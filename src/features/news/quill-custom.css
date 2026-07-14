@@ -1,0 +1,12 @@
+/* Custom Quill Editor Styles for NewsModal */
+@import 'react-quill-new/dist/quill.snow.css';
+
+.ql-toolbar.ql-snow { border: 1px solid var(--color-border) !important; border-radius: 12px 12px 0 0; background: var(--color-surface-alt); padding: 4px 8px; }
+.ql-container.ql-snow { border: 1px solid var(--color-border) !important; border-top: none !important; border-radius: 0 0 12px 12px; background: var(--color-surface); min-height: 115px; max-height: 220px; overflow-y: auto; font-family: inherit; }
+.ql-editor { font-size: 13px; font-weight: 500; color: var(--color-text); padding: 10px 14px; line-height: 1.5; }
+.ql-editor.ql-blank::before { color: var(--color-text-muted); font-style: normal; opacity: 0.4; }
+.ql-stroke { stroke: var(--color-text-muted) !important; }
+.ql-fill { fill: var(--color-text-muted) !important; }
+.ql-picker { color: var(--color-text-muted) !important; }
+.ql-active .ql-stroke { stroke: var(--color-primary) !important; }
+.ql-active .ql-fill { fill: var(--color-primary) !important; }

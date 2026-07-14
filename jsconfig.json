@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@hooks/students/*": ["src/features/students/hooks/*"],
+      "@hooks/enrollment/*": ["src/features/enrollment/hooks/*"],
+      "@hooks/reports/*": ["src/features/raport/hooks/*"],
+      "@hooks/dorms/*": ["src/features/dorms/hooks/*"],
+      "@hooks/*": ["src/shared/hooks/*"],
+      "@utils/dorms/*": ["src/features/dorms/utils/*"],
+      "@utils/enrollment/*": ["src/features/enrollment/utils/*"],
+      "@utils/reports/*": ["src/features/raport/utils/*"],
+      "@utils/students/*": ["src/features/students/utils/*"],
+      "@utils/*": ["src/shared/utils/*"],
+      "@context/*": ["src/core/context/*"],
+      "@lib/*": ["src/core/lib/*"],
+      "@assets/*": ["src/assets/*"],
+      "@features/*": ["src/features/*"],
+      "@core/*": ["src/core/*"],
+      "@shared/*": ["src/shared/*"]
+    },
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ESNext",
+    "allowImportingTsExtensions": false
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

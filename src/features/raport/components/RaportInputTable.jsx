@@ -178,7 +178,7 @@ const CopyDataModal = ({ isOpen, onClose, students, scores, extras, currentMonth
                 const ids = students.map(s => s.id)
                 const { data } = await supabase
                     .from('student_monthly_reports')
-                    .select('student_id,nilai_akhlak,nilai_ibadah,nilai_kebersihan,nilai_quran,nilai_bahasa')
+                    .select('student_id,nilai_akhlak,nilai_ibadah,nilai_kebersihan,nilai_quran,nilai_bahasa,berat_badan,tinggi_badan,ziyadah,murojaah,hari_sakit,hari_izin,hari_alpa,hari_pulang,catatan')
                     .in('student_id', ids).eq('month', sourceMonth).eq('year', sourceYear)
                 if (!active) return
                 const map = {}

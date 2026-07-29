@@ -789,7 +789,23 @@ export function useRaportCore() {
                 })
             const copied = toCopy.length
             setScores(prev => { const next = { ...prev }; for (const rep of toCopy) { next[rep.student_id] = { nilai_akhlak: rep.nilai_akhlak ?? '', nilai_ibadah: rep.nilai_ibadah ?? '', nilai_kebersihan: rep.nilai_kebersihan ?? '', nilai_quran: rep.nilai_quran ?? '', nilai_bahasa: rep.nilai_bahasa ?? '' } }; return next })
-            setExtras(prev => { const next = { ...prev }; for (const rep of data) { const cur = next[rep.student_id] || {}; if (!cur.berat_badan && !cur.tinggi_badan) next[rep.student_id] = { ...cur, berat_badan: rep.berat_badan ?? '', tinggi_badan: rep.tinggi_badan ?? '' } }; return next })
+            setExtras(prev => {
+                const next = { ...prev }
+                for (const rep of toCopy) {
+                    next[rep.student_id] = {
+                        berat_badan: rep.berat_badan ?? '',
+                        tinggi_badan: rep.tinggi_badan ?? '',
+                        ziyadah: rep.ziyadah ?? '',
+                        murojaah: rep.murojaah ?? '',
+                        hari_sakit: rep.hari_sakit ?? '',
+                        hari_izin: rep.hari_izin ?? '',
+                        hari_alpa: rep.hari_alpa ?? '',
+                        hari_pulang: rep.hari_pulang ?? '',
+                        catatan: rep.catatan ?? '',
+                    }
+                }
+                return next
+            })
             const copiedIds = new Set(toCopy.map(rep => rep.student_id))
             setSavedIds(prev => { const next = new Set(prev); for (const id of copiedIds) next.delete(id); return next })
             addToast(`Disalin dari ${BULAN.find(b => b.id === targetMonth)?.id_str} ${targetYear} — ${copied} santri`, 'success')

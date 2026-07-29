@@ -136,8 +136,12 @@ const RaportPrintCard = memo(({
         return isAr ? g.label : g.id
     }
 
+    // Tahun ajaran: bulan >= 7 (Juli–Des) → tahun/tahun+1, bulan < 7 (Jan–Jun) → tahun-1/tahun
+    const bulanId = Number(bulanObj?.id ?? 0)
+    const ayStart = bulanId >= 7 ? tahun : tahun - 1
+    const ayEnd = ayStart + 1
     const yearDisplay = reportType === 'bulanan'
-        ? (isAr ? `\u200F${toArabicNum(tahun - 1)} \u2013 ${toArabicNum(tahun)}` : `${tahun - 1} – ${tahun}`)
+        ? (isAr ? `\u200F${toArabicNum(ayStart)} \u2013 ${toArabicNum(ayEnd)}` : `${ayStart} – ${ayEnd}`)
         : (isAr ? toArabicNum(academicYear) : academicYear)
 
     const tableDir = isAr ? 'rtl' : 'ltr'

@@ -75,11 +75,11 @@ export const QURAN_LEVELS = [
 ]
 
 export const TEST_SCORES = [
-    { id: 'mumtaz', name: 'Mumtaz (Istimewa)', color: 'text-emerald-600 bg-emerald-500/10' },
-    { id: 'jayyid_jiddan', name: 'Jayyid Jiddan (Sangat Baik)', color: 'text-sky-600 bg-sky-500/10' },
-    { id: 'jayyid', name: 'Jayyid (Baik)', color: 'text-indigo-600 bg-indigo-500/10' },
-    { id: 'maqbul', name: 'Maqbul (Cukup)', color: 'text-amber-600 bg-amber-500/10' },
-    { id: 'rasib', name: 'Rasib (Kurang)', color: 'text-rose-600 bg-rose-500/10' },
+    { id: 'mumtaz', name: 'Mumtaz (Sangat Baik)', color: 'text-emerald-600 bg-emerald-500/10' },
+    { id: 'jayyid_jiddan', name: 'Jayyid Jiddan (Baik)', color: 'text-sky-600 bg-sky-500/10' },
+    { id: 'jayyid', name: 'Jayyid (Cukup)', color: 'text-indigo-600 bg-indigo-500/10' },
+    { id: 'maqbul', name: 'Maqbul (Kurang)', color: 'text-amber-600 bg-amber-500/10' },
+    { id: 'rasib', name: 'Rasib (Kurang Baik)', color: 'text-rose-600 bg-rose-500/10' },
 ]
 
 export const REQUIRED_DOCUMENTS = [

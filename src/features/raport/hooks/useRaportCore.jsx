@@ -136,6 +136,7 @@ export function useRaportCore() {
     const [prevMonthScores, setPrevMonthScores] = useState({})
     const [studentTrend, setStudentTrend] = useState({})
     const [catatanArabMap, setCatatanArabMap] = useState({})
+    const [behaviorReports, setBehaviorReports] = useState({}) // { studentId: [{ violation_type_id, points, notes, reported_at, teacher_name, rule_name, rule_category, is_negative }] }
     const [saveAllConfirm, setSaveAllConfirm] = useState(null)
 
     // Bulk & preview states
@@ -429,7 +430,7 @@ export function useRaportCore() {
                 
                 if (useReportType === 'bulanan') {
                     initScores[s.id] = { nilai_akhlak: rep?.nilai_akhlak ?? '', nilai_ibadah: rep?.nilai_ibadah ?? '', nilai_kebersihan: rep?.nilai_kebersihan ?? '', nilai_quran: rep?.nilai_quran ?? '', nilai_bahasa: rep?.nilai_bahasa ?? '' }
-                    initExtras[s.id] = { berat_badan: rep?.berat_badan ?? '', tinggi_badan: rep?.tinggi_badan ?? '', ziyadah: rep?.ziyadah ?? '', murojaah: rep?.murojaah ?? '', hari_sakit: rep?.hari_sakit ?? '', hari_izin: rep?.hari_izin ?? '', hari_alpa: rep?.hari_alpa ?? '', hari_pulang: rep?.hari_pulang ?? '', catatan: rep?.catatan ?? '' }
+                    initExtras[s.id] = { berat_badan: rep?.berat_badan ?? '', tinggi_badan: rep?.tinggi_badan ?? '', ziyadah: rep?.ziyadah ?? '', murojaah: rep?.murojaah ?? '', sholat: rep?.sholat ?? '', hari_sakit: rep?.hari_sakit ?? '', hari_izin: rep?.hari_izin ?? '', hari_alpa: rep?.hari_alpa ?? '', hari_pulang: rep?.hari_pulang ?? '', catatan: rep?.catatan ?? '' }
                 } else {
                     const scObj = {}
                     criteria.forEach(k => {
@@ -440,6 +441,7 @@ export function useRaportCore() {
                     initExtras[s.id] = {
                         berat_badan: rep?.extras?.berat_badan ?? '',
                         tinggi_badan: rep?.extras?.tinggi_badan ?? '',
+                        sholat: rep?.extras?.sholat ?? '',
                         hari_sakit: rep?.extras?.hari_sakit ?? '',
                         hari_izin: rep?.extras?.hari_izin ?? '',
                         hari_alpa: rep?.extras?.hari_alpa ?? '',
@@ -466,6 +468,44 @@ export function useRaportCore() {
             setShowIncompleteOnly(false)
             setStudents(finalStudents); setScoresRaw(initScores); setExtras(initExtras); setExistingReportIds(initExisting)
             setSavedIds(initSavedIds)
+
+            // ── Fetch behavior reports (violations & achievements) for this class/month ──
+            try {
+                const ids = finalStudents.map(s => s.id)
+                if (ids.length && useReportType === 'bulanan') {
+                    // Get start/end of month for filtering
+                    const monthStart = new Date(year, month - 1, 1).toISOString()
+                    const monthEnd = new Date(year, month, 0, 23, 59, 59).toISOString()
+                    const { data: brData } = await supabase
+                        .from('reports')
+                        .select('id, student_id, violation_type_id, points, notes, reported_at, teacher_name, point_rules!inner(id, name, category, is_negative)')
+                        .in('student_id', ids)
+                        .gte('reported_at', monthStart)
+                        .lte('reported_at', monthEnd)
+                        .order('reported_at', { ascending: false })
+                    const brMap = {}
+                    for (const r of (brData || [])) {
+                        if (!brMap[r.student_id]) brMap[r.student_id] = []
+                        brMap[r.student_id].push({
+                            id: r.id,
+                            violation_type_id: r.violation_type_id,
+                            points: r.points,
+                            notes: r.notes,
+                            reported_at: r.reported_at,
+                            teacher_name: r.teacher_name,
+                            rule_name: r.point_rules?.name || '',
+                            rule_category: r.point_rules?.category || '',
+                            is_negative: r.point_rules?.is_negative ?? true
+                        })
+                    }
+                    setBehaviorReports(brMap)
+                } else {
+                    setBehaviorReports({})
+                }
+            } catch (brErr) {
+                console.warn('Failed to load behavior reports:', brErr)
+                setBehaviorReports({})
+            }
             try {
                 const session = { classId, month, year, useLang, reportType: useReportType, selectedSemester: useSemester, academicYear: useAcademicYear, className: classesList.find(c => c.id === classId)?.name || '' }
                 localStorage.setItem('raport_last_session', JSON.stringify(session))
@@ -537,6 +577,7 @@ export function useRaportCore() {
                     tinggi_badan: ex.tinggi_badan !== '' ? Number(ex.tinggi_badan) : null, 
                     ziyadah: ex.ziyadah || null, 
                     murojaah: ex.murojaah || null, 
+                    sholat: ex.sholat || null, 
                     hari_sakit: ex.hari_sakit !== '' ? Number(ex.hari_sakit) : 0, 
                     hari_izin: ex.hari_izin !== '' ? Number(ex.hari_izin) : 0, 
                     hari_alpa: ex.hari_alpa !== '' ? Number(ex.hari_alpa) : 0, 
@@ -572,6 +613,7 @@ export function useRaportCore() {
                     extras: {
                         berat_badan: ex.berat_badan !== '' ? Number(ex.berat_badan) : null,
                         tinggi_badan: ex.tinggi_badan !== '' ? Number(ex.tinggi_badan) : null,
+                        sholat: ex.sholat || null,
                         hari_sakit: ex.hari_sakit !== '' ? Number(ex.hari_sakit) : 0,
                         hari_izin: ex.hari_izin !== '' ? Number(ex.hari_izin) : 0,
                         hari_alpa: ex.hari_alpa !== '' ? Number(ex.hari_alpa) : 0,
@@ -905,7 +947,7 @@ export function useRaportCore() {
         copyingLastMonth, setCopyingLastMonth, studentSearch, setStudentSearch,
         draftAvailable, setDraftAvailable, isOnline, setIsOnline,
         newMonthBanner, setNewMonthBanner, prevMonthScores, setPrevMonthScores,
-        studentTrend, setStudentTrend, catatanArabMap, setCatatanArabMap,
+        studentTrend, setStudentTrend, catatanArabMap, setCatatanArabMap, behaviorReports,
         saveAllConfirm, setSaveAllConfirm, showNoPhoneOnly, setShowNoPhoneOnly,
         showIncompleteOnly, setShowIncompleteOnly, lastSession, setLastSession,
         autoSaveTimers, completedCount, progressPct, noPhoneCount, hasUnsavedMemo,

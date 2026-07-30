@@ -8,7 +8,8 @@ import {
     faPalette, faEye, faCheck,
     faChevronRight, faSearch, faXmark, faSkull,
     faTrash, faCircleExclamation, faCode, faSync, faUsers,
-    faHistory, faCheckCircle, faCircleInfo, faChartPie
+    faHistory, faCheckCircle, faCircleInfo, faChartPie,
+    faTags, faCalendarDays, faQrcode, faPenFancy
 } from '@fortawesome/free-solid-svg-icons'
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import DashboardLayout from '@core/layouts/DashboardLayout'
@@ -17,6 +18,7 @@ import Pagination from '@shared/components/Pagination'
 import { useToast } from '@context/Toast'
 import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
+import { translitToAr } from '@utils/reports/translitData'
 import { useSchoolSettings, DEFAULT_SETTINGS } from '@context/SchoolSettings'
 import { useAuth } from '@context/Auth'
 import { fmtRelative } from '@utils/formatters'
@@ -143,11 +145,43 @@ const RAPORT_SECTIONS = [
     },
     {
         id: 'kepala',
-        label: 'Kepala Sekolah / Direktur',
-        desc: 'Nama dan jabatan yang tercetak di footer raport',
+        label: 'Kepala Sekolah / Pengasuh',
+        desc: 'Nama, jabatan, dan prefix untuk tanda tangan raport',
         icon: faUser,
         color: 'text-emerald-500', bg: 'bg-emerald-500/10',
         gradient: 'from-emerald-500/8 to-transparent',
+    },
+    {
+        id: 'labels',
+        label: 'Label Raport',
+        desc: 'Label section, catatan, dan istilah yang tampil di raport',
+        icon: faTags,
+        color: 'text-amber-500', bg: 'bg-amber-500/10',
+        gradient: 'from-amber-500/8 to-transparent',
+    },
+    {
+        id: 'ujian',
+        label: 'Label Ujian & Semester',
+        desc: 'Nama ujian, semester, dan periode akademik',
+        icon: faCalendarDays,
+        color: 'text-sky-500', bg: 'bg-sky-500/10',
+        gradient: 'from-sky-500/8 to-transparent',
+    },
+    {
+        id: 'grading',
+        label: 'Skala Penilaian',
+        desc: 'Label predikat nilai (Sangat Baik, Baik, dll)',
+        icon: faPenFancy,
+        color: 'text-rose-500', bg: 'bg-rose-500/10',
+        gradient: 'from-rose-500/8 to-transparent',
+    },
+    {
+        id: 'verifikasi',
+        label: 'Verifikasi & QR Code',
+        desc: 'Label portal, instruksi QR, dan domain verifikasi',
+        icon: faQrcode,
+        color: 'text-cyan-500', bg: 'bg-cyan-500/10',
+        gradient: 'from-cyan-500/8 to-transparent',
     },
     {
         id: 'warna',
@@ -232,31 +266,90 @@ function ColorInput({ label, value, onChange }) {
 function RaportPreview({ form }) {
     const c1 = form.report_color_primary || '#1a5c35'
     const c2 = form.report_color_secondary || '#c8a400'
+    const pengasuhTitle = (form.headmaster_title_id || 'Pengasuh\nMuhammadiyah Boarding School Tanggul')
+    const pengasuhLines = pengasuhTitle.split('\n')
+    const displayHeadmasterNameAr = form.headmaster_name_ar || (form.headmaster_name_id ? translitToAr(form.headmaster_name_id) : '—')
+    const displayPengasuhNameAr = form.pengasuh_name_ar || (form.pengasuh_name_id ? translitToAr(form.pengasuh_name_id) : '—')
+
     return (
-        <div className="rounded-xl overflow-hidden bg-white text-black shadow-md border border-gray-200">
-            <div className="flex items-center gap-3 p-3">
+        <div className="rounded-2xl overflow-hidden bg-white text-black shadow-xl border border-gray-200/60 max-w-[560px] mx-auto font-serif">
+            {/* Header — dua logo kiri-kanan seperti raport asli */}
+            <div className="flex items-start gap-4 px-6 pt-5 pb-3">
+                {/* Logo kiri */}
                 <img
                     src={form.logo_url || mbsLogo}
-                    alt="logo"
-                    className="w-10 h-10 object-contain rounded shrink-0"
-                    onError={e => {
-                        if (form.logo_url) e.target.src = mbsLogo;
-                        else e.target.style.display = 'none';
-                    }}
+                    alt="logo kiri"
+                    className="w-[52px] h-[52px] object-contain shrink-0"
+                    onError={e => { e.target.style.display = 'none' }}
                 />
-                <div className="flex-1 text-center leading-tight min-w-0">
-                    {form.school_subtitle_ar && <div className="text-[7px] text-gray-400 truncate" dir="rtl">{form.school_subtitle_ar}</div>}
-                    <div className="text-[11px] font-black truncate" style={{ color: c1 }} dir="rtl">{form.school_name_ar || '—'}</div>
-                    <div className="text-[9px] font-bold text-gray-600 truncate">{form.school_name_id || '—'}</div>
-                    <div className="text-[8px] text-gray-400 truncate">{form.school_address || '—'}</div>
+                {/* Teks tengah */}
+                <div className="flex-1 text-center leading-tight min-w-0 pt-0.5">
+                    {form.school_subtitle_ar && <div className="text-[7.5px] text-gray-500 mb-1" dir="rtl" style={{ fontFamily: 'Arial, sans-serif' }}>{form.school_subtitle_ar}</div>}
+                    <div className="text-[15px] font-black" style={{ color: c1 }} dir="rtl" style={{ fontFamily: 'Arial, sans-serif' }}>{form.school_name_ar || '—'}</div>
+                    <div className="text-[11.5px] font-bold text-gray-800 mt-0.5" style={{ fontFamily: 'Times New Roman, serif' }}>{form.school_name_id || '—'}</div>
+                    <div className="text-[8.5px] text-gray-500 mt-1 leading-snug" style={{ fontFamily: 'Times New Roman, serif' }}>
+                        <div>{form.school_address_line1 || 'Jl. Pemandian no. 88 RT 002 RW 003 Patemon, Tanggul, Jember 68155'}</div>
+                        {form.school_address_line2 && <div>{form.school_address_line2}</div>}
+                    </div>
+                </div>
+                {/* Logo kanan */}
+                <img
+                    src={form.logo_url_2 || form.logo_url || mbsLogo}
+                    alt="logo kanan"
+                    className="w-[52px] h-[52px] object-contain shrink-0"
+                    onError={e => { e.target.style.display = 'none' }}
+                />
+            </div>
+
+            {/* Gradient + double border */}
+            <div style={{ height: 3, background: `linear-gradient(90deg, ${c1}, ${c2}, ${c1})` }} />
+            <div style={{ borderBottom: `3px double ${c1}`, marginTop: 2 }} />
+
+            {/* Signature blocks — 3 kolom seperti raport asli */}
+            <div className="flex justify-between px-8 py-6">
+                {/* Wali Santri */}
+                <div className="flex-1 text-center">
+                    <div className="text-[11px] font-bold text-gray-800" style={{ fontFamily: 'Times New Roman, serif' }}>Wali Santri</div>
+                </div>
+
+                {/* Kepala Sekolah */}
+                <div className="flex-1 text-center">
+                    <div className="text-[9px] text-gray-500 italic" style={{ fontFamily: 'Times New Roman, serif' }}>{form.headmaster_prefix_id || 'Mengetahui,'}</div>
+                    <div className="text-[11px] font-bold text-gray-800" style={{ fontFamily: 'Times New Roman, serif' }}>{form.headmaster_label_id || 'Kepala Sekolah'}</div>
+                    {form.headmaster_label_ar && <div className="text-[9px] text-gray-400 mt-0.5" dir="rtl" style={{ fontFamily: 'Arial, sans-serif' }}>{form.headmaster_label_ar}</div>}
+                </div>
+
+                {/* Pengasuh */}
+                <div className="flex-1 text-center">
+                    <div className="text-[11px] font-bold text-gray-800" style={{ fontFamily: 'Times New Roman, serif' }}>{pengasuhLines[0]}</div>
+                    {pengasuhLines.length > 1 && (
+                        <div className="text-[9px] text-gray-500 leading-tight whitespace-pre-line" style={{ fontFamily: 'Times New Roman, serif' }}>
+                            {pengasuhLines.slice(1).join('\n')}
+                        </div>
+                    )}
+                    {form.headmaster_title_ar && <div className="text-[9px] text-gray-400 mt-0.5" dir="rtl" style={{ fontFamily: 'Arial, sans-serif' }}>{form.headmaster_title_ar.split('\n')[0]}</div>}
                 </div>
             </div>
-            <div style={{ height: 3, background: `linear-gradient(90deg,${c1},${c2},${c1})` }} />
-            <div style={{ borderBottom: `2px double ${c1}`, marginTop: 2 }} />
-            <div className="flex justify-between px-3 py-2 text-[8px] text-gray-400">
-                <span>Musyrif / Wali Kamar</span>
-                <span>{form.headmaster_name_id || '—'}</span>
-                <span>Wali Santri</span>
+
+            {/* Garis ttd + nama — di bawah label */}
+            <div className="flex justify-between px-8 pb-6">
+                {/* Wali Santri */}
+                <div className="flex-1 text-center">
+                    <div className="border-t border-gray-400 mx-6 mb-2" />
+                    <div className="text-[9px] text-gray-400 tracking-[0.15em]">••••••••••••••</div>
+                </div>
+
+                {/* Kepala Sekolah */}
+                <div className="flex-1 text-center">
+                    <div className="border-t border-gray-400 mx-6 mb-2" />
+                    <div className="text-[10px] font-bold text-gray-700" style={{ fontFamily: 'Times New Roman, serif' }}>{form.headmaster_name_id || '—'}</div>
+                </div>
+
+                {/* Pengasuh */}
+                <div className="flex-1 text-center">
+                    <div className="border-t border-gray-400 mx-6 mb-2" />
+                    <div className="text-[10px] font-bold text-gray-700" style={{ fontFamily: 'Times New Roman, serif' }}>{form.pengasuh_name_id || '—'}</div>
+                </div>
             </div>
         </div>
     )
@@ -1527,28 +1620,69 @@ export default function AdminSettingsPage() {
                                     />
                                 </div>
                                 <div className="sm:col-span-2">
-                                    <FL>Alamat</FL>
+                                    <FL>Alamat Baris 1 (Header Raport)</FL>
                                     <input
-                                        type="text" value={form.school_address}
-                                        onChange={e => set('school_address', e.target.value)}
+                                        type="text" value={form.school_address_line1 || ''}
+                                        onChange={e => set('school_address_line1', e.target.value)}
                                         className="input-field text-sm h-11"
+                                        placeholder="Jl. Pemandian No. 88 Dusun Krajan II Patemon Tanggul Jember 68155"
                                     />
                                 </div>
                                 <div className="sm:col-span-2">
-                                    <FL>URL / Path Logo</FL>
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-11 h-11 rounded-xl border-2 border-[var(--color-border)] bg-[var(--color-surface-alt)] flex items-center justify-center overflow-hidden flex-shrink-0">
-                                            {form.logo_url
-                                                ? <img src={form.logo_url} alt="logo" className="w-9 h-9 object-contain" onError={e => e.target.style.display = 'none'} />
-                                                : <FontAwesomeIcon icon={faUpload} className="text-[var(--color-text-muted)] text-xs" />
-                                            }
+                                    <FL>Alamat Baris 2 (Header Raport)</FL>
+                                    <input
+                                        type="text" value={form.school_address_line2 || ''}
+                                        onChange={e => set('school_address_line2', e.target.value)}
+                                        className="input-field text-sm h-11"
+                                        placeholder="Asrama Tahfidz Al-Qur'an Bambu Kuning Jl. Teratai No. 11 Tanggul Jember 68155"
+                                    />
+                                </div>
+                                <div className="sm:col-span-2">
+                                    <FL>Logo Utama (Kiri & Tengah)</FL>
+                                    <div className="flex items-start gap-4">
+                                        <div className="w-20 h-20 rounded-xl border-2 border-[var(--color-border)] bg-white flex items-center justify-center overflow-hidden flex-shrink-0 shadow-sm">
+                                            <img
+                                                src={form.logo_url || mbsLogo}
+                                                alt="logo utama"
+                                                className="w-16 h-16 object-contain p-1"
+                                                onError={e => { e.target.src = mbsLogo }}
+                                            />
                                         </div>
-                                        <input
-                                            type="text" value={form.logo_url}
-                                            onChange={e => set('logo_url', e.target.value)}
-                                            className="input-field text-sm h-11 flex-1"
-                                            placeholder="https://example.com/logo.png"
-                                        />
+                                        <div className="flex-1 min-w-0">
+                                            <input
+                                                type="text" value={form.logo_url}
+                                                onChange={e => set('logo_url', e.target.value)}
+                                                className="input-field text-sm h-11 w-full"
+                                                placeholder="https://example.com/logo.png"
+                                            />
+                                            <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug">
+                                                Logo utama sekolah. Jika logo kanan kosong, logo ini digunakan di kedua sisi.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="sm:col-span-2">
+                                    <FL>Logo Kedua (Kanan — opsional)</FL>
+                                    <div className="flex items-start gap-4">
+                                        <div className="w-20 h-20 rounded-xl border-2 border-[var(--color-border)] bg-white flex items-center justify-center overflow-hidden flex-shrink-0 shadow-sm">
+                                            <img
+                                                src={form.logo_url_2 || form.logo_url || mbsLogo}
+                                                alt="logo kedua"
+                                                className="w-16 h-16 object-contain p-1"
+                                                onError={e => { e.target.src = mbsLogo }}
+                                            />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <input
+                                                type="text" value={form.logo_url_2 || ''}
+                                                onChange={e => set('logo_url_2', e.target.value)}
+                                                className="input-field text-sm h-11 w-full"
+                                                placeholder="https://example.com/logo-kanan.png"
+                                            />
+                                            <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug">
+                                                Logo di sisi kanan raport (misal: logo unit SMP/SMA atau logo organisasi)
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1559,43 +1693,406 @@ export default function AdminSettingsPage() {
                             <SectionHeader section={RAPORT_SECTIONS[1]} />
                             <div className="p-5 grid sm:grid-cols-2 gap-4">
                                 <div>
-                                    <FL>Jabatan (Indonesia)</FL>
+                                    <FL>Label Jabatan (Indonesia)</FL>
+                                    <input
+                                        type="text" value={form.headmaster_label_id || ''}
+                                        onChange={e => set('headmaster_label_id', e.target.value)}
+                                        className="input-field text-sm h-11"
+                                        placeholder="Kepala Sekolah"
+                                    />
+                                </div>
+                                <div>
+                                    <FL>Label Jabatan (Arab)</FL>
+                                    <input
+                                        type="text" value={form.headmaster_label_ar || ''}
+                                        onChange={e => set('headmaster_label_ar', e.target.value)}
+                                        dir="rtl" className="input-field text-sm h-11 text-right"
+                                        placeholder="رئيس المدرسة"
+                                    />
+                                </div>
+                                <div>
+                                    <FL>Prefix di Atas Label (Indonesia)</FL>
+                                    <input
+                                        type="text" value={form.headmaster_prefix_id || ''}
+                                        onChange={e => set('headmaster_prefix_id', e.target.value)}
+                                        className="input-field text-sm h-11"
+                                        placeholder="Mengetahui,"
+                                    />
+                                    <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug">
+                                        Teks kecil di atas label jabatan (contoh: "Mengetahui,")
+                                    </p>
+                                </div>
+                                <div>
+                                    <FL>Prefix di Atas Label (Arab)</FL>
+                                    <input
+                                        type="text" value={form.headmaster_prefix_ar || ''}
+                                        onChange={e => set('headmaster_prefix_ar', e.target.value)}
+                                        dir="rtl" className="input-field text-sm h-11 text-right"
+                                        placeholder="يتقدم"
+                                    />
+                                </div>
+                                <div>
+                                    <FL>Jabatan Lengkap (Indonesia) — untuk tanda tangan</FL>
                                     <input
                                         type="text" value={form.headmaster_title_id}
                                         onChange={e => set('headmaster_title_id', e.target.value)}
                                         className="input-field text-sm h-11"
+                                        placeholder="Pengasuh&#10;Muhammadiyah Boarding School Tanggul"
                                     />
+                                    <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug">
+                                        Gunakan \n untuk enter baru (contoh: "Pengasuh\nMBS Tanggul")
+                                    </p>
                                 </div>
                                 <div>
-                                    <FL>Nama (Indonesia)</FL>
+                                    <FL>Nama Lengkap (Indonesia)</FL>
                                     <input
                                         type="text" value={form.headmaster_name_id}
                                         onChange={e => set('headmaster_name_id', e.target.value)}
                                         className="input-field font-bold text-sm h-11"
+                                        placeholder="Ir. H. M. Ali Maksum"
                                     />
+                                    <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug">
+                                        Akan ditransliterasi otomatis ke Arab jika kolom Arab kosong
+                                    </p>
                                 </div>
                                 <div>
-                                    <FL>Jabatan (Arab)</FL>
+                                    <FL>Jabatan Lengkap (Arab) — untuk tanda tangan</FL>
                                     <input
                                         type="text" value={form.headmaster_title_ar}
                                         onChange={e => set('headmaster_title_ar', e.target.value)}
                                         dir="rtl" className="input-field text-sm h-11 text-right"
+                                        placeholder="المشرف&#10;معهد محمدية تانجول"
                                     />
+                                    <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug text-right">
+                                        Gunakan \n untuk enter baru
+                                    </p>
                                 </div>
                                 <div>
-                                    <FL>Nama (Arab)</FL>
+                                    <FL>Nama Lengkap (Arab)</FL>
                                     <input
                                         type="text" value={form.headmaster_name_ar}
                                         onChange={e => set('headmaster_name_ar', e.target.value)}
                                         dir="rtl" className="input-field font-bold text-sm h-11 text-right"
+                                        placeholder="خویرول انوار"
                                     />
+                                    <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug text-right">
+                                        Kosongkan jika ingin otomatis dari nama Indonesia
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="px-5 pb-5">
+                                <div className="border-t border-[var(--color-border)] pt-4">
+                                    <p className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-3">Pengasuh / Ketua Yayasan</p>
+                                    <div className="grid sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <FL>Nama Pengasuh (Indonesia)</FL>
+                                            <input
+                                                type="text" value={form.pengasuh_name_id || ''}
+                                                onChange={e => set('pengasuh_name_id', e.target.value)}
+                                                className="input-field font-bold text-sm h-11"
+                                                placeholder="Ir. H. M. Ali Maksum"
+                                            />
+                                        </div>
+                                        <div>
+                                            <FL>Nama Pengasuh (Arab)</FL>
+                                            <input
+                                                type="text" value={form.pengasuh_name_ar || ''}
+                                                onChange={e => set('pengasuh_name_ar', e.target.value)}
+                                                dir="rtl" className="input-field font-bold text-sm h-11 text-right"
+                                                placeholder="المهندس محمد علي معصوم"
+                                            />
+                                            <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug text-right">
+                                                Kosongkan jika ingin otomatis dari nama Indonesia
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* ── Section: Label Raport ── */}
+                        <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                            <SectionHeader section={RAPORT_SECTIONS[2]} />
+                            <div className="p-5 space-y-4">
+                                <p className="text-[11px] text-[var(--color-text-muted)] -mt-2 mb-3">Label section yang tampil di dalam raport. Gunakan format ID / Arab.</p>
+                                <div className="grid sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <FL>Section "Perkembangan Fisik" (ID)</FL>
+                                        <input type="text" value={form.report_labels?.section_physical?.id || 'PERKEMBANGAN FISIK'} onChange={e => set('report_labels', { ...form.report_labels, section_physical: { ...form.report_labels?.section_physical, id: e.target.value } })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Section "Perkembangan Fisik" (AR)</FL>
+                                        <input type="text" value={form.report_labels?.section_physical?.ar || 'التطور البدني'} onChange={e => set('report_labels', { ...form.report_labels, section_physical: { ...form.report_labels?.section_physical, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                    </div>
+                                    <div>
+                                        <FL>Section "Perkembangan Hafalan" (ID)</FL>
+                                        <input type="text" value={form.report_labels?.section_hafalan?.id || 'PERKEMBANGAN HAFALAN'} onChange={e => set('report_labels', { ...form.report_labels, section_hafalan: { ...form.report_labels?.section_hafalan, id: e.target.value } })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Section "Perkembangan Hafalan" (AR)</FL>
+                                        <input type="text" value={form.report_labels?.section_hafalan?.ar || 'تطور الحفظ'} onChange={e => set('report_labels', { ...form.report_labels, section_hafalan: { ...form.report_labels?.section_hafalan, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                    </div>
+                                    <div>
+                                        <FL>Section "Absensi" (ID)</FL>
+                                        <input type="text" value={form.report_labels?.section_attendance?.id || 'ABSENSI'} onChange={e => set('report_labels', { ...form.report_labels, section_attendance: { ...form.report_labels?.section_attendance, id: e.target.value } })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Section "Absensi" (AR)</FL>
+                                        <input type="text" value={form.report_labels?.section_attendance?.ar || 'الغياب'} onChange={e => set('report_labels', { ...form.report_labels, section_attendance: { ...form.report_labels?.section_attendance, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                    </div>
+                                </div>
+                                <div className="pt-3 border-t border-[var(--color-border)]">
+                                    <p className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-3">Label Tambahan</p>
+                                    <div className="grid sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <FL>"Catatan Wali Kelas" (ID)</FL>
+                                            <input type="text" value={form.report_labels?.catatan_label?.id || 'Catatan Wali Kelas'} onChange={e => set('report_labels', { ...form.report_labels, catatan_label: { ...form.report_labels?.catatan_label, id: e.target.value } })} className="input-field text-sm h-11" />
+                                        </div>
+                                        <div>
+                                            <FL>"Catatan Wali Kelas" (AR)</FL>
+                                            <input type="text" value={form.report_labels?.catatan_label?.ar || 'ملاحظة'} onChange={e => set('report_labels', { ...form.report_labels, catatan_label: { ...form.report_labels?.catatan_label, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                        </div>
+                                        <div>
+                                            <FL>"Jumlah Total" (ID)</FL>
+                                            <input type="text" value={form.report_labels?.total_label?.id || 'Jumlah Total'} onChange={e => set('report_labels', { ...form.report_labels, total_label: { ...form.report_labels?.total_label, id: e.target.value } })} className="input-field text-sm h-11" />
+                                        </div>
+                                        <div>
+                                            <FL>"Jumlah Total" (AR)</FL>
+                                            <input type="text" value={form.report_labels?.total_label?.ar || 'المجموع الإجمالي'} onChange={e => set('report_labels', { ...form.report_labels, total_label: { ...form.report_labels?.total_label, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                        </div>
+                                        <div>
+                                            <FL>"Nilai Rata-Rata" (ID)</FL>
+                                            <input type="text" value={form.report_labels?.avg_label?.id || 'Nilai Rata-Rata'} onChange={e => set('report_labels', { ...form.report_labels, avg_label: { ...form.report_labels?.avg_label, id: e.target.value } })} className="input-field text-sm h-11" />
+                                        </div>
+                                        <div>
+                                            <FL>"Nilai Rata-Rata" (AR)</FL>
+                                            <input type="text" value={form.report_labels?.avg_label?.ar || 'المعدل'} onChange={e => set('report_labels', { ...form.report_labels, avg_label: { ...form.report_labels?.avg_label, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                        </div>
+                                        <div>
+                                            <FL>"KKM" / "KKM" (ID & AR)</FL>
+                                            <input type="text" value={form.report_labels?.kkm_label?.id || 'KKM'} onChange={e => set('report_labels', { ...form.report_labels, kkm_label: { ...form.report_labels?.kkm_label, id: e.target.value, ar: e.target.value } })} className="input-field text-sm h-11" />
+                                        </div>
+                                        <div>
+                                            <FL>Unit "Hari" (ID)</FL>
+                                            <input type="text" value={form.report_labels?.unit_day?.id || 'hari'} onChange={e => set('report_labels', { ...form.report_labels, unit_day: { ...form.report_labels?.unit_day, id: e.target.value } })} className="input-field text-sm h-11" />
+                                        </div>
+                                        <div>
+                                            <FL>Unit "Hari" (AR)</FL>
+                                            <input type="text" value={form.report_labels?.unit_day?.ar || 'يَوْم'} onChange={e => set('report_labels', { ...form.report_labels, unit_day: { ...form.report_labels?.unit_day, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* ── Section: Label Ujian & Semester ── */}
+                        <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                            <SectionHeader section={RAPORT_SECTIONS[3]} />
+                            <div className="p-5 space-y-4">
+                                <div className="grid sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <FL>Nama Ujian Lisan (ID)</FL>
+                                        <input type="text" value={form.report_labels?.ujian_lisan_title?.id || 'Ujian Lisan'} onChange={e => set('report_labels', { ...form.report_labels, ujian_lisan_title: { ...form.report_labels?.ujian_lisan_title, id: e.target.value } })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Nama Ujian Lisan (AR)</FL>
+                                        <input type="text" value={form.report_labels?.ujian_lisan_title?.ar || 'الاختبار الشفهي'} onChange={e => set('report_labels', { ...form.report_labels, ujian_lisan_title: { ...form.report_labels?.ujian_lisan_title, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                    </div>
+                                    <div>
+                                        <FL>Judul Raport Ujian Lisan (ID)</FL>
+                                        <input type="text" value={form.report_labels?.ujian_lisan_report?.id || 'Hasil Ujian Lisan'} onChange={e => set('report_labels', { ...form.report_labels, ujian_lisan_report: { ...form.report_labels?.ujian_lisan_report, id: e.target.value } })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Judul Raport Ujian Lisan (AR)</FL>
+                                        <input type="text" value={form.report_labels?.ujian_lisan_report?.ar || 'نتيجة الإختبار الشفهي'} onChange={e => set('report_labels', { ...form.report_labels, ujian_lisan_report: { ...form.report_labels?.ujian_lisan_report, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                    </div>
+                                    <div>
+                                        <FL>Nama Ujian Mapel Pondok (ID)</FL>
+                                        <input type="text" value={form.report_labels?.ujian_pondok_title?.id || 'Ujian Mapel Pondok'} onChange={e => set('report_labels', { ...form.report_labels, ujian_pondok_title: { ...form.report_labels?.ujian_pondok_title, id: e.target.value } })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Nama Ujian Mapel Pondok (AR)</FL>
+                                        <input type="text" value={form.report_labels?.ujian_pondok_title?.ar || 'الاختبار للدراسة الإسلامية'} onChange={e => set('report_labels', { ...form.report_labels, ujian_pondok_title: { ...form.report_labels?.ujian_pondok_title, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                    </div>
+                                    <div>
+                                        <FL>Judul Raport Ujian Pondok (ID)</FL>
+                                        <input type="text" value={form.report_labels?.ujian_pondok_report?.id || 'Hasil Ujian Akhir'} onChange={e => set('report_labels', { ...form.report_labels, ujian_pondok_report: { ...form.report_labels?.ujian_pondok_report, id: e.target.value } })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Judul Raport Ujian Pondok (AR)</FL>
+                                        <input type="text" value={form.report_labels?.ujian_pondok_report?.ar || 'نتيجة الاختبار النهائي'} onChange={e => set('report_labels', { ...form.report_labels, ujian_pondok_report: { ...form.report_labels?.ujian_pondok_report, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                    </div>
+                                    <div>
+                                        <FL>Praktek Ibadah (ID)</FL>
+                                        <input type="text" value={form.report_labels?.praktek_ibadah?.id || 'Praktek Ibadah'} onChange={e => set('report_labels', { ...form.report_labels, praktek_ibadah: { ...form.report_labels?.praktek_ibadah, id: e.target.value } })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Praktek Ibadah (AR)</FL>
+                                        <input type="text" value={form.report_labels?.praktek_ibadah?.ar || 'الاختبار التطبيقي'} onChange={e => set('report_labels', { ...form.report_labels, praktek_ibadah: { ...form.report_labels?.praktek_ibadah, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                    </div>
+                                </div>
+                                <div className="pt-3 border-t border-[var(--color-border)]">
+                                    <p className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-3">Label Semester & Periode</p>
+                                    <div className="grid sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <FL>Semester "Ganjil" (ID)</FL>
+                                            <input type="text" value={form.report_labels?.semester_ganjil?.id || 'Ganjil'} onChange={e => set('report_labels', { ...form.report_labels, semester_ganjil: { ...form.report_labels?.semester_ganjil, id: e.target.value } })} className="input-field text-sm h-11" />
+                                        </div>
+                                        <div>
+                                            <FL>Semester "Ganjil" (AR)</FL>
+                                            <input type="text" value={form.report_labels?.semester_ganjil?.ar || 'الأول'} onChange={e => set('report_labels', { ...form.report_labels, semester_ganjil: { ...form.report_labels?.semester_ganjil, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                        </div>
+                                        <div>
+                                            <FL>Semester "Genap" (ID)</FL>
+                                            <input type="text" value={form.report_labels?.semester_genap?.id || 'Genap'} onChange={e => set('report_labels', { ...form.report_labels, semester_genap: { ...form.report_labels?.semester_genap, id: e.target.value } })} className="input-field text-sm h-11" />
+                                        </div>
+                                        <div>
+                                            <FL>Semester "Genap" (AR)</FL>
+                                            <input type="text" value={form.report_labels?.semester_genap?.ar || 'الثاني'} onChange={e => set('report_labels', { ...form.report_labels, semester_genap: { ...form.report_labels?.semester_genap, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                        </div>
+                                        <div>
+                                            <FL>Prefix Periode Lisan (ID)</FL>
+                                            <input type="text" value={form.report_labels?.period_prefix_lisan?.id || 'Akhir Tahun Semester'} onChange={e => set('report_labels', { ...form.report_labels, period_prefix_lisan: { ...form.report_labels?.period_prefix_lisan, id: e.target.value } })} className="input-field text-sm h-11" />
+                                        </div>
+                                        <div>
+                                            <FL>Prefix Periode Lisan (AR)</FL>
+                                            <input type="text" value={form.report_labels?.period_prefix_lisan?.ar || 'لآخر السنة للفصل الدراسي'} onChange={e => set('report_labels', { ...form.report_labels, period_prefix_lisan: { ...form.report_labels?.period_prefix_lisan, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                        </div>
+                                        <div>
+                                            <FL>Prefix Periode Pondok (ID)</FL>
+                                            <input type="text" value={form.report_labels?.period_prefix_pondok?.id || 'Semester'} onChange={e => set('report_labels', { ...form.report_labels, period_prefix_pondok: { ...form.report_labels?.period_prefix_pondok, id: e.target.value } })} className="input-field text-sm h-11" />
+                                        </div>
+                                        <div>
+                                            <FL>Prefix Periode Pondok (AR)</FL>
+                                            <input type="text" value={form.report_labels?.period_prefix_pondok?.ar || 'للفصل الدراسي'} onChange={e => set('report_labels', { ...form.report_labels, period_prefix_pondok: { ...form.report_labels?.period_prefix_pondok, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                        </div>
+                                        <div>
+                                            <FL>Prefix Periode Umum (ID)</FL>
+                                            <input type="text" value={form.report_labels?.period_prefix_general?.id || 'Semester'} onChange={e => set('report_labels', { ...form.report_labels, period_prefix_general: { ...form.report_labels?.period_prefix_general, id: e.target.value } })} className="input-field text-sm h-11" />
+                                        </div>
+                                        <div>
+                                            <FL>Prefix Periode Umum (AR)</FL>
+                                            <input type="text" value={form.report_labels?.period_prefix_general?.ar || 'الفصل الدراسي'} onChange={e => set('report_labels', { ...form.report_labels, period_prefix_general: { ...form.report_labels?.period_prefix_general, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="pt-3 border-t border-[var(--color-border)]">
+                                    <p className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-3">Label Info Siswa & Nomor Raport</p>
+                                    <div className="grid sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <FL>"Nama Santri" (ID)</FL>
+                                            <input type="text" value={form.report_labels?.student_name_label?.id || 'Nama Santri'} onChange={e => set('report_labels', { ...form.report_labels, student_name_label: { ...form.report_labels?.student_name_label, id: e.target.value } })} className="input-field text-sm h-11" />
+                                        </div>
+                                        <div>
+                                            <FL>"Nama Santri" (AR)</FL>
+                                            <input type="text" value={form.report_labels?.student_name_label?.ar || 'اسم الطالب'} onChange={e => set('report_labels', { ...form.report_labels, student_name_label: { ...form.report_labels?.student_name_label, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                        </div>
+                                        <div>
+                                            <FL>"No. Absen" (ID)</FL>
+                                            <input type="text" value={form.report_labels?.student_no_label?.id || 'No. Absen'} onChange={e => set('report_labels', { ...form.report_labels, student_no_label: { ...form.report_labels?.student_no_label, id: e.target.value } })} className="input-field text-sm h-11" />
+                                        </div>
+                                        <div>
+                                            <FL>"No. Absen" (AR)</FL>
+                                            <input type="text" value={form.report_labels?.student_no_label?.ar || 'رقم الطالب'} onChange={e => set('report_labels', { ...form.report_labels, student_no_label: { ...form.report_labels?.student_no_label, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                        </div>
+                                        <div>
+                                            <FL>Prefix Nomor Raport</FL>
+                                            <input type="text" value={form.report_labels?.report_number_prefix || 'RPT'} onChange={e => set('report_labels', { ...form.report_labels, report_number_prefix: e.target.value })} className="input-field text-sm h-11" placeholder="RPT" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* ── Section: Skala Penilaian ── */}
+                        <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                            <SectionHeader section={RAPORT_SECTIONS[4]} />
+                            <div className="p-5 space-y-4">
+                                <p className="text-[11px] text-[var(--color-text-muted)] -mt-2 mb-3">Label predikat nilai yang tampil di raport.</p>
+                                <div className="grid sm:grid-cols-3 gap-4">
+                                    <div>
+                                        <FL>Predikat 9 (ID)</FL>
+                                        <input type="text" value={form.report_labels?.grade_istimewa || 'Sangat Baik'} onChange={e => set('report_labels', { ...form.report_labels, grade_istimewa: e.target.value })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Predikat 8 (ID)</FL>
+                                        <input type="text" value={form.report_labels?.grade_sangat_baik || 'Baik'} onChange={e => set('report_labels', { ...form.report_labels, grade_sangat_baik: e.target.value })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Predikat 6 (ID)</FL>
+                                        <input type="text" value={form.report_labels?.grade_baik || 'Cukup'} onChange={e => set('report_labels', { ...form.report_labels, grade_baik: e.target.value })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Predikat 4 (ID)</FL>
+                                        <input type="text" value={form.report_labels?.grade_cukup || 'Kurang'} onChange={e => set('report_labels', { ...form.report_labels, grade_cukup: e.target.value })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Predikat &lt;4 (ID)</FL>
+                                        <input type="text" value={form.report_labels?.grade_kurang || 'Kurang Baik'} onChange={e => set('report_labels', { ...form.report_labels, grade_kurang: e.target.value })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Predikat Gagal (ID)</FL>
+                                        <input type="text" value={form.report_labels?.grade_gagal || 'Gagal'} onChange={e => set('report_labels', { ...form.report_labels, grade_gagal: e.target.value })} className="input-field text-sm h-11" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* ── Section: Verifikasi & QR Code ── */}
+                        <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                            <SectionHeader section={RAPORT_SECTIONS[5]} />
+                            <div className="p-5 space-y-4">
+                                <div className="grid sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <FL>Domain Aplikasi</FL>
+                                        <input type="text" value={form.app_domain || ''} onChange={e => set('app_domain', e.target.value)} className="input-field text-sm h-11" placeholder="laporanmu.my.id" />
+                                        <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug">Domain untuk URL verifikasi raport</p>
+                                    </div>
+                                    <div>
+                                        <FL>Prefix Nomor Raport</FL>
+                                        <input type="text" value={form.report_labels?.report_number_prefix || 'RPT'} onChange={e => set('report_labels', { ...form.report_labels, report_number_prefix: e.target.value })} className="input-field text-sm h-11" placeholder="RPT" />
+                                    </div>
+                                </div>
+                                <div className="grid sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <FL>Label Portal (ID)</FL>
+                                        <input type="text" value={form.report_labels?.portal_label?.id || 'LaporanMu Academic Portal'} onChange={e => set('report_labels', { ...form.report_labels, portal_label: { ...form.report_labels?.portal_label, id: e.target.value } })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Label Portal (AR)</FL>
+                                        <input type="text" value={form.report_labels?.portal_label?.ar || 'بوابة LaporanMu الأكاديمية'} onChange={e => set('report_labels', { ...form.report_labels, portal_label: { ...form.report_labels?.portal_label, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                    </div>
+                                    <div>
+                                        <FL>Instruksi QR (ID)</FL>
+                                        <input type="text" value={form.report_labels?.qr_instruction?.id || 'Pindai QR untuk verifikasi keaslian raport'} onChange={e => set('report_labels', { ...form.report_labels, qr_instruction: { ...form.report_labels?.qr_instruction, id: e.target.value } })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Instruksi QR (AR)</FL>
+                                        <input type="text" value={form.report_labels?.qr_instruction?.ar || 'امسح الرمز للتحقق من صحة التقرير'} onChange={e => set('report_labels', { ...form.report_labels, qr_instruction: { ...form.report_labels?.qr_instruction, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                    </div>
+                                    <div>
+                                        <FL>Label "No. Raport" (ID)</FL>
+                                        <input type="text" value={form.report_labels?.report_no_label?.id || 'No. Raport: '} onChange={e => set('report_labels', { ...form.report_labels, report_no_label: { ...form.report_labels?.report_no_label, id: e.target.value } })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Label "No. Raport" (AR)</FL>
+                                        <input type="text" value={form.report_labels?.report_no_label?.ar || 'رقم التقرير: '} onChange={e => set('report_labels', { ...form.report_labels, report_no_label: { ...form.report_labels?.report_no_label, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                    </div>
+                                    <div>
+                                        <FL>Label "Waktu Cetak" (ID)</FL>
+                                        <input type="text" value={form.report_labels?.print_time_label?.id || 'Waktu Cetak: '} onChange={e => set('report_labels', { ...form.report_labels, print_time_label: { ...form.report_labels?.print_time_label, id: e.target.value } })} className="input-field text-sm h-11" />
+                                    </div>
+                                    <div>
+                                        <FL>Label "Waktu Cetak" (AR)</FL>
+                                        <input type="text" value={form.report_labels?.print_time_label?.ar || 'تاريخ الطباعة: '} onChange={e => set('report_labels', { ...form.report_labels, print_time_label: { ...form.report_labels?.print_time_label, ar: e.target.value } })} dir="rtl" className="input-field text-sm h-11 text-right" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         {/* ── Section: Warna & Tampilan ── */}
                         <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
-                            <SectionHeader section={RAPORT_SECTIONS[2]} />
+                            <SectionHeader section={RAPORT_SECTIONS[6]} />
                             <div className="p-5 space-y-5">
                                 <div className="grid sm:grid-cols-2 gap-4">
                                     <ColorInput

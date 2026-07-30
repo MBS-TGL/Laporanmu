@@ -8,15 +8,24 @@ export const DEFAULT_SETTINGS = {
     school_name_ar: 'معهد محمدية الإسلامي تانجول',
     school_subtitle_ar: 'المجلس التعليمي للمرحلتين الابتدائية والمتوسطة التابع للرئاسة الفرعية للجمعية المحمدية',
     school_address: 'Jl. Pemandian no. 88 RT 002 RW 003 Patemon, Tanggul, Jember 68155',
+    school_address_line1: 'Jl. Pemandian No. 88 Dusun Krajan II Patemon Tanggul Jember 68155',
+    school_address_line2: 'Asrama Tahfidz Al-Qur\'an Bambu Kuning Jl. Teratai No. 11 Tanggul Jember 68155',
     school_domain: 'smpmuh4tanggul.sch.id',
     app_domain: 'laporanmu.my.id',
     logo_url: '',
+    logo_url_2: '',
 
-    // Kepala Sekolah / Direktur
+    // Kepala Sekolah / Pengasuh
     headmaster_title_id: 'Pengasuh\nMuhammadiyah Boarding School Tanggul',
-    headmaster_name_id: 'Ir. Muhammad Ali Maksum',
+    headmaster_name_id: 'Khoirul Anwar S.Pd.',
     headmaster_title_ar: 'مدير المعهد\nمعهد محمدية تانجول',
-    headmaster_name_ar: 'المهندس محمد علي معصوم',
+    headmaster_name_ar: '',
+    headmaster_label_id: 'Kepala Sekolah',
+    headmaster_label_ar: 'رئيس المدرسة',
+    headmaster_prefix_id: 'Mengetahui,',
+    headmaster_prefix_ar: 'يتقدم',
+    pengasuh_name_id: 'Ir. H. M. Ali Maksum',
+    pengasuh_name_ar: '',
 
     // Warna Raport
     report_color_primary: '#1a5c35',
@@ -55,9 +64,9 @@ export function SchoolSettingsProvider({ children }) {
                         data.headmaster_title_ar = 'مدير المعهد\nمعهد محمدية تانجول'
                     }
                     // Naikkan Otomatis Nama/Judul Jika Cocok Dengan Default Lama
-                    if (data.headmaster_name_id === 'KH. Muhammad Ali Maksum, Lc') {
-                        data.headmaster_name_id = 'Ir. Muhammad Ali Maksum'
-                        data.headmaster_name_ar = 'المهندس محمد علي معصوم'
+                    if (data.headmaster_name_id === 'KH. Muhammad Ali Maksum, Lc' || data.headmaster_name_id === 'Ir. H. M. Ali Maksum') {
+                        data.headmaster_name_id = 'Khoirul Anwar S.Pd.'
+                        data.headmaster_name_ar = ''
                     }
                     // Perbaiki Otomatis Path Logo Lama
                     if (data.logo_url === '/src/assets/mbs.png') {

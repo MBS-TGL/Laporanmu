@@ -28,8 +28,6 @@ const printCardAreEqual = (prev, next) => {
     if (JSON.stringify(prev.scores) !== JSON.stringify(next.scores)) return false
     // Deep-compare extra fields
     if (JSON.stringify(prev.extra) !== JSON.stringify(next.extra)) return false
-    // Deep-compare behavior reports
-    if (JSON.stringify(prev.behaviorReports) !== JSON.stringify(next.behaviorReports)) return false
 
     if (JSON.stringify(prev.settings) !== JSON.stringify(next.settings)) return false
     if (JSON.stringify(prev.layoutConfig) !== JSON.stringify(next.layoutConfig)) return false
@@ -56,8 +54,7 @@ const RaportPrintCard = memo(({
     selectedClass,
     layoutConfig = {},
     signMode = 'basah',
-    signatures = null,
-    behaviorReports = []
+    signatures = null
 }) => {
     // Resolve layoutConfig values with fallback defaults
     const lc = {
@@ -910,75 +907,6 @@ const RaportPrintCard = memo(({
                     </div>
                 )}
             </div>
-
-            {/* Catatan Perilaku */}
-            {(ex.sholat || (behaviorReports && behaviorReports.length > 0)) && !isSemesterExam && (
-                <div style={{ marginTop: isA4 ? 6 : 10, border: '1px solid #ccc', borderRadius: 4, padding: isA4 ? '6px 10px' : '8px 12px' }}>
-                    <div style={{
-                        fontWeight: 800, fontSize: isAr ? '12pt' : '9.5pt', color: '#1a1a2e', marginBottom: 6,
-                        direction: isAr ? 'rtl' : 'ltr', fontFamily: isAr ? arFont : 'inherit',
-                        textAlign: isAr ? 'right' : 'left', textTransform: isAr ? 'none' : 'uppercase', letterSpacing: '0.5px'
-                    }}>
-                        {isAr ? 'ملاحظات السلوك' : 'Catatan Perilaku'}
-                    </div>
-                    <div style={{ display: 'flex', gap: 12, flexDirection: isAr ? 'row-reverse' : 'row', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-                        {/* Sholat */}
-                        {ex.sholat && (() => {
-                            let sholatData = {}
-                            try { sholatData = JSON.parse(ex.sholat) } catch { sholatData = { terlambat: 0, tidak_sholat: 0 } }
-                            const tlb = sholatData.terlambat || 0
-                            const tdk = sholatData.tidak_sholat || 0
-                            if (tlb === 0 && tdk === 0) return null
-                            const parts = []
-                            if (tlb > 0) parts.push(`${isAr ? 'متأخر' : 'Terlambat'} ${tlb}x`)
-                            if (tdk > 0) parts.push(`${isAr ? 'لم يصل' : 'Tidak Sholat'} ${tdk}x`)
-                            return (
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '9pt', fontFamily: isAr ? arFont : 'inherit', direction: isAr ? 'rtl' : 'ltr' }}>
-                                    <span style={{ fontWeight: 700, color: '#555' }}>{isAr ? 'الصلاة' : 'Sholat'}:</span>
-                                    <span style={{ fontWeight: 600, color: '#e11d48', background: '#e11d4818', padding: '1px 8px', borderRadius: 4, fontSize: '8.5pt' }}>{parts.join(', ')}</span>
-                                </div>
-                            )
-                        })()}
-                        {/* Pelanggaran & Prestasi */}
-                        {behaviorReports && behaviorReports.length > 0 && (() => {
-                            const pelanggaran = behaviorReports.filter(r => r.is_negative)
-                            const prestasi = behaviorReports.filter(r => !r.is_negative)
-                            return (
-                                <>
-                                    {pelanggaran.length > 0 && (
-                                        <div style={{ flex: 1, minWidth: 200 }}>
-                                            <div style={{ fontWeight: 700, fontSize: '8.5pt', color: '#e11d48', marginBottom: 3, fontFamily: isAr ? arFont : 'inherit', direction: isAr ? 'rtl' : 'ltr', textAlign: isAr ? 'right' : 'left' }}>
-                                                {isAr ? 'المخالفات' : 'Pelanggaran'} ({pelanggaran.length})
-                                            </div>
-                                            <div style={{ fontSize: '8pt', lineHeight: 1.4, fontFamily: isAr ? arFont : 'inherit', direction: isAr ? 'rtl' : 'ltr', textAlign: isAr ? 'right' : 'left' }}>
-                                                {pelanggaran.map((r, i) => (
-                                                    <div key={r.id || i} style={{ marginBottom: 1, color: '#444' }}>
-                                                        {i + 1}. {r.rule_name}{r.notes ? ` (${r.notes})` : ''} <span style={{ color: '#e11d48', fontWeight: 600 }}>[{r.points}]</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-                                    {prestasi.length > 0 && (
-                                        <div style={{ flex: 1, minWidth: 200 }}>
-                                            <div style={{ fontWeight: 700, fontSize: '8.5pt', color: '#059669', marginBottom: 3, fontFamily: isAr ? arFont : 'inherit', direction: isAr ? 'rtl' : 'ltr', textAlign: isAr ? 'right' : 'left' }}>
-                                                {isAr ? 'الإنجازات' : 'Prestasi'} ({prestasi.length})
-                                            </div>
-                                            <div style={{ fontSize: '8pt', lineHeight: 1.4, fontFamily: isAr ? arFont : 'inherit', direction: isAr ? 'rtl' : 'ltr', textAlign: isAr ? 'right' : 'left' }}>
-                                                {prestasi.map((r, i) => (
-                                                    <div key={r.id || i} style={{ marginBottom: 1, color: '#444' }}>
-                                                        {i + 1}. {r.rule_name}{r.notes ? ` (${r.notes})` : ''} <span style={{ color: '#059669', fontWeight: 600 }}>[+{r.points}]</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-                                </>
-                            )
-                        })()}
-                    </div>
-                </div>
-            )}
 
             </div>
 

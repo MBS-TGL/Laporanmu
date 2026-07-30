@@ -1,7 +1,7 @@
 import { memo, useState, useEffect, useRef } from 'react'
 import {
     Loader2, CheckCircle2, Save, FileText, X,
-    ClipboardList, Zap, Lightbulb, Languages, Star, Heart
+    ClipboardList, Zap, Lightbulb, Languages, Star, Heart, Clock
 } from 'lucide-react'
 import { getGradePredicate, RAPORT_TYPES } from '@utils/reports/raportTypeRegistry'
 import {
@@ -305,6 +305,27 @@ const StudentRow = memo(({
                                     )}
                                 </div>
                             </>
+                        )}
+                        {/* Sholat Counter */}
+                        {rtObj.hasHafalan && (
+                            <div className="flex flex-col gap-1">
+                                <div className="flex items-center gap-1 rounded-md border border-[var(--color-border)] overflow-hidden" style={{ background: 'var(--color-surface)', height: 28 }}>
+                                    <div className="w-6 h-full flex items-center justify-center shrink-0" style={{ background: '#06b6d418' }}>
+                                        <Clock className="w-2.5 h-2.5" style={{ color: '#06b6d4' }} />
+                                    </div>
+                                    <span className="text-[8px] font-black text-[#06b6d4] shrink-0 px-1">Sholat</span>
+                                    <div className="flex items-center gap-0.5 ml-auto pr-1">
+                                        <span className="text-[7px] text-[var(--color-text-muted)]">Tlb</span>
+                                        <input type="number" min={0} inputMode="numeric" value={(() => { try { return JSON.parse(ex.sholat || '{}').terlambat ?? 0 } catch { return 0 } })()}
+                                            onChange={e => { const v = Math.max(0, parseInt(e.target.value) || 0); const cur = (() => { try { return JSON.parse(ex.sholat || '{}') } catch { return {} } })(); onExtraChange(student.id, 'sholat', JSON.stringify({ ...cur, terlambat: v })) }}
+                                            className="w-6 h-5 text-[9px] font-bold text-center bg-transparent text-[var(--color-text)] outline-none border border-[var(--color-border)] rounded" style={{ appearance: 'none', MozAppearance: 'textfield' }} />
+                                        <span className="text-[7px] text-[var(--color-text-muted)] ml-1">Tdk</span>
+                                        <input type="number" min={0} inputMode="numeric" value={(() => { try { return JSON.parse(ex.sholat || '{}').tidak_sholat ?? 0 } catch { return 0 } })()}
+                                            onChange={e => { const v = Math.max(0, parseInt(e.target.value) || 0); const cur = (() => { try { return JSON.parse(ex.sholat || '{}') } catch { return {} } })(); onExtraChange(student.id, 'sholat', JSON.stringify({ ...cur, tidak_sholat: v })) }}
+                                            className="w-6 h-5 text-[9px] font-bold text-center bg-transparent text-[var(--color-text)] outline-none border border-[var(--color-border)] rounded" style={{ appearance: 'none', MozAppearance: 'textfield' }} />
+                                    </div>
+                                </div>
+                            </div>
                         )}
                     </div>
                 </td>

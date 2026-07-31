@@ -171,11 +171,13 @@ export const ExtraTextarea = memo(({ value, studentId, fieldKey, onCommit, ...te
     return <textarea {...textareaProps} value={localVal} onChange={handleChange} onBlur={handleBlur} />
 })
 
-export const ExtraExpandingTextarea = memo(({ value, studentId, fieldKey, onCommit, color, label, icon: IconComponent, ...rest }) => {
+export const ExtraExpandingTextarea = memo(({ value, studentId, fieldKey, onCommit, color, label, icon: IconComponent, size = 'sm', ...rest }) => {
     const [localVal, setLocalVal] = useState(value ?? '')
     const [focused, setFocused] = useState(false)
     const debounceRef = useRef(null)
     const taRef = useRef(null)
+
+    const isLarge = size === 'lg'
 
     useEffect(() => { setLocalVal(value ?? '') }, [value])
 
@@ -217,7 +219,7 @@ export const ExtraExpandingTextarea = memo(({ value, studentId, fieldKey, onComm
                 borderColor: focused ? color : 'var(--color-border)',
                 boxShadow: focused ? `0 0 0 2px ${color}20` : 'none',
                 zIndex: focused ? 20 : 'auto',
-                height: focused ? 'auto' : '28px',
+                height: focused ? 'auto' : (isLarge ? '48px' : '32px'),
                 flex: focused ? '1 1 50%' : '1 1 0%',
                 minWidth: focused ? 0 : undefined,
             }}
@@ -225,28 +227,28 @@ export const ExtraExpandingTextarea = memo(({ value, studentId, fieldKey, onComm
         >
             {IconComponent && (
                 <div 
-                    className="w-6 shrink-0 flex justify-center transition-all duration-200"
+                    className="shrink-0 flex justify-center transition-all duration-200"
                     style={{ 
+                        width: isLarge ? '28px' : '24px',
                         background: focused ? `${color}25` : `${color}15`,
                         alignItems: focused ? 'flex-start' : 'center',
                         paddingTop: focused ? '6px' : '0px',
                     }}
                 >
-                    <IconComponent className="w-2.5 h-2.5" style={{ color }} />
+                    <IconComponent className={isLarge ? 'w-3 h-3' : 'w-2.5 h-2.5'} style={{ color }} />
                 </div>
             )}
             <div 
-                className="flex-1 min-w-0 relative flex items-center px-1.5 h-full"
+                className="flex-1 min-w-0 relative flex items-center h-full"
                 style={{
-                    paddingTop: focused ? '4px' : '0px',
-                    paddingBottom: focused ? '4px' : '0px',
+                    padding: isLarge ? '4px 8px' : '0px 6px',
                 }}
             >
                 {!focused && (
                     <span 
-                        className={`text-[8px] truncate leading-none w-full ${
-                            localVal ? 'font-bold text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-40 font-semibold'
-                        }`}
+                        className={`truncate leading-tight w-full ${
+                            isLarge ? 'text-[10px]' : 'text-[9px]'
+                        } ${localVal ? 'font-bold text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-40 font-semibold'}`}
                     >
                         {localVal || label}
                     </span>
@@ -259,7 +261,7 @@ export const ExtraExpandingTextarea = memo(({ value, studentId, fieldKey, onComm
                     onBlur={handleBlur}
                     placeholder={`Isi ${label.toLowerCase()}...`}
                     rows={1}
-                    className="w-full p-0 text-[9px] font-bold bg-transparent text-[var(--color-text)] outline-none resize-none leading-snug transition-all duration-200 overflow-hidden"
+                    className={`w-full p-0 font-bold bg-transparent text-[var(--color-text)] outline-none resize-none leading-snug transition-all duration-200 overflow-hidden ${isLarge ? 'text-[11px]' : 'text-[10px]'}`}
                     style={{
                         height: focused ? 'auto' : '0px',
                         minHeight: focused ? 18 : 0,
@@ -477,17 +479,28 @@ const StudentRow = memo(({
                         )}
                         {rtObj.hasCatatan && (
                             <>
-                                <div className="relative flex rounded-md border border-[var(--color-border)] overflow-visible" style={{ background: 'var(--color-surface)', height: 32 }}>
-                                    <div className="w-6 shrink-0 flex items-center justify-center" style={{ background: '#f59e0b18' }}>
-                                        <ClipboardList className="w-2.5 h-2.5 text-[#f59e0b]" />
+                                <div className="relative">
+                                    <ExtraExpandingTextarea
+                                        value={ex.catatan ?? ''}
+                                        studentId={student.id}
+                                        fieldKey="catatan"
+                                        onCommit={onCatatanChange}
+                                        color="#f59e0b"
+                                        label="Catatan"
+                                        icon={ClipboardList}
+                                        size="lg"
+                                        aria-label="Catatan musyrif"
+                                    />
+                                    <div className="absolute right-0 top-0 flex items-center h-full pointer-events-none" style={{ zIndex: 10 }}>
+                                        <div className="flex items-center gap-0.5 pr-0.5 pointer-events-auto">
+                                            <button onClick={() => { const c = generateAutoComment(sc, student.id, trendData, criteria, reportType, classLevel); if (!c) return; onCatatanChange(student.id, 'catatan', c) }} title="Generate komentar otomatis dari nilai" disabled={!avg} className="w-5 h-5 flex items-center justify-center text-amber-500 hover:text-amber-600 hover:bg-amber-500/10 rounded transition-all disabled:opacity-30">
+                                                <Zap className="w-2.5 h-2.5" />
+                                            </button>
+                                            <button onClick={() => onTemplateToggle(student.id)} title="Template catatan" className={`w-5 h-5 flex items-center justify-center transition-all rounded ${templateOpen ? 'text-amber-600 bg-amber-500/15' : 'text-[var(--color-text-muted)] hover:text-amber-500 hover:bg-amber-500/10'}`}>
+                                                <Lightbulb className="w-2.5 h-2.5" />
+                                            </button>
+                                        </div>
                                     </div>
-                                    <ExtraInput placeholder="Catatan" value={ex.catatan ?? ''} studentId={student.id} fieldKey="catatan" onCommit={onCatatanChange} aria-label="Catatan musyrif" className="flex-1 w-0 h-full px-1.5 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none" />
-                                    <button onClick={() => { const c = generateAutoComment(sc, student.id, trendData, criteria, reportType, classLevel); if (!c) return; onCatatanChange(student.id, 'catatan', c) }} title="Generate komentar otomatis dari nilai" disabled={!avg} className="shrink-0 w-6 flex items-center justify-center text-amber-500 hover:text-amber-600 hover:bg-amber-500/10 transition-all disabled:opacity-30">
-                                        <Zap className="w-2.5 h-2.5" />
-                                    </button>
-                                    <button onClick={() => onTemplateToggle(student.id)} title="Template catatan" className={`shrink-0 w-6 flex items-center justify-center transition-all ${templateOpen ? 'text-amber-600 bg-amber-500/15' : 'text-[var(--color-text-muted)] hover:text-amber-500 hover:bg-amber-500/10'}`}>
-                                        <Lightbulb className="w-2.5 h-2.5" />
-                                    </button>
                                     {templateOpen && (
                                         <div className="absolute left-0 right-0 z-30 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-xl overflow-hidden" style={{ ...(si < 2 ? { top: 'calc(100% + 4px)' } : { bottom: 'calc(100% + 4px)' }), minWidth: 200 }}>
                                             <p className="text-[7px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-2.5 pt-2 pb-1">Pilih template catatan</p>

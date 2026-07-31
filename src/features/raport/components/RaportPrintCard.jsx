@@ -714,11 +714,11 @@ const RaportPrintCard = memo(({
                 {/* Data Tambahan — Baris 1: Catatan Perilaku | Perkembangan Hafalan | Absensi */}
                 {(rtObj.hasFisik || rtObj.hasHafalan || rtObj.hasAttendance) && !isSemesterExam && (
                     <>
-                        <div style={{ display: 'flex', gap: 0, marginBottom: 6, flexDirection: isAr ? 'row-reverse' : 'row', alignItems: 'stretch' }}>
+                        <div style={{ display: 'flex', gap: 0, marginBottom: isA4 ? 8 : 14, flexDirection: isAr ? 'row-reverse' : 'row', alignItems: 'stretch' }}>
                             {/* Catatan Perilaku — 40% */}
                             <div style={{ width: '40%', flexShrink: 0, display: 'flex', flexDirection: 'column', paddingRight: 7 }}>
                                 <div style={{ fontSize: isAr ? (isLisan ? '16pt' : '14.5pt') : '9pt', fontWeight: 800, marginBottom: 0, textAlign: 'center', background: '#f0f4f8', border: '1px solid #999', borderBottom: 'none', padding: '3px 0', fontFamily: isAr ? arFont : 'inherit', lineHeight: isAr ? 1.15 : 'normal' }}>
-                                    {isAr ? 'ملاحظات السلوك' : 'CATATAN PERILAKU'}
+                                    {isAr ? 'ملاحظات السلوك' : 'KETERTIBAN'}
                                 </div>
                                 <table style={{ width: '100%', height: '100%', borderCollapse: 'collapse', fontSize: isAr ? '9pt' : '9.5pt', flex: 1 }}>
                                     <tbody>
@@ -778,7 +778,7 @@ const RaportPrintCard = memo(({
                                     <div style={{ fontSize: isAr ? (isLisan ? '16pt' : '14.5pt') : '9pt', fontWeight: 800, marginBottom: 0, textAlign: 'center', background: '#f0f4f8', border: '1px solid #999', borderBottom: 'none', padding: '3px 0', fontFamily: isAr ? arFont : 'inherit', lineHeight: isAr ? 1.15 : 'normal' }}>
                                         {isAr ? 'الغياب' : 'ABSENSI'}
                                     </div>
-                                    <table style={{ width: '100%', height: '100%', borderCollapse: 'collapse', fontSize: isAr ? '9.5pt' : '11pt', flex: 1 }}>
+                                    <table style={{ width: '100%', height: '100%', borderCollapse: 'collapse', fontSize: isAr ? '9pt' : '9.5pt', flex: 1 }}>
                                         <tbody>
                                             {[
                                                 { key: 'hari_sakit', label: L.sick },

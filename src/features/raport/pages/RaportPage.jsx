@@ -94,6 +94,7 @@ export default function RaportPage() {
     const silentPrintRef = useRef(false) // skip executePrint saat generate PDF untuk WA
     const [layoutConfig, setLayoutConfig] = useState(() => loadLayoutConfig())
     const [pageSize, setPageSize] = useState('f4') // 'a4' | 'f4'
+    const { enabled: autosaveEnabled } = useFlag('raport.autosave')
 
     // ── Hooks integration ──
     const core = useRaportCore()
@@ -516,6 +517,8 @@ export default function RaportPage() {
     // PERF: Gunakan ref untuk scores agar useEffect tidak re-run di setiap keystroke
     const scoresSnapshotRef = useRef(scores)
     scoresSnapshotRef.current = scores
+    const extrasSnapshotRef = useRef(extras)
+    extrasSnapshotRef.current = extras
 
     useEffect(() => {
         if (!showIncompleteOnly) {
@@ -967,6 +970,7 @@ export default function RaportPage() {
     // ── Auto-save (idle-based: simpan ke DB hanya setelah user idle)
     // Tidak meng-update setSavedIds per keystroke — itu sudah dilakukan di handler.
     const triggerAutoSave = useCallback((studentId) => {
+        if (!autosaveEnabled) return
         // Cancel idle callback lama jika masih pending
         if (typeof autoSaveTimers.current[studentId] === 'function') autoSaveTimers.current[studentId]()
         if (globalSaveTimerRef.current) clearTimeout(globalSaveTimerRef.current)
@@ -988,7 +992,7 @@ export default function RaportPage() {
             saveStudent(studentId)
             globalSaveTimerRef.current = setTimeout(() => setGlobalSaveIndicator(null), 2000)
         }, 2000)
-    }, [saveStudent])
+    }, [saveStudent, autosaveEnabled])
 
     // PERF: Stable callback untuk update extras field — diperlukan agar ExtraInput memo()
     // tidak re-render tiap parent render (karena inline arrow selalu buat referensi baru).
@@ -1012,6 +1016,9 @@ export default function RaportPage() {
     }, [])
 
     const handleExtraChange = useCallback((studentId, key, value) => {
+        // DIRTY CHECK: skip jika value sama dengan yang sudah ada di ref
+        const cur = pendingExtrasRef.current[studentId]?.[key] ?? extrasSnapshotRef.current?.[studentId]?.[key]
+        if (String(value) === String(cur ?? '')) return
         // Buffer ke ref dulu — tidak menyebabkan re-render tabel
         if (!pendingExtrasRef.current[studentId]) pendingExtrasRef.current[studentId] = {}
         pendingExtrasRef.current[studentId][key] = value
@@ -1034,6 +1041,9 @@ export default function RaportPage() {
 
     // Sama dengan handleExtraChange tapi juga reset terjemahan Arab catatan
     const handleCatatanChange = useCallback((studentId, key, value) => {
+        // DIRTY CHECK: skip jika value sama dengan yang sudah ada di ref
+        const cur = pendingExtrasRef.current[studentId]?.[key] ?? extrasSnapshotRef.current?.[studentId]?.[key]
+        if (String(value) === String(cur ?? '')) return
         if (!pendingExtrasRef.current[studentId]) pendingExtrasRef.current[studentId] = {}
         pendingExtrasRef.current[studentId][key] = value
         const markUnsaved = () => setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
@@ -1053,10 +1063,18 @@ export default function RaportPage() {
 
     // PERF: Stable callback untuk ScoreCell onChange — buffer ke ref, flush via idle
     const handleScoreChange = useCallback((studentId, key, value) => {
+        // DIRTY CHECK: skip jika value sama dengan yang sudah ada di ref
+        const cur = pendingScoresRef.current[studentId]?.[key] ?? scoresSnapshotRef.current?.[studentId]?.[key]
+        if (String(value) === String(cur ?? '')) return
         if (!pendingScoresRef.current[studentId]) pendingScoresRef.current[studentId] = {}
         pendingScoresRef.current[studentId][key] = value
-        // Mark unsaved
-        setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
+        // Mark unsaved — defer via idle agar tidak trigger re-render per keystroke
+        const markUnsaved = () => setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
+        if (typeof window.requestIdleCallback === 'function') {
+            window.requestIdleCallback(markUnsaved, { timeout: 1500 })
+        } else {
+            setTimeout(markUnsaved, 500)
+        }
         triggerAutoSave(studentId)
         // Flush ke state parent via idle agar tidak block input
         if (typeof window.requestIdleCallback === 'function') {
@@ -2156,6 +2174,8 @@ await Promise.all([
                     runZipBlast={runZipBlast}
                     openPrintWindow={openPrintWindow}
                     cellRefs={cellRefs}
+                    behaviorReports={behaviorReports}
+                    autosaveEnabled={autosaveEnabled}
                 />
             </Suspense>
         )

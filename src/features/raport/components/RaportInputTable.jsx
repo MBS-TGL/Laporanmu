@@ -439,7 +439,9 @@ export default function RaportInputTable({
     setConfirmModal,
     runZipBlast,
     openPrintWindow,
-    cellRefs
+    cellRefs,
+    behaviorReports = {},
+    autosaveEnabled = true
 }) {
     const classLevel = getClassLevel(selectedClass)
     const rtObj = RAPORT_TYPES[reportType] || RAPORT_TYPES.bulanan
@@ -780,25 +782,29 @@ export default function RaportInputTable({
                                 </div>
                             )}
 
-                            <div className={`flex items-center justify-center gap-1 px-1.5 [@media(min-width:1350px)]:px-2 h-9 rounded-xl border text-[9px] font-black uppercase tracking-wider transition-all duration-300 shrink-0 ${globalSaveIndicator === 'saving'
-                                ? 'bg-amber-500/10 border-amber-500/20 text-amber-600 shadow-sm animate-pulse'
-                                : 'bg-emerald-500/5 border-emerald-500/20 text-emerald-600'
+                            <div className={`flex items-center justify-center gap-1 px-1.5 [@media(min-width:1350px)]:px-2 h-9 rounded-xl border text-[9px] font-black uppercase tracking-wider transition-all duration-300 shrink-0 ${!autosaveEnabled
+                                ? 'bg-slate-500/5 border-slate-200 dark:border-slate-700 text-slate-400'
+                                : globalSaveIndicator === 'saving'
+                                    ? 'bg-amber-500/10 border-amber-500/20 text-amber-600 shadow-sm animate-pulse'
+                                    : 'bg-emerald-500/5 border-emerald-500/20 text-emerald-600'
                                 }`}
-                                title={globalSaveIndicator === 'saving' ? 'Sedang menyimpan data otomatis' : 'Autosave Aktif'}>
-                                {globalSaveIndicator === 'saving' ? (
-                                    <Loader2 className="w-3 h-3 animate-spin text-amber-600" />
-                                ) : (
-                                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                                )}
-                                <span>
-                                    {globalSaveIndicator === 'saving' ? (
+                                title={!autosaveEnabled ? 'Autosave dinonaktifkan — gunakan Simpan Semua atau Ctrl+S' : globalSaveIndicator === 'saving' ? 'Sedang menyimpan data otomatis' : 'Autosave Aktif'}>
+                                {!autosaveEnabled ? (
+                                    <>
+                                        <AlertCircle className="w-3 h-3 text-slate-400" />
+                                        <span className="hidden [@media(min-width:1350px)]:inline">Manual</span>
+                                    </>
+                                ) : globalSaveIndicator === 'saving' ? (
+                                    <>
+                                        <Loader2 className="w-3 h-3 animate-spin text-amber-600" />
                                         <span>Menyimpan...</span>
-                                    ) : (
-                                        <span className="hidden [@media(min-width:1350px)]:inline">
-                                            Autosave
-                                        </span>
-                                    )}
-                                </span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                                        <span className="hidden [@media(min-width:1350px)]:inline">Autosave</span>
+                                    </>
+                                )}
                             </div>
 
                             {/* Progress Bar */}
@@ -1475,6 +1481,7 @@ export default function RaportInputTable({
                                                     templateOpen={templateOpenId === student.id}
                                                     catatanArab={catatanArabMap[student.id]}
                                                     sendingWAStatus={sendingWA[student.id]}
+                                                    studentBehaviors={behaviorReports[student.id] || []}
                                                     onScoreChange={handleScoreChange}
                                                     onExtraChange={handleExtraChange}
                                                     onCatatanChange={handleCatatanChange}
@@ -1586,6 +1593,29 @@ export default function RaportInputTable({
                                                     </div>
                                                 ))}
                                             </div>
+                                            {(() => {
+                                                const brs = (behaviorReports[student.id] || [])
+                                                const negPts = brs.filter(b => b.is_negative).reduce((s, b) => s + (b.points || 0), 0)
+                                                const hasPlg = !!(ex.pelanggaran || '').trim()
+                                                const hasSholat = !!(ex.sholat || '').trim()
+                                                const highAbs = Number(ex.hari_alpa || 0) >= 3
+                                                const hasPrs = !!(ex.prestasi || '').trim()
+                                                const mobWarns = []
+                                                if ((negPts > 0 || hasPlg) && !hasPrs) {
+                                                    if (Number(sc.nilai_akhlak) >= 8) mobWarns.push('Akhlak perlu ditinjau')
+                                                    if (Number(sc.nilai_bahasa) >= 8) mobWarns.push('Bahasa perlu ditinjau')
+                                                }
+                                                if (hasSholat && Number(sc.nilai_ibadah) >= 8) mobWarns.push('Ibadah perlu ditinjau')
+                                                if (highAbs) mobWarns.push(`${ex.hari_alpa} hari alpa`)
+                                                if (!mobWarns.length) return null
+                                                return (
+                                                    <div className="mt-1.5 flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5"
+                                                        style={{ background: '#fffbeb', borderColor: '#fde68a' }}>
+                                                        <AlertTriangle className="w-3 h-3 shrink-0" style={{ color: '#d97706' }} />
+                                                        <span className="text-[9px] font-black text-amber-700 leading-tight">{mobWarns.join(' · ')}</span>
+                                                    </div>
+                                                )
+                                            })()}
                                         </div>
                                         {(rtObj.hasFisik || rtObj.hasAttendance) && (
                                             <div>

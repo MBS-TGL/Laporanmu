@@ -1,4 +1,4 @@
-import { memo, useState, useEffect, useRef } from 'react'
+import { memo, useState, useEffect, useRef, useMemo } from 'react'
 import {
     Loader2, CheckCircle2, Save, FileText, X,
     ClipboardList, Zap, Lightbulb, Languages, Star, Heart,
@@ -20,7 +20,7 @@ const WhatsAppIcon = (props) => (
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
-export const ScoreCell = memo(({ value, studentId, kriteria, onScoreChange, onKeyDown, si, ki, cellRefs, maxScore, reportType, classLevel }) => {
+export const ScoreCell = memo(({ value, studentId, kriteria, onScoreChange, onKeyDown, si, ki, cellRefs, maxScore, reportType, classLevel, warning }) => {
     const [focused, setFocused] = useState(false)
     const [hasError, setHasError] = useState(false)
     const [localVal, setLocalVal] = useState(value !== '' && value !== null && value !== undefined ? value : '')
@@ -47,11 +47,11 @@ export const ScoreCell = memo(({ value, studentId, kriteria, onScoreChange, onKe
     const handleBlur = () => {
         setFocused(false); setHasError(false)
         if (debounceRef.current) { clearTimeout(debounceRef.current); debounceRef.current = null }
-        onScoreChange(studentId, kriteria.key, localVal)
+        if (String(localVal) !== String(value ?? '')) onScoreChange(studentId, kriteria.key, localVal)
     }
 
     return (
-        <div title={g ? `${kriteria.id}: ${val} — ${g.id} (${g.label})` : kriteria.id}>
+        <div className="relative" title={warning ? `${kriteria.id}: ${warning.msg}` : (g ? `${kriteria.id}: ${val} — ${g.id} (${g.label})` : kriteria.id)}>
             <input
                 ref={el => { if (el) cellRefs.current[`${si}-${ki}`] = el }}
                 type="text"
@@ -72,6 +72,11 @@ export const ScoreCell = memo(({ value, studentId, kriteria, onScoreChange, onKe
                 }}
                 placeholder="—"
             />
+            {warning && (
+                <div className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 rounded-full flex items-center justify-center" style={{ background: warning.type === 'danger' ? '#ef4444' : '#f59e0b' }}>
+                    <AlertTriangle className="w-2 h-2 text-white" />
+                </div>
+            )}
         </div>
     )
 })
@@ -94,7 +99,7 @@ export const ExtraInput = memo(({ value, studentId, fieldKey, onCommit, ...input
             setFocused(false)
         }, 150)
         if (debounceRef.current) { clearTimeout(debounceRef.current); debounceRef.current = null }
-        onCommit(studentId, fieldKey, localVal)
+        if (localVal !== (value ?? '')) onCommit(studentId, fieldKey, localVal)
     }
 
     const handleSelectPreset = (preset) => {
@@ -161,7 +166,7 @@ export const ExtraTextarea = memo(({ value, studentId, fieldKey, onCommit, ...te
     }
     const handleBlur = () => {
         if (debounceRef.current) { clearTimeout(debounceRef.current); debounceRef.current = null }
-        onCommit(studentId, fieldKey, localVal)
+        if (localVal !== (value ?? '')) onCommit(studentId, fieldKey, localVal)
     }
     return <textarea {...textareaProps} value={localVal} onChange={handleChange} onBlur={handleBlur} />
 })
@@ -196,7 +201,7 @@ export const ExtraExpandingTextarea = memo(({ value, studentId, fieldKey, onComm
     const handleBlur = () => {
         setFocused(false)
         if (debounceRef.current) { clearTimeout(debounceRef.current); debounceRef.current = null }
-        onCommit(studentId, fieldKey, localVal)
+        if (localVal !== (value ?? '')) onCommit(studentId, fieldKey, localVal)
     }
 
     const handleFocus = () => {
@@ -293,6 +298,7 @@ const studentRowAreEqual = (prev, next) => {
         prev.templateOpen === next.templateOpen &&
         prev.catatanArab === next.catatanArab &&
         prev.sendingWAStatus === next.sendingWAStatus &&
+        prev.studentBehaviors === next.studentBehaviors &&
         prev.onScoreChange === next.onScoreChange &&
         prev.onExtraChange === next.onExtraChange &&
         prev.onCatatanChange === next.onCatatanChange &&
@@ -315,12 +321,56 @@ const studentRowAreEqual = (prev, next) => {
 const StudentRow = memo(({
     student, si, sc, ex, isSaved, isSaving, isDirty, isChecked,
     bulkMode, lang, trendData, prevScores, templateOpen, catatanArab, sendingWAStatus,
+    studentBehaviors = [],
     onScoreChange, onExtraChange, onCatatanChange, onSave, onWA, onPDF, onReset,
     onBulkToggle, onKeyDown, onTemplateToggle, onTemplateApply, onTranslitToggle,
     generateAutoComment, cellRefs,
     criteria = [], maxScore, reportType, classLevel
 }) => {
     const rtObj = RAPORT_TYPES[reportType] || RAPORT_TYPES.bulanan
+
+    // ── Score consistency warnings ──
+    // Cross-reference pelanggaran/sholat/absensi with scores
+    const scoreWarnings = useMemo(() => {
+        const warnings = []
+        const negPoints = studentBehaviors.filter(b => b.is_negative).reduce((sum, b) => sum + (b.points || 0), 0)
+        const hasPelanggaran = !!(ex.pelanggaran || '').trim()
+        const hasSholatIssue = !!(ex.sholat || '').trim()
+        const highAbsence = Number(ex.hari_alpa || 0) >= 3
+        const hasPrestasi = !!(ex.prestasi || '').trim()
+
+        const akhlak = Number(sc.nilai_akhlak)
+        const ibadah = Number(sc.nilai_ibadah)
+        const bahasa = Number(sc.nilai_bahasa)
+        const bersih = Number(sc.nilai_kebersihan)
+
+        // Pelanggaran → Akhlak & Bahasa bisa saja rendah
+        if ((negPoints > 0 || hasPelanggaran) && !hasPrestasi) {
+            if (akhlak >= 8) warnings.push({ key: 'nilai_akhlak', msg: negPoints > 0 ? `${negPoints} poin pelanggaran` : 'Ada catatan pelanggaran', type: 'danger' })
+            if (bahasa >= 8) warnings.push({ key: 'nilai_bahasa', msg: 'Pelanggaran tercatat', type: 'warning' })
+        }
+
+        // Sholat → Ibadah
+        if (hasSholatIssue) {
+            if (ibadah >= 8) warnings.push({ key: 'nilai_ibadah', msg: 'Ketertiban sholat bermasalah', type: 'danger' })
+        }
+
+        // Absensi tinggi → semua nilai
+        if (highAbsence) {
+            const highScores = criteria.filter(k => Number(sc[k.key]) >= 8)
+            if (highScores.length > 0) {
+                warnings.push({ key: '__all__', msg: `${ex.hari_alpa} hari alpa — cek ulang semua nilai`, type: 'warning' })
+            }
+        }
+
+        // Kebersihan + pelanggaran kebersihan
+        if (hasPelanggaran && bersih >= 8 && !hasPrestasi) {
+            warnings.push({ key: 'nilai_kebersihan', msg: 'Pelanggaran tercatat', type: 'warning' })
+        }
+
+        return warnings
+    }, [studentBehaviors, ex.pelanggaran, ex.sholat, ex.prestasi, ex.hari_alpa, sc, criteria])
+
     const activeFisikFields = FISIK_FIELDS.filter(f => {
         if (f.key === 'berat_badan' || f.key === 'tinggi_badan') {
             return rtObj.hasFisik
@@ -351,21 +401,39 @@ const StudentRow = memo(({
                     </div>
                 </div>
             </td>
-            {criteria.map((k, ki) => {
-                const prevVal = prevScores?.[k.key], curVal = sc[k.key], hasDelta = (prevVal != null && curVal !== '' && curVal != null), delta = hasDelta ? Number(curVal) - Number(prevVal) : 0
-                return (
-                    <td key={k.key} className="py-2 text-center" style={{ verticalAlign: 'middle' }}>
-                        <div className="flex flex-col items-center justify-center">
-                            <ScoreCell value={sc[k.key]} studentId={student.id} kriteria={k} onScoreChange={onScoreChange} onKeyDown={onKeyDown} si={si} ki={ki} cellRefs={cellRefs} maxScore={maxScore} reportType={reportType} classLevel={classLevel} />
-                            <div style={{ height: 10, fontSize: 8, fontWeight: 900, lineHeight: 1, marginTop: 2 }} className="flex items-center justify-center">
-                                {hasDelta && delta > 0 && <span style={{ color: '#10b981' }} title={`Bulan lalu: ${prevVal}`}>▲{delta}</span>}
-                                {hasDelta && delta < 0 && <span style={{ color: '#ef4444' }} title={`Bulan lalu: ${prevVal}`}>▼{Math.abs(delta)}</span>}
-                                {hasDelta && delta === 0 && <span style={{ color: 'var(--color-text-muted)', opacity: 0.4 }}>—</span>}
+            <td colSpan={criteria.length} className="py-2 text-center px-1" style={{ verticalAlign: 'middle' }}>
+                <div className="flex items-center justify-evenly w-full">
+                    {criteria.map((k, ki) => {
+                        const prevVal = prevScores?.[k.key], curVal = sc[k.key], hasDelta = (prevVal != null && curVal !== '' && curVal != null), delta = hasDelta ? Number(curVal) - Number(prevVal) : 0
+                        const scoreWarn = scoreWarnings.find(w => w.key === k.key)
+                        return (
+                            <div key={k.key} className="flex flex-col items-center justify-center flex-1">
+                                <ScoreCell value={sc[k.key]} studentId={student.id} kriteria={k} onScoreChange={onScoreChange} onKeyDown={onKeyDown} si={si} ki={ki} cellRefs={cellRefs} maxScore={maxScore} reportType={reportType} classLevel={classLevel} warning={scoreWarn} />
+                                <div style={{ height: 10, fontSize: 8, fontWeight: 900, lineHeight: 1, marginTop: 2 }} className="flex items-center justify-center">
+                                    {hasDelta && delta > 0 && <span style={{ color: '#10b981' }} title={`Bulan lalu: ${prevVal}`}>▲{delta}</span>}
+                                    {hasDelta && delta < 0 && <span style={{ color: '#ef4444' }} title={`Bulan lalu: ${prevVal}`}>▼{Math.abs(delta)}</span>}
+                                    {hasDelta && delta === 0 && <span style={{ color: 'var(--color-text-muted)', opacity: 0.4 }}>—</span>}
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                )
-            })}
+                        )
+                    })}
+                </div>
+                {scoreWarnings.length > 0 && (
+                    <div
+                        className="mt-5 mx-auto w-fit flex items-center justify-center gap-1 rounded border px-1.5 py-[3px]"
+                        style={{
+                            background: scoreWarnings.some(w => w.type === 'danger') ? '#fef2f2' : '#fffbeb',
+                            borderColor: scoreWarnings.some(w => w.type === 'danger') ? '#fecaca' : '#fde68a',
+                        }}
+                        title={scoreWarnings.map(w => w.msg).join(' · ')}
+                    >
+                        <AlertTriangle className="w-2.5 h-2.5 shrink-0" style={{ color: scoreWarnings.some(w => w.type === 'danger') ? '#ef4444' : '#d97706' }} />
+                        <span style={{ fontSize: 8, fontWeight: 900, color: scoreWarnings.some(w => w.type === 'danger') ? '#dc2626' : '#b45309', lineHeight: 1.2 }}>
+                            {scoreWarnings.length === 1 ? scoreWarnings[0].msg : `${scoreWarnings.length} catatan: ${scoreWarnings[0].msg}`}
+                        </span>
+                    </div>
+                )}
+            </td>
             {(rtObj.hasFisik || rtObj.hasAttendance) && (
                 <td className="px-2 py-3" style={{ verticalAlign: 'middle' }}>
                     <div className="grid grid-cols-2 gap-x-1.5 gap-y-2">

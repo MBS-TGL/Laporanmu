@@ -86,6 +86,7 @@ const CATEGORIES = [
 const KNOWN_FLAGS = [
     // Module (Modul Utama)
     { key: 'module.raport', label: 'Raport Bulanan', category: 'module', description: 'Nilai & rekap perilaku per bulan', sort_order: 1 },
+    { key: 'raport.autosave', label: 'Autosave Nilai', category: 'module', description: 'Simpan otomatis nilai saat musyrif berhenti mengetik', sort_order: 2 },
     { key: 'module.pelanggaran', label: 'Modul Pelanggaran', category: 'module', description: 'Aktifkan pencatatan poin negatif/pelanggaran', sort_order: 2 },
     { key: 'module.prestasi', label: 'Modul Prestasi', category: 'module', description: 'Aktifkan pencatatan poin positif/prestasi', sort_order: 3 },
     { key: 'module.gate', label: 'Portal Keluar Masuk', category: 'module', description: 'Fitur izin keluar guru & kunjungan tamu', sort_order: 4 },
@@ -1047,7 +1048,22 @@ export default function AdminSettingsPage() {
         const { data, error } = await supabase
             .from('feature_flags').select('*').order('category').order('sort_order')
         if (error) addToast('Gagal memuat flags: ' + error.message, 'error')
-        else setFlags(data || [])
+        else {
+            setFlags(data || [])
+            // Auto-insert missing flags from KNOWN_FLAGS
+            const existingKeys = new Set((data || []).map(f => f.key))
+            const missingFlags = KNOWN_FLAGS.filter(f => !existingKeys.has(f.key))
+            if (missingFlags.length > 0) {
+                const { error: insErr } = await supabase
+                    .from('feature_flags')
+                    .insert(missingFlags.map(f => ({ ...f, enabled: true })))
+                if (!insErr) {
+                    const { data: refreshed } = await supabase
+                        .from('feature_flags').select('*').order('category').order('sort_order')
+                    if (refreshed) setFlags(refreshed)
+                }
+            }
+        }
         setLoading(false); setRefreshing(false)
     }, [addToast])
 

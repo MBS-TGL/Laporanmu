@@ -513,24 +513,27 @@ export default function RaportPage() {
     // (sama dengan delay auto-save) saat filter "tidak lengkap" aktif.
     const [filteredStudents, setFilteredStudents] = useState(() => students)
     const filteredDebounceRef = useRef(null)
+    // PERF: Gunakan ref untuk scores agar useEffect tidak re-run di setiap keystroke
+    const scoresSnapshotRef = useRef(scores)
+    scoresSnapshotRef.current = scores
+
     useEffect(() => {
-        const next = showIncompleteOnly
-            ? baseFiltered.filter(s => !isComplete(scores[s.id] || {}, activeCriteria))
-            : baseFiltered
         if (!showIncompleteOnly) {
-            // Tanpa filter incomplete — update langsung, tidak perlu debounce, hindari re-render jika referensi sama
+            // Tanpa filter incomplete — update langsung dari baseFiltered
             setFilteredStudents(prev => {
-                if (prev === next) return prev
-                return next
+                if (prev === baseFiltered) return prev
+                return baseFiltered
             })
             return
         }
-        // Dengan filter incomplete — debounce agar baris tidak langsung hilang
-        // saat nilai terakhir baru saja diketik
+        // Dengan filter incomplete — debounce 1.5s, baca scores dari ref terbaru
         if (filteredDebounceRef.current) clearTimeout(filteredDebounceRef.current)
-        filteredDebounceRef.current = setTimeout(() => setFilteredStudents(next), 1500)
+        filteredDebounceRef.current = setTimeout(() => {
+            const sc = scoresSnapshotRef.current
+            setFilteredStudents(baseFiltered.filter(s => !isComplete(sc[s.id] || {}, activeCriteria)))
+        }, 1500)
         return () => { if (filteredDebounceRef.current) clearTimeout(filteredDebounceRef.current) }
-    }, [baseFiltered, showIncompleteOnly, scores])
+    }, [baseFiltered, showIncompleteOnly])
 
     // ── Fetch page data
     useEffect(() => {
@@ -720,7 +723,10 @@ export default function RaportPage() {
     // FIX #4: Cleanup semua autoSaveTimers saat komponen unmount
     useEffect(() => {
         return () => {
-            Object.values(autoSaveTimers.current).forEach(clearTimeout)
+            Object.values(autoSaveTimers.current).forEach(cancel => {
+                if (typeof cancel === 'function') cancel()
+                else clearTimeout(cancel) // fallback untuk format lama
+            })
         }
     }, [])
 
@@ -958,41 +964,107 @@ export default function RaportPage() {
         }
     }, [selectedMonth, selectedYear, musyrif, profile, addToast, loadStudents, reportType])
 
-    // ── Auto-save
+    // ── Auto-save (idle-based: simpan ke DB hanya setelah user idle)
+    // Tidak meng-update setSavedIds per keystroke — itu sudah dilakukan di handler.
     const triggerAutoSave = useCallback((studentId) => {
-        setSavedIds(prev => { const next = new Set(prev); next.delete(studentId); return next })
-        if (autoSaveTimers.current[studentId]) clearTimeout(autoSaveTimers.current[studentId])
+        // Cancel idle callback lama jika masih pending
+        if (typeof autoSaveTimers.current[studentId] === 'function') autoSaveTimers.current[studentId]()
         if (globalSaveTimerRef.current) clearTimeout(globalSaveTimerRef.current)
-        autoSaveTimers.current[studentId] = setTimeout(() => {
+        // Gunakan requestIdleCallback agar save tidak bersaing dengan render/input.
+        // Fallback ke setTimeout 2s di browser yang belum support.
+        const scheduleIdle = (fn, timeout) => {
+            if (typeof window.requestIdleCallback === 'function') {
+                const id = window.requestIdleCallback(fn, { timeout })
+                return () => window.cancelIdleCallback(id)
+            }
+            const t = setTimeout(fn, timeout)
+            return () => clearTimeout(t)
+        }
+        // Delay 2s setelah idle — cukup responsif tapi tidak lag saat ngetik
+        let cancel
+        autoSaveTimers.current[studentId] = () => cancel?.()
+        cancel = scheduleIdle(() => {
             setGlobalSaveIndicator('saving')
             saveStudent(studentId)
-            setGlobalSaveIndicator('saved')
             globalSaveTimerRef.current = setTimeout(() => setGlobalSaveIndicator(null), 2000)
-        }, 3000)
+        }, 2000)
     }, [saveStudent])
 
     // PERF: Stable callback untuk update extras field — diperlukan agar ExtraInput memo()
     // tidak re-render tiap parent render (karena inline arrow selalu buat referensi baru).
+    // PERF #2: Gunakan ref sebagai buffer sementara — parent state (extras) hanya
+    // di-update lewat idle callback, bukan tiap keystroke, agar tabel tidak re-render terus.
+    const pendingExtrasRef = useRef({})
+    const pendingScoresRef = useRef({})
+
+    const flushExtras = useCallback((studentId) => {
+        const pending = pendingExtrasRef.current[studentId]
+        if (!pending) return
+        setExtras(prev => ({ ...prev, [studentId]: { ...prev[studentId], ...pending } }))
+        delete pendingExtrasRef.current[studentId]
+    }, [])
+
+    const flushScores = useCallback((studentId) => {
+        const pending = pendingScoresRef.current[studentId]
+        if (!pending) return
+        setScores(prev => ({ ...prev, [studentId]: { ...prev[studentId], ...pending } }))
+        delete pendingScoresRef.current[studentId]
+    }, [])
+
     const handleExtraChange = useCallback((studentId, key, value) => {
-        setExtras(prev => ({ ...prev, [studentId]: { ...prev[studentId], [key]: value } }))
-        setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
+        // Buffer ke ref dulu — tidak menyebabkan re-render tabel
+        if (!pendingExtrasRef.current[studentId]) pendingExtrasRef.current[studentId] = {}
+        pendingExtrasRef.current[studentId][key] = value
+        // Mark unsaved — defer via idle agar tidak trigger re-render per keystroke
+        const markUnsaved = () => setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
+        if (typeof window.requestIdleCallback === 'function') {
+            window.requestIdleCallback(markUnsaved, { timeout: 1500 })
+        } else {
+            setTimeout(markUnsaved, 500)
+        }
+        // Flush ke state parent dan trigger autosave setelah idle
         triggerAutoSave(studentId)
-    }, [triggerAutoSave])
+        // Flush state segera tapi dijadwalkan idle agar tidak block input
+        if (typeof window.requestIdleCallback === 'function') {
+            window.requestIdleCallback(() => flushExtras(studentId), { timeout: 1000 })
+        } else {
+            setTimeout(() => flushExtras(studentId), 300)
+        }
+    }, [triggerAutoSave, flushExtras])
 
     // Sama dengan handleExtraChange tapi juga reset terjemahan Arab catatan
     const handleCatatanChange = useCallback((studentId, key, value) => {
-        setExtras(prev => ({ ...prev, [studentId]: { ...prev[studentId], [key]: value } }))
-        setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
+        if (!pendingExtrasRef.current[studentId]) pendingExtrasRef.current[studentId] = {}
+        pendingExtrasRef.current[studentId][key] = value
+        const markUnsaved = () => setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
+        if (typeof window.requestIdleCallback === 'function') {
+            window.requestIdleCallback(markUnsaved, { timeout: 1500 })
+        } else {
+            setTimeout(markUnsaved, 500)
+        }
         triggerAutoSave(studentId)
+        if (typeof window.requestIdleCallback === 'function') {
+            window.requestIdleCallback(() => flushExtras(studentId), { timeout: 1000 })
+        } else {
+            setTimeout(() => flushExtras(studentId), 300)
+        }
         setCatatanArabMap(prev => { const n = { ...prev }; delete n[studentId]; return n })
-    }, [triggerAutoSave])
+    }, [triggerAutoSave, flushExtras])
 
-    // PERF: Stable callback untuk ScoreCell onChange — tiap inline arrow baru = ScoreCell re-render
+    // PERF: Stable callback untuk ScoreCell onChange — buffer ke ref, flush via idle
     const handleScoreChange = useCallback((studentId, key, value) => {
-        setScores(prev => ({ ...prev, [studentId]: { ...prev[studentId], [key]: value } }))
+        if (!pendingScoresRef.current[studentId]) pendingScoresRef.current[studentId] = {}
+        pendingScoresRef.current[studentId][key] = value
+        // Mark unsaved
         setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
         triggerAutoSave(studentId)
-    }, [triggerAutoSave])
+        // Flush ke state parent via idle agar tidak block input
+        if (typeof window.requestIdleCallback === 'function') {
+            window.requestIdleCallback(() => flushScores(studentId), { timeout: 1000 })
+        } else {
+            setTimeout(() => flushScores(studentId), 300)
+        }
+    }, [triggerAutoSave, flushScores])
 
     // Stable: toggle template dropdown per santri
     const handleTemplateToggle = useCallback((studentId) => {

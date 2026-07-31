@@ -1,7 +1,8 @@
 import { memo, useState, useEffect, useRef } from 'react'
 import {
     Loader2, CheckCircle2, Save, FileText, X,
-    ClipboardList, Zap, Lightbulb, Languages, Star, Heart
+    ClipboardList, Zap, Lightbulb, Languages, Star, Heart,
+    AlertTriangle, Compass
 } from 'lucide-react'
 import { getGradePredicate, RAPORT_TYPES } from '@utils/reports/raportTypeRegistry'
 import {
@@ -22,19 +23,31 @@ const WhatsAppIcon = (props) => (
 export const ScoreCell = memo(({ value, studentId, kriteria, onScoreChange, onKeyDown, si, ki, cellRefs, maxScore, reportType, classLevel }) => {
     const [focused, setFocused] = useState(false)
     const [hasError, setHasError] = useState(false)
-    const val = value !== '' && value !== null && value !== undefined ? Number(value) : ''
+    const [localVal, setLocalVal] = useState(value !== '' && value !== null && value !== undefined ? value : '')
+    const debounceRef = useRef(null)
+
+    useEffect(() => { if (!focused) setLocalVal(value !== '' && value !== null && value !== undefined ? value : '') }, [value, focused])
+
+    const val = localVal !== '' && localVal !== null && localVal !== undefined ? Number(localVal) : ''
     const g = val !== '' ? getGradePredicate(val, reportType, classLevel, kriteria.key) : null
 
     const handleChange = (e) => {
         const raw = e.target.value.replace(/[^0-9]/g, '')
-        if (raw === '') { setHasError(false); onScoreChange(studentId, kriteria.key, ''); return }
+        setLocalVal(raw)
+        if (debounceRef.current) clearTimeout(debounceRef.current)
+        if (raw === '') { setHasError(false); debounceRef.current = setTimeout(() => onScoreChange(studentId, kriteria.key, ''), 300); return }
         const num = Number(raw)
         if (num < 0 || num > maxScore) {
-            setHasError(true); onScoreChange(studentId, kriteria.key, Math.min(maxScore, Math.max(0, num)))
+            setHasError(true)
             setTimeout(() => setHasError(false), 1200)
-        } else {
-            setHasError(false); onScoreChange(studentId, kriteria.key, num)
         }
+        debounceRef.current = setTimeout(() => onScoreChange(studentId, kriteria.key, num), 300)
+    }
+
+    const handleBlur = () => {
+        setFocused(false); setHasError(false)
+        if (debounceRef.current) { clearTimeout(debounceRef.current); debounceRef.current = null }
+        onScoreChange(studentId, kriteria.key, localVal)
     }
 
     return (
@@ -45,11 +58,11 @@ export const ScoreCell = memo(({ value, studentId, kriteria, onScoreChange, onKe
                 inputMode="decimal"
                 min={0}
                 max={maxScore}
-                value={val}
+                value={localVal}
                 onChange={handleChange}
                 onKeyDown={e => onKeyDown(e, si, ki)}
                 onFocus={() => setFocused(true)}
-                onBlur={() => { setFocused(false); setHasError(false) }}
+                onBlur={handleBlur}
                 aria-label={`Nilai ${kriteria.id}`}
                 className="w-9 h-8 text-center text-[13px] font-black rounded-lg outline-none transition-all appearance-none"
                 style={{
@@ -151,6 +164,114 @@ export const ExtraTextarea = memo(({ value, studentId, fieldKey, onCommit, ...te
         onCommit(studentId, fieldKey, localVal)
     }
     return <textarea {...textareaProps} value={localVal} onChange={handleChange} onBlur={handleBlur} />
+})
+
+export const ExtraExpandingTextarea = memo(({ value, studentId, fieldKey, onCommit, color, label, icon: IconComponent, ...rest }) => {
+    const [localVal, setLocalVal] = useState(value ?? '')
+    const [focused, setFocused] = useState(false)
+    const debounceRef = useRef(null)
+    const taRef = useRef(null)
+
+    useEffect(() => { setLocalVal(value ?? '') }, [value])
+
+    const autoResize = () => {
+        const el = taRef.current
+        if (!el) return
+        el.style.height = 'auto'
+        el.style.height = Math.min(el.scrollHeight, 120) + 'px'
+    }
+
+    useEffect(() => {
+        if (focused) autoResize()
+    }, [focused, localVal])
+
+    const handleChange = (e) => {
+        const v = e.target.value
+        setLocalVal(v)
+        autoResize()
+        if (debounceRef.current) clearTimeout(debounceRef.current)
+        debounceRef.current = setTimeout(() => onCommit(studentId, fieldKey, v), 300)
+    }
+
+    const handleBlur = () => {
+        setFocused(false)
+        if (debounceRef.current) { clearTimeout(debounceRef.current); debounceRef.current = null }
+        onCommit(studentId, fieldKey, localVal)
+    }
+
+    const handleFocus = () => {
+        setFocused(true)
+        setTimeout(autoResize, 0)
+    }
+
+    return (
+        <div
+            className="relative flex rounded-md border transition-all duration-200 overflow-hidden"
+            style={{
+                background: 'var(--color-surface)',
+                borderColor: focused ? color : 'var(--color-border)',
+                boxShadow: focused ? `0 0 0 2px ${color}20` : 'none',
+                zIndex: focused ? 20 : 'auto',
+                height: focused ? 'auto' : '28px',
+                flex: focused ? '1 1 50%' : '1 1 0%',
+                minWidth: focused ? 0 : undefined,
+            }}
+            title={label}
+        >
+            {IconComponent && (
+                <div 
+                    className="w-6 shrink-0 flex justify-center transition-all duration-200"
+                    style={{ 
+                        background: focused ? `${color}25` : `${color}15`,
+                        alignItems: focused ? 'flex-start' : 'center',
+                        paddingTop: focused ? '6px' : '0px',
+                    }}
+                >
+                    <IconComponent className="w-2.5 h-2.5" style={{ color }} />
+                </div>
+            )}
+            <div 
+                className="flex-1 min-w-0 relative flex items-center px-1.5 h-full"
+                style={{
+                    paddingTop: focused ? '4px' : '0px',
+                    paddingBottom: focused ? '4px' : '0px',
+                }}
+            >
+                {!focused && (
+                    <span 
+                        className={`text-[8px] truncate leading-none w-full ${
+                            localVal ? 'font-bold text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-40 font-semibold'
+                        }`}
+                    >
+                        {localVal || label}
+                    </span>
+                )}
+                <textarea
+                    ref={taRef}
+                    value={localVal}
+                    onChange={handleChange}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    placeholder={`Isi ${label.toLowerCase()}...`}
+                    rows={1}
+                    className="w-full p-0 text-[9px] font-bold bg-transparent text-[var(--color-text)] outline-none resize-none leading-snug transition-all duration-200 overflow-hidden"
+                    style={{
+                        height: focused ? 'auto' : '0px',
+                        minHeight: focused ? 18 : 0,
+                        opacity: focused ? 1 : 0,
+                        pointerEvents: focused ? 'auto' : 'none',
+                    }}
+                    {...rest}
+                />
+            </div>
+            {!focused && (
+                <div
+                    className="absolute inset-0 cursor-text"
+                    onClick={() => { taRef.current?.focus() }}
+                />
+            )}
+        </div>
+    )
 })
 
 // ─── Main StudentRow ─────────────────────────────────────────────────────────
@@ -271,20 +392,24 @@ const StudentRow = memo(({
             {(rtObj.hasHafalan || rtObj.hasCatatan) && (
                 <td className="px-2 py-3" style={{ verticalAlign: 'middle' }}>
                     <div className="flex flex-col gap-1.5">
-                        {rtObj.hasHafalan && HAFALAN_FIELDS.map(f => {
-                            const IconComp = f.icon
-                            return (
-                                <div key={f.key} className="flex items-center gap-1 rounded-md border border-[var(--color-border)]" style={{ background: 'var(--color-surface)', height: 32 }}>
-                                    <div className="w-6 h-full flex items-center justify-center shrink-0 rounded-l-[5px]" style={{ background: f.color + '18' }}>
-                                        <IconComp className="w-2.5 h-2.5" style={{ color: f.color }} />
-                                    </div>
-                                    <ExtraInput placeholder={f.ph} value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={onExtraChange} aria-label={f.ph} className="flex-1 w-0 h-full px-1 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none" />
-                                </div>
-                            )
-                        })}
+                        {rtObj.hasHafalan && (
+                            <div className="grid grid-cols-2 gap-1">
+                                {HAFALAN_FIELDS.map(f => {
+                                    const IconComp = f.icon
+                                    return (
+                                        <div key={f.key} className="flex items-center gap-1 rounded-md border border-[var(--color-border)]" style={{ background: 'var(--color-surface)', height: 28 }}>
+                                            <div className="w-6 h-full flex items-center justify-center shrink-0 rounded-l-[5px]" style={{ background: f.color + '18' }}>
+                                                <IconComp className="w-2.5 h-2.5" style={{ color: f.color }} />
+                                            </div>
+                                            <ExtraInput placeholder={f.ph} value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={onExtraChange} aria-label={f.ph} className="flex-1 w-0 h-full px-1 text-[10px] font-bold bg-transparent text-[var(--color-text)] outline-none" />
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        )}
                         {rtObj.hasCatatan && (
                             <>
-                                <div className="flex rounded-md border border-[var(--color-border)] overflow-hidden" style={{ background: 'var(--color-surface)', height: 32 }}>
+                                <div className="relative flex rounded-md border border-[var(--color-border)] overflow-visible" style={{ background: 'var(--color-surface)', height: 32 }}>
                                     <div className="w-6 shrink-0 flex items-center justify-center" style={{ background: '#f59e0b18' }}>
                                         <ClipboardList className="w-2.5 h-2.5 text-[#f59e0b]" />
                                     </div>
@@ -292,10 +417,8 @@ const StudentRow = memo(({
                                     <button onClick={() => { const c = generateAutoComment(sc, student.id, trendData, criteria, reportType, classLevel); if (!c) return; onCatatanChange(student.id, 'catatan', c) }} title="Generate komentar otomatis dari nilai" disabled={!avg} className="shrink-0 w-6 flex items-center justify-center text-amber-500 hover:text-amber-600 hover:bg-amber-500/10 transition-all disabled:opacity-30">
                                         <Zap className="w-2.5 h-2.5" />
                                     </button>
-                                </div>
-                                <div className="relative">
-                                    <button onClick={() => onTemplateToggle(student.id)} className={`w-full h-6 rounded-md border text-[8px] font-black flex items-center justify-center gap-1 transition-all ${templateOpen ? 'bg-amber-500/15 border-amber-500/30 text-amber-600' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                                        <Lightbulb className="w-2.5 h-2.5" /> Template Catatan
+                                    <button onClick={() => onTemplateToggle(student.id)} title="Template catatan" className={`shrink-0 w-6 flex items-center justify-center transition-all ${templateOpen ? 'text-amber-600 bg-amber-500/15' : 'text-[var(--color-text-muted)] hover:text-amber-500 hover:bg-amber-500/10'}`}>
+                                        <Lightbulb className="w-2.5 h-2.5" />
                                     </button>
                                     {templateOpen && (
                                         <div className="absolute left-0 right-0 z-30 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-xl overflow-hidden" style={{ ...(si < 2 ? { top: 'calc(100% + 4px)' } : { bottom: 'calc(100% + 4px)' }), minWidth: 200 }}>
@@ -304,18 +427,23 @@ const StudentRow = memo(({
                                         </div>
                                     )}
                                 </div>
-                                <div className="grid grid-cols-3 gap-1">
+                                <div className="flex gap-1">
                                     {[
-                                        { key: 'pelanggaran', label: 'Pelanggaran', color: '#ef4444' },
-                                        { key: 'prestasi', label: 'Prestasi', color: '#10b981' },
-                                        { key: 'sholat', label: 'Sholat', color: '#6366f1' }
+                                        { key: 'pelanggaran', label: 'Pelanggaran', color: '#ef4444', icon: AlertTriangle },
+                                        { key: 'prestasi', label: 'Prestasi', color: '#10b981', icon: Star },
+                                        { key: 'sholat', label: 'Sholat', color: '#6366f1', icon: Compass }
                                     ].map(f => (
-                                        <div key={f.key} className="flex items-center gap-0.5 rounded-md border border-[var(--color-border)]" style={{ background: 'var(--color-surface)', height: 26 }}>
-                                            <div className="w-5 h-full flex items-center justify-center shrink-0" style={{ background: f.color + '18' }}>
-                                                <span className="text-[7px] font-black" style={{ color: f.color }}>{f.label[0]}</span>
-                                            </div>
-                                            <ExtraInput placeholder={f.label} value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={onExtraChange} aria-label={f.label} className="flex-1 w-0 h-full px-0.5 text-[9px] font-bold bg-transparent text-[var(--color-text)] outline-none" />
-                                        </div>
+                                        <ExtraExpandingTextarea
+                                            key={f.key}
+                                            value={ex[f.key] ?? ''}
+                                            studentId={student.id}
+                                            fieldKey={f.key}
+                                            onCommit={onExtraChange}
+                                            color={f.color}
+                                            label={f.label}
+                                            icon={f.icon}
+                                            aria-label={f.label}
+                                        />
                                     ))}
                                 </div>
                             </>

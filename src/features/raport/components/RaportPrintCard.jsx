@@ -814,24 +814,24 @@ const RaportPrintCard = memo(({
                                     <div style={{ fontSize: isAr ? (isLisan ? '16pt' : '14.5pt') : '9pt', fontWeight: 800, marginBottom: 0, textAlign: 'center', background: '#f0f4f8', border: '1px solid #999', borderBottom: 'none', padding: '3px 0', fontFamily: isAr ? arFont : 'inherit', lineHeight: isAr ? 1.15 : 'normal' }}>
                                         {isAr ? 'التطور البدني' : 'PERKEMBANGAN FISIK'}
                                     </div>
-                                    <table style={{ width: '100%', height: '100%', borderCollapse: 'collapse', fontSize: isAr ? '10pt' : '11.5pt', flex: 1 }}>
+                                    <table style={{ width: '100%', height: '100%', borderCollapse: 'collapse', fontSize: isAr ? '9pt' : '9.5pt', flex: 1 }}>
                                         <tbody>
                                             <tr style={{ height: '50%' }}>
                                                 {isAr ? <>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '35%', fontSize: `${lc.arSecFontSize}pt`, fontFamily: arFont }}>{displayVal(ex.berat_badan)}</td>
+                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '35%', fontSize: `${lc.arSecFontSize}pt`, fontFamily: arFont }}>{ex.berat_badan ? `${ex.berat_badan} kg` : '—'}</td>
                                                     <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'right', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt` }}>{L.weight}</td>
                                                 </> : <>
                                                     <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'left' }}>{L.weight}</td>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '35%' }}>{displayVal(ex.berat_badan)}</td>
+                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '35%' }}>{ex.berat_badan ? `${ex.berat_badan} kg` : '—'}</td>
                                                 </>}
                                             </tr>
                                             <tr style={{ height: '50%' }}>
                                                 {isAr ? <>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '35%', fontSize: `${lc.arSecFontSize}pt`, fontFamily: arFont }}>{displayVal(ex.tinggi_badan)}</td>
+                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '35%', fontSize: `${lc.arSecFontSize}pt`, fontFamily: arFont }}>{ex.tinggi_badan ? `${ex.tinggi_badan} cm` : '—'}</td>
                                                     <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'right', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt` }}>{L.height}</td>
                                                 </> : <>
                                                     <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'left' }}>{L.height}</td>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700 }}>{displayVal(ex.tinggi_badan)}</td>
+                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700 }}>{ex.tinggi_badan ? `${ex.tinggi_badan} cm` : '—'}</td>
                                                 </>}
                                             </tr>
                                         </tbody>

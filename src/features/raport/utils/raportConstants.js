@@ -88,19 +88,11 @@ export const HAFALAN_FIELDS = [
 
 export const GRADE = (n) => {
     const num = Number(n)
-<<<<<<< HEAD
     if (num >= 9) return { label: 'ممتاز', id: 'Sangat Baik', bg: '#10b98115', border: '#10b98140', uiColor: '#10b981', color: '#000' }
     if (num >= 8) return { label: 'جيد جدا', id: 'Baik', bg: '#3b82f615', border: '#3b82f640', uiColor: '#3b82f6', color: '#000' }
     if (num >= 6) return { label: 'جيد', id: 'Cukup', bg: '#6366f115', border: '#6366f140', uiColor: '#6366f1', color: '#000' }
     if (num >= 4) return { label: 'مقبول', id: 'Kurang', bg: '#f59e0b15', border: '#f59e0b40', uiColor: '#f59e0b', color: '#000' }
     return { label: 'راسب', id: 'Kurang Baik', bg: '#ef444415', border: '#ef444440', uiColor: '#ef4444', color: '#ef4444' }
-=======
-    if (num >= 9) return { label: 'ممتاز جدا', id: 'Sangat Baik', bg: '#10b98115', border: '#10b98140', uiColor: '#10b981', color: '#000' }
-    if (num >= 8) return { label: 'جيد جدا', id: 'Baik', bg: '#3b82f615', border: '#3b82f640', uiColor: '#3b82f6', color: '#000' }
-    if (num >= 6) return { label: 'جيد', id: 'Cukup', bg: '#6366f115', border: '#6366f140', uiColor: '#6366f1', color: '#000' }
-    if (num >= 4) return { label: 'مقبول', id: 'Kurang', bg: '#f59e0b15', border: '#f59e0b40', uiColor: '#f59e0b', color: '#000' }
-    return { label: 'ضعيف', id: 'Kurang Baik', bg: '#ef444415', border: '#ef444440', uiColor: '#ef4444', color: '#ef4444' }
->>>>>>> 2e71777f11f44a5d166c7e910b76cf02c952a214
 }
 
 export const calcAvg = (scores) => {

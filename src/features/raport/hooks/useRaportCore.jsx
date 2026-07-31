@@ -102,7 +102,7 @@ export function useRaportCore() {
     const [loading, setLoading] = useState(false)
     const [transliterating, setTransliterating] = useState(false)
     const [scores, setScoresRaw] = useState({})
-    
+
     // Undo history
     const scoresHistoryRef = useRef([])
     const scoresHistoryIdxRef = useRef(-1)
@@ -161,12 +161,18 @@ export function useRaportCore() {
 
     // Auto-save logic triggers
     const autoSaveTimers = useRef({})
-    
+    const scoresRef = useRef(scores)
+    const extrasRef = useRef(extras)
+    const existingReportIdsRef = useRef(existingReportIds)
+    scoresRef.current = scores
+    extrasRef.current = extras
+    existingReportIdsRef.current = existingReportIds
+
     // Computed values
     const selectedClass = useMemo(() => classesList.find(c => c.id === selectedClassId), [classesList, selectedClassId])
     const classLevel = useMemo(() => getClassLevel(selectedClass), [selectedClass])
     const bulanObj = useMemo(() => BULAN.find(b => b.id === selectedMonth), [selectedMonth])
-    
+
     const completedCount = useMemo(() => {
         const rtObj = RAPORT_TYPES[reportType] || RAPORT_TYPES.bulanan
         const criteria = rtObj.getCriteria(selectedClass)
@@ -177,16 +183,16 @@ export function useRaportCore() {
         if (!students.length) return 0
         const rtObj = RAPORT_TYPES[reportType] || RAPORT_TYPES.bulanan
         const criteria = rtObj.getCriteria(selectedClass)
-        
+
         const totalRatio = students.reduce((acc, s) => {
             const sc = scores[s.id] || {}
             const ex = extras[s.id] || {}
-            
+
             const progressFields = []
             criteria.forEach(k => {
                 progressFields.push(sc[k.key])
             })
-            
+
             if (rtObj.hasFisik) {
                 progressFields.push(ex.berat_badan, ex.tinggi_badan)
             }
@@ -199,9 +205,9 @@ export function useRaportCore() {
             if (rtObj.hasCatatan) {
                 progressFields.push(ex.catatan)
             }
-            
+
             progressFields.push(ex.pelanggaran, ex.prestasi, ex.sholat)
-            
+
             const filled = progressFields.filter(v => v !== '' && v !== null && v !== undefined).length
             return acc + (progressFields.length ? (filled / progressFields.length) : 0)
         }, 0)
@@ -213,13 +219,13 @@ export function useRaportCore() {
     const hasUnsavedMemo = useMemo(() => {
         const rtObj = RAPORT_TYPES[reportType] || RAPORT_TYPES.bulanan
         const criteria = rtObj.getCriteria(selectedClass)
-        
+
         return students.some(s => {
             if (savedIds.has(s.id)) return false
             const sc = scores[s.id] || {}, ex = extras[s.id] || {}
-            
+
             const hasScoreValue = criteria.some(k => sc[k.key] !== '' && sc[k.key] !== null && sc[k.key] !== undefined)
-            
+
             const checkFields = []
             if (rtObj.hasFisik) {
                 checkFields.push(ex.berat_badan, ex.tinggi_badan)
@@ -234,9 +240,9 @@ export function useRaportCore() {
                 checkFields.push(ex.catatan)
             }
             checkFields.push(ex.pelanggaran, ex.prestasi, ex.sholat)
-            
+
             const hasExtraValue = checkFields.some(v => v !== '' && v !== null && v !== undefined)
-            
+
             return hasScoreValue || hasExtraValue
         })
     }, [students, scores, extras, savedIds, reportType, selectedClass])
@@ -338,7 +344,7 @@ export function useRaportCore() {
             const { data: stuData, error: stuErr } = await supabase.from('students').select('id, name, registration_code, photo_url, gender, phone, metadata').eq('class_id', classId).is('deleted_at', null).order('name')
             if (stuErr) throw stuErr
             const ids = (stuData || []).map(s => s.id)
-            
+
             const rtObj = RAPORT_TYPES[useReportType] || RAPORT_TYPES.bulanan
             const classObj = classesList.find(c => c.id === classId)
             const criteria = rtObj.getCriteria(classObj)
@@ -348,7 +354,7 @@ export function useRaportCore() {
             if (useReportType === 'bulanan') {
                 const prevM = month === 1 ? 12 : month - 1
                 const prevY = month === 1 ? year - 1 : year
-                
+
                 const [res1, res2] = await Promise.all([
                     supabase.from('student_monthly_reports').select('*').in('student_id', ids).eq('month', month).eq('year', year),
                     supabase.from('student_monthly_reports').select('student_id,nilai_akhlak,nilai_ibadah,nilai_kebersihan,nilai_quran,nilai_bahasa').in('student_id', ids).eq('month', prevM).eq('year', prevY),
@@ -427,17 +433,13 @@ export function useRaportCore() {
 
             const initScores = {}, initExtras = {}, initExisting = {}
             const initSavedIds = new Set()
-            
+
             for (const s of (stuData || [])) {
                 const rep = repData?.find(r => r.student_id === s.id)
-                
+
                 if (useReportType === 'bulanan') {
                     initScores[s.id] = { nilai_akhlak: rep?.nilai_akhlak ?? '', nilai_ibadah: rep?.nilai_ibadah ?? '', nilai_kebersihan: rep?.nilai_kebersihan ?? '', nilai_quran: rep?.nilai_quran ?? '', nilai_bahasa: rep?.nilai_bahasa ?? '' }
-<<<<<<< HEAD
                     initExtras[s.id] = { berat_badan: rep?.berat_badan ?? '', tinggi_badan: rep?.tinggi_badan ?? '', ziyadah: rep?.ziyadah ?? '', murojaah: rep?.murojaah ?? '', hari_sakit: rep?.hari_sakit ?? '', hari_izin: rep?.hari_izin ?? '', hari_alpa: rep?.hari_alpa ?? '', hari_pulang: rep?.hari_pulang ?? '', catatan: rep?.catatan ?? '', pelanggaran: rep?.pelanggaran ?? '', prestasi: rep?.prestasi ?? '', sholat: rep?.sholat ?? '' }
-=======
-                    initExtras[s.id] = { berat_badan: rep?.berat_badan ?? '', tinggi_badan: rep?.tinggi_badan ?? '', ziyadah: rep?.ziyadah ?? '', murojaah: rep?.murojaah ?? '', sholat: rep?.sholat ?? '', hari_sakit: rep?.hari_sakit ?? '', hari_izin: rep?.hari_izin ?? '', hari_alpa: rep?.hari_alpa ?? '', hari_pulang: rep?.hari_pulang ?? '', catatan: rep?.catatan ?? '' }
->>>>>>> 2e71777f11f44a5d166c7e910b76cf02c952a214
                 } else {
                     const scObj = {}
                     criteria.forEach(k => {
@@ -532,8 +534,8 @@ export function useRaportCore() {
 
     // ── Load offline draft ──
     const loadDraft = useCallback(() => {
-        const suffixKey = reportType === 'bulanan' 
-            ? `${selectedMonth}_${selectedYear}` 
+        const suffixKey = reportType === 'bulanan'
+            ? `${selectedMonth}_${selectedYear}`
             : `${selectedSemester}_${academicYear.replace('/', '_')}`
         const key = `draft_raport_${reportType}_${selectedClassId}_${suffixKey}`
         try {
@@ -553,8 +555,8 @@ export function useRaportCore() {
     }, [selectedClassId, selectedMonth, selectedYear, selectedSemester, academicYear, reportType, addToast, setScores, setExtras])
 
     const clearDraft = useCallback(() => {
-        const suffixKey = reportType === 'bulanan' 
-            ? `${selectedMonth}_${selectedYear}` 
+        const suffixKey = reportType === 'bulanan'
+            ? `${selectedMonth}_${selectedYear}`
             : `${selectedSemester}_${academicYear.replace('/', '_')}`
         const key = `draft_raport_${reportType}_${selectedClassId}_${suffixKey}`
         try { localStorage.removeItem(key); setDraftAvailable(false); addToast('Draft dihapus', 'success') }
@@ -563,44 +565,44 @@ export function useRaportCore() {
 
     // ── Save single ──
     const saveStudent = useCallback(async (studentId) => {
-        const sc = scores[studentId], ex = extras[studentId] ?? {}
+        const sc = scoresRef.current[studentId], ex = extrasRef.current[studentId] ?? {}
         if (!sc) return
         setSaving(prev => ({ ...prev, [studentId]: true }))
         try {
             const rtObj = RAPORT_TYPES[reportType] || RAPORT_TYPES.bulanan
             const tableName = rtObj.dbTable
             let error
-            
+
             if (reportType === 'bulanan') {
-                const payload = { 
-                    student_id: studentId, 
-                    month: selectedMonth, 
-                    year: selectedYear, 
-                    musyrif_name: musyrif, 
-                    updated_by: profile?.id ?? null, 
-                    updated_by_name: profile?.name ?? null, 
-                    ...Object.fromEntries(Object.entries(sc).map(([k, v]) => [k, v === '' ? null : Number(v)])), 
-                    berat_badan: ex.berat_badan !== '' ? Number(ex.berat_badan) : null, 
-                    tinggi_badan: ex.tinggi_badan !== '' ? Number(ex.tinggi_badan) : null, 
-                    ziyadah: ex.ziyadah || null, 
-                    murojaah: ex.murojaah || null, 
-                    sholat: ex.sholat || null, 
-                    hari_sakit: ex.hari_sakit !== '' ? Number(ex.hari_sakit) : 0, 
-                    hari_izin: ex.hari_izin !== '' ? Number(ex.hari_izin) : 0, 
-                    hari_alpa: ex.hari_alpa !== '' ? Number(ex.hari_alpa) : 0, 
-                    hari_pulang: ex.hari_pulang !== '' ? Number(ex.hari_pulang) : 0, 
+                const payload = {
+                    student_id: studentId,
+                    month: selectedMonth,
+                    year: selectedYear,
+                    musyrif_name: musyrif,
+                    updated_by: profile?.id ?? null,
+                    updated_by_name: profile?.name ?? null,
+                    ...Object.fromEntries(Object.entries(sc).map(([k, v]) => [k, v === '' ? null : Number(v)])),
+                    berat_badan: ex.berat_badan !== '' ? Number(ex.berat_badan) : null,
+                    tinggi_badan: ex.tinggi_badan !== '' ? Number(ex.tinggi_badan) : null,
+                    ziyadah: ex.ziyadah || null,
+                    murojaah: ex.murojaah || null,
+                    sholat: ex.sholat || null,
+                    hari_sakit: ex.hari_sakit !== '' ? Number(ex.hari_sakit) : 0,
+                    hari_izin: ex.hari_izin !== '' ? Number(ex.hari_izin) : 0,
+                    hari_alpa: ex.hari_alpa !== '' ? Number(ex.hari_alpa) : 0,
+                    hari_pulang: ex.hari_pulang !== '' ? Number(ex.hari_pulang) : 0,
                     catatan: ex.catatan || null,
                     pelanggaran: ex.pelanggaran || null,
                     prestasi: ex.prestasi || null,
                     sholat: ex.sholat || null
                 }
-                const existingId = existingReportIds[studentId]
-                if (existingId) { 
-                    ({ error } = await supabase.from(tableName).update(payload).eq('id', existingId)) 
-                } else { 
+                const existingId = existingReportIdsRef.current[studentId]
+                if (existingId) {
+                    ({ error } = await supabase.from(tableName).update(payload).eq('id', existingId))
+                } else {
                     const { data, error: upsErr } = await supabase.from(tableName).upsert(payload, { onConflict: 'student_id,month,year' }).select('id').single()
                     error = upsErr
-                    if (!upsErr && data) setExistingReportIds(prev => ({ ...prev, [studentId]: data.id })) 
+                    if (!upsErr && data) setExistingReportIds(prev => ({ ...prev, [studentId]: data.id }))
                 }
                 if (error) throw error
                 await logAudit({
@@ -631,7 +633,7 @@ export function useRaportCore() {
                         catatan: ex.catatan || null
                     }
                 }
-                const existingId = existingReportIds[studentId]
+                const existingId = existingReportIdsRef.current[studentId]
                 if (existingId) {
                     ({ error } = await supabase.from(tableName).update(payload).eq('id', existingId))
                 } else {
@@ -651,7 +653,7 @@ export function useRaportCore() {
             setSavedIds(prev => new Set([...prev, studentId]))
         } catch (e) { addToast(`Gagal menyimpan: ${e.message}`, 'error'); console.error('saveStudent error:', e) }
         finally { setSaving(prev => ({ ...prev, [studentId]: false })) }
-    }, [scores, extras, reportType, selectedMonth, selectedYear, selectedSemester, academicYear, musyrif, existingReportIds, addToast, profile])
+    }, [reportType, selectedMonth, selectedYear, selectedSemester, academicYear, musyrif, addToast, profile])
 
     // ── Reset student ──
     const resetStudent = useCallback(async (studentId) => {
@@ -659,7 +661,7 @@ export function useRaportCore() {
             clearTimeout(autoSaveTimers.current[studentId])
             delete autoSaveTimers.current[studentId]
         }
-        
+
         const rtObj = RAPORT_TYPES[reportType] || RAPORT_TYPES.bulanan
         const criteria = rtObj.getCriteria(selectedClass)
         const emptySc = {}
@@ -708,30 +710,30 @@ export function useRaportCore() {
                 return
             }
 
-            const payloads = studentsToSave.map(s => { 
+            const payloads = studentsToSave.map(s => {
                 const sc = scores[s.id] || {}, ex = extras[s.id] || {}
                 if (reportType === 'bulanan') {
-                    return { 
-                        student_id: s.id, 
-                        month: selectedMonth, 
-                        year: selectedYear, 
-                        musyrif_name: musyrif, 
-                        updated_by: profile?.id ?? null, 
-                        updated_by_name: profile?.name ?? null, 
-                        ...Object.fromEntries(Object.entries(sc).map(([k, v]) => [k, v === '' ? null : Number(v)])), 
-                        berat_badan: ex.berat_badan !== '' ? Number(ex.berat_badan) : null, 
-                        tinggi_badan: ex.tinggi_badan !== '' ? Number(ex.tinggi_badan) : null, 
-                        ziyadah: ex.ziyadah || null, 
-                        murojaah: ex.murojaah || null, 
-                        hari_sakit: ex.hari_sakit !== '' ? Number(ex.hari_sakit) : 0, 
-                        hari_izin: ex.hari_izin !== '' ? Number(ex.hari_izin) : 0, 
-                        hari_alpa: ex.hari_alpa !== '' ? Number(ex.hari_alpa) : 0, 
-                        hari_pulang: ex.hari_pulang !== '' ? Number(ex.hari_pulang) : 0, 
+                    return {
+                        student_id: s.id,
+                        month: selectedMonth,
+                        year: selectedYear,
+                        musyrif_name: musyrif,
+                        updated_by: profile?.id ?? null,
+                        updated_by_name: profile?.name ?? null,
+                        ...Object.fromEntries(Object.entries(sc).map(([k, v]) => [k, v === '' ? null : Number(v)])),
+                        berat_badan: ex.berat_badan !== '' ? Number(ex.berat_badan) : null,
+                        tinggi_badan: ex.tinggi_badan !== '' ? Number(ex.tinggi_badan) : null,
+                        ziyadah: ex.ziyadah || null,
+                        murojaah: ex.murojaah || null,
+                        hari_sakit: ex.hari_sakit !== '' ? Number(ex.hari_sakit) : 0,
+                        hari_izin: ex.hari_izin !== '' ? Number(ex.hari_izin) : 0,
+                        hari_alpa: ex.hari_alpa !== '' ? Number(ex.hari_alpa) : 0,
+                        hari_pulang: ex.hari_pulang !== '' ? Number(ex.hari_pulang) : 0,
                         catatan: ex.catatan || null,
                         pelanggaran: ex.pelanggaran || null,
                         prestasi: ex.prestasi || null,
                         sholat: ex.sholat || null
-                    } 
+                    }
                 } else {
                     return {
                         student_id: s.id,
@@ -756,8 +758,8 @@ export function useRaportCore() {
             })
 
             const tableName = rtObj.dbTable
-            const conflictColumns = reportType === 'bulanan' 
-                ? 'student_id,month,year' 
+            const conflictColumns = reportType === 'bulanan'
+                ? 'student_id,month,year'
                 : 'student_id,report_type,semester,academic_year'
 
             const { data: upserted, error } = await supabase
@@ -785,9 +787,9 @@ export function useRaportCore() {
                     : `${studentsToSave.length} raport berhasil disimpan`,
                 'success'
             )
-            
-            const suffixKey = reportType === 'bulanan' 
-                ? `${selectedMonth}_${selectedYear}` 
+
+            const suffixKey = reportType === 'bulanan'
+                ? `${selectedMonth}_${selectedYear}`
                 : `${selectedSemester}_${academicYear.replace('/', '_')}`
             try { const key = `draft_raport_${reportType}_${selectedClassId}_${suffixKey}`; localStorage.removeItem(key); setDraftAvailable(false) } catch { }
 
@@ -834,7 +836,7 @@ export function useRaportCore() {
             const ids = studentIds ?? students.map(s => s.id)
             const { data } = await supabase.from('student_monthly_reports').select('*').in('student_id', ids).eq('month', targetMonth).eq('year', targetYear)
             if (!data?.length) { addToast(`Tidak ada data untuk bulan ${BULAN.find(b => b.id === targetMonth)?.id_str} ${targetYear}`, 'warning'); return }
-            
+
             const rtObj = RAPORT_TYPES[reportType]
             const criteria = rtObj.getCriteria(selectedClass)
 
@@ -876,7 +878,7 @@ export function useRaportCore() {
     // ── Reset Class (All Students) ──
     const resetClass = useCallback(async () => {
         if (!selectedClassId || !students.length) return
-        
+
         // Clear all timers
         for (const studentId of Object.keys(autoSaveTimers.current)) {
             if (autoSaveTimers.current[studentId]) {
@@ -884,14 +886,14 @@ export function useRaportCore() {
                 delete autoSaveTimers.current[studentId]
             }
         }
-        
+
         const rtObj = RAPORT_TYPES[reportType] || RAPORT_TYPES.bulanan
         const criteria = rtObj.getCriteria(selectedClass)
 
         // Clear local states for all students in the class
         const emptyScores = {}
         const emptyExtras = {}
-        
+
         const emptySc = {}
         criteria.forEach(k => { emptySc[k.key] = '' })
 
@@ -908,22 +910,22 @@ export function useRaportCore() {
             }
             return next
         })
-        
+
         // Get database IDs to delete
         const dbIdsToDelete = students
             .map(s => existingReportIds[s.id])
             .filter(Boolean)
-            
+
         if (!dbIdsToDelete.length) {
             addToast('Data kelas berhasil direset', 'success')
             return
         }
-        
+
         setSavingAll(true)
         try {
             const { error } = await supabase.from(rtObj.dbTable).delete().in('id', dbIdsToDelete)
             if (error) throw error
-            
+
             setExistingReportIds(prev => {
                 const next = { ...prev }
                 for (const s of students) {
@@ -931,7 +933,7 @@ export function useRaportCore() {
                 }
                 return next
             })
-            
+
             addToast(`Data untuk ${students.length} santri berhasil direset`, 'success')
             await logAudit({
                 action: 'DELETE', source: 'OPERATIONAL', tableName: rtObj.dbTable,

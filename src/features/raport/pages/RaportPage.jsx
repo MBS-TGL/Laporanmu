@@ -962,10 +962,9 @@ export default function RaportPage() {
     const triggerAutoSave = useCallback((studentId) => {
         setSavedIds(prev => { const next = new Set(prev); next.delete(studentId); return next })
         if (autoSaveTimers.current[studentId]) clearTimeout(autoSaveTimers.current[studentId])
-        // FIX 6: show "Menyimpan..." indicator
-        setGlobalSaveIndicator('saving')
         if (globalSaveTimerRef.current) clearTimeout(globalSaveTimerRef.current)
         autoSaveTimers.current[studentId] = setTimeout(() => {
+            setGlobalSaveIndicator('saving')
             saveStudent(studentId)
             setGlobalSaveIndicator('saved')
             globalSaveTimerRef.current = setTimeout(() => setGlobalSaveIndicator(null), 2000)

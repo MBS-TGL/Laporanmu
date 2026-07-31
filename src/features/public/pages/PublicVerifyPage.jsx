@@ -78,41 +78,35 @@ export default function PublicVerifyPage() {
             setLoading(true)
             setErrorMsg('')
 
-            // 1. Fetch Student & Class Details
-            let studentQuery = supabase.from('students').select('*, classes(*)').is('deleted_at', null)
-            
-            if (studentId) {
-                studentQuery = studentQuery.eq('id', studentId)
-            } else {
+            if (!studentId) {
                 setErrorMsg('Parameter verifikasi kurang lengkap!')
                 setLoading(false)
                 return
             }
 
-            const { data: stuData, error: stuErr } = await studentQuery.single()
-            if (stuErr || !stuData) {
-                setErrorMsg('Data siswa tidak ditemukan di server!')
+            // Use RPC to bypass RLS (SECURITY DEFINER)
+            const { data: rpcResult, error: rpcErr } = await supabase
+                .rpc('verify_raport', {
+                    p_student_id: studentId,
+                    p_month: month,
+                    p_year: year
+                })
+
+            if (rpcErr || !rpcResult) {
+                console.error('[PublicVerifyPage] RPC error:', rpcErr)
+                setErrorMsg('Gagal menghubungi server verifikasi!')
                 setVerified(false)
                 return
             }
 
-            // 2. Fetch Monthly Report Details
-            const { data: repData, error: repErr } = await supabase
-                .from('student_monthly_reports')
-                .select('*')
-                .eq('student_id', stuData.id)
-                .eq('month', month)
-                .eq('year', year)
-                .single()
-
-            if (repErr || !repData) {
-                setErrorMsg('Data laporan bulanan raport tidak ditemukan!')
+            if (rpcResult.error) {
+                setErrorMsg(rpcResult.error)
                 setVerified(false)
                 return
             }
 
-            setStudent(stuData)
-            setReport(repData)
+            setStudent(rpcResult.student)
+            setReport(rpcResult.report)
             setVerified(true)
         } catch (err) {
             console.error('[PublicVerifyPage] Verification error:', err)

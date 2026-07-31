@@ -4,7 +4,7 @@ import {
     ArrowLeft, School, Loader2, Save, Printer, Search, Zap, Sparkles, AlertTriangle,
     Download, Check, Users, CheckCircle2, ChevronLeft, ChevronRight, X, TrendingUp,
     FileText, Scale, Ruler, HeartPulse, AlertCircle, DoorOpen, BookOpen, ClipboardList, Copy,
-    FolderArchive, Paintbrush, Compass, Clock
+    FolderArchive, Paintbrush, Compass
 } from 'lucide-react'
 const WhatsAppIcon = (props) => (
     <svg viewBox="0 0 448 512" fill="currentColor" {...props}>
@@ -22,6 +22,7 @@ import {
 import { getGradePredicate, getClassLevel, RAPORT_TYPES } from '@utils/reports/raportTypeRegistry'
 import { isComplete, generateAutoComment } from '@utils/reports/raportHelpers'
 import { supabase } from '@lib/supabase'
+import { useDebounce } from '@shared/hooks/useDebounce'
 
 const ROW_HEIGHT = 188
 
@@ -200,7 +201,7 @@ const CopyDataModal = ({ isOpen, onClose, students, scores, extras, currentMonth
     const hasCurrent = (id) => {
         const sc = scores[id], ex = extras[id]
         return (sc && Object.values(sc).some(v => v !== '' && v !== null && v !== undefined)) ||
-               (ex && Object.values(ex).some(v => v !== '' && v !== null && v !== undefined))
+            (ex && Object.values(ex).some(v => v !== '' && v !== null && v !== undefined))
     }
     const hasSource = (id) => {
         const r = sourceData[id]
@@ -448,6 +449,7 @@ export default function RaportInputTable({
     const [isBulkModalOpen, setIsBulkModalOpen] = useState(false)
     const [isCopyModalOpen, setIsCopyModalOpen] = useState(false)
 
+    const debouncedScores = useDebounce(scores, 600)
 
     const classStats = React.useMemo(() => {
         const activeCriteria = criteria || []
@@ -463,7 +465,7 @@ export default function RaportInputTable({
         })
 
         students.forEach(s => {
-            const sc = scores[s.id] || {}
+            const sc = debouncedScores[s.id] || {}
             if (isComplete(sc, activeCriteria)) {
                 completeCount++
             }
@@ -496,7 +498,7 @@ export default function RaportInputTable({
             total: students.length,
             incomplete: students.length - completeCount
         }
-    }, [students, scores, criteria])
+    }, [students, debouncedScores, criteria])
 
     return (
         <div className="space-y-4">
@@ -947,7 +949,7 @@ export default function RaportInputTable({
                 title="Terpilih"
                 subtitle="Aksi Massal"
             >
-                <button 
+                <button
                     onClick={async () => {
                         const selected = students.filter(s => bulkSelected.has(s.id))
                         if (!selected.length) return
@@ -1040,7 +1042,7 @@ export default function RaportInputTable({
                     <span>Simpan Semua</span>
                 </button>
 
-                <button 
+                <button
                     onClick={() => setIsBulkModalOpen(true)}
                     className="h-10 sm:h-9 px-3 rounded-xl bg-fuchsia-500/10 text-fuchsia-400 border border-fuchsia-500/20 hover:bg-fuchsia-600 hover:text-white transition-all flex items-center justify-center gap-1.5 text-[9px] font-black uppercase tracking-widest"
                     title="Isi Massal"
@@ -1049,7 +1051,7 @@ export default function RaportInputTable({
                     <span>Isi Massal</span>
                 </button>
 
-                <button 
+                <button
                     onClick={() => {
                         const withPhone = students.filter(s => bulkSelected.has(s.id) && s.phone && isComplete(scores[s.id] || {}, criteria))
                         if (!withPhone.length) { addToast('Tidak ada santri terpilih dengan WA & nilai lengkap', 'warning'); return }
@@ -1062,7 +1064,7 @@ export default function RaportInputTable({
                     <span>WA Blast</span>
                 </button>
 
-                <button 
+                <button
                     onClick={() => {
                         const toExport = students.filter(s => bulkSelected.has(s.id) && isComplete(scores[s.id] || {}, criteria))
                         if (!toExport.length) { addToast('Tidak ada santri terpilih dengan nilai lengkap', 'warning'); return }
@@ -1077,694 +1079,651 @@ export default function RaportInputTable({
                 </button>
             </BulkActionsBar>
 
-                <Modal
-                    isOpen={isBulkModalOpen}
-                    onClose={() => setIsBulkModalOpen(false)}
-                    title="Isi Massal Nilai"
-                    description="Berlaku hanya untuk kolom nilai yang masih kosong."
-                    icon={Sparkles}
-                    iconBg="bg-violet-500/10"
-                    iconColor="text-violet-600"
-                    size="md"
-                    footer={
-                        <div className="flex items-center justify-between w-full">
+            <Modal
+                isOpen={isBulkModalOpen}
+                onClose={() => setIsBulkModalOpen(false)}
+                title="Isi Massal Nilai"
+                description="Berlaku hanya untuk kolom nilai yang masih kosong."
+                icon={Sparkles}
+                iconBg="bg-violet-500/10"
+                iconColor="text-violet-600"
+                size="md"
+                footer={
+                    <div className="flex items-center justify-between w-full">
+                        <button
+                            onClick={() => setIsBulkModalOpen(false)}
+                            className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
+                        >
+                            Batal
+                        </button>
+                        <div className="flex items-center gap-2">
                             <button
-                                onClick={() => setIsBulkModalOpen(false)}
+                                onClick={() => {
+                                    setBulkValues({})
+                                }}
                                 className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
                             >
-                                Batal
+                                Reset Input
                             </button>
-                            <div className="flex items-center gap-2">
-                                <button
-                                    onClick={() => {
-                                        setBulkValues({})
-                                    }}
-                                    className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
-                                >
-                                    Reset Input
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        const keys = Object.keys(bulkValues).filter(k => bulkValues[k] !== '')
-                                        if (!keys.length) { addToast('Isi minimal satu kolom data', 'warning'); return }
+                            <button
+                                onClick={() => {
+                                    const keys = Object.keys(bulkValues).filter(k => bulkValues[k] !== '')
+                                    if (!keys.length) { addToast('Isi minimal satu kolom data', 'warning'); return }
 
-                                        const targetStudents = bulkSelected.size > 0
-                                            ? students.filter(s => bulkSelected.has(s.id))
-                                            : students;
+                                    const targetStudents = bulkSelected.size > 0
+                                        ? students.filter(s => bulkSelected.has(s.id))
+                                        : students;
 
-                                        const scoreKeys = ['nilai_akhlak', 'nilai_ibadah', 'nilai_kebersihan', 'nilai_quran', 'nilai_bahasa']
-<<<<<<< HEAD
-                                        const extraKeys = ['berat_badan', 'tinggi_badan', 'hari_sakit', 'hari_izin', 'hari_alpa', 'hari_pulang', 'ziyadah', 'murojaah', 'catatan', 'pelanggaran', 'prestasi', 'sholat']
-=======
-                                        const extraKeys = ['berat_badan', 'tinggi_badan', 'hari_sakit', 'hari_izin', 'hari_alpa', 'hari_pulang', 'ziyadah', 'murojaah', 'sholat', 'catatan']
->>>>>>> 2e71777f11f44a5d166c7e910b76cf02c952a214
+                                    const scoreKeys = ['nilai_akhlak', 'nilai_ibadah', 'nilai_kebersihan', 'nilai_quran', 'nilai_bahasa']
+                                    const extraKeys = ['berat_badan', 'tinggi_badan', 'hari_sakit', 'hari_izin', 'hari_alpa', 'hari_pulang', 'ziyadah', 'murojaah', 'catatan', 'pelanggaran', 'prestasi', 'sholat']
 
-                                        const activeScoreKeys = keys.filter(k => scoreKeys.includes(k))
-                                        const activeExtraKeys = keys.filter(k => extraKeys.includes(k))
+                                    const activeScoreKeys = keys.filter(k => scoreKeys.includes(k))
+                                    const activeExtraKeys = keys.filter(k => extraKeys.includes(k))
 
-                                        const changedIds = targetStudents
-                                            .filter(s => {
-                                                const curScores = scores[s.id] || {}
-                                                const curExtras = extras[s.id] || {}
-                                                const hasEmptyScore = activeScoreKeys.some(k => curScores[k] === '' || curScores[k] === null || curScores[k] === undefined)
-                                                const hasEmptyExtra = activeExtraKeys.some(k => curExtras[k] === '' || curExtras[k] === null || curExtras[k] === undefined)
-                                                return hasEmptyScore || hasEmptyExtra
-                                            })
-                                            .map(s => s.id)
-
-                                        if (!changedIds.length) {
-                                            addToast('Semua kolom target sudah memiliki nilai/data', 'warning')
-                                            return
-                                        }
-
-                                        if (activeScoreKeys.length) {
-                                            setScores(prev => {
-                                                const next = { ...prev }
-                                                for (const s of targetStudents) {
-                                                    const cur = next[s.id] || {}
-                                                    const updated = { ...cur }
-                                                    let changed = false
-                                                    for (const k of activeScoreKeys) {
-                                                        if (cur[k] === '' || cur[k] === null || cur[k] === undefined) {
-                                                            updated[k] = bulkValues[k]; changed = true
-                                                        }
-                                                    }
-                                                    if (changed) next[s.id] = updated
-                                                }
-                                                return next
-                                            })
-                                        }
-
-                                        if (activeExtraKeys.length) {
-                                            setExtras(prev => {
-                                                const next = { ...prev }
-                                                for (const s of targetStudents) {
-                                                    const cur = next[s.id] || {}
-                                                    const updated = { ...cur }
-                                                    let changed = false
-                                                    for (const k of activeExtraKeys) {
-                                                        if (cur[k] === '' || cur[k] === null || cur[k] === undefined) {
-                                                            updated[k] = bulkValues[k]; changed = true
-                                                        }
-                                                    }
-                                                    if (changed) next[s.id] = updated
-                                                }
-                                                return next
-                                            })
-                                        }
-
-                                        changedIds.forEach(id => {
-                                            setSavedIds(p => { const n = new Set(p); n.delete(id); return n })
-                                            triggerAutoSave(id)
+                                    const changedIds = targetStudents
+                                        .filter(s => {
+                                            const curScores = scores[s.id] || {}
+                                            const curExtras = extras[s.id] || {}
+                                            const hasEmptyScore = activeScoreKeys.some(k => curScores[k] === '' || curScores[k] === null || curScores[k] === undefined)
+                                            const hasEmptyExtra = activeExtraKeys.some(k => curExtras[k] === '' || curExtras[k] === null || curExtras[k] === undefined)
+                                            return hasEmptyScore || hasEmptyExtra
                                         })
+                                        .map(s => s.id)
 
-                                        addToast(`Berhasil diterapkan ke ${changedIds.length} santri`, 'success')
-                                        setIsBulkModalOpen(false)
-                                    }}
-                                    className="h-9 px-5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white text-[10px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md shadow-[var(--color-primary)]/10"
-                                >
-                                    <Check className="w-3.5 h-3.5" />
-                                    Terapkan Data
-                                </button>
-                            </div>
-                        </div>
-                    }
-                >
-                    <div className="space-y-5">
-                        <div className="p-3 rounded-xl bg-slate-500/5 border border-[var(--color-border)]/50 text-[10px] text-[var(--color-text-muted)] font-bold">
-                            {bulkSelected.size > 0 ? (
-                                <span>
-                                    Data massal akan diterapkan ke <span className="font-black text-violet-600">{bulkSelected.size} santri terpilih</span> yang kolom nilainya masih kosong.
-                                </span>
-                            ) : (
-                                <span>
-                                    Data massal akan diterapkan ke <span className="font-black text-[var(--color-text)]">semua ({students.length}) santri</span> di kelas ini yang kolom nilainya masih kosong.
-                                </span>
-                            )}
-                        </div>
+                                    if (!changedIds.length) {
+                                        addToast('Semua kolom target sudah memiliki nilai/data', 'warning')
+                                        return
+                                    }
 
-                        {/* Section 1: Nilai Akademik */}
-                        <div>
-                            <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Nilai Akademik</p>
-                            <div className="grid grid-cols-5 gap-2">
-                                {criteria.map(k => (
-                                    <div key={k.key} className="flex flex-col gap-1 flex-1 min-w-0">
-                                        <span className="text-[8px] font-black uppercase tracking-tight text-center truncate" style={{ color: k.color }}>
-                                            {k.id}
-                                        </span>
-                                        <div className="relative rounded-xl overflow-hidden border transition-all duration-200"
+                                    if (activeScoreKeys.length) {
+                                        setScores(prev => {
+                                            const next = { ...prev }
+                                            for (const s of targetStudents) {
+                                                const cur = next[s.id] || {}
+                                                const updated = { ...cur }
+                                                let changed = false
+                                                for (const k of activeScoreKeys) {
+                                                    if (cur[k] === '' || cur[k] === null || cur[k] === undefined) {
+                                                        updated[k] = bulkValues[k]; changed = true
+                                                    }
+                                                }
+                                                if (changed) next[s.id] = updated
+                                            }
+                                            return next
+                                        })
+                                    }
+
+                                    if (activeExtraKeys.length) {
+                                        setExtras(prev => {
+                                            const next = { ...prev }
+                                            for (const s of targetStudents) {
+                                                const cur = next[s.id] || {}
+                                                const updated = { ...cur }
+                                                let changed = false
+                                                for (const k of activeExtraKeys) {
+                                                    if (cur[k] === '' || cur[k] === null || cur[k] === undefined) {
+                                                        updated[k] = bulkValues[k]; changed = true
+                                                    }
+                                                }
+                                                if (changed) next[s.id] = updated
+                                            }
+                                            return next
+                                        })
+                                    }
+
+                                    changedIds.forEach(id => {
+                                        setSavedIds(p => { const n = new Set(p); n.delete(id); return n })
+                                        triggerAutoSave(id)
+                                    })
+
+                                    addToast(`Berhasil diterapkan ke ${changedIds.length} santri`, 'success')
+                                    setIsBulkModalOpen(false)
+                                }}
+                                className="h-9 px-5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white text-[10px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md shadow-[var(--color-primary)]/10"
+                            >
+                                <Check className="w-3.5 h-3.5" />
+                                Terapkan Data
+                            </button>
+                        </div>
+                    </div>
+                }
+            >
+                <div className="space-y-5">
+                    <div className="p-3 rounded-xl bg-slate-500/5 border border-[var(--color-border)]/50 text-[10px] text-[var(--color-text-muted)] font-bold">
+                        {bulkSelected.size > 0 ? (
+                            <span>
+                                Data massal akan diterapkan ke <span className="font-black text-violet-600">{bulkSelected.size} santri terpilih</span> yang kolom nilainya masih kosong.
+                            </span>
+                        ) : (
+                            <span>
+                                Data massal akan diterapkan ke <span className="font-black text-[var(--color-text)]">semua ({students.length}) santri</span> di kelas ini yang kolom nilainya masih kosong.
+                            </span>
+                        )}
+                    </div>
+
+                    {/* Section 1: Nilai Akademik */}
+                    <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Nilai Akademik</p>
+                        <div className="grid grid-cols-5 gap-2">
+                            {criteria.map(k => (
+                                <div key={k.key} className="flex flex-col gap-1 flex-1 min-w-0">
+                                    <span className="text-[8px] font-black uppercase tracking-tight text-center truncate" style={{ color: k.color }}>
+                                        {k.id}
+                                    </span>
+                                    <div className="relative rounded-xl overflow-hidden border transition-all duration-200"
+                                        style={{
+                                            borderColor: bulkValues[k.key] !== '' && bulkValues[k.key] != null ? k.color : 'var(--color-border)',
+                                            boxShadow: bulkValues[k.key] !== '' && bulkValues[k.key] != null ? `${k.color}15 0 0 0 2px` : 'none'
+                                        }}>
+                                        <input
+                                            type="number"
+                                            min={0}
+                                            max={maxScore}
+                                            placeholder="—"
+                                            value={bulkValues[k.key] ?? ''}
+                                            onChange={e => setBulkValues(prev => ({
+                                                ...prev,
+                                                [k.key]: e.target.value === '' ? '' : Math.min(maxScore, Math.max(0, Number(e.target.value)))
+                                            }))}
+                                            className="w-full h-10 text-center text-sm font-black bg-[var(--color-surface)] outline-none transition-all appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                             style={{
-                                                borderColor: bulkValues[k.key] !== '' && bulkValues[k.key] != null ? k.color : 'var(--color-border)',
-                                                boxShadow: bulkValues[k.key] !== '' && bulkValues[k.key] != null ? `${k.color}15 0 0 0 2px` : 'none'
-                                            }}>
-                                            <input
-                                                type="number"
-                                                min={0}
-                                                max={maxScore}
-                                                placeholder="—"
-                                                value={bulkValues[k.key] ?? ''}
-                                                onChange={e => setBulkValues(prev => ({
-                                                    ...prev,
-                                                    [k.key]: e.target.value === '' ? '' : Math.min(maxScore, Math.max(0, Number(e.target.value)))
-                                                }))}
-                                                className="w-full h-10 text-center text-sm font-black bg-[var(--color-surface)] outline-none transition-all appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                                style={{
-                                                    color: bulkValues[k.key] !== '' && bulkValues[k.key] != null ? k.color : 'var(--color-text-muted)'
-                                                }}
-                                            />
-                                            <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ background: k.color }} />
-                                        </div>
+                                                color: bulkValues[k.key] !== '' && bulkValues[k.key] != null ? k.color : 'var(--color-text-muted)'
+                                            }}
+                                        />
+                                        <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ background: k.color }} />
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                            ))}
                         </div>
+                    </div>
 
-                        {/* Section 2: Fisik & Kehadiran */}
-                        {(rtObj.hasFisik || rtObj.hasAttendance) && (
-                            <div>
-                                <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Fisik & Kehadiran</p>
-                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                                    {[
-                                        ...(rtObj.hasFisik ? [
-                                            { key: 'berat_badan', label: 'Berat Badan', unit: 'kg', icon: Scale, color: '#6366f1' },
-                                            { key: 'tinggi_badan', label: 'Tinggi Badan', unit: 'cm', icon: Ruler, color: '#06b6d4' }
-                                        ] : []),
-                                        ...(rtObj.hasAttendance ? [
-                                            { key: 'hari_sakit', label: 'Sakit', unit: 'hari', icon: HeartPulse, color: '#ef4444' },
-                                            { key: 'hari_izin', label: 'Izin', unit: 'hari', icon: AlertCircle, color: '#f59e0b' },
-                                            { key: 'hari_alpa', label: 'Alpa', unit: 'hari', icon: AlertCircle, color: '#ef4444' },
-                                            { key: 'hari_pulang', label: 'Pulang', unit: 'kali', icon: DoorOpen, color: '#8b5cf6' }
-                                        ] : [])
-                                    ].map(f => (
-                                        <div key={f.key} className="flex flex-col gap-1 min-w-0">
-                                            <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">
-                                                {f.label}
-                                            </span>
-                                            <div className="flex items-center gap-1 rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)] focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all" style={{ height: 38 }}>
-                                                <div className="w-8 h-full flex items-center justify-center shrink-0" style={{ background: f.color + '18' }}>
-                                                    {(() => { const Icon = f.icon; return <Icon style={{ color: f.color }} className="w-3 h-3" /> })()}
-                                                </div>
-                                                <input
-                                                    type="number"
-                                                    min={0}
-                                                    placeholder="—"
-                                                    value={bulkValues[f.key] ?? ''}
-                                                    onChange={e => setBulkValues(prev => ({
-                                                        ...prev,
-                                                        [f.key]: e.target.value === '' ? '' : Math.max(0, Number(e.target.value))
-                                                    }))}
-                                                    className="flex-1 w-0 h-full text-[11px] font-bold text-left px-2 bg-transparent text-[var(--color-text)] outline-none appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                                />
-                                                <span className="text-[8px] font-black text-[var(--color-text-muted)] pr-2.5 opacity-65 uppercase">{f.unit}</span>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Section 3: Hafalan & Catatan */}
-                        {(rtObj.hasHafalan || rtObj.hasCatatan) && (
-                            <div>
-                                <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Hafalan & Catatan</p>
-                                <div className="space-y-2.5">
-                                    {rtObj.hasHafalan && (
-                                        <div className="space-y-2">
-                                            <div className="grid grid-cols-2 gap-2">
-                                                {[
-                                                    { key: 'ziyadah', label: 'Ziyadah (Target Hafalan)', icon: BookOpen, color: '#10b981' },
-                                                    { key: 'murojaah', label: "Muroja'ah (Lancar)", icon: FileText, color: '#8b5cf6' }
-                                                ].map(f => (
-                                                    <div key={f.key} className="flex flex-col gap-1 min-w-0">
-                                                        <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">
-                                                            {f.label}
-                                                        </span>
-                                                        <div className="flex items-center gap-1 rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)] focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all" style={{ height: 38 }}>
-                                                            <div className="w-8 h-full flex items-center justify-center shrink-0" style={{ background: f.color + '18' }}>
-                                                                {(() => { const Icon = f.icon; return <Icon style={{ color: f.color }} className="w-3 h-3" /> })()}
-                                                            </div>
-                                                            <input
-                                                                type="text"
-                                                                placeholder="—"
-                                                                value={bulkValues[f.key] ?? ''}
-                                                                onChange={e => setBulkValues(prev => ({
-                                                                    ...prev,
-                                                                    [f.key]: e.target.value
-                                                                }))}
-                                                                className="flex-1 w-0 h-full px-2 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            {/* Sholat Counter */}
-                                            <div className="flex flex-col gap-1">
-                                                <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">Sholat (Pelanggaran)</span>
-                                                <div className="flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-2">
-                                                    <div className="w-8 h-8 flex items-center justify-center shrink-0 rounded-lg" style={{ background: '#06b6d418' }}>
-                                                        <Clock style={{ color: '#06b6d4' }} className="w-3 h-3" />
-                                                    </div>
-                                                    <div className="flex items-center gap-3 flex-1">
-                                                        <label className="flex items-center gap-1.5">
-                                                            <span className="text-[9px] font-bold text-[var(--color-text-muted)]">Terlambat</span>
-                                                            <input type="number" min={0} inputMode="numeric" value={(() => { try { return JSON.parse(bulkValues.sholat || '{}').terlambat ?? 0 } catch { return 0 } })()}
-                                                                onChange={e => { const v = Math.max(0, parseInt(e.target.value) || 0); const cur = (() => { try { return JSON.parse(bulkValues.sholat || '{}') } catch { return {} } })(); setBulkValues(prev => ({ ...prev, sholat: JSON.stringify({ ...cur, terlambat: v }) })) }}
-                                                                className="w-10 h-7 text-[11px] font-bold text-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] outline-none" style={{ appearance: 'none', MozAppearance: 'textfield' }} />
-                                                        </label>
-                                                        <label className="flex items-center gap-1.5">
-                                                            <span className="text-[9px] font-bold text-[var(--color-text-muted)]">Tidak Sholat</span>
-                                                            <input type="number" min={0} inputMode="numeric" value={(() => { try { return JSON.parse(bulkValues.sholat || '{}').tidak_sholat ?? 0 } catch { return 0 } })()}
-                                                                onChange={e => { const v = Math.max(0, parseInt(e.target.value) || 0); const cur = (() => { try { return JSON.parse(bulkValues.sholat || '{}') } catch { return {} } })(); setBulkValues(prev => ({ ...prev, sholat: JSON.stringify({ ...cur, tidak_sholat: v }) })) }}
-                                                                className="w-10 h-7 text-[11px] font-bold text-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] outline-none" style={{ appearance: 'none', MozAppearance: 'textfield' }} />
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-                                    {rtObj.hasCatatan && (
-                                        <div className="flex flex-col gap-1">
-                                            <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">
-                                                Catatan Perkembangan
-                                            </span>
-                                            <div className="flex rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)] focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all">
-                                                <div className="w-8 shrink-0 flex items-center justify-center border-r border-[var(--color-border)]/50" style={{ background: '#f59e0b12' }}>
-                                                    <ClipboardList style={{ color: "#f59e0b" }} className="w-3 h-3" />
-                                                </div>
-                                                <textarea
-                                                    rows={2}
-                                                    placeholder="Tulis catatan yang ingin diterapkan secara massal..."
-                                                    value={bulkValues.catatan ?? ''}
-                                                    onChange={e => setBulkValues(prev => ({
-                                                        ...prev,
-                                                        catatan: e.target.value
-                                                    }))}
-                                                    className="flex-1 w-0 px-2.5 py-2 text-[11px] font-medium bg-transparent text-[var(--color-text)] outline-none resize-none leading-normal"
-                                                />
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Section 4: Catatan Perilaku */}
+                    {/* Section 2: Fisik & Kehadiran */}
+                    {(rtObj.hasFisik || rtObj.hasAttendance) && (
                         <div>
-                            <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Catatan Perilaku</p>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Fisik & Kehadiran</p>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                                 {[
-                                    { key: 'pelanggaran', label: 'Pelanggaran' },
-                                    { key: 'prestasi', label: 'Prestasi' },
-                                    { key: 'sholat', label: 'Sholat' }
+                                    ...(rtObj.hasFisik ? [
+                                        { key: 'berat_badan', label: 'Berat Badan', unit: 'kg', icon: Scale, color: '#6366f1' },
+                                        { key: 'tinggi_badan', label: 'Tinggi Badan', unit: 'cm', icon: Ruler, color: '#06b6d4' }
+                                    ] : []),
+                                    ...(rtObj.hasAttendance ? [
+                                        { key: 'hari_sakit', label: 'Sakit', unit: 'hari', icon: HeartPulse, color: '#ef4444' },
+                                        { key: 'hari_izin', label: 'Izin', unit: 'hari', icon: AlertCircle, color: '#f59e0b' },
+                                        { key: 'hari_alpa', label: 'Alpa', unit: 'hari', icon: AlertCircle, color: '#ef4444' },
+                                        { key: 'hari_pulang', label: 'Pulang', unit: 'kali', icon: DoorOpen, color: '#8b5cf6' }
+                                    ] : [])
                                 ].map(f => (
                                     <div key={f.key} className="flex flex-col gap-1 min-w-0">
                                         <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">
                                             {f.label}
                                         </span>
-                                        <div className="flex rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)] focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all" style={{ height: 38 }}>
+                                        <div className="flex items-center gap-1 rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)] focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all" style={{ height: 38 }}>
+                                            <div className="w-8 h-full flex items-center justify-center shrink-0" style={{ background: f.color + '18' }}>
+                                                {(() => { const Icon = f.icon; return <Icon style={{ color: f.color }} className="w-3 h-3" /> })()}
+                                            </div>
                                             <input
-                                                type="text"
+                                                type="number"
+                                                min={0}
                                                 placeholder="—"
                                                 value={bulkValues[f.key] ?? ''}
                                                 onChange={e => setBulkValues(prev => ({
                                                     ...prev,
-                                                    [f.key]: e.target.value
+                                                    [f.key]: e.target.value === '' ? '' : Math.max(0, Number(e.target.value))
                                                 }))}
-                                                className="flex-1 w-0 h-full px-2.5 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none"
+                                                className="flex-1 w-0 h-full text-[11px] font-bold text-left px-2 bg-transparent text-[var(--color-text)] outline-none appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                             />
+                                            <span className="text-[8px] font-black text-[var(--color-text-muted)] pr-2.5 opacity-65 uppercase">{f.unit}</span>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
-                    </div>
-                </Modal>
-
-                {/* Desktop Table View */}
-                <div className="hidden md:block">
-                    {loading ? (
-                        <DesktopSkeleton criteria={criteria} />
-                    ) : filteredStudents.length === 0 ? (
-                        <div className="py-10 flex items-center justify-center rounded-xl border border-dashed border-[var(--color-border)]">
-                            <EmptyState
-                                icon={Users}
-                                variant="plain"
-                                title={showIncompleteOnly ? 'Semua nilai sudah lengkap! 🎉' : 'Santri tidak ditemukan'}
-                                description={showIncompleteOnly ? 'Tidak ada santri yang nilainya belum diisi.' : 'Coba kata kunci lain atau hapus filter.'}
-                                action={
-                                    <button onClick={() => { setShowIncompleteOnly(false); setShowNoPhoneOnly(false); setStudentSearch('') }}
-                                        className="h-9 px-5 rounded-xl border border-[var(--color-border)] text-[11px] font-black hover:bg-[var(--color-surface-alt)] transition-all bg-[var(--color-surface)] text-[var(--color-text)] cursor-pointer">
-                                        Tampilkan Semua
-                                    </button>
-                                }
-                            />
-                        </div>
-                    ) : (
-                        <div
-                            ref={tableScrollRef}
-                            className="overflow-x-auto rounded-xl border border-[var(--color-border)] fade-in animate-in duration-300"
-                            style={{ maxHeight: 'calc(100vh - 140px)', overflowY: 'auto', overflowAnchor: 'none' }}
-                        >
-                            <table style={{ borderCollapse: 'collapse', width: '100%', minWidth: 910, tableLayout: 'fixed' }}>
-                                <colgroup>
-                                    <col style={{ width: 36 }} />
-                                    <col style={{ width: 140 }} />
-                                    {criteria.map(k => <col key={k.key} style={{ width: 54 }} />)}
-                                    {(rtObj.hasFisik || rtObj.hasAttendance) && <col style={{ width: 170 }} />}
-                                    {(rtObj.hasHafalan || rtObj.hasCatatan) && <col style={{ width: 160 }} />}
-                                    <col style={{ width: 130 }} />
-                                </colgroup>
-                                <thead className="sticky top-0 z-20">
-                                    <tr style={{ background: 'none' }}>
-                                        <th style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>
-                                            <input type="checkbox"
-                                                checked={bulkSelected.size === filteredStudents.length && filteredStudents.length > 0}
-                                                onChange={e => setBulkSelected(e.target.checked ? new Set(filteredStudents.map(s => s.id)) : new Set())}
-                                                aria-label="Pilih semua"
-                                                className="w-3.5 h-3.5 accent-violet-500 cursor-pointer"
-                                            />
-                                        </th>
-                                        <th className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] sticky left-0 z-10" style={{ background: 'var(--color-surface-alt)', padding: '10px 0', textAlign: 'center', verticalAlign: 'middle', borderRight: '1px solid var(--color-border)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>Santri</th>
-                                        {criteria.map(k => (
-                                            <th key={k.key} title={k.id} style={{ padding: '8px 2px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>
-                                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minWidth: 0, overflow: 'hidden' }}>
-                                                    <span style={{
-                                                        fontSize: 9.5,
-                                                        fontWeight: 900,
-                                                        color: 'var(--color-text-muted)',
-                                                        lineHeight: 1.2,
-                                                        whiteSpace: 'nowrap',
-                                                        textAlign: 'center',
-                                                        overflow: 'hidden',
-                                                        textOverflow: 'ellipsis',
-                                                        width: '100%',
-                                                        textTransform: 'uppercase',
-                                                        letterSpacing: '0.5px'
-                                                    }}>
-                                                        {k.id}
-                                                    </span>
-                                                </div>
-                                            </th>
-                                        ))}
-                                        {(rtObj.hasFisik || rtObj.hasAttendance) && (
-                                            <th style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>
-                                                <span style={{ fontSize: 10, fontWeight: 900, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
-                                                    {rtObj.hasFisik && rtObj.hasAttendance ? 'Fisik & Kehadiran' : rtObj.hasFisik ? 'Fisik' : 'Kehadiran'}
-                                                </span>
-                                            </th>
-                                        )}
-                                        {(rtObj.hasHafalan || rtObj.hasCatatan) && (
-                                            <th style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>
-                                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-                                                    <span style={{ fontSize: 10, fontWeight: 900, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
-                                                        {rtObj.hasHafalan && rtObj.hasCatatan ? 'Hafalan & Catatan' : rtObj.hasHafalan ? 'Hafalan' : 'Catatan'}
-                                                    </span>
-                                                </div>
-                                            </th>
-                                        )}
-                                        <th className="sticky right-0 z-10" style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', fontSize: 10, fontWeight: 900, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1, background: 'var(--color-surface-alt)', borderLeft: '1px solid var(--color-border)', borderRight: '1px solid var(--color-border)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {filteredStudents.length > 20 && visibleRange.start > 0 && (
-                                        <tr style={{ height: visibleRange.start * ROW_HEIGHT }}><td colSpan={99} /></tr>
-                                    )}
-                                    {(filteredStudents.length > 20
-                                        ? filteredStudents.slice(visibleRange.start, visibleRange.end)
-                                        : filteredStudents
-                                    ).map((student, _vi) => {
-                                        const si = filteredStudents.length > 20 ? visibleRange.start + _vi : _vi
-                                        const sc = scores[student.id] || {}, ex = extras[student.id] || {}
-                                        return (
-                                            <StudentRow key={student.id}
-                                                student={student} si={si} sc={sc} ex={ex}
-                                                isSaved={savedIds.has(student.id)}
-                                                isSaving={!!saving[student.id]}
-                                                isDirty={!savedIds.has(student.id) && (criteria.some(k => sc[k.key] !== '' && sc[k.key] !== null) || Object.values(ex).some(v => v !== '' && v !== null))}
-                                                isChecked={bulkSelected.has(student.id)}
-                                                bulkMode={true} lang={lang}
-                                                criteria={criteria}
-                                                maxScore={maxScore}
-                                                reportType={reportType}
-                                                classLevel={classLevel}
-                                                trendData={studentTrend[student.id]}
-                                                prevScores={prevMonthScores[student.id]}
-                                                templateOpen={templateOpenId === student.id}
-                                                catatanArab={catatanArabMap[student.id]}
-                                                sendingWAStatus={sendingWA[student.id]}
-                                                onScoreChange={handleScoreChange}
-                                                onExtraChange={handleExtraChange}
-                                                onCatatanChange={handleCatatanChange}
-                                                onSave={saveStudent}
-                                                onWA={generateAndSendWA}
-                                                onPDF={handlePDF}
-                                                onReset={handleResetStudent}
-                                                onBulkToggle={handleBulkToggle}
-                                                onKeyDown={handleKeyDown}
-                                                onTemplateToggle={handleTemplateToggle}
-                                                onTemplateApply={handleTemplateApply}
-                                                onTranslitToggle={handleTranslitToggle}
-                                                cellRefs={cellRefs}
-                                                generateAutoComment={generateAutoComment}
-                                            />
-                                        )
-                                    })}
-                                    {filteredStudents.length > 20 && visibleRange.end < filteredStudents.length && (
-                                        <tr style={{ height: (filteredStudents.length - visibleRange.end) * ROW_HEIGHT }}><td colSpan={99} /></tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
                     )}
-                </div>
 
-                {/* Mobile Card View */}
-                <div className="md:hidden">
-                    {loading ? (
-                        <MobileSkeleton />
-                    ) : filteredStudents.length === 0 ? (
-                        <div className="p-4">
-                            <EmptyState
-                                icon={showIncompleteOnly ? CheckCircle2 : showNoPhoneOnly ? CheckCircle2 : Search}
-                                title={showIncompleteOnly ? 'Semua nilai sudah lengkap! 🎉' : showNoPhoneOnly ? 'Semua santri sudah ada nomor WA ✓' : 'Santri tidak ditemukan'}
-                                description={showIncompleteOnly ? 'Tidak ada santri yang nilainya belum diisi.' : showNoPhoneOnly ? 'Tidak ada santri tanpa nomor WA.' : 'Coba kata kunci lain atau hapus filter.'}
-                                action={
-                                    <button onClick={() => { setShowIncompleteOnly(false); setShowNoPhoneOnly(false); setStudentSearch('') }} className="h-8 px-4 rounded-xl border border-[var(--color-border)] text-[11px] font-black hover:bg-[var(--color-surface-alt)] transition-all bg-[var(--color-surface)] text-[var(--color-text)]">Tampilkan Semua</button>
-                                }
-                            />
-                        </div>
-                    ) : (() => {
-                        const safeIdx = Math.min(mobileActiveIdx, filteredStudents.length - 1)
-                        const student = filteredStudents[safeIdx]
-                        if (!student) return null
-                        const sc = scores[student.id] || {}, ex = extras[student.id] || {}
-                        const avg = calcAvg(sc, criteria), isSaved = savedIds.has(student.id), isSaving = saving[student.id]
-                        const isDirty = !isSaved && criteria.some(k => sc[k.key] !== '' && sc[k.key] !== null && sc[k.key] !== undefined)
-                        const complete = isComplete(sc, criteria)
-                        const goTo = (idx) => setMobileActiveIdx(Math.max(0, Math.min(filteredStudents.length - 1, idx)))
-                        let _touchStartX = 0
-                        const onTouchStart = (e) => { _touchStartX = e.touches[0].clientX }
-                        const onTouchEnd = (e) => { const dx = e.changedTouches[0].clientX - _touchStartX; if (dx < -50) goTo(safeIdx + 1); else if (dx > 50) goTo(safeIdx - 1) }
-                        return (
-                            <div className="fade-in animate-in duration-300">
-                                {/* Card dengan swipe gesture */}
-                                <div className="rounded-2xl border bg-[var(--color-surface)] overflow-hidden transition-all"
-                                    style={{ borderColor: complete ? '#10b98130' : isDirty ? '#f59e0b30' : 'var(--color-border)' }}
-                                    onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-                                    {/* Sticky Header inside Card */}
-                                    <div className="sticky top-0 z-10 flex items-center gap-2 px-3 py-2.5 border-b bg-[var(--color-surface)] transition-all"
-                                        style={{ borderColor: complete ? '#10b98130' : 'var(--color-border)' }}>
-                                        <input type="checkbox" checked={bulkSelected.has(student.id)}
-                                            onChange={e => setBulkSelected(prev => { const n = new Set(prev); e.target.checked ? n.add(student.id) : n.delete(student.id); return n })}
-                                            className="w-4 h-4 accent-violet-500 shrink-0 cursor-pointer" />
-                                        <span className="text-[9px] font-black px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] shrink-0">{safeIdx + 1}/{filteredStudents.length}</span>
-                                        <RadarChart scores={sc} size={30} />
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-[12px] font-black text-[var(--color-text)] truncate">{student.name}</p>
-                                            <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
-                                                {avg ? (
-                                                    <span className="text-[9px] font-black px-1.5 py-0.5 rounded-md" style={{ background: getGrade(Number(avg)).bg, color: getGrade(Number(avg)).uiColor }}>
-                                                        {avg} — {getGrade(Number(avg)).id}
+                    {/* Section 3: Hafalan & Catatan */}
+                    {(rtObj.hasHafalan || rtObj.hasCatatan) && (
+                        <div>
+                            <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Hafalan & Catatan</p>
+                            <div className="space-y-2.5">
+                                {rtObj.hasHafalan && (
+                                    <div className="space-y-2">
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {[
+                                                { key: 'ziyadah', label: 'Ziyadah (Target Hafalan)', icon: BookOpen, color: '#10b981' },
+                                                { key: 'murojaah', label: "Muroja'ah (Lancar)", icon: FileText, color: '#8b5cf6' }
+                                            ].map(f => (
+                                                <div key={f.key} className="flex flex-col gap-1 min-w-0">
+                                                    <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">
+                                                        {f.label}
                                                     </span>
-                                                ) : (
-                                                    <span className="text-[8px] text-[var(--color-text-muted)]">Belum diisi</span>
-                                                )}
-                                                {isSaving && <Loader2 className="w-3 h-3 text-amber-500 animate-spin" />}
-                                                {!isSaving && isDirty && <span className="text-[7px] font-black text-amber-500">● belum simpan</span>}
-                                            </div>
+                                                    <div className="flex items-center gap-1 rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)] focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all" style={{ height: 38 }}>
+                                                        <div className="w-8 h-full flex items-center justify-center shrink-0" style={{ background: f.color + '18' }}>
+                                                            {(() => { const Icon = f.icon; return <Icon style={{ color: f.color }} className="w-3 h-3" /> })()}
+                                                        </div>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="—"
+                                                            value={bulkValues[f.key] ?? ''}
+                                                            onChange={e => setBulkValues(prev => ({
+                                                                ...prev,
+                                                                [f.key]: e.target.value
+                                                            }))}
+                                                            className="flex-1 w-0 h-full px-2 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            ))}
                                         </div>
-                                        <div className="flex items-center gap-1.5 shrink-0">
-                                            <button onClick={() => openStudentDetailDrawer(student)}
-                                                title="Histori semua raport santri ini"
-                                                className="h-8 w-8 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 flex items-center justify-center hover:bg-indigo-500/20 transition-all">
-                                                <TrendingUp className="w-3 h-3" />
-                                            </button>
-                                            <button onClick={() => saveStudent(student.id)} disabled={isSaving || !canEdit}
-                                                className="h-8 px-2 rounded-xl text-[10px] font-black flex items-center gap-1 shrink-0 transition-all"
-                                                style={{ background: isSaved ? '#10b98115' : isDirty ? '#6366f115' : 'var(--color-surface-alt)', color: isSaved ? '#10b981' : isDirty ? '#6366f1' : 'var(--color-text-muted)', border: `1px solid ${isSaved ? '#10b98130' : isDirty ? '#6366f130' : 'var(--color-border)'}` }}>
-                                                {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : isSaved ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> : <Save className="w-3.5 h-3.5" />}
-                                            </button>
+
+                                    </div>
+                                )}
+                                {rtObj.hasCatatan && (
+                                    <div className="flex flex-col gap-1">
+                                        <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">
+                                            Catatan Perkembangan
+                                        </span>
+                                        <div className="flex rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)] focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all">
+                                            <div className="w-8 shrink-0 flex items-center justify-center border-r border-[var(--color-border)]/50" style={{ background: '#f59e0b12' }}>
+                                                <ClipboardList style={{ color: "#f59e0b" }} className="w-3 h-3" />
+                                            </div>
+                                            <textarea
+                                                rows={2}
+                                                placeholder="Tulis catatan yang ingin diterapkan secara massal..."
+                                                value={bulkValues.catatan ?? ''}
+                                                onChange={e => setBulkValues(prev => ({
+                                                    ...prev,
+                                                    catatan: e.target.value
+                                                }))}
+                                                className="flex-1 w-0 px-2.5 py-2 text-[11px] font-medium bg-transparent text-[var(--color-text)] outline-none resize-none leading-normal"
+                                            />
                                         </div>
                                     </div>
-                                    {/* Body */}
-                                    <div className="px-4 py-3 space-y-3">
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Section 4: Catatan Perilaku */}
+                    <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Catatan Perilaku</p>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            {[
+                                { key: 'pelanggaran', label: 'Pelanggaran' },
+                                { key: 'prestasi', label: 'Prestasi' },
+                                { key: 'sholat', label: 'Sholat' }
+                            ].map(f => (
+                                <div key={f.key} className="flex flex-col gap-1 min-w-0">
+                                    <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">
+                                        {f.label}
+                                    </span>
+                                    <div className="flex rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)] focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all" style={{ height: 38 }}>
+                                        <input
+                                            type="text"
+                                            placeholder="—"
+                                            value={bulkValues[f.key] ?? ''}
+                                            onChange={e => setBulkValues(prev => ({
+                                                ...prev,
+                                                [f.key]: e.target.value
+                                            }))}
+                                            className="flex-1 w-0 h-full px-2.5 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none"
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </Modal>
+
+            {/* Desktop Table View */}
+            <div className="hidden md:block">
+                {loading ? (
+                    <DesktopSkeleton criteria={criteria} />
+                ) : filteredStudents.length === 0 ? (
+                    <div className="py-10 flex items-center justify-center rounded-xl border border-dashed border-[var(--color-border)]">
+                        <EmptyState
+                            icon={Users}
+                            variant="plain"
+                            title={showIncompleteOnly ? 'Semua nilai sudah lengkap! 🎉' : 'Santri tidak ditemukan'}
+                            description={showIncompleteOnly ? 'Tidak ada santri yang nilainya belum diisi.' : 'Coba kata kunci lain atau hapus filter.'}
+                            action={
+                                <button onClick={() => { setShowIncompleteOnly(false); setShowNoPhoneOnly(false); setStudentSearch('') }}
+                                    className="h-9 px-5 rounded-xl border border-[var(--color-border)] text-[11px] font-black hover:bg-[var(--color-surface-alt)] transition-all bg-[var(--color-surface)] text-[var(--color-text)] cursor-pointer">
+                                    Tampilkan Semua
+                                </button>
+                            }
+                        />
+                    </div>
+                ) : (
+                    <div
+                        ref={tableScrollRef}
+                        className="overflow-x-auto rounded-xl border border-[var(--color-border)] fade-in animate-in duration-300"
+                        style={{ maxHeight: 'calc(100vh - 140px)', overflowY: 'auto', overflowAnchor: 'none' }}
+                    >
+                        <table style={{ borderCollapse: 'collapse', width: '100%', minWidth: 910, tableLayout: 'fixed' }}>
+                            <colgroup>
+                                <col style={{ width: 36 }} />
+                                <col style={{ width: 140 }} />
+                                {criteria.map(k => <col key={k.key} style={{ width: 54 }} />)}
+                                {(rtObj.hasFisik || rtObj.hasAttendance) && <col style={{ width: 170 }} />}
+                                {(rtObj.hasHafalan || rtObj.hasCatatan) && <col style={{ width: 160 }} />}
+                                <col style={{ width: 130 }} />
+                            </colgroup>
+                            <thead className="sticky top-0 z-20">
+                                <tr style={{ background: 'none' }}>
+                                    <th style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>
+                                        <input type="checkbox"
+                                            checked={bulkSelected.size === filteredStudents.length && filteredStudents.length > 0}
+                                            onChange={e => setBulkSelected(e.target.checked ? new Set(filteredStudents.map(s => s.id)) : new Set())}
+                                            aria-label="Pilih semua"
+                                            className="w-3.5 h-3.5 accent-violet-500 cursor-pointer"
+                                        />
+                                    </th>
+                                    <th className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] sticky left-0 z-10" style={{ background: 'var(--color-surface-alt)', padding: '10px 0', textAlign: 'center', verticalAlign: 'middle', borderRight: '1px solid var(--color-border)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>Santri</th>
+                                    {criteria.map(k => (
+                                        <th key={k.key} title={k.id} style={{ padding: '8px 2px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>
+                                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minWidth: 0, overflow: 'hidden' }}>
+                                                <span style={{
+                                                    fontSize: 9.5,
+                                                    fontWeight: 900,
+                                                    color: 'var(--color-text-muted)',
+                                                    lineHeight: 1.2,
+                                                    whiteSpace: 'nowrap',
+                                                    textAlign: 'center',
+                                                    overflow: 'hidden',
+                                                    textOverflow: 'ellipsis',
+                                                    width: '100%',
+                                                    textTransform: 'uppercase',
+                                                    letterSpacing: '0.5px'
+                                                }}>
+                                                    {k.id}
+                                                </span>
+                                            </div>
+                                        </th>
+                                    ))}
+                                    {(rtObj.hasFisik || rtObj.hasAttendance) && (
+                                        <th style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>
+                                            <span style={{ fontSize: 10, fontWeight: 900, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                                                {rtObj.hasFisik && rtObj.hasAttendance ? 'Fisik & Kehadiran' : rtObj.hasFisik ? 'Fisik' : 'Kehadiran'}
+                                            </span>
+                                        </th>
+                                    )}
+                                    {(rtObj.hasHafalan || rtObj.hasCatatan) && (
+                                        <th style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>
+                                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+                                                <span style={{ fontSize: 10, fontWeight: 900, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                                                    {rtObj.hasHafalan && rtObj.hasCatatan ? 'Hafalan & Catatan' : rtObj.hasHafalan ? 'Hafalan' : 'Catatan'}
+                                                </span>
+                                            </div>
+                                        </th>
+                                    )}
+                                    <th className="sticky right-0 z-10" style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', fontSize: 10, fontWeight: 900, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1, background: 'var(--color-surface-alt)', borderLeft: '1px solid var(--color-border)', borderRight: '1px solid var(--color-border)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredStudents.length > 20 && visibleRange.start > 0 && (
+                                    <tr style={{ height: visibleRange.start * ROW_HEIGHT }}><td colSpan={99} /></tr>
+                                )}
+                                {(filteredStudents.length > 20
+                                    ? filteredStudents.slice(visibleRange.start, visibleRange.end)
+                                    : filteredStudents
+                                ).map((student, _vi) => {
+                                    const si = filteredStudents.length > 20 ? visibleRange.start + _vi : _vi
+                                    const sc = scores[student.id] || {}, ex = extras[student.id] || {}
+                                    return (
+                                        <StudentRow key={student.id}
+                                            student={student} si={si} sc={sc} ex={ex}
+                                            isSaved={savedIds.has(student.id)}
+                                            isSaving={!!saving[student.id]}
+                                            isDirty={!savedIds.has(student.id) && (criteria.some(k => sc[k.key] !== '' && sc[k.key] !== null) || Object.values(ex).some(v => v !== '' && v !== null))}
+                                            isChecked={bulkSelected.has(student.id)}
+                                            bulkMode={true} lang={lang}
+                                            criteria={criteria}
+                                            maxScore={maxScore}
+                                            reportType={reportType}
+                                            classLevel={classLevel}
+                                            trendData={studentTrend[student.id]}
+                                            prevScores={prevMonthScores[student.id]}
+                                            templateOpen={templateOpenId === student.id}
+                                            catatanArab={catatanArabMap[student.id]}
+                                            sendingWAStatus={sendingWA[student.id]}
+                                            onScoreChange={handleScoreChange}
+                                            onExtraChange={handleExtraChange}
+                                            onCatatanChange={handleCatatanChange}
+                                            onSave={saveStudent}
+                                            onWA={generateAndSendWA}
+                                            onPDF={handlePDF}
+                                            onReset={handleResetStudent}
+                                            onBulkToggle={handleBulkToggle}
+                                            onKeyDown={handleKeyDown}
+                                            onTemplateToggle={handleTemplateToggle}
+                                            onTemplateApply={handleTemplateApply}
+                                            onTranslitToggle={handleTranslitToggle}
+                                            cellRefs={cellRefs}
+                                            generateAutoComment={generateAutoComment}
+                                        />
+                                    )
+                                })}
+                                {filteredStudents.length > 20 && visibleRange.end < filteredStudents.length && (
+                                    <tr style={{ height: (filteredStudents.length - visibleRange.end) * ROW_HEIGHT }}><td colSpan={99} /></tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden">
+                {loading ? (
+                    <MobileSkeleton />
+                ) : filteredStudents.length === 0 ? (
+                    <div className="p-4">
+                        <EmptyState
+                            icon={showIncompleteOnly ? CheckCircle2 : showNoPhoneOnly ? CheckCircle2 : Search}
+                            title={showIncompleteOnly ? 'Semua nilai sudah lengkap! 🎉' : showNoPhoneOnly ? 'Semua santri sudah ada nomor WA ✓' : 'Santri tidak ditemukan'}
+                            description={showIncompleteOnly ? 'Tidak ada santri yang nilainya belum diisi.' : showNoPhoneOnly ? 'Tidak ada santri tanpa nomor WA.' : 'Coba kata kunci lain atau hapus filter.'}
+                            action={
+                                <button onClick={() => { setShowIncompleteOnly(false); setShowNoPhoneOnly(false); setStudentSearch('') }} className="h-8 px-4 rounded-xl border border-[var(--color-border)] text-[11px] font-black hover:bg-[var(--color-surface-alt)] transition-all bg-[var(--color-surface)] text-[var(--color-text)]">Tampilkan Semua</button>
+                            }
+                        />
+                    </div>
+                ) : (() => {
+                    const safeIdx = Math.min(mobileActiveIdx, filteredStudents.length - 1)
+                    const student = filteredStudents[safeIdx]
+                    if (!student) return null
+                    const sc = scores[student.id] || {}, ex = extras[student.id] || {}
+                    const avg = calcAvg(sc, criteria), isSaved = savedIds.has(student.id), isSaving = saving[student.id]
+                    const isDirty = !isSaved && criteria.some(k => sc[k.key] !== '' && sc[k.key] !== null && sc[k.key] !== undefined)
+                    const complete = isComplete(sc, criteria)
+                    const goTo = (idx) => setMobileActiveIdx(Math.max(0, Math.min(filteredStudents.length - 1, idx)))
+                    let _touchStartX = 0
+                    const onTouchStart = (e) => { _touchStartX = e.touches[0].clientX }
+                    const onTouchEnd = (e) => { const dx = e.changedTouches[0].clientX - _touchStartX; if (dx < -50) goTo(safeIdx + 1); else if (dx > 50) goTo(safeIdx - 1) }
+                    return (
+                        <div className="fade-in animate-in duration-300">
+                            {/* Card dengan swipe gesture */}
+                            <div className="rounded-2xl border bg-[var(--color-surface)] overflow-hidden transition-all"
+                                style={{ borderColor: complete ? '#10b98130' : isDirty ? '#f59e0b30' : 'var(--color-border)' }}
+                                onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+                                {/* Sticky Header inside Card */}
+                                <div className="sticky top-0 z-10 flex items-center gap-2 px-3 py-2.5 border-b bg-[var(--color-surface)] transition-all"
+                                    style={{ borderColor: complete ? '#10b98130' : 'var(--color-border)' }}>
+                                    <input type="checkbox" checked={bulkSelected.has(student.id)}
+                                        onChange={e => setBulkSelected(prev => { const n = new Set(prev); e.target.checked ? n.add(student.id) : n.delete(student.id); return n })}
+                                        className="w-4 h-4 accent-violet-500 shrink-0 cursor-pointer" />
+                                    <span className="text-[9px] font-black px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] shrink-0">{safeIdx + 1}/{filteredStudents.length}</span>
+                                    <RadarChart scores={sc} size={30} />
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-[12px] font-black text-[var(--color-text)] truncate">{student.name}</p>
+                                        <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                                            {avg ? (
+                                                <span className="text-[9px] font-black px-1.5 py-0.5 rounded-md" style={{ background: getGrade(Number(avg)).bg, color: getGrade(Number(avg)).uiColor }}>
+                                                    {avg} — {getGrade(Number(avg)).id}
+                                                </span>
+                                            ) : (
+                                                <span className="text-[8px] text-[var(--color-text-muted)]">Belum diisi</span>
+                                            )}
+                                            {isSaving && <Loader2 className="w-3 h-3 text-amber-500 animate-spin" />}
+                                            {!isSaving && isDirty && <span className="text-[7px] font-black text-amber-500">● belum simpan</span>}
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-1.5 shrink-0">
+                                        <button onClick={() => openStudentDetailDrawer(student)}
+                                            title="Histori semua raport santri ini"
+                                            className="h-8 w-8 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 flex items-center justify-center hover:bg-indigo-500/20 transition-all">
+                                            <TrendingUp className="w-3 h-3" />
+                                        </button>
+                                        <button onClick={() => saveStudent(student.id)} disabled={isSaving || !canEdit}
+                                            className="h-8 px-2 rounded-xl text-[10px] font-black flex items-center gap-1 shrink-0 transition-all"
+                                            style={{ background: isSaved ? '#10b98115' : isDirty ? '#6366f115' : 'var(--color-surface-alt)', color: isSaved ? '#10b981' : isDirty ? '#6366f1' : 'var(--color-text-muted)', border: `1px solid ${isSaved ? '#10b98130' : isDirty ? '#6366f130' : 'var(--color-border)'}` }}>
+                                            {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : isSaved ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> : <Save className="w-3.5 h-3.5" />}
+                                        </button>
+                                    </div>
+                                </div>
+                                {/* Body */}
+                                <div className="px-4 py-3 space-y-3">
+                                    <div>
+                                        <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Nilai Kriteria</p>
+                                        <div className="grid grid-cols-5 gap-1.5">
+                                            {criteria.map(k => (
+                                                <div key={k.key} className="flex flex-col items-center gap-0.5">
+                                                    <span className="text-[7px] font-black uppercase tracking-wide" style={{ color: k.color }}>{k.id.slice(0, 3)}</span>
+                                                     <input type="number" inputMode="decimal" min={0} max={maxScore} placeholder="—"
+                                                        value={sc[k.key] ?? ''}
+                                                        onChange={e => { const v = e.target.value === '' ? '' : Math.min(maxScore, Math.max(0, Number(e.target.value))); handleScoreChange(student.id, k.key, v) }}
+                                                        className="w-full h-10 text-center text-base font-black rounded-xl outline-none transition-all appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                                        style={{ background: sc[k.key] !== '' && sc[k.key] != null ? getGrade(Number(sc[k.key])).bg : 'var(--color-surface-alt)', color: sc[k.key] !== '' && sc[k.key] != null ? getGrade(Number(sc[k.key])).uiColor : 'var(--color-text-muted)', border: `2px solid ${sc[k.key] !== '' && sc[k.key] != null ? getGrade(Number(sc[k.key])).border : 'var(--color-border)'}` }} />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    {(rtObj.hasFisik || rtObj.hasAttendance) && (
                                         <div>
-                                            <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Nilai Kriteria</p>
-                                            <div className="grid grid-cols-5 gap-1.5">
-                                                {criteria.map(k => (
-                                                    <div key={k.key} className="flex flex-col items-center gap-0.5">
-                                                        <span className="text-[7px] font-black uppercase tracking-wide" style={{ color: k.color }}>{k.id.slice(0, 3)}</span>
-                                                        <input type="number" inputMode="decimal" min={0} max={maxScore} placeholder="—"
-                                                            value={sc[k.key] ?? ''}
-                                                            onChange={e => { const v = e.target.value === '' ? '' : Math.min(maxScore, Math.max(0, Number(e.target.value))); setScores(prev => ({ ...prev, [student.id]: { ...prev[student.id], [k.key]: v } })); setSavedIds(prev => { const n = new Set(prev); n.delete(student.id); return n }); triggerAutoSave(student.id) }}
-                                                            className="w-full h-10 text-center text-base font-black rounded-xl outline-none transition-all appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                                            style={{ background: sc[k.key] !== '' && sc[k.key] != null ? getGrade(Number(sc[k.key])).bg : 'var(--color-surface-alt)', color: sc[k.key] !== '' && sc[k.key] != null ? getGrade(Number(sc[k.key])).uiColor : 'var(--color-text-muted)', border: `2px solid ${sc[k.key] !== '' && sc[k.key] != null ? getGrade(Number(sc[k.key])).border : 'var(--color-border)'}` }} />
+                                            <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5 flex justify-between items-center">
+                                                <span>{rtObj.hasFisik && rtObj.hasAttendance ? 'Fisik & Kehadiran' : rtObj.hasFisik ? 'Kondisi Fisik' : 'Ketidakhadiran'}</span>
+                                            </p>
+                                            <div className="grid grid-cols-2 gap-1.5">
+                                                {[
+                                                    ...(rtObj.hasFisik ? [
+                                                        { key: 'berat_badan', label: 'Berat Badan', icon: Scale, color: '#6366f1', unit: 'kg' },
+                                                        { key: 'tinggi_badan', label: 'Tinggi Badan', icon: Ruler, color: '#06b6d4', unit: 'cm' }
+                                                    ] : []),
+                                                    ...(rtObj.hasAttendance ? [
+                                                        { key: 'hari_sakit', label: 'Sakit', icon: HeartPulse, color: '#ef4444', unit: 'hr' },
+                                                        { key: 'hari_izin', label: 'Izin', icon: AlertCircle, color: '#f59e0b', unit: 'hr' },
+                                                        { key: 'hari_alpa', label: 'Alpa', icon: AlertCircle, color: '#ef4444', unit: 'hr' },
+                                                        { key: 'hari_pulang', label: 'Pulang', icon: DoorOpen, color: '#8b5cf6', unit: 'x' }
+                                                    ] : [])
+                                                ].map(f => (
+                                                    <div key={f.key} className="flex items-center gap-1 rounded-lg border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)]" style={{ height: 32 }}>
+                                                        <div className="w-7 h-full flex items-center justify-center shrink-0" style={{ background: f.color + '18' }}>{(() => { const Icon = f.icon; return <Icon style={{ color: f.color }} className="w-3 h-3" /> })()}</div>
+                                                        <ExtraInput type="text" inputMode="decimal" placeholder={f.label} value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={handleExtraChange}
+                                                            className="flex-1 w-0 h-full text-[11px] font-black text-left px-1.5 bg-transparent text-[var(--color-text)] outline-none" />
+                                                        <span className="text-[7px] font-black text-[var(--color-text-muted)] pr-1.5 opacity-60 uppercase">{f.unit}</span>
                                                     </div>
                                                 ))}
                                             </div>
                                         </div>
-                                        {(rtObj.hasFisik || rtObj.hasAttendance) && (
-                                            <div>
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5 flex justify-between items-center">
-                                                    <span>{rtObj.hasFisik && rtObj.hasAttendance ? 'Fisik & Kehadiran' : rtObj.hasFisik ? 'Kondisi Fisik' : 'Ketidakhadiran'}</span>
-                                                </p>
-                                                <div className="grid grid-cols-2 gap-1.5">
-                                                    {[
-                                                        ...(rtObj.hasFisik ? [
-                                                            { key: 'berat_badan', label: 'Berat Badan', icon: Scale, color: '#6366f1', unit: 'kg' },
-                                                            { key: 'tinggi_badan', label: 'Tinggi Badan', icon: Ruler, color: '#06b6d4', unit: 'cm' }
-                                                        ] : []),
-                                                        ...(rtObj.hasAttendance ? [
-                                                            { key: 'hari_sakit', label: 'Sakit', icon: HeartPulse, color: '#ef4444', unit: 'hr' },
-                                                            { key: 'hari_izin', label: 'Izin', icon: AlertCircle, color: '#f59e0b', unit: 'hr' },
-                                                            { key: 'hari_alpa', label: 'Alpa', icon: AlertCircle, color: '#ef4444', unit: 'hr' },
-                                                            { key: 'hari_pulang', label: 'Pulang', icon: DoorOpen, color: '#8b5cf6', unit: 'x' }
-                                                        ] : [])
-                                                    ].map(f => (
-                                                        <div key={f.key} className="flex items-center gap-1 rounded-lg border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)]" style={{ height: 32 }}>
-                                                            <div className="w-7 h-full flex items-center justify-center shrink-0" style={{ background: f.color + '18' }}>{(() => { const Icon = f.icon; return <Icon style={{ color: f.color }} className="w-3 h-3" /> })()}</div>
-                                                            <ExtraInput type="text" inputMode="decimal" placeholder={f.label} value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={handleExtraChange}
-                                                                className="flex-1 w-0 h-full text-[11px] font-black text-left px-1.5 bg-transparent text-[var(--color-text)] outline-none" />
-                                                            <span className="text-[7px] font-black text-[var(--color-text-muted)] pr-1.5 opacity-60 uppercase">{f.unit}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
-                                        {rtObj.hasHafalan && (
-                                            <div className="space-y-1.5">
-                                                <div className="grid grid-cols-2 gap-1.5">
-                                                    {[{ key: 'ziyadah', ph: 'Ziyadah', icon: BookOpen, color: '#10b981' }, { key: 'murojaah', ph: "Muroja'ah", icon: FileText, color: '#8b5cf6' }].map(f => (
-                                                        <div key={f.key} className="flex items-center gap-1 rounded-lg border border-[var(--color-border)]" style={{ height: 32 }}>
-                                                            <div className="w-7 h-full flex items-center justify-center shrink-0 rounded-l-[7px]" style={{ background: f.color + '18' }}>{(() => { const Icon = f.icon; return <Icon style={{ color: f.color }} className="w-3 h-3" /> })()}</div>
-                                                            <ExtraInput placeholder={f.ph} value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={handleExtraChange}
-                                                                className="flex-1 w-0 h-full px-1.5 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none" />
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                                {/* Sholat Counter Mobile */}
-                                                <div className="flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] px-2 py-1.5" style={{ height: 32 }}>
-                                                    <div className="w-5 h-5 flex items-center justify-center shrink-0 rounded" style={{ background: '#06b6d418' }}>
-                                                        <Clock style={{ color: '#06b6d4' }} className="w-2.5 h-2.5" />
+                                    )}
+                                    {rtObj.hasHafalan && (
+                                        <div className="space-y-1.5">
+                                            <div className="grid grid-cols-2 gap-1.5">
+                                                {[{ key: 'ziyadah', ph: 'Ziyadah', icon: BookOpen, color: '#10b981' }, { key: 'murojaah', ph: "Muroja'ah", icon: FileText, color: '#8b5cf6' }].map(f => (
+                                                    <div key={f.key} className="flex items-center gap-1 rounded-lg border border-[var(--color-border)]" style={{ height: 32 }}>
+                                                        <div className="w-7 h-full flex items-center justify-center shrink-0 rounded-l-[7px]" style={{ background: f.color + '18' }}>{(() => { const Icon = f.icon; return <Icon style={{ color: f.color }} className="w-3 h-3" /> })()}</div>
+                                                        <ExtraInput placeholder={f.ph} value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={handleExtraChange}
+                                                            className="flex-1 w-0 h-full px-1.5 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none" />
                                                     </div>
-                                                    <span className="text-[8px] font-black text-[#06b6d4] shrink-0">Sholat</span>
-                                                    <div className="flex items-center gap-1 ml-auto">
-                                                        <span className="text-[7px] text-[var(--color-text-muted)]">Tlb</span>
-                                                        <input type="number" min={0} inputMode="numeric" value={(() => { try { return JSON.parse(ex.sholat || '{}').terlambat ?? 0 } catch { return 0 } })()}
-                                                            onChange={e => { const v = Math.max(0, parseInt(e.target.value) || 0); const cur = (() => { try { return JSON.parse(ex.sholat || '{}') } catch { return {} } })(); handleExtraChange(student.id, 'sholat', JSON.stringify({ ...cur, terlambat: v })) }}
-                                                            className="w-6 h-5 text-[9px] font-bold text-center bg-transparent text-[var(--color-text)] outline-none border border-[var(--color-border)] rounded" style={{ appearance: 'none', MozAppearance: 'textfield' }} />
-                                                        <span className="text-[7px] text-[var(--color-text-muted)]">Tdk</span>
-                                                        <input type="number" min={0} inputMode="numeric" value={(() => { try { return JSON.parse(ex.sholat || '{}').tidak_sholat ?? 0 } catch { return 0 } })()}
-                                                            onChange={e => { const v = Math.max(0, parseInt(e.target.value) || 0); const cur = (() => { try { return JSON.parse(ex.sholat || '{}') } catch { return {} } })(); handleExtraChange(student.id, 'sholat', JSON.stringify({ ...cur, tidak_sholat: v })) }}
-                                                            className="w-6 h-5 text-[9px] font-bold text-center bg-transparent text-[var(--color-text)] outline-none border border-[var(--color-border)] rounded" style={{ appearance: 'none', MozAppearance: 'textfield' }} />
-                                                    </div>
-                                                </div>
+                                                ))}
                                             </div>
-                                        )}
-                                        {rtObj.hasCatatan && (
-                                            <div className="flex rounded-lg border border-[var(--color-border)] overflow-hidden">
-                                                <div className="w-7 shrink-0 flex items-start justify-center pt-2" style={{ background: '#f59e0b18' }}><ClipboardList style={{ color: "#f59e0b" }} className="w-3 h-3" /></div>
-                                                <ExtraTextarea placeholder="Catatan musyrif..." value={ex.catatan ?? ''} studentId={student.id} fieldKey="catatan" onCommit={handleCatatanChange}
-                                                    maxLength={200} rows={2} className="flex-1 w-0 px-2 py-1.5 text-[11px] bg-transparent text-[var(--color-text)] outline-none resize-none leading-tight" />
-                                                <button
-                                                    onClick={() => { const c = generateAutoComment(sc, student.id, studentTrend[student.id], criteria, reportType, classLevel); if (!c) return; setExtras(prev => ({ ...prev, [student.id]: { ...prev[student.id], catatan: c } })); setSavedIds(prev => { const n = new Set(prev); n.delete(student.id); return n }); triggerAutoSave(student.id) }}
-                                                    title="Generate komentar otomatis" disabled={!avg}
-                                                    className="shrink-0 w-8 flex items-center justify-center text-amber-500 hover:text-amber-600 hover:bg-amber-500/10 transition-all disabled:opacity-30" aria-label="Generate komentar otomatis">
-                                                    <Zap className="w-3 h-3" />
-                                                </button>
-                                            </div>
-                                        )}
-                                        <div className="flex gap-2 pt-1">
-                                            <button onClick={() => { setPreviewStudentId(student.id); setStep(3) }} className="flex-1 h-9 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 text-[11px] font-black flex items-center justify-center gap-1.5 hover:bg-indigo-500/20 transition-all"><FileText className="w-3 h-3" /> PDF</button>
-                                            <button onClick={() => generateAndSendWA(student)} disabled={!student.phone}
-                                                className={`flex-1 h-9 rounded-xl border text-[11px] font-black flex items-center justify-center gap-1.5 transition-all ${!student.phone ? 'opacity-30 cursor-not-allowed bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)]' : 'bg-green-500/10 border-green-500/20 text-green-600 hover:bg-green-500/20'}`}>
-                                                <WhatsAppIcon className="w-3 h-3" /> WA
-                                            </button>
-                                            <button onClick={() => handleResetStudent(student)}
-                                                className="h-9 w-9 rounded-xl border border-dashed border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-red-500 hover:border-red-500/30 flex items-center justify-center transition-all">
-                                                <X className="w-3.5 h-3.5" />
+                                        </div>
+                                    )}
+                                    {rtObj.hasCatatan && (
+                                        <div className="flex rounded-lg border border-[var(--color-border)] overflow-hidden">
+                                            <div className="w-7 shrink-0 flex items-start justify-center pt-2" style={{ background: '#f59e0b18' }}><ClipboardList style={{ color: "#f59e0b" }} className="w-3 h-3" /></div>
+                                            <ExtraTextarea placeholder="Catatan musyrif..." value={ex.catatan ?? ''} studentId={student.id} fieldKey="catatan" onCommit={handleCatatanChange}
+                                                maxLength={200} rows={2} className="flex-1 w-0 px-2 py-1.5 text-[11px] bg-transparent text-[var(--color-text)] outline-none resize-none leading-tight" />
+                                            <button
+                                                onClick={() => { const c = generateAutoComment(sc, student.id, studentTrend[student.id], criteria, reportType, classLevel); if (!c) return; setExtras(prev => ({ ...prev, [student.id]: { ...prev[student.id], catatan: c } })); setSavedIds(prev => { const n = new Set(prev); n.delete(student.id); return n }); triggerAutoSave(student.id) }}
+                                                title="Generate komentar otomatis" disabled={!avg}
+                                                className="shrink-0 w-8 flex items-center justify-center text-amber-500 hover:text-amber-600 hover:bg-amber-500/10 transition-all disabled:opacity-30" aria-label="Generate komentar otomatis">
+                                                <Zap className="w-3 h-3" />
                                             </button>
                                         </div>
+                                    )}
+                                    <div className="flex gap-2 pt-1">
+                                        <button onClick={() => { setPreviewStudentId(student.id); setStep(3) }} className="flex-1 h-9 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 text-[11px] font-black flex items-center justify-center gap-1.5 hover:bg-indigo-500/20 transition-all"><FileText className="w-3 h-3" /> PDF</button>
+                                        <button onClick={() => generateAndSendWA(student)} disabled={!student.phone}
+                                            className={`flex-1 h-9 rounded-xl border text-[11px] font-black flex items-center justify-center gap-1.5 transition-all ${!student.phone ? 'opacity-30 cursor-not-allowed bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)]' : 'bg-green-500/10 border-green-500/20 text-green-600 hover:bg-green-500/20'}`}>
+                                            <WhatsAppIcon className="w-3 h-3" /> WA
+                                        </button>
+                                        <button onClick={() => handleResetStudent(student)}
+                                            className="h-9 w-9 rounded-xl border border-dashed border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-red-500 hover:border-red-500/30 flex items-center justify-center transition-all">
+                                            <X className="w-3.5 h-3.5" />
+                                        </button>
                                     </div>
                                 </div>
-
-                                {/* Prominent prev/next navigation */}
-                                <div className="flex gap-2 mt-3">
-                                    <button onClick={() => goTo(safeIdx - 1)} disabled={safeIdx === 0}
-                                        className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-[11px] font-black flex items-center justify-center gap-2 hover:bg-[var(--color-surface)] hover:text-[var(--color-text)] disabled:opacity-30 transition-all">
-                                        <ChevronLeft className="w-3.5 h-3.5" /> Sebelumnya
-                                    </button>
-                                    <div className="flex items-center gap-1 px-1">
-                                        {filteredStudents.length <= 9
-                                            ? filteredStudents.map((_, i) => (
-                                                <button key={i} onClick={() => goTo(i)} className="rounded-full transition-all"
-                                                    style={{ width: i === safeIdx ? 10 : 6, height: i === safeIdx ? 10 : 6, background: i === safeIdx ? 'var(--color-primary)' : 'var(--color-border)' }} />
-                                            ))
-                                            : <span className="text-[9px] font-black text-[var(--color-text-muted)] whitespace-nowrap">{safeIdx + 1}/{filteredStudents.length}</span>
-                                        }
-                                    </div>
-                                    <button onClick={() => goTo(safeIdx + 1)} disabled={safeIdx === filteredStudents.length - 1}
-                                        className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-[11px] font-black flex items-center justify-center gap-2 hover:bg-[var(--color-surface)] hover:text-[var(--color-text)] disabled:opacity-30 transition-all">
-                                        Berikutnya <ChevronRight className="w-3.5 h-3.5" />
-                                    </button>
-                                </div>
                             </div>
-                        )
-                    })()}
-                </div>
 
-                {/* Averages display */}
-                <div className="hidden md:grid grid-cols-5 gap-2">
-                    {classStats.criteriaAverages.map(k => {
-                        const avg = k.average
-                        const g = avg !== '—' ? getGrade(Number(avg)) : null
-                        return (
-                            <div key={k.key} className="p-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-center">
-                                <div className="text-[8px] font-black uppercase tracking-widest mb-1" style={{ color: k.color }}>
-                                    {k.id}
+                            {/* Prominent prev/next navigation */}
+                            <div className="flex gap-2 mt-3">
+                                <button onClick={() => goTo(safeIdx - 1)} disabled={safeIdx === 0}
+                                    className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-[11px] font-black flex items-center justify-center gap-2 hover:bg-[var(--color-surface)] hover:text-[var(--color-text)] disabled:opacity-30 transition-all">
+                                    <ChevronLeft className="w-3.5 h-3.5" /> Sebelumnya
+                                </button>
+                                <div className="flex items-center gap-1 px-1">
+                                    {filteredStudents.length <= 9
+                                        ? filteredStudents.map((_, i) => (
+                                            <button key={i} onClick={() => goTo(i)} className="rounded-full transition-all"
+                                                style={{ width: i === safeIdx ? 10 : 6, height: i === safeIdx ? 10 : 6, background: i === safeIdx ? 'var(--color-primary)' : 'var(--color-border)' }} />
+                                        ))
+                                        : <span className="text-[9px] font-black text-[var(--color-text-muted)] whitespace-nowrap">{safeIdx + 1}/{filteredStudents.length}</span>
+                                    }
                                 </div>
-                                <div className="text-lg font-black" style={{ color: g?.uiColor || 'var(--color-text-muted)' }}>
-                                    {avg}
-                                </div>
-                                <div className="text-[7px] font-bold text-[var(--color-text-muted)]">
-                                    Rata - Rata Kelas
-                                </div>
+                                <button onClick={() => goTo(safeIdx + 1)} disabled={safeIdx === filteredStudents.length - 1}
+                                    className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-[11px] font-black flex items-center justify-center gap-2 hover:bg-[var(--color-surface)] hover:text-[var(--color-text)] disabled:opacity-30 transition-all">
+                                    Berikutnya <ChevronRight className="w-3.5 h-3.5" />
+                                </button>
                             </div>
-                        )
-                    })}
-                </div>
+                        </div>
+                    )
+                })()}
+            </div>
 
-                <CopyDataModal
-                    isOpen={isCopyModalOpen}
-                    onClose={() => setIsCopyModalOpen(false)}
-                    students={students}
-                    scores={scores}
-                    extras={extras}
-                    currentMonth={selectedMonth}
-                    currentYear={selectedYear}
-                    copyFromLastMonth={copyFromLastMonth}
-                    maxScore={maxScore}
-                />
+            {/* Averages display */}
+            <div className="hidden md:grid grid-cols-5 gap-2">
+                {classStats.criteriaAverages.map(k => {
+                    const avg = k.average
+                    const g = avg !== '—' ? getGrade(Number(avg)) : null
+                    return (
+                        <div key={k.key} className="p-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-center">
+                            <div className="text-[8px] font-black uppercase tracking-widest mb-1" style={{ color: k.color }}>
+                                {k.id}
+                            </div>
+                            <div className="text-lg font-black" style={{ color: g?.uiColor || 'var(--color-text-muted)' }}>
+                                {avg}
+                            </div>
+                            <div className="text-[7px] font-bold text-[var(--color-text-muted)]">
+                                Rata - Rata Kelas
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+
+            <CopyDataModal
+                isOpen={isCopyModalOpen}
+                onClose={() => setIsCopyModalOpen(false)}
+                students={students}
+                scores={scores}
+                extras={extras}
+                currentMonth={selectedMonth}
+                currentYear={selectedYear}
+                copyFromLastMonth={copyFromLastMonth}
+                maxScore={maxScore}
+            />
         </div>
     )
 }

@@ -4,7 +4,7 @@ import {
     ArrowLeft, School, Loader2, Save, Printer, Search, Zap, Sparkles, AlertTriangle,
     Download, Check, Users, CheckCircle2, ChevronLeft, ChevronRight, X, TrendingUp,
     FileText, Scale, Ruler, HeartPulse, AlertCircle, DoorOpen, BookOpen, ClipboardList, Copy,
-    FolderArchive, Paintbrush, Compass, Clock
+    FolderArchive, Paintbrush
 } from 'lucide-react'
 const WhatsAppIcon = (props) => (
     <svg viewBox="0 0 448 512" fill="currentColor" {...props}>
@@ -178,7 +178,7 @@ const CopyDataModal = ({ isOpen, onClose, students, scores, extras, currentMonth
                 const ids = students.map(s => s.id)
                 const { data } = await supabase
                     .from('student_monthly_reports')
-                    .select('student_id,nilai_akhlak,nilai_ibadah,nilai_kebersihan,nilai_quran,nilai_bahasa,berat_badan,tinggi_badan,ziyadah,murojaah,sholat,hari_sakit,hari_izin,hari_alpa,hari_pulang,catatan')
+                    .select('student_id,nilai_akhlak,nilai_ibadah,nilai_kebersihan,nilai_quran,nilai_bahasa,berat_badan,tinggi_badan,ziyadah,murojaah,hari_sakit,hari_izin,hari_alpa,hari_pulang,catatan')
                     .in('student_id', ids).eq('month', sourceMonth).eq('year', sourceYear)
                 if (!active) return
                 const map = {}
@@ -955,8 +955,7 @@ export default function RaportInputTable({
                         const hasAnyData = (sc, ex) =>
                             criteria.some(k => sc[k.key] !== '' && sc[k.key] !== null && sc[k.key] !== undefined) ||
                             [ex.berat_badan, ex.tinggi_badan, ex.ziyadah, ex.murojaah,
-                            ex.hari_sakit, ex.hari_izin, ex.hari_alpa, ex.hari_pulang, ex.catatan,
-                            ex.pelanggaran, ex.prestasi, ex.sholat
+                            ex.hari_sakit, ex.hari_izin, ex.hari_alpa, ex.hari_pulang, ex.catatan
                             ].some(v => v !== '' && v !== null && v !== undefined)
                         const toSave = selected.filter(s => hasAnyData(scores[s.id] || {}, extras[s.id] || {}))
                         if (!toSave.length) { addToast('Santri yang dipilih belum ada yang diisi nilainya', 'warning'); return }
@@ -973,15 +972,12 @@ export default function RaportInputTable({
                                         ...Object.fromEntries(Object.entries(sc).map(([k, v]) => [k, v === '' ? null : Number(v)])),
                                         berat_badan: ex.berat_badan !== '' && ex.berat_badan != null ? Number(ex.berat_badan) : null,
                                         tinggi_badan: ex.tinggi_badan !== '' && ex.tinggi_badan != null ? Number(ex.tinggi_badan) : null,
-                                        ziyadah: ex.ziyadah || null, murojaah: ex.murojaah || null, sholat: ex.sholat || null,
+                                        ziyadah: ex.ziyadah || null, murojaah: ex.murojaah || null,
                                         hari_sakit: ex.hari_sakit !== '' && ex.hari_sakit != null ? Number(ex.hari_sakit) : 0,
                                         hari_izin: ex.hari_izin !== '' && ex.hari_izin != null ? Number(ex.hari_izin) : 0,
                                         hari_alpa: ex.hari_alpa !== '' && ex.hari_alpa != null ? Number(ex.hari_alpa) : 0,
                                         hari_pulang: ex.hari_pulang !== '' && ex.hari_pulang != null ? Number(ex.hari_pulang) : 0,
-                                        catatan: ex.catatan || null,
-                                        pelanggaran: ex.pelanggaran || null,
-                                        prestasi: ex.prestasi || null,
-                                        sholat: ex.sholat || null
+                                        catatan: ex.catatan || null
                                     }
                                 });
                                 ({ data: upserted, error } = await supabase
@@ -1113,11 +1109,7 @@ export default function RaportInputTable({
                                             : students;
 
                                         const scoreKeys = ['nilai_akhlak', 'nilai_ibadah', 'nilai_kebersihan', 'nilai_quran', 'nilai_bahasa']
-<<<<<<< HEAD
-                                        const extraKeys = ['berat_badan', 'tinggi_badan', 'hari_sakit', 'hari_izin', 'hari_alpa', 'hari_pulang', 'ziyadah', 'murojaah', 'catatan', 'pelanggaran', 'prestasi', 'sholat']
-=======
-                                        const extraKeys = ['berat_badan', 'tinggi_badan', 'hari_sakit', 'hari_izin', 'hari_alpa', 'hari_pulang', 'ziyadah', 'murojaah', 'sholat', 'catatan']
->>>>>>> 2e71777f11f44a5d166c7e910b76cf02c952a214
+                                        const extraKeys = ['berat_badan', 'tinggi_badan', 'hari_sakit', 'hari_izin', 'hari_alpa', 'hari_pulang', 'ziyadah', 'murojaah', 'catatan']
 
                                         const activeScoreKeys = keys.filter(k => scoreKeys.includes(k))
                                         const activeExtraKeys = keys.filter(k => extraKeys.includes(k))
@@ -1289,57 +1281,32 @@ export default function RaportInputTable({
                                 <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Hafalan & Catatan</p>
                                 <div className="space-y-2.5">
                                     {rtObj.hasHafalan && (
-                                        <div className="space-y-2">
-                                            <div className="grid grid-cols-2 gap-2">
-                                                {[
-                                                    { key: 'ziyadah', label: 'Ziyadah (Target Hafalan)', icon: BookOpen, color: '#10b981' },
-                                                    { key: 'murojaah', label: "Muroja'ah (Lancar)", icon: FileText, color: '#8b5cf6' }
-                                                ].map(f => (
-                                                    <div key={f.key} className="flex flex-col gap-1 min-w-0">
-                                                        <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">
-                                                            {f.label}
-                                                        </span>
-                                                        <div className="flex items-center gap-1 rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)] focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all" style={{ height: 38 }}>
-                                                            <div className="w-8 h-full flex items-center justify-center shrink-0" style={{ background: f.color + '18' }}>
-                                                                {(() => { const Icon = f.icon; return <Icon style={{ color: f.color }} className="w-3 h-3" /> })()}
-                                                            </div>
-                                                            <input
-                                                                type="text"
-                                                                placeholder="—"
-                                                                value={bulkValues[f.key] ?? ''}
-                                                                onChange={e => setBulkValues(prev => ({
-                                                                    ...prev,
-                                                                    [f.key]: e.target.value
-                                                                }))}
-                                                                className="flex-1 w-0 h-full px-2 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none"
-                                                            />
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {[
+                                                { key: 'ziyadah', label: 'Ziyadah (Target Hafalan)', icon: BookOpen, color: '#10b981' },
+                                                { key: 'murojaah', label: "Muroja'ah (Lancar)", icon: FileText, color: '#8b5cf6' }
+                                            ].map(f => (
+                                                <div key={f.key} className="flex flex-col gap-1 min-w-0">
+                                                    <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">
+                                                        {f.label}
+                                                    </span>
+                                                    <div className="flex items-center gap-1 rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)] focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all" style={{ height: 38 }}>
+                                                        <div className="w-8 h-full flex items-center justify-center shrink-0" style={{ background: f.color + '18' }}>
+                                                            {(() => { const Icon = f.icon; return <Icon style={{ color: f.color }} className="w-3 h-3" /> })()}
                                                         </div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            {/* Sholat Counter */}
-                                            <div className="flex flex-col gap-1">
-                                                <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">Sholat (Pelanggaran)</span>
-                                                <div className="flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-2">
-                                                    <div className="w-8 h-8 flex items-center justify-center shrink-0 rounded-lg" style={{ background: '#06b6d418' }}>
-                                                        <Clock style={{ color: '#06b6d4' }} className="w-3 h-3" />
-                                                    </div>
-                                                    <div className="flex items-center gap-3 flex-1">
-                                                        <label className="flex items-center gap-1.5">
-                                                            <span className="text-[9px] font-bold text-[var(--color-text-muted)]">Terlambat</span>
-                                                            <input type="number" min={0} inputMode="numeric" value={(() => { try { return JSON.parse(bulkValues.sholat || '{}').terlambat ?? 0 } catch { return 0 } })()}
-                                                                onChange={e => { const v = Math.max(0, parseInt(e.target.value) || 0); const cur = (() => { try { return JSON.parse(bulkValues.sholat || '{}') } catch { return {} } })(); setBulkValues(prev => ({ ...prev, sholat: JSON.stringify({ ...cur, terlambat: v }) })) }}
-                                                                className="w-10 h-7 text-[11px] font-bold text-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] outline-none" style={{ appearance: 'none', MozAppearance: 'textfield' }} />
-                                                        </label>
-                                                        <label className="flex items-center gap-1.5">
-                                                            <span className="text-[9px] font-bold text-[var(--color-text-muted)]">Tidak Sholat</span>
-                                                            <input type="number" min={0} inputMode="numeric" value={(() => { try { return JSON.parse(bulkValues.sholat || '{}').tidak_sholat ?? 0 } catch { return 0 } })()}
-                                                                onChange={e => { const v = Math.max(0, parseInt(e.target.value) || 0); const cur = (() => { try { return JSON.parse(bulkValues.sholat || '{}') } catch { return {} } })(); setBulkValues(prev => ({ ...prev, sholat: JSON.stringify({ ...cur, tidak_sholat: v }) })) }}
-                                                                className="w-10 h-7 text-[11px] font-bold text-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] outline-none" style={{ appearance: 'none', MozAppearance: 'textfield' }} />
-                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="—"
+                                                            value={bulkValues[f.key] ?? ''}
+                                                            onChange={e => setBulkValues(prev => ({
+                                                                ...prev,
+                                                                [f.key]: e.target.value
+                                                            }))}
+                                                            className="flex-1 w-0 h-full px-2 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none"
+                                                        />
                                                     </div>
                                                 </div>
-                                            </div>
+                                            ))}
                                         </div>
                                     )}
                                     {rtObj.hasCatatan && (
@@ -1367,36 +1334,6 @@ export default function RaportInputTable({
                                 </div>
                             </div>
                         )}
-
-                        {/* Section 4: Catatan Perilaku */}
-                        <div>
-                            <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Catatan Perilaku</p>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                                {[
-                                    { key: 'pelanggaran', label: 'Pelanggaran' },
-                                    { key: 'prestasi', label: 'Prestasi' },
-                                    { key: 'sholat', label: 'Sholat' }
-                                ].map(f => (
-                                    <div key={f.key} className="flex flex-col gap-1 min-w-0">
-                                        <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">
-                                            {f.label}
-                                        </span>
-                                        <div className="flex rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)] focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all" style={{ height: 38 }}>
-                                            <input
-                                                type="text"
-                                                placeholder="—"
-                                                value={bulkValues[f.key] ?? ''}
-                                                onChange={e => setBulkValues(prev => ({
-                                                    ...prev,
-                                                    [f.key]: e.target.value
-                                                }))}
-                                                className="flex-1 w-0 h-full px-2.5 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none"
-                                            />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
                     </div>
                 </Modal>
 
@@ -1652,33 +1589,14 @@ export default function RaportInputTable({
                                             </div>
                                         )}
                                         {rtObj.hasHafalan && (
-                                            <div className="space-y-1.5">
-                                                <div className="grid grid-cols-2 gap-1.5">
-                                                    {[{ key: 'ziyadah', ph: 'Ziyadah', icon: BookOpen, color: '#10b981' }, { key: 'murojaah', ph: "Muroja'ah", icon: FileText, color: '#8b5cf6' }].map(f => (
-                                                        <div key={f.key} className="flex items-center gap-1 rounded-lg border border-[var(--color-border)]" style={{ height: 32 }}>
-                                                            <div className="w-7 h-full flex items-center justify-center shrink-0 rounded-l-[7px]" style={{ background: f.color + '18' }}>{(() => { const Icon = f.icon; return <Icon style={{ color: f.color }} className="w-3 h-3" /> })()}</div>
-                                                            <ExtraInput placeholder={f.ph} value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={handleExtraChange}
-                                                                className="flex-1 w-0 h-full px-1.5 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none" />
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                                {/* Sholat Counter Mobile */}
-                                                <div className="flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] px-2 py-1.5" style={{ height: 32 }}>
-                                                    <div className="w-5 h-5 flex items-center justify-center shrink-0 rounded" style={{ background: '#06b6d418' }}>
-                                                        <Clock style={{ color: '#06b6d4' }} className="w-2.5 h-2.5" />
+                                            <div className="grid grid-cols-2 gap-1.5">
+                                                {[{ key: 'ziyadah', ph: 'Ziyadah', icon: BookOpen, color: '#10b981' }, { key: 'murojaah', ph: "Muroja'ah", icon: FileText, color: '#8b5cf6' }].map(f => (
+                                                    <div key={f.key} className="flex items-center gap-1 rounded-lg border border-[var(--color-border)]" style={{ height: 32 }}>
+                                                        <div className="w-7 h-full flex items-center justify-center shrink-0 rounded-l-[7px]" style={{ background: f.color + '18' }}>{(() => { const Icon = f.icon; return <Icon style={{ color: f.color }} className="w-3 h-3" /> })()}</div>
+                                                        <ExtraInput placeholder={f.ph} value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={handleExtraChange}
+                                                            className="flex-1 w-0 h-full px-1.5 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none" />
                                                     </div>
-                                                    <span className="text-[8px] font-black text-[#06b6d4] shrink-0">Sholat</span>
-                                                    <div className="flex items-center gap-1 ml-auto">
-                                                        <span className="text-[7px] text-[var(--color-text-muted)]">Tlb</span>
-                                                        <input type="number" min={0} inputMode="numeric" value={(() => { try { return JSON.parse(ex.sholat || '{}').terlambat ?? 0 } catch { return 0 } })()}
-                                                            onChange={e => { const v = Math.max(0, parseInt(e.target.value) || 0); const cur = (() => { try { return JSON.parse(ex.sholat || '{}') } catch { return {} } })(); handleExtraChange(student.id, 'sholat', JSON.stringify({ ...cur, terlambat: v })) }}
-                                                            className="w-6 h-5 text-[9px] font-bold text-center bg-transparent text-[var(--color-text)] outline-none border border-[var(--color-border)] rounded" style={{ appearance: 'none', MozAppearance: 'textfield' }} />
-                                                        <span className="text-[7px] text-[var(--color-text-muted)]">Tdk</span>
-                                                        <input type="number" min={0} inputMode="numeric" value={(() => { try { return JSON.parse(ex.sholat || '{}').tidak_sholat ?? 0 } catch { return 0 } })()}
-                                                            onChange={e => { const v = Math.max(0, parseInt(e.target.value) || 0); const cur = (() => { try { return JSON.parse(ex.sholat || '{}') } catch { return {} } })(); handleExtraChange(student.id, 'sholat', JSON.stringify({ ...cur, tidak_sholat: v })) }}
-                                                            className="w-6 h-5 text-[9px] font-bold text-center bg-transparent text-[var(--color-text)] outline-none border border-[var(--color-border)] rounded" style={{ appearance: 'none', MozAppearance: 'textfield' }} />
-                                                    </div>
-                                                </div>
+                                                ))}
                                             </div>
                                         )}
                                         {rtObj.hasCatatan && (

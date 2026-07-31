@@ -1,7 +1,7 @@
 import {
     Star, Heart, Brush, BookOpen, Languages,
     Scale, Ruler, HeartPulse, AlertCircle,
-    AlertTriangle, DoorOpen, FileText
+    AlertTriangle, DoorOpen, FileText, Compass
 } from 'lucide-react'
 
 export const MAX_SCORE = 9
@@ -88,11 +88,19 @@ export const HAFALAN_FIELDS = [
 
 export const GRADE = (n) => {
     const num = Number(n)
+<<<<<<< HEAD
     if (num >= 9) return { label: 'ممتاز', id: 'Sangat Baik', bg: '#10b98115', border: '#10b98140', uiColor: '#10b981', color: '#000' }
     if (num >= 8) return { label: 'جيد جدا', id: 'Baik', bg: '#3b82f615', border: '#3b82f640', uiColor: '#3b82f6', color: '#000' }
     if (num >= 6) return { label: 'جيد', id: 'Cukup', bg: '#6366f115', border: '#6366f140', uiColor: '#6366f1', color: '#000' }
     if (num >= 4) return { label: 'مقبول', id: 'Kurang', bg: '#f59e0b15', border: '#f59e0b40', uiColor: '#f59e0b', color: '#000' }
     return { label: 'راسب', id: 'Kurang Baik', bg: '#ef444415', border: '#ef444440', uiColor: '#ef4444', color: '#ef4444' }
+=======
+    if (num >= 9) return { label: 'ممتاز جدا', id: 'Sangat Baik', bg: '#10b98115', border: '#10b98140', uiColor: '#10b981', color: '#000' }
+    if (num >= 8) return { label: 'جيد جدا', id: 'Baik', bg: '#3b82f615', border: '#3b82f640', uiColor: '#3b82f6', color: '#000' }
+    if (num >= 6) return { label: 'جيد', id: 'Cukup', bg: '#6366f115', border: '#6366f140', uiColor: '#6366f1', color: '#000' }
+    if (num >= 4) return { label: 'مقبول', id: 'Kurang', bg: '#f59e0b15', border: '#f59e0b40', uiColor: '#f59e0b', color: '#000' }
+    return { label: 'ضعيف', id: 'Kurang Baik', bg: '#ef444415', border: '#ef444440', uiColor: '#ef4444', color: '#ef4444' }
+>>>>>>> 2e71777f11f44a5d166c7e910b76cf02c952a214
 }
 
 export const calcAvg = (scores) => {
@@ -123,4 +131,83 @@ export const HAFALAN_PRESETS = {
         '15 Juz',
         '30 Juz'
     ]
+}
+
+// ─── Report Labels (Bisa Di-Override Via Settings) ────────────────────────────
+// Default values — gunakan getReportLabels(settings) untuk merge dengan settings
+export const DEFAULT_REPORT_LABELS = {
+    // Section Headers
+    section_physical: { id: 'PERKEMBANGAN FISIK', ar: 'التطور البدني' },
+    section_hafalan: { id: 'PERKEMBANGAN HAFALAN', ar: 'تطور الحفظ' },
+    section_attendance: { id: 'ABSENSI', ar: 'الغياب' },
+
+    // Catatan
+    catatan_label: { id: 'Catatan Wali Kelas', ar: 'ملاحظة' },
+
+    // Total & Rata-rata
+    total_label: { id: 'Jumlah Total', ar: 'المجموع الإجمالي' },
+    avg_label: { id: 'Nilai Rata-Rata', ar: 'المعدل' },
+
+    // KKM
+    kkm_label: { id: 'KKM', ar: 'KKM' },
+
+    // Ujian
+    ujian_lisan_title: { id: 'Ujian Lisan', ar: 'الاختبار الشفهي' },
+    ujian_pondok_title: { id: 'Ujian Mapel Pondok', ar: 'الاختبار للدراسة الإسلامية' },
+    ujian_lisan_report: { id: 'Hasil Ujian Lisan', ar: 'نتيجة الإختبار الشفهي' },
+    ujian_pondok_report: { id: 'Hasil Ujian Akhir', ar: 'نتيجة الاختبار النهائي' },
+
+    // Semester
+    semester_ganjil: { id: 'Ganjil', ar: 'الأول' },
+    semester_genap: { id: 'Genap', ar: 'الثاني' },
+    period_prefix_lisan: { id: 'Akhir Tahun Semester', ar: 'لآخر السنة للفصل الدراسي' },
+    period_prefix_pondok: { id: 'Semester', ar: 'للفصل الدراسي' },
+    period_prefix_general: { id: 'Semester', ar: 'الفصل الدراسي' },
+
+    // Praktek Ibadah
+    praktek_ibadah: { id: 'Praktek Ibadah', ar: 'الاختبار التطبيقي' },
+
+    // Unit
+    unit_day: { id: 'hari', ar: 'يَوْم' },
+
+    // QR & Verifikasi
+    portal_label: { id: 'LaporanMu Academic Portal', ar: 'بوابة LaporanMu الأكاديمية' },
+    qr_instruction: { id: 'Pindai QR untuk verifikasi keaslian raport', ar: 'امسح الرمز للتحقق من صحة التقرير' },
+    report_no_label: { id: 'No. Raport: ', ar: 'رقم التقرير: ' },
+    print_time_label: { id: 'Waktu Cetak: ', ar: 'تاريخ الطباعة: ' },
+
+    // Student Info
+    student_name_label: { id: 'Nama Santri', ar: 'اسم الطالب' },
+    student_no_label: { id: 'No. Absen', ar: 'رقم الطالب' },
+
+    // Grading Scale Labels
+    grade_istimewa: 'Sangat Baik',
+    grade_sangat_baik: 'Baik',
+    grade_baik: 'Cukup',
+    grade_cukup: 'Kurang',
+    grade_kurang: 'Kurang Baik',
+    grade_gagal: 'Sangat Kurang',
+
+    // Report Number Prefix
+    report_number_prefix: 'RPT',
+
+    // Behavior & Sholat Labels
+    section_perilaku: { id: 'Catatan Perilaku', ar: 'ملاحظات السلوك' },
+    pelanggaran_label: { id: 'Pelanggaran', ar: 'المخالفات' },
+    prestasi_label: { id: 'Prestasi', ar: 'الإنجازات' },
+    sholat_label: { id: 'Sholat', ar: 'الصلاة' },
+}
+
+/**
+ * Merge default labels dengan custom labels dari settings
+ * @param {Object} settings - school settings dari context
+ * @returns {Object} merged labels
+ */
+export const getReportLabels = (settings = {}) => {
+    const custom = settings.report_labels || {}
+    const merged = {}
+    for (const [key, defaultValue] of Object.entries(DEFAULT_REPORT_LABELS)) {
+        merged[key] = custom[key] !== undefined ? custom[key] : defaultValue
+    }
+    return merged
 }

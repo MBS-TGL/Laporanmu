@@ -955,7 +955,8 @@ export default function RaportInputTable({
                         const hasAnyData = (sc, ex) =>
                             criteria.some(k => sc[k.key] !== '' && sc[k.key] !== null && sc[k.key] !== undefined) ||
                             [ex.berat_badan, ex.tinggi_badan, ex.ziyadah, ex.murojaah,
-                            ex.hari_sakit, ex.hari_izin, ex.hari_alpa, ex.hari_pulang, ex.catatan
+                            ex.hari_sakit, ex.hari_izin, ex.hari_alpa, ex.hari_pulang, ex.catatan,
+                            ex.pelanggaran, ex.prestasi, ex.sholat
                             ].some(v => v !== '' && v !== null && v !== undefined)
                         const toSave = selected.filter(s => hasAnyData(scores[s.id] || {}, extras[s.id] || {}))
                         if (!toSave.length) { addToast('Santri yang dipilih belum ada yang diisi nilainya', 'warning'); return }
@@ -977,7 +978,10 @@ export default function RaportInputTable({
                                         hari_izin: ex.hari_izin !== '' && ex.hari_izin != null ? Number(ex.hari_izin) : 0,
                                         hari_alpa: ex.hari_alpa !== '' && ex.hari_alpa != null ? Number(ex.hari_alpa) : 0,
                                         hari_pulang: ex.hari_pulang !== '' && ex.hari_pulang != null ? Number(ex.hari_pulang) : 0,
-                                        catatan: ex.catatan || null
+                                        catatan: ex.catatan || null,
+                                        pelanggaran: ex.pelanggaran || null,
+                                        prestasi: ex.prestasi || null,
+                                        sholat: ex.sholat || null
                                     }
                                 });
                                 ({ data: upserted, error } = await supabase
@@ -1109,7 +1113,7 @@ export default function RaportInputTable({
                                             : students;
 
                                         const scoreKeys = ['nilai_akhlak', 'nilai_ibadah', 'nilai_kebersihan', 'nilai_quran', 'nilai_bahasa']
-                                        const extraKeys = ['berat_badan', 'tinggi_badan', 'hari_sakit', 'hari_izin', 'hari_alpa', 'hari_pulang', 'ziyadah', 'murojaah', 'catatan']
+                                        const extraKeys = ['berat_badan', 'tinggi_badan', 'hari_sakit', 'hari_izin', 'hari_alpa', 'hari_pulang', 'ziyadah', 'murojaah', 'catatan', 'pelanggaran', 'prestasi', 'sholat']
 
                                         const activeScoreKeys = keys.filter(k => scoreKeys.includes(k))
                                         const activeExtraKeys = keys.filter(k => extraKeys.includes(k))
@@ -1334,6 +1338,36 @@ export default function RaportInputTable({
                                 </div>
                             </div>
                         )}
+
+                        {/* Section 4: Catatan Perilaku */}
+                        <div>
+                            <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Catatan Perilaku</p>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                {[
+                                    { key: 'pelanggaran', label: 'Pelanggaran' },
+                                    { key: 'prestasi', label: 'Prestasi' },
+                                    { key: 'sholat', label: 'Sholat' }
+                                ].map(f => (
+                                    <div key={f.key} className="flex flex-col gap-1 min-w-0">
+                                        <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">
+                                            {f.label}
+                                        </span>
+                                        <div className="flex rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)] focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all" style={{ height: 38 }}>
+                                            <input
+                                                type="text"
+                                                placeholder="—"
+                                                value={bulkValues[f.key] ?? ''}
+                                                onChange={e => setBulkValues(prev => ({
+                                                    ...prev,
+                                                    [f.key]: e.target.value
+                                                }))}
+                                                className="flex-1 w-0 h-full px-2.5 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none"
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </Modal>
 

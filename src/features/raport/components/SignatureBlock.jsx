@@ -8,9 +8,10 @@ const blockStyle = {
   flexDirection: 'column',
   alignItems: 'center',
   textAlign: 'center',
+  position: 'relative',
 };
 
-export default function SignatureBlock({ label, nama, signatureUrl, mode, isAr = false }) {
+export default function SignatureBlock({ label, topLabel, nama, signatureUrl, mode, isAr = false }) {
   const isDigital = mode === 'digital' && signatureUrl;
   const labelSize = isAr ? '13pt' : '10.5pt';
   const nameSize = isAr ? '14pt' : '11.5pt';
@@ -18,6 +19,23 @@ export default function SignatureBlock({ label, nama, signatureUrl, mode, isAr =
 
   return (
     <div className="raport-signature-block" style={blockStyle}>
+      {/* Top Label (e.g. "Mengetahui") — absolut agar tidak menggeser label utama */}
+      {topLabel && (
+        <div style={{
+          position: 'absolute',
+          top: '-25px',
+          left: 0,
+          right: 0,
+          fontSize: isAr ? '14pt' : '12pt',
+          fontWeight: 600,
+          color: '#111827',
+          textAlign: 'center',
+          lineHeight: 1.3,
+          pointerEvents: 'none',
+        }}>
+          {topLabel}
+        </div>
+      )}
       {/* Label Jabatan (support newlines) */}
       <div
         className="raport-signature-label"

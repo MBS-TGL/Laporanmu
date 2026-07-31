@@ -304,6 +304,20 @@ const StudentRow = memo(({
                                         </div>
                                     )}
                                 </div>
+                                <div className="grid grid-cols-3 gap-1">
+                                    {[
+                                        { key: 'pelanggaran', label: 'Pelanggaran', color: '#ef4444' },
+                                        { key: 'prestasi', label: 'Prestasi', color: '#10b981' },
+                                        { key: 'sholat', label: 'Sholat', color: '#6366f1' }
+                                    ].map(f => (
+                                        <div key={f.key} className="flex items-center gap-0.5 rounded-md border border-[var(--color-border)]" style={{ background: 'var(--color-surface)', height: 26 }}>
+                                            <div className="w-5 h-full flex items-center justify-center shrink-0" style={{ background: f.color + '18' }}>
+                                                <span className="text-[7px] font-black" style={{ color: f.color }}>{f.label[0]}</span>
+                                            </div>
+                                            <ExtraInput placeholder={f.label} value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={onExtraChange} aria-label={f.label} className="flex-1 w-0 h-full px-0.5 text-[9px] font-bold bg-transparent text-[var(--color-text)] outline-none" />
+                                        </div>
+                                    ))}
+                                </div>
                             </>
                         )}
                     </div>

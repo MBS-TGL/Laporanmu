@@ -93,6 +93,8 @@ function getPortalContainer(id) {
 export default function RaportPage() {
     const printContainerRef = useRef(null)
     const silentPrintRef = useRef(false) // skip executePrint saat generate PDF untuk WA
+    const printExecutingRef = useRef(false) // guard: prevent executePrint from firing multiple times
+    const exportingPdfRef = useRef(false) // guard: skip executePrint during exportBulkPDF
     const [layoutConfig, setLayoutConfig] = useState(() => loadLayoutConfig())
     const [pageSize, setPageSize] = useState('f4') // 'a4' | 'f4'
     const { enabled: autosaveEnabled } = useFlag('raport.autosave')
@@ -1547,6 +1549,7 @@ export default function RaportPage() {
     // ── Print
     const openPrintWindow = useCallback((stuList) => {
         if (!stuList?.length) { addToast('Tidak ada data untuk dicetak', 'warning'); return }
+        printExecutingRef.current = false
         setPrintRenderedCount(0); setPrintQueue(stuList.map(s => s.id))
     }, [addToast])
 
@@ -1555,7 +1558,7 @@ export default function RaportPage() {
         const cards = container.querySelectorAll('.raport-card'); if (!cards.length) { addToast('Gagal menyiapkan raport', 'error'); return }
         const html = [...cards].map(c => c.outerHTML).join('')
         const titleStr = stuList.length === 1 ? `Raport ${stuList[0].name}_${selectedClass?.name}_${bulanObj?.id_str} ${selectedYear}` : `Raport Kelas ${selectedClass?.name}_${bulanObj?.id_str} ${selectedYear}`
-        const win = window.open('', '_blank'); if (!win) { addToast('Popup diblokir browser.', 'error'); setPrintQueue([]); setPrintRenderedCount(0); return }
+        const win = window.open('', '_blank'); if (!win) { addToast('Popup diblokir browser.', 'error'); printExecutingRef.current = false; setPrintQueue([]); setPrintRenderedCount(0); return }
         win.document.write(buildRaportPrintDocumentHtml(html, pageSize, titleStr))
         win.document.close();
         win.focus();
@@ -1568,6 +1571,7 @@ await Promise.all([
                  ]);
                      setTimeout(() => {
                     win.print();
+                    printExecutingRef.current = false;
                     setPrintQueue([]);
                     setPrintRenderedCount(0);
                     logAudit({
@@ -1579,6 +1583,7 @@ await Promise.all([
                 console.error("Font loading failed, printing anyway:", err);
                 setTimeout(() => {
                     win.print();
+                    printExecutingRef.current = false;
                     setPrintQueue([]);
                     setPrintRenderedCount(0);
                 }, 500);
@@ -1586,6 +1591,7 @@ await Promise.all([
         } else {
             setTimeout(() => {
                 win.print();
+                printExecutingRef.current = false;
                 setPrintQueue([]);
                 setPrintRenderedCount(0);
             }, 800);
@@ -1593,10 +1599,14 @@ await Promise.all([
     }, [selectedClass, bulanObj, selectedYear, addToast, profile, selectedMonth, pageSize])
 
     useEffect(() => {
+        if (!printQueue.length) { printExecutingRef.current = false; return }
         const expectedCount = printQueue.length + (printQueue.length > 1 ? 1 : 0)
-        if (!printQueue.length || printRenderedCount < expectedCount) return
+        if (printRenderedCount < expectedCount) return
+        if (printExecutingRef.current) return
+        if (exportingPdfRef.current) return
         // Jika dipanggil dari generatePDFBlob untuk WA/PDF silent — skip print window
         if (silentPrintRef.current) return
+        printExecutingRef.current = true
         const stuList = (archivePreview ? archivePreview.students : students).filter(s => printQueue.includes(s.id))
         executePrint(stuList)
     }, [printRenderedCount, printQueue, students, archivePreview, executePrint])
@@ -1606,6 +1616,7 @@ await Promise.all([
     useEffect(() => {
         if (!pendingExport || !archivePreview || archivePreview.entry?.key !== pendingExport.key) return
         const entry = pendingExport; setPendingExport(null)
+        exportingPdfRef.current = true
         const stuIds = archivePreview.students.map(s => s.id); setPrintRenderedCount(0); setPrintQueue(stuIds)
         const tryExport = (attempt = 0) => {
             const cards = printContainerRef.current?.querySelectorAll('.raport-card')
@@ -1625,6 +1636,7 @@ await Promise.all([
                      ]);
                     setTimeout(() => {
                         win.print();
+                        exportingPdfRef.current = false;
                         setPrintQueue([]);
                         setPrintRenderedCount(0);
                     }, 500);
@@ -1632,6 +1644,7 @@ await Promise.all([
                     console.error("Font loading failed, printing anyway:", err);
                     setTimeout(() => {
                         win.print();
+                        exportingPdfRef.current = false;
                         setPrintQueue([]);
                         setPrintRenderedCount(0);
                     }, 500);
@@ -1639,6 +1652,7 @@ await Promise.all([
             } else {
                 setTimeout(() => {
                     win.print();
+                    exportingPdfRef.current = false;
                     setPrintQueue([]);
                     setPrintRenderedCount(0);
                 }, 800);

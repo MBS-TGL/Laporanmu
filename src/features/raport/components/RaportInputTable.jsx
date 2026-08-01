@@ -178,7 +178,7 @@ const CopyDataModal = ({ isOpen, onClose, students, scores, extras, currentMonth
                 const ids = students.map(s => s.id)
                 const { data } = await supabase
                     .from('student_monthly_reports')
-                    .select('student_id,nilai_akhlak,nilai_ibadah,nilai_kebersihan,nilai_quran,nilai_bahasa,berat_badan,tinggi_badan,ziyadah,murojaah,hari_sakit,hari_izin,hari_alpa,hari_pulang,catatan')
+                    .select('student_id,nilai_akhlak,nilai_ibadah,nilai_kebersihan,nilai_quran,nilai_bahasa,berat_badan,tinggi_badan,ziyadah,murojaah,hari_sakit,hari_izin,hari_alpa,hari_pulang,catatan,pelanggaran,prestasi,sholat')
                     .in('student_id', ids).eq('month', sourceMonth).eq('year', sourceYear)
                 if (!active) return
                 const map = {}
@@ -187,7 +187,8 @@ const CopyDataModal = ({ isOpen, onClose, students, scores, extras, currentMonth
                 // auto-select all students with source data
                 setSelectedIds(new Set(Object.keys(map).filter(id => {
                     const r = map[id]
-                    return SCORE_KEYS.some(k => r[k.key] !== null && r[k.key] !== undefined)
+                    return SCORE_KEYS.some(k => r[k.key] !== null && r[k.key] !== undefined) ||
+                        [r.berat_badan, r.tinggi_badan, r.ziyadah, r.murojaah, r.hari_sakit, r.hari_izin, r.hari_alpa, r.hari_pulang, r.catatan, r.pelanggaran, r.prestasi, r.sholat].some(v => v !== null && v !== undefined && v !== '')
                 })))
             } finally {
                 if (active) setLoading(false)

@@ -844,7 +844,10 @@ export function useRaportCore() {
                 ? data
                 : data.filter(rep => {
                     const cur = scores[rep.student_id] || {}
-                    return criteria.every(k => cur[k.key] === '' || cur[k.key] === null || cur[k.key] === undefined)
+                    const curEx = extras[rep.student_id] || {}
+                    const scoresEmpty = criteria.every(k => cur[k.key] === '' || cur[k.key] === null || cur[k.key] === undefined)
+                    const extrasEmpty = [curEx.berat_badan, curEx.tinggi_badan, curEx.ziyadah, curEx.murojaah, curEx.hari_sakit, curEx.hari_izin, curEx.hari_alpa, curEx.hari_pulang, curEx.catatan, curEx.pelanggaran, curEx.prestasi, curEx.sholat].every(v => v === '' || v === null || v === undefined)
+                    return scoresEmpty && extrasEmpty
                 })
             const copied = toCopy.length
             setScores(prev => { const next = { ...prev }; for (const rep of toCopy) { next[rep.student_id] = { nilai_akhlak: rep.nilai_akhlak ?? '', nilai_ibadah: rep.nilai_ibadah ?? '', nilai_kebersihan: rep.nilai_kebersihan ?? '', nilai_quran: rep.nilai_quran ?? '', nilai_bahasa: rep.nilai_bahasa ?? '' } }; return next })
@@ -873,7 +876,7 @@ export function useRaportCore() {
             addToast(`Disalin dari ${BULAN.find(b => b.id === targetMonth)?.id_str} ${targetYear} — ${copied} santri`, 'success')
         } catch (e) { addToast('Gagal menyalin data', 'error'); console.error('copyFromLastMonth error:', e) }
         finally { setCopyingLastMonth(false) }
-    }, [selectedClassId, students, selectedMonth, selectedYear, reportType, selectedClass, scores, addToast, setScores])
+    }, [selectedClassId, students, selectedMonth, selectedYear, reportType, selectedClass, scores, extras, addToast, setScores, setExtras])
 
     // ── Reset Class (All Students) ──
     const resetClass = useCallback(async () => {

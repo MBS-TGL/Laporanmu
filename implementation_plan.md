@@ -77,7 +77,7 @@ ADD COLUMN IF NOT EXISTS sholat TEXT;
 - **Footer Tanda Tangan Utama**:
   Sederhanakan TTD utama di bagian bawah menjadi hanya 3 kolom:
   1. Wali Santri (kiri)
-  2. Mengetahui, Kepala Sekolah - Khoirul Anwar S.Pd (tengah)
+  2. Mengetahui, Kepala Sekolah - Khoirul Anwar, S.Pd. (tengah)
   3. Pengasuh - Ir. H. M. Ali Maksum (kanan)
 
 ---
@@ -89,4 +89,4 @@ ADD COLUMN IF NOT EXISTS sholat TEXT;
 2. Buka preview cetak Raport Bulanan.
 3. Pastikan layout data tambahan terbagi menjadi dua baris layout yang rapi dan sejajar sesuai gambar referensi.
 4. Periksa apakah predikat di tabel atas (misal nilai 9 menghasilkan predikat "Sangat Baik") sudah sinkron dengan predikat di tabel skala penilaian bawah.
-5. Verifikasi bahwa nama Kepala Sekolah fallback tercetak sebagai `Khoirul Anwar S.Pd` dan Pengasuh sebagai `Ir. H. M. Ali Maksum`.
+5. Verifikasi bahwa nama Kepala Sekolah fallback tercetak sebagai `Khoirul Anwar, S.Pd.` dan Pengasuh sebagai `Ir. H. M. Ali Maksum`.

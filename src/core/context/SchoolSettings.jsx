@@ -17,7 +17,7 @@ export const DEFAULT_SETTINGS = {
 
     // Kepala Sekolah / Pengasuh
     headmaster_title_id: 'Pengasuh\nMuhammadiyah Boarding School Tanggul',
-    headmaster_name_id: 'Khoirul Anwar S.Pd.',
+    headmaster_name_id: 'Khoirul Anwar, S.Pd.',
     headmaster_title_ar: 'مدير المعهد\nمعهد محمدية تانجول',
     headmaster_name_ar: '',
     headmaster_label_id: 'Kepala Sekolah',
@@ -65,7 +65,7 @@ export function SchoolSettingsProvider({ children }) {
                     }
                     // Naikkan Otomatis Nama/Judul Jika Cocok Dengan Default Lama
                     if (data.headmaster_name_id === 'KH. Muhammad Ali Maksum, Lc' || data.headmaster_name_id === 'Ir. H. M. Ali Maksum') {
-                        data.headmaster_name_id = 'Khoirul Anwar S.Pd.'
+                        data.headmaster_name_id = 'Khoirul Anwar, S.Pd.'
                         data.headmaster_name_ar = ''
                     }
                     // Perbaiki Otomatis Path Logo Lama

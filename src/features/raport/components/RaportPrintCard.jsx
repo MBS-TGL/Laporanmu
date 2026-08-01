@@ -926,7 +926,7 @@ const RaportPrintCard = memo(({
                             key: 'wali_kelas',
                             label: isSemesterExam ? 'Wali Kelas' : 'Kepala Sekolah',
                             topLabel: isSemesterExam ? undefined : 'Mengetahui,',
-                            nama: signatures?.wali_kelas?.nama ?? (isSemesterExam ? displayMusyrif : 'Khoirul Anwar S.Pd') ?? '......................',
+                            nama: signatures?.wali_kelas?.nama ?? (isSemesterExam ? displayMusyrif : 'Khoirul Anwar, S.Pd.') ?? '......................',
                             signatureUrl: signatures?.wali_kelas?.url ?? null,
                             mode: signMode
                         },

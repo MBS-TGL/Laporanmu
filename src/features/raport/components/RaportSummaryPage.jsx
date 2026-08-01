@@ -280,8 +280,8 @@ const RaportSummaryPage = memo(({
 
             {/* Footer note */}
             <div style={{ marginTop: 6, padding: '6px 8px', background: '#f0f4f8', borderRadius: 6, fontSize: '7.5pt', color: '#4b5563', border: '1px solid #e5e7eb' }}>
-                <b>Catatan untuk Wali Kelas:</b> Halaman ini membantu Bapak/Ibu memahami gambaran umum raport setiap santri. 
-                Baris berwarna kuning menandakan santri yang perlu perhatian lebih (nilai rendah, pelanggaran, atau absensi tinggi). 
+                <b>Catatan untuk Wali Kelas:</b> Halaman ini membantu Bapak/Ibu memahami gambaran umum raport setiap santri.
+                Baris berwarna kuning menandakan santri yang perlu perhatian lebih (nilai rendah, pelanggaran, atau absensi tinggi).
                 Gunakan data ini sebagai panduan saat menyampaikan raport kepada orang tua.
                 {attentionStudents.length > 0 && (
                     <div style={{ marginTop: 3, color: '#b45309', fontWeight: 600 }}>

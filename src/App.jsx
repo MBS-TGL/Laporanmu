@@ -73,6 +73,7 @@ const TeachersPage = lazyRetry(() => import('@features/teachers/pages/TeachersPa
 const ClassesPage = lazyRetry(() => import('@features/classes/pages/ClassesPage.jsx'))
 const AcademicYearsPage = lazyRetry(() => import('@features/academic-years/pages/AcademicYearsPage.jsx'))
 const EnrollmentPage = lazyRetry(() => import('@features/enrollment/pages/EnrollmentPage.jsx'))
+const InventoryPage = lazyRetry(() => import('@features/inventory/pages/InventoryPage.jsx'))
 const PublicEnrollmentPage = lazyRetry(() => import('@features/public/pages/PublicEnrollmentPage.jsx'))
 const PublicStatusCheckPage = lazyRetry(() => import('@features/public/pages/PublicStatusCheckPage.jsx'))
 
@@ -580,6 +581,11 @@ function AppRoutes() {
             <Route path="/master/enrollment" element={
               <RoleFlagRoute roles={DEV_ADMIN_TEACHER} flag="module.enrollment" label="PSB / Enrollment">
                 <EnrollmentPage />
+              </RoleFlagRoute>
+            } />
+            <Route path="/master/inventory" element={
+              <RoleFlagRoute roles={DEV_ADMIN_TEACHER} flag="nav.inventory" label="Inventaris & Aset">
+                <InventoryPage />
               </RoleFlagRoute>
             } />
 

@@ -3379,9 +3379,6 @@ await Promise.all([
                 {/* ── Hidden print container ── */}
                 {printQueue.length > 0 && (
                     <div ref={printContainerRef} style={{ position: 'fixed', left: '-9999px', top: 0, width: '1000px', visibility: 'hidden', pointerEvents: 'none' }}>
-                        {printStudents.filter(s => printQueue.includes(s.id)).map(s => (
-                            <RaportPrintCard key={s.id} student={s} scores={printScores[s.id]} extra={printExtras[s.id]} bulanObj={printBulan} tahun={printYear} musyrif={printMusyrif} className={printClass} lang={printLang} settings={settings} pageSize={pageSize} catatanArab={catatanArabMap[s.id]} studentIndex={printStudents.findIndex(x => x.id === s.id) + 1} onRendered={() => setPrintRenderedCount(c => c + 1)} reportType={printReportType} selectedSemester={printSemester} academicYear={printAcademicYear} selectedClass={printSelectedClassResolved} layoutConfig={layoutConfig} signMode={isArchiveMode ? 'basah' : signMode} signatures={isArchiveMode ? null : signatures} behaviorReports={behaviorReports[s.id]} />
-                        ))}
                         {printQueue.length > 1 && (
                             <RaportSummaryPage
                                 students={printStudents.filter(s => printQueue.includes(s.id))}
@@ -3400,6 +3397,9 @@ await Promise.all([
                                 pageSize={pageSize}
                             />
                         )}
+                        {printStudents.filter(s => printQueue.includes(s.id)).map(s => (
+                            <RaportPrintCard key={s.id} student={s} scores={printScores[s.id]} extra={printExtras[s.id]} bulanObj={printBulan} tahun={printYear} musyrif={printMusyrif} className={printClass} lang={printLang} settings={settings} pageSize={pageSize} catatanArab={catatanArabMap[s.id]} studentIndex={printStudents.findIndex(x => x.id === s.id) + 1} onRendered={() => setPrintRenderedCount(c => c + 1)} reportType={printReportType} selectedSemester={printSemester} academicYear={printAcademicYear} selectedClass={printSelectedClassResolved} layoutConfig={layoutConfig} signMode={isArchiveMode ? 'basah' : signMode} signatures={isArchiveMode ? null : signatures} behaviorReports={behaviorReports[s.id]} />
+                        ))}
                     </div>
                 )}
 

@@ -43,6 +43,7 @@ import {
 import { translitToAr, translitClassToAr, loadTranslitData } from '@utils/reports/translitData'
 import { RadarChart, SparklineTrend } from '@features/raport/components/RaportCharts'
 import RaportPrintCard from '@features/raport/components/RaportPrintCard'
+import RaportSummaryPage from '@features/raport/components/RaportSummaryPage'
 import { buildRaportPrintDocumentHtml } from '@features/raport/utils/raportPrintHtml'
 import RaportLayoutSettings, { loadLayoutConfig } from '@features/raport/components/RaportLayoutSettings'
 import StudentRow, { ExtraInput, ExtraTextarea } from '@features/raport/components/RaportRecordRow'
@@ -1592,7 +1593,8 @@ await Promise.all([
     }, [selectedClass, bulanObj, selectedYear, addToast, profile, selectedMonth, pageSize])
 
     useEffect(() => {
-        if (!printQueue.length || printRenderedCount < printQueue.length) return
+        const expectedCount = printQueue.length + (printQueue.length > 1 ? 1 : 0)
+        if (!printQueue.length || printRenderedCount < expectedCount) return
         // Jika dipanggil dari generatePDFBlob untuk WA/PDF silent — skip print window
         if (silentPrintRef.current) return
         const stuList = (archivePreview ? archivePreview.students : students).filter(s => printQueue.includes(s.id))
@@ -3366,6 +3368,24 @@ await Promise.all([
                         {printStudents.filter(s => printQueue.includes(s.id)).map(s => (
                             <RaportPrintCard key={s.id} student={s} scores={printScores[s.id]} extra={printExtras[s.id]} bulanObj={printBulan} tahun={printYear} musyrif={printMusyrif} className={printClass} lang={printLang} settings={settings} pageSize={pageSize} catatanArab={catatanArabMap[s.id]} studentIndex={printStudents.findIndex(x => x.id === s.id) + 1} onRendered={() => setPrintRenderedCount(c => c + 1)} reportType={printReportType} selectedSemester={printSemester} academicYear={printAcademicYear} selectedClass={printSelectedClassResolved} layoutConfig={layoutConfig} signMode={isArchiveMode ? 'basah' : signMode} signatures={isArchiveMode ? null : signatures} behaviorReports={behaviorReports[s.id]} />
                         ))}
+                        {printQueue.length > 1 && (
+                            <RaportSummaryPage
+                                students={printStudents.filter(s => printQueue.includes(s.id))}
+                                scores={printScores}
+                                extras={printExtras}
+                                bulanObj={printBulan}
+                                tahun={printYear}
+                                musyrif={printMusyrif}
+                                className={printClass}
+                                reportType={printReportType}
+                                selectedSemester={printSemester}
+                                academicYear={printAcademicYear}
+                                selectedClass={printSelectedClassResolved}
+                                onRendered={() => setPrintRenderedCount(c => c + 1)}
+                                behaviorReports={behaviorReports}
+                                pageSize={pageSize}
+                            />
+                        )}
                     </div>
                 )}
 

@@ -72,7 +72,7 @@ export const BOARDING_ITEMS = [
 export const ACADEMIC_ITEMS = [
     { to: "/academic/tahfidz", label: "Tahfidz Al-Qur'an", icon: BookOpenCheck, desc: "Jurnal setoran hafalan Al-Qur'an, tilawah & murajaah", color: "bg-emerald-500/10 text-emerald-600" },
     { to: "/academic/attendance", label: "Presensi Santri", icon: QrCode, desc: "Absensi KBM harian via scan QR kartu santri", color: "bg-indigo-500/10 text-indigo-600" },
-    { to: "/academic/wafa", label: "Presensi Mengaji & Tahfidz", icon: ClipboardCheck, desc: "Absensi mengaji wafa (07:30) & tahfidz (14:05) guru, mudabbir & siswa", color: "bg-violet-500/10 text-violet-600" },
+    { to: "/academic/halaqah", label: "Presensi Halaqah", icon: ClipboardCheck, desc: "Absensi mengaji & tahfidz guru, mudabbir & siswa", color: "bg-violet-500/10 text-violet-600" },
     { to: "/academic/schedule", label: "Jadwal Pembelajaran", icon: CalendarDays, desc: "Atur plotting jadwal KBM dan penugasan guru pengajar", color: "bg-purple-500/10 text-purple-600" },
     { to: "/academic/raport", label: "Rapor & Penilaian", icon: FileSpreadsheet, desc: "Penginputan nilai UTS/UAS dan cetak raport Kurikulum", color: "bg-indigo-500/10 text-indigo-600" },
     { to: "/academic/extracurricular", label: "Ekstrakurikuler", icon: Award, desc: "Manajemen klub, minat bakat, pramuka, silat & panahan", color: "bg-amber-500/10 text-amber-600" },
@@ -176,7 +176,7 @@ export const ROUTE_FLAG_MAP = {
     '/boarding/counseling': 'nav.counseling',
     '/raport': 'module.raport',
     '/academic/tahfidz': 'nav.tahfidz',
-    '/academic/wafa': 'nav.wafa',
+    '/academic/halaqah': 'nav.halaqah',
     '/academic/extracurricular': 'nav.extracurricular',
     '/finance/saving': 'nav.saving',
     '/master/students': 'nav.students',

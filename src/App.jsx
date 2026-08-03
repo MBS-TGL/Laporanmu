@@ -50,7 +50,7 @@ const DormsPage = lazyRetry(() => import('@features/dorms/pages/DormsPage.jsx'))
 const HealthPage = lazyRetry(() => import('@features/health/pages/HealthPage.jsx'))
 const CounselingPage = lazyRetry(() => import('@features/counseling/pages/CounselingPage.jsx'))
 const AttendancePage = lazyRetry(() => import('@features/attendance/pages/AttendancePage.jsx'))
-const WafaAttendancePage = lazyRetry(() => import('@features/wafa/pages/WafaAttendancePage.jsx'))
+const HalaqahPage = lazyRetry(() => import('@features/wafa/pages/HalaqahPage.jsx'))
 const GatePage = lazyRetry(() => import('@features/gate/pages/GatePage.jsx'))
 const GateKioskPage = lazyRetry(() => import('@features/gate/pages/GateKioskPage.jsx'))
 const SettingsPage = lazyRetry(() => import('@features/settings/pages/SettingsPage.jsx'))
@@ -90,7 +90,7 @@ const ROUTE_ALIASES = [
   // English ↔ Indonesian aliases
   { from: '/absence', to: '/attendance' },
   { from: '/attendance', to: '/attendance' },
-  { from: '/presensi', to: '/academic/wafa' },
+  { from: '/presensi', to: '/academic/halaqah' },
   { from: '/portal', to: '/boarding/gate' },
   { from: '/gate', to: '/boarding/gate' },
   { from: '/report', to: '/raport' },
@@ -469,7 +469,7 @@ function AppRoutes() {
             <Route path="/academic/raport" element={<FlagRoute flag="module.raport" label="Rapor & Penilaian"><RaportPage /></FlagRoute>} />
             <Route path="/boarding/behavior" element={<FlagRoute flag="module.poin" label="Kedisiplinan & Poin"><BehaviorPage /></FlagRoute>} />
             <Route path="/attendance" element={<FlagRoute flag="module.absensi" label="Absensi Bulanan"><AttendancePage /></FlagRoute>} />
-            <Route path="/academic/wafa" element={<FlagRoute flag="nav.wafa" label="Presensi Mengaji & Tahfidz"><WafaAttendancePage /></FlagRoute>} />
+            <Route path="/academic/halaqah" element={<FlagRoute flag="nav.halaqah" label="Presensi Halaqah"><HalaqahPage /></FlagRoute>} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/boarding/dorms" element={
               <RoleFlagRoute roles={DEV_ADMIN_TEACHER} flag="nav.dorms" label="Manajemen Asrama">

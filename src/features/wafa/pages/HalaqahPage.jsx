@@ -842,9 +842,11 @@ function MobileCardView({ items, dataMap, tahun, bulan, daysInMonth, todayDate, 
                 const sum = summarize(days, tahun, bulan)
                 const pct = weekdays > 0 ? Math.round((sum.H / weekdays) * 100) : 0
                 const hasNote = !!notesMap[item.id]
+                const alertAlpa = sum.A >= (alpaThreshold ?? 3)
+                const alertHadir = pct < (hadirThreshold ?? 75) && weekdays > 0 && sum.H + sum.S + sum.I + sum.A + sum.P > 0
 
                 return (
-                    <div key={item.id} className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden">
+                    <div key={item.id} className={`rounded-2xl border bg-[var(--color-surface)] overflow-hidden ${alertAlpa ? 'border-red-300/60' : alertHadir ? 'border-amber-300/60' : 'border-[var(--color-border)]'}`}>
                         <div className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/40">
                             <div className="flex items-center gap-2 min-w-0">
                                 <div className="w-6 h-6 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[9px] font-black text-[var(--color-text-muted)] shrink-0">{idx + 1}</div>
@@ -854,6 +856,16 @@ function MobileCardView({ items, dataMap, tahun, bulan, daysInMonth, todayDate, 
                                 </div>
                             </div>
                             <div className="flex items-center gap-1 shrink-0">
+                                {alertAlpa && (
+                                    <span className="text-[9px] font-black text-red-500 flex items-center gap-0.5 bg-red-500/10 px-1.5 py-0.5 rounded-md">
+                                        <FontAwesomeIcon icon={faTriangleExclamation} className="text-[7px]" />Alpa {sum.A}×
+                                    </span>
+                                )}
+                                {alertHadir && !alertAlpa && (
+                                    <span className="text-[9px] font-black text-amber-500 flex items-center gap-0.5 bg-amber-500/10 px-1.5 py-0.5 rounded-md">
+                                        <FontAwesomeIcon icon={faBell} className="text-[7px]" />Hadir {pct}%
+                                    </span>
+                                )}
                                 <span className={`text-[10px] font-black ${pct >= 80 ? 'text-emerald-600' : pct >= 60 ? 'text-amber-600' : 'text-red-600'}`}>{pct}%</span>
                                 <button onClick={(e) => { const r = e.currentTarget.getBoundingClientRect(); onNoteClick?.({ item, x: r.left, y: r.bottom }) }}
                                     className={`w-6 h-6 rounded-md flex items-center justify-center ml-1 transition-all ${hasNote ? 'text-amber-500 bg-amber-500/10' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
@@ -919,9 +931,11 @@ function MobileListView({ items, dataMap, tahun, bulan, daysInMonth, todayDate, 
                 const sum = summarize(days, tahun, bulan)
                 const pct = weekdays > 0 ? Math.round((sum.H / weekdays) * 100) : 0
                 const hasNote = !!notesMap[item.id]
+                const alertAlpa = sum.A >= (alpaThreshold ?? 3)
+                const alertHadir = pct < (hadirThreshold ?? 75) && weekdays > 0 && sum.H + sum.S + sum.I + sum.A + sum.P > 0
 
                 return (
-                    <div key={item.id} className="flex items-center gap-2.5 px-4 py-2.5">
+                    <div key={item.id} className={`flex items-center gap-2.5 px-4 py-2.5 ${alertAlpa ? 'bg-red-500/[0.03]' : alertHadir ? 'bg-amber-500/[0.03]' : ''}`}>
                         <div className="w-5 h-5 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[8px] font-black text-[var(--color-text-muted)] shrink-0">{idx + 1}</div>
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-1">
@@ -941,6 +955,16 @@ function MobileListView({ items, dataMap, tahun, bulan, daysInMonth, todayDate, 
                                 )
                             })}
                             <div className="flex flex-col items-center ml-1">
+                                {alertAlpa && (
+                                    <span className="text-[7px] font-black text-red-500 flex items-center gap-0.5">
+                                        <FontAwesomeIcon icon={faTriangleExclamation} className="text-[6px]" />Alpa {sum.A}×
+                                    </span>
+                                )}
+                                {alertHadir && !alertAlpa && (
+                                    <span className="text-[7px] font-black text-amber-500 flex items-center gap-0.5">
+                                        <FontAwesomeIcon icon={faBell} className="text-[6px]" />Hadir {pct}%
+                                    </span>
+                                )}
                                 <span className={`text-[10px] font-black ${pct >= 80 ? 'text-emerald-600' : pct >= 60 ? 'text-amber-600' : 'text-red-600'}`}>{pct}%</span>
                                 <span className="text-[7px] text-[var(--color-text-muted)]">%</span>
                             </div>
@@ -997,7 +1021,8 @@ function GroupManageModal({ groups, teacherList, studentList, onClose, onRefresh
                 ...studentIds.map(sid => ({ group_id: groupId, student_id: sid, role: 'student' })),
             ]
             // Delete existing members, then insert new
-            await supabase.from('wafa_group_members').delete().eq('group_id', groupId)
+            const { error: deleteErr } = await supabase.from('wafa_group_members').delete().eq('group_id', groupId)
+            if (deleteErr) throw deleteErr
             if (allMembers.length > 0) {
                 const { error } = await supabase.from('wafa_group_members').insert(allMembers)
                 if (error) throw error
@@ -1154,7 +1179,7 @@ function GroupManageModal({ groups, teacherList, studentList, onClose, onRefresh
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
-export default function WafaAttendancePage() {
+export default function HalaqahPage() {
     const { addToast } = useToast()
     const { dir } = useLanguage()
     const { profile } = useAuth()
@@ -1201,7 +1226,7 @@ export default function WafaAttendancePage() {
     const [searchRaw, setSearchRaw] = useState('')
     const search = useDeferredValue(searchRaw)
     const [hideWeekend, setHideWeekend] = useState(false)
-    const [mobileView, setMobileView] = useState('table')
+    const [mobileView, setMobileView] = useState(() => localStorage.getItem('wafa_halaqah_mobile_view') || 'table')
     const [noteTarget, setNoteTarget] = useState(null)
     const [showImport, setShowImport] = useState(false)
     const [showAlertConfig, setShowAlertConfig] = useState(false)
@@ -1339,42 +1364,44 @@ export default function WafaAttendancePage() {
     }, [activeSession])
 
     // Column summary
+    const statsList = useMemo(() => filteredItems.length > 0 ? filteredItems : currentList, [filteredItems, currentList])
+
     const colSummary = useMemo(() => {
         const out = {}
         for (let d = 1; d <= daysInMonth; d++) {
             let h = 0, x = 0
-            for (const item of currentList) {
+            for (const item of statsList) {
                 const v = displayData[item.id]?.[d] || ''
                 if (v === 'H') h++; else if (v) x++
             }
             out[d] = { h, x }
         }
         return out
-    }, [displayData, currentList, daysInMonth])
+    }, [displayData, statsList, daysInMonth])
 
     // Summary stats
     const summary = useMemo(() => {
-        const counts = { H: 0, S: 0, I: 0, A: 0, P: 0, total: currentList.length }
-        for (const item of currentList) {
+        const counts = { H: 0, S: 0, I: 0, A: 0, P: 0, total: statsList.length }
+        for (const item of statsList) {
             const sum = summarize(displayData[item.id] || {}, tahun, bulan)
             for (const k of STATUS_LIST) counts[k] += sum[k]
         }
         return counts
-    }, [currentList, displayData, tahun, bulan])
+    }, [statsList, displayData, tahun, bulan])
 
     // Completion %
     const completionPct = useMemo(() => {
-        if (!currentList.length) return 0
+        if (!statsList.length) return 0
         let filled = 0, total = 0
         for (let d = 1; d <= daysInMonth; d++) {
             if (isWeekend(tahun, bulan, d)) continue
-            total += currentList.length
-            for (const item of currentList) {
+            total += statsList.length
+            for (const item of statsList) {
                 if (displayData[item.id]?.[d]) filled++
             }
         }
         return total > 0 ? Math.round((filled / total) * 100) : 0
-    }, [displayData, currentList, daysInMonth, tahun, bulan])
+    }, [displayData, statsList, daysInMonth, tahun, bulan])
 
     // ── Undo/Redo ──
     const pushHistory = useCallback((map) => {
@@ -1512,6 +1539,7 @@ export default function WafaAttendancePage() {
             historyRef.current = [structuredClone(currentMap)]
             historyIdxRef.current = 0
             setCanUndo(false); setCanRedo(false)
+            setIsDirty(false)
         } catch (err) {
             console.error('Fetch error:', err)
             addToast('Gagal memuat data presensi', 'error')
@@ -1539,7 +1567,7 @@ export default function WafaAttendancePage() {
 
     // Title
     useEffect(() => {
-        document.title = `Presensi Mengaji & Tahfidz · ${BULAN_NAMA[bulan]} ${tahun} | Laporanmu`
+        document.title = `Presensi Halaqah · ${BULAN_NAMA[bulan]} ${tahun} | Laporanmu`
         return () => { document.title = 'Laporanmu' }
     }, [bulan, tahun])
 
@@ -1659,29 +1687,31 @@ export default function WafaAttendancePage() {
     }, [pushHistory, setCurrentData])
 
     const handleColFill = useCallback((day, status) => {
+        const targetItems = filteredItems.length > 0 ? filteredItems : currentList
         setCurrentData(prev => {
             let next = prev
-            for (const item of currentList) {
+            for (const item of targetItems) {
                 next = setDayValue(next, item.id, day, status)
             }
             pushHistory(next)
             return next
         })
         setIsDirty(true)
-        logAudit({ action: 'UPDATE', source: 'SYSTEM', tableName: `wafa_${activeTab}_attendance`, newData: { intent: 'column_fill', day, status, count: currentList.length } })
-    }, [currentList, pushHistory, setCurrentData, activeTab, setDayValue])
+        logAudit({ action: 'UPDATE', source: 'SYSTEM', tableName: `wafa_${activeTab}_attendance`, newData: { intent: 'column_fill', day, status, count: targetItems.length } })
+    }, [filteredItems, currentList, pushHistory, setCurrentData, activeTab, setDayValue])
 
     const handleColClear = useCallback((day) => {
+        const targetItems = filteredItems.length > 0 ? filteredItems : currentList
         setCurrentData(prev => {
             let next = prev
-            for (const item of currentList) {
+            for (const item of targetItems) {
                 next = setDayValue(next, item.id, day, '')
             }
             pushHistory(next)
             return next
         })
         setIsDirty(true)
-    }, [currentList, pushHistory, setCurrentData, setDayValue])
+    }, [filteredItems, currentList, pushHistory, setCurrentData, setDayValue])
 
     const handleRowFill = useCallback((itemId, status) => {
         setCurrentData(prev => {
@@ -1705,12 +1735,19 @@ export default function WafaAttendancePage() {
 
     const handleRowClear = useCallback((itemId) => {
         setCurrentData(prev => {
-            const updated = { ...prev, [itemId]: {} }
-            pushHistory(updated)
-            return updated
+            const next = { ...prev }
+            const curr = { ...(next[itemId] || {}) }
+            for (const dayKey of Object.keys(curr)) {
+                const dayObj = { ...(curr[dayKey] || {}) }
+                delete dayObj[activeSession]
+                if (Object.keys(dayObj).length === 0) delete curr[dayKey]; else curr[dayKey] = dayObj
+            }
+            next[itemId] = curr
+            pushHistory(next)
+            return next
         })
         setIsDirty(true)
-    }, [pushHistory, setCurrentData])
+    }, [pushHistory, setCurrentData, activeSession])
 
     const handleReset = useCallback(() => {
         setCurrentData(structuredClone(currentOriginal))
@@ -1720,12 +1757,13 @@ export default function WafaAttendancePage() {
 
     const handleSave = useCallback(async () => {
         if (saving || !isDirty) return
-        const prevOriginal = structuredClone(currentOriginal)
-        setCurrentOriginal(structuredClone(currentData))
-        setIsDirty(false); setSaving(true)
         if (!isOnline) {
-            setSaving(false); addToast('Offline — data tersimpan lokal, sync saat online', 'warning'); return
+            addToast('Tidak ada koneksi — data tetap ditandai belum disimpan', 'warning')
+            haptic('error')
+            return
         }
+        const prevOriginal = structuredClone(currentOriginal)
+        setSaving(true)
         const upserts = currentList.map(item => ({
             item_id: item.id, tab: activeTab, year: tahun, month: bulan,
             days: currentData[item.id] || {}, updated_by: profile?.id ?? null,
@@ -1738,6 +1776,7 @@ export default function WafaAttendancePage() {
             addToast('Gagal menyimpan: ' + error.message, 'error')
             haptic('error')
         } else {
+            setCurrentOriginal(structuredClone(currentData)); setIsDirty(false)
             try { localStorage.removeItem(draftKey(activeTab, tahun, bulan, activeSession)) } catch { }
             addToast(`Absensi ${BULAN_NAMA[bulan]} ${tahun} tersimpan ✓`, 'success')
             await logAudit({ action: 'UPDATE', source: 'SYSTEM', tableName: `wafa_${activeTab}_attendance`, newData: { year: tahun, month: bulan, count: currentList.length } })
@@ -1827,12 +1866,31 @@ export default function WafaAttendancePage() {
             setConfirmModal({
                 message: 'Perubahan yang belum disimpan akan hilang jika ganti tab.',
                 confirmLabel: 'Ganti Tab',
-                onConfirm: () => { setActiveTab(newTab); setActiveSession('mengaji'); setSearchRaw(''); setFilterClassId(''); setPage(1); setIsDirty(false); setConfirmModal(null) },
+                onConfirm: () => { setActiveTab(newTab); setActiveSession('mengaji'); setSelectedGroupId(null); setSearchRaw(''); setFilterClassId(''); setPage(1); setIsDirty(false); setConfirmModal(null) },
             })
             return
         }
         setActiveTab(newTab); setActiveSession('mengaji'); setSelectedGroupId(null); setSearchRaw(''); setFilterClassId(''); setPage(1); setIsDirty(false)
     }, [isDirty])
+
+    const handleSessionChange = useCallback((newSession) => {
+        if (newSession === activeSession) return
+        if (isDirty) {
+            setConfirmModal({
+                message: 'Perubahan yang belum disimpan akan hilang jika ganti sesi.',
+                confirmLabel: 'Ganti Sesi',
+                onConfirm: () => { setActiveSession(newSession); setIsDirty(false); setConfirmModal(null) },
+            })
+            return
+        }
+        setActiveSession(newSession)
+    }, [isDirty, activeSession])
+
+    const handleScrollToToday = useCallback(() => {
+        if (todayColRef.current) {
+            todayColRef.current.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+        }
+    }, [])
 
     // ── Render ──
     return (
@@ -1842,8 +1900,8 @@ export default function WafaAttendancePage() {
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                     <div>
-                        <Breadcrumb items={['Dashboard', 'Akademik', 'Presensi Mengaji & Tahfidz']} />
-                        <h1 className="text-2xl font-black font-heading tracking-tight text-[var(--color-text)]">Presensi Mengaji & Tahfidz</h1>
+                        <Breadcrumb items={['Dashboard', 'Akademik', 'Presensi Halaqah']} />
+                        <h1 className="text-2xl font-black font-heading tracking-tight text-[var(--color-text)]">Presensi Halaqah</h1>
                         <p className="text-[var(--color-text-muted)] text-[11px] mt-0.5 font-medium opacity-70">
                             <span className="sm:hidden">Input & rekap absensi guru, mentor & siswa per bulan.</span>
                             <span className="hidden sm:inline">Klik sel untuk ganti status · Tahan & geser untuk isi banyak · Klik nama/tanggal untuk isi cepat</span>
@@ -1856,25 +1914,21 @@ export default function WafaAttendancePage() {
                                 <span className="hidden sm:inline">Offline</span>
                             </div>
                         )}
-                        <button onClick={() => setShowAlertConfig(true)}
-                            className="h-8 px-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-[10px] font-black flex items-center gap-1.5 hover:bg-[var(--color-border)] hover:text-[var(--color-text)] active:scale-95 transition-all"
-                            title="Pengaturan Alert">
-                            <FontAwesomeIcon icon={faGear} className="text-[9px]" />
-                        </button>
                     </div>
                 </div>
 
                 {/* Tab bar — data source tabs */}
-                <div className="flex items-center bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5 w-fit mb-5">
+                <div className="flex items-center bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5 mb-3 w-full sm:w-fit overflow-x-auto">
                     {TABS.map(tab => {
                         const count = tab.key === 'teacher' ? teacherList.length : tab.key === 'mentor' ? mentorList.length : (filterClassId ? studentList.filter(s => s.classId === filterClassId).length : studentList.length)
                         return (
                             <button key={tab.key} onClick={() => handleTabChange(tab.key)}
-                                className={`h-8 px-4 rounded-xl text-[11px] font-black flex items-center gap-1.5 transition-all ${activeTab === tab.key
+                                className={`h-8 px-3 sm:px-4 rounded-xl text-[11px] font-black flex items-center gap-1.5 transition-all whitespace-nowrap ${activeTab === tab.key
                                     ? 'bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm'
                                     : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                                <FontAwesomeIcon icon={tab.icon} className="text-[10px]" />
-                                {tab.label}
+                                <FontAwesomeIcon icon={tab.icon} className="text-[10px] shrink-0" />
+                                <span className="hidden xs:inline">{tab.label}</span>
+                                <span className="xs:hidden">{tab.label.split(' ')[0]}</span>
                                 <span className="text-[9px] opacity-50">({count})</span>
                             </button>
                         )
@@ -1882,15 +1936,15 @@ export default function WafaAttendancePage() {
                 </div>
 
                 {/* Session tabs */}
-                <div className="flex items-center bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5 w-fit mb-5">
+                <div className="flex items-center bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5 mb-3 w-full sm:w-fit overflow-x-auto">
                     {SESSIONS.map(sess => (
-                        <button key={sess.key} onClick={() => { setActiveSession(sess.key); setIsDirty(false) }}
-                            className={`h-8 px-4 rounded-xl text-[11px] font-black flex items-center gap-1.5 transition-all ${activeSession === sess.key
+                        <button key={sess.key} onClick={() => handleSessionChange(sess.key)}
+                            className={`h-8 px-3 sm:px-4 rounded-xl text-[11px] font-black flex items-center gap-1.5 transition-all whitespace-nowrap flex-1 sm:flex-none justify-center ${activeSession === sess.key
                                 ? 'bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm'
                                 : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                            <FontAwesomeIcon icon={sess.icon} className="text-[10px]" />
-                            {sess.label}
-                            <span className="text-[9px] opacity-40 font-medium">{sess.time}</span>
+                            <FontAwesomeIcon icon={sess.icon} className="text-[10px] shrink-0" />
+                            <span>{sess.label.split(' ')[0]}</span>
+                            <span className="text-[9px] opacity-40 font-medium hidden sm:inline">{sess.time}</span>
                         </button>
                     ))}
                 </div>
@@ -1914,7 +1968,7 @@ export default function WafaAttendancePage() {
                         ) : (
                             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
                                 {groups.map(g => (
-                                    <button key={g.id} onClick={() => setSelectedGroupId(selectedGroupId === g.id ? null : g.id)}
+                                    <button key={g.id} onClick={() => { setSelectedGroupId(selectedGroupId === g.id ? null : g.id); setPage(1) }}
                                         className={`text-left rounded-xl border p-3 transition-all ${selectedGroupId === g.id
                                             ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5 shadow-md shadow-[var(--color-primary)]/10'
                                             : 'border-[var(--color-border)] bg-[var(--color-surface)] hover:shadow-md'}`}>
@@ -1932,76 +1986,101 @@ export default function WafaAttendancePage() {
                 )}
 
                 {/* Controls bar */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-6">
-                    {/* Year/Month nav */}
-                    <div className="flex items-center gap-1">
-                        <button onClick={prevBulan}
-                            className="h-9 w-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all active:scale-95">
-                            <FontAwesomeIcon icon={faChevronLeft} className="text-[10px]" />
-                        </button>
-                        <div className="flex items-center gap-1.5 px-2">
-                            <FontAwesomeIcon icon={faCalendarDays} className="text-[var(--color-primary)] text-[11px]" />
-                            <span className="text-[13px] font-black text-[var(--color-text)]">{BULAN_NAMA[bulan]}</span>
-                            <span className="text-[12px] font-bold text-[var(--color-text-muted)]">{tahun}</span>
-                        </div>
-                        <button onClick={nextBulan}
-                            className="h-9 w-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all active:scale-95">
-                            <FontAwesomeIcon icon={faChevronRight} className="text-[10px]" />
-                        </button>
-                    </div>
-
-                    {/* Class filter — only for Siswa tab */}
-                    {activeTab === 'student' && (
-                        <div className="relative">
-                            <FontAwesomeIcon icon={faChalkboardTeacher} className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
-                            <select value={filterClassId} onChange={e => { setFilterClassId(e.target.value); setPage(1) }}
-                                className="h-9 pl-8 pr-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-colors appearance-none cursor-pointer">
-                                <option value="">Semua Kelas</option>
-                                {classList.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                            </select>
-                            <FontAwesomeIcon icon={faChevronDown} className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] text-[var(--color-text-muted)] pointer-events-none" />
-                        </div>
-                    )}
-
-                    {/* Search */}
-                    <div className="flex-1 relative">
-                        <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[var(--color-text-muted)]" />
-                        <input ref={searchInputRef} type="text" value={searchRaw} onChange={e => setSearchRaw(e.target.value)}
-                            placeholder={`Cari ${currentTab?.label?.toLowerCase() || ''}...`}
-                            className="w-full h-9 pl-9 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-semibold text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)] transition-all" />
-                    </div>
-
-                    {/* Hide weekend */}
-                    <button onClick={() => setHideWeekend(v => !v)}
-                        className={`h-8 px-3 rounded-xl border text-[10px] font-black transition-all flex items-center gap-1.5 shrink-0 ${hideWeekend
-                            ? 'border-[var(--color-primary)]/30 bg-[var(--color-primary)]/8 text-[var(--color-primary)]'
-                            : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                        <FontAwesomeIcon icon={faEye} className="text-[9px]" />
-                        {hideWeekend ? 'Tampilkan' : 'Sembunyikan'} Weekend
-                    </button>
-
-                    {/* Mass action */}
-                    <MassActionDropdown
-                        items={currentList} dataMap={displayData} setDataMap={setCurrentData}
-                        tahun={tahun} bulan={bulan} daysInMonth={daysInMonth}
-                        onDirty={() => setIsDirty(true)} addToast={addToast} tabKey={activeTab} activeSession={activeSession} />
-
-                    {/* Mobile view toggle */}
-                    <div className="flex gap-1 p-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]">
-                        {[{ key: 'table', icon: faTableList }, { key: 'card', icon: faBorderAll }, { key: 'list', icon: faList }].map(v => (
-                            <button key={v.key} onClick={() => setMobileView(v.key)}
-                                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${mobileView === v.key ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                                <FontAwesomeIcon icon={v.icon} className="text-[11px]" />
+                <div className="flex flex-col gap-2 mb-4">
+                    {/* Row 1: Month nav + Search + Alert config */}
+                    <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 shrink-0">
+                            <button onClick={prevBulan}
+                                className="h-8 w-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all active:scale-95">
+                                <FontAwesomeIcon icon={faChevronLeft} className="text-[10px]" />
                             </button>
-                        ))}
+                            <div className="flex items-center gap-1 px-1">
+                                <FontAwesomeIcon icon={faCalendarDays} className="text-[var(--color-primary)] text-[11px]" />
+                                <span className="text-[12px] font-black text-[var(--color-text)]">{BULAN_NAMA[bulan]} {tahun}</span>
+                            </div>
+                            <button onClick={nextBulan}
+                                className="h-8 w-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all active:scale-95">
+                                <FontAwesomeIcon icon={faChevronRight} className="text-[10px]" />
+                            </button>
+                        </div>
+
+                        {/* Class filter — only for Siswa tab */}
+                        {activeTab === 'student' && (
+                            <div className="relative shrink-0">
+                                <select value={filterClassId} onChange={e => { setFilterClassId(e.target.value); setPage(1) }}
+                                    className="h-8 pl-2.5 pr-7 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-colors appearance-none cursor-pointer">
+                                    <option value="">Semua Kelas</option>
+                                    {classList.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                </select>
+                                <FontAwesomeIcon icon={faChevronDown} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[8px] text-[var(--color-text-muted)] pointer-events-none" />
+                            </div>
+                        )}
+
+                        <div className="flex-1 relative min-w-0">
+                            <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-[var(--color-text-muted)]" />
+                            <input ref={searchInputRef} type="text" value={searchRaw} onChange={e => setSearchRaw(e.target.value)}
+                                placeholder={`Cari ${currentTab?.label?.toLowerCase() || ''}...`}
+                                className="w-full h-8 pl-8 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-semibold text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)] transition-all" />
+                        </div>
+
+                        <button onClick={() => setShowAlertConfig(true)}
+                            className="h-8 w-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] flex items-center justify-center shrink-0 hover:bg-[var(--color-border)] hover:text-[var(--color-text)] active:scale-95 transition-all"
+                            title="Pengaturan Alert">
+                            <FontAwesomeIcon icon={faGear} className="text-[10px]" />
+                        </button>
                     </div>
 
-                    {/* Import */}
-                    <button onClick={() => setShowImport(true)}
-                        className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all flex items-center gap-1.5 shrink-0">
-                        <FontAwesomeIcon icon={faFileImport} className="text-[9px]" />
-                        Import
-                    </button>
+                    {/* Row 2: Action buttons */}
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                        <button onClick={handleScrollToToday}
+                            className="h-7 px-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all flex items-center gap-1 shrink-0">
+                            <FontAwesomeIcon icon={faCrosshairs} className="text-[8px]" />
+                            <span className="hidden sm:inline">Hari Ini</span>
+                            <span className="sm:hidden">Hari</span>
+                        </button>
+
+                        <button onClick={() => setHideWeekend(v => !v)}
+                            className={`h-7 px-2.5 rounded-lg border text-[10px] font-black transition-all flex items-center gap-1 shrink-0 ${hideWeekend
+                                ? 'border-[var(--color-primary)]/30 bg-[var(--color-primary)]/8 text-[var(--color-primary)]'
+                                : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                            <FontAwesomeIcon icon={hideWeekend ? faEyeSlash : faEye} className="text-[8px]" />
+                            <span className="hidden sm:inline">{hideWeekend ? 'Tampilkan' : 'Sembunyikan'} Weekend</span>
+                            <span className="sm:hidden">WE</span>
+                        </button>
+
+                        <MassActionDropdown
+                            items={filteredItems.length > 0 ? filteredItems : currentList} dataMap={displayData} setDataMap={setCurrentData}
+                            tahun={tahun} bulan={bulan} daysInMonth={daysInMonth}
+                            onDirty={() => setIsDirty(true)} addToast={addToast} tabKey={activeTab} activeSession={activeSession} />
+
+                        <div className="flex gap-1 p-0.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] shrink-0">
+                            {[{ key: 'table', icon: faTableList }, { key: 'card', icon: faBorderAll }, { key: 'list', icon: faList }].map(v => (
+                                <button key={v.key} onClick={() => { setMobileView(v.key); localStorage.setItem('wafa_halaqah_mobile_view', v.key) }}
+                                    className={`w-7 h-7 rounded-md flex items-center justify-center transition-all ${mobileView === v.key ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                                    <FontAwesomeIcon icon={v.icon} className="text-[10px]" />
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className="flex gap-0.5 shrink-0">
+                            <button onClick={applyUndo} disabled={!canUndo}
+                                className="h-7 w-7 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                                title="Undo">
+                                <FontAwesomeIcon icon={faRotateLeft} className="text-[8px]" />
+                            </button>
+                            <button onClick={applyRedo} disabled={!canRedo}
+                                className="h-7 w-7 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                                title="Redo">
+                                <FontAwesomeIcon icon={faRotateRight} className="text-[8px]" />
+                            </button>
+                        </div>
+
+                        <button onClick={() => setShowImport(true)}
+                            className="h-7 px-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all flex items-center gap-1 shrink-0">
+                            <FontAwesomeIcon icon={faFileImport} className="text-[8px]" />
+                            <span className="hidden sm:inline">Import</span>
+                        </button>
+                    </div>
                 </div>
 
                 {/* Summary cards */}
@@ -2040,11 +2119,13 @@ export default function WafaAttendancePage() {
                 ) : mobileView === 'card' ? (
                     <MobileCardView items={activeTab === 'student' ? paginatedItems : filteredItems} dataMap={displayData} tahun={tahun} bulan={bulan}
                         daysInMonth={daysInMonth} todayDate={todayDate} onCellClick={handleCellClick}
-                        notesMap={currentNotes} onNoteClick={handleNoteClick} loadingData={loading} />
+                        notesMap={currentNotes} onNoteClick={handleNoteClick} loadingData={loading}
+                        alpaThreshold={alertThreshold.alpa} hadirThreshold={alertThreshold.hadirPct} />
                 ) : mobileView === 'list' ? (
                     <MobileListView items={activeTab === 'student' ? paginatedItems : filteredItems} dataMap={displayData} tahun={tahun} bulan={bulan}
                         daysInMonth={daysInMonth} todayDate={todayDate} onCellClick={handleCellClick}
-                        notesMap={currentNotes} onNoteClick={handleNoteClick} loadingData={loading} />
+                        notesMap={currentNotes} onNoteClick={handleNoteClick} loadingData={loading}
+                        alpaThreshold={alertThreshold.alpa} hadirThreshold={alertThreshold.hadirPct} />
                 ) : (
                     /* Desktop table — monthly calendar grid */
                     <div className="overflow-x-auto rounded-xl border border-[var(--color-border)]">
@@ -2197,20 +2278,22 @@ export default function WafaAttendancePage() {
                                         </td>
                                         {dayMeta.filter(dm => !(hideWeekend && dm.weekend) && !dm.invalid).map(({ d, weekend }) => {
                                             const { h, x } = colSummary[d] || { h: 0, x: 0 }
+                                            const exceedAlpa = alertThreshold.alpa != null && x >= alertThreshold.alpa
                                             return (
                                                 <td key={d} style={{
                                                     width: 32, minWidth: 32, padding: '4px 0', textAlign: 'center',
                                                     borderTop: '2px solid var(--color-border)', borderLeft: '1px solid var(--color-border)',
-                                                    background: 'var(--color-surface-alt)', opacity: weekend ? 0.35 : 1,
+                                                    background: exceedAlpa ? 'rgba(239,68,68,0.06)' : weekend ? 'var(--color-surface-alt)' : 'var(--color-surface-alt)',
+                                                    opacity: weekend ? 0.35 : 1,
                                                 }}>
                                                     {h > 0 && <span style={{ display: 'block', fontSize: 8, fontWeight: 900, color: '#059669', lineHeight: '1.2' }}>{h}</span>}
-                                                    {x > 0 && <span style={{ display: 'block', fontSize: 8, fontWeight: 900, color: '#dc2626', lineHeight: '1.2' }}>{x}</span>}
+                                                    {x > 0 && <span style={{ display: 'block', fontSize: 8, fontWeight: 900, color: exceedAlpa ? '#dc2626' : '#f59e0b', lineHeight: '1.2' }}>{x}</span>}
                                                 </td>
                                             )
                                         })}
                                         {STATUS_LIST.map((s, i) => {
                                             const rightOffset = 40 + (STATUS_LIST.length - 1 - i) * 28
-                                            const total = currentList.reduce((acc, item) => acc + Object.values(displayData[item.id] || {}).filter(v => v === s).length, 0)
+                                            const total = statsList.reduce((acc, item) => acc + Object.values(displayData[item.id] || {}).filter(v => v === s).length, 0)
                                             return (
                                                 <td key={s} style={{
                                                     position: 'sticky', right: rightOffset, zIndex: 4,
@@ -2316,7 +2399,7 @@ export default function WafaAttendancePage() {
 
                 {/* Import modal */}
                 {showImport && (
-                    <ImportModal itemList={currentList} tahun={tahun} bulan={bulan} daysInMonth={daysInMonth}
+                    <ImportModal itemList={filteredItems.length > 0 ? filteredItems : currentList} tahun={tahun} bulan={bulan} daysInMonth={daysInMonth}
                         onImport={handleImport} onClose={() => setShowImport(false)} />
                 )}
 
@@ -2333,7 +2416,7 @@ export default function WafaAttendancePage() {
                 {/* ColFill popup */}
                 {colFillTarget && (
                     <ColFillPopup day={colFillTarget.d} dow={colFillTarget.dow} x={colFillTarget.x} y={colFillTarget.y}
-                        itemCount={currentList.length}
+                        itemCount={filteredItems.length > 0 ? filteredItems.length : currentList.length}
                         onFill={(status) => handleColFill(colFillTarget.d, status)}
                         onClear={() => handleColClear(colFillTarget.d)}
                         onClose={() => setColFillTarget(null)} />

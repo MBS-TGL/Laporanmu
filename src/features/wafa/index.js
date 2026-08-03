@@ -1,2 +1,2 @@
-export { default } from './pages/WafaPage'
-export { default as PresensiPage } from './pages/WafaPage'
+export { default } from './pages/WafaAttendancePage'
+export { default as WafaAttendancePage } from './pages/WafaAttendancePage'

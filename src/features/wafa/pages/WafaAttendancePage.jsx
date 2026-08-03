@@ -12,7 +12,7 @@ import {
     faCalendarDays, faChartSimple, faBolt, faChevronDown,
     faXmark, faLightbulb, faCheck, faTableList, faArrowPointer,
     faFloppyDisk, faArrowsRotate, faListCheck,
-    faRotateRight, faBullseye, faUsers,
+    faRotateRight, faBullseye, faUsers, faPlus,
     faCopy, faEye, faEyeSlash, faFilter, faFileImport,
     faPrint, faBell, faStickyNote, faArrowDown, faCrosshairs,
     faArrowTrendUp, faArrowTrendDown, faGear, faUpload,
@@ -1154,7 +1154,7 @@ function GroupManageModal({ groups, teacherList, studentList, onClose, onRefresh
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
-export default function PresensiPage() {
+export default function WafaAttendancePage() {
     const { addToast } = useToast()
     const { dir } = useLanguage()
     const { profile } = useAuth()

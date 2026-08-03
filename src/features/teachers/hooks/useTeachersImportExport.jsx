@@ -36,7 +36,7 @@ const ALL_EXPORT_COLUMNS = [
     { key: 'status', label: 'Status', fn: t => STATUS_CONFIG[t.status]?.label || t.status || '' },
     { key: 'join_date', label: 'Tgl Bergabung', fn: t => t.join_date || '' },
     { key: 'address', label: 'Alamat', fn: t => t.address || '' },
-    { key: 'type', label: 'Jenis Pegawai', fn: t => t.type === 'karyawan' ? 'Karyawan' : 'Guru' },
+    { key: 'type', label: 'Jenis Pegawai', fn: t => t.type === 'karyawan' ? 'Karyawan' : t.type === 'pengabdian' ? 'Pengabdian' : 'Guru' },
     { key: 'nik', label: 'NIK', fn: t => t.nik || '' },
     { key: 'nip', label: 'NIP', fn: t => t.nip || '' },
     { key: 'nuptk', label: 'NUPTK', fn: t => t.nuptk || '' },

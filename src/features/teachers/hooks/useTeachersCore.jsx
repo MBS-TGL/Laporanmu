@@ -223,7 +223,7 @@ export function useTeachersCore({ addToast, profile }) {
     const fetchStats = useCallback(async () => {
         try {
             const { data } = await supabase.from('teachers').select('id,gender,status,type').is('deleted_at', null)
-            if (data) setStats({ total: data.length, active: data.filter(t => t.status === 'active').length, male: data.filter(t => t.gender === 'L').length, female: data.filter(t => t.gender === 'P').length, guru: data.filter(t => !t.type || t.type === 'guru').length, karyawan: data.filter(t => t.type === 'karyawan').length })
+            if (data) setStats({ total: data.length, active: data.filter(t => t.status === 'active').length, male: data.filter(t => t.gender === 'L').length, female: data.filter(t => t.gender === 'P').length, guru: data.filter(t => !t.type || t.type === 'guru').length, karyawan: data.filter(t => t.type === 'karyawan').length, pengabdian: data.filter(t => t.type === 'pengabdian').length })
         } catch { }
     }, [])
 

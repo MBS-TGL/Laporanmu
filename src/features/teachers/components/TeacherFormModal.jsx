@@ -187,7 +187,7 @@ const TeacherFormModal = memo(function TeacherFormModal({
         <Modal
             isOpen={isOpen}
             onClose={onClose}
-            title={selectedItem ? `Edit Data ${form.type === 'karyawan' ? 'Karyawan' : 'Guru'}` : `Tambah ${form.type === 'karyawan' ? 'Karyawan' : 'Guru'} Baru`}
+            title={selectedItem ? `Edit Data ${form.type === 'karyawan' ? 'Karyawan' : form.type === 'pengabdian' ? 'Pengabdian' : 'Guru'}` : `Tambah ${form.type === 'karyawan' ? 'Karyawan' : form.type === 'pengabdian' ? 'Pengabdian' : 'Guru'} Baru`}
             description={
                 <div className="flex items-center gap-2">
                     <div className="h-1.5 w-24 bg-[var(--color-border)] rounded-full overflow-hidden shrink-0">
@@ -522,6 +522,7 @@ const TeacherFormModal = memo(function TeacherFormModal({
                             <div className="flex p-1 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl h-11">
                                 {[
                                     { key: 'guru', label: 'Guru', activeCls: 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20' },
+                                    { key: 'pengabdian', label: 'Pengabdian', activeCls: 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20' },
                                     { key: 'karyawan', label: 'Karyawan', activeCls: 'bg-slate-700 text-white shadow-lg shadow-slate-700/20' }
                                 ].map(o => (
                                     <button key={o.key} type="button" onClick={() => setField('type', o.key)} className={`flex-1 rounded-lg text-[10px] font-bold transition-all duration-200 ${form.type === o.key ? o.activeCls : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>{o.label}</button>

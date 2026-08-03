@@ -84,8 +84,8 @@ const TeacherRow = memo(({
                         </button>
                         <div className="flex items-center gap-1.5 mt-1 flex-wrap">
                             {teacher.nbm && <p className="text-[10px] text-[var(--color-text-muted)] font-mono opacity-60 uppercase tracking-wider">{teacher.nbm}</p>}
-                            <span className={`text-[8px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-widest border ${teacher.type === 'karyawan' ? 'bg-blue-500/10 text-blue-600 border-blue-500/20' : 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20'}`}>
-                                {teacher.type === 'karyawan' ? 'Karyawan' : 'Guru'}
+                            <span className={`text-[8px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-widest border ${teacher.type === 'karyawan' ? 'bg-blue-500/10 text-blue-600 border-blue-500/20' : teacher.type === 'pengabdian' ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20'}`}>
+                                {teacher.type === 'karyawan' ? 'Karyawan' : teacher.type === 'pengabdian' ? 'Pengabdian' : 'Guru'}
                             </span>
                         </div>
                     </div>
@@ -193,8 +193,8 @@ const TeacherMobileCard = memo(({
                             <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                                 {teacher.subject && <span className="px-2 py-0.5 rounded-md bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 text-[9px] font-black uppercase tracking-widest">{teacher.subject}</span>}
                                 <span className={`px-2 py-0.5 rounded-full border text-[9px] font-black uppercase tracking-widest ${STATUS_CONFIG[teacher.status]?.color}`}>{STATUS_CONFIG[teacher.status]?.label}</span>
-                                <span className={`px-2 py-0.5 rounded-md border text-[9px] font-black uppercase tracking-widest ${teacher.type === 'karyawan' ? 'bg-blue-500/10 text-blue-600 border-blue-500/20' : 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20'}`}>
-                                    {teacher.type === 'karyawan' ? 'Karyawan' : 'Guru'}
+                                <span className={`px-2 py-0.5 rounded-md border text-[9px] font-black uppercase tracking-widest ${teacher.type === 'karyawan' ? 'bg-blue-500/10 text-blue-600 border-blue-500/20' : teacher.type === 'pengabdian' ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20'}`}>
+                                    {teacher.type === 'karyawan' ? 'Karyawan' : teacher.type === 'pengabdian' ? 'Pengabdian' : 'Guru'}
                                 </span>
                             </div>
                             <p className="text-[10px] text-[var(--color-text-muted)] font-mono mt-1 opacity-60 uppercase tracking-widest">{teacher.nbm || 'NO NBM'}</p>

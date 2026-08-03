@@ -664,6 +664,51 @@ Rekam jejak sesi Bimbingan Konseling (BK) santri MBS Tanggul.
 
 `proses` | `selesai`
 
+## Table `wafa_attendance`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary, default `gen_random_uuid()` |
+| `item_id` | `uuid` | Not null (FK to teachers or students) |
+| `tab` | `text` | Not null (`teacher`, `mentor`, `student`) |
+| `year` | `int4` | Not null |
+| `month` | `int4` | Not null |
+| `days` | `jsonb` | Not null, default `'{}'` |
+| `updated_by` | `uuid` | Nullable (FK to profiles) |
+| `created_at` | `timestamptz` | Nullable, default `now()` |
+| `updated_at` | `timestamptz` | Nullable, default `now()` |
+
+Constraints: unique(`item_id`, `tab`, `year`, `month`)
+
+## Table `wafa_groups`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary, default `gen_random_uuid()` |
+| `name` | `text` | Not null |
+| `guru_id` | `uuid` | Not null (FK to teachers) |
+| `created_at` | `timestamptz` | Nullable, default `now()` |
+| `updated_at` | `timestamptz` | Nullable, default `now()` |
+| `deleted_at` | `timestamptz` | Nullable |
+
+## Table `wafa_group_members`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary, default `gen_random_uuid()` |
+| `group_id` | `uuid` | Not null (FK to wafa_groups, ON DELETE CASCADE) |
+| `student_id` | `uuid` | Not null (FK to students) |
+| `role` | `text` | Not null, default `student` (`student` or `mudabbir`) |
+| `created_at` | `timestamptz` | Nullable, default `now()` |
+
+Constraints: unique(`group_id`, `student_id`)
+
 ## RLS Policies
 
 ### `ai_logs`

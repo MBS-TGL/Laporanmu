@@ -104,7 +104,7 @@ export default memo(function TeacherProfileModal({
                             <div className="flex flex-wrap gap-3 items-center text-[10px] font-bold text-white/70 uppercase tracking-wider">
                                 <span className="flex items-center gap-1.5"><FontAwesomeIcon icon={faIdCard} className="text-indigo-400" /> {selectedTeacher.nbm || 'Tanpa NBM'}</span>
                                 <span className="w-1 h-1 rounded-full bg-white/30" />
-                                <span className="flex items-center gap-1.5"><FontAwesomeIcon icon={faBriefcase} className="text-indigo-400" /> {selectedTeacher.type === 'guru' ? 'Guru' : 'Karyawan'}</span>
+                                <span className="flex items-center gap-1.5"><FontAwesomeIcon icon={faBriefcase} className="text-indigo-400" /> {selectedTeacher.type === 'karyawan' ? 'Karyawan' : selectedTeacher.type === 'pengabdian' ? 'Pengabdian' : 'Guru'}</span>
                                 {selectedTeacher.subject && (
                                     <>
                                         <span className="w-1 h-1 rounded-full bg-white/30" />

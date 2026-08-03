@@ -71,7 +71,7 @@ const ALL_EXPORT_COLUMNS = [
     { key: 'status', label: 'Status', fn: t => STATUS_CONFIG[t.status]?.label || t.status || '' },
     { key: 'join_date', label: 'Tgl Bergabung', fn: t => t.join_date || '' },
     { key: 'address', label: 'Alamat', fn: t => t.address || '' },
-    { key: 'type', label: 'Jenis Pegawai', fn: t => t.type === 'karyawan' ? 'Karyawan' : 'Guru' },
+    { key: 'type', label: 'Jenis Pegawai', fn: t => t.type === 'karyawan' ? 'Karyawan' : t.type === 'pengabdian' ? 'Pengabdian' : 'Guru' },
     { key: 'nik', label: 'NIK', fn: t => t.nik || '' },
     { key: 'nip', label: 'NIP', fn: t => t.nip || '' },
     { key: 'nuptk', label: 'NUPTK', fn: t => t.nuptk || '' },
@@ -145,14 +145,14 @@ export default function TeachersPage() {
     const [totalRows, setTotalRows] = useState(0)
     const [subjectsList, setSubjectsList] = useState([])
     const [classesList, setClassesList] = useState([])
-    const [stats, setStats] = useState({ total: 0, active: 0, male: 0, female: 0, guru: 0, karyawan: 0 })
+    const [stats, setStats] = useState({ total: 0, active: 0, male: 0, female: 0, guru: 0, karyawan: 0, pengabdian: 0 })
     const [uploadingPhoto, setUploadingPhoto] = useState(false)
     // filters
     const [searchQuery, setSearchQuery] = useState('')
     const [filterSubject, setFilterSubject] = useState('')
     const [filterGender, setFilterGender] = useState('')
     const [filterStatus, setFilterStatus] = useState('active')
-    const [filterType, setFilterType] = useState('') // '' | 'guru' | 'karyawan'
+    const [filterType, setFilterType] = useState('') // '' | 'guru' | 'pengabdian' | 'karyawan'
     const [filterMissing, setFilterMissing] = useState('')
     const [sortBy, setSortBy] = useState('name_asc')
     const [page, setPage] = useState(1)
@@ -236,7 +236,7 @@ export default function TeachersPage() {
     // --- Stats Carousel Dot Indicator ---
     const statsScrollRef = useRef(null)
     const [activeStatIdx, setActiveStatIdx] = useState(0)
-    const STAT_CARD_COUNT = 4
+    const STAT_CARD_COUNT = 5
 
     // access.teacher_teachers — kalau off, guru hanya bisa lihat (read-only)
     const { enabled: teacherTeachersEnabled } = useFlag('access.teacher_teachers')
@@ -372,7 +372,7 @@ export default function TeachersPage() {
     const fetchStats = useCallback(async () => {
         try {
             const { data } = await supabase.from('teachers').select('id,gender,status,type').is('deleted_at', null)
-            if (data) setStats({ total: data.length, active: data.filter(t => t.status === 'active').length, male: data.filter(t => t.gender === 'L').length, female: data.filter(t => t.gender === 'P').length, guru: data.filter(t => !t.type || t.type === 'guru').length, karyawan: data.filter(t => t.type === 'karyawan').length })
+            if (data) setStats({ total: data.length, active: data.filter(t => t.status === 'active').length, male: data.filter(t => t.gender === 'L').length, female: data.filter(t => t.gender === 'P').length, guru: data.filter(t => !t.type || t.type === 'guru').length, karyawan: data.filter(t => t.type === 'karyawan').length, pengabdian: data.filter(t => t.type === 'pengabdian').length })
         } catch { }
     }, [])
 
@@ -650,7 +650,7 @@ export default function TeachersPage() {
                 }
                 if (data.type) {
                     const t = data.type.toLowerCase().trim()
-                    data.type = ['karyawan', 'staf', 'staff', 'non-guru', 'kary'].includes(t) ? 'karyawan' : 'guru'
+                    data.type = ['karyawan', 'staf', 'staff', 'non-guru', 'kary'].includes(t) ? 'karyawan' : ['pengabdian', 'pengab'].includes(t) ? 'pengabdian' : 'guru'
                 }
                 if (data.teaching_hours) {
                     data.teaching_hours = Number(data.teaching_hours) || 0
@@ -730,7 +730,7 @@ export default function TeachersPage() {
             'No. WhatsApp',
             'Email',
             'Status (active/inactive/cuti)',
-            'Jenis Pegawai (guru/karyawan)',
+            'Jenis Pegawai (guru/pengabdian/karyawan)',
             'NIK',
             'NIP',
             'NUPTK',
@@ -1073,7 +1073,7 @@ export default function TeachersPage() {
                     badge="Master Data"
                     breadcrumbs={['Faculty Members']}
                     title="Data Guru"
-                    subtitle={`Kelola ${stats.total} data ${filterType === 'karyawan' ? 'karyawan' : filterType === 'guru' ? 'guru' : 'guru dan karyawan'} dalam sistem.`}
+                    subtitle={`Kelola ${stats.total} data ${filterType === 'karyawan' ? 'karyawan' : filterType === 'pengabdian' ? 'pengabdian' : filterType === 'guru' ? 'guru' : 'guru, pengabdian & karyawan'} dalam sistem.`}
                     actions={
                         <>
                             {/* Header Menu Button */}
@@ -1239,12 +1239,13 @@ export default function TeachersPage() {
                 />
 
                 {/* ── Stats ── */}
-                <StatsCarousel count={STAT_CARD_COUNT} cols={4}>
+                <StatsCarousel count={STAT_CARD_COUNT} cols={5}>
                     {[
                         { icon: faChalkboardTeacher, label: 'Total', value: stats.total, borderColor: 'border-t-[var(--color-primary)]', iconBg: 'bg-gradient-to-br from-[var(--color-primary)]/10 to-[var(--color-accent)]/10 text-[var(--color-primary)]', onClick: () => { setFilterType(''); setPage(1) } },
                         { icon: faCheckCircle, label: 'Aktif', value: stats.active, borderColor: 'border-t-emerald-500', iconBg: 'bg-emerald-500/10 text-emerald-500', onClick: () => { setFilterStatus('active'); setPage(1) } },
                         { icon: faChalkboardTeacher, label: 'Guru', value: stats.guru, borderColor: 'border-t-indigo-500', iconBg: 'bg-indigo-500/10 text-indigo-500', onClick: () => { setFilterType('guru'); setPage(1) } },
                         { icon: faBriefcase, label: 'Karyawan', value: stats.karyawan, borderColor: 'border-t-blue-500', iconBg: 'bg-blue-500/10 text-blue-500', onClick: () => { setFilterType('karyawan'); setPage(1) } },
+                        { icon: faUserTie, label: 'Pengabdian', value: stats.pengabdian, borderColor: 'border-t-emerald-600', iconBg: 'bg-emerald-600/10 text-emerald-600', onClick: () => { setFilterType('pengabdian'); setPage(1) } },
                     ].map((s, i) => (
                         <StatCard
                             key={i}
@@ -1455,7 +1456,7 @@ export default function TeachersPage() {
                                     <button type="button" onClick={() => setFilterType('')}
                                         className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-indigo-500/20 bg-indigo-500/10 text-[10px] font-black text-indigo-600" title="Hapus filter jenis">
                                         <FontAwesomeIcon icon={faUserTie} className="text-[10px] opacity-70" />
-                                        Jenis: {filterType === 'guru' ? 'Guru' : 'Karyawan'}
+                                        Jenis: {filterType === 'guru' ? 'Guru' : filterType === 'pengabdian' ? 'Pengabdian' : 'Karyawan'}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-indigo-500/20 flex items-center justify-center text-indigo-600 opacity-70 group-hover:opacity-100 transition-opacity">
                                             <FontAwesomeIcon icon={faXmark} className="text-[10px]" />
                                         </span>
@@ -1510,6 +1511,7 @@ export default function TeachersPage() {
                                             options={[
                                                 { id: '', name: 'Semua Jenis' },
                                                 { id: 'guru', name: 'Guru' },
+                                                { id: 'pengabdian', name: 'Pengabdian' },
                                                 { id: 'karyawan', name: 'Karyawan' }
                                             ]}
                                             placeholder="Semua Jenis"

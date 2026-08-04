@@ -59,7 +59,7 @@ const W_NAMA = 176
 
 const TABS = [
     { key: 'teacher', label: 'Guru Pengampu', icon: faChalkboardTeacher, desc: 'Absensi guru mata pelajaran', tableName: 'teachers', typeFilter: 'guru', detailKey: 'subject', emptyLabel: 'Guru' },
-    { key: 'mentor', label: 'Mudabbir / Mentor', icon: faUserClock, desc: 'Absensi pembimbing & musyrif', tableName: 'teachers', typeFilter: 'mentor', detailKey: 'type', emptyLabel: 'Mentor' },
+    { key: 'mentor', label: 'Mudabbir', icon: faUserClock, desc: 'Absensi pembimbing dari siswa hafidz', tableName: 'students', typeFilter: null, detailKey: 'group_name', emptyLabel: 'Mudabbir' },
     { key: 'student', label: 'Siswa', icon: faUsers, desc: 'Absensi santri harian', tableName: 'students', typeFilter: null, detailKey: 'class_name', emptyLabel: 'Santri' },
 ]
 
@@ -1493,16 +1493,39 @@ export default function HalaqahPage() {
 
             // Split teachers
             const guruList = (teachers || []).filter(t => !t.type || t.type === 'guru' || t.type === 'pengabdian')
-            const mentorListData = (teachers || []).filter(t => t.type === 'karyawan' || t.type === 'musyrif' || t.type === 'mentor')
 
             setTeacherList(guruList.map(t => ({ id: t.id, name: t.name, detail: t.subject || 'Guru', gender: t.gender, nisn: null, original: t })))
-            setMentorList(mentorListData.map(t => ({ id: t.id, name: t.name, detail: t.type === 'musyrif' ? 'Musyrif' : t.type === 'mentor' ? 'Mentor' : 'Karyawan', gender: t.gender, nisn: null, original: t })))
             setStudentList((students || []).map(s => ({ id: s.id, name: s.name, detail: s.classes?.name || s.nisn || 'Santri', nisn: s.nisn, gender: s.gender, classId: s.class_id, original: s })))
+
+            // Fetch group members to find mudabbir (students assigned as mudabbir)
+            const { data: mudabbirMembers } = await supabase
+                .from('wafa_group_members')
+                .select('student_id, group_id, wafa_groups(name)')
+                .eq('role', 'mudabbir')
+
+            const mudabbirById = {}
+            for (const m of mudabbirMembers || []) {
+                if (!mudabbirById[m.student_id]) {
+                    const student = (students || []).find(s => s.id === m.student_id)
+                    if (student) {
+                        mudabbirById[m.student_id] = {
+                            id: student.id,
+                            name: student.name,
+                            detail: m.wafa_groups?.name || student.classes?.name || 'Mudabbir',
+                            gender: student.gender,
+                            nisn: student.nisn,
+                            original: student,
+                        }
+                    }
+                }
+            }
+            const mudabbirListData = Object.values(mudabbirById)
+            setMentorList(mudabbirListData)
 
             // Fetch attendance for each type
             const allIds = [
                 ...guruList.map(t => t.id),
-                ...mentorListData.map(t => t.id),
+                ...mudabbirListData.map(m => m.id),
                 ...(students || []).map(s => s.id),
             ]
 
@@ -1518,7 +1541,7 @@ export default function HalaqahPage() {
                 const ex = attendance?.find(a => a.item_id === g.id)
                 tMap[g.id] = ex?.days ? { ...ex.days } : {}
             }
-            for (const m of mentorListData) {
+            for (const m of mudabbirListData) {
                 const ex = attendance?.find(a => a.item_id === m.id)
                 mMap[m.id] = ex?.days ? { ...ex.days } : {}
             }

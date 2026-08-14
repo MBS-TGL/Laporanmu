@@ -61,6 +61,7 @@ export const TASK_CENTER_ITEM = {
 // ─── Kesantrian & Kedisiplinan (Daily Boarding Ops - High Priority) ─────────────
 export const BOARDING_ITEMS = [
     { to: "/boarding/gate", label: "Portal Perizinan", icon: Compass, desc: "Manajemen Izin santri keluar & kembali ke pesantren", color: "bg-red-500/10 text-red-500" },
+    { to: "/boarding/leave-permit", label: "Izin Keluar Pondok", icon: ClipboardList, desc: "Surat izin keluar pondok santri & pencatatan keberangkatan", color: "bg-amber-500/10 text-amber-500" },
     { to: "/boarding/behavior", label: "Kedisiplinan & Poin", icon: Flag, desc: "Pencatatan pelanggaran, prestasi, dan akumulasi poin santri", color: "bg-orange-500/10 text-orange-500" },
     { to: "/boarding/dorms", label: "Manajemen Asrama", icon: Bed, desc: "Plotting kamar santri, kontrol kebersihan, & tugas Musyrif", color: "bg-indigo-500/10 text-indigo-600" },
     { to: "/boarding/health", label: "Klinik & Kesehatan", icon: HeartPulse, desc: "Pos Kesehatan Pesantren (Poskestren) & rekam medis santri", color: "bg-emerald-500/10 text-emerald-600" },
@@ -170,6 +171,7 @@ export const NAV_GROUPS = [
 // Maps route path → feature flag key
 export const ROUTE_FLAG_MAP = {
     '/boarding/gate': 'nav.gate',
+    '/boarding/leave-permit': 'nav.leave_permit',
     '/boarding/behavior': 'nav.poin',
     '/boarding/dorms': 'nav.dorms',
     '/boarding/health': 'nav.health',

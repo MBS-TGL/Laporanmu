@@ -81,6 +81,7 @@
 | `birth_place` | `text` |  Nullable |
 | `religion` | `text` |  Nullable |
 | `address` | `text` |  Nullable |
+| `dorm_id` | `text` |  Nullable |
 
 ## Table `point_rules`
 
@@ -221,6 +222,9 @@
 | `hari_alpa` | `int2` |  Nullable |
 | `updated_by` | `uuid` |  Nullable |
 | `updated_by_name` | `text` |  Nullable |
+| `sholat` | `varchar` |  Nullable |
+| `pelanggaran` | `text` |  Nullable |
+| `prestasi` | `text` |  Nullable |
 
 ## Table `student_attendance`
 
@@ -259,6 +263,29 @@
 | `estimated_return` | `timestamptz` |  Nullable |
 | `student_id` | `uuid` |  Nullable |
 | `updated_at` | `timestamptz` |  |
+| `leave_permit_id` | `uuid` |  Nullable |
+
+## Table `leave_permits`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `student_id` | `uuid` |  Not Null |
+| `phone` | `text` |  Nullable |
+| `destination` | `text` |  Not Null |
+| `purpose` | `text` |  Not Null |
+| `leave_date` | `date` |  Not Null |
+| `return_deadline` | `timestamptz` |  Not Null |
+| `status` | `text` |  Default 'issued' |
+| `issued_by` | `uuid` |  Nullable |
+| `issued_at` | `timestamptz` |  Default now() |
+| `signature_type` | `text` |  Nullable |
+| `signature_id` | `uuid` |  Nullable |
+| `gate_log_id` | `uuid` |  Nullable |
+| `created_at` | `timestamptz` |  Default now() |
+| `updated_at` | `timestamptz` |  Default now() |
 
 ## Table `feature_flags`
 
@@ -634,6 +661,47 @@ Rekam jejak sesi Bimbingan Konseling (BK) santri MBS Tanggul.
 | `created_at` | `timestamptz` |  Nullable |
 | `updated_at` | `timestamptz` |  Nullable |
 
+## Table `wafa_attendance`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `item_id` | `uuid` |  |
+| `tab` | `text` |  |
+| `year` | `int4` |  |
+| `month` | `int4` |  |
+| `days` | `jsonb` |  |
+| `updated_by` | `uuid` |  Nullable |
+| `created_at` | `timestamptz` |  Nullable |
+| `updated_at` | `timestamptz` |  Nullable |
+
+## Table `wafa_groups`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `name` | `text` |  |
+| `guru_id` | `uuid` |  |
+| `created_at` | `timestamptz` |  Nullable |
+| `updated_at` | `timestamptz` |  Nullable |
+| `deleted_at` | `timestamptz` |  Nullable |
+
+## Table `wafa_group_members`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `group_id` | `uuid` |  |
+| `student_id` | `uuid` |  |
+| `role` | `text` |  |
+| `created_at` | `timestamptz` |  Nullable |
+
 ## Custom Types / Enums
 
 ### `app_role`
@@ -663,51 +731,6 @@ Rekam jejak sesi Bimbingan Konseling (BK) santri MBS Tanggul.
 ### `counseling_status`
 
 `proses` | `selesai`
-
-## Table `wafa_attendance`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `uuid` | Primary, default `gen_random_uuid()` |
-| `item_id` | `uuid` | Not null (FK to teachers or students) |
-| `tab` | `text` | Not null (`teacher`, `mentor`, `student`) |
-| `year` | `int4` | Not null |
-| `month` | `int4` | Not null |
-| `days` | `jsonb` | Not null, default `'{}'` |
-| `updated_by` | `uuid` | Nullable (FK to profiles) |
-| `created_at` | `timestamptz` | Nullable, default `now()` |
-| `updated_at` | `timestamptz` | Nullable, default `now()` |
-
-Constraints: unique(`item_id`, `tab`, `year`, `month`)
-
-## Table `wafa_groups`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `uuid` | Primary, default `gen_random_uuid()` |
-| `name` | `text` | Not null |
-| `guru_id` | `uuid` | Not null (FK to teachers) |
-| `created_at` | `timestamptz` | Nullable, default `now()` |
-| `updated_at` | `timestamptz` | Nullable, default `now()` |
-| `deleted_at` | `timestamptz` | Nullable |
-
-## Table `wafa_group_members`
-
-### Columns
-
-| Name | Type | Constraints |
-|------|------|-------------|
-| `id` | `uuid` | Primary, default `gen_random_uuid()` |
-| `group_id` | `uuid` | Not null (FK to wafa_groups, ON DELETE CASCADE) |
-| `student_id` | `uuid` | Not null (FK to students) |
-| `role` | `text` | Not null, default `student` (`student` or `mudabbir`) |
-| `created_at` | `timestamptz` | Nullable, default `now()` |
-
-Constraints: unique(`group_id`, `student_id`)
 
 ## RLS Policies
 
@@ -918,6 +941,33 @@ Constraints: unique(`group_id`, `student_id`)
 |--------|---------|-------|--------|-------|------------|
 | `Allow read for authenticated users` | SELECT | authenticated | PERMISSIVE | `true` | — |
 | `Allow write for authenticated users` | ALL | authenticated | PERMISSIVE | `true` | `true` |
+
+### `wafa_attendance`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `Allow public delete access on wafa_attendance` | DELETE | public | PERMISSIVE | `true` | — |
+| `Allow public insert access on wafa_attendance` | INSERT | public | PERMISSIVE | — | `true` |
+| `Allow public read access on wafa_attendance` | SELECT | public | PERMISSIVE | `true` | — |
+| `Allow public update access on wafa_attendance` | UPDATE | public | PERMISSIVE | `true` | — |
+
+### `wafa_groups`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `Allow public delete access on wafa_groups` | DELETE | public | PERMISSIVE | `true` | — |
+| `Allow public insert access on wafa_groups` | INSERT | public | PERMISSIVE | — | `true` |
+| `Allow public read access on wafa_groups` | SELECT | public | PERMISSIVE | `true` | — |
+| `Allow public update access on wafa_groups` | UPDATE | public | PERMISSIVE | `true` | — |
+
+### `wafa_group_members`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `Allow public delete access on wafa_group_members` | DELETE | public | PERMISSIVE | `true` | — |
+| `Allow public insert access on wafa_group_members` | INSERT | public | PERMISSIVE | — | `true` |
+| `Allow public read access on wafa_group_members` | SELECT | public | PERMISSIVE | `true` | — |
+| `Allow public update access on wafa_group_members` | UPDATE | public | PERMISSIVE | `true` | — |
 
 ### `signatures`
 

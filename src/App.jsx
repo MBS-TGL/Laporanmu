@@ -53,6 +53,8 @@ const AttendancePage = lazyRetry(() => import('@features/attendance/pages/Attend
 const HalaqahPage = lazyRetry(() => import('@features/wafa/pages/HalaqahPage.jsx'))
 const GatePage = lazyRetry(() => import('@features/gate/pages/GatePage.jsx'))
 const GateKioskPage = lazyRetry(() => import('@features/gate/pages/GateKioskPage.jsx'))
+const LeavePermitPage = lazyRetry(() => import('@features/leave-permit/pages/LeavePermitPage.jsx'))
+const LeavePermitDashboardPage = lazyRetry(() => import('@features/leave-permit/pages/LeavePermitDashboardPage.jsx'))
 const SettingsPage = lazyRetry(() => import('@features/settings/pages/SettingsPage.jsx'))
 
 // Admin-only
@@ -496,6 +498,16 @@ function AppRoutes() {
             <Route path="/boarding/gate/kiosk" element={
               <RoleFlagRoute roles={DEV_ADMIN_GATE} flag="module.gate" label="Portal Keluar Masuk">
                 <GateKioskPage />
+              </RoleFlagRoute>
+            } />
+            <Route path="/boarding/leave-permit" element={
+              <RoleFlagRoute roles={DEV_ADMIN}>
+                <LeavePermitPage />
+              </RoleFlagRoute>
+            } />
+            <Route path="/boarding/leave-permit/dashboard" element={
+              <RoleFlagRoute roles={DEV_ADMIN}>
+                <LeavePermitDashboardPage />
               </RoleFlagRoute>
             } />
             <Route path="/admin/logs" element={

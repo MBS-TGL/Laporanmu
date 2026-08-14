@@ -56,6 +56,8 @@ import LogCard from '@features/gate/ui/LogCard'
 import GateFilterBar from '@features/gate/ui/GateFilterBar'
 import GateTableRow from '@features/gate/ui/GateTableRow'
 import LiveClock from '@features/gate/ui/LiveClock'
+import GateReconcilePanel from '@features/leave-permit/ui/GateReconcilePanel'
+import useLeavePermitCore from '@features/leave-permit/hooks/useLeavePermitCore'
 
 
 // ─── Skeletons ──────────────────────────────────────────────────────────────
@@ -206,6 +208,21 @@ export default function GatePage() {
     handleBulkCheckout, handleBulkDelete,
     handleSelectAll, toggleSelect, clearSelection,
   } = useGateCore({ activeTab, rekapMode, rekapDate })
+
+  const { confirmDeparture, confirmReturn } = useLeavePermitCore()
+  const [reconcileLoading, setReconcileLoading] = useState(false)
+
+  const handleConfirmDeparture = async (permit) => {
+    setReconcileLoading(true)
+    await confirmDeparture(permit)
+    setReconcileLoading(false)
+  }
+
+  const handleConfirmReturn = async (permit) => {
+    setReconcileLoading(true)
+    await confirmReturn(permit)
+    setReconcileLoading(false)
+  }
 
   // ── Keyboard Shortcuts ──────────────────────────────────────────────────────
   useEffect(() => {
@@ -413,6 +430,7 @@ export default function GatePage() {
     { key: 'input', label: tp('tabInput'), icon: Plus },
     { key: 'log', label: tp('tabLogHariIni'), icon: Calendar },
     { key: 'rekap', label: tp('tabRekap'), icon: CalendarDays },
+    { key: 'izin', label: 'Izin Santri', icon: ClipboardList },
   ]
 
   // ── Guards ─────────────────────────────────────────────────────────────────
@@ -1285,6 +1303,23 @@ export default function GatePage() {
                   }
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* ── TAB: IZIN SANTRI ── */}
+        {activeTab === 'izin' && (
+          <div className="space-y-4 animate-in fade-in duration-200">
+            <div className="glass rounded-[1.5rem] p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <ClipboardList className="w-4 h-4 text-[var(--color-primary)]" />
+                <h3 className="text-[13px] font-black text-[var(--color-text)]">Rekoncile Izin Santri</h3>
+              </div>
+              <GateReconcilePanel
+                onConfirmDeparture={handleConfirmDeparture}
+                onConfirmReturn={handleConfirmReturn}
+                loading={reconcileLoading}
+              />
             </div>
           </div>
         )}

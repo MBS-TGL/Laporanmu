@@ -754,7 +754,7 @@ const RaportPrintCard = memo(({
                                     </div>
                                     <table style={{ width: '100%', height: '100%', borderCollapse: 'collapse', fontSize: isAr ? '9pt' : '9.5pt', flex: 1 }}>
                                         <tbody>
-                                            <tr style={{ height: '50%' }}>
+                                            <tr style={{ height: '33.33%' }}>
                                                 {isAr ? <>
                                                     <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%', fontSize: `${lc.arSecFontSize}pt`, fontFamily: arFont }}>{displayVal(ex.ziyadah, true)}</td>
                                                     <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'right', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt`, width: '30%' }}>{L.ziyadah}</td>
@@ -763,13 +763,22 @@ const RaportPrintCard = memo(({
                                                     <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%' }}>{displayVal(ex.ziyadah, true)}</td>
                                                 </>}
                                             </tr>
-                                            <tr style={{ height: '50%' }}>
+                                            <tr style={{ height: '33.33%' }}>
                                                 {isAr ? <>
                                                     <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%', fontSize: `${lc.arSecFontSize}pt`, fontFamily: arFont }}>{displayVal(ex.murojaah, true)}</td>
                                                     <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'right', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt`, width: '30%' }}>{L.murojaah}</td>
                                                 </> : <>
                                                     <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'left', width: '30%' }}>{L.murojaah}</td>
                                                     <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%' }}>{displayVal(ex.murojaah, true)}</td>
+                                                </>}
+                                            </tr>
+                                            <tr style={{ height: '33.33%' }}>
+                                                {isAr ? <>
+                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%', fontSize: `${lc.arSecFontSize}pt`, fontFamily: arFont }}>{displayVal(ex.total_hafalan || totalHafalan, true)}</td>
+                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'right', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt`, width: '30%' }}>{L.totalHafalan || 'مجموع الحفظ'}</td>
+                                                </> : <>
+                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'left', width: '30%' }}>{L.totalHafalan || 'Total Hafalan'}</td>
+                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%' }}>{displayVal(ex.total_hafalan || totalHafalan, true)}</td>
                                                 </>}
                                             </tr>
                                         </tbody>

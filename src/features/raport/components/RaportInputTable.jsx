@@ -1586,10 +1586,27 @@ export default function RaportInputTable({
                                                 {criteria.map(k => (
                                                     <div key={k.key} className="flex flex-col items-center gap-0.5">
                                                         <span className="text-[7px] font-black uppercase tracking-wide" style={{ color: k.color }}>{k.id.slice(0, 3)}</span>
-                                                        <input type="number" inputMode="decimal" min={0} max={maxScore} placeholder="—"
+                                                        <input type="text" inputMode="decimal" min={0} max={maxScore} placeholder="—"
                                                             value={sc[k.key] ?? ''}
-                                                            onChange={e => { const v = e.target.value === '' ? '' : Math.min(maxScore, Math.max(0, Number(e.target.value))); setScores(prev => ({ ...prev, [student.id]: { ...prev[student.id], [k.key]: v } })); setSavedIds(prev => { const n = new Set(prev); n.delete(student.id); return n }); triggerAutoSave(student.id) }}
-                                                            className="w-full h-10 text-center text-base font-black rounded-xl outline-none transition-all appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                                            onChange={e => {
+                                                                let raw = e.target.value.replace(/,/g, '.').replace(/[^0-9.]/g, '')
+                                                                const parts = raw.split('.')
+                                                                if (parts.length > 2) raw = parts[0] + '.' + parts.slice(1).join('')
+                                                                if (parts.length === 2 && parts[1].length > 1) raw = parts[0] + '.' + parts[1].slice(0, 1)
+                                                                if (raw.length > 1 && raw.startsWith('0') && !raw.startsWith('0.')) raw = raw.replace(/^0+/, '') || '0'
+                                                                if (raw === '' || raw === '.') {
+                                                                    setScores(prev => ({ ...prev, [student.id]: { ...prev[student.id], [k.key]: '' } }))
+                                                                    setSavedIds(prev => { const n = new Set(prev); n.delete(student.id); return n })
+                                                                    triggerAutoSave(student.id)
+                                                                    return
+                                                                }
+                                                                const num = Number(raw)
+                                                                if (isNaN(num) || num < 0 || num > maxScore) return
+                                                                setScores(prev => ({ ...prev, [student.id]: { ...prev[student.id], [k.key]: num } }))
+                                                                setSavedIds(prev => { const n = new Set(prev); n.delete(student.id); return n })
+                                                                triggerAutoSave(student.id)
+                                                            }}
+                                                            className="w-full h-10 text-center text-base font-black rounded-xl outline-none transition-all appearance-none"
                                                             style={{ background: sc[k.key] !== '' && sc[k.key] != null ? getGrade(Number(sc[k.key])).bg : 'var(--color-surface-alt)', color: sc[k.key] !== '' && sc[k.key] != null ? getGrade(Number(sc[k.key])).uiColor : 'var(--color-text-muted)', border: `2px solid ${sc[k.key] !== '' && sc[k.key] != null ? getGrade(Number(sc[k.key])).border : 'var(--color-border)'}` }} />
                                                     </div>
                                                 ))}
@@ -1647,8 +1664,8 @@ export default function RaportInputTable({
                                             </div>
                                         )}
                                         {rtObj.hasHafalan && (
-                                            <div className="grid grid-cols-2 gap-1.5">
-                                                {[{ key: 'ziyadah', ph: 'Ziyadah', icon: BookOpen, color: '#10b981' }, { key: 'murojaah', ph: "Muroja'ah", icon: FileText, color: '#8b5cf6' }].map(f => (
+                                            <div className="grid grid-cols-3 gap-1.5">
+                                                {HAFALAN_FIELDS.map(f => (
                                                     <div key={f.key} className="flex items-center gap-1 rounded-lg border border-[var(--color-border)]" style={{ height: 32 }}>
                                                         <div className="w-7 h-full flex items-center justify-center shrink-0 rounded-l-[7px]" style={{ background: f.color + '18' }}>{(() => { const Icon = f.icon; return <Icon style={{ color: f.color }} className="w-3 h-3" /> })()}</div>
                                                         <ExtraInput placeholder={f.ph} value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={handleExtraChange}

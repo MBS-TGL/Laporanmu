@@ -32,22 +32,53 @@ export const ScoreCell = memo(({ value, studentId, kriteria, onScoreChange, onKe
     const g = val !== '' ? getGradePredicate(val, reportType, classLevel, kriteria.key) : null
 
     const handleChange = (e) => {
-        const raw = e.target.value.replace(/[^0-9]/g, '')
-        setLocalVal(raw)
-        if (debounceRef.current) clearTimeout(debounceRef.current)
-        if (raw === '') { setHasError(false); debounceRef.current = setTimeout(() => onScoreChange(studentId, kriteria.key, ''), 300); return }
-        const num = Number(raw)
-        if (num < 0 || num > maxScore) {
-            setHasError(true)
-            setTimeout(() => setHasError(false), 1200)
+        let raw = e.target.value.replace(/,/g, '.').replace(/[^0-9.]/g, '')
+        const parts = raw.split('.')
+        if (parts.length > 2) raw = parts[0] + '.' + parts.slice(1).join('')
+        if (parts.length === 2 && parts[1].length > 1) {
+            raw = parts[0] + '.' + parts[1].slice(0, 1)
         }
+        if (raw.length > 1 && raw.startsWith('0') && !raw.startsWith('0.')) {
+            raw = raw.replace(/^0+/, '') || '0'
+        }
+
+        if (raw === '' || raw === '.') {
+            setLocalVal(raw)
+            setHasError(false)
+            if (debounceRef.current) clearTimeout(debounceRef.current)
+            debounceRef.current = setTimeout(() => onScoreChange(studentId, kriteria.key, ''), 300)
+            return
+        }
+
+        const num = Number(raw)
+        if (isNaN(num) || num < 0 || num > maxScore) {
+            setHasError(true)
+            setTimeout(() => setHasError(false), 500)
+            return
+        }
+
+        setLocalVal(raw)
+        setHasError(false)
+        if (debounceRef.current) clearTimeout(debounceRef.current)
         debounceRef.current = setTimeout(() => onScoreChange(studentId, kriteria.key, num), 300)
     }
 
     const handleBlur = () => {
         setFocused(false); setHasError(false)
         if (debounceRef.current) { clearTimeout(debounceRef.current); debounceRef.current = null }
-        if (String(localVal) !== String(value ?? '')) onScoreChange(studentId, kriteria.key, localVal)
+        if (localVal === '' || localVal === '.') {
+            onScoreChange(studentId, kriteria.key, '')
+            setLocalVal('')
+            return
+        }
+        let num = Number(localVal)
+        if (isNaN(num)) num = ''
+        else if (num > maxScore) num = maxScore
+        else if (num < 0) num = 0
+
+        const finalVal = num === '' ? '' : num
+        setLocalVal(finalVal === '' ? '' : String(finalVal))
+        if (String(finalVal) !== String(value ?? '')) onScoreChange(studentId, kriteria.key, finalVal)
     }
 
     return (
@@ -463,7 +494,7 @@ const StudentRow = memo(({
                 <td className="px-2 py-3" style={{ verticalAlign: 'middle' }}>
                     <div className="flex flex-col gap-1.5">
                         {rtObj.hasHafalan && (
-                            <div className="grid grid-cols-2 gap-1">
+                            <div className="grid grid-cols-3 gap-1">
                                 {HAFALAN_FIELDS.map(f => {
                                     const IconComp = f.icon
                                     return (

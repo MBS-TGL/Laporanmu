@@ -1,7 +1,7 @@
 import {
     Star, Heart, Brush, BookOpen, Languages,
     Scale, Ruler, HeartPulse, AlertCircle,
-    AlertTriangle, DoorOpen, FileText, Compass
+    AlertTriangle, DoorOpen, FileText, Compass, Award
 } from 'lucide-react'
 
 export const MAX_SCORE = 9
@@ -48,7 +48,7 @@ export const LABEL = {
         studentName: 'اسم الطالب', room: 'الغرفة', class: 'الفصل', year: 'العام الدراسي',
         subject: 'جوانب التقييم', score: 'النقاط',
         grade: 'التقدير', num: 'الرقم', weight: 'وزن البدن', height: 'طول البدن',
-        ziyadah: 'الزيادة', murojaah: 'المراجعة', sick: 'للمرض', home: 'للرجوع',
+        ziyadah: 'الزيادة', murojaah: 'المراجعة', totalHafalan: 'مجموع الحفظ', sick: 'للمرض', home: 'للرجوع',
         izin: 'الإذن', alpa: 'بلا إذن', gradeScale: 'نظام التقدير',
         musyrif: 'مربي الفصل', guardian: 'ولي الأمر',
         reportTitle: 'نتيجة الشخصية', month: 'شهر',
@@ -57,7 +57,7 @@ export const LABEL = {
         studentName: 'Nama Santri', room: 'Kamar', class: 'Kelas', year: 'Tahun Ajaran',
         subject: 'Aspek Penilaian', score: 'Nilai',
         grade: 'Predikat', num: 'No', weight: 'Berat Badan', height: 'Tinggi Badan',
-        ziyadah: 'Ziyadah', murojaah: "Muroja'ah", sick: 'Sakit', home: 'Pulang',
+        ziyadah: 'Ziyadah', murojaah: "Muroja'ah", totalHafalan: 'Total Hafalan', sick: 'Sakit', home: 'Pulang',
         izin: 'Izin', alpa: 'Alpa', gradeScale: 'Skala Penilaian',
         musyrif: 'Wali Kelas', guardian: 'Wali Santri',
         reportTitle: 'RAPORT BULANAN', month: 'Bulan',
@@ -84,6 +84,7 @@ export const FISIK_FIELDS = [
 export const HAFALAN_FIELDS = [
     { key: 'ziyadah', ph: 'Ziyadah', icon: BookOpen, color: '#10b981' },
     { key: 'murojaah', ph: "Muroja'ah", icon: FileText, color: '#8b5cf6' },
+    { key: 'total_hafalan', ph: 'Total Hafalan', icon: Award, color: '#3b82f6' },
 ]
 
 export const GRADE = (n) => {
@@ -121,6 +122,17 @@ export const HAFALAN_PRESETS = {
         '5 Juz',
         '10 Juz',
         '15 Juz',
+        '30 Juz'
+    ],
+    total_hafalan: [
+        '1 Juz',
+        '2 Juz',
+        '3 Juz',
+        '5 Juz',
+        '10 Juz',
+        '15 Juz',
+        '20 Juz',
+        '25 Juz',
         '30 Juz'
     ]
 }

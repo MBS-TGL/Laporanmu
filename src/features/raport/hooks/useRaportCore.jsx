@@ -593,8 +593,7 @@ export function useRaportCore() {
                     hari_pulang: ex.hari_pulang !== '' ? Number(ex.hari_pulang) : 0,
                     catatan: ex.catatan || null,
                     pelanggaran: ex.pelanggaran || null,
-                    prestasi: ex.prestasi || null,
-                    sholat: ex.sholat || null
+                    prestasi: ex.prestasi || null
                 }
                 const existingId = existingReportIdsRef.current[studentId]
                 if (existingId) {

@@ -89,6 +89,11 @@ const RaportPrintCard = memo(({
         : []
     const semesterTotal = semesterFilledScores.reduce((s, v) => s + Number(v), 0)
     const semesterAvg = semesterFilledScores.length > 0 ? Math.round(semesterTotal / semesterFilledScores.length) : 0
+
+    // Total Hafalan = Ziyadah + Muroja'ah (dihitung otomatis, tanpa field baru)
+    const _ziyadahNum = ex.ziyadah !== '' && ex.ziyadah !== null && ex.ziyadah !== undefined ? Number(ex.ziyadah) : 0
+    const _murojaahNum = ex.murojaah !== '' && ex.murojaah !== null && ex.murojaah !== undefined ? Number(ex.murojaah) : 0
+    const totalHafalan = isNaN(_ziyadahNum) || isNaN(_murojaahNum) ? '' : String(_ziyadahNum + _murojaahNum)
     const rp = isSemesterExam ? '1px' : (isA4 ? '1.5px' : '2px') // row padding: kompak untuk ujian semester
     const rowPadding = isAr
         ? (isSemesterExam ? (isA4 ? '1px 0' : '2px 0') : (isA4 ? '2.5px 0' : '4px 0'))
@@ -839,8 +844,8 @@ const RaportPrintCard = memo(({
                                 </div>
                             )}
 
-                            {/* Catatan Wali Kelas — 50%, sejajar Perkembangan Hafalan */}
-                            {rtObj.hasCatatan && ex.catatan ? (
+                            {/* Catatan Wali Kelas & Kelengkapan Perlengkapan — 50%, sejajar Perkembangan Hafalan */}
+                            {rtObj.hasCatatan && (
                                 <div style={{
                                     width: '50%', flexShrink: 0, alignSelf: 'stretch', border: '1px solid #ccc', borderRadius: 4, padding: isA4 ? '6px 10px' : '8px 12px',
                                     display: 'flex', flexDirection: 'column', paddingRight: 7
@@ -850,20 +855,21 @@ const RaportPrintCard = memo(({
                                         direction: isAr ? 'rtl' : 'ltr', fontFamily: isAr ? arFont : 'inherit',
                                         textAlign: isAr ? 'right' : 'left'
                                     }}>
-                                        {isAr ? 'ملاحظة' : 'Catatan Wali Kelas'}
+                                        {isAr ? 'ملاحظة و اكتمال' : 'Catatan & Kelengkapan'}
                                     </div>
                                     <div style={{
                                         fontSize: (isAr && catatanArab) ? '12pt' : '9.5pt',
                                         direction: isAr ? 'rtl' : 'ltr',
                                         fontFamily: isAr ? arFont : 'inherit',
                                         textAlign: isAr ? 'right' : 'left',
-                                        lineHeight: isA4 ? 1.4 : 1.6
+                                        lineHeight: isA4 ? 1.4 : 1.6,
+                                        color: ex.catatan ? '#000' : '#999',
+                                        fontStyle: ex.catatan ? 'normal' : 'italic',
+                                        flex: 1
                                     }}>
-                                        {isAr && catatanArab ? catatanArab : isAr && ex.catatan ? translitToAr(ex.catatan) : ex.catatan}
+                                        {isAr && catatanArab ? catatanArab : isAr && ex.catatan ? translitToAr(ex.catatan) : ex.catatan || (isAr ? 'لا يوجد' : '—')}
                                     </div>
                                 </div>
-                            ) : (
-                                <div style={{ width: '50%', flexShrink: 0 }} />
                             )}
 
                             {/* TTD Wali Kelas — 25%, sejajar Absensi, selalu tampil */}

@@ -802,13 +802,13 @@ const RaportPrintCard = memo(({
                                             ].map(item => (
                                                 <tr key={item.key}>
                                                     {isAr ? <>
-                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: absPadding, textAlign: 'center', fontWeight: 700, width: '35%', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt` }}>
+                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: absPadding, textAlign: 'center', fontWeight: 700, width: '50%', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt` }}>
                                                             {displayVal(ex[item.key], true) === '—' ? '—' : `${displayVal(ex[item.key], true)} يَوْم`}
                                                         </td>
-                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: absPadding, textAlign: 'right', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt` }}>{item.label}</td>
+                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: absPadding, textAlign: 'right', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt`, width: '50%' }}>{item.label}</td>
                                                     </> : <>
-                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: absPadding, textAlign: 'left' }}>{item.label}</td>
-                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: absPadding, textAlign: 'center', fontWeight: 700, width: '35%' }}>
+                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: absPadding, textAlign: 'left', width: '50%' }}>{item.label}</td>
+                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: absPadding, textAlign: 'center', fontWeight: 700, width: '50%' }}>
                                                             {displayVal(ex[item.key], true) === '—' ? '—' : `${displayVal(ex[item.key], true)} hari`}
                                                         </td>
                                                     </>}

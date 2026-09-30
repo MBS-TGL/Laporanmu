@@ -2157,6 +2157,7 @@ await Promise.all([
                     templateOpenId={templateOpenId}
                     catatanArabMap={catatanArabMap}
                     prevMonthScores={prevMonthScores}
+                    prevMonthExtras={prevMonthExtras}
                     studentTrend={studentTrend}
                     sendingWA={sendingWA}
                     canEdit={canEdit}

@@ -134,6 +134,7 @@ export function useRaportCore() {
     const [isOnline, setIsOnline] = useState(() => typeof navigator !== 'undefined' ? navigator.onLine : true)
     const [newMonthBanner, setNewMonthBanner] = useState(null)
     const [prevMonthScores, setPrevMonthScores] = useState({})
+    const [prevMonthExtras, setPrevMonthExtras] = useState({})
     const [studentTrend, setStudentTrend] = useState({})
     const [catatanArabMap, setCatatanArabMap] = useState({})
     const [behaviorReports, setBehaviorReports] = useState({}) // { studentId: [{ violation_type_id, points, notes, reported_at, teacher_name, rule_name, rule_category, is_negative }] }
@@ -357,7 +358,7 @@ export function useRaportCore() {
 
                 const [res1, res2] = await Promise.all([
                     supabase.from('student_monthly_reports').select('*').in('student_id', ids).eq('month', month).eq('year', year),
-                    supabase.from('student_monthly_reports').select('student_id,nilai_akhlak,nilai_ibadah,nilai_kebersihan,nilai_quran,nilai_bahasa').in('student_id', ids).eq('month', prevM).eq('year', prevY),
+                    supabase.from('student_monthly_reports').select('student_id,nilai_akhlak,nilai_ibadah,nilai_kebersihan,nilai_quran,nilai_bahasa,ziyadah,murojaah,total_hafalan').in('student_id', ids).eq('month', prevM).eq('year', prevY),
                 ])
                 repData = res1.data || []
                 prevRepData = res2.data || []
@@ -417,10 +418,11 @@ export function useRaportCore() {
                 }
             }, 0)
 
-            const prevScoreMap = {}
+            const prevScoreMap = {}, prevExtraMap = {}
             for (const r of (prevRepData || [])) {
                 if (useReportType === 'bulanan') {
                     prevScoreMap[r.student_id] = { nilai_akhlak: r.nilai_akhlak, nilai_ibadah: r.nilai_ibadah, nilai_kebersihan: r.nilai_kebersihan, nilai_quran: r.nilai_quran, nilai_bahasa: r.nilai_bahasa }
+                    prevExtraMap[r.student_id] = { ziyadah: r.ziyadah ?? '', murojaah: r.murojaah ?? '', total_hafalan: r.total_hafalan ?? '' }
                 } else {
                     const scObj = {}
                     criteria.forEach(k => {
@@ -430,6 +432,7 @@ export function useRaportCore() {
                 }
             }
             setPrevMonthScores(prevScoreMap)
+            setPrevMonthExtras(prevExtraMap)
 
             const initScores = {}, initExtras = {}, initExisting = {}
             const initSavedIds = new Set()
@@ -968,7 +971,7 @@ export function useRaportCore() {
         existingReportIds, setExistingReportIds, savingAll, setSavingAll,
         copyingLastMonth, setCopyingLastMonth, studentSearch, setStudentSearch,
         draftAvailable, setDraftAvailable, isOnline, setIsOnline,
-        newMonthBanner, setNewMonthBanner, prevMonthScores, setPrevMonthScores,
+        newMonthBanner, setNewMonthBanner, prevMonthScores, setPrevMonthScores, prevMonthExtras,
         studentTrend, setStudentTrend, catatanArabMap, setCatatanArabMap, behaviorReports,
         saveAllConfirm, setSaveAllConfirm, showNoPhoneOnly, setShowNoPhoneOnly,
         showIncompleteOnly, setShowIncompleteOnly, lastSession, setLastSession,

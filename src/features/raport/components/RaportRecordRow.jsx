@@ -1,8 +1,8 @@
-import { memo, useState, useEffect, useRef, useMemo } from 'react'
+import { memo, useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import {
     Loader2, CheckCircle2, Save, FileText, X,
     ClipboardList, Zap, Lightbulb, Languages, Star, Heart,
-    AlertTriangle, Compass
+    AlertTriangle, Compass, Plus, Minus, Copy
 } from 'lucide-react'
 import { getGradePredicate, RAPORT_TYPES } from '@utils/reports/raportTypeRegistry'
 import {
@@ -353,7 +353,7 @@ const studentRowAreEqual = (prev, next) => {
 
 const StudentRow = memo(({
     student, si, sc, ex, isSaved, isSaving, isDirty, isChecked,
-    bulkMode, lang, trendData, prevScores, templateOpen, catatanArab, sendingWAStatus,
+    bulkMode, lang, trendData, prevScores, prevExtras, templateOpen, catatanArab, sendingWAStatus,
     studentBehaviors = [],
     onScoreChange, onExtraChange, onCatatanChange, onSave, onWA, onPDF, onReset,
     onBulkToggle, onKeyDown, onTemplateToggle, onTemplateApply, onTranslitToggle,
@@ -361,6 +361,18 @@ const StudentRow = memo(({
     criteria = [], maxScore, reportType, classLevel
 }) => {
     const rtObj = RAPORT_TYPES[reportType] || RAPORT_TYPES.bulanan
+    const [confirmReset, setConfirmReset] = useState(false)
+    const confirmResetTimerRef = useRef(null)
+    const handleResetClick = useCallback(() => {
+        if (confirmReset) {
+            clearTimeout(confirmResetTimerRef.current)
+            setConfirmReset(false)
+            onReset(student)
+        } else {
+            setConfirmReset(true)
+            confirmResetTimerRef.current = setTimeout(() => setConfirmReset(false), 2500)
+        }
+    }, [confirmReset, onReset, student])
 
     // ── Score consistency warnings ──
     // Cross-reference pelanggaran/sholat/absensi with scores
@@ -472,6 +484,12 @@ const StudentRow = memo(({
                     <div className="grid grid-cols-2 gap-x-1.5 gap-y-2">
                         {activeFisikFields.map(f => {
                             const IconComp = f.icon
+                            const isAttendance = f.key.startsWith('hari_')
+                            const curNum = Number(ex[f.key] ?? 0)
+                            const handleStep = (delta) => {
+                                const next = Math.max(0, curNum + delta)
+                                onExtraChange(student.id, f.key, String(next))
+                            }
                             return (
                                 <div key={f.key} className="flex flex-col gap-0.5">
                                     <span style={{ fontSize: 7.5, fontWeight: 900, color: f.color, letterSpacing: '0.4px', textTransform: 'uppercase', lineHeight: 1, paddingLeft: 2 }}>
@@ -481,8 +499,33 @@ const StudentRow = memo(({
                                         <div className="w-6 h-full flex items-center justify-center shrink-0" style={{ background: f.color + '18' }}>
                                             <IconComp className="w-2.5 h-2.5" style={{ color: f.color }} />
                                         </div>
-                                        <ExtraInput type="number" inputMode="decimal" placeholder="—" value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={onExtraChange} aria-label={f.fullLabel} className="flex-1 w-0 h-full text-[11px] font-bold text-center px-0.5 bg-transparent text-[var(--color-text)] outline-none appearance-none" />
-                                        <span className="text-[8px] text-[var(--color-text-muted)] font-bold pr-1 shrink-0">{f.unit}</span>
+                                        {isAttendance ? (
+                                            <>
+                                                <button
+                                                    onClick={() => handleStep(-1)}
+                                                    disabled={curNum <= 0}
+                                                    className="w-5 h-full flex items-center justify-center shrink-0 transition-colors hover:bg-[var(--color-surface-alt)] disabled:opacity-20"
+                                                    aria-label={`Kurangi ${f.fullLabel}`}
+                                                >
+                                                    <Minus className="w-2.5 h-2.5" style={{ color: f.color }} />
+                                                </button>
+                                                <span className="flex-1 text-[11px] font-black text-center" style={{ color: curNum > 0 ? f.color : 'var(--color-text-muted)' }}>
+                                                    {curNum > 0 ? curNum : '—'}
+                                                </span>
+                                                <button
+                                                    onClick={() => handleStep(1)}
+                                                    className="w-5 h-full flex items-center justify-center shrink-0 transition-colors hover:bg-[var(--color-surface-alt)]"
+                                                    aria-label={`Tambah ${f.fullLabel}`}
+                                                >
+                                                    <Plus className="w-2.5 h-2.5" style={{ color: f.color }} />
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <ExtraInput type="number" inputMode="decimal" placeholder="—" value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={onExtraChange} aria-label={f.fullLabel} className="flex-1 w-0 h-full text-[11px] font-bold text-center px-0.5 bg-transparent text-[var(--color-text)] outline-none appearance-none" />
+                                                <span className="text-[8px] text-[var(--color-text-muted)] font-bold pr-1 shrink-0">{f.unit}</span>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                             )
@@ -497,12 +540,27 @@ const StudentRow = memo(({
                             <div className="grid grid-cols-3 gap-1">
                                 {HAFALAN_FIELDS.map(f => {
                                     const IconComp = f.icon
+                                    const prevVal = prevExtras?.[f.key]
+                                    const hasPrev = prevVal !== undefined && prevVal !== null && prevVal !== ''
                                     return (
-                                        <div key={f.key} className="flex items-center gap-1 rounded-md border border-[var(--color-border)]" style={{ background: 'var(--color-surface)', height: 28 }}>
-                                            <div className="w-6 h-full flex items-center justify-center shrink-0 rounded-l-[5px]" style={{ background: f.color + '18' }}>
-                                                <IconComp className="w-2.5 h-2.5" style={{ color: f.color }} />
+                                        <div key={f.key} className="flex flex-col gap-0.5">
+                                            <div className="flex items-center gap-1 rounded-md border border-[var(--color-border)]" style={{ background: 'var(--color-surface)', height: 28 }}>
+                                                <div className="w-6 h-full flex items-center justify-center shrink-0 rounded-l-[5px]" style={{ background: f.color + '18' }}>
+                                                    <IconComp className="w-2.5 h-2.5" style={{ color: f.color }} />
+                                                </div>
+                                                <ExtraInput placeholder={f.ph} value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={onExtraChange} aria-label={f.ph} className="flex-1 w-0 h-full px-1 text-[10px] font-bold bg-transparent text-[var(--color-text)] outline-none" />
                                             </div>
-                                            <ExtraInput placeholder={f.ph} value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={onExtraChange} aria-label={f.ph} className="flex-1 w-0 h-full px-1 text-[10px] font-bold bg-transparent text-[var(--color-text)] outline-none" />
+                                            {hasPrev && (
+                                                <button
+                                                    onClick={() => onExtraChange(student.id, f.key, prevVal)}
+                                                    className="flex items-center gap-0.5 w-full px-1 py-0.5 rounded text-[8px] font-black transition-colors hover:bg-[var(--color-surface-alt)] truncate"
+                                                    style={{ color: f.color, opacity: 0.8 }}
+                                                    title={`Salin dari bulan lalu: ${prevVal}`}
+                                                >
+                                                    <Copy className="w-2 h-2 shrink-0" />
+                                                    <span className="truncate">{prevVal}</span>
+                                                </button>
+                                            )}
                                         </div>
                                     )
                                 })}
@@ -593,10 +651,11 @@ const StudentRow = memo(({
                             WA
                         </button>
                     </div>
-                    <button onClick={() => onReset(student)} aria-label={`Reset nilai ${student.name}`}
-                        className="w-full h-7 rounded-lg flex items-center justify-center gap-1 text-[10px] font-black transition-all hover:bg-red-500/10 hover:text-red-500"
-                        style={{ background: 'transparent', color: 'var(--color-text-muted)', border: '1px dashed var(--color-border)' }}>
-                        <X className="w-2.5 h-2.5" /> Reset
+                    <button onClick={handleResetClick} aria-label={`Reset nilai ${student.name}`}
+                        className={`w-full h-7 rounded-lg flex items-center justify-center gap-1 text-[10px] font-black transition-all ${confirmReset ? 'bg-red-500/15 text-red-500 border-red-400/40' : 'hover:bg-red-500/10 hover:text-red-500'}`}
+                        style={{ background: confirmReset ? undefined : 'transparent', color: confirmReset ? undefined : 'var(--color-text-muted)', border: `1px ${confirmReset ? 'solid' : 'dashed'} ${confirmReset ? '#f87171' : 'var(--color-border)'}` }}>
+                        <X className="w-2.5 h-2.5" />
+                        {confirmReset ? 'Yakin?' : 'Reset'}
                     </button>
                 </div>
             </td>

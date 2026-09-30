@@ -405,6 +405,7 @@ export default function RaportInputTable({
     templateOpenId,
     catatanArabMap,
     prevMonthScores,
+    prevMonthExtras = {},
     studentTrend,
     sendingWA,
     canEdit,
@@ -1479,6 +1480,7 @@ export default function RaportInputTable({
                                                     classLevel={classLevel}
                                                     trendData={studentTrend[student.id]}
                                                     prevScores={prevMonthScores[student.id]}
+                                                    prevExtras={prevMonthExtras[student.id]}
                                                     templateOpen={templateOpenId === student.id}
                                                     catatanArab={catatanArabMap[student.id]}
                                                     sendingWAStatus={sendingWA[student.id]}

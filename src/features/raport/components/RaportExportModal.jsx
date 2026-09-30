@@ -59,7 +59,7 @@ export default function RaportExportModal({
             { key: 'tinggi_badan', label: 'Tinggi Badan', icon: Ruler },
             { key: 'ziyadah', label: 'Ziyadah', icon: BookOpen },
             { key: 'murojaah', label: 'Muroja\'ah', icon: FileText },
-            { key: 'total_hafalan', label: 'Total Hafalan', icon: Award },
+            { key: 'total_hafalan', label: 'Mahfuzhat', icon: Award },
             { key: 'hari_sakit', label: 'Absen Sakit', icon: HeartPulse },
             { key: 'hari_izin', label: 'Absen Izin', icon: AlertCircle },
             { key: 'hari_alpa', label: 'Absen Alpa', icon: AlertTriangle },

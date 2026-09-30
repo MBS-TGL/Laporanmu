@@ -70,6 +70,7 @@ const RaportPrintCard = memo(({
         numColWidth: 6,
         subjectArWidth: 34.5,
         subjectIdWidth: 34.5,
+        showCapaianHafalan: true,
         ...layoutConfig,
     }
     const semNum = Number(selectedSemester)
@@ -747,44 +748,50 @@ const RaportPrintCard = memo(({
                             </div>
 
                             {/* Ziyadah / Murojaah — 40% */}
-                            {rtObj.hasHafalan && (
-                                <div style={{ width: '40%', flexShrink: 0, display: 'flex', flexDirection: 'column', paddingRight: 7 }}>
-                                    <div style={{ fontSize: isAr ? (isLisan ? '16pt' : '14.5pt') : '9pt', fontWeight: 800, marginBottom: 0, textAlign: 'center', background: '#f0f4f8', border: '1px solid #999', borderBottom: 'none', padding: '3px 0', fontFamily: isAr ? arFont : 'inherit', lineHeight: isAr ? 1.15 : 'normal' }}>
-                                        {isAr ? 'تطور الحفظ' : 'PERKEMBANGAN HAFALAN'}
+                            {rtObj.hasHafalan && (() => {
+                                const showCapaian = lc.showCapaianHafalan !== false
+                                const rowHeight = showCapaian ? '33.33%' : '50%'
+                                return (
+                                    <div style={{ width: '40%', flexShrink: 0, display: 'flex', flexDirection: 'column', paddingRight: 7 }}>
+                                        <div style={{ fontSize: isAr ? (isLisan ? '16pt' : '14.5pt') : '9pt', fontWeight: 800, marginBottom: 0, textAlign: 'center', background: '#f0f4f8', border: '1px solid #999', borderBottom: 'none', padding: '3px 0', fontFamily: isAr ? arFont : 'inherit', lineHeight: isAr ? 1.15 : 'normal' }}>
+                                            {isAr ? 'تطور الحفظ' : 'PERKEMBANGAN HAFALAN'}
+                                        </div>
+                                        <table style={{ width: '100%', height: '100%', borderCollapse: 'collapse', fontSize: isAr ? '9pt' : '9.5pt', flex: 1 }}>
+                                            <tbody>
+                                                <tr style={{ height: rowHeight }}>
+                                                    {isAr ? <>
+                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%', fontSize: `${lc.arSecFontSize}pt`, fontFamily: arFont }}>{displayVal(ex.ziyadah, true)}</td>
+                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'right', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt`, width: '30%' }}>{L.ziyadah}</td>
+                                                    </> : <>
+                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'left', width: '30%' }}>{L.ziyadah}</td>
+                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%' }}>{displayVal(ex.ziyadah, true)}</td>
+                                                    </>}
+                                                </tr>
+                                                <tr style={{ height: rowHeight }}>
+                                                    {isAr ? <>
+                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%', fontSize: `${lc.arSecFontSize}pt`, fontFamily: arFont }}>{displayVal(ex.murojaah, true)}</td>
+                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'right', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt`, width: '30%' }}>{L.murojaah}</td>
+                                                    </> : <>
+                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'left', width: '30%' }}>{L.murojaah}</td>
+                                                        <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%' }}>{displayVal(ex.murojaah, true)}</td>
+                                                    </>}
+                                                </tr>
+                                                {showCapaian && (
+                                                    <tr style={{ height: rowHeight }}>
+                                                        {isAr ? <>
+                                                            <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%', fontSize: `${lc.arSecFontSize}pt`, fontFamily: arFont }}>{displayVal(ex.total_hafalan || totalHafalan, true)}</td>
+                                                            <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'right', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt`, width: '30%' }}>{L.totalHafalan || 'المحفوظات'}</td>
+                                                        </> : <>
+                                                            <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'left', width: '30%' }}>{L.totalHafalan || 'Mahfuzhat'}</td>
+                                                            <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%' }}>{displayVal(ex.total_hafalan || totalHafalan, true)}</td>
+                                                        </>}
+                                                    </tr>
+                                                )}
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <table style={{ width: '100%', height: '100%', borderCollapse: 'collapse', fontSize: isAr ? '9pt' : '9.5pt', flex: 1 }}>
-                                        <tbody>
-                                            <tr style={{ height: '33.33%' }}>
-                                                {isAr ? <>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%', fontSize: `${lc.arSecFontSize}pt`, fontFamily: arFont }}>{displayVal(ex.ziyadah, true)}</td>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'right', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt`, width: '30%' }}>{L.ziyadah}</td>
-                                                </> : <>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'left', width: '30%' }}>{L.ziyadah}</td>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%' }}>{displayVal(ex.ziyadah, true)}</td>
-                                                </>}
-                                            </tr>
-                                            <tr style={{ height: '33.33%' }}>
-                                                {isAr ? <>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%', fontSize: `${lc.arSecFontSize}pt`, fontFamily: arFont }}>{displayVal(ex.murojaah, true)}</td>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'right', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt`, width: '30%' }}>{L.murojaah}</td>
-                                                </> : <>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'left', width: '30%' }}>{L.murojaah}</td>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%' }}>{displayVal(ex.murojaah, true)}</td>
-                                                </>}
-                                            </tr>
-                                            <tr style={{ height: '33.33%' }}>
-                                                {isAr ? <>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%', fontSize: `${lc.arSecFontSize}pt`, fontFamily: arFont }}>{displayVal(ex.total_hafalan || totalHafalan, true)}</td>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'right', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt`, width: '30%' }}>{L.totalHafalan || 'مجموع الحفظ'}</td>
-                                                </> : <>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'left', width: '30%' }}>{L.totalHafalan || 'Total Hafalan'}</td>
-                                                    <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%' }}>{displayVal(ex.total_hafalan || totalHafalan, true)}</td>
-                                                </>}
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            )}
+                                )
+                            })()}
 
                             {/* Kehadiran — 20% */}
                             {rtObj.hasAttendance && (

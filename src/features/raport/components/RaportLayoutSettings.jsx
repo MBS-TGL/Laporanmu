@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {
     Settings2, RotateCcw, ChevronDown, ChevronUp,
-    Type, Columns, Lightbulb, AlignJustify, Hash, Award, BookOpen, Globe
+    Type, Columns, Lightbulb, AlignJustify, Hash, Award, BookOpen, Globe, Eye
 } from 'lucide-react'
 
 // ── Default layout config ───────────────────────────────────────────────────
@@ -18,6 +18,9 @@ export const DEFAULT_LAYOUT_CONFIG = {
     numColWidth: 6,           // Kolom No/الرقم
     subjectArWidth: 34.5,     // Kolom Arabic subject name
     subjectIdWidth: 34.5,     // Kolom Indonesian subject name
+
+    // Visibility toggles
+    showCapaianHafalan: true, // Tampilkan baris Mahfuzhat di tabel Perkembangan Hafalan
 }
 
 export const LS_LAYOUT_KEY = 'raport_layout_config'
@@ -80,6 +83,40 @@ function SliderControl({ label, sublabel, icon: Icon, value, min, max, step = 0.
                     background: `linear-gradient(to right, ${accentColor} 0%, ${accentColor} ${pct}%, var(--color-border) ${pct}%, var(--color-border) 100%)`
                 }}
             />
+        </div>
+    )
+}
+
+// ── Toggle Switch Control ───────────────────────────────────────────────────
+function ToggleControl({ label, sublabel, icon: Icon, checked, onChange, accentColor = '#10b981' }) {
+    return (
+        <div className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
+            <div className="flex items-center gap-1.5 min-w-0">
+                {Icon && (
+                    <div className="w-5 h-5 rounded-md flex items-center justify-center shrink-0" style={{ background: `${accentColor}18` }}>
+                        <Icon className="w-2.5 h-2.5" style={{ color: accentColor }} />
+                    </div>
+                )}
+                <div className="min-w-0">
+                    <p className="text-[9px] font-bold text-[var(--color-text)] leading-tight truncate">{label}</p>
+                    {sublabel && <p className="text-[7.5px] text-[var(--color-text-muted)] leading-tight truncate">{sublabel}</p>}
+                </div>
+            </div>
+            <button
+                type="button"
+                role="switch"
+                aria-checked={checked}
+                onClick={() => onChange(!checked)}
+                className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                    checked ? 'bg-emerald-500' : 'bg-gray-300 dark:bg-gray-600'
+                }`}
+            >
+                <span
+                    className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                        checked ? 'translate-x-4' : 'translate-x-0'
+                    }`}
+                />
+            </button>
         </div>
     )
 }
@@ -241,6 +278,19 @@ export default function RaportLayoutSettings({ config, onChange }) {
                             min={20} max={55} step={0.5} unit="%"
                             accentColor="#0ea5e9"
                             onChange={v => set('subjectIdWidth', v)}
+                        />
+                    </div>
+
+                    {/* ── Visibility Toggles ── */}
+                    <SectionHeader icon={Eye} label="Tampilan Baris Tabel" color="#10b981" />
+                    <div className="space-y-2">
+                        <ToggleControl
+                            label="Baris Mahfuzhat"
+                            sublabel="Tampilkan baris Mahfuzhat di tabel Perkembangan Hafalan"
+                            icon={Award}
+                            checked={config.showCapaianHafalan !== false}
+                            accentColor="#10b981"
+                            onChange={v => set('showCapaianHafalan', v)}
                         />
                     </div>
 

@@ -178,7 +178,7 @@ const CopyDataModal = ({ isOpen, onClose, students, scores, extras, currentMonth
                 const ids = students.map(s => s.id)
                 const { data } = await supabase
                     .from('student_monthly_reports')
-                    .select('student_id,nilai_akhlak,nilai_ibadah,nilai_kebersihan,nilai_quran,nilai_bahasa,berat_badan,tinggi_badan,ziyadah,murojaah,hari_sakit,hari_izin,hari_alpa,hari_pulang,catatan,pelanggaran,prestasi,sholat')
+                    .select('student_id,nilai_akhlak,nilai_ibadah,nilai_kebersihan,nilai_quran,nilai_bahasa,berat_badan,tinggi_badan,ziyadah,murojaah,total_hafalan,hari_sakit,hari_izin,hari_alpa,hari_pulang,catatan,pelanggaran,prestasi,sholat')
                     .in('student_id', ids).eq('month', sourceMonth).eq('year', sourceYear)
                 if (!active) return
                 const map = {}
@@ -188,7 +188,7 @@ const CopyDataModal = ({ isOpen, onClose, students, scores, extras, currentMonth
                 setSelectedIds(new Set(Object.keys(map).filter(id => {
                     const r = map[id]
                     return SCORE_KEYS.some(k => r[k.key] !== null && r[k.key] !== undefined) ||
-                        [r.berat_badan, r.tinggi_badan, r.ziyadah, r.murojaah, r.hari_sakit, r.hari_izin, r.hari_alpa, r.hari_pulang, r.catatan, r.pelanggaran, r.prestasi, r.sholat].some(v => v !== null && v !== undefined && v !== '')
+                        [r.berat_badan, r.tinggi_badan, r.ziyadah, r.murojaah, r.total_hafalan, r.hari_sakit, r.hari_izin, r.hari_alpa, r.hari_pulang, r.catatan, r.pelanggaran, r.prestasi, r.sholat].some(v => v !== null && v !== undefined && v !== '')
                 })))
             } finally {
                 if (active) setLoading(false)
@@ -970,7 +970,7 @@ export default function RaportInputTable({
                         const isBulanan = reportType === 'bulanan'
                         const hasAnyData = (sc, ex) =>
                             criteria.some(k => sc[k.key] !== '' && sc[k.key] !== null && sc[k.key] !== undefined) ||
-                            [ex.berat_badan, ex.tinggi_badan, ex.ziyadah, ex.murojaah,
+                            [ex.berat_badan, ex.tinggi_badan, ex.ziyadah, ex.murojaah, ex.total_hafalan,
                             ex.hari_sakit, ex.hari_izin, ex.hari_alpa, ex.hari_pulang, ex.catatan
                             ].some(v => v !== '' && v !== null && v !== undefined)
                         const toSave = selected.filter(s => hasAnyData(scores[s.id] || {}, extras[s.id] || {}))
@@ -989,6 +989,7 @@ export default function RaportInputTable({
                                         berat_badan: ex.berat_badan !== '' && ex.berat_badan != null ? Number(ex.berat_badan) : null,
                                         tinggi_badan: ex.tinggi_badan !== '' && ex.tinggi_badan != null ? Number(ex.tinggi_badan) : null,
                                         ziyadah: ex.ziyadah || null, murojaah: ex.murojaah || null,
+                                        total_hafalan: ex.total_hafalan || null,
                                         hari_sakit: ex.hari_sakit !== '' && ex.hari_sakit != null ? Number(ex.hari_sakit) : 0,
                                         hari_izin: ex.hari_izin !== '' && ex.hari_izin != null ? Number(ex.hari_izin) : 0,
                                         hari_alpa: ex.hari_alpa !== '' && ex.hari_alpa != null ? Number(ex.hari_alpa) : 0,
@@ -1125,7 +1126,7 @@ export default function RaportInputTable({
                                             : students;
 
                                         const scoreKeys = ['nilai_akhlak', 'nilai_ibadah', 'nilai_kebersihan', 'nilai_quran', 'nilai_bahasa']
-                                        const extraKeys = ['berat_badan', 'tinggi_badan', 'hari_sakit', 'hari_izin', 'hari_alpa', 'hari_pulang', 'ziyadah', 'murojaah', 'catatan']
+                                        const extraKeys = ['berat_badan', 'tinggi_badan', 'hari_sakit', 'hari_izin', 'hari_alpa', 'hari_pulang', 'ziyadah', 'murojaah', 'total_hafalan', 'catatan']
 
                                         const activeScoreKeys = keys.filter(k => scoreKeys.includes(k))
                                         const activeExtraKeys = keys.filter(k => extraKeys.includes(k))

@@ -121,7 +121,7 @@ export default function RaportPage() {
         existingReportIds, setExistingReportIds, savingAll, setSavingAll,
         copyingLastMonth, setCopyingLastMonth, studentSearch, setStudentSearch,
         draftAvailable, setDraftAvailable, isOnline, setIsOnline,
-        newMonthBanner, setNewMonthBanner, prevMonthScores, setPrevMonthScores,
+        newMonthBanner, setNewMonthBanner, prevMonthScores, setPrevMonthScores, prevMonthExtras,
         studentTrend, setStudentTrend, catatanArabMap, setCatatanArabMap, behaviorReports,
         saveAllConfirm, setSaveAllConfirm, showNoPhoneOnly, setShowNoPhoneOnly,
         showIncompleteOnly, setShowIncompleteOnly, lastSession, setLastSession,
@@ -553,7 +553,7 @@ export default function RaportPage() {
                     supabase.from('classes').select('id, name, homeroom_teacher_id, teachers:homeroom_teacher_id(name)').order('name'),
                     supabase.from('students').select('id, class_id').is('deleted_at', null),
                     supabase.from('student_monthly_reports')
-                        .select('student_id, nilai_akhlak, nilai_ibadah, nilai_kebersihan, nilai_quran, nilai_bahasa, berat_badan, tinggi_badan, hari_sakit, hari_izin, hari_alpa, hari_pulang, ziyadah, murojaah, catatan')
+                        .select('student_id, nilai_akhlak, nilai_ibadah, nilai_kebersihan, nilai_quran, nilai_bahasa, berat_badan, tinggi_badan, hari_sakit, hari_izin, hari_alpa, hari_pulang, ziyadah, murojaah, total_hafalan, catatan')
                         .eq('month', curMonth).eq('year', curYear),
                     supabase.from('student_monthly_reports')
                         .select('student_id, month, year')
@@ -1358,7 +1358,7 @@ export default function RaportPage() {
                 const rep = repData?.find(r => r.student_id === s.id)
                 if (reportType === 'bulanan') {
                     scMap[s.id] = { nilai_akhlak: rep?.nilai_akhlak ?? '', nilai_ibadah: rep?.nilai_ibadah ?? '', nilai_kebersihan: rep?.nilai_kebersihan ?? '', nilai_quran: rep?.nilai_quran ?? '', nilai_bahasa: rep?.nilai_bahasa ?? '' }
-                    exMap[s.id] = { berat_badan: rep?.berat_badan ?? '', tinggi_badan: rep?.tinggi_badan ?? '', ziyadah: rep?.ziyadah ?? '', murojaah: rep?.murojaah ?? '', hari_sakit: rep?.hari_sakit ?? '', hari_izin: rep?.hari_izin ?? '', hari_alpa: rep?.hari_alpa ?? '', hari_pulang: rep?.hari_pulang ?? '', catatan: rep?.catatan ?? '' }
+                    exMap[s.id] = { berat_badan: rep?.berat_badan ?? '', tinggi_badan: rep?.tinggi_badan ?? '', ziyadah: rep?.ziyadah ?? '', murojaah: rep?.murojaah ?? '', total_hafalan: rep?.total_hafalan ?? '', hari_sakit: rep?.hari_sakit ?? '', hari_izin: rep?.hari_izin ?? '', hari_alpa: rep?.hari_alpa ?? '', hari_pulang: rep?.hari_pulang ?? '', catatan: rep?.catatan ?? '' }
                 } else {
                     const scObj = {}
                     criteria.forEach(k => {
@@ -1417,6 +1417,7 @@ export default function RaportPage() {
                         tinggi_badan: ex.tinggi_badan !== '' && ex.tinggi_badan != null ? Number(ex.tinggi_badan) : null,
                         ziyadah: ex.ziyadah || null,
                         murojaah: ex.murojaah || null,
+                        total_hafalan: ex.total_hafalan || null,
                         hari_sakit: ex.hari_sakit !== '' && ex.hari_sakit != null ? Number(ex.hari_sakit) : 0,
                         hari_izin: ex.hari_izin !== '' && ex.hari_izin != null ? Number(ex.hari_izin) : 0,
                         hari_alpa: ex.hari_alpa !== '' && ex.hari_alpa != null ? Number(ex.hari_alpa) : 0,

@@ -201,7 +201,7 @@ export function useRaportCore() {
                 progressFields.push(ex.hari_sakit, ex.hari_izin, ex.hari_alpa, ex.hari_pulang)
             }
             if (rtObj.hasHafalan) {
-                progressFields.push(ex.ziyadah, ex.murojaah)
+                progressFields.push(ex.ziyadah, ex.murojaah, ex.total_hafalan)
             }
             if (rtObj.hasCatatan) {
                 progressFields.push(ex.catatan)
@@ -235,7 +235,7 @@ export function useRaportCore() {
                 checkFields.push(ex.hari_sakit, ex.hari_izin, ex.hari_alpa, ex.hari_pulang)
             }
             if (rtObj.hasHafalan) {
-                checkFields.push(ex.ziyadah, ex.murojaah)
+                checkFields.push(ex.ziyadah, ex.murojaah, ex.total_hafalan)
             }
             if (rtObj.hasCatatan) {
                 checkFields.push(ex.catatan)
@@ -442,7 +442,7 @@ export function useRaportCore() {
 
                 if (useReportType === 'bulanan') {
                     initScores[s.id] = { nilai_akhlak: rep?.nilai_akhlak ?? '', nilai_ibadah: rep?.nilai_ibadah ?? '', nilai_kebersihan: rep?.nilai_kebersihan ?? '', nilai_quran: rep?.nilai_quran ?? '', nilai_bahasa: rep?.nilai_bahasa ?? '' }
-                    initExtras[s.id] = { berat_badan: rep?.berat_badan ?? '', tinggi_badan: rep?.tinggi_badan ?? '', ziyadah: rep?.ziyadah ?? '', murojaah: rep?.murojaah ?? '', hari_sakit: rep?.hari_sakit ?? '', hari_izin: rep?.hari_izin ?? '', hari_alpa: rep?.hari_alpa ?? '', hari_pulang: rep?.hari_pulang ?? '', catatan: rep?.catatan ?? '', pelanggaran: rep?.pelanggaran ?? '', prestasi: rep?.prestasi ?? '', sholat: rep?.sholat ?? '' }
+                    initExtras[s.id] = { berat_badan: rep?.berat_badan ?? '', tinggi_badan: rep?.tinggi_badan ?? '', ziyadah: rep?.ziyadah ?? '', murojaah: rep?.murojaah ?? '', total_hafalan: rep?.total_hafalan ?? '', hari_sakit: rep?.hari_sakit ?? '', hari_izin: rep?.hari_izin ?? '', hari_alpa: rep?.hari_alpa ?? '', hari_pulang: rep?.hari_pulang ?? '', catatan: rep?.catatan ?? '', pelanggaran: rep?.pelanggaran ?? '', prestasi: rep?.prestasi ?? '', sholat: rep?.sholat ?? '' }
                 } else {
                     const scObj = {}
                     criteria.forEach(k => {
@@ -589,6 +589,7 @@ export function useRaportCore() {
                     tinggi_badan: ex.tinggi_badan !== '' ? Number(ex.tinggi_badan) : null,
                     ziyadah: ex.ziyadah || null,
                     murojaah: ex.murojaah || null,
+                    total_hafalan: ex.total_hafalan || null,
                     sholat: ex.sholat || null,
                     hari_sakit: ex.hari_sakit !== '' ? Number(ex.hari_sakit) : 0,
                     hari_izin: ex.hari_izin !== '' ? Number(ex.hari_izin) : 0,
@@ -670,7 +671,7 @@ export function useRaportCore() {
         criteria.forEach(k => { emptySc[k.key] = '' })
 
         setScores(prev => ({ ...prev, [studentId]: emptySc }))
-        setExtras(prev => ({ ...prev, [studentId]: { berat_badan: '', tinggi_badan: '', ziyadah: '', murojaah: '', hari_sakit: '', hari_izin: '', hari_alpa: '', hari_pulang: '', catatan: '', pelanggaran: '', prestasi: '', sholat: '' } }))
+        setExtras(prev => ({ ...prev, [studentId]: { berat_badan: '', tinggi_badan: '', ziyadah: '', murojaah: '', total_hafalan: '', hari_sakit: '', hari_izin: '', hari_alpa: '', hari_pulang: '', catatan: '', pelanggaran: '', prestasi: '', sholat: '' } }))
         setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
 
         const existingId = existingReportIds[studentId]
@@ -701,7 +702,7 @@ export function useRaportCore() {
 
             const hasAnyData = (sc, ex) =>
                 criteria.some(k => sc[k.key] !== '' && sc[k.key] !== null && sc[k.key] !== undefined) ||
-                [ex.berat_badan, ex.tinggi_badan, ex.ziyadah, ex.murojaah,
+                [ex.berat_badan, ex.tinggi_badan, ex.ziyadah, ex.murojaah, ex.total_hafalan,
                 ex.hari_sakit, ex.hari_izin, ex.hari_alpa, ex.hari_pulang, ex.catatan,
                 ex.pelanggaran, ex.prestasi, ex.sholat
                 ].some(v => v !== '' && v !== null && v !== undefined)
@@ -727,6 +728,7 @@ export function useRaportCore() {
                         tinggi_badan: ex.tinggi_badan !== '' ? Number(ex.tinggi_badan) : null,
                         ziyadah: ex.ziyadah || null,
                         murojaah: ex.murojaah || null,
+                        total_hafalan: ex.total_hafalan || null,
                         hari_sakit: ex.hari_sakit !== '' ? Number(ex.hari_sakit) : 0,
                         hari_izin: ex.hari_izin !== '' ? Number(ex.hari_izin) : 0,
                         hari_alpa: ex.hari_alpa !== '' ? Number(ex.hari_alpa) : 0,
@@ -809,7 +811,7 @@ export function useRaportCore() {
 
         const hasAnyData = (sc, ex) =>
             criteria.some(k => sc[k.key] !== '' && sc[k.key] !== null && sc[k.key] !== undefined) ||
-            [ex.berat_badan, ex.tinggi_badan, ex.ziyadah, ex.murojaah,
+            [ex.berat_badan, ex.tinggi_badan, ex.ziyadah, ex.murojaah, ex.total_hafalan,
             ex.hari_sakit, ex.hari_izin, ex.hari_alpa, ex.hari_pulang, ex.catatan,
             ex.pelanggaran, ex.prestasi, ex.sholat
             ].some(v => v !== '' && v !== null && v !== undefined)
@@ -848,7 +850,7 @@ export function useRaportCore() {
                     const cur = scores[rep.student_id] || {}
                     const curEx = extras[rep.student_id] || {}
                     const scoresEmpty = criteria.every(k => cur[k.key] === '' || cur[k.key] === null || cur[k.key] === undefined)
-                    const extrasEmpty = [curEx.berat_badan, curEx.tinggi_badan, curEx.ziyadah, curEx.murojaah, curEx.hari_sakit, curEx.hari_izin, curEx.hari_alpa, curEx.hari_pulang, curEx.catatan, curEx.pelanggaran, curEx.prestasi, curEx.sholat].every(v => v === '' || v === null || v === undefined)
+                    const extrasEmpty = [curEx.berat_badan, curEx.tinggi_badan, curEx.ziyadah, curEx.murojaah, curEx.total_hafalan, curEx.hari_sakit, curEx.hari_izin, curEx.hari_alpa, curEx.hari_pulang, curEx.catatan, curEx.pelanggaran, curEx.prestasi, curEx.sholat].every(v => v === '' || v === null || v === undefined)
                     return scoresEmpty && extrasEmpty
                 })
             const copied = toCopy.length
@@ -861,6 +863,7 @@ export function useRaportCore() {
                         tinggi_badan: rep.tinggi_badan ?? '',
                         ziyadah: rep.ziyadah ?? '',
                         murojaah: rep.murojaah ?? '',
+                        total_hafalan: rep.total_hafalan ?? '',
                         hari_sakit: rep.hari_sakit ?? '',
                         hari_izin: rep.hari_izin ?? '',
                         hari_alpa: rep.hari_alpa ?? '',
@@ -904,7 +907,7 @@ export function useRaportCore() {
 
         for (const s of students) {
             emptyScores[s.id] = emptySc
-            emptyExtras[s.id] = { berat_badan: '', tinggi_badan: '', ziyadah: '', murojaah: '', hari_sakit: '', hari_izin: '', hari_alpa: '', hari_pulang: '', catatan: '', pelanggaran: '', prestasi: '', sholat: '' }
+            emptyExtras[s.id] = { berat_badan: '', tinggi_badan: '', ziyadah: '', murojaah: '', total_hafalan: '', hari_sakit: '', hari_izin: '', hari_alpa: '', hari_pulang: '', catatan: '', pelanggaran: '', prestasi: '', sholat: '' }
         }
         setScores(prev => ({ ...prev, ...emptyScores }))
         setExtras(prev => ({ ...prev, ...emptyExtras }))

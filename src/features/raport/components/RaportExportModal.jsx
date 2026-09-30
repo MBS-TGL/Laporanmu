@@ -3,7 +3,8 @@ import {
     CheckCircle2, FileText, Sliders, Loader2, Table, AlertTriangle, Users, Contact,
     Download, Hash, Star, HelpCircle, Tags, PieChart, ArrowDownAZ, FileSpreadsheet,
     ChevronDown, Settings, Heading, MoveHorizontal, MoveVertical, User, School, BookOpen,
-    Heart, Brush, Languages, Scale, Ruler, HeartPulse, AlertCircle, DoorOpen, FileArchive, Printer
+    Heart, Brush, Languages, Scale, Ruler, HeartPulse, AlertCircle, DoorOpen, FileArchive, Printer,
+    Award
 } from 'lucide-react'
 import { Modal } from '@shared/components'
 
@@ -58,6 +59,7 @@ export default function RaportExportModal({
             { key: 'tinggi_badan', label: 'Tinggi Badan', icon: Ruler },
             { key: 'ziyadah', label: 'Ziyadah', icon: BookOpen },
             { key: 'murojaah', label: 'Muroja\'ah', icon: FileText },
+            { key: 'total_hafalan', label: 'Total Hafalan', icon: Award },
             { key: 'hari_sakit', label: 'Absen Sakit', icon: HeartPulse },
             { key: 'hari_izin', label: 'Absen Izin', icon: AlertCircle },
             { key: 'hari_alpa', label: 'Absen Alpa', icon: AlertTriangle },
@@ -71,11 +73,11 @@ export default function RaportExportModal({
     const PRESETS = useMemo(() => {
         const critKeys = (criteria && criteria.length > 0) ? criteria.map(k => k.key) : ['nilai_akhlak', 'nilai_ibadah', 'nilai_kebersihan', 'nilai_quran', 'nilai_bahasa']
         return [
-            { id: 'all', label: 'Lengkap', cols: ['nama', ...critKeys, 'avg', 'predikat', 'berat_badan', 'tinggi_badan', 'ziyadah', 'murojaah', 'hari_sakit', 'hari_izin', 'hari_alpa', 'hari_pulang', 'catatan'] },
+            { id: 'all', label: 'Lengkap', cols: ['nama', ...critKeys, 'avg', 'predikat', 'berat_badan', 'tinggi_badan', 'ziyadah', 'murojaah', 'total_hafalan', 'hari_sakit', 'hari_izin', 'hari_alpa', 'hari_pulang', 'catatan'] },
             { id: 'academic', label: 'Akademik Only', cols: ['nama', ...critKeys, 'avg', 'predikat'] },
             { id: 'physical', label: 'Kesehatan & Fisik', cols: ['nama', 'berat_badan', 'tinggi_badan'] },
             { id: 'attendance', label: 'Absensi/Kehadiran', cols: ['nama', 'hari_sakit', 'hari_izin', 'hari_alpa', 'hari_pulang'] },
-            { id: 'evaluation', label: 'Tahfidz & Catatan', cols: ['nama', 'ziyadah', 'murojaah', 'catatan'] },
+            { id: 'evaluation', label: 'Tahfidz & Catatan', cols: ['nama', 'ziyadah', 'murojaah', 'total_hafalan', 'catatan'] },
         ]
     }, [criteria])
 

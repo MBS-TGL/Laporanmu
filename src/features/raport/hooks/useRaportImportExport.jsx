@@ -768,6 +768,7 @@ export function useRaportImportExport(core, { printContainerRef, silentPrintRef,
                 tinggi_badan: 'TB(cm)',
                 ziyadah: 'Ziyadah',
                 murojaah: "Muroja'ah",
+                total_hafalan: 'Total Hafalan',
                 hari_sakit: 'Sakit',
                 hari_izin: 'Izin',
                 hari_alpa: 'Alpa',
@@ -795,6 +796,7 @@ export function useRaportImportExport(core, { printContainerRef, silentPrintRef,
                     else if (col === 'tinggi_badan') rowData.push(ex.tinggi_badan ?? '')
                     else if (col === 'ziyadah') rowData.push(ex.ziyadah ?? '')
                     else if (col === 'murojaah') rowData.push(ex.murojaah ?? '')
+                    else if (col === 'total_hafalan') rowData.push(ex.total_hafalan ?? '')
                     else if (col === 'hari_sakit') rowData.push(ex.hari_sakit ?? '')
                     else if (col === 'hari_izin') rowData.push(ex.hari_izin ?? '')
                     else if (col === 'hari_alpa') rowData.push(ex.hari_alpa ?? '')
@@ -856,6 +858,7 @@ export function useRaportImportExport(core, { printContainerRef, silentPrintRef,
                 tinggi_badan: 'TB(cm)',
                 ziyadah: 'Ziyadah',
                 murojaah: "Muroja'ah",
+                total_hafalan: 'Total Hafalan',
                 hari_sakit: 'Sakit',
                 hari_izin: 'Izin',
                 hari_alpa: 'Alpa',
@@ -883,6 +886,7 @@ export function useRaportImportExport(core, { printContainerRef, silentPrintRef,
                     else if (col === 'tinggi_badan') rowData.push(ex.tinggi_badan !== '' && ex.tinggi_badan !== undefined ? Number(ex.tinggi_badan) : '')
                     else if (col === 'ziyadah') rowData.push(ex.ziyadah ?? '')
                     else if (col === 'murojaah') rowData.push(ex.murojaah ?? '')
+                    else if (col === 'total_hafalan') rowData.push(ex.total_hafalan ?? '')
                     else if (col === 'hari_sakit') rowData.push(ex.hari_sakit !== '' && ex.hari_sakit !== undefined ? Number(ex.hari_sakit) : '')
                     else if (col === 'hari_izin') rowData.push(ex.hari_izin !== '' && ex.hari_izin !== undefined ? Number(ex.hari_izin) : '')
                     else if (col === 'hari_alpa') rowData.push(ex.hari_alpa !== '' && ex.hari_alpa !== undefined ? Number(ex.hari_alpa) : '')
@@ -956,7 +960,7 @@ export function useRaportImportExport(core, { printContainerRef, silentPrintRef,
                 criteria.forEach(k => {
                     headers.push(k.id)
                 })
-                headers.push('Rata-rata', 'Predikat', 'BB(kg)', 'TB(cm)', 'Ziyadah', "Muroja'ah", 'Hari Sakit', 'Hari Izin', 'Hari Alpa', 'Hari Pulang', 'Catatan')
+                headers.push('Rata-rata', 'Predikat', 'BB(kg)', 'TB(cm)', 'Ziyadah', "Muroja'ah", 'Total Hafalan', 'Hari Sakit', 'Hari Izin', 'Hari Alpa', 'Hari Pulang', 'Catatan')
 
                 const rows = classStudents.map((s, i) => {
                     const rep = allRep.find(r => r.student_id === s.id) || {}
@@ -979,7 +983,7 @@ export function useRaportImportExport(core, { printContainerRef, silentPrintRef,
                         avg ? Number(avg) : '', predikat,
                         rep.berat_badan !== null && rep.berat_badan !== undefined ? Number(rep.berat_badan) : '',
                         rep.tinggi_badan !== null && rep.tinggi_badan !== undefined ? Number(rep.tinggi_badan) : '',
-                        rep.ziyadah ?? '', rep.murojaah ?? '',
+                        rep.ziyadah ?? '', rep.murojaah ?? '', rep.total_hafalan ?? '',
                         rep.hari_sakit !== null && rep.hari_sakit !== undefined ? Number(rep.hari_sakit) : '',
                         rep.hari_izin !== null && rep.hari_izin !== undefined ? Number(rep.hari_izin) : '',
                         rep.hari_alpa !== null && rep.hari_alpa !== undefined ? Number(rep.hari_alpa) : '',

@@ -2,8 +2,10 @@ import { memo, useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import {
     Loader2, CheckCircle2, Save, FileText, X,
     ClipboardList, Zap, Lightbulb, Languages, Star, Heart,
-    AlertTriangle, Compass, Plus, Minus, Copy
+    AlertTriangle, Compass, Plus, Minus, Copy, HeartPulse,
+    BookOpen, Layers
 } from 'lucide-react'
+import Modal from '@shared/components/Modal'
 import { getGradePredicate, RAPORT_TYPES } from '@utils/reports/raportTypeRegistry'
 import {
     FISIK_FIELDS, HAFALAN_FIELDS,
@@ -120,7 +122,18 @@ export const ExtraInput = memo(({ value, studentId, fieldKey, onCommit, ...input
     useEffect(() => { setLocalVal(value ?? '') }, [value])
 
     const handleChange = (e) => {
-        const v = e.target.value; setLocalVal(v)
+        let v = e.target.value
+        if (fieldKey === 'berat_badan' || fieldKey === 'tinggi_badan') {
+            v = v.replace(/,/g, '.').replace(/[^0-9.]/g, '')
+            const parts = v.split('.')
+            if (parts.length > 2) v = parts[0] + '.' + parts.slice(1).join('')
+            if (parts[1] && parts[1].length > 1) v = parts[0] + '.' + parts.slice(0, 1)
+            if (v !== '' && Number(v) > 300) v = '300'
+        } else if (fieldKey?.startsWith('hari_')) {
+            v = v.replace(/[^0-9]/g, '')
+            if (v !== '' && Number(v) > 365) v = '365'
+        }
+        setLocalVal(v)
         if (debounceRef.current) clearTimeout(debounceRef.current)
         debounceRef.current = setTimeout(() => onCommit(studentId, fieldKey, v), 300)
     }
@@ -130,7 +143,12 @@ export const ExtraInput = memo(({ value, studentId, fieldKey, onCommit, ...input
             setFocused(false)
         }, 150)
         if (debounceRef.current) { clearTimeout(debounceRef.current); debounceRef.current = null }
-        if (localVal !== (value ?? '')) onCommit(studentId, fieldKey, localVal)
+        let finalVal = localVal
+        if (fieldKey === 'berat_badan' || fieldKey === 'tinggi_badan') {
+            if (finalVal !== '' && Number(finalVal) > 300) finalVal = '300'
+        }
+        setLocalVal(finalVal)
+        if (finalVal !== (value ?? '')) onCommit(studentId, fieldKey, finalVal)
     }
 
     const handleSelectPreset = (preset) => {
@@ -208,7 +226,7 @@ export const ExtraExpandingTextarea = memo(({ value, studentId, fieldKey, onComm
     const debounceRef = useRef(null)
     const taRef = useRef(null)
 
-    const isLarge = size === 'lg'
+    const collapsedHeight = size === 'xl' ? '42px' : size === 'lg' ? '52px' : size === 'md' ? '44px' : '36px'
 
     useEffect(() => { setLocalVal(value ?? '') }, [value])
 
@@ -244,42 +262,39 @@ export const ExtraExpandingTextarea = memo(({ value, studentId, fieldKey, onComm
 
     return (
         <div
-            className="relative flex rounded-md border transition-all duration-200 overflow-hidden"
+            className="relative flex rounded-xl border transition-all duration-200 overflow-hidden"
             style={{
-                background: 'var(--color-surface)',
+                background: 'var(--color-surface-alt)',
                 borderColor: focused ? color : 'var(--color-border)',
                 boxShadow: focused ? `0 0 0 2px ${color}20` : 'none',
                 zIndex: focused ? 20 : 'auto',
-                height: focused ? 'auto' : (isLarge ? '48px' : '32px'),
-                flex: focused ? '1 1 50%' : '1 1 0%',
-                minWidth: focused ? 0 : undefined,
+                height: focused ? 'auto' : collapsedHeight,
+                minHeight: collapsedHeight,
+                flex: '1 1 0%',
+                minWidth: 0,
             }}
             title={label}
         >
             {IconComponent && (
                 <div 
-                    className="shrink-0 flex justify-center transition-all duration-200"
+                    className="shrink-0 w-8 flex justify-center transition-all duration-200"
                     style={{ 
-                        width: isLarge ? '28px' : '24px',
                         background: focused ? `${color}25` : `${color}15`,
                         alignItems: focused ? 'flex-start' : 'center',
-                        paddingTop: focused ? '6px' : '0px',
+                        paddingTop: focused ? '8px' : '0px',
                     }}
                 >
-                    <IconComponent className={isLarge ? 'w-3 h-3' : 'w-2.5 h-2.5'} style={{ color }} />
+                    <IconComponent className="w-3.5 h-3.5" style={{ color }} />
                 </div>
             )}
             <div 
-                className="flex-1 min-w-0 relative flex items-center h-full"
-                style={{
-                    padding: isLarge ? '4px 8px' : '0px 6px',
-                }}
+                className="flex-1 min-w-0 relative flex items-center h-full px-2.5"
             >
                 {!focused && (
                     <span 
-                        className={`truncate leading-tight w-full ${
-                            isLarge ? 'text-[10px]' : 'text-[9px]'
-                        } ${localVal ? 'font-bold text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-40 font-semibold'}`}
+                        className={`truncate leading-tight w-full text-xs ${
+                            localVal ? 'font-bold text-[var(--color-text)]' : 'text-[var(--color-text-muted)] font-medium'
+                        }`}
                     >
                         {localVal || label}
                     </span>
@@ -292,10 +307,10 @@ export const ExtraExpandingTextarea = memo(({ value, studentId, fieldKey, onComm
                     onBlur={handleBlur}
                     placeholder={`Isi ${label.toLowerCase()}...`}
                     rows={1}
-                    className={`w-full p-0 font-bold bg-transparent text-[var(--color-text)] outline-none resize-none leading-snug transition-all duration-200 overflow-hidden ${isLarge ? 'text-[11px]' : 'text-[10px]'}`}
+                    className="w-full p-0 font-medium text-xs bg-transparent text-[var(--color-text)] outline-none resize-none leading-snug transition-all duration-200 overflow-hidden"
                     style={{
                         height: focused ? 'auto' : '0px',
-                        minHeight: focused ? 18 : 0,
+                        minHeight: focused ? 20 : 0,
                         opacity: focused ? 1 : 0,
                         pointerEvents: focused ? 'auto' : 'none',
                     }}
@@ -416,6 +431,9 @@ const StudentRow = memo(({
         return warnings
     }, [studentBehaviors, ex.pelanggaran, ex.sholat, ex.prestasi, ex.hari_alpa, sc, criteria])
 
+    const [showModal, setShowModal] = useState(false)
+    const [activeModalTab, setActiveModalTab] = useState('fisik')
+
     const activeFisikFields = FISIK_FIELDS.filter(f => {
         if (f.key === 'berat_badan' || f.key === 'tinggi_badan') {
             return rtObj.hasFisik
@@ -424,203 +442,121 @@ const StudentRow = memo(({
     })
     const avg = calcAvg(sc, criteria)
     const g = avg ? getGradePredicate(Number(avg), reportType, classLevel) : null
+
+    const hasFisikData = ex.berat_badan || ex.tinggi_badan || Number(ex.hari_sakit) > 0 || Number(ex.hari_izin) > 0 || Number(ex.hari_alpa) > 0 || Number(ex.hari_pulang) > 0
+    const hasHafalanCatatanData = ex.ziyadah || ex.murojaah || ex.total_hafalan || ex.catatan || ex.pelanggaran || ex.prestasi || ex.sholat
+
     return (
-        <tr className={`border-t border-[var(--color-border)] transition-colors group table-row-lazy ${isChecked ? 'bg-indigo-500/5' : si % 2 === 0 ? 'bg-[var(--color-surface)]' : 'bg-[var(--color-surface-alt)]'}`}>
-            {bulkMode && (
-                <td className="text-center px-1" style={{ verticalAlign: 'middle' }}>
-                    <input type="checkbox" checked={isChecked} onChange={e => onBulkToggle(student.id, e.target.checked)} aria-label={`Pilih ${student.name}`} className="w-3.5 h-3.5 accent-violet-500 cursor-pointer" />
-                </td>
-            )}
-            <td className={`px-0 py-3 sticky left-0 z-10 transition-colors ${isChecked ? 'bg-indigo-500/5' : si % 2 === 0 ? 'bg-[var(--color-surface)]' : 'bg-[var(--color-surface-alt)]'}`} style={{ borderRight: '1px solid var(--color-border)' }}>
-                <div className="flex flex-col items-center justify-center text-center gap-1.5">
-                    <RadarChart scores={sc} size={32} criteria={criteria} maxScore={maxScore} />
-                    <div className="min-w-0">
-                        <div className="text-[12px] font-black text-[var(--color-text)] leading-tight whitespace-normal break-words uppercase tracking-tight">{student.name}</div>
-                        <div className="flex items-center justify-center gap-1 mt-0.5 flex-wrap">
-                            {avg ? <span className="text-[9px] font-black px-1.5 py-0.5 rounded-md" style={{ background: g?.bg || 'var(--color-surface-alt)', color: g?.uiColor || 'var(--color-text)' }}>{avg}</span> : <span className="text-[8px] text-[var(--color-text-muted)] font-bold">isi nilai</span>}
-                            {isSaving && <Loader2 className="w-2 h-2 text-amber-500 animate-spin" />}
-                            {!isSaving && isSaved && <CheckCircle2 className="w-2 h-2 text-emerald-500" />}
-                            {!isSaving && !isSaved && isDirty && <span className="text-[8px] font-black text-amber-500 flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse inline-block" /></span>}
-                            {trendData?.length >= 2 && <SparklineTrend trendData={trendData} criteria={criteria} />}
+        <>
+            <tr className={`border-t border-[var(--color-border)] transition-colors group table-row-lazy ${isChecked ? 'bg-indigo-500/5' : si % 2 === 0 ? 'bg-[var(--color-surface)]' : 'bg-[var(--color-surface-alt)]'}`}>
+                {bulkMode && (
+                    <td className="text-center px-1" style={{ verticalAlign: 'middle' }}>
+                        <input type="checkbox" checked={isChecked} onChange={e => onBulkToggle(student.id, e.target.checked)} aria-label={`Pilih ${student.name}`} className="w-3.5 h-3.5 accent-violet-500 cursor-pointer" />
+                    </td>
+                )}
+                <td className={`px-0 py-3 sticky left-0 z-10 transition-colors ${isChecked ? 'bg-indigo-500/5' : si % 2 === 0 ? 'bg-[var(--color-surface)]' : 'bg-[var(--color-surface-alt)]'}`} style={{ borderRight: '1px solid var(--color-border)' }}>
+                    <div className="flex flex-col items-center justify-center text-center gap-1.5">
+                        <RadarChart scores={sc} size={32} criteria={criteria} maxScore={maxScore} />
+                        <div className="min-w-0">
+                            <div className="text-[12px] font-black text-[var(--color-text)] leading-tight whitespace-normal break-words uppercase tracking-tight">{student.name}</div>
+                            <div className="flex items-center justify-center gap-1 mt-0.5 flex-wrap">
+                                {avg ? <span className="text-[9px] font-black px-1.5 py-0.5 rounded-md" style={{ background: g?.bg || 'var(--color-surface-alt)', color: g?.uiColor || 'var(--color-text)' }}>{avg}</span> : <span className="text-[8px] text-[var(--color-text-muted)] font-bold">isi nilai</span>}
+                                {isSaving && <Loader2 className="w-2 h-2 text-amber-500 animate-spin" />}
+                                {!isSaving && isSaved && <CheckCircle2 className="w-2 h-2 text-emerald-500" />}
+                                {!isSaving && !isSaved && isDirty && <span className="text-[8px] font-black text-amber-500 flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse inline-block" /></span>}
+                                {trendData?.length >= 2 && <SparklineTrend trendData={trendData} criteria={criteria} />}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </td>
-            <td colSpan={criteria.length} className="py-2 text-center px-1" style={{ verticalAlign: 'middle' }}>
-                <div className="flex items-center justify-evenly w-full">
-                    {criteria.map((k, ki) => {
-                        const prevVal = prevScores?.[k.key], curVal = sc[k.key], hasDelta = (prevVal != null && curVal !== '' && curVal != null), delta = hasDelta ? Number(curVal) - Number(prevVal) : 0
-                        const scoreWarn = scoreWarnings.find(w => w.key === k.key)
-                        return (
-                            <div key={k.key} className="flex flex-col items-center justify-center flex-1">
-                                <ScoreCell value={sc[k.key]} studentId={student.id} kriteria={k} onScoreChange={onScoreChange} onKeyDown={onKeyDown} si={si} ki={ki} cellRefs={cellRefs} maxScore={maxScore} reportType={reportType} classLevel={classLevel} warning={scoreWarn} />
-                                <div style={{ height: 10, fontSize: 8, fontWeight: 900, lineHeight: 1, marginTop: 2 }} className="flex items-center justify-center">
-                                    {hasDelta && delta > 0 && <span style={{ color: '#10b981' }} title={`Bulan lalu: ${prevVal}`}>▲{delta}</span>}
-                                    {hasDelta && delta < 0 && <span style={{ color: '#ef4444' }} title={`Bulan lalu: ${prevVal}`}>▼{Math.abs(delta)}</span>}
-                                    {hasDelta && delta === 0 && <span style={{ color: 'var(--color-text-muted)', opacity: 0.4 }}>—</span>}
-                                </div>
-                            </div>
-                        )
-                    })}
-                </div>
-                {scoreWarnings.length > 0 && (
-                    <div
-                        className="mt-5 mx-auto w-fit flex items-center justify-center gap-1 rounded border px-1.5 py-[3px]"
-                        style={{
-                            background: scoreWarnings.some(w => w.type === 'danger') ? '#fef2f2' : '#fffbeb',
-                            borderColor: scoreWarnings.some(w => w.type === 'danger') ? '#fecaca' : '#fde68a',
-                        }}
-                        title={scoreWarnings.map(w => w.msg).join(' · ')}
-                    >
-                        <AlertTriangle className="w-2.5 h-2.5 shrink-0" style={{ color: scoreWarnings.some(w => w.type === 'danger') ? '#ef4444' : '#d97706' }} />
-                        <span style={{ fontSize: 8, fontWeight: 900, color: scoreWarnings.some(w => w.type === 'danger') ? '#dc2626' : '#b45309', lineHeight: 1.2 }}>
-                            {scoreWarnings.length === 1 ? scoreWarnings[0].msg : `${scoreWarnings.length} catatan: ${scoreWarnings[0].msg}`}
-                        </span>
-                    </div>
-                )}
-            </td>
-            {(rtObj.hasFisik || rtObj.hasAttendance) && (
-                <td className="px-2 py-3" style={{ verticalAlign: 'middle' }}>
-                    <div className="grid grid-cols-2 gap-x-1.5 gap-y-2">
-                        {activeFisikFields.map(f => {
-                            const IconComp = f.icon
-                            const isAttendance = f.key.startsWith('hari_')
-                            const curNum = Number(ex[f.key] ?? 0)
-                            const handleStep = (delta) => {
-                                const next = Math.max(0, curNum + delta)
-                                onExtraChange(student.id, f.key, String(next))
-                            }
+                </td>
+                <td colSpan={criteria.length} className="py-2 text-center px-1" style={{ verticalAlign: 'middle' }}>
+                    <div className="flex items-center justify-evenly w-full">
+                        {criteria.map((k, ki) => {
+                            const prevVal = prevScores?.[k.key], curVal = sc[k.key], hasDelta = (prevVal != null && curVal !== '' && curVal != null), delta = hasDelta ? Number(curVal) - Number(prevVal) : 0
+                            const scoreWarn = scoreWarnings.find(w => w.key === k.key)
                             return (
-                                <div key={f.key} className="flex flex-col gap-0.5">
-                                    <span style={{ fontSize: 7.5, fontWeight: 900, color: f.color, letterSpacing: '0.4px', textTransform: 'uppercase', lineHeight: 1, paddingLeft: 2 }}>
-                                        {f.label}
-                                    </span>
-                                    <div title={`${f.fullLabel} (${f.unit})`} className="flex items-center gap-0 rounded-md border border-[var(--color-border)] overflow-hidden" style={{ background: 'var(--color-surface)', height: 28 }}>
-                                        <div className="w-6 h-full flex items-center justify-center shrink-0" style={{ background: f.color + '18' }}>
-                                            <IconComp className="w-2.5 h-2.5" style={{ color: f.color }} />
-                                        </div>
-                                        {isAttendance ? (
-                                            <>
-                                                <button
-                                                    onClick={() => handleStep(-1)}
-                                                    disabled={curNum <= 0}
-                                                    className="w-5 h-full flex items-center justify-center shrink-0 transition-colors hover:bg-[var(--color-surface-alt)] disabled:opacity-20"
-                                                    aria-label={`Kurangi ${f.fullLabel}`}
-                                                >
-                                                    <Minus className="w-2.5 h-2.5" style={{ color: f.color }} />
-                                                </button>
-                                                <span className="flex-1 text-[11px] font-black text-center" style={{ color: curNum > 0 ? f.color : 'var(--color-text-muted)' }}>
-                                                    {curNum > 0 ? curNum : '—'}
-                                                </span>
-                                                <button
-                                                    onClick={() => handleStep(1)}
-                                                    className="w-5 h-full flex items-center justify-center shrink-0 transition-colors hover:bg-[var(--color-surface-alt)]"
-                                                    aria-label={`Tambah ${f.fullLabel}`}
-                                                >
-                                                    <Plus className="w-2.5 h-2.5" style={{ color: f.color }} />
-                                                </button>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <ExtraInput type="number" inputMode="decimal" placeholder="—" value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={onExtraChange} aria-label={f.fullLabel} className="flex-1 w-0 h-full text-[11px] font-bold text-center px-0.5 bg-transparent text-[var(--color-text)] outline-none appearance-none" />
-                                                <span className="text-[8px] text-[var(--color-text-muted)] font-bold pr-1 shrink-0">{f.unit}</span>
-                                            </>
-                                        )}
+                                <div key={k.key} className="flex flex-col items-center justify-center flex-1">
+                                    <ScoreCell value={sc[k.key]} studentId={student.id} kriteria={k} onScoreChange={onScoreChange} onKeyDown={onKeyDown} si={si} ki={ki} cellRefs={cellRefs} maxScore={maxScore} reportType={reportType} classLevel={classLevel} warning={scoreWarn} />
+                                    <div style={{ height: 10, fontSize: 8, fontWeight: 900, lineHeight: 1, marginTop: 2 }} className="flex items-center justify-center">
+                                        {hasDelta && delta > 0 && <span style={{ color: '#10b981' }} title={`Bulan lalu: ${prevVal}`}>▲{delta}</span>}
+                                        {hasDelta && delta < 0 && <span style={{ color: '#ef4444' }} title={`Bulan lalu: ${prevVal}`}>▼{Math.abs(delta)}</span>}
+                                        {hasDelta && delta === 0 && <span style={{ color: 'var(--color-text-muted)', opacity: 0.4 }}>—</span>}
                                     </div>
                                 </div>
                             )
                         })}
                     </div>
+                    {scoreWarnings.length > 0 && (
+                        <div
+                            className="mt-5 mx-auto w-fit flex items-center justify-center gap-1 rounded border px-1.5 py-[3px]"
+                            style={{
+                                background: scoreWarnings.some(w => w.type === 'danger') ? '#fef2f2' : '#fffbeb',
+                                borderColor: scoreWarnings.some(w => w.type === 'danger') ? '#fecaca' : '#fde68a',
+                            }}
+                            title={scoreWarnings.map(w => w.msg).join(' · ')}
+                        >
+                            <AlertTriangle className="w-2.5 h-2.5 shrink-0" style={{ color: scoreWarnings.some(w => w.type === 'danger') ? '#ef4444' : '#d97706' }} />
+                            <span style={{ fontSize: 8, fontWeight: 900, color: scoreWarnings.some(w => w.type === 'danger') ? '#dc2626' : '#b45309', lineHeight: 1.2 }}>
+                                {scoreWarnings.length === 1 ? scoreWarnings[0].msg : `${scoreWarnings.length} catatan: ${scoreWarnings[0].msg}`}
+                            </span>
+                        </div>
+                    )}
                 </td>
-            )}
-            {(rtObj.hasHafalan || rtObj.hasCatatan) && (
-                <td className="px-2 py-3" style={{ verticalAlign: 'middle' }}>
-                    <div className="flex flex-col gap-1.5">
-                        {rtObj.hasHafalan && (
-                            <div className="grid grid-cols-3 gap-1">
-                                {HAFALAN_FIELDS.map(f => {
-                                    const IconComp = f.icon
-                                    const prevVal = prevExtras?.[f.key]
-                                    const hasPrev = prevVal !== undefined && prevVal !== null && prevVal !== ''
-                                    return (
-                                        <div key={f.key} className="flex flex-col gap-0.5">
-                                            <div className="flex items-center gap-1 rounded-md border border-[var(--color-border)]" style={{ background: 'var(--color-surface)', height: 28 }}>
-                                                <div className="w-6 h-full flex items-center justify-center shrink-0 rounded-l-[5px]" style={{ background: f.color + '18' }}>
-                                                    <IconComp className="w-2.5 h-2.5" style={{ color: f.color }} />
-                                                </div>
-                                                <ExtraInput placeholder={f.ph} value={ex[f.key] ?? ''} studentId={student.id} fieldKey={f.key} onCommit={onExtraChange} aria-label={f.ph} className="flex-1 w-0 h-full px-1 text-[10px] font-bold bg-transparent text-[var(--color-text)] outline-none" />
-                                            </div>
-                                            {hasPrev && (
-                                                <button
-                                                    onClick={() => onExtraChange(student.id, f.key, prevVal)}
-                                                    className="flex items-center gap-0.5 w-full px-1 py-0.5 rounded text-[8px] font-black transition-colors hover:bg-[var(--color-surface-alt)] truncate"
-                                                    style={{ color: f.color, opacity: 0.8 }}
-                                                    title={`Salin dari bulan lalu: ${prevVal}`}
-                                                >
-                                                    <Copy className="w-2 h-2 shrink-0" />
-                                                    <span className="truncate">{prevVal}</span>
-                                                </button>
-                                            )}
-                                        </div>
-                                    )
-                                })}
+                {(rtObj.hasFisik || rtObj.hasAttendance) && (
+                    <td className="px-2 py-2" style={{ verticalAlign: 'middle' }}>
+                        <button
+                            type="button"
+                            onClick={() => setShowModal(true)}
+                            className={`w-full px-2.5 py-1.5 rounded-xl border text-left transition-all group flex flex-col justify-center gap-0.5 cursor-pointer ${
+                                hasFisikData
+                                    ? 'border-teal-500/30 bg-teal-500/5 hover:bg-teal-500/15'
+                                    : 'border-dashed border-[var(--color-border)] hover:border-teal-400 bg-[var(--color-surface)] hover:bg-teal-500/5'
+                            }`}
+                        >
+                            <div className="flex items-center justify-between text-[10px] font-black text-teal-600 dark:text-teal-400">
+                                <span className="flex items-center gap-1"><HeartPulse className="w-3 h-3" /> Fisik & Absen</span>
+                                <span className="text-[9px] font-extrabold text-[var(--color-text-muted)] group-hover:text-teal-600">Edit ›</span>
                             </div>
-                        )}
-                        {rtObj.hasCatatan && (
-                            <>
-                                <div className="relative">
-                                    <ExtraExpandingTextarea
-                                        value={ex.catatan ?? ''}
-                                        studentId={student.id}
-                                        fieldKey="catatan"
-                                        onCommit={onCatatanChange}
-                                        color="#f59e0b"
-                                        label="Catatan"
-                                        icon={ClipboardList}
-                                        size="lg"
-                                        aria-label="Catatan musyrif"
-                                    />
-                                    <div className="absolute right-0 top-0 flex items-center h-full pointer-events-none" style={{ zIndex: 10 }}>
-                                        <div className="flex items-center gap-0.5 pr-0.5 pointer-events-auto">
-                                            <button onClick={() => { const c = generateAutoComment(sc, student.id, trendData, criteria, reportType, classLevel); if (!c) return; onCatatanChange(student.id, 'catatan', c) }} title="Generate komentar otomatis dari nilai" disabled={!avg} className="w-5 h-5 flex items-center justify-center text-amber-500 hover:text-amber-600 hover:bg-amber-500/10 rounded transition-all disabled:opacity-30">
-                                                <Zap className="w-2.5 h-2.5" />
-                                            </button>
-                                            <button onClick={() => onTemplateToggle(student.id)} title="Template catatan" className={`w-5 h-5 flex items-center justify-center transition-all rounded ${templateOpen ? 'text-amber-600 bg-amber-500/15' : 'text-[var(--color-text-muted)] hover:text-amber-500 hover:bg-amber-500/10'}`}>
-                                                <Lightbulb className="w-2.5 h-2.5" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                    {templateOpen && (
-                                        <div className="absolute left-0 right-0 z-30 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-xl overflow-hidden" style={{ ...(si < 2 ? { top: 'calc(100% + 4px)' } : { bottom: 'calc(100% + 4px)' }), minWidth: 200 }}>
-                                            <p className="text-[7px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-2.5 pt-2 pb-1">Pilih template catatan</p>
-                                            {CATATAN_TEMPLATES.map((tmpl, ti) => (<button key={ti} onMouseDown={() => onTemplateApply(student.id, tmpl)} className="w-full text-left px-2.5 py-1.5 text-[10px] text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all leading-snug border-t border-[var(--color-border)]/40 first:border-t-0">{tmpl}</button>))}
-                                        </div>
-                                    )}
+                            {ex.berat_badan || ex.tinggi_badan ? (
+                                <div className="text-[10px] font-bold text-[var(--color-text)] truncate">
+                                    {ex.berat_badan ? `${ex.berat_badan}kg` : '—'} / {ex.tinggi_badan ? `${ex.tinggi_badan}cm` : '—'}
                                 </div>
-                                <div className="flex gap-1">
-                                    {[
-                                        { key: 'pelanggaran', label: 'Pelanggaran', color: '#ef4444', icon: AlertTriangle },
-                                        { key: 'prestasi', label: 'Prestasi', color: '#10b981', icon: Star },
-                                        { key: 'sholat', label: 'Sholat', color: '#6366f1', icon: Compass }
-                                    ].map(f => (
-                                        <ExtraExpandingTextarea
-                                            key={f.key}
-                                            value={ex[f.key] ?? ''}
-                                            studentId={student.id}
-                                            fieldKey={f.key}
-                                            onCommit={onExtraChange}
-                                            color={f.color}
-                                            label={f.label}
-                                            icon={f.icon}
-                                            aria-label={f.label}
-                                        />
-                                    ))}
+                            ) : null}
+                            <div className="text-[9px] font-medium text-[var(--color-text-muted)] flex items-center gap-1 truncate">
+                                <span>S:{ex.hari_sakit || 0}</span> •
+                                <span>I:{ex.hari_izin || 0}</span> •
+                                <span className={Number(ex.hari_alpa) > 0 ? "text-rose-500 font-extrabold" : ""}>A:{ex.hari_alpa || 0}</span>
+                            </div>
+                        </button>
+                    </td>
+                )}
+                {(rtObj.hasHafalan || rtObj.hasCatatan) && (
+                    <td className="px-2 py-2" style={{ verticalAlign: 'middle' }}>
+                        <button
+                            type="button"
+                            onClick={() => setShowModal(true)}
+                            className={`w-full px-2.5 py-1.5 rounded-xl border text-left transition-all group flex flex-col justify-center gap-0.5 cursor-pointer ${
+                                hasHafalanCatatanData
+                                    ? 'border-amber-500/30 bg-amber-500/5 hover:bg-amber-500/15'
+                                    : 'border-dashed border-[var(--color-border)] hover:border-amber-400 bg-[var(--color-surface)] hover:bg-amber-500/5'
+                            }`}
+                        >
+                            <div className="flex items-center justify-between text-[10px] font-black text-amber-600 dark:text-amber-400">
+                                <span className="flex items-center gap-1"><ClipboardList className="w-3 h-3" /> Hafalan & Catatan</span>
+                                <span className="text-[9px] font-extrabold text-[var(--color-text-muted)] group-hover:text-amber-600">Edit ›</span>
+                            </div>
+                            {ex.ziyadah || ex.murojaah ? (
+                                <div className="text-[10px] font-bold text-[var(--color-text)] truncate">
+                                    {ex.ziyadah ? `Ziya: ${ex.ziyadah}` : ''} {ex.murojaah ? `Muro: ${ex.murojaah}` : ''}
                                 </div>
-                            </>
-                        )}
-                    </div>
-                </td>
-            )}
+                            ) : null}
+                            <div className="text-[9px] font-medium text-[var(--color-text-muted)] truncate">
+                                {ex.catatan ? `"${ex.catatan}"` : ex.pelanggaran ? `Pelanggaran: ${ex.pelanggaran}` : '+ Klik untuk isi'}
+                            </div>
+                        </button>
+                    </td>
+                )}
+
             <td className={`px-2 py-3 sticky right-0 z-10 transition-colors ${si % 2 === 0 ? 'bg-[var(--color-surface)]' : 'bg-[var(--color-surface-alt)]'}`} style={{ verticalAlign: 'middle', borderLeft: '1px solid var(--color-border)', borderRight: '1px solid var(--color-border)' }}>
                 <div className="flex flex-col gap-1.5">
                     <button onClick={() => onSave(student.id)} disabled={isSaving} className="w-full h-8 rounded-lg flex items-center justify-center gap-1.5 text-[11px] font-black transition-all disabled:opacity-50" style={{ background: isSaved ? '#10b98115' : isDirty ? '#6366f115' : 'var(--color-surface-alt)', color: isSaved ? '#10b981' : isDirty ? '#6366f1' : 'var(--color-text-muted)', border: '1px solid', borderColor: isSaved ? '#10b98130' : isDirty ? '#6366f130' : 'var(--color-border)' }}>
@@ -660,7 +596,316 @@ const StudentRow = memo(({
                 </div>
             </td>
         </tr>
-    )
+
+        {/* DETAIL & CATATAN MODAL */}
+        {showModal && (
+            <Modal
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                title="Input Detail Santri"
+                description={`Lengkapi kondisi fisik, kehadiran, hafalan Qur'an & catatan evaluasi santri`}
+                icon={ClipboardList}
+                iconBg="bg-indigo-500/10"
+                iconColor="text-indigo-600"
+                size="lg"
+                footer={
+                    <div className="flex items-center justify-between w-full">
+                        <button
+                            type="button"
+                            onClick={() => setShowModal(false)}
+                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all cursor-pointer"
+                        >
+                            Batal
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => { onSave(student.id); setShowModal(false) }}
+                            className="h-10 px-6 rounded-2xl bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-black text-xs uppercase tracking-wider transition-all shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 cursor-pointer"
+                        >
+                            <Save className="w-4 h-4" />
+                            <span>Simpan &amp; Selesai</span>
+                        </button>
+                    </div>
+                }
+            >
+                <div className="space-y-4 py-1 text-left">
+                    {/* Header Student Info Bar */}
+                    <div className="p-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3 min-w-0">
+                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-md shadow-indigo-500/20">
+                                {student.name.charAt(0)}
+                            </div>
+                            <div className="min-w-0">
+                                <h4 className="text-xs font-black text-[var(--color-text)] truncate">{student.name}</h4>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-black">
+                            <span>Rata-rata:</span>
+                            <span className="text-xs font-black">{avg || '—'}</span>
+                        </div>
+                    </div>
+
+                    {/* Interactive Tab Navigation */}
+                    <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
+                        {(rtObj.hasFisik || rtObj.hasAttendance) && (
+                            <button
+                                type="button"
+                                onClick={() => setActiveModalTab('fisik')}
+                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                                    activeModalTab === 'fisik'
+                                        ? 'bg-[var(--color-surface)] text-teal-600 dark:text-teal-400 shadow-sm border border-[var(--color-border)]'
+                                        : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+                                }`}
+                            >
+                                <HeartPulse className="w-3.5 h-3.5" />
+                                <span>Fisik &amp; Absensi</span>
+                                {hasFisikData && <span className="w-1.5 h-1.5 rounded-full bg-teal-500" />}
+                            </button>
+                        )}
+                        {rtObj.hasHafalan && (
+                            <button
+                                type="button"
+                                onClick={() => setActiveModalTab('hafalan')}
+                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                                    activeModalTab === 'hafalan'
+                                        ? 'bg-[var(--color-surface)] text-emerald-600 dark:text-emerald-400 shadow-sm border border-[var(--color-border)]'
+                                        : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+                                }`}
+                            >
+                                <BookOpen className="w-3.5 h-3.5" />
+                                <span>Hafalan Qur'an</span>
+                                {(ex.ziyadah || ex.murojaah || ex.total_hafalan) && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />}
+                            </button>
+                        )}
+                        {rtObj.hasCatatan && (
+                            <button
+                                type="button"
+                                onClick={() => setActiveModalTab('catatan')}
+                                className={`flex-1 py-2 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                                    activeModalTab === 'catatan'
+                                        ? 'bg-[var(--color-surface)] text-amber-600 dark:text-amber-400 shadow-sm border border-[var(--color-border)]'
+                                        : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+                                }`}
+                            >
+                                <ClipboardList className="w-3.5 h-3.5" />
+                                <span>Catatan &amp; Evaluasi</span>
+                                {(ex.catatan || ex.pelanggaran || ex.prestasi || ex.sholat) && <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />}
+                            </button>
+                        )}
+                        <button
+                            type="button"
+                            onClick={() => setActiveModalTab('all')}
+                            className={`py-2 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                                activeModalTab === 'all'
+                                    ? 'bg-[var(--color-surface)] text-indigo-600 dark:text-indigo-400 shadow-sm border border-[var(--color-border)]'
+                                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+                            }`}
+                            title="Tampilkan semua seksi sekaligus"
+                        >
+                            <Layers className="w-3.5 h-3.5" />
+                            <span>Semua</span>
+                        </button>
+                    </div>
+
+                    {/* SECTION 1: FISIK & KEHADIRAN */}
+                    {(rtObj.hasFisik || rtObj.hasAttendance) && (activeModalTab === 'fisik' || activeModalTab === 'all') && (
+                        <div className="p-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] space-y-4 shadow-sm animate-in fade-in zoom-in-95 duration-200">
+                            <div className="flex items-center justify-between">
+                                <h5 className="text-[11px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
+                                    Kondisi Fisik &amp; Kehadiran
+                                </h5>
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                {activeFisikFields.map(f => {
+                                    const IconComp = f.icon
+                                    const isAttendance = f.key.startsWith('hari_')
+                                    const curNum = Number(ex[f.key] ?? 0)
+                                    const handleStep = (delta) => {
+                                        const next = Math.max(0, curNum + delta)
+                                        onExtraChange(student.id, f.key, String(next))
+                                    }
+                                    return (
+                                        <div key={f.key} className="space-y-1">
+                                            <label className="text-[9px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] flex items-center gap-1">
+                                                <IconComp className="w-3 h-3" style={{ color: f.color }} />
+                                                {f.fullLabel} ({f.unit})
+                                            </label>
+                                            <div className="flex items-center h-9 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] overflow-hidden transition-all focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-500/20">
+                                                {isAttendance ? (
+                                                    <>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleStep(-1)}
+                                                            disabled={curNum <= 0}
+                                                            className="w-8 h-full flex items-center justify-center hover:bg-[var(--color-surface)] text-[var(--color-text-muted)] active:scale-95 disabled:opacity-30 transition-all cursor-pointer shrink-0"
+                                                        >
+                                                            <Minus className="w-3 h-3" />
+                                                        </button>
+                                                        <span className="flex-1 text-center text-xs font-black" style={{ color: curNum > 0 ? f.color : 'var(--color-text-muted)' }}>
+                                                            {curNum}
+                                                        </span>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleStep(1)}
+                                                            className="w-8 h-full flex items-center justify-center hover:bg-[var(--color-surface)] text-[var(--color-text-muted)] active:scale-95 transition-all cursor-pointer shrink-0"
+                                                        >
+                                                            <Plus className="w-3 h-3" />
+                                                        </button>
+                                                    </>
+                                                ) : (
+                                                    <div className="flex items-center w-full h-full px-2.5">
+                                                        <ExtraInput
+                                                            type="number"
+                                                            inputMode="decimal"
+                                                            placeholder="0"
+                                                            value={ex[f.key] ?? ''}
+                                                            studentId={student.id}
+                                                            fieldKey={f.key}
+                                                            onCommit={onExtraChange}
+                                                            className="w-full h-full text-xs font-bold bg-transparent outline-none"
+                                                        />
+                                                        <span className="text-[10px] font-bold text-[var(--color-text-muted)] shrink-0">{f.unit}</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* SECTION 2: HAFALAN QUR'AN */}
+                    {rtObj.hasHafalan && (activeModalTab === 'hafalan' || activeModalTab === 'all') && (
+                        <div className="p-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] space-y-4 shadow-sm animate-in fade-in zoom-in-95 duration-200">
+                            <div className="flex items-center justify-between">
+                                <h5 className="text-[11px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
+                                    Capaian Hafalan Al-Qur'an
+                                </h5>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {HAFALAN_FIELDS.map(f => {
+                                    const IconComp = f.icon
+                                    const prevVal = prevExtras?.[f.key]
+                                    return (
+                                        <div key={f.key} className="flex flex-col gap-1">
+                                            {/* ExtraExpandingTextarea — tampilkan icon+label sendiri saat collapsed */}
+                                            <ExtraExpandingTextarea
+                                                value={ex[f.key] ?? ''}
+                                                studentId={student.id}
+                                                fieldKey={f.key}
+                                                onCommit={onExtraChange}
+                                                color={f.color}
+                                                label={f.ph}
+                                                icon={IconComp}
+                                                size="xl"
+                                                placeholder={`Isi ${f.ph.toLowerCase()}...`}
+                                            />
+                                            {/* Salin pill — hanya tampil jika ada data sebelumnya */}
+                                            {prevVal && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => onExtraChange(student.id, f.key, prevVal)}
+                                                    className="self-start flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full border transition-all cursor-pointer hover:opacity-80 mt-0.5"
+                                                    style={{ color: f.color, borderColor: `${f.color}30`, background: `${f.color}10` }}
+                                                >
+                                                    <Copy className="w-2.5 h-2.5" />
+                                                    Salin: {prevVal}
+                                                </button>
+                                            )}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* SECTION 3: CATATAN & EVALUASI */}
+                    {rtObj.hasCatatan && (activeModalTab === 'catatan' || activeModalTab === 'all') && (
+                        <div className="p-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] space-y-4 shadow-sm animate-in fade-in zoom-in-95 duration-200">
+                            <div className="flex items-center justify-between">
+                                <h5 className="text-[11px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
+                                    Catatan Musyrif &amp; Evaluasi Santri
+                                </h5>
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => { const c = generateAutoComment(sc, student.id, trendData, criteria, reportType, classLevel); if (!c) return; onCatatanChange(student.id, 'catatan', c) }}
+                                        disabled={!avg}
+                                        className="px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-[10px] flex items-center gap-1 transition-all cursor-pointer disabled:opacity-30"
+                                    >
+                                        <Zap className="w-3.5 h-3.5" />
+                                        Auto-Generate
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => onTemplateToggle(student.id)}
+                                        className="px-3 py-1.5 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-bold text-[10px] flex items-center gap-1 transition-all cursor-pointer"
+                                    >
+                                        <Lightbulb className="w-3.5 h-3.5" />
+                                        Template Catatan
+                                    </button>
+                                </div>
+                            </div>
+
+                            {templateOpen && (
+                                <div className="p-2.5 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl shadow-lg space-y-1">
+                                    <p className="text-[9px] font-black uppercase text-[var(--color-text-muted)] px-2 py-1">Pilih Template Catatan:</p>
+                                    {CATATAN_TEMPLATES.map((tmpl, ti) => (
+                                        <button
+                                            key={ti}
+                                            type="button"
+                                            onClick={() => onTemplateApply(student.id, tmpl)}
+                                            className="w-full text-left p-2 rounded-lg text-xs font-medium hover:bg-indigo-50 dark:hover:bg-indigo-950/40 text-[var(--color-text)] transition-all cursor-pointer"
+                                        >
+                                            {tmpl}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+
+                            <ExtraExpandingTextarea
+                                value={ex.catatan ?? ''}
+                                studentId={student.id}
+                                fieldKey="catatan"
+                                onCommit={onCatatanChange}
+                                color="#f59e0b"
+                                label="Catatan Utama Musyrif"
+                                icon={ClipboardList}
+                                size="lg"
+                                placeholder="Tulis catatan evaluasi santri untuk periode ini..."
+                            />
+
+                            <div className="border-t border-[var(--color-border)] pt-3">
+                                <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2.5">Catatan Khusus</p>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    {[
+                                        { key: 'pelanggaran', label: 'Pelanggaran', color: '#ef4444', icon: AlertTriangle, ph: 'Catatan pelanggaran...' },
+                                        { key: 'prestasi', label: 'Prestasi', color: '#10b981', icon: Star, ph: 'Catatan prestasi...' },
+                                        { key: 'sholat', label: 'Sholat', color: '#6366f1', icon: Compass, ph: 'Catatan ketertiban sholat...' }
+                                    ].map(f => (
+                                        <ExtraExpandingTextarea
+                                            key={f.key}
+                                            value={ex[f.key] ?? ''}
+                                            studentId={student.id}
+                                            fieldKey={f.key}
+                                            onCommit={onExtraChange}
+                                            color={f.color}
+                                            label={f.label}
+                                            icon={f.icon}
+                                            size="sm"
+                                            placeholder={f.ph}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </Modal>
+        )}
+    </>
+)
 }, studentRowAreEqual)
 
 export default StudentRow

@@ -14,6 +14,13 @@ import { loadTranslitData } from '@utils/reports/translitData'
 const ROW_HEIGHT = 188
 const OVERSCAN = 5
 
+const sanitizeNum = (val, max = 999.9, min = 0, defaultVal = null) => {
+    if (val === '' || val === null || val === undefined) return defaultVal
+    const n = Number(val)
+    if (isNaN(n)) return defaultVal
+    return Math.min(max, Math.max(min, n))
+}
+
 export function useRaportCore() {
     const { addToast } = useToast()
     const { settings } = useSchoolSettings()
@@ -664,16 +671,16 @@ export function useRaportCore() {
                     updated_by: profile?.id ?? null,
                     updated_by_name: profile?.name ?? null,
                     ...Object.fromEntries(Object.entries(sc).map(([k, v]) => [k, v === '' ? null : Number(v)])),
-                    berat_badan: ex.berat_badan !== '' ? Number(ex.berat_badan) : null,
-                    tinggi_badan: ex.tinggi_badan !== '' ? Number(ex.tinggi_badan) : null,
+                    berat_badan: sanitizeNum(ex.berat_badan, 300, 0, null),
+                    tinggi_badan: sanitizeNum(ex.tinggi_badan, 300, 0, null),
                     ziyadah: ex.ziyadah || null,
                     murojaah: ex.murojaah || null,
                     total_hafalan: ex.total_hafalan || null,
                     sholat: ex.sholat || null,
-                    hari_sakit: ex.hari_sakit !== '' ? Number(ex.hari_sakit) : 0,
-                    hari_izin: ex.hari_izin !== '' ? Number(ex.hari_izin) : 0,
-                    hari_alpa: ex.hari_alpa !== '' ? Number(ex.hari_alpa) : 0,
-                    hari_pulang: ex.hari_pulang !== '' ? Number(ex.hari_pulang) : 0,
+                    hari_sakit: sanitizeNum(ex.hari_sakit, 365, 0, 0),
+                    hari_izin: sanitizeNum(ex.hari_izin, 365, 0, 0),
+                    hari_alpa: sanitizeNum(ex.hari_alpa, 365, 0, 0),
+                    hari_pulang: sanitizeNum(ex.hari_pulang, 365, 0, 0),
                     catatan: ex.catatan || null,
                     pelanggaran: ex.pelanggaran || null,
                     prestasi: ex.prestasi || null
@@ -705,13 +712,13 @@ export function useRaportCore() {
                     updated_by_name: profile?.name ?? null,
                     scores: Object.fromEntries(Object.entries(sc).map(([k, v]) => [k, v === '' ? null : Number(v)])),
                     extras: {
-                        berat_badan: ex.berat_badan !== '' ? Number(ex.berat_badan) : null,
-                        tinggi_badan: ex.tinggi_badan !== '' ? Number(ex.tinggi_badan) : null,
+                        berat_badan: sanitizeNum(ex.berat_badan, 300, 0, null),
+                        tinggi_badan: sanitizeNum(ex.tinggi_badan, 300, 0, null),
                         sholat: ex.sholat || null,
-                        hari_sakit: ex.hari_sakit !== '' ? Number(ex.hari_sakit) : 0,
-                        hari_izin: ex.hari_izin !== '' ? Number(ex.hari_izin) : 0,
-                        hari_alpa: ex.hari_alpa !== '' ? Number(ex.hari_alpa) : 0,
-                        hari_pulang: ex.hari_pulang !== '' ? Number(ex.hari_pulang) : 0,
+                        hari_sakit: sanitizeNum(ex.hari_sakit, 365, 0, 0),
+                        hari_izin: sanitizeNum(ex.hari_izin, 365, 0, 0),
+                        hari_alpa: sanitizeNum(ex.hari_alpa, 365, 0, 0),
+                        hari_pulang: sanitizeNum(ex.hari_pulang, 365, 0, 0),
                         catatan: ex.catatan || null
                     }
                 }
@@ -803,15 +810,15 @@ export function useRaportCore() {
                         updated_by: profile?.id ?? null,
                         updated_by_name: profile?.name ?? null,
                         ...Object.fromEntries(Object.entries(sc).map(([k, v]) => [k, v === '' ? null : Number(v)])),
-                        berat_badan: ex.berat_badan !== '' ? Number(ex.berat_badan) : null,
-                        tinggi_badan: ex.tinggi_badan !== '' ? Number(ex.tinggi_badan) : null,
+                        berat_badan: sanitizeNum(ex.berat_badan, 300, 0, null),
+                        tinggi_badan: sanitizeNum(ex.tinggi_badan, 300, 0, null),
                         ziyadah: ex.ziyadah || null,
                         murojaah: ex.murojaah || null,
                         total_hafalan: ex.total_hafalan || null,
-                        hari_sakit: ex.hari_sakit !== '' ? Number(ex.hari_sakit) : 0,
-                        hari_izin: ex.hari_izin !== '' ? Number(ex.hari_izin) : 0,
-                        hari_alpa: ex.hari_alpa !== '' ? Number(ex.hari_alpa) : 0,
-                        hari_pulang: ex.hari_pulang !== '' ? Number(ex.hari_pulang) : 0,
+                        hari_sakit: sanitizeNum(ex.hari_sakit, 365, 0, 0),
+                        hari_izin: sanitizeNum(ex.hari_izin, 365, 0, 0),
+                        hari_alpa: sanitizeNum(ex.hari_alpa, 365, 0, 0),
+                        hari_pulang: sanitizeNum(ex.hari_pulang, 365, 0, 0),
                         catatan: ex.catatan || null,
                         pelanggaran: ex.pelanggaran || null,
                         prestasi: ex.prestasi || null,
@@ -828,12 +835,12 @@ export function useRaportCore() {
                         updated_by_name: profile?.name ?? null,
                         scores: Object.fromEntries(Object.entries(sc).map(([k, v]) => [k, v === '' ? null : Number(v)])),
                         extras: {
-                            berat_badan: ex.berat_badan !== '' ? Number(ex.berat_badan) : null,
-                            tinggi_badan: ex.tinggi_badan !== '' ? Number(ex.tinggi_badan) : null,
-                            hari_sakit: ex.hari_sakit !== '' ? Number(ex.hari_sakit) : 0,
-                            hari_izin: ex.hari_izin !== '' ? Number(ex.hari_izin) : 0,
-                            hari_alpa: ex.hari_alpa !== '' ? Number(ex.hari_alpa) : 0,
-                            hari_pulang: ex.hari_pulang !== '' ? Number(ex.hari_pulang) : 0,
+                            berat_badan: sanitizeNum(ex.berat_badan, 300, 0, null),
+                            tinggi_badan: sanitizeNum(ex.tinggi_badan, 300, 0, null),
+                            hari_sakit: sanitizeNum(ex.hari_sakit, 365, 0, 0),
+                            hari_izin: sanitizeNum(ex.hari_izin, 365, 0, 0),
+                            hari_alpa: sanitizeNum(ex.hari_alpa, 365, 0, 0),
+                            hari_pulang: sanitizeNum(ex.hari_pulang, 365, 0, 0),
                             catatan: ex.catatan || null
                         }
                     }

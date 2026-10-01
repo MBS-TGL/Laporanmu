@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { useRaportContext } from '@features/raport/context/RaportContext'
 import { ArrowLeft, Printer, Download, Search, Check, FileArchive, SlidersHorizontal, Sparkles } from 'lucide-react'
 import RaportPrintCard from '@features/raport/components/RaportPrintCard'
 import RaportSummaryPage from '@features/raport/components/RaportSummaryPage'
 import RaportLayoutSettings from '@features/raport/components/RaportLayoutSettings'
+import { buildRaportPrintDocumentHtml } from '@features/raport/utils/raportPrintHtml'
 import { BULAN } from '@utils/reports/raportConstants'
 import Modal from '@shared/components/Modal'
 import { WaBlastConfirmContent, WaBlastProgressContent, ZipBlastProgressContent } from '@features/raport/components/RaportModals'
@@ -20,7 +21,8 @@ export default function RaportPreviewPage({ isAcademic = false }) {
         selectedYear, setSelectedYear, selectedSemester, setSelectedSemester, academicYear, setAcademicYear,
         reportType, setReportType, students, scores, extras, musyrif, bulanObj, lang,
         previewStudentId, setPreviewStudentId, selectedStudentIds, setPrintQueue, behaviorReports,
-        loadStudents, catatanArabMap, handleDownloadPdf, generatingPdfIds
+        loadStudents, catatanArabMap, handleDownloadPdf, generatingPdfIds, settings,
+        printQueue, printRenderedCount, setPrintRenderedCount, archivePreview, silentPrintRef, addToast
     } = core
 
     const {
@@ -34,6 +36,63 @@ export default function RaportPreviewPage({ isAcademic = false }) {
     const [tabView, setTabView] = useState('card') // 'card' | 'rekap'
     const [searchStudent, setSearchStudent] = useState('')
     const [isLayoutSettingsOpen, setIsLayoutSettingsOpen] = useState(false)
+
+    // ── Batch Printing Logic ──
+    const printContainerRef = useRef(null)
+    const printExecutingRef = useRef(false)
+    const exportingPdfRef = useRef(false) // from monolithic component, not strictly needed but good for safety
+
+    const executePrint = useCallback((stuList) => {
+        const container = printContainerRef.current; if (!container) return
+        const cards = container.querySelectorAll('.raport-card'); if (!cards.length) { addToast('Gagal menyiapkan raport', 'error'); return }
+        const html = [...cards].map(c => c.outerHTML).join('')
+        const titleStr = stuList.length === 1 ? `Raport ${stuList[0].name}_${selectedClass?.name}_${bulanObj?.id_str} ${selectedYear}` : `Raport Kelas ${selectedClass?.name}_${bulanObj?.id_str} ${selectedYear}`
+        const win = window.open('', '_blank'); if (!win) { addToast('Popup diblokir browser.', 'error'); printExecutingRef.current = false; setPrintQueue([]); setPrintRenderedCount(0); return }
+        win.document.write(buildRaportPrintDocumentHtml(html, pageSize, titleStr))
+        win.document.close();
+        win.focus();
+        if (win.document.fonts && win.document.fonts.ready) {
+            win.document.fonts.ready.then(async () => {
+                await Promise.all([
+                    win.document.fonts.load('400 16px Amiri'),
+                    win.document.fonts.load('700 16px Amiri'),
+                ]);
+                setTimeout(() => {
+                    win.print();
+                    printExecutingRef.current = false;
+                    setPrintQueue([]);
+                    setPrintRenderedCount(0);
+                }, 500);
+            }).catch((err) => {
+                console.error("Font loading failed, printing anyway:", err);
+                setTimeout(() => {
+                    win.print();
+                    printExecutingRef.current = false;
+                    setPrintQueue([]);
+                    setPrintRenderedCount(0);
+                }, 500);
+            });
+        } else {
+            setTimeout(() => {
+                win.print();
+                printExecutingRef.current = false;
+                setPrintQueue([]);
+                setPrintRenderedCount(0);
+            }, 800);
+        }
+    }, [selectedClass, bulanObj, selectedYear, addToast, pageSize, setPrintQueue, setPrintRenderedCount])
+
+    useEffect(() => {
+        if (!printQueue || !printQueue.length) { printExecutingRef.current = false; return }
+        const expectedCount = printQueue.length + (printQueue.length > 1 ? 1 : 0) // 1 for summary page if batch
+        if (printRenderedCount < expectedCount) return
+        if (printExecutingRef.current) return
+        if (exportingPdfRef.current) return
+        if (silentPrintRef?.current) return
+        printExecutingRef.current = true
+        const stuList = (archivePreview ? archivePreview.students : students).filter(s => printQueue.includes(s.id))
+        executePrint(stuList)
+    }, [printRenderedCount, printQueue, students, archivePreview, executePrint, silentPrintRef])
 
     useEffect(() => {
         if (classId) setSelectedClassId(classId)
@@ -129,13 +188,22 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                 </div>
             </div>
 
-            {/* Layout Settings Drawer/Modal */}
-            <RaportLayoutSettings
+            {/* Layout Settings Modal */}
+            <Modal
                 isOpen={isLayoutSettingsOpen}
                 onClose={() => setIsLayoutSettingsOpen(false)}
-                layoutConfig={layoutConfig}
-                setLayoutConfig={setLayoutConfig}
-            />
+                title="Kustomisasi Layout"
+                description="Atur font arab & lebar kolom raport"
+                icon={SlidersHorizontal}
+                iconBg="bg-violet-500/10"
+                iconColor="text-violet-500"
+                size="md"
+            >
+                <RaportLayoutSettings
+                    config={layoutConfig}
+                    onChange={setLayoutConfig}
+                />
+            </Modal>
 
             {/* Main Preview Content */}
             {tabView === 'rekap' ? (
@@ -154,6 +222,7 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                         selectedClass={selectedClass}
                         behaviorReports={behaviorReports}
                         pageSize={pageSize}
+                        settings={settings}
                     />
                 </div>
             ) : (
@@ -206,6 +275,7 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                                 pageSize={pageSize}
                                 catatanArab={catatanArabMap[currentStudent.id]}
                                 studentIndex={studentIdx}
+                                settings={settings}
                                 reportType={reportType}
                                 selectedSemester={selectedSemester}
                                 academicYear={academicYear}
@@ -221,6 +291,57 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                             </div>
                         )}
                     </div>
+                </div>
+            )}
+
+            {/* Hidden Print Container */}
+            {printQueue?.length > 0 && (
+                <div ref={printContainerRef} style={{ position: 'fixed', left: '-9999px', top: 0, width: '1000px', visibility: 'hidden', pointerEvents: 'none' }}>
+                    {printQueue.length > 1 && (
+                        <RaportSummaryPage
+                            students={(archivePreview ? archivePreview.students : students).filter(s => printQueue.includes(s.id))}
+                            scores={scores}
+                            extras={extras}
+                            bulanObj={bulanObj}
+                            tahun={selectedYear}
+                            musyrif={musyrif}
+                            className={selectedClass?.name}
+                            reportType={reportType}
+                            selectedSemester={selectedSemester}
+                            academicYear={academicYear}
+                            selectedClass={selectedClass}
+                            onRendered={() => setPrintRenderedCount(c => c + 1)}
+                            behaviorReports={behaviorReports}
+                            pageSize={pageSize}
+                            settings={settings}
+                        />
+                    )}
+                    {(archivePreview ? archivePreview.students : students).filter(s => printQueue.includes(s.id)).map((s, idx) => (
+                        <RaportPrintCard
+                            key={s.id}
+                            student={s}
+                            scores={scores[s.id]}
+                            extra={extras[s.id]}
+                            bulanObj={bulanObj}
+                            tahun={selectedYear}
+                            musyrif={musyrif}
+                            className={selectedClass?.name}
+                            lang={lang}
+                            settings={settings}
+                            pageSize={pageSize}
+                            catatanArab={catatanArabMap ? catatanArabMap[s.id] : null}
+                            studentIndex={idx + 1}
+                            onRendered={() => setPrintRenderedCount(c => c + 1)}
+                            reportType={reportType}
+                            selectedSemester={selectedSemester}
+                            academicYear={academicYear}
+                            selectedClass={selectedClass}
+                            layoutConfig={layoutConfig}
+                            signMode={archivePreview ? 'basah' : signMode}
+                            signatures={archivePreview ? null : signatures}
+                            behaviorReports={behaviorReports[s.id]}
+                        />
+                    ))}
                 </div>
             )}
         </div>

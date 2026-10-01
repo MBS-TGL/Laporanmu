@@ -75,7 +75,7 @@ export default function RaportImportModal({
             { key: 'tinggi_badan', label: 'Tinggi Badan (cm)', required: false, desc: 'Angka tinggi badan' },
             { key: 'ziyadah', label: 'Ziyadah', required: false, desc: 'Catatan tambahan hafalan baru' },
             { key: 'murojaah', label: 'Muroja\'ah', required: false, desc: 'Catatan tambahan pengulangan hafalan' },
-            { key: 'total_hafalan', label: 'Mahfuzhat', required: false, desc: 'Catatan hafalan mahfuzhat / kata mutiara' },
+            { key: 'total_hafalan', label: 'Hafalan', required: false, desc: 'Catatan hafalan Hafalan / kata mutiara' },
             { key: 'hari_sakit', label: 'Sakit (Hari)', required: false, desc: 'Jumlah hari absen sakit' },
             { key: 'hari_izin', label: 'Izin (Hari)', required: false, desc: 'Jumlah hari absen izin' },
             { key: 'hari_alpa', label: 'Alpa (Hari)', required: false, desc: 'Jumlah hari absen alpa' },
@@ -153,7 +153,7 @@ export default function RaportImportModal({
             tinggi_badan: ['tb', 'tb(cm)', 'tinggi', 'tinggi badan', 'tb (cm)', 'height'],
             ziyadah: ['ziyadah', 'ziyadah hafalan', 'tambah hafalan'],
             murojaah: ["muroja'ah", 'murojaah', 'murojaah hafalan', 'ulang hafalan'],
-            total_hafalan: ['mahfuzhat', 'mahfudzot', 'mahfudzath', 'mahfuzat', 'mahfuzot', 'total hafalan', 'capaian hafalan'],
+            total_hafalan: ['Hafalan', 'mahfudzot', 'mahfudzath', 'mahfuzat', 'mahfuzot', 'total hafalan', 'capaian hafalan'],
             hari_sakit: ['sakit', 'hari sakit', 'absen sakit', 'sakit (hari)'],
             hari_izin: ['izin', 'hari izin', 'absen izin', 'izin (hari)'],
             hari_alpa: ['alpa', 'hari alpa', 'absen alpa', 'alpa (hari)', 'tanpa keterangan'],
@@ -862,7 +862,7 @@ export default function RaportImportModal({
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-3 bg-[var(--color-surface-alt)]/50 rounded-2xl border border-[var(--color-border)] shadow-sm">
                         <div className="flex items-center gap-2.5">
                             <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-600">
-                               <School className="w-4 h-4" />
+                                <School className="w-4 h-4" />
                             </div>
                             <div className="flex flex-col text-left">
                                 <span className="text-[10px] font-black uppercase tracking-wider text-[var(--color-text)]">Bulan & Tahun Aktif</span>
@@ -1103,7 +1103,7 @@ export default function RaportImportModal({
                                                             <td className="px-2 py-1 text-[10px]"><EditableCell rowIdx={i} colKey="hari_izin" value={r.hari_izin} /></td>
                                                             <td className="px-2 py-1 text-[10px]"><EditableCell rowIdx={i} colKey="hari_alpa" value={r.hari_alpa} /></td>
 
-                                                             <td className="px-2 py-1 text-center">
+                                                            <td className="px-2 py-1 text-center">
                                                                 {r._hasError ? (
                                                                     <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-red-500/10 text-red-600 text-[8px] font-black uppercase">
                                                                         <AlertCircle className="w-3.5 h-3.5" /> Error

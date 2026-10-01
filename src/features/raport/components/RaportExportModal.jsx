@@ -30,7 +30,7 @@ export default function RaportExportModal({
         const cols = [
             { key: 'nama', label: 'Nama Santri', icon: User }
         ]
-        
+
         // Dynamic criteria columns
         if (criteria && criteria.length > 0) {
             criteria.forEach(k => {
@@ -59,7 +59,7 @@ export default function RaportExportModal({
             { key: 'tinggi_badan', label: 'Tinggi Badan', icon: Ruler },
             { key: 'ziyadah', label: 'Ziyadah', icon: BookOpen },
             { key: 'murojaah', label: 'Muroja\'ah', icon: FileText },
-            { key: 'total_hafalan', label: 'Mahfuzhat', icon: Award },
+            { key: 'total_hafalan', label: 'Hafalan', icon: Award },
             { key: 'hari_sakit', label: 'Absen Sakit', icon: HeartPulse },
             { key: 'hari_izin', label: 'Absen Izin', icon: AlertCircle },
             { key: 'hari_alpa', label: 'Absen Alpa', icon: AlertTriangle },
@@ -218,7 +218,7 @@ export default function RaportExportModal({
                             <div className="relative w-16 h-16">
                                 <div className="absolute inset-0 rounded-full bg-[var(--color-primary)]/10 animate-ping opacity-75"></div>
                                 <div className="absolute inset-0 rounded-full border-2 border-[var(--color-primary)]/10"></div>
-                                <div 
+                                <div
                                     className="absolute inset-0 rounded-full border-2 border-transparent border-t-[var(--color-primary)] border-r-[var(--color-primary)] animate-spin"
                                     style={{ filter: 'drop-shadow(0 0 4px var(--color-primary))' }}
                                 ></div>

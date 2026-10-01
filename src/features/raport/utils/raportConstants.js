@@ -57,7 +57,7 @@ export const LABEL = {
         studentName: 'Nama Santri', room: 'Kamar', class: 'Kelas', year: 'Tahun Ajaran',
         subject: 'Aspek Penilaian', score: 'Nilai',
         grade: 'Predikat', num: 'No', weight: 'Berat Badan', height: 'Tinggi Badan',
-        ziyadah: 'Ziyadah', murojaah: "Muroja'ah", totalHafalan: 'Mahfuzhat', sick: 'Sakit', home: 'Pulang',
+        ziyadah: 'Ziyadah', murojaah: "Muroja'ah", totalHafalan: 'Hafalan', sick: 'Sakit', home: 'Pulang',
         izin: 'Izin', alpa: 'Alpa', gradeScale: 'Skala Penilaian',
         musyrif: 'Wali Kelas', guardian: 'Wali Santri',
         reportTitle: 'RAPORT BULANAN', month: 'Bulan',
@@ -84,7 +84,7 @@ export const FISIK_FIELDS = [
 export const HAFALAN_FIELDS = [
     { key: 'ziyadah', ph: 'Ziyadah', icon: BookOpen, color: '#10b981' },
     { key: 'murojaah', ph: "Muroja'ah", icon: FileText, color: '#8b5cf6' },
-    { key: 'total_hafalan', ph: 'Mahfuzhat', icon: Award, color: '#3b82f6' },
+    { key: 'total_hafalan', ph: 'Hafalan', icon: Award, color: '#3b82f6' },
 ]
 
 export const GRADE = (n) => {

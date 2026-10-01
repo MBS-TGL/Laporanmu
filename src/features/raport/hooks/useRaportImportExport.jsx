@@ -768,7 +768,7 @@ export function useRaportImportExport(core, { printContainerRef, silentPrintRef,
                 tinggi_badan: 'TB(cm)',
                 ziyadah: 'Ziyadah',
                 murojaah: "Muroja'ah",
-                total_hafalan: 'Mahfuzhat',
+                total_hafalan: 'Hafalan',
                 hari_sakit: 'Sakit',
                 hari_izin: 'Izin',
                 hari_alpa: 'Alpa',
@@ -858,7 +858,7 @@ export function useRaportImportExport(core, { printContainerRef, silentPrintRef,
                 tinggi_badan: 'TB(cm)',
                 ziyadah: 'Ziyadah',
                 murojaah: "Muroja'ah",
-                total_hafalan: 'Mahfuzhat',
+                total_hafalan: 'Hafalan',
                 hari_sakit: 'Sakit',
                 hari_izin: 'Izin',
                 hari_alpa: 'Alpa',
@@ -960,7 +960,7 @@ export function useRaportImportExport(core, { printContainerRef, silentPrintRef,
                 criteria.forEach(k => {
                     headers.push(k.id)
                 })
-                headers.push('Rata-rata', 'Predikat', 'BB(kg)', 'TB(cm)', 'Ziyadah', "Muroja'ah", 'Mahfuzhat', 'Hari Sakit', 'Hari Izin', 'Hari Alpa', 'Hari Pulang', 'Catatan')
+                headers.push('Rata-rata', 'Predikat', 'BB(kg)', 'TB(cm)', 'Ziyadah', "Muroja'ah", 'Hafalan', 'Hari Sakit', 'Hari Izin', 'Hari Alpa', 'Hari Pulang', 'Catatan')
 
                 const rows = classStudents.map((s, i) => {
                     const rep = allRep.find(r => r.student_id === s.id) || {}

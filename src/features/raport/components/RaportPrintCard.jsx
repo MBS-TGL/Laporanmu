@@ -782,7 +782,7 @@ const RaportPrintCard = memo(({
                                                             <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%', fontSize: `${lc.arSecFontSize}pt`, fontFamily: arFont }}>{displayVal(ex.total_hafalan || totalHafalan, true)}</td>
                                                             <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'right', fontFamily: arFont, fontSize: `${lc.arSecFontSize}pt`, width: '30%' }}>{L.totalHafalan || 'المحفوظات'}</td>
                                                         </> : <>
-                                                            <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'left', width: '30%' }}>{L.totalHafalan || 'Mahfuzhat'}</td>
+                                                            <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'left', width: '30%' }}>{L.totalHafalan || 'Hafalan'}</td>
                                                             <td style={{ verticalAlign: 'middle', border: '1px solid #999', padding: secPadding, textAlign: 'center', fontWeight: 700, width: '70%' }}>{displayVal(ex.total_hafalan || totalHafalan, true)}</td>
                                                         </>}
                                                     </tr>

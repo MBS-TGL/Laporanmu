@@ -273,6 +273,84 @@ export function useRaportCore() {
         }
     }, [classProgress, stats.totalKelas, stats.totalSiswa])
 
+    // ── Fetch page-level data (classes list + progress stats) on mount ──
+    useEffect(() => {
+        const fetchData = async () => {
+            const curMonth = now.getMonth() + 1
+            const curYear = now.getFullYear()
+            try {
+                const [classRes, studRes, curRepRes, lastRepRes] = await Promise.all([
+                    supabase.from('classes').select('id, name, homeroom_teacher_id, teachers:homeroom_teacher_id(name)').order('name'),
+                    supabase.from('students').select('id, class_id').is('deleted_at', null),
+                    supabase.from('student_monthly_reports')
+                        .select('student_id, nilai_akhlak, nilai_ibadah, nilai_kebersihan, nilai_quran, nilai_bahasa')
+                        .eq('month', curMonth).eq('year', curYear),
+                    supabase.from('student_monthly_reports')
+                        .select('student_id, month, year')
+                        .order('year', { ascending: false })
+                        .order('month', { ascending: false })
+                        .limit(5000),
+                ])
+                if (classRes.error) throw classRes.error
+                if (studRes.error) throw studRes.error
+                const classes = classRes.data || []
+                const allStudents = studRes.data || []
+                const curReports = curRepRes.data || []
+                const lastReports = lastRepRes.data || []
+                setClassesList(classes)
+                setStats({
+                    totalKelas: classes.length,
+                    totalSiswa: allStudents.length,
+                    totalRaport: lastReports.length,
+                    bulanIni: curMonth,
+                })
+                const stuByClass = {}
+                for (const s of allStudents) {
+                    if (!stuByClass[s.class_id]) stuByClass[s.class_id] = []
+                    stuByClass[s.class_id].push(s.id)
+                }
+                const stuToClass = {}
+                for (const s of allStudents) stuToClass[s.id] = s.class_id
+                const curProgressByStudent = {}
+                for (const r of curReports) {
+                    const progressFields = [r.nilai_akhlak, r.nilai_ibadah, r.nilai_kebersihan, r.nilai_quran, r.nilai_bahasa]
+                    const filled = progressFields.filter(v => v !== '' && v !== null && v !== undefined).length
+                    curProgressByStudent[r.student_id] = filled / progressFields.length
+                }
+                const curDoneSet = new Set(
+                    curReports
+                        .filter(r => ['nilai_akhlak', 'nilai_ibadah', 'nilai_kebersihan', 'nilai_quran', 'nilai_bahasa']
+                            .every(k => r[k] !== '' && r[k] !== null && r[k] !== undefined))
+                        .map(r => r.student_id)
+                )
+                const lastReportByClass = {}
+                for (const r of lastReports) {
+                    const cid = stuToClass[r.student_id]
+                    if (!cid) continue
+                    if (!lastReportByClass[cid]) lastReportByClass[cid] = { month: r.month, year: r.year }
+                }
+                const prog = {}
+                for (const cls of classes) {
+                    const ids = stuByClass[cls.id] || []
+                    prog[cls.id] = {
+                        total: ids.length,
+                        done: ids.filter(id => curDoneSet.has(id)).length,
+                        pct: ids.length ? Math.round((ids.reduce((acc, id) => acc + (curProgressByStudent[id] || 0), 0) / ids.length) * 100) : 0,
+                        lastMonth: lastReportByClass[cls.id]?.month ?? null,
+                        lastYear: lastReportByClass[cls.id]?.year ?? null,
+                    }
+                }
+                setClassProgress(prog)
+            } catch (e) {
+                console.error('fetchData error:', e)
+            } finally {
+                setPageLoading(false)
+            }
+        }
+        fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     // ── Pre-load/Transliterate names ──
     const transliterateToArab = useCallback(async (name) => {
         const { KATA_ARAB: KA, ASMAUL_HUSNA: AH, DIGRAPH: DG, SINGLE: SG } = await loadTranslitData()

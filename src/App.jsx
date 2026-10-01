@@ -45,6 +45,12 @@ const PublicVerifyPage = lazyRetry(() => import('@features/public/pages/PublicVe
 const DashboardPage = lazyRetry(() => import('@features/dashboard/pages/DashboardPage.jsx'))
 const TaskCenterPage = lazyRetry(() => import('@features/dashboard/pages/TaskCenterPage.jsx'))
 const RaportPage = lazyRetry(() => import('@features/raport/pages/RaportPage.jsx'))
+const RaportLayout = lazyRetry(() => import('@features/raport/layouts/RaportLayout.jsx'))
+const RaportDashboardPage = lazyRetry(() => import('@features/raport/pages/RaportDashboardPage.jsx'))
+const RaportSetupPage = lazyRetry(() => import('@features/raport/pages/RaportSetupPage.jsx'))
+const RaportInputPage = lazyRetry(() => import('@features/raport/pages/RaportInputPage.jsx'))
+const RaportPreviewPage = lazyRetry(() => import('@features/raport/pages/RaportPreviewPage.jsx'))
+const RaportArchivePage = lazyRetry(() => import('@features/raport/pages/RaportArchivePage.jsx'))
 const BehaviorPage = lazyRetry(() => import('@features/behavior/pages/BehaviorPage.jsx'))
 const DormsPage = lazyRetry(() => import('@features/dorms/pages/DormsPage.jsx'))
 const HealthPage = lazyRetry(() => import('@features/health/pages/HealthPage.jsx'))
@@ -467,8 +473,29 @@ function AppRoutes() {
             {/* Core — module flag guarded */}
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/task-center" element={<TaskCenterPage />} />
-            <Route path="/raport" element={<FlagRoute flag="module.raport" label="Raport Pondok"><RaportPage /></FlagRoute>} />
-            <Route path="/academic/raport" element={<FlagRoute flag="module.raport" label="Rapor & Penilaian"><RaportPage /></FlagRoute>} />
+            {/* ── Raport Pondok — nested multi-step routes ── */}
+            <Route
+              path="/raport"
+              element={<FlagRoute flag="module.raport" label="Raport Pondok"><RaportLayout isAcademic={false} /></FlagRoute>}
+            >
+              <Route index element={<RaportDashboardPage isAcademic={false} />} />
+              <Route path="setup/:classId" element={<RaportSetupPage isAcademic={false} />} />
+              <Route path="input/:classId" element={<RaportInputPage isAcademic={false} />} />
+              <Route path="preview/:classId" element={<RaportPreviewPage isAcademic={false} />} />
+              <Route path="archive" element={<RaportArchivePage isAcademic={false} />} />
+            </Route>
+
+            {/* ── Rapor Akademik — nested multi-step routes ── */}
+            <Route
+              path="/academic/raport"
+              element={<FlagRoute flag="module.raport" label="Rapor &amp; Penilaian"><RaportLayout isAcademic={true} /></FlagRoute>}
+            >
+              <Route index element={<RaportDashboardPage isAcademic={true} />} />
+              <Route path="setup/:classId" element={<RaportSetupPage isAcademic={true} />} />
+              <Route path="input/:classId" element={<RaportInputPage isAcademic={true} />} />
+              <Route path="preview/:classId" element={<RaportPreviewPage isAcademic={true} />} />
+              <Route path="archive" element={<RaportArchivePage isAcademic={true} />} />
+            </Route>
             <Route path="/boarding/behavior" element={<FlagRoute flag="module.poin" label="Kedisiplinan & Poin"><BehaviorPage /></FlagRoute>} />
             <Route path="/attendance" element={<FlagRoute flag="module.absensi" label="Absensi Bulanan"><AttendancePage /></FlagRoute>} />
             <Route path="/academic/halaqah" element={<FlagRoute flag="nav.halaqah" label="Presensi Halaqah"><HalaqahPage /></FlagRoute>} />

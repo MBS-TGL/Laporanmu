@@ -48,12 +48,13 @@ export function useRaportCore() {
         return isAcademicRaport ? 'umum' : 'bulanan'
     })
 
+    const prevAcademicRef = useRef(isAcademicRaport)
+
     useEffect(() => {
-        if (isAcademicRaport) {
-            setReportType('umum')
-        } else {
-            setReportType('bulanan')
-        }
+        if (prevAcademicRef.current === isAcademicRaport) return
+        prevAcademicRef.current = isAcademicRaport
+
+        setReportType(isAcademicRaport ? 'umum' : 'bulanan')
         setSelectedClassId('')
         setMusyrif('')
         setStep(0)
@@ -348,7 +349,7 @@ export function useRaportCore() {
             }
         }
         fetchData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // ── Pre-load/Transliterate names ──

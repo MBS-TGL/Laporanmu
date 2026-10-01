@@ -183,11 +183,10 @@ export default function RaportSetupPage({ isAcademic = false }) {
                                     key={opt.id}
                                     type="button"
                                     onClick={() => setClassSelectionType(opt.id)}
-                                    className={`h-10 px-4 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                                        classSelectionType === opt.id
-                                            ? 'bg-indigo-600 text-white shadow-md'
-                                            : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]'
-                                    }`}
+                                    className={`h-10 px-4 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${classSelectionType === opt.id
+                                        ? 'bg-indigo-600 text-white shadow-md'
+                                        : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]'
+                                        }`}
                                 >
                                     {(() => {
                                         const Icon = opt.icon
@@ -215,10 +214,9 @@ export default function RaportSetupPage({ isAcademic = false }) {
                                 key={opt.id}
                                 type="button"
                                 onClick={() => setClassSelectionGrade(opt.id)}
-                                className={`h-8 px-3.5 rounded-xl text-[10px] font-black border transition-all cursor-pointer ${
-                                    classSelectionGrade === opt.id
-                                        ? 'bg-indigo-500/10 border-indigo-500/40 text-indigo-600 dark:text-indigo-400 shadow-xs'
-                                        : 'border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface)] hover:border-indigo-500/25 hover:text-indigo-600'
+                                className={`h-8 px-3.5 rounded-xl text-[10px] font-black border transition-all cursor-pointer ${classSelectionGrade === opt.id
+                                    ? 'bg-indigo-500/10 border-indigo-500/40 text-indigo-600 dark:text-indigo-400 shadow-xs'
+                                    : 'border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface)] hover:border-indigo-500/25 hover:text-indigo-600'
                                     }`}
                             >
                                 {opt.label}
@@ -252,23 +250,21 @@ export default function RaportSetupPage({ isAcademic = false }) {
                                             if (isEmpty) return
                                             setTempSelectedClassId(cls.id)
                                         }}
-                                        className={`p-4 rounded-2xl border transition-all text-left flex items-center gap-3.5 relative overflow-hidden group shadow-xs cursor-pointer ${
-                                            isEmpty
-                                                ? 'opacity-40 cursor-not-allowed bg-slate-100/50 dark:bg-slate-800/30 border-dashed border-[var(--color-border)]'
-                                                : isSelected
-                                                    ? 'border-indigo-500 bg-indigo-500/10 ring-2 ring-indigo-500/20 shadow-md scale-[1.01]'
-                                                    : 'border-[var(--color-border)] bg-[var(--color-surface)] hover:border-indigo-500/50 hover:bg-indigo-500/5'
+                                        className={`p-4 rounded-2xl border transition-all text-left flex items-center gap-3.5 relative overflow-hidden group shadow-xs cursor-pointer ${isEmpty
+                                            ? 'opacity-40 cursor-not-allowed bg-slate-100/50 dark:bg-slate-800/30 border-dashed border-[var(--color-border)]'
+                                            : isSelected
+                                                ? 'border-indigo-500 bg-indigo-500/10 ring-2 ring-indigo-500/20 shadow-md scale-[1.01]'
+                                                : 'border-[var(--color-border)] bg-[var(--color-surface)] hover:border-indigo-500/50 hover:bg-indigo-500/5'
                                             }`}
                                     >
                                         <div
-                                            className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 font-black text-xs transition-all ${
-                                                isEmpty
-                                                    ? 'bg-slate-200 text-slate-400'
-                                                    : isSelected
-                                                        ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/30'
-                                                        : isBoarding
-                                                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white'
-                                                            : 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white'
+                                            className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 font-black text-xs transition-all ${isEmpty
+                                                ? 'bg-slate-200 text-slate-400'
+                                                : isSelected
+                                                    ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/30'
+                                                    : isBoarding
+                                                        ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white'
+                                                        : 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white'
                                                 }`}
                                         >
                                             {isSelected ? <Check className="w-4 h-4 text-white" /> : (cls.name?.charAt(0) || 'K')}
@@ -321,11 +317,10 @@ export default function RaportSetupPage({ isAcademic = false }) {
                             if (!tempSelectedClassId) return
                             navigate(`${basePath}/setup/${tempSelectedClassId}`)
                         }}
-                        className={`h-14 flex-1 px-6 rounded-2xl text-white font-black text-sm transition-all flex items-center justify-center gap-2 shadow-lg ${
-                            !tempSelectedClassId
-                                ? 'bg-slate-300 dark:bg-slate-700 cursor-not-allowed shadow-none'
-                                : 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-500/25 active:scale-[0.99] cursor-pointer'
-                        }`}
+                        className={`h-14 flex-1 px-6 rounded-2xl text-white font-black text-sm transition-all flex items-center justify-center gap-2 shadow-lg ${!tempSelectedClassId
+                            ? 'bg-slate-300 dark:bg-slate-700 cursor-not-allowed shadow-none'
+                            : 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-500/25 active:scale-[0.99] cursor-pointer'
+                            }`}
                     >
                         <span>Lanjut ke Setup Periode</span>
                         <ArrowRight className="w-5 h-5" />
@@ -337,257 +332,220 @@ export default function RaportSetupPage({ isAcademic = false }) {
 
     // ── STEP 2: SETUP PERIODE & BAHASA FORM ──
     const gradeNum = getGradeNum(selectedClass?.name || '')
-    const displayStudentCount = studentCount !== null
-        ? studentCount
-        : (selectedClass?.total_students || selectedClass?.student_count || 14)
+    const displayStudentCount = studentCount ?? selectedClass?.total_students ?? selectedClass?.student_count ?? '…'
 
     return (
-        <div className="w-full space-y-6">
+        <div className="w-full space-y-3">
 
-            {/* Top Setup Banner */}
-            <div className="relative overflow-hidden rounded-2xl p-4 sm:p-5 bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50/60 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-emerald-950/20 border border-emerald-200/80 dark:border-emerald-800/40 shadow-xs flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-emerald-500/15 dark:bg-emerald-500/25 border border-emerald-400/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 shadow-xs">
-                    <Sliders className="w-6 h-6" />
+            {/* Banner */}
+            <div className="rounded-2xl px-3 py-2.5 bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50/60 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-emerald-950/20 border border-emerald-200/80 dark:border-emerald-800/40 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-400/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                    <Sliders className="w-5 h-5" />
                 </div>
                 <div className="min-w-0">
-                    <h2 className="text-base sm:text-lg font-black text-slate-800 dark:text-slate-100 tracking-tight leading-snug">
-                        {titleText}
-                    </h2>
-                    <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 font-medium leading-relaxed mt-0.5">
+                    <h2 className="text-sm font-black text-slate-800 dark:text-slate-100 leading-tight">{titleText}</h2>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400 font-medium">
                         Langkah 1: Tentukan periode dan bahasa pengantar untuk raport kelas ini.
                     </p>
                 </div>
             </div>
 
-            {/* Main Form Sections */}
-            <div className="space-y-6">
+            {/*
+                Grid 2 kolom x 3 baris (tinggi tiap baris diatur manual):
+                Kiri  : Kelas Terpilih (baris 1-2) + Bulan/Tahun (baris 3)
+                Kanan : Musyrif (baris 1)          + Template Bahasa (baris 2-3)
 
-                {/* Row 1: Kelas Terpilih & Musyrif */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                ===== PANDUAN UKURAN (cari class ini lalu ubah angkanya) =====
+                1) TINGGI BARIS GRID (paling berpengaruh):
+                   md:grid-rows-[4.25rem_0.75rem_4.25rem]
+                   - angka 1 (4.25rem) = tinggi baris Musyrif (kanan atas)
+                   - angka 3 (4.25rem) = tinggi baris Bulan/Tahun (kiri bawah)
+                   - angka 2 (0.75rem) = baris tengah, hanya penentu tinggi kotak Kelas & Bahasa
+                   Tinggi kotak Kelas  = angka1 + angka2 + 2x jarak - label
+                   Tinggi kartu Bahasa = angka2 + angka3 + 2x jarak - label
+                   -> kecilkan angka 2 untuk memperkecil Kelas & Bahasa,
+                      besarkan angka 1 dan 3 (sekalian h-11 input) untuk memperbesar Musyrif & Bulan/Tahun.
+                   Jangan angka 1 dan 3 lebih kecil dari (label ~14px + tinggi input + 4px).
+                2) TINGGI INPUT/DROPDOWN: "h-11" (Musyrif) dan "!h-11" (Bulan, Tahun, Semester, Tahun Ajaran)
+                3) JARAK ANTAR KOTAK: gap-y-2 (vertikal), gap-x-3 (horizontal)
+                4) KOTAK KELAS: p-2 (padding), w-9 h-9 (avatar), text-[13px] (nama), text-[9px] (jumlah siswa)
+                5) KARTU BAHASA: px-3 (padding), text-sm (judul), text-[9px] (sub), w-4 h-4 (ikon)
+                6) TOMBOL BAWAH: h-10 (Kembali & Mulai Input Nilai)
+            */}
+            <div className="grid grid-cols-1 md:grid-cols-2 md:grid-rows-[4.25rem_0.75rem_4.25rem] gap-x-3 gap-y-2">
 
-                    {/* KELAS TERPILIH */}
-                    <div className="space-y-2">
-                        <div className="h-4 flex items-center">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-1.5">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
-                                Kelas Terpilih
-                            </label>
-                        </div>
-                        <div className="h-[52px] px-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 dark:bg-emerald-950/20 flex items-center justify-between gap-3 shadow-xs">
-                            <div className="flex items-center gap-3 min-w-0">
-                                <div className="w-8 h-8 rounded-full bg-emerald-500 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/30">
-                                    {gradeNum}
-                                </div>
-                                <div className="min-w-0">
-                                    <h3 className="text-xs sm:text-sm font-black text-[var(--color-text)] truncate leading-tight">
-                                        {selectedClass?.name || 'Memuat Kelas...'}
-                                    </h3>
-                                    <span className="text-[9px] font-extrabold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">
-                                        {displayStudentCount} SISWA TERDAFTAR
-                                    </span>
-                                </div>
+                {/* Kelas Terpilih — kiri, tinggi 2 */}
+                <div className="md:col-start-1 md:row-start-1 md:row-span-2 flex flex-col gap-1">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                        Kelas Terpilih
+                    </label>
+                    <div className="flex-1 p-2 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 dark:bg-emerald-950/20 flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3 min-w-0">
+                            <div className="w-9 h-9 rounded-full bg-emerald-500 text-white font-black text-sm flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/30">
+                                {gradeNum}
                             </div>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setSelectedClassId('')
-                                    navigate(basePath)
-                                }}
-                                className="px-3 py-1 rounded-xl border border-emerald-500/40 bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 font-black text-xs hover:bg-emerald-50 dark:hover:bg-emerald-950/50 transition-all shadow-xs shrink-0 active:scale-95 cursor-pointer"
-                            >
-                                Ganti
-                            </button>
+                            <div className="min-w-0">
+                                <h3 className="text-[13px] font-black text-[var(--color-text)] truncate leading-tight">
+                                    {selectedClass?.name || 'Memuat Kelas...'}
+                                </h3>
+                                <span className="text-[9px] font-extrabold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">
+                                    {displayStudentCount} SISWA TERDAFTAR
+                                </span>
+                            </div>
                         </div>
+                        <button
+                            type="button"
+                            onClick={() => { setSelectedClassId(''); navigate(basePath) }}
+                            className="px-3 py-1 rounded-xl border border-emerald-500/40 bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 font-black text-[11px] hover:bg-emerald-50 dark:hover:bg-emerald-950/50 transition-all shrink-0 active:scale-95 cursor-pointer"
+                        >
+                            Ganti
+                        </button>
                     </div>
-
-                    {/* MUSYRIF / WALI KELAS */}
-                    <div className="space-y-2">
-                        <div className="h-4 flex items-center justify-between">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-1.5">
-                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 inline-block"></span>
-                                Musyrif / Wali Kelas
-                            </label>
-                            {homeroomTeacherName && musyrif !== homeroomTeacherName && (
-                                <button
-                                    type="button"
-                                    onClick={() => setMusyrif(homeroomTeacherName)}
-                                    className="text-[9px] font-bold text-indigo-500 hover:underline flex items-center gap-1"
-                                >
-                                    <UserCheck className="w-3 h-3" />
-                                    Pakai Wali Resmi ({homeroomTeacherName})
-                                </button>
-                            )}
-                        </div>
-                        <input
-                            type="text"
-                            value={musyrif}
-                            onChange={e => setMusyrif(e.target.value)}
-                            placeholder="Nama Wali Kelas / Musyrif"
-                            className="w-full h-12 px-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-sm font-bold text-[var(--color-text)] focus:outline-none focus:border-indigo-500 transition-all shadow-xs"
-                        />
-                    </div>
-
                 </div>
 
-                {/* Row 2: Periode & Template Bahasa */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                    {/* BULAN & TAHUN / SEMESTER & TAHUN AJARAN */}
-                    {isMonthly ? (
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <div className="h-4 flex items-center">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Bulan</label>
-                                </div>
-                                <RichSelect
-                                    value={selectedMonth}
-                                    onChange={val => setSelectedMonth(Number(val))}
-                                    options={monthOptions}
-                                    placeholder="Pilih Bulan"
-                                    buttonClassName="!h-12 !rounded-2xl border-[var(--color-border)] bg-[var(--color-surface-alt)] font-bold text-sm px-4 shadow-xs flex items-center"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <div className="h-4 flex items-center">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Tahun</label>
-                                </div>
-                                <RichSelect
-                                    value={selectedYear}
-                                    onChange={val => setSelectedYear(Number(val))}
-                                    options={yearOptions}
-                                    placeholder="Pilih Tahun"
-                                    buttonClassName="!h-12 !rounded-2xl border-[var(--color-border)] bg-[var(--color-surface-alt)] font-bold text-sm px-4 shadow-xs flex items-center"
-                                />
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <div className="h-4 flex items-center">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Semester</label>
-                                </div>
-                                <RichSelect
-                                    value={selectedSemester}
-                                    onChange={val => setSelectedSemester(Number(val))}
-                                    options={[
-                                        { id: 1, name: 'Semester 1 (Ganjil)' },
-                                        { id: 2, name: 'Semester 2 (Genap)' }
-                                    ]}
-                                    placeholder="Pilih Semester"
-                                    buttonClassName="!h-12 !rounded-2xl border-[var(--color-border)] bg-[var(--color-surface-alt)] font-bold text-sm px-4 shadow-xs flex items-center"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <div className="h-4 flex items-center">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Tahun Ajaran</label>
-                                </div>
-                                <RichSelect
-                                    value={academicYear}
-                                    onChange={val => setAcademicYear(val)}
-                                    options={Array.from({ length: 3 }).map((_, i) => {
-                                        const startYear = (now?.getFullYear() || 2026) - 1 + i
-                                        const val = `${startYear}/${startYear + 1}`
-                                        return { id: val, name: val }
-                                    })}
-                                    placeholder="Pilih Tahun Ajaran"
-                                    buttonClassName="!h-12 !rounded-2xl border-[var(--color-border)] bg-[var(--color-surface-alt)] font-bold text-sm px-4 shadow-xs flex items-center"
-                                />
-                            </div>
-                        </div>
-                    )}
-
-                    {/* TEMPLATE BAHASA */}
-                    <div className="space-y-2">
-                        <div className="h-4 flex items-center justify-between">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
-                                Template Bahasa
-                            </label>
+                {/* Musyrif — kanan, tinggi 1 */}
+                <div className="md:col-start-2 md:row-start-1 space-y-1">
+                    <div className="flex items-center justify-between">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+                            Musyrif / Wali Kelas
+                        </label>
+                        {homeroomTeacherName && musyrif !== homeroomTeacherName && (
                             <button
                                 type="button"
-                                onClick={() => setShowTemplateModal(true)}
-                                className="text-[10px] font-bold text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 flex items-center gap-1 transition-colors cursor-pointer"
+                                onClick={() => setMusyrif(homeroomTeacherName)}
+                                className="text-[9px] font-bold text-indigo-500 hover:underline flex items-center gap-1"
                             >
-                                <Eye className="w-3.5 h-3.5" />
-                                Lihat Perbedaan Template
+                                <UserCheck className="w-3 h-3" />
+                                Pakai Wali Resmi ({homeroomTeacherName})
                             </button>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                            {/* Arabic Option */}
-                            <button
-                                type="button"
-                                onClick={() => setLang('ar')}
-                                className={`h-[52px] px-4 rounded-2xl border text-left transition-all relative overflow-hidden flex items-center justify-between cursor-pointer ${
-                                    lang === 'ar'
-                                        ? 'bg-indigo-500/10 dark:bg-indigo-950/40 border-2 border-indigo-500 text-indigo-950 dark:text-indigo-200 shadow-sm'
-                                        : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-indigo-300'
-                                }`}
-                            >
-                                <div>
-                                    <span className={`text-sm sm:text-base font-black block leading-tight ${lang === 'ar' ? 'text-indigo-600 dark:text-indigo-400' : 'text-[var(--color-text)]'}`}>
-                                        العربية
-                                    </span>
-                                    <span className="text-[10px] font-medium text-[var(--color-text-muted)]">
-                                        Pondok / Boarding
-                                    </span>
-                                </div>
-                                <MoonStar className={`w-4 h-4 shrink-0 transition-colors ${lang === 'ar' ? 'text-indigo-600 dark:text-indigo-400' : 'text-[var(--color-text-muted)] opacity-60'}`} />
-                            </button>
-
-                            {/* Indonesian Option */}
-                            <button
-                                type="button"
-                                onClick={() => setLang('id')}
-                                className={`h-[52px] px-4 rounded-2xl border text-left transition-all relative overflow-hidden flex items-center justify-between cursor-pointer ${
-                                    lang === 'id'
-                                        ? 'bg-indigo-500/10 dark:bg-indigo-950/40 border-2 border-indigo-500 text-indigo-950 dark:text-indigo-200 shadow-sm'
-                                        : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-indigo-300'
-                                }`}
-                            >
-                                <div>
-                                    <span className={`text-sm sm:text-base font-black block leading-tight ${lang === 'id' ? 'text-indigo-600 dark:text-indigo-400' : 'text-[var(--color-text)]'}`}>
-                                        Indonesia
-                                    </span>
-                                    <span className="text-[10px] font-medium text-[var(--color-text-muted)]">
-                                        Sekolah / Reguler
-                                    </span>
-                                </div>
-                                <School className={`w-4 h-4 shrink-0 transition-colors ${lang === 'id' ? 'text-indigo-600 dark:text-indigo-400' : 'text-[var(--color-text-muted)] opacity-60'}`} />
-                            </button>
-                        </div>
-                    </div>
-
-                </div>
-
-                {/* Bottom Action Bar */}
-                <div className="flex items-center gap-4 pt-2">
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setSelectedClassId('')
-                            navigate(basePath)
-                        }}
-                        className="h-12 px-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] font-extrabold text-xs transition-all flex items-center justify-center gap-2 shadow-xs shrink-0 active:scale-98 cursor-pointer"
-                    >
-                        <ArrowLeft className="w-4 h-4" />
-                        <span>Kembali</span>
-                    </button>
-
-                    <button
-                        type="button"
-                        onClick={handleContinue}
-                        disabled={submitting}
-                        className="h-12 flex-1 px-6 rounded-2xl bg-emerald-500 hover:bg-emerald-600 active:scale-[0.99] disabled:opacity-50 text-white font-black text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25 cursor-pointer"
-                    >
-                        {submitting ? (
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
-                            <ChevronRight className="w-5 h-5" />
                         )}
-                        <span>{submitting ? 'Memuat Data...' : 'Mulai Input Nilai'}</span>
-                    </button>
+                    </div>
+                    <input
+                        type="text"
+                        value={musyrif}
+                        onChange={e => setMusyrif(e.target.value)}
+                        placeholder="Nama Wali Kelas / Musyrif"
+                        className="w-full h-11 px-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-sm font-bold text-[var(--color-text)] focus:outline-none focus:border-indigo-500 transition-all"
+                    />
                 </div>
 
+                {/* Periode — kiri bawah, tinggi 1 */}
+                {isMonthly ? (
+                    <div className="md:col-start-1 md:row-start-3 grid grid-cols-2 gap-3">
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Bulan</label>
+                            <RichSelect
+                                value={selectedMonth}
+                                onChange={val => setSelectedMonth(Number(val))}
+                                options={monthOptions}
+                                placeholder="Pilih Bulan"
+                                buttonClassName="!h-11 !rounded-2xl border-[var(--color-border)] bg-[var(--color-surface-alt)] font-bold text-sm px-4 flex items-center"
+                            />
+                        </div>
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Tahun</label>
+                            <RichSelect
+                                value={selectedYear}
+                                onChange={val => setSelectedYear(Number(val))}
+                                options={yearOptions}
+                                placeholder="Pilih Tahun"
+                                buttonClassName="!h-11 !rounded-2xl border-[var(--color-border)] bg-[var(--color-surface-alt)] font-bold text-sm px-4 flex items-center"
+                            />
+                        </div>
+                    </div>
+                ) : (
+                    <div className="md:col-start-1 md:row-start-3 grid grid-cols-2 gap-3">
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Semester</label>
+                            <RichSelect
+                                value={selectedSemester}
+                                onChange={val => setSelectedSemester(Number(val))}
+                                options={[
+                                    { id: 1, name: 'Semester 1 (Ganjil)' },
+                                    { id: 2, name: 'Semester 2 (Genap)' }
+                                ]}
+                                placeholder="Pilih Semester"
+                                buttonClassName="!h-11 !rounded-2xl border-[var(--color-border)] bg-[var(--color-surface-alt)] font-bold text-sm px-4 flex items-center"
+                            />
+                        </div>
+                        <div className="space-y-1">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Tahun Ajaran</label>
+                            <RichSelect
+                                value={academicYear}
+                                onChange={val => setAcademicYear(val)}
+                                options={Array.from({ length: 3 }).map((_, i) => {
+                                    const startYear = (now?.getFullYear() || 2026) - 1 + i
+                                    const val = `${startYear}/${startYear + 1}`
+                                    return { id: val, name: val }
+                                })}
+                                placeholder="Pilih Tahun Ajaran"
+                                buttonClassName="!h-11 !rounded-2xl border-[var(--color-border)] bg-[var(--color-surface-alt)] font-bold text-sm px-4 flex items-center"
+                            />
+                        </div>
+                    </div>
+                )}
+
+                {/* Template Bahasa — kanan, tinggi 2 */}
+                <div className="md:col-start-2 md:row-start-2 md:row-span-2 flex flex-col gap-1">
+                    <div className="flex items-center justify-between">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Template Bahasa</label>
+                        <button
+                            type="button"
+                            onClick={() => setShowTemplateModal(true)}
+                            className="text-[10px] font-bold text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 flex items-center gap-1 cursor-pointer"
+                        >
+                            <Eye className="w-3.5 h-3.5" />
+                            Lihat Perbedaan Template
+                        </button>
+                    </div>
+                    <div className="flex-1 grid grid-cols-2 gap-3">
+                        {[
+                            { id: 'ar', title: 'العربية', sub: 'Pondok / Boarding', Icon: MoonStar },
+                            { id: 'id', title: 'Indonesia', sub: 'Sekolah / Reguler', Icon: School },
+                        ].map(({ id, title, sub, Icon }) => (
+                            <button
+                                key={id}
+                                type="button"
+                                onClick={() => setLang(id)}
+                                className={`h-full px-3 rounded-2xl border text-left transition-all flex items-center justify-between cursor-pointer ${lang === id
+                                    ? 'bg-indigo-500/10 dark:bg-indigo-950/40 border-2 border-indigo-500'
+                                    : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] hover:border-indigo-300'
+                                    }`}
+                            >
+                                <div>
+                                    <span className={`text-sm font-black block leading-tight ${lang === id ? 'text-indigo-600 dark:text-indigo-400' : 'text-[var(--color-text)]'}`}>
+                                        {title}
+                                    </span>
+                                    <span className="text-[9px] font-medium text-[var(--color-text-muted)]">{sub}</span>
+                                </div>
+                                <Icon className={`w-4 h-4 shrink-0 ${lang === id ? 'text-indigo-600 dark:text-indigo-400' : 'text-[var(--color-text-muted)] opacity-60'}`} />
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Action bar */}
+            <div className="flex items-center gap-3 pt-1">
+                <button
+                    type="button"
+                    onClick={() => { setSelectedClassId(''); navigate(basePath) }}
+                    className="h-10 px-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] font-extrabold text-xs transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+                >
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>Kembali</span>
+                </button>
+                <button
+                    type="button"
+                    onClick={handleContinue}
+                    disabled={submitting}
+                    className="h-10 flex-1 px-5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white font-black text-sm transition-all flex items-center justify-center gap-2 shadow-md shadow-emerald-500/25 cursor-pointer"
+                >
+                    {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <ChevronRight className="w-5 h-5" />}
+                    <span>{submitting ? 'Memuat Data...' : 'Mulai Input Nilai'}</span>
+                </button>
             </div>
 
             {/* Template Difference Modal */}

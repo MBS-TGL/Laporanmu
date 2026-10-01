@@ -9,7 +9,7 @@ export default function RaportInputPage({ isAcademic = false }) {
     const { classId } = useParams()
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
-    const { core, activeRtObj } = useRaportContext()
+    const { core, activeRtObj, activeCriteria, activeMaxScore, isAcademic: isAcad, importExport } = useRaportContext()
 
     const {
         selectedClass, setSelectedClassId, selectedMonth, setSelectedMonth,
@@ -132,7 +132,13 @@ export default function RaportInputPage({ isAcademic = false }) {
                         Loading spreadsheet...
                     </div>
                 }>
-                    <LazyRaportInputTable />
+                    <LazyRaportInputTable
+                        {...core}
+                        {...importExport}
+                        criteria={activeCriteria}
+                        maxScore={activeMaxScore}
+                        isAcademicRaport={isAcad}
+                    />
                 </Suspense>
             )}
         </div>

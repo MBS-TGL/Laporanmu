@@ -871,7 +871,7 @@ const RaportPrintCard = memo(({
                                         direction: isAr ? 'rtl' : 'ltr', fontFamily: isAr ? arFont : 'inherit',
                                         textAlign: isAr ? 'right' : 'left'
                                     }}>
-                                        {isAr ? 'ملاحظة و اكتمال' : 'Catatan & Kelengkapan'}
+                                        {isAr ? 'ملاحظة و اكتمال' : 'Catatan'}
                                     </div>
                                     <div style={{
                                         fontSize: (isAr && catatanArab) ? '12pt' : '9.5pt',

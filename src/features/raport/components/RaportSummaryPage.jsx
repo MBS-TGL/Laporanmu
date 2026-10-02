@@ -1,6 +1,6 @@
 import React, { memo, useEffect } from 'react'
 import { RAPORT_TYPES, getClassLevel, getGradePredicate } from '@features/raport/utils/raportTypeRegistry'
-import { calcAvg } from '@features/raport/utils/raportHelpers'
+import { calcAvg, hafalanRankScore, hafalanDisplay } from '@features/raport/utils/raportHelpers'
 import { RAPORT_SERIF } from '@features/raport/utils/raportFonts'
 
 // ─── Constants ──────────────────────────────────────────────────────
@@ -72,10 +72,10 @@ const TrophyRankBadge = ({ rank, idx }) => {
 
 const PredBadge = ({ label, color }) => (
     <span style={{
-        display: 'inline-block', padding: '2px 7px', borderRadius: 4,
-        fontSize: '7.5pt', fontWeight: 700, lineHeight: 1.3,
+        display: 'inline-block', padding: '3px 6px', borderRadius: 4,
+        fontSize: '7pt', fontWeight: 700, lineHeight: 1.25,
         background: color, color: '#fff',
-        whiteSpace: 'nowrap', letterSpacing: '0.2px',
+        whiteSpace: 'normal', letterSpacing: 0,
     }}>{label}</span>
 )
 
@@ -93,6 +93,24 @@ const PelanggaranBadges = ({ text }) => {
                 }}>{item}</span>
             ))}
         </div>
+    )
+}
+
+const KpiCell = ({ label, value, sub, valueColor }) => (
+    <div style={{ flex: 1, minWidth: 0, padding: '0 10px' }}>
+        <div style={{ fontSize: '6.5pt', fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', color: '#64748b' }}>{label}</div>
+        <div style={{
+            fontSize: '12pt', fontWeight: 800, color: valueColor || '#0f172a', lineHeight: 1.2, marginTop: 1,
+            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+        }}>{value}</div>
+        {sub ? <div style={{ fontSize: '6.5pt', color: '#94a3b8', marginTop: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{sub}</div> : null}
+    </div>
+)
+
+const DistSeg = ({ count, total, color }) => {
+    if (!count || !total) return null
+    return (
+        <div style={{ flex: count, minWidth: 4, background: color, height: 8 }} />
     )
 }
 
@@ -120,7 +138,7 @@ const RaportSummaryPage = memo(({
     const isA4 = pageSize === 'a4'
     const maxScore = rtObj.maxScore
 
-    const pad = isA4 ? '4mm 10mm 4mm 20mm' : '8mm 10mm 8mm 20mm'
+    const pad = isA4 ? '8mm 11mm 8mm 11mm' : '10mm 12mm 10mm 12mm'
     const pageW = isA4 ? '210mm' : '215mm'
     const pageH = isA4 ? '297mm' : '330mm'
 
@@ -147,6 +165,11 @@ const RaportSummaryPage = memo(({
         const pelanggaran = ex.pelanggaran || ''
         const prestasi = ex.prestasi || ''
         const sholat = ex.sholat || ''
+        const ziyadah = String(ex.ziyadah || '').trim()
+        const murojaah = String(ex.murojaah || '').trim()
+        const totalHafalan = String(ex.total_hafalan || '').trim()
+        const hafalanScore = hafalanRankScore(ex)
+        const hafalanText = hafalanDisplay(ex)
 
         const subjectScores = criteria.map(k => ({
             key: k.key,
@@ -171,6 +194,7 @@ const RaportSummaryPage = memo(({
             pelanggaran, prestasi, sholat,
             sakit, izin, alpa, pulang,
             catatan, highlights, negPoints,
+            ziyadah, murojaah, totalHafalan, hafalanScore, hafalanText,
         }
     })
 
@@ -191,13 +215,15 @@ const RaportSummaryPage = memo(({
         if (r.gradeObj?.id) dist[r.gradeObj.id] = (dist[r.gradeObj.id] || 0) + 1
     })
 
-    // Students needing attention
+    const filledCount = rows.filter(r => r.avgNum !== null).length
+    const alpaStudents = rows.filter(r => Number(r.alpa) > 0)
+    const hasHafalan = !!rtObj.hasHafalan
+
     const lowScoreCutoff = maxScore === 9 ? 6 : 60
     const attentionStudents = rows.filter(r =>
         (r.avgNum !== null && r.avgNum < lowScoreCutoff) || r.negPoints > 0 || r.highlights.length >= 2
     )
 
-    // Per-subject class averages
     const subjectAvgs = criteria.map(k => {
         const vals = rows.map(r => r.subjectScores.find(s => s.key === k.key)?.val).filter(v => v !== null && v !== undefined)
         return {
@@ -208,6 +234,41 @@ const RaportSummaryPage = memo(({
         }
     })
 
+    const hafalanRanked = [...rows]
+        .filter(r => r.hafalanScore != null)
+        .sort((a, b) => b.hafalanScore - a.hafalanScore)
+    const hafalanWithText = rows.filter(r => r.hafalanText)
+    const hafalanEmpty = rows.filter(r => !r.hafalanText)
+    const topHafalan = hafalanRanked[0] || hafalanWithText[0] || null
+    const bestZiyadah = [...rows].filter(r => r.ziyadah).sort((a, b) => (hafalanRankScore({ ziyadah: b.ziyadah }) ?? -1) - (hafalanRankScore({ ziyadah: a.ziyadah }) ?? -1))[0]
+    const bestMurojaah = [...rows].filter(r => r.murojaah).sort((a, b) => (hafalanRankScore({ murojaah: b.murojaah }) ?? -1) - (hafalanRankScore({ murojaah: a.murojaah }) ?? -1))[0]
+
+    const dominantPred = Object.entries(dist).sort((a, b) => b[1] - a[1]).find(([, n]) => n > 0)
+    const numericSubjects = subjectAvgs.filter(s => s.avg !== '-')
+    const strongest = numericSubjects.length ? [...numericSubjects].sort((a, b) => Number(b.avg) - Number(a.avg))[0] : null
+    const weakest = numericSubjects.length ? [...numericSubjects].sort((a, b) => Number(a.avg) - Number(b.avg))[0] : null
+
+    const teacherInsight = (() => {
+        const parts = []
+        if (filledCount) {
+            const predLabel = dominantPred ? dominantPred[0] : (rows.find(r => r.gradeObj)?.gradeObj?.id || '')
+            parts.push(`${filledCount} dari ${rows.length} santri sudah bernilai (rata-rata ${classAvg}${predLabel ? `, predikat dominan ${predLabel}` : ''}).`)
+        } else {
+            parts.push(`Belum ada nilai yang tercatat untuk ${rows.length} santri kelas ini.`)
+        }
+        if (strongest && weakest && strongest.id !== weakest.id) {
+            parts.push(`Capaian paling kuat di ${strongest.id} (${strongest.avg}), perlu penguatan di ${weakest.id} (${weakest.avg}).`)
+        }
+        if (hasHafalan && topHafalan) {
+            parts.push(`Hafalan terdepan: ${topHafalan.name}${topHafalan.hafalanText ? ` (${topHafalan.hafalanText})` : ''}.`)
+        } else if (hasHafalan) {
+            parts.push('Belum ada capaian hafalan yang bisa dibandingkan.')
+        }
+        if (alpaStudents.length) parts.push(`${alpaStudents.length} santri tercatat alpa.`)
+        if (attentionStudents.length) parts.push(`${attentionStudents.length} santri perlu tindak lanjut wali kelas.`)
+        return parts.join(' ')
+    })()
+
     // ─── Ranking ────────────────────────────────────────────────────
     const sortedByAvg = [...rows].filter(r => r.avgNum !== null).sort((a, b) => b.avgNum - a.avgNum)
     const rankMap = new Map()
@@ -215,7 +276,7 @@ const RaportSummaryPage = memo(({
     const top3Set = new Set(sortedByAvg.slice(0, 3).map(r => r.idx))
 
     // ─── Multi-page pagination ──────────────────────────────────────
-    const ROWS_FIRST = isA4 ? 20 : 25
+    const ROWS_FIRST = isA4 ? 10 : 12
     const ROWS_NEXT = isA4 ? 25 : 30
 
     const pages = []
@@ -253,20 +314,19 @@ const RaportSummaryPage = memo(({
 
     // ─── Table styles ───────────────────────────────────────────────
     const displayCriteria = criteria
-    const totalSubjectW = Math.max(22, Math.min(32, displayCriteria.length * 5.2))
-    const critColW = `${totalSubjectW / displayCriteria.length}%`
-    const critFontSize = displayCriteria.length > 8 ? '5.5pt' : displayCriteria.length > 6 ? '6pt' : '6.5pt'
+    const critCount = Math.max(displayCriteria.length, 1)
+    const critColW = `${(52 / critCount).toFixed(2)}%`
 
     const thBase = {
-        border: '1px solid #cbd5e1', padding: '4px 2px',
-        textAlign: 'center', fontWeight: 700, fontSize: '7pt',
+        border: '1px solid #cbd5e1', padding: '7px 6px',
+        textAlign: 'center', fontWeight: 700, fontSize: '7.5pt',
         background: 'linear-gradient(180deg, #f1f5f9 0%, #e8ecf1 100%)',
-        color: '#334155', textTransform: 'uppercase', letterSpacing: '0.3px',
+        color: '#334155', textTransform: 'uppercase', letterSpacing: '0.15px',
         verticalAlign: 'middle',
     }
     const tdBase = {
-        border: '1px solid #cbd5e1', padding: '3.5px 3px',
-        fontSize: '8pt', verticalAlign: 'middle',
+        border: '1px solid #cbd5e1', padding: '7px 6px',
+        fontSize: '8.5pt', verticalAlign: 'middle',
     }
     const tdC = { ...tdBase, textAlign: 'center' }
     const tdL = { ...tdBase, textAlign: 'left' }
@@ -309,13 +369,13 @@ const RaportSummaryPage = memo(({
                                 <div style={{
                                     fontSize: '14pt', fontWeight: 800, letterSpacing: '1.5px',
                                     color: '#1e293b', textTransform: 'uppercase',
-                                }}>Rekapitulasi Raport</div>
+                                }}>Rekapitulasi Kelas</div>
                                 <div style={{
                                     fontSize: '10.5pt', fontWeight: 600, marginTop: 3, color: '#334155',
                                 }}>Kelas {className} — {periodStr}</div>
                                 <div style={{
-                                    fontSize: '9pt', color: '#64748b', marginTop: 2,
-                                }}>Wali Kelas: {musyrif || '-'}</div>
+                                    fontSize: '8.5pt', color: '#64748b', marginTop: 2,
+                                }}>Wali Kelas: {musyrif || '-'} · Bahan baca cepat untuk rapat & tindak lanjut</div>
                             </div>
                         ) : (
                             <div style={{
@@ -333,58 +393,81 @@ const RaportSummaryPage = memo(({
 
                         {/* ═══════════════ CLEAN 1-LINE FUNCTIONAL SUMMARY STRIP (First Page) ═══════════════ */}
                         {isFirst && (
-                            <div style={{
-                                marginBottom: 8, padding: '5px 12px', borderRadius: 6,
-                                background: '#f8fafc', border: '1px solid #cbd5e1',
-                                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                                fontSize: '8.5pt', color: '#334155',
-                            }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                    <span style={{ fontWeight: 700, color: '#64748b', fontSize: '7.5pt', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
-                                        Rata-Rata Kelas:
-                                    </span>
-                                    <b style={{ fontSize: '11pt', color: getAvgColor(classAvg), lineHeight: 1 }}>{classAvg}</b>
-                                    <span style={{ fontSize: '7.5pt', color: '#64748b' }}>
-                                        (Tertinggi: <b style={{ color: '#10b981' }}>{highest}</b> | Terendah: <b style={{ color: '#ef4444' }}>{lowest}</b>)
-                                    </span>
-                                </div>
-
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: '7.5pt' }}>
-                                    <span>
-                                        <b style={{ color: '#64748b' }}>Absensi Total:</b> Sakit <b>{totalSakit}</b> · Izin <b>{totalIzin}</b> · Alpa <b style={{ color: totalAlpa > 0 ? '#dc2626' : undefined }}>{totalAlpa}</b> · Pulang <b>{totalPulang}</b>
-                                    </span>
-                                    {totalNegPoints > 0 ? (
-                                        <span style={{ fontSize: '7pt', color: '#b91c1c', fontWeight: 700, background: '#fef2f2', padding: '1px 6px', borderRadius: 4, border: '1px solid #fca5a5' }}>
-                                            {totalNegPoints} Poin Violasi
-                                        </span>
-                                    ) : (
-                                        <span style={{ fontSize: '7pt', color: '#047857', fontWeight: 700, background: '#ecfdf5', padding: '1px 6px', borderRadius: 4, border: '1px solid #a7f3d0' }}>
-                                            0 Violasi
-                                        </span>
+                            <div style={{ marginBottom: 8 }}>
+                                <div style={{
+                                    marginBottom: 6, padding: '8px 4px', borderRadius: 7,
+                                    background: '#f8fafc', border: '1px solid #cbd5e1',
+                                    display: 'flex', alignItems: 'stretch',
+                                }}>
+                                    <KpiCell
+                                        label="Santri"
+                                        value={`${filledCount}/${rows.length}`}
+                                        sub="sudah bernilai"
+                                    />
+                                    <div style={{ width: 1, background: '#e2e8f0' }} />
+                                    <KpiCell
+                                        label="Rata-rata"
+                                        value={classAvg}
+                                        valueColor={getAvgColor(classAvg)}
+                                        sub={`max ${highest} · min ${lowest}`}
+                                    />
+                                    <div style={{ width: 1, background: '#e2e8f0' }} />
+                                    <KpiCell
+                                        label="Predikat"
+                                        value={dominantPred ? dominantPred[0] : '—'}
+                                        sub={dominantPred ? `${dominantPred[1]} santri` : 'belum ada'}
+                                    />
+                                    <div style={{ width: 1, background: '#e2e8f0' }} />
+                                    <KpiCell
+                                        label="Absensi"
+                                        value={totalAlpa}
+                                        valueColor={totalAlpa > 0 ? '#dc2626' : '#047857'}
+                                        sub={`sakit ${totalSakit} · izin ${totalIzin} · pulang ${totalPulang}`}
+                                    />
+                                    {hasHafalan && (
+                                        <>
+                                            <div style={{ width: 1, background: '#e2e8f0' }} />
+                                            <KpiCell
+                                                label="Hafalan"
+                                                value={topHafalan ? (topHafalan.hafalanText || 'Ada') : '—'}
+                                                sub={topHafalan ? `teratas: ${topHafalan.name}` : 'belum tercatat'}
+                                            />
+                                        </>
                                     )}
+                                </div>
+                                <div style={{
+                                    padding: '6px 10px', borderRadius: 6,
+                                    background: '#eff6ff', border: '1px solid #bfdbfe',
+                                    fontSize: '7.5pt', color: '#1e3a8a', lineHeight: 1.45, fontWeight: 600,
+                                }}>
+                                    {teacherInsight}
                                 </div>
                             </div>
                         )}
 
                         {/* ═══════════════ STUDENT TABLE ═══════════════ */}
                         <div style={{ flex: 1, overflow: 'hidden' }}>
-                            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '8pt' }}>
+                            <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed', fontSize: '8.5pt' }}>
                                 <thead>
                                     <tr>
-                                        <th style={{ ...thBase, width: '3%' }}>No</th>
-                                        <th style={{ ...thBase, width: '13%', textAlign: 'left', paddingLeft: 6 }}>Nama</th>
+                                        <th style={{ ...thBase, width: '5%' }}>No</th>
+                                        <th style={{ ...thBase, width: hasHafalan ? '16%' : '18%', textAlign: 'left' }}>Nama</th>
                                         {displayCriteria.map(k => (
                                             <th key={k.key} style={{ ...thBase, width: critColW }}>
-                                                <div style={{ fontSize: critFontSize, lineHeight: 1.15 }}>{k.id}</div>
+                                                <div style={{ fontSize: critFontSize, lineHeight: 1.25 }}>{shortCritLabel(k.id)}</div>
                                             </th>
                                         ))}
-                                        <th style={{ ...thBase, width: '5%', background: 'linear-gradient(180deg, #e8ecf1 0%, #dde3eb 100%)' }}>Avg</th>
-                                        <th style={{ ...thBase, width: '7.5%' }}>Predikat</th>
-                                        <th style={{ ...thBase, width: '9%', textAlign: 'left', paddingLeft: 5 }}>Pelanggaran</th>
-                                        <th style={{ ...thBase, width: '7%' }}>Sholat</th>
-                                        <th style={{ ...thBase, width: '3.5%' }}>Alpa</th>
-                                        <th style={{ ...thBase, width: '3.5%' }}>Plg</th>
-                                        <th style={{ ...thBase, width: isFirst ? '18%' : '18%', textAlign: 'left', paddingLeft: 5 }}>Catatan</th>
+                                        <th style={{ ...thBase, width: '6%', background: 'linear-gradient(180deg, #e8ecf1 0%, #dde3eb 100%)' }}>Avg</th>
+                                        <th style={{ ...thBase, width: '10%' }}>Predikat</th>
+                                        {hasHafalan && (
+                                            <th style={{ ...thBase, width: '12%', textAlign: 'left' }}>Hafalan</th>
+                                        )}
+                                        <th style={{ ...thBase, width: '11%', textAlign: 'left' }}>Pelanggaran</th>
+                                        <th style={{ ...thBase, width: '9%' }}>
+                                            <div>Hadir</div>
+                                            <div style={{ fontSize: '6pt', fontWeight: 600, textTransform: 'none', color: '#64748b', letterSpacing: 0, marginTop: 1 }}>Sholat · Alpa · Plg</div>
+                                        </th>
+                                        <th style={{ ...thBase, width: hasHafalan ? '12%' : '16%', textAlign: 'left' }}>Catatan</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -394,13 +477,13 @@ const RaportSummaryPage = memo(({
 
                                         return (
                                             <tr key={r.idx} style={rowSt}>
-                                                <td style={{ ...tdC, fontWeight: 500, color: '#64748b', padding: '3px 1px' }}>
+                                                <td style={{ ...tdC }}>
                                                     <TrophyRankBadge rank={rank} idx={r.idx} />
                                                 </td>
-                                                <td style={{ ...tdL, paddingLeft: 6 }}>
+                                                <td style={tdL}>
                                                     <span style={{
-                                                        fontWeight: 600, fontSize: '7.5pt',
-                                                        lineHeight: 1.2, color: '#1e293b',
+                                                        fontWeight: 700, fontSize: '8.5pt',
+                                                        lineHeight: 1.3, color: '#1e293b',
                                                     }}>{r.name}</span>
                                                 </td>
                                                 {displayCriteria.map(k => {
@@ -437,38 +520,34 @@ const RaportSummaryPage = memo(({
                                                         : <span style={{ color: '#d1d5db' }}>-</span>
                                                     }
                                                 </td>
-                                                {/* Pelanggaran */}
-                                                <td style={{ ...tdL, paddingLeft: 5 }}>
+                                                {hasHafalan && (
+                                                    <td style={{ ...tdL, fontSize: '7.5pt', lineHeight: 1.35 }}>
+                                                        {r.hafalanText ? (
+                                                            <div>
+                                                                {r.ziyadah ? <div><span style={{ color: '#64748b' }}>Z </span><b>{r.ziyadah}</b></div> : null}
+                                                                {r.murojaah ? <div><span style={{ color: '#64748b' }}>M </span><b>{r.murojaah}</b></div> : null}
+                                                                {r.totalHafalan && r.totalHafalan !== r.ziyadah ? <div style={{ color: '#0369a1' }}>Σ {r.totalHafalan}</div> : null}
+                                                                {!r.ziyadah && !r.murojaah && r.totalHafalan ? <b>{r.totalHafalan}</b> : null}
+                                                            </div>
+                                                        ) : (
+                                                            <span style={{ color: '#d1d5db' }}>—</span>
+                                                        )}
+                                                    </td>
+                                                )}
+                                                <td style={tdL}>
                                                     <PelanggaranBadges text={r.pelanggaran} />
                                                 </td>
-                                                {/* Sholat */}
-                                                <td style={{ ...tdC, fontSize: '7pt', lineHeight: 1.2 }}>
-                                                    {r.sholat ? (
-                                                        <span style={{ color: '#dc2626', fontWeight: 600 }}>
-                                                            {r.sholat}
-                                                        </span>
-                                                    ) : (
-                                                        <span style={{ color: '#10b981', fontSize: '7.5pt' }}>✓</span>
-                                                    )}
+                                                <td style={{ ...tdC, fontSize: '7.5pt', lineHeight: 1.35 }}>
+                                                    <div style={{ color: r.sholat ? '#dc2626' : '#059669', fontWeight: 700 }}>
+                                                        {r.sholat || '✓'}
+                                                    </div>
+                                                    <div style={{ color: '#64748b', fontSize: '7pt', fontWeight: 600 }}>
+                                                        A <span style={{ color: Number(r.alpa) > 0 ? '#dc2626' : '#94a3b8' }}>{r.alpa || 0}</span>
+                                                        {' · '}
+                                                        P <span style={{ color: Number(r.pulang) > 0 ? '#334155' : '#94a3b8' }}>{r.pulang || 0}</span>
+                                                    </div>
                                                 </td>
-                                                {/* Alpa */}
-                                                <td style={{ ...tdC }}>
-                                                    {r.alpa ? (
-                                                        <span style={{ color: '#dc2626', fontWeight: 700 }}>{r.alpa}</span>
-                                                    ) : (
-                                                        <span style={{ color: '#cbd5e1' }}>0</span>
-                                                    )}
-                                                </td>
-                                                {/* Pulang */}
-                                                <td style={{ ...tdC }}>
-                                                    {r.pulang ? (
-                                                        <span style={{ fontWeight: 600 }}>{r.pulang}</span>
-                                                    ) : (
-                                                        <span style={{ color: '#cbd5e1' }}>0</span>
-                                                    )}
-                                                </td>
-                                                {/* Catatan / Highlight */}
-                                                <td style={{ ...tdL, fontSize: '7pt', paddingLeft: 5, lineHeight: 1.25 }}>
+                                                <td style={{ ...tdL, fontSize: '7.5pt', lineHeight: 1.35 }}>
                                                     {r.highlights.length > 0 ? (
                                                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
                                                             {r.highlights.map((h, hi) => (
@@ -530,14 +609,17 @@ const RaportSummaryPage = memo(({
                                                 {classAvg}
                                             </td>
                                             <td style={tdC}>-</td>
+                                            {hasHafalan && (
+                                                <td style={{ ...tdL, fontSize: '7.5pt', color: '#64748b' }}>
+                                                    {hafalanWithText.length}/{rows.length} tercatat
+                                                </td>
+                                            )}
                                             <td style={tdC}>-</td>
-                                            <td style={tdC}>-</td>
-                                            <td style={{ ...tdC, color: totalAlpa > 0 ? '#dc2626' : undefined, fontWeight: totalAlpa > 0 ? 800 : 500 }}>
-                                                {totalAlpa}
+                                            <td style={{ ...tdC, fontSize: '7.5pt', color: totalAlpa > 0 ? '#dc2626' : '#64748b', fontWeight: totalAlpa > 0 ? 800 : 600 }}>
+                                                A {totalAlpa} · P {totalPulang}
                                             </td>
-                                            <td style={{ ...tdC, fontWeight: 600 }}>{totalPulang}</td>
-                                            <td style={{ ...tdL, paddingLeft: 5, fontSize: '7pt', color: '#64748b' }}>
-                                                {totalNegPoints > 0 ? `${totalNegPoints} Poin Violasi` : 'Nihil'}
+                                            <td style={{ ...tdL, fontSize: '7.5pt', color: '#64748b' }}>
+                                                {totalNegPoints > 0 ? `${totalNegPoints} poin violasi` : 'Nihil'}
                                             </td>
                                         </tr>
                                     </tfoot>
@@ -547,53 +629,135 @@ const RaportSummaryPage = memo(({
 
                         {/* ═══════════════ FOOTER ═══════════════ */}
                         <div style={{ marginTop: 'auto', paddingTop: 6 }}>
-                            {/* Attention section — last page only */}
                             {isLast && (
-                                <div style={{
-                                    padding: '7px 10px', background: '#f8fafc',
-                                    borderRadius: 7, fontSize: '7.5pt', color: '#475569',
-                                    border: '1px solid #e2e8f0', marginBottom: 5,
-                                }}>
-                                    <div style={{ fontWeight: 700, marginBottom: 3, color: '#334155', fontSize: '8pt' }}>
-                                        📝 Catatan untuk Wali Kelas
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 5 }}>
+                                    <div style={{ display: 'flex', gap: 6, alignItems: 'stretch' }}>
+                                        {/* Peta predikat + mapel */}
+                                        <div style={{
+                                            flex: 1, minWidth: 0, padding: '8px 10px',
+                                            background: '#f8fafc', borderRadius: 7, border: '1px solid #e2e8f0',
+                                        }}>
+                                            <div style={{ fontWeight: 800, fontSize: '8pt', color: '#0f172a', marginBottom: 6, letterSpacing: '0.2px' }}>
+                                                Peta Kelas
+                                            </div>
+                                            <div style={{ display: 'flex', height: 8, borderRadius: 4, overflow: 'hidden', background: '#e2e8f0', marginBottom: 16 }}>
+                                                {Object.entries(PRED_COLORS).map(([label, color]) => (
+                                                    <DistSeg key={label} label={label} count={dist[label] || 0} total={filledCount} color={color} />
+                                                ))}
+                                            </div>
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 10px', marginBottom: 6 }}>
+                                                {Object.entries(PRED_COLORS).map(([label, color]) => (
+                                                    <span key={label} style={{ fontSize: '6.5pt', color: '#475569', fontWeight: 600 }}>
+                                                        <span style={{ display: 'inline-block', width: 7, height: 7, borderRadius: 2, background: color, marginRight: 4, verticalAlign: 'middle' }} />
+                                                        {label} {dist[label] || 0}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                            {strongest && weakest ? (
+                                                <div style={{ fontSize: '7pt', color: '#334155', lineHeight: 1.4, borderTop: '1px solid #e2e8f0', paddingTop: 6 }}>
+                                                    <div><b style={{ color: '#047857' }}>Terkuat:</b> {strongest.id} ({strongest.avg}) · min {strongest.min} / max {strongest.max}</div>
+                                                    {weakest.id !== strongest.id ? (
+                                                        <div><b style={{ color: '#b45309' }}>Perlu penguatan:</b> {weakest.id} ({weakest.avg}) · min {weakest.min} / max {weakest.max}</div>
+                                                    ) : null}
+                                                </div>
+                                            ) : (
+                                                <div style={{ fontSize: '7pt', color: '#94a3b8' }}>Isi nilai agar peta mapel tampil.</div>
+                                            )}
+                                        </div>
+
+                                        {/* Prestasi hafalan */}
+                                        {hasHafalan && (
+                                            <div style={{
+                                                flex: 1.15, minWidth: 0, padding: '8px 10px',
+                                                background: '#f0fdf4', borderRadius: 7, border: '1px solid #bbf7d0',
+                                            }}>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5 }}>
+                                                    <div style={{ fontWeight: 800, fontSize: '8pt', color: '#14532d' }}>Prestasi Hafalan</div>
+                                                    <div style={{ fontSize: '6.5pt', color: '#166534', fontWeight: 700 }}>
+                                                        {hafalanWithText.length}/{rows.length} tercatat
+                                                    </div>
+                                                </div>
+                                                {(bestZiyadah || bestMurojaah) && (
+                                                    <div style={{ fontSize: '6.8pt', color: '#166534', marginBottom: 5, lineHeight: 1.35 }}>
+                                                        {bestZiyadah ? <>Ziyadah terbanyak: <b>{bestZiyadah.name}</b> ({bestZiyadah.ziyadah})</> : null}
+                                                        {bestZiyadah && bestMurojaah ? ' · ' : null}
+                                                        {bestMurojaah ? <>Muroja&apos;ah terbanyak: <b>{bestMurojaah.name}</b> ({bestMurojaah.murojaah})</> : null}
+                                                    </div>
+                                                )}
+                                                {hafalanRanked.length > 0 || hafalanWithText.length > 0 ? (
+                                                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                                        <thead>
+                                                            <tr>
+                                                                {['#', 'Nama', 'Ziyadah', "Muroja'ah", 'Total'].map(h => (
+                                                                    <th key={h} style={{
+                                                                        textAlign: h === 'Nama' ? 'left' : 'center',
+                                                                        fontSize: '6pt', fontWeight: 800, color: '#166534',
+                                                                        borderBottom: '1px solid #bbf7d0', padding: '2px 3px',
+                                                                        textTransform: 'uppercase', letterSpacing: '0.3px',
+                                                                    }}>{h}</th>
+                                                                ))}
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {(hafalanRanked.length ? hafalanRanked : hafalanWithText).slice(0, 6).map((r, i) => (
+                                                                <tr key={r.idx}>
+                                                                    <td style={{ textAlign: 'center', fontSize: '7pt', fontWeight: 800, color: i === 0 ? '#b45309' : '#334155', padding: '2px 3px', width: 18 }}>
+                                                                        {i + 1}
+                                                                    </td>
+                                                                    <td style={{ textAlign: 'left', fontSize: '7pt', fontWeight: i === 0 ? 800 : 600, color: '#14532d', padding: '2px 3px' }}>
+                                                                        {r.name}{i === 0 ? '  ★' : ''}
+                                                                    </td>
+                                                                    <td style={{ textAlign: 'center', fontSize: '6.5pt', padding: '2px 3px' }}>{r.ziyadah || '—'}</td>
+                                                                    <td style={{ textAlign: 'center', fontSize: '6.5pt', padding: '2px 3px' }}>{r.murojaah || '—'}</td>
+                                                                    <td style={{ textAlign: 'center', fontSize: '6.5pt', fontWeight: 700, padding: '2px 3px' }}>{r.totalHafalan || r.hafalanText || '—'}</td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
+                                                ) : (
+                                                    <div style={{ fontSize: '7.5pt', color: '#166534', lineHeight: 1.4 }}>
+                                                        Belum ada capaian ziyadah / muroja&apos;ah yang tercatat. Isi di input rapor agar ranking hafalan kelas tampil di sini.
+                                                    </div>
+                                                )}
+                                                {hafalanEmpty.length > 0 && hafalanWithText.length > 0 && (
+                                                    <div style={{ fontSize: '6.5pt', color: '#854d0e', marginTop: 5, lineHeight: 1.35 }}>
+                                                        Belum mengisi hafalan ({hafalanEmpty.length}): {hafalanEmpty.slice(0, 5).map(r => r.name).join(', ')}{hafalanEmpty.length > 5 ? ` +${hafalanEmpty.length - 5} lagi` : ''}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
-                                    <div style={{ lineHeight: 1.35, color: '#64748b' }}>
-                                        Halaman ini membantu memahami gambaran umum raport santri.
-                                        Baris dengan <span style={{ display: 'inline-block', width: 10, height: 3, background: '#f59e0b', borderRadius: 1, verticalAlign: 'middle', margin: '0 2px' }} /> kuning menandakan perlu perhatian,
-                                        {' '}<span style={{ display: 'inline-block', width: 10, height: 3, background: '#ef4444', borderRadius: 1, verticalAlign: 'middle', margin: '0 2px' }} /> merah menandakan masalah signifikan.
-                                    </div>
+
                                     {attentionStudents.length > 0 && (
                                         <div style={{
-                                            marginTop: 5, paddingTop: 5,
-                                            borderTop: '1px solid #e2e8f0',
+                                            padding: '7px 10px', background: '#fffbeb',
+                                            borderRadius: 7, border: '1px solid #fde68a',
                                         }}>
-                                            <div style={{
-                                                fontWeight: 700, color: '#b45309', marginBottom: 3,
-                                                fontSize: '7.5pt',
-                                            }}>
-                                                ⚠ Perlu Perhatian Khusus ({attentionStudents.length} santri):
+                                            <div style={{ fontWeight: 800, color: '#92400e', marginBottom: 4, fontSize: '7.5pt' }}>
+                                                Perlu tindak lanjut ({attentionStudents.length} santri)
                                             </div>
                                             <div style={{
                                                 display: 'grid',
-                                                gridTemplateColumns: attentionStudents.length > 4 ? '1fr 1fr' : '1fr',
+                                                gridTemplateColumns: attentionStudents.length > 3 ? '1fr 1fr' : '1fr',
                                                 gap: '2px 12px',
                                             }}>
                                                 {attentionStudents.map(r => (
-                                                    <div key={r.idx} style={{
-                                                        fontSize: '7pt', lineHeight: 1.3,
-                                                        display: 'flex', gap: 3,
-                                                    }}>
-                                                        <span style={{ fontWeight: 700, color: '#334155', flexShrink: 0 }}>• {r.name}</span>
-                                                        <span style={{ color: '#b45309' }}>— {r.highlights.join(', ')}</span>
+                                                    <div key={r.idx} style={{ fontSize: '7pt', lineHeight: 1.3, display: 'flex', gap: 3 }}>
+                                                        <span style={{ fontWeight: 700, color: '#334155', flexShrink: 0 }}>{r.name}</span>
+                                                        <span style={{ color: '#b45309' }}>— {r.highlights.join(', ') || 'nilai rendah'}</span>
                                                     </div>
                                                 ))}
                                             </div>
                                         </div>
                                     )}
+
+                                    <div style={{ fontSize: '6.5pt', color: '#94a3b8', lineHeight: 1.3 }}>
+                                        Baris kuning: perlu perhatian · baris merah: masalah berlapis · piala: juara nilai kelas.
+                                        Ranking hafalan memakai volume (juz/halaman/lembar); catatan kualitatif tidak diurutkan.
+                                    </div>
                                 </div>
                             )}
 
-                            {/* Page number */}
                             <div style={{
                                 fontSize: '7pt', color: '#94a3b8', textAlign: 'right',
                                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',

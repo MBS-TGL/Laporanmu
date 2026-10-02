@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 
 import {
     ArrowLeft, School, Loader2, Save, Printer, Search, Zap, Sparkles, AlertTriangle,
     Download, Check, Users, CheckCircle2, ChevronLeft, ChevronRight, X, TrendingUp,
     FileText, Scale, Ruler, HeartPulse, AlertCircle, DoorOpen, BookOpen, ClipboardList, Copy,
-    FolderArchive, Paintbrush
+    FolderArchive, Paintbrush, Star, Compass
 } from 'lucide-react'
 const WhatsAppIcon = (props) => (
     <svg viewBox="0 0 448 512" fill="currentColor" {...props}>
@@ -13,7 +14,7 @@ const WhatsAppIcon = (props) => (
 )
 import { EmptyState, Modal, BulkActionsBar } from '@shared/components'
 import RichSelect from '@shared/components/RichSelect'
-import StudentRow, { ExtraInput, ExtraTextarea } from './RaportRecordRow'
+import StudentRow, { ExtraInput, ExtraTextarea, ExtraExpandingTextarea } from './RaportRecordRow'
 import { RadarChart } from './RaportCharts'
 
 import {
@@ -451,14 +452,56 @@ export default function RaportInputTable({
 
     const [isBulkModalOpen, setIsBulkModalOpen] = useState(false)
     const [isCopyModalOpen, setIsCopyModalOpen] = useState(false)
+    const [unsavedBarDismissed, setUnsavedBarDismissed] = useState(false)
+    const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 1024 : false)
     const headerScrollRef = useRef(null)
 
-    const handleBodyScroll = (e) => {
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 1024)
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+
+    useEffect(() => {
+        if (!hasUnsavedMemo) {
+            setUnsavedBarDismissed(false)
+        }
+    }, [hasUnsavedMemo])
+
+    const unsavedCount = useMemo(() => {
+        return students.filter(s => {
+            if (savedIds.has(s.id)) return false
+            const sc = scores[s.id] || {}, ex = extras[s.id] || {}
+            const hasScoreValue = (criteria || []).some(k => sc[k.key] !== '' && sc[k.key] !== null && sc[k.key] !== undefined)
+            const checkFields = [
+                ex.berat_badan, ex.tinggi_badan,
+                ex.hari_sakit, ex.hari_izin, ex.hari_alpa, ex.hari_pulang,
+                ex.ziyadah, ex.murojaah, ex.total_hafalan,
+                ex.catatan, ex.pelanggaran, ex.prestasi, ex.sholat
+            ]
+            const hasExtraValue = checkFields.some(v => v !== '' && v !== null && v !== undefined)
+            return hasScoreValue || hasExtraValue
+        }).length
+    }, [students, savedIds, scores, extras, criteria])
+
+    const handleBodyScroll = useCallback((e) => {
         if (headerScrollRef.current) {
             headerScrollRef.current.scrollLeft = e.target.scrollLeft
         }
-    }
+    }, [])
 
+    const getStudentPhone = useCallback((s) => {
+        return s?.phone || s?.guardian_phone || s?.parent_phone || s?.metadata?.phone || s?.metadata?.guardian_phone || s?.metadata?.parent_phone || s?.metadata?.father_phone || s?.metadata?.mother_phone || ''
+    }, [])
+
+    const handleTriggerWaBlast = useCallback((targetStudents = students) => {
+        const withPhone = (targetStudents || []).filter(s => !!getStudentPhone(s))
+        if (!withPhone.length) {
+            addToast('Belum ada santri dengan nomor WhatsApp yang terdaftar', 'warning')
+            return
+        }
+        setWaBlastConfirm({ queue: withPhone })
+    }, [students, getStudentPhone, addToast, setWaBlastConfirm])
 
     // PERF: classStats di-debounce — tidak recalculate setiap keystroke
     const [classStats, setClassStats] = useState({ overallAverage: '—', criteriaAverages: [], completed: 0, total: 0, incomplete: 0 })
@@ -651,14 +694,7 @@ export default function RaportInputTable({
                     </button>
 
                     <button
-                        onClick={() => {
-                            const withPhone = students.filter(s => s.phone && isComplete(scores[s.id] || {}, criteria))
-                            if (withPhone.length) {
-                                setWaBlastConfirm({ queue: withPhone })
-                            } else {
-                                addToast('Belum ada santri dengan nomor WA & nilai lengkap', 'warning')
-                            }
-                        }}
+                        onClick={() => handleTriggerWaBlast()}
                         className="h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 flex items-center justify-center transition-all hover:bg-emerald-500/20"
                         title="Blast WA"
                     >
@@ -930,14 +966,7 @@ export default function RaportInputTable({
                                 <span className="hidden lg:inline">Export</span>
                             </button>
 
-                            <button onClick={() => {
-                                const withPhone = students.filter(s => s.phone && isComplete(scores[s.id] || {}, criteria))
-                                if (withPhone.length) {
-                                    setWaBlastConfirm({ queue: withPhone })
-                                } else {
-                                    addToast('Belum ada santri dengan nomor WA & nilai lengkap', 'warning')
-                                }
-                            }} className="h-9 px-2.5 rounded-xl bg-green-500/10 border border-green-500/20 text-green-600 text-[9px] font-black flex items-center justify-center gap-1 transition-all hover:bg-green-500/20 flex-grow min-w-[36px] shrink-0" title="Blast WhatsApp Nilai">
+                            <button onClick={() => handleTriggerWaBlast()} className="h-9 px-2.5 rounded-xl bg-green-500/10 border border-green-500/20 text-green-600 text-[9px] font-black flex items-center justify-center gap-1 transition-all hover:bg-green-500/20 flex-grow min-w-[36px] shrink-0" title="Blast WhatsApp Nilai">
                                 <WhatsAppIcon className="w-3 h-3" /> <span className="hidden lg:inline">Blast WA</span>
                             </button>
 
@@ -1064,8 +1093,9 @@ export default function RaportInputTable({
 
                 <button
                     onClick={() => {
-                        const withPhone = students.filter(s => bulkSelected.has(s.id) && s.phone && isComplete(scores[s.id] || {}, criteria))
-                        if (!withPhone.length) { addToast('Tidak ada santri terpilih dengan WA & nilai lengkap', 'warning'); return }
+                        const selected = students.filter(s => bulkSelected.has(s.id))
+                        const withPhone = selected.filter(s => getStudentPhone(s))
+                        if (!withPhone.length) { addToast('Santri terpilih belum memiliki nomor WhatsApp', 'warning'); return }
                         setWaBlastConfirm({ queue: withPhone })
                     }}
                     className="h-10 sm:h-9 px-3 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-600 hover:text-white transition-all flex items-center justify-center gap-1.5 text-[9px] font-black uppercase tracking-widest"
@@ -1089,6 +1119,30 @@ export default function RaportInputTable({
                     <span>Export ZIP</span>
                 </button>
             </BulkActionsBar>
+
+            {/* ── FLOATING UNSAVED ACTION BAR (Using standard BulkActionsBar) ── */}
+            {hasUnsavedMemo && !unsavedBarDismissed && bulkSelected.size === 0 && (
+                <BulkActionsBar
+                    selectedCount={unsavedCount || 1}
+                    onClear={() => setUnsavedBarDismissed(true)}
+                    title="Belum Disimpan"
+                    subtitle={unsavedCount > 0 ? `${unsavedCount} Santri` : 'Ada Perubahan'}
+                >
+                    <button
+                        onClick={saveAll}
+                        disabled={savingAll}
+                        className="h-10 sm:h-9 px-3.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-600 hover:text-white transition-all flex items-center justify-center gap-1.5 text-[9px] font-black uppercase tracking-widest disabled:opacity-50 cursor-pointer"
+                        title="Simpan Semua"
+                    >
+                        {savingAll ? (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        ) : (
+                            <Save className="w-3.5 h-3.5" />
+                        )}
+                        <span>Simpan Semua</span>
+                    </button>
+                </BulkActionsBar>
+            )}
 
             <Modal
                 isOpen={isBulkModalOpen}
@@ -1199,8 +1253,8 @@ export default function RaportInputTable({
                     </div>
                 }
             >
-                <div className="space-y-5">
-                    <div className="p-3 rounded-xl bg-slate-500/5 border border-[var(--color-border)]/50 text-[10px] text-[var(--color-text-muted)] font-bold">
+                <div className="space-y-0">
+                    <div className="p-3 rounded-xl bg-slate-500/5 border border-[var(--color-border)]/50 text-[10px] text-[var(--color-text-muted)] font-bold mb-4">
                         {bulkSelected.size > 0 ? (
                             <span>
                                 Data massal akan diterapkan ke <span className="font-black text-violet-600">{bulkSelected.size} santri terpilih</span> yang kolom nilainya masih kosong.
@@ -1213,7 +1267,7 @@ export default function RaportInputTable({
                     </div>
 
                     {/* Section 1: Nilai Akademik */}
-                    <div>
+                    <div className="pb-4">
                         <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Nilai Akademik</p>
                         <div className="grid grid-cols-5 gap-2">
                             {criteria.map(k => (
@@ -1250,107 +1304,142 @@ export default function RaportInputTable({
 
                     {/* Section 2: Fisik & Kehadiran */}
                     {(rtObj.hasFisik || rtObj.hasAttendance) && (
-                        <div>
-                            <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Fisik & Kehadiran</p>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        <div className="border-t border-[var(--color-border)] pt-4 pb-4">
+                            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)] mb-3">Kondisi Fisik &amp; Kehadiran</p>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                                 {[
                                     ...(rtObj.hasFisik ? [
-                                        { key: 'berat_badan', label: 'Berat Badan', unit: 'kg', icon: Scale, color: '#6366f1' },
-                                        { key: 'tinggi_badan', label: 'Tinggi Badan', unit: 'cm', icon: Ruler, color: '#06b6d4' }
+                                        { key: 'berat_badan', label: 'Berat Badan', unitLabel: 'KG', icon: Scale, color: '#6366f1', isText: false },
+                                        { key: 'tinggi_badan', label: 'Tinggi Badan', unitLabel: 'CM', icon: Ruler, color: '#06b6d4', isText: false }
                                     ] : []),
                                     ...(rtObj.hasAttendance ? [
-                                        { key: 'hari_sakit', label: 'Sakit', unit: 'hari', icon: HeartPulse, color: '#ef4444' },
-                                        { key: 'hari_izin', label: 'Izin', unit: 'hari', icon: AlertCircle, color: '#f59e0b' },
-                                        { key: 'hari_alpa', label: 'Alpa', unit: 'hari', icon: AlertCircle, color: '#ef4444' },
-                                        { key: 'hari_pulang', label: 'Pulang', unit: 'kali', icon: DoorOpen, color: '#8b5cf6' }
+                                        { key: 'hari_sakit', label: 'Hari Sakit', unitLabel: 'HR', icon: HeartPulse, color: '#ef4444', isText: false },
+                                        { key: 'hari_izin', label: 'Hari Izin', unitLabel: 'HR', icon: AlertCircle, color: '#f59e0b', isText: false },
+                                        { key: 'hari_alpa', label: 'Hari Alpa', unitLabel: 'HR', icon: AlertCircle, color: '#ef4444', isText: false },
+                                        { key: 'hari_pulang', label: 'Hari Pulang', unitLabel: 'X', icon: DoorOpen, color: '#8b5cf6', isText: false }
                                     ] : [])
-                                ].map(f => (
-                                    <div key={f.key} className="flex flex-col gap-1 min-w-0">
-                                        <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">
-                                            {f.label}
-                                        </span>
-                                        <div className="flex items-center gap-1 rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)] focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all" style={{ height: 38 }}>
-                                            <div className="w-8 h-full flex items-center justify-center shrink-0" style={{ background: f.color + '18' }}>
-                                                {(() => { const Icon = f.icon; return <Icon style={{ color: f.color }} className="w-3 h-3" /> })()}
+                                ].map(f => {
+                                    const Icon = f.icon
+                                    const val = bulkValues[f.key]
+                                    const numVal = val === '' || val === undefined ? '' : Number(val)
+                                    const setVal = (v) => setBulkValues(prev => ({ ...prev, [f.key]: v }))
+                                    const decrement = () => setVal(Math.max(0, (numVal === '' ? 0 : numVal) - 1))
+                                    const increment = () => setVal(Math.min(300, (numVal === '' ? 0 : numVal) + 1))
+                                    return (
+                                        <div key={f.key} className="flex flex-col gap-1 min-w-0">
+                                            <div className="flex items-center gap-1.5">
+                                                <Icon style={{ color: f.color }} className="w-3 h-3 shrink-0" />
+                                                <span className="text-[9px] font-black uppercase tracking-tight text-[var(--color-text)]">
+                                                    {f.label} <span className="opacity-40">({f.unitLabel})</span>
+                                                </span>
                                             </div>
-                                            <input
-                                                type="number"
-                                                min={0}
-                                                placeholder="—"
-                                                value={bulkValues[f.key] ?? ''}
-                                                onChange={e => setBulkValues(prev => ({
-                                                    ...prev,
-                                                    [f.key]: e.target.value === '' ? '' : Math.max(0, Number(e.target.value))
-                                                }))}
-                                                className="flex-1 w-0 h-full text-[11px] font-bold text-left px-2 bg-transparent text-[var(--color-text)] outline-none appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                            />
-                                            <span className="text-[8px] font-black text-[var(--color-text-muted)] pr-2.5 opacity-65 uppercase">{f.unit}</span>
+                                            <div className="flex items-stretch rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface)] shadow-sm focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all" style={{ height: 42 }}>
+                                                <button
+                                                    type="button"
+                                                    onClick={decrement}
+                                                    className="w-9 flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-colors shrink-0 text-lg font-light border-r border-[var(--color-border)] cursor-pointer"
+                                                >−</button>
+                                                <input
+                                                    type="number"
+                                                    min={0}
+                                                    max={300}
+                                                    placeholder="0"
+                                                    value={numVal}
+                                                    onChange={e => setVal(e.target.value === '' ? '' : Math.min(300, Math.max(0, Number(e.target.value))))}
+                                                    className="flex-1 w-0 h-full text-sm font-bold text-center bg-transparent text-[var(--color-text)] outline-none appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={increment}
+                                                    className="w-9 flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-colors shrink-0 text-lg font-light border-l border-[var(--color-border)] cursor-pointer"
+                                                >+</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    )
+                                })}
                             </div>
                         </div>
                     )}
 
                     {/* Section 3: Hafalan & Catatan */}
                     {(rtObj.hasHafalan || rtObj.hasCatatan) && (
-                        <div>
-                            <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Hafalan & Catatan</p>
-                            <div className="space-y-2.5">
+                        <div className="border-t border-[var(--color-border)] pt-4">
+                            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)] mb-3">Hafalan &amp; Catatan</p>
+                            <div className="space-y-3">
                                 {rtObj.hasHafalan && (
-                                    <div className="grid grid-cols-2 gap-2">
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                                         {[
-                                            { key: 'ziyadah', label: 'Ziyadah (Target Hafalan)', icon: BookOpen, color: '#10b981' },
-                                            { key: 'murojaah', label: "Muroja'ah (Lancar)", icon: FileText, color: '#8b5cf6' }
+                                            { key: 'ziyadah', label: 'Ziyadah', icon: BookOpen, color: '#10b981', ph: 'Isi ziyadah...' },
+                                            { key: 'murojaah', label: "Muroja'ah", icon: FileText, color: '#8b5cf6', ph: "Isi muroja'ah..." },
+                                            { key: 'total_hafalan', label: 'Hafalan', icon: Star, color: '#f59e0b', ph: 'Isi total hafalan...' }
                                         ].map(f => (
-                                            <div key={f.key} className="flex flex-col gap-1 min-w-0">
-                                                <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">
-                                                    {f.label}
-                                                </span>
-                                                <div className="flex items-center gap-1 rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)] focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all" style={{ height: 38 }}>
-                                                    <div className="w-8 h-full flex items-center justify-center shrink-0" style={{ background: f.color + '18' }}>
-                                                        {(() => { const Icon = f.icon; return <Icon style={{ color: f.color }} className="w-3 h-3" /> })()}
-                                                    </div>
-                                                    <input
-                                                        type="text"
-                                                        placeholder="—"
-                                                        value={bulkValues[f.key] ?? ''}
-                                                        onChange={e => setBulkValues(prev => ({
-                                                            ...prev,
-                                                            [f.key]: e.target.value
-                                                        }))}
-                                                        className="flex-1 w-0 h-full px-2 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none"
-                                                    />
-                                                </div>
-                                            </div>
+                                            <ExtraExpandingTextarea
+                                                key={f.key}
+                                                value={bulkValues[f.key] ?? ''}
+                                                studentId="bulk"
+                                                fieldKey={f.key}
+                                                onCommit={(_, key, val) => setBulkValues(prev => ({ ...prev, [key]: val }))}
+                                                color={f.color}
+                                                label={f.label}
+                                                icon={f.icon}
+                                                size="xl"
+                                                placeholder={f.ph}
+                                            />
                                         ))}
                                     </div>
                                 )}
                                 {rtObj.hasCatatan && (
-                                    <div className="flex flex-col gap-1">
-                                        <span className="text-[8px] font-black uppercase tracking-tight text-[var(--color-text-muted)]">
-                                            Catatan Perkembangan
-                                        </span>
-                                        <div className="flex rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface-alt)] focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all">
-                                            <div className="w-8 shrink-0 flex items-center justify-center border-r border-[var(--color-border)]/50" style={{ background: '#f59e0b12' }}>
-                                                <ClipboardList style={{ color: "#f59e0b" }} className="w-3 h-3" />
+                                    <div className="space-y-2.5">
+                                        <div className="flex flex-col gap-1">
+                                            <span className="text-[9px] font-black uppercase tracking-tight text-[var(--color-text)]">
+                                                Catatan Utama Musyrif
+                                            </span>
+                                            <div className="flex rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface)] shadow-sm focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all">
+                                                <div className="w-8 shrink-0 flex items-center justify-center border-r border-[var(--color-border)]/50" style={{ background: '#f59e0b12' }}>
+                                                    <ClipboardList style={{ color: "#f59e0b" }} className="w-3 h-3" />
+                                                </div>
+                                                <textarea
+                                                    rows={2}
+                                                    placeholder="Tulis catatan yang ingin diterapkan secara massal..."
+                                                    value={bulkValues.catatan ?? ''}
+                                                    onChange={e => setBulkValues(prev => ({
+                                                        ...prev,
+                                                        catatan: e.target.value
+                                                    }))}
+                                                    className="flex-1 w-0 px-2.5 py-2 text-[11px] font-medium bg-transparent text-[var(--color-text)] outline-none resize-none leading-normal"
+                                                />
                                             </div>
-                                            <textarea
-                                                rows={2}
-                                                placeholder="Tulis catatan yang ingin diterapkan secara massal..."
-                                                value={bulkValues.catatan ?? ''}
-                                                onChange={e => setBulkValues(prev => ({
-                                                    ...prev,
-                                                    catatan: e.target.value
-                                                }))}
-                                                className="flex-1 w-0 px-2.5 py-2 text-[11px] font-medium bg-transparent text-[var(--color-text)] outline-none resize-none leading-normal"
-                                            />
+                                        </div>
+
+                                        <div className="border-t border-[var(--color-border)] pt-2.5">
+                                            <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text)] mb-2">Catatan Khusus</p>
+                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                                                {[
+                                                    { key: 'pelanggaran', label: 'Pelanggaran', color: '#ef4444', icon: AlertTriangle, ph: 'Pelanggaran' },
+                                                    { key: 'prestasi', label: 'Prestasi', color: '#10b981', icon: Star, ph: 'Prestasi' },
+                                                    { key: 'sholat', label: 'Sholat', color: '#6366f1', icon: Compass, ph: 'Sholat' }
+                                                ].map(f => (
+                                                    <ExtraExpandingTextarea
+                                                        key={f.key}
+                                                        value={bulkValues[f.key] ?? ''}
+                                                        studentId="bulk"
+                                                        fieldKey={f.key}
+                                                        onCommit={(_, key, val) => setBulkValues(prev => ({ ...prev, [key]: val }))}
+                                                        color={f.color}
+                                                        label={f.label}
+                                                        icon={f.icon}
+                                                        size="xl"
+                                                        placeholder={f.ph}
+                                                    />
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                 )}
                             </div>
                         </div>
                     )}
+
                 </div>
             </Modal>
 
@@ -1374,23 +1463,25 @@ export default function RaportInputTable({
                         />
                     </div>
                 ) : (
-                    <div
-                        className="rounded-xl border border-[var(--color-border)] fade-in animate-in duration-300 overflow-hidden"
-                    >
-                        {/* Fixed Header (no scrollbar) */}
-                        <div ref={headerScrollRef} className="overflow-x-hidden" style={{ scrollbarWidth: 'none' }}>
-                            <table style={{ borderCollapse: 'collapse', width: '100%', minWidth: 910, tableLayout: 'fixed' }}>
+                    <div className="rounded-xl border border-[var(--color-border)] fade-in animate-in duration-300 overflow-hidden bg-[var(--color-surface)]">
+                        {/* Header Table (No vertical scrollbar, fixed at top) */}
+                        <div
+                            ref={headerScrollRef}
+                            className="overflow-x-hidden bg-[var(--color-surface-alt)] border-b border-[var(--color-border)]"
+                            style={{ scrollbarGutter: 'stable' }}
+                        >
+                            <table style={{ borderCollapse: 'separate', borderSpacing: 0, width: '100%', minWidth: 980, tableLayout: 'fixed' }}>
                                 <colgroup>
                                     <col style={{ width: 36 }} />
                                     <col style={{ width: 140 }} />
                                     {criteria.map(k => <col key={k.key} style={{ width: 54 }} />)}
-                                    {(rtObj.hasFisik || rtObj.hasAttendance) && <col style={{ width: 120 }} />}
-                                    {(rtObj.hasHafalan || rtObj.hasCatatan) && <col style={{ width: 160 }} />}
+                                    {(rtObj.hasFisik || rtObj.hasAttendance) && <col style={{ width: 145 }} />}
+                                    {(rtObj.hasHafalan || rtObj.hasCatatan) && <col style={{ width: 195 }} />}
                                     <col style={{ width: 130 }} />
                                 </colgroup>
                                 <thead>
-                                    <tr style={{ background: 'none' }}>
-                                        <th style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>
+                                    <tr>
+                                        <th style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)' }}>
                                             <input type="checkbox"
                                                 checked={bulkSelected.size === filteredStudents.length && filteredStudents.length > 0}
                                                 onChange={e => setBulkSelected(e.target.checked ? new Set(filteredStudents.map(s => s.id)) : new Set())}
@@ -1398,9 +1489,9 @@ export default function RaportInputTable({
                                                 className="w-3.5 h-3.5 accent-violet-500 cursor-pointer"
                                             />
                                         </th>
-                                        <th className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]" style={{ background: 'var(--color-surface-alt)', padding: '10px 0', textAlign: 'center', verticalAlign: 'middle', borderRight: '1px solid var(--color-border)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>Santri</th>
+                                        <th className="sticky left-0 z-10 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]" style={{ background: 'var(--color-surface-alt)', padding: '10px 0', textAlign: 'center', verticalAlign: 'middle', borderRight: '1px solid var(--color-border)' }}>Santri</th>
                                         {criteria.map(k => (
-                                            <th key={k.key} title={k.id} style={{ padding: '8px 2px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>
+                                            <th key={k.key} title={k.id} style={{ padding: '8px 2px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)' }}>
                                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minWidth: 0, overflow: 'hidden' }}>
                                                     <span style={{
                                                         fontSize: 9.5,
@@ -1421,14 +1512,14 @@ export default function RaportInputTable({
                                             </th>
                                         ))}
                                         {(rtObj.hasFisik || rtObj.hasAttendance) && (
-                                            <th style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>
+                                            <th style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)' }}>
                                                 <span style={{ fontSize: 10, fontWeight: 900, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
                                                     {rtObj.hasFisik && rtObj.hasAttendance ? 'Fisik & Kehadiran' : rtObj.hasFisik ? 'Fisik' : 'Kehadiran'}
                                                 </span>
                                             </th>
                                         )}
                                         {(rtObj.hasHafalan || rtObj.hasCatatan) && (
-                                            <th style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>
+                                            <th style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', background: 'var(--color-surface-alt)' }}>
                                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
                                                     <span style={{ fontSize: 10, fontWeight: 900, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
                                                         {rtObj.hasHafalan && rtObj.hasCatatan ? 'Hafalan & Catatan' : rtObj.hasHafalan ? 'Hafalan' : 'Catatan'}
@@ -1436,25 +1527,26 @@ export default function RaportInputTable({
                                                 </div>
                                             </th>
                                         )}
-                                        <th style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', fontSize: 10, fontWeight: 900, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1, background: 'var(--color-surface-alt)', borderLeft: '1px solid var(--color-border)', borderRight: '1px solid var(--color-border)', boxShadow: 'inset 0 -1px 0 var(--color-border)' }}>Aksi</th>
+                                        <th className="sticky right-0 z-10" style={{ padding: '10px 8px', textAlign: 'center', verticalAlign: 'middle', fontSize: 10, fontWeight: 900, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1, background: 'var(--color-surface-alt)', borderLeft: '1px solid var(--color-border)', borderRight: '1px solid var(--color-border)' }}>Aksi</th>
                                     </tr>
                                 </thead>
                             </table>
                         </div>
-                        {/* Scrollable Body */}
+
+                        {/* Scrollable Data Body (Vertical scrollbar starts here!) */}
                         <div
                             ref={tableScrollRef}
                             onScroll={handleBodyScroll}
                             className="overflow-x-auto overflow-y-auto custom-scrollbar"
-                            style={{ maxHeight: 'calc(100vh - 190px)', overflowAnchor: 'none' }}
+                            style={{ maxHeight: 'calc(100vh - 235px)', overflowAnchor: 'none', scrollbarGutter: 'stable' }}
                         >
-                            <table style={{ borderCollapse: 'collapse', width: '100%', minWidth: 910, tableLayout: 'fixed' }}>
+                            <table style={{ borderCollapse: 'separate', borderSpacing: 0, width: '100%', minWidth: 980, tableLayout: 'fixed' }}>
                                 <colgroup>
                                     <col style={{ width: 36 }} />
                                     <col style={{ width: 140 }} />
                                     {criteria.map(k => <col key={k.key} style={{ width: 54 }} />)}
-                                    {(rtObj.hasFisik || rtObj.hasAttendance) && <col style={{ width: 120 }} />}
-                                    {(rtObj.hasHafalan || rtObj.hasCatatan) && <col style={{ width: 160 }} />}
+                                    {(rtObj.hasFisik || rtObj.hasAttendance) && <col style={{ width: 145 }} />}
+                                    {(rtObj.hasHafalan || rtObj.hasCatatan) && <col style={{ width: 195 }} />}
                                     <col style={{ width: 130 }} />
                                 </colgroup>
                                 <tbody>

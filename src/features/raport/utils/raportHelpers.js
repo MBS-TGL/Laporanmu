@@ -129,7 +129,7 @@ export const buildWaLines = ({
 }
 
 /**
- * Generator komentar otomatis berdasarkan tren nilai
+ * Generator komentar otomatis berdasarkan tren nilai (Lebih Manusiawi, Ringkas & Alami)
  */
 export const generateAutoComment = (sc, studentId = '', trendHistory = [], criteria = [], reportTypeId = 'bulanan', classLevel = 'SMP') => {
     if (!criteria || criteria.length === 0) return ''
@@ -147,7 +147,7 @@ export const generateAutoComment = (sc, studentId = '', trendHistory = [], crite
     const avg = currentScores.reduce((a, b) => a + b.val, 0) / currentScores.length
     const avgFormatted = avg.toFixed(1)
 
-    // Sort current scores to find highest and lowest
+    // Sort current scores
     const sortedScores = [...currentScores].sort((a, b) => b.val - a.val)
     const bestAspect = sortedScores[0]
     const worstAspect = sortedScores[sortedScores.length - 1]
@@ -156,13 +156,14 @@ export const generateAutoComment = (sc, studentId = '', trendHistory = [], crite
     const history = (trendHistory || []).slice().sort((a, b) =>
         a.year !== b.year ? a.year - b.year : a.month - b.month
     )
-    
-    // Get the immediate previous report
     const prevReport = history.length > 0 ? history[history.length - 1] : null
-    
-    let trendText = ''
-    let progressHighlight = ''
-    
+
+    let prevAvg = null
+    let prevAvgFormatted = null
+    let deltaAvg = 0
+    let maxImprovement = null
+    let maxDecline = null
+
     if (prevReport) {
         const prevScores = criteria.map(k => ({
             key: k.key,
@@ -171,89 +172,159 @@ export const generateAutoComment = (sc, studentId = '', trendHistory = [], crite
         })).filter(k => k.val !== null)
 
         if (prevScores.length > 0) {
-            const prevAvg = prevScores.reduce((a, b) => a + b.val, 0) / prevScores.length
-            const prevAvgFormatted = prevAvg.toFixed(1)
-            const deltaAvg = avg - prevAvg
+            prevAvg = prevScores.reduce((a, b) => a + b.val, 0) / prevScores.length
+            prevAvgFormatted = prevAvg.toFixed(1)
+            deltaAvg = avg - prevAvg
 
-            if (Math.abs(deltaAvg) > (rtObj.maxScore === 9 ? 0.1 : 1.0)) {
-                if (deltaAvg > 0) {
-                    trendText = `Alhamdulillah, rata-rata nilai mengalami kenaikan dari ${prevAvgFormatted} menjadi ${avgFormatted}.`
-                } else {
-                    trendText = `Rata-rata nilai bulan ini (${avgFormatted}) mengalami sedikit penurunan dari periode lalu (${prevAvgFormatted}).`
-                }
-            } else {
-                trendText = `Perkembangan nilai rata-rata ananda stabil di angka ${avgFormatted} dibanding periode lalu.`
-            }
-
-            // Find aspect with highest improvement and aspect with highest decline
-            let maxImprovement = { key: '', id: '', delta: -99 }
-            let maxDecline = { key: '', id: '', delta: 99 }
+            let topImpDelta = 0
+            let topDecDelta = 0
 
             currentScores.forEach(curr => {
                 const prev = prevScores.find(p => p.key === curr.key)
                 if (prev) {
                     const diff = curr.val - prev.val
-                    if (diff > 0 && diff > maxImprovement.delta) {
+                    if (diff > 0 && diff > topImpDelta) {
+                        topImpDelta = diff
                         maxImprovement = { key: curr.key, id: curr.id, delta: diff }
                     }
-                    if (diff < 0 && diff < maxDecline.delta) {
+                    if (diff < 0 && diff < topDecDelta) {
+                        topDecDelta = diff
                         maxDecline = { key: curr.key, id: curr.id, delta: diff }
                     }
                 }
             })
-
-            if (maxImprovement.key && maxImprovement.delta > 0) {
-                progressHighlight = `Peningkatan terbaik terlihat pada aspek ${maxImprovement.id} (+${maxImprovement.delta.toFixed(0)}).`
-            } else if (maxDecline.key && maxDecline.delta < 0) {
-                progressHighlight = `Mohon perhatian khusus pada aspek ${maxDecline.id} yang mengalami penurunan (-${Math.abs(maxDecline.delta).toFixed(0)}).`
-            }
         }
     }
 
-    // 3. Construct the comment parts
-    const introParts = []
+    // Thresholds
     const thresholdHigh = rtObj.maxScore === 9 ? 8.5 : 85
     const thresholdMedium = rtObj.maxScore === 9 ? 7.5 : 75
     const thresholdLow = rtObj.maxScore === 9 ? 6.0 : 60
-
-    if (avg >= thresholdHigh) {
-        introParts.push(`Masya Allah, ananda menunjukkan prestasi yang luar biasa periode ini dengan rata-rata ${avgFormatted}.`)
-    } else if (avg >= thresholdMedium) {
-        introParts.push(`Alhamdulillah, perkembangan ananda periode ini cukup baik dan memuaskan dengan rata-rata ${avgFormatted}.`)
-    } else if (avg >= thresholdLow) {
-        introParts.push(`Perkembangan ananda periode ini secara umum cukup stabil dengan rata-rata ${avgFormatted}.`)
-    } else {
-        introParts.push(`Perkembangan ananda periode ini masih memerlukan bimbingan lebih intensif (rata-rata ${avgFormatted}).`)
-    }
-
-    const aspectParts = []
     const aspectGoodThreshold = rtObj.maxScore === 9 ? 8 : 80
     const aspectNeedThreshold = rtObj.maxScore === 9 ? 7 : 70
 
-    if (bestAspect.val >= aspectGoodThreshold) {
-        aspectParts.push(`Ananda sangat unggul dalam aspek ${bestAspect.id} (Nilai: ${bestAspect.val}).`)
-    }
-    if (worstAspect.val < aspectNeedThreshold && worstAspect.key !== bestAspect.key) {
-        aspectParts.push(`Perlu pendampingan lebih pada aspek ${worstAspect.id} (Nilai: ${worstAspect.val}) agar bisa lebih ditingkatkan.`)
-    }
+    // Sentence 1: Pembuka + Capaian & Tren Rata-Rata (Menyatu secara alami tanpa pengulangan angka)
+    let sentence1 = ''
+    const hasSignificantTrend = prevAvg !== null && Math.abs(deltaAvg) >= (rtObj.maxScore === 9 ? 0.1 : 1.0)
 
-    const closingParts = []
     if (avg >= thresholdHigh) {
-        closingParts.push(`Pertahankan prestasi ini dan semoga terus istiqomah. Barakallahu fiik.`)
+        if (hasSignificantTrend && deltaAvg > 0) {
+            sentence1 = `Masya Allah, capaian ananda meningkat sangat baik periode ini hingga meraih rata-rata ${avgFormatted} (sebelumnya ${prevAvgFormatted}).`
+        } else if (hasSignificantTrend && deltaAvg < 0) {
+            sentence1 = `Masya Allah, ananda menunjukkan hasil yang sangat baik dengan rata-rata ${avgFormatted}, meski ada sedikit penurunan dibanding bulan lalu (${prevAvgFormatted}).`
+        } else if (prevAvg !== null) {
+            sentence1 = `Masya Allah, ananda terus mempertahankan prestasi yang luar biasa periode ini dengan rata-rata ${avgFormatted}.`
+        } else {
+            sentence1 = `Masya Allah, ananda menunjukkan prestasi yang sangat memuaskan periode ini dengan rata-rata ${avgFormatted}.`
+        }
     } else if (avg >= thresholdMedium) {
-        closingParts.push(`Semoga periode depan ananda bisa meraih hasil yang lebih baik lagi. Tetap semangat.`)
+        if (hasSignificantTrend && deltaAvg > 0) {
+            sentence1 = `Alhamdulillah, perkembangan nilai ananda membaik periode ini dengan peningkatan rata-rata menjadi ${avgFormatted} (sebelumnya ${prevAvgFormatted}).`
+        } else if (hasSignificantTrend && deltaAvg < 0) {
+            sentence1 = `Alhamdulillah, capaian ananda periode ini cukup baik dengan rata-rata ${avgFormatted}, walau ada sedikit penurunan dari bulan lalu (${prevAvgFormatted}).`
+        } else if (prevAvg !== null) {
+            sentence1 = `Alhamdulillah, perkembangan nilai ananda cukup stabil dan memuaskan dengan rata-rata ${avgFormatted}.`
+        } else {
+            sentence1 = `Alhamdulillah, perkembangan ananda periode ini cukup baik dan memuaskan dengan rata-rata ${avgFormatted}.`
+        }
+    } else if (avg >= thresholdLow) {
+        if (hasSignificantTrend && deltaAvg < 0) {
+            sentence1 = `Capaian ananda periode ini rata-rata ${avgFormatted}, mengalami penurunan dari bulan lalu (${prevAvgFormatted}).`
+        } else {
+            sentence1 = `Alhamdulillah, capaian ananda periode ini secara umum cukup stabil di rata-rata ${avgFormatted}.`
+        }
     } else {
-        closingParts.push(`Mohon kerja sama orang tua untuk turut mendampingi dan memotivasi ananda di rumah.`)
+        sentence1 = `Capaian ananda periode ini meraih rata-rata ${avgFormatted} dan memerlukan bimbingan lebih intensif.`
     }
 
-    // Assembly
-    const paragraph = [
-        introParts[0],
-        trendText,
-        progressHighlight,
-        aspectParts.join(' '),
-        closingParts[0]
-    ].filter(Boolean).join(' ')
+    // Sentence 2: Sorotan Aspek (Keunggulan & Area Perhatian digabung secara mengalir tanpa format angka mentah)
+    let sentence2 = ''
+    const hasBest = bestAspect && bestAspect.val >= aspectGoodThreshold
+    const hasNeedsWork = worstAspect && worstAspect.val < aspectNeedThreshold && worstAspect.key !== bestAspect?.key
 
-    return paragraph
+    if (maxDecline && hasBest) {
+        sentence2 = `Ananda sangat menonjol di aspek ${bestAspect.id}, namun perlu perhatian lebih pada aspek ${maxDecline.id} yang mengalami penurunan.`
+    } else if (maxImprovement && hasNeedsWork) {
+        sentence2 = `Peningkatan terbaik terlihat pada aspek ${maxImprovement.id}, sementara aspek ${worstAspect.id} masih perlu pendampingan lebih.`
+    } else if (hasBest && hasNeedsWork) {
+        sentence2 = `Ananda sangat baik pada aspek ${bestAspect.id}, namun aspek ${worstAspect.id} masih perlu ditingkatkan lagi.`
+    } else if (hasBest) {
+        sentence2 = `Keunggulan ananda terlihat sangat menonjol pada aspek ${bestAspect.id}.`
+    } else if (maxDecline) {
+        sentence2 = `Mohon perhatian khusus pada aspek ${maxDecline.id} yang sedikit mengalami penurunan.`
+    } else if (hasNeedsWork) {
+        sentence2 = `Perlu pendampingan lebih pada aspek ${worstAspect.id} agar hasilnya bisa lebih optimal.`
+    }
+
+    // Sentence 3: Penutup & Motivasi
+    let sentence3 = ''
+    if (avg >= thresholdHigh) {
+        sentence3 = `Semoga terus konsisten dan istiqamah. Barakallahu fiik.`
+    } else if (avg >= thresholdMedium) {
+        sentence3 = `Semoga di periode berikutnya ananda dapat meraih hasil yang lebih optimal.`
+    } else {
+        sentence3 = `Mohon dukungan dan bimbingan Bapak/Ibu di rumah agar ananda semakin bersemangat.`
+    }
+
+    return [sentence1, sentence2, sentence3].filter(Boolean).join(' ')
 }
+
+const HALAMAN_PER_JUZ = 20
+const HALAMAN_PER_LEMBAR = 2
+
+const parseMixedNumber = (raw) => {
+    const s = String(raw).trim().replace(',', '.')
+    const mixed = s.match(/^(\d+)\s+(\d+)\s*\/\s*(\d+)$/)
+    if (mixed) return Number(mixed[1]) + Number(mixed[2]) / Number(mixed[3])
+    const frac = s.match(/^(\d+)\s*\/\s*(\d+)$/)
+    if (frac) return Number(frac[1]) / Number(frac[2])
+    const n = Number(s)
+    return Number.isFinite(n) ? n : null
+}
+
+/**
+ * Ubah catatan hafalan (1 Juz, 1/2 Halaman, 2 Lembar, angka) ke satuan halaman
+ * agar bisa diurutkan. Nilai kualitatif (Lancar, Juz 30, Bab 1) mengembalikan null.
+ */
+export const parseHafalanToHalaman = (raw) => {
+    if (raw === null || raw === undefined) return null
+    const s = String(raw).trim()
+    if (!s) return null
+    if (/^(lancar|mutqin|cukup lancar|bab\b)/i.test(s)) return null
+    if (/^juz\s*\d+/i.test(s)) return null
+
+    const unitMatch = s.match(/^(.*?)\s*(juz|halaman|hlm|lembar|lbr)\s*$/i)
+    if (unitMatch) {
+        const qty = parseMixedNumber(unitMatch[1])
+        if (qty == null) return null
+        const unit = unitMatch[2].toLowerCase()
+        if (unit.startsWith('juz')) return qty * HALAMAN_PER_JUZ
+        if (unit.startsWith('lem') || unit.startsWith('lbr')) return qty * HALAMAN_PER_LEMBAR
+        return qty
+    }
+
+    return parseMixedNumber(s)
+}
+
+export const hafalanRankScore = (ex = {}) => {
+    const total = parseHafalanToHalaman(ex.total_hafalan)
+    const ziy = parseHafalanToHalaman(ex.ziyadah)
+    const mur = parseHafalanToHalaman(ex.murojaah)
+    if (total != null) return total
+    if (ziy != null && mur != null) return ziy + mur
+    if (ziy != null) return ziy
+    if (mur != null) return mur
+    return null
+}
+
+export const hafalanDisplay = (ex = {}) => {
+    const total = String(ex.total_hafalan || '').trim()
+    const ziy = String(ex.ziyadah || '').trim()
+    const mur = String(ex.murojaah || '').trim()
+    if (total) return total
+    if (ziy && mur) return `Z ${ziy} · M ${mur}`
+    if (ziy) return ziy
+    if (mur) return mur
+    return ''
+}
+

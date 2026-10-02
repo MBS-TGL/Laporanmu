@@ -106,17 +106,25 @@ export const HAFALAN_PRESETS = {
     ziyadah: [
         '1/2 Halaman',
         '1 Halaman',
-        '2 Halaman',
+        '1 Lembar',
+        '2 Lembar',
         '3 Halaman',
         '5 Halaman',
-        '7 Halaman',
         '10 Halaman',
-        '1 Juz',
-        '2 Juz'
-    ],
-    murojaah: [
         '1/2 Juz',
         '1 Juz',
+        '1 1/2 Juz',
+        '2 Juz',
+        '3 Juz'
+    ],
+    murojaah: [
+        '1/2 Halaman',
+        '1 Halaman',
+        '1 Lembar',
+        '2 Lembar',
+        '1/2 Juz',
+        '1 Juz',
+        '1 1/2 Juz',
         '2 Juz',
         '3 Juz',
         '5 Juz',
@@ -125,19 +133,26 @@ export const HAFALAN_PRESETS = {
         '30 Juz'
     ],
     total_hafalan: [
+        '1/2 Juz',
+        '1 Juz',
+        '1 1/2 Juz',
+        '2 Juz',
+        '3 Juz',
+        '5 Juz',
+        '10 Juz',
+        '15 Juz',
+        '20 Juz',
+        '30 Juz',
+        'Juz 30',
+        'Juz 29',
         'Bab 1',
         'Bab 2',
         'Bab 3',
         'Bab 1-3',
         'Bab 1-5',
-        '10 Judul',
-        '20 Judul',
         'Lancar',
-        'Cukup Lancar',
-        '1 Juz',
-        '2 Juz',
-        '3 Juz',
-        '5 Juz'
+        'Mutqin',
+        'Cukup Lancar'
     ]
 }
 

@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { LABEL, toArabicNum, LIST_KAMAR, getReportLabels } from '@utils/reports/raportConstants'
 import { translitToAr, translitClassToAr } from '@utils/reports/translitData'
 import { RAPORT_TYPES, getClassLevel, getGradePredicate } from '@features/raport/utils/raportTypeRegistry'
@@ -7,6 +7,7 @@ import smpLogo from '@assets/images/logos/logo-smp.png'
 import smaLogo from '@assets/images/logos/logo-sma.jpg'
 import SignatureBlock from './SignatureBlock'
 import { RAPORT_AR_FONT, RAPORT_SERIF } from '@features/raport/utils/raportFonts'
+import { getRaportQrDataUrl } from '@features/raport/utils/raportQr'
 
 const printCardAreEqual = (prev, next) => {
     if (prev.lang !== next.lang) return false
@@ -133,7 +134,8 @@ const RaportPrintCard = memo(({
     const isTanggul = String(settings.school_name_id || '').toLowerCase().includes('tanggul') ||
         String(settings.school_address || '').toLowerCase().includes('tanggul')
 
-    useEffect(() => { onRendered?.() }, [onRendered])
+    const [qrImages, setQrImages] = useState({ footer: '', pengasuh: '', wali_kelas: '' })
+    const [qrReadyTick, setQrReadyTick] = useState(0)
 
     const classLevel = selectedClass ? getClassLevel(selectedClass) : getClassLevel(className)
     const getGradeObj = (v) => getGradePredicate(v, reportType, classLevel)
@@ -280,6 +282,46 @@ const RaportPrintCard = memo(({
         return `${prefix}/${cleanClass}/${periodStr}/${orderStr}`;
     }
 
+    useEffect(() => {
+        let cancelled = false
+        const verificationUrl = getVerificationUrl()
+        const load = async () => {
+            try {
+                if (signMode === 'qrcode') {
+                    const [pengasuh, wali_kelas] = await Promise.all([
+                        getRaportQrDataUrl(`${verificationUrl}&sig=pengasuh`, 160),
+                        getRaportQrDataUrl(`${verificationUrl}&sig=wali_kelas`, 160),
+                    ])
+                    if (!cancelled) setQrImages({ footer: '', pengasuh, wali_kelas })
+                } else {
+                    const footer = await getRaportQrDataUrl(verificationUrl, 96)
+                    if (!cancelled) setQrImages({ footer, pengasuh: '', wali_kelas: '' })
+                }
+            } finally {
+                if (!cancelled) setQrReadyTick(t => t + 1)
+            }
+        }
+        load()
+        return () => { cancelled = true }
+    }, [
+        student?.id,
+        studentIndex,
+        signMode,
+        lang,
+        reportType,
+        className,
+        tahun,
+        bulanObj?.id,
+        academicYear,
+        selectedSemester,
+        settings.app_domain,
+    ])
+
+    useEffect(() => {
+        if (qrReadyTick === 0) return
+        onRendered?.()
+    }, [qrReadyTick, onRendered])
+
     const getReportTitle = () => {
         if (reportType === 'bulanan') {
             return L.reportTitle
@@ -394,6 +436,7 @@ const RaportPrintCard = memo(({
                     }
                     .raport-header-table {
                         width: 100% !important;
+                        table-layout: fixed !important;
                         border-collapse: collapse !important;
                         border: none !important;
                         margin: 0 0 10px 0 !important;
@@ -412,6 +455,7 @@ const RaportPrintCard = memo(({
                     .raport-header-center {
                         text-align: center !important;
                         vertical-align: middle !important;
+                        overflow: hidden !important;
                     }
                     .school-name-ar {
                         font-size: ${isSemesterExam ? '26pt' : '30pt'} !important;
@@ -420,7 +464,8 @@ const RaportPrintCard = memo(({
                     .school-subtitle-ar {
                         font-size: ${subtitleArFontSize} !important;
                         line-height: 1.3 !important;
-                        white-space: nowrap !important;
+                        word-break: break-word !important;
+                        overflow-wrap: break-word !important;
                     }
                     .school-name-id {
                         font-size: ${isSemesterExam ? '13pt' : '15pt'} !important;
@@ -440,7 +485,7 @@ const RaportPrintCard = memo(({
             <div className="raport-card-body">
                 {/* Header Sekolah */}
                 <div style={{ marginBottom: isSemesterExam ? (isA4 ? 4 : 6) : (isA4 ? 6 : 12) }}>
-                    <table className="raport-header-table" style={{ width: '100%', borderCollapse: 'collapse', border: 'none', margin: '0 0 10px 0', padding: 0 }}>
+                    <table className="raport-header-table" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse', border: 'none', margin: '0 0 10px 0', padding: 0 }}>
                         <tbody>
                             <tr>
                                 {/* Logo Kiri (Unit/Sekolah) */}
@@ -459,7 +504,7 @@ const RaportPrintCard = memo(({
                                     textAlign: 'center'
                                 }}>
                                     {settings.school_subtitle_ar && (
-                                        <div className="school-subtitle-ar" style={{ fontSize: subtitleArFontSize, color: '#444', direction: 'rtl', marginBottom: 2, fontFamily: arFont, fontWeight: 700, lineHeight: 1.3, whiteSpace: 'nowrap' }}>
+                                        <div className="school-subtitle-ar" style={{ fontSize: subtitleArFontSize, color: '#444', direction: 'rtl', marginBottom: 2, fontFamily: arFont, fontWeight: 700, lineHeight: 1.3 }}>
                                             {settings.school_subtitle_ar}
                                         </div>
                                     )}
@@ -967,6 +1012,7 @@ const RaportPrintCard = memo(({
                             nama={block.nama}
                             signatureUrl={block.signatureUrl}
                             mode={block.mode}
+                            qrDataUrl={block.mode === 'qrcode' ? qrImages[block.key] : undefined}
                             isAr={isAr}
                         />
                     ))}
@@ -986,16 +1032,21 @@ const RaportPrintCard = memo(({
                     direction: isAr ? 'rtl' : 'ltr'
                 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <img
-                            crossOrigin="anonymous"
-                            src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&format=svg&ecc=L&qzone=1&data=${encodeURIComponent(getVerificationUrl())}`}
-                            alt="Verification QR"
-                            style={{ width: '42px', height: '42px', display: 'block', backgroundColor: '#fff', padding: '2px', border: '1px solid #eee', borderRadius: '4px' }}
-                        />
+                        {signMode === 'qrcode' ? null : qrImages.footer ? (
+                            <img
+                                src={qrImages.footer}
+                                alt="Verification QR"
+                                style={{ width: '42px', height: '42px', display: 'block', backgroundColor: '#fff', padding: '2px', border: '1px solid #eee', borderRadius: '4px' }}
+                            />
+                        ) : (
+                            <div style={{ width: '42px', height: '42px' }} />
+                        )}
                         <div style={{ display: 'flex', flexDirection: 'column', textAlign: isAr ? 'right' : 'left', lineHeight: 1.2 }}>
                             <span style={{ fontWeight: 700, color: '#555' }}>{isAr ? 'بوابة LaporanMu الأكاديمية' : 'LaporanMu Academic Portal'}</span>
                             <span style={{ fontSize: '6.5pt', color: '#999', fontStyle: 'italic' }}>
-                                {isAr ? 'امسح الرمز للتحقق من صحة التقرير' : 'Pindai QR untuk verifikasi keaslian raport'}
+                                {signMode === 'qrcode'
+                                    ? (isAr ? 'امسح رمز QR على التوقيع للتحقق' : 'Pindai QR pada kolom tanda tangan untuk verifikasi')
+                                    : (isAr ? 'امسح الرمز للتحقق من صحة التقرير' : 'Pindai QR untuk verifikasi keaslian raport')}
                             </span>
                         </div>
                     </div>

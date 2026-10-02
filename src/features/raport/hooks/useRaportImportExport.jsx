@@ -146,14 +146,17 @@ export function useRaportImportExport(core, { printContainerRef, silentPrintRef,
     const [isImportModalOpen, setIsImportModalOpen] = useState(false)
     const [isExportModalOpen, setIsExportOpen] = useState(false)
 
-    // Digital/Wet Signature States
+    const SIGN_MODES = ['basah', 'digital', 'qrcode']
+
+    // Digital/Wet/QR Signature States
     const [signMode, setSignMode] = useState(() => {
         try {
-            return localStorage.getItem('raport_sign_mode') ?? 'basah'
+            const stored = localStorage.getItem('raport_sign_mode')
+            return SIGN_MODES.includes(stored) ? stored : 'basah'
         } catch {
             return 'basah'
         }
-    }) // 'basah' | 'digital'
+    }) // 'basah' | 'digital' | 'qrcode'
     const [signatures, setSignatures] = useState(null)
     const signaturesCache = useRef(null) // cache agar tidak re-fetch tiap toggle
 
@@ -206,12 +209,16 @@ export function useRaportImportExport(core, { printContainerRef, silentPrintRef,
             setSignatures(result)
         } catch (err) {
             console.error('[Signatures] Error fetching signatures:', err)
+            const empty = {
+                pengasuh: { nama: null, url: null },
+                wali_kelas: { nama: null, url: null },
+            }
+            setSignatures(empty)
         }
     }
 
-    // Toggle handler
-    const handleToggleSignMode = () => {
-        const next = signMode === 'basah' ? 'digital' : 'basah'
+    const handleSetSignMode = (next) => {
+        if (!SIGN_MODES.includes(next) || next === signMode) return
         setSignMode(next)
         try {
             localStorage.setItem('raport_sign_mode', next)
@@ -221,6 +228,11 @@ export function useRaportImportExport(core, { printContainerRef, silentPrintRef,
         if (next === 'digital') {
             fetchSignatures(selectedClass?.id)
         }
+    }
+
+    // Toggle handler (basah <-> digital; QR remains selectable via handleSetSignMode)
+    const handleToggleSignMode = () => {
+        handleSetSignMode(signMode === 'digital' ? 'basah' : 'digital')
     }
 
     // Fetch signatures on init if mode is digital
@@ -537,7 +549,8 @@ export function useRaportImportExport(core, { printContainerRef, silentPrintRef,
     // ── Generate and send WA ──
     const generateAndSendWA = useCallback(async (student) => {
         if (!student.phone) { addToast('Nomor WA wali tidak tersedia', 'warning'); return }
-        const phone = student.phone.replace(/\D/g, '').replace(/^0/, '62')
+        const rawPhone = student.phone || student.guardian_phone || student.parent_phone || student.metadata?.phone || student.metadata?.guardian_phone || student.metadata?.parent_phone || student.metadata?.father_phone || student.metadata?.mother_phone
+        const phone = String(rawPhone || '').replace(/\D/g, '').replace(/^0/, '62')
 
         // Cek persistent cache raportLinks terlebih dahulu
         let cachedUrl = getCachedRaportLink(student.id)
@@ -603,10 +616,10 @@ export function useRaportImportExport(core, { printContainerRef, silentPrintRef,
         setWaBlast({ queue, idx: 0, done: 0, failed: 0, active: true, status: isDebug ? 'simulating' : 'generating' })
         for (let i = 0; i < queue.length; i++) {
             if (abortRef.current) break
-            setWaBlast(prev => prev ? { ...prev, idx: i } : null)
             const student = queue[i]
             try {
-                const phone = student.phone?.replace(/\D/g, '').replace(/^0/, '62')
+                const rawPhone = student.phone || student.guardian_phone || student.parent_phone || student.metadata?.phone || student.metadata?.guardian_phone || student.metadata?.parent_phone || student.metadata?.father_phone || student.metadata?.mother_phone
+                const phone = String(rawPhone || '').replace(/\D/g, '').replace(/^0/, '62')
                 if (!phone) { failed++; continue }
 
                 let url = 'https://laporanmu.github.io/mock_debug_preview.pdf'
@@ -1042,6 +1055,6 @@ export function useRaportImportExport(core, { printContainerRef, silentPrintRef,
         generateAndSendWA, runWaBlast, runZipBlast,
         handleExportCSV: handleExportCSVModal, handleExportExcel: handleExportExcelModal, handleExportAllClasses: handleExportAllClassesModal,
         handleExportZip: handleExportZipModal, handlePrintAll: handlePrintAllModal,
-        signMode, handleToggleSignMode, signatures
+        signMode, handleToggleSignMode, handleSetSignMode, signatures
     }
 }

@@ -11,8 +11,9 @@ const blockStyle = {
   position: 'relative',
 };
 
-export default function SignatureBlock({ label, topLabel, labelPrefix, nama, signatureUrl, mode, isAr = false }) {
+export default function SignatureBlock({ label, topLabel, labelPrefix, nama, signatureUrl, mode, qrDataUrl, isAr = false }) {
   const isDigital = mode === 'digital' && signatureUrl;
+  const isQr = mode === 'qrcode';
   const labelSize = isAr ? '13pt' : '10.5pt';
   const nameSize = isAr ? '14pt' : '11.5pt';
 
@@ -72,17 +73,21 @@ export default function SignatureBlock({ label, topLabel, labelPrefix, nama, sig
           alignItems: 'center',
         }}
       >
-        {/* Area tanda tangan — selalu ada 80px untuk basah/digital */}
         <div style={{ height: '80px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {isDigital && (
             <img src={signatureUrl} alt={`TTD ${label}`} crossOrigin="anonymous" style={{ maxHeight: '80px', objectFit: 'contain' }} />
           )}
+          {isQr && qrDataUrl && (
+            <img
+              src={qrDataUrl}
+              alt={`QR ${label}`}
+              style={{ width: '72px', height: '72px', display: 'block', backgroundColor: '#fff', padding: '2px' }}
+            />
+          )}
         </div>
 
-        {/* Garis tanda tangan */}
         <div style={{ width: isAr ? '148px' : '128px', borderTop: '1px solid rgb(156, 163, 175)' }} />
 
-        {/* Nama penandatangan */}
         <div style={{ width: '100%', fontWeight: 700, fontSize: nameSize, fontFamily: isAr ? RAPORT_AR_FONT : 'inherit', marginTop: '8px', textAlign: 'center', color: '#111827', lineHeight: isAr ? 1.35 : 1.25 }}>
           {nama}
         </div>

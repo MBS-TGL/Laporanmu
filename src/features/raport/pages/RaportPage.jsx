@@ -8,7 +8,7 @@ import {
     Scale, Ruler, HeartPulse, DoorOpen, UploadCloud, FileText, FileSpreadsheet, FileArchive,
     Archive, Sliders, Plus, Filter, Sparkles, TrendingUp, TrendingDown, HelpCircle, Info,
     SortAsc, Wifi, Keyboard, Lightbulb, Moon, Sun, Maximize2, Minimize2, ChevronDown, Upload, ChevronUp,
-    PenTool, Fingerprint,
+    PenTool, Fingerprint, QrCode,
     Cog,
     ActivityIcon,
     SlidersHorizontal
@@ -23,6 +23,7 @@ import PageHeader from '@shared/components/PageHeader'
 import { StatCard, EmptyState } from '@shared/components/DataDisplay'
 import Modal from '@shared/components/Modal'
 import RichSelect from '@shared/components/RichSelect'
+import ConfirmDialog from '@shared/components/ConfirmDialog'
 import StatsCarousel from '@shared/components/StatsCarousel'
 import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
@@ -160,7 +161,7 @@ export default function RaportPage() {
         buildWaMessage, sendWATextOnly, generatePDFBlob, uploadToSupabase,
         generateAndSendWA, runWaBlast, runZipBlast,
         handleExportCSV, handleExportExcel, handleExportAllClasses, handleExportZip, handlePrintAll,
-        signMode, handleToggleSignMode, signatures
+        signMode, handleSetSignMode, signatures
     } = importExport
 
     // ── Archive state
@@ -1127,15 +1128,14 @@ export default function RaportPage() {
             title: 'Reset Nilai?',
             description: 'Nilai santri akan dikosongkan',
             body: (
-                <>
-                    Siswa <span className="text-red-500 font-black px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">{student.name}</span> akan direset. Nilai akademik, hafalan, fisik, dan catatan santri ini akan dihapus secara permanen dari database.
-                </>
+                <span className="text-xs text-[var(--color-text-muted)] leading-relaxed block">
+                    Siswa <span className="px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-500 font-bold border border-rose-500/20 inline-block">{student.name}</span> akan direset. Nilai akademik, hafalan, fisik, dan catatan santri ini akan dihapus secara permanen dari database.
+                </span>
             ),
             icon: AlertTriangle,
-            iconBg: 'bg-red-500/10',
-            iconColor: 'text-red-500',
-            variant: 'red',
-            confirmLabel: 'Ya, Reset Semua',
+            iconBg: 'bg-rose-500/10',
+            iconColor: 'text-rose-500',
+            confirmText: 'Ya, Reset Semua',
             confirmIcon: AlertTriangle,
             onConfirm: () => { setConfirmModal(null); resetStudent(student.id) }
         })
@@ -1146,15 +1146,14 @@ export default function RaportPage() {
             title: 'Reset Nilai Satu Kelas?',
             description: 'Nilai satu kelas akan dikosongkan',
             body: (
-                <>
-                    Semua data nilai untuk kelas <span className="text-red-500 font-black px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">{selectedClass?.name || ''}</span> akan dikosongkan. Nilai akademik, hafalan, fisik, dan catatan seluruh santri di kelas ini akan dihapus secara permanen dari database.
-                </>
+                <span className="text-xs text-[var(--color-text-muted)] leading-relaxed block">
+                    Semua data nilai untuk kelas <span className="px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-500 font-bold border border-rose-500/20 inline-block">{selectedClass?.name || ''}</span> akan dikosongkan.
+                </span>
             ),
             icon: AlertTriangle,
-            iconBg: 'bg-red-500/10',
-            iconColor: 'text-red-500',
-            variant: 'red',
-            confirmLabel: 'Ya, Reset Kelas',
+            iconBg: 'bg-rose-500/10',
+            iconColor: 'text-rose-500',
+            confirmText: 'Ya, Reset Kelas',
             confirmIcon: AlertTriangle,
             onConfirm: () => { setConfirmModal(null); resetClass() }
         })
@@ -2377,10 +2376,12 @@ await Promise.all([
                                         <span className="flex items-center gap-1.5">
                                             {signMode === 'digital' ? (
                                                 <Fingerprint className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                                            ) : signMode === 'qrcode' ? (
+                                                <QrCode className="w-3.5 h-3.5 text-cyan-500 shrink-0" />
                                             ) : (
                                                 <PenTool className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
                                             )}
-                                            {signMode === 'digital' ? 'TTD Digital' : 'TTD Basah'}
+                                            {signMode === 'digital' ? 'TTD Digital' : signMode === 'qrcode' ? 'TTD QR' : 'TTD Manual'}
                                         </span>
                                         <ChevronDown className={`w-3.5 h-3.5 text-[var(--color-text-muted)] transition-transform duration-200 ${showSigDropdown ? 'rotate-180' : ''}`} />
                                     </button>
@@ -2389,23 +2390,33 @@ await Promise.all([
                                         <div className="absolute right-0 top-full mt-1.5 w-full sm:w-36 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl z-50 overflow-hidden py-1 animate-in fade-in slide-in-from-top-1 duration-100">
                                             <button
                                                 onClick={() => {
-                                                    if (signMode !== 'basah') handleToggleSignMode();
+                                                    handleSetSignMode('basah');
                                                     setShowSigDropdown(false);
                                                 }}
                                                 className={`w-full px-3.5 py-2.5 text-left text-[10px] font-black transition-colors flex items-center gap-2 ${signMode === 'basah' ? 'bg-[var(--color-surface-alt)] text-indigo-500' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]/50'}`}
                                             >
                                                 <PenTool className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
-                                                <span>TTD Basah</span>
+                                                <span>TTD Manual</span>
                                             </button>
                                             <button
                                                 onClick={() => {
-                                                    if (signMode !== 'digital') handleToggleSignMode();
+                                                    handleSetSignMode('digital');
                                                     setShowSigDropdown(false);
                                                 }}
                                                 className={`w-full px-3.5 py-2.5 text-left text-[10px] font-black transition-colors flex items-center gap-2 ${signMode === 'digital' ? 'bg-[var(--color-surface-alt)] text-emerald-500' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]/50'}`}
                                             >
                                                 <Fingerprint className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                                                 <span>TTD Digital</span>
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    handleSetSignMode('qrcode');
+                                                    setShowSigDropdown(false);
+                                                }}
+                                                className={`w-full px-3.5 py-2.5 text-left text-[10px] font-black transition-colors flex items-center gap-2 ${signMode === 'qrcode' ? 'bg-[var(--color-surface-alt)] text-cyan-500' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]/50'}`}
+                                            >
+                                                <QrCode className="w-3.5 h-3.5 text-cyan-500 shrink-0" />
+                                                <span>TTD QR Code</span>
                                             </button>
                                         </div>
                                     )}
@@ -3756,51 +3767,22 @@ await Promise.all([
                 </Modal>
 
                 {/* General Confirmation Modal */}
-                <Modal
-                    isOpen={!!confirmModal}
-                    onClose={() => setConfirmModal(null)}
-                    title={confirmModal?.title ?? 'Konfirmasi'}
-                    description={confirmModal?.description}
-                    icon={confirmModal?.icon}
-                    iconBg={confirmModal?.iconBg}
-                    iconColor={confirmModal?.iconColor}
-                    size={confirmModal?.size ?? 'sm'}
-                    mobileVariant="bottom-sheet"
-                    footer={confirmModal && (
-                        <div className="flex items-center w-full gap-3">
-                            <button
-                                type="button"
-                                onClick={() => setConfirmModal(null)}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
-                            >
-                                Batal
-                            </button>
-                            <div className="flex-1" />
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    confirmModal.onConfirm()
-                                    setConfirmModal(null)
-                                }}
-                                className={`h-10 px-6 rounded-xl text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 ${confirmModal.variant === 'amber'
-                                    ? 'bg-amber-500 hover:bg-amber-600 shadow-amber-500/20'
-                                    : 'bg-red-500 hover:bg-red-600 shadow-red-500/20'
-                                    }`}
-                            >
-                                {(() => { if (!confirmModal.confirmIcon) return null; const Icon = confirmModal.confirmIcon; return <Icon className="w-3.5 h-3.5 opacity-70" /> })()}
-                                {confirmModal.confirmLabel ?? 'Lanjutkan'}
-                            </button>
-                        </div>
-                    )}
-                >
-                    {confirmModal && (
-                        <div className="px-1">
-                            <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
-                                {confirmModal.body}
-                            </p>
-                        </div>
-                    )}
-                </Modal>
+                {confirmModal && (
+                    <ConfirmDialog
+                        isOpen={!!confirmModal}
+                        onClose={() => setConfirmModal(null)}
+                        onConfirm={confirmModal.onConfirm}
+                        title={confirmModal.title}
+                        description={confirmModal.description}
+                        icon={confirmModal.icon || AlertTriangle}
+                        iconBg={confirmModal.iconBg || 'bg-rose-500/10'}
+                        iconColor={confirmModal.iconColor || 'text-rose-500'}
+                        confirmText={confirmModal.confirmText || confirmModal.confirmLabel || 'Konfirmasi'}
+                        confirmIcon={confirmModal.confirmIcon}
+                    >
+                        {confirmModal.body}
+                    </ConfirmDialog>
+                )}
 
                 {/* ── FULLSCREEN DIGITAL PREVIEW ── */}
                 {isFullScreenPreview && createPortal(

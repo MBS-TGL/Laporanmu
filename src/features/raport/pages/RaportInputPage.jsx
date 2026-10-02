@@ -1,11 +1,18 @@
 import React, { useEffect, Suspense, lazy, useState, useRef, useMemo, useCallback } from 'react'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { useRaportContext } from '@features/raport/context/RaportContext'
-import { AlertTriangle, ArrowLeft, Save, Copy, Eye, Loader2, CheckCircle2, Globe, FileSpreadsheet } from 'lucide-react'
-import { isComplete } from '@utils/reports/raportHelpers'
+import { AlertTriangle, ArrowLeft, Save, Copy, Eye, Loader2, CheckCircle2, Globe, FileSpreadsheet, Archive } from 'lucide-react'
+import { isComplete } from '@features/raport/utils/raportHelpers'
 import { KRITERIA } from '@utils/reports/raportConstants'
+import ConfirmDialog from '@shared/components/ConfirmDialog'
+import Modal from '@shared/components/Modal'
+import RaportPrintCard from '@features/raport/components/RaportPrintCard'
+import RaportSummaryPage from '@features/raport/components/RaportSummaryPage'
+import { WaBlastConfirmContent, WaBlastProgressContent, ZipBlastProgressContent, WhatsAppIcon } from '@features/raport/components/RaportModals'
+import { buildRaportPrintDocumentHtml } from '@features/raport/utils/raportPrintHtml'
 
 const LazyRaportInputTable = lazy(() => import('@features/raport/components/RaportInputTable'))
+const LazyRaportExportModal = lazy(() => import('@features/raport/components/RaportExportModal'))
 
 const ROW_HEIGHT = 188
 const OVERSCAN = 5
@@ -14,7 +21,19 @@ export default function RaportInputPage({ isAcademic = false }) {
     const { classId } = useParams()
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
-    const { core, activeRtObj, activeCriteria, activeMaxScore, isAcademic: isAcad, importExport } = useRaportContext()
+    const {
+        core,
+        activeRtObj,
+        activeCriteria,
+        activeMaxScore,
+        isAcademic: isAcad,
+        importExport,
+        pageSize,
+        setPageSize,
+        layoutConfig,
+        printContainerRef,
+        silentPrintRef
+    } = useRaportContext()
 
     const {
         selectedClass, setSelectedClassId, selectedMonth, setSelectedMonth,
@@ -30,9 +49,16 @@ export default function RaportInputPage({ isAcademic = false }) {
         transliterateToArab, scoresHistoryRef, scoresHistoryIdxRef,
         bulkMode, setBulkMode, bulkSelected, setBulkSelected,
         previewStudentId, setPreviewStudentId, setStep,
+        printQueue, setPrintQueue, printRenderedCount, setPrintRenderedCount, handleDownloadPdf, generatingPdfIds, settings
     } = core
 
-    const { sendingWA, generateAndSendWA, runZipBlast, setWaBlastConfirm, setIsExportOpen: setIsExportModalOpen } = importExport
+    const {
+        sendingWA, generateAndSendWA, runZipBlast, setWaBlastConfirm, waBlastConfirm,
+        isExportModalOpen, setIsExportOpen: setIsExportModalOpen,
+        waBlast, setWaBlast, zipBlast, setZipBlast, waBlastAbortRef, zipAbortRef,
+        runWaBlast, buildWaMessage, handleExportCSV, handleExportExcel, handleExportAllClasses,
+        handleExportZip, handlePrintAll, exporting, signMode, signatures
+    } = importExport
 
     const basePath = isAcademic ? '/academic/raport' : '/raport'
 
@@ -53,36 +79,20 @@ export default function RaportInputPage({ isAcademic = false }) {
         }
     }, [classId, students.length, loading, selectedMonth, selectedYear, lang, reportType, selectedSemester, academicYear, loadStudents])
 
-    // ── Filtered students (with debounce for "incomplete only") ──
-    const baseFiltered = useMemo(() => {
+    // ── Instant Filtered Students ──
+    const filteredStudents = useMemo(() => {
         let list = students
-        if (studentSearch.trim()) list = list.filter(s => s.name.toLowerCase().includes(studentSearch.toLowerCase()))
-        if (showNoPhoneOnly) list = list.filter(s => !s.phone)
-        return list
-    }, [students, studentSearch, showNoPhoneOnly])
-
-    const [filteredStudents, setFilteredStudents] = useState(() => students)
-    const filteredDebounceRef = useRef(null)
-    const scoresSnapshotRef = useRef(scores)
-    scoresSnapshotRef.current = scores
-    const extrasSnapshotRef = useRef(extras)
-    extrasSnapshotRef.current = extras
-
-    useEffect(() => {
-        if (!showIncompleteOnly) {
-            setFilteredStudents(prev => {
-                if (prev === baseFiltered) return prev
-                return baseFiltered
-            })
-            return
+        if (studentSearch && studentSearch.trim()) {
+            list = list.filter(s => s.name.toLowerCase().includes(studentSearch.toLowerCase()))
         }
-        if (filteredDebounceRef.current) clearTimeout(filteredDebounceRef.current)
-        filteredDebounceRef.current = setTimeout(() => {
-            const sc = scoresSnapshotRef.current
-            setFilteredStudents(baseFiltered.filter(s => !isComplete(sc[s.id] || {}, activeCriteria)))
-        }, 1500)
-        return () => { if (filteredDebounceRef.current) clearTimeout(filteredDebounceRef.current) }
-    }, [baseFiltered, showIncompleteOnly, activeCriteria])
+        if (showNoPhoneOnly) {
+            list = list.filter(s => !s.phone)
+        }
+        if (showIncompleteOnly) {
+            list = list.filter(s => !isComplete(scores[s.id] || {}, activeCriteria))
+        }
+        return list
+    }, [students, studentSearch, showNoPhoneOnly, showIncompleteOnly, scores, activeCriteria])
 
     // ── Virtual scroll ──
     const cellRefs = useRef({})
@@ -185,67 +195,37 @@ export default function RaportInputPage({ isAcademic = false }) {
         delete pendingScoresRef.current[studentId]
     }, [setScores])
 
-    // ── Score change handler ──
+    // ── Score change handler (Draft Mode: only updates local state, no auto-save) ──
     const handleScoreChange = useCallback((studentId, key, value) => {
-        const cur = pendingScoresRef.current[studentId]?.[key] ?? scoresSnapshotRef.current?.[studentId]?.[key]
-        if (String(value) === String(cur ?? '')) return
-        if (!pendingScoresRef.current[studentId]) pendingScoresRef.current[studentId] = {}
-        pendingScoresRef.current[studentId][key] = value
-        const markUnsaved = () => setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
-        if (typeof window.requestIdleCallback === 'function') {
-            window.requestIdleCallback(markUnsaved, { timeout: 1500 })
-        } else { setTimeout(markUnsaved, 500) }
-        triggerAutoSave(studentId)
-        if (typeof window.requestIdleCallback === 'function') {
-            window.requestIdleCallback(() => flushScores(studentId), { timeout: 1000 })
-        } else { setTimeout(() => flushScores(studentId), 300) }
-    }, [triggerAutoSave, flushScores, setSavedIds])
+        setScores(prev => ({ ...prev, [studentId]: { ...prev[studentId], [key]: value } }))
+        setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
+    }, [setScores, setSavedIds])
 
-    // ── Extra change handler ──
+    // ── Extra change handler (Draft Mode: only updates local state, no auto-save) ──
     const handleExtraChange = useCallback((studentId, key, value) => {
-        const cur = pendingExtrasRef.current[studentId]?.[key] ?? extrasSnapshotRef.current?.[studentId]?.[key]
-        if (String(value) === String(cur ?? '')) return
-        if (!pendingExtrasRef.current[studentId]) pendingExtrasRef.current[studentId] = {}
-        pendingExtrasRef.current[studentId][key] = value
-        const markUnsaved = () => setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
-        if (typeof window.requestIdleCallback === 'function') {
-            window.requestIdleCallback(markUnsaved, { timeout: 1500 })
-        } else { setTimeout(markUnsaved, 500) }
-        triggerAutoSave(studentId)
-        if (typeof window.requestIdleCallback === 'function') {
-            window.requestIdleCallback(() => flushExtras(studentId), { timeout: 1000 })
-        } else { setTimeout(() => flushExtras(studentId), 300) }
-    }, [triggerAutoSave, flushExtras, setSavedIds])
+        setExtras(prev => ({ ...prev, [studentId]: { ...prev[studentId], [key]: value } }))
+        setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
+    }, [setExtras, setSavedIds])
 
-    // ── Catatan change handler ──
+    // ── Catatan change handler (Draft Mode: only updates local state, no auto-save) ──
     const handleCatatanChange = useCallback((studentId, key, value) => {
-        const cur = pendingExtrasRef.current[studentId]?.[key] ?? extrasSnapshotRef.current?.[studentId]?.[key]
-        if (String(value) === String(cur ?? '')) return
-        if (!pendingExtrasRef.current[studentId]) pendingExtrasRef.current[studentId] = {}
-        pendingExtrasRef.current[studentId][key] = value
-        const markUnsaved = () => setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
-        if (typeof window.requestIdleCallback === 'function') {
-            window.requestIdleCallback(markUnsaved, { timeout: 1500 })
-        } else { setTimeout(markUnsaved, 500) }
-        triggerAutoSave(studentId)
-        if (typeof window.requestIdleCallback === 'function') {
-            window.requestIdleCallback(() => flushExtras(studentId), { timeout: 1000 })
-        } else { setTimeout(() => flushExtras(studentId), 300) }
+        setExtras(prev => ({ ...prev, [studentId]: { ...prev[studentId], [key]: value } }))
+        setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
         setCatatanArabMap(prev => { const n = { ...prev }; delete n[studentId]; return n })
-    }, [triggerAutoSave, flushExtras, setSavedIds, setCatatanArabMap])
+    }, [setExtras, setSavedIds, setCatatanArabMap])
 
     // ── Template handlers ──
     const handleTemplateToggle = useCallback((studentId) => {
         setTemplateOpenId(prev => prev === studentId ? null : studentId)
     }, [])
 
+    // ── Template apply (Draft Mode: no auto-save) ──
     const handleTemplateApply = useCallback((studentId, tmpl) => {
         setExtras(prev => ({ ...prev, [studentId]: { ...prev[studentId], catatan: tmpl } }))
         setSavedIds(prev => { const n = new Set(prev); n.delete(studentId); return n })
-        triggerAutoSave(studentId)
         setTemplateOpenId(null)
         setCatatanArabMap(prev => { const n = { ...prev }; delete n[studentId]; return n })
-    }, [triggerAutoSave, setExtras, setSavedIds, setCatatanArabMap])
+    }, [setExtras, setSavedIds, setCatatanArabMap])
 
     // ── Translit toggle ──
     const handleTranslitToggle = useCallback(async (studentId, catatan, currentArab) => {
@@ -268,19 +248,76 @@ export default function RaportInputPage({ isAcademic = false }) {
         navigate(`${basePath}/preview/${classId}?month=${selectedMonth}&year=${selectedYear}&type=${reportType}`)
     }, [setPreviewStudentId, navigate, basePath, classId, selectedMonth, selectedYear, reportType])
 
+    // ── Batch Printing Logic ──
+    const printExecutingRef = useRef(false)
+    const exportingPdfRef = useRef(false)
+
+    const executePrint = useCallback((stuList) => {
+        const container = printContainerRef?.current; if (!container) return
+        const cards = container.querySelectorAll('.raport-card'); if (!cards.length) { addToast('Gagal menyiapkan raport', 'error'); return }
+        const html = [...cards].map(c => c.outerHTML).join('')
+        const titleStr = stuList.length === 1 ? `Raport ${stuList[0].name}_${selectedClass?.name}_${bulanObj?.id_str} ${selectedYear}` : `Raport Kelas ${selectedClass?.name}_${bulanObj?.id_str} ${selectedYear}`
+        const win = window.open('', '_blank'); if (!win) { addToast('Popup diblokir browser.', 'error'); printExecutingRef.current = false; setPrintQueue([]); setPrintRenderedCount(0); return }
+        win.document.write(buildRaportPrintDocumentHtml(html, pageSize, titleStr))
+        win.document.close();
+        win.focus();
+        if (win.document.fonts && win.document.fonts.ready) {
+            win.document.fonts.ready.then(async () => {
+                await Promise.all([
+                    win.document.fonts.load('400 16px Amiri'),
+                    win.document.fonts.load('700 16px Amiri'),
+                ]);
+                setTimeout(() => {
+                    win.print();
+                    printExecutingRef.current = false;
+                    setPrintQueue([]);
+                    setPrintRenderedCount(0);
+                }, 500);
+            }).catch((err) => {
+                console.error("Font loading failed, printing anyway:", err);
+                setTimeout(() => {
+                    win.print();
+                    printExecutingRef.current = false;
+                    setPrintQueue([]);
+                    setPrintRenderedCount(0);
+                }, 500);
+            });
+        } else {
+            setTimeout(() => {
+                win.print();
+                printExecutingRef.current = false;
+                setPrintQueue([]);
+                setPrintRenderedCount(0);
+            }, 800);
+        }
+    }, [selectedClass, bulanObj, selectedYear, addToast, pageSize, setPrintQueue, setPrintRenderedCount, printContainerRef])
+
+    useEffect(() => {
+        if (!printQueue || !printQueue.length) { printExecutingRef.current = false; return }
+        const expectedCount = printQueue.length + (printQueue.length > 1 ? 1 : 0)
+        if (printRenderedCount < expectedCount) return
+        if (printExecutingRef.current) return
+        if (exportingPdfRef.current) return
+        if (silentPrintRef?.current) return
+        printExecutingRef.current = true
+        const stuList = students.filter(s => printQueue.includes(s.id))
+        executePrint(stuList)
+    }, [printRenderedCount, printQueue, students, executePrint, silentPrintRef])
+
     // ── Reset student ──
     const handleResetStudent = useCallback((student) => {
         setConfirmModal({
             title: 'Reset Nilai?',
             description: 'Nilai santri akan dikosongkan',
             body: (
-                <>Siswa <span className="text-red-500 font-black px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">{student.name}</span> akan direset. Nilai akademik, hafalan, fisik, dan catatan santri ini akan dihapus secara permanen dari database.</>
+                <span className="text-xs text-[var(--color-text-muted)] leading-relaxed block">
+                    Siswa <span className="px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-500 font-bold border border-rose-500/20 inline-block">{student.name}</span> akan direset. Nilai akademik, hafalan, fisik, dan catatan santri ini akan dihapus secara permanen dari database.
+                </span>
             ),
             icon: AlertTriangle,
-            iconBg: 'bg-red-500/10',
-            iconColor: 'text-red-500',
-            variant: 'red',
-            confirmLabel: 'Ya, Reset Semua',
+            iconBg: 'bg-rose-500/10',
+            iconColor: 'text-rose-500',
+            confirmText: 'Ya, Reset Semua',
             confirmIcon: AlertTriangle,
             onConfirm: () => { setConfirmModal(null); resetStudent(student.id) }
         })
@@ -292,13 +329,14 @@ export default function RaportInputPage({ isAcademic = false }) {
             title: 'Reset Nilai Satu Kelas?',
             description: 'Nilai satu kelas akan dikosongkan',
             body: (
-                <>Semua data nilai untuk kelas <span className="text-red-500 font-black px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">{selectedClass?.name || ''}</span> akan dikosongkan.</>
+                <span className="text-xs text-[var(--color-text-muted)] leading-relaxed block">
+                    Semua data nilai untuk kelas <span className="px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-500 font-bold border border-rose-500/20 inline-block">{selectedClass?.name || ''}</span> akan dikosongkan.
+                </span>
             ),
             icon: AlertTriangle,
-            iconBg: 'bg-red-500/10',
-            iconColor: 'text-red-500',
-            variant: 'red',
-            confirmLabel: 'Ya, Reset Kelas',
+            iconBg: 'bg-rose-500/10',
+            iconColor: 'text-rose-500',
+            confirmText: 'Ya, Reset Kelas',
             confirmIcon: AlertTriangle,
             onConfirm: () => { setConfirmModal(null); resetClass() }
         })
@@ -451,47 +489,204 @@ export default function RaportInputPage({ isAcademic = false }) {
                         openPrintWindow={openPrintWindow}
                         cellRefs={cellRefs}
                         behaviorReports={behaviorReports}
-                        autosaveEnabled={true}
+                        autosaveEnabled={false}
                     />
                 </Suspense>
             )}
 
+            {/* SaaS Raport Export Modal */}
+            <Suspense fallback={null}>
+                {isExportModalOpen && (
+                    <LazyRaportExportModal
+                        isOpen={isExportModalOpen}
+                        onClose={() => setIsExportModalOpen(false)}
+                        students={students}
+                        selectedStudentIds={Array.from(bulkSelected || [])}
+                        activeClassName={selectedClass?.name}
+                        selectedMonthName={bulanObj?.id_str}
+                        selectedYear={selectedYear}
+                        exporting={exporting}
+                        handleExportCSV={handleExportCSV}
+                        handleExportExcel={handleExportExcel}
+                        handleExportAllClasses={handleExportAllClasses}
+                        handleExportZip={handleExportZip}
+                        handlePrintAll={handlePrintAll}
+                        addToast={addToast}
+                        criteria={activeCriteria}
+                        reportType={reportType}
+                    />
+                )}
+            </Suspense>
+
+            {/* WA Blast Confirm Modal */}
+            {waBlastConfirm && (
+                <WaBlastConfirmContent
+                    isOpen={!!waBlastConfirm}
+                    onClose={() => setWaBlastConfirm(null)}
+                    queue={waBlastConfirm.queue}
+                    lang={lang}
+                    setLang={setLang}
+                    pageSize={pageSize}
+                    setPageSize={setPageSize}
+                    buildWaMessage={buildWaMessage}
+                    onPreviewStudent={(studentId) => {
+                        setPreviewStudentId(studentId)
+                        navigate(`${basePath}/preview/${classId}?month=${selectedMonth}&year=${selectedYear}&type=${reportType}`)
+                    }}
+                    handleDownloadPdf={handleDownloadPdf}
+                    generatingPdfIds={generatingPdfIds}
+                    onConfirm={(selectedQueue, isDebug) => {
+                        setWaBlastConfirm(null)
+                        setTimeout(() => {
+                            runWaBlast(selectedQueue, waBlastAbortRef, isDebug)
+                        }, 150)
+                    }}
+                    onCancel={() => setWaBlastConfirm(null)}
+                />
+            )}
+
+            {/* WA Blast Progress Modal */}
+            <Modal
+                isOpen={!!waBlast}
+                onClose={() => {
+                    if (waBlast?.active) {
+                        if (waBlastAbortRef.current) waBlastAbortRef.current.aborted = true
+                        setWaBlast(prev => prev ? { ...prev, active: false, status: 'aborted' } : null)
+                        addToast('WA Blast dibatalkan', 'info')
+                    } else {
+                        setWaBlast(null)
+                    }
+                }}
+                title="Mengirim Pesan WhatsApp"
+                description="Proses pengiriman raport via WhatsApp"
+                icon={WhatsAppIcon}
+                iconBg="bg-green-500/10"
+                iconColor="text-green-600"
+                size="md"
+                closeOnOutsideClick={!waBlast?.active}
+            >
+                {waBlast && (
+                    <WaBlastProgressContent
+                        progress={(waBlast.done || 0) + (waBlast.failed || 0)}
+                        total={waBlast.queue?.length || 0}
+                        done={waBlast.done || 0}
+                        failed={waBlast.failed || 0}
+                        activeName={waBlast.active && waBlast.queue?.[waBlast.idx]?.name}
+                        active={waBlast.active}
+                        status={waBlast.status}
+                        onCancel={() => {
+                            if (waBlastAbortRef.current) waBlastAbortRef.current.aborted = true
+                            setWaBlast(prev => prev ? { ...prev, active: false, status: 'aborted' } : null)
+                            addToast('Membatalkan WA Blast...', 'info')
+                        }}
+                    />
+                )}
+            </Modal>
+
+            {/* Zip Blast Progress Modal */}
+            <Modal
+                isOpen={!!zipBlast}
+                onClose={() => {
+                    if (zipBlast?.active) {
+                        if (zipAbortRef.current) zipAbortRef.current.aborted = true
+                        setZipBlast(prev => prev ? { ...prev, status: 'aborted', active: false } : null)
+                        addToast('Ekspor ZIP dibatalkan', 'info')
+                    } else {
+                        setZipBlast(null)
+                    }
+                }}
+                title="Export Arsip ZIP Raport"
+                description="Menyiapkan file ZIP rapor PDF"
+                icon={Archive}
+                iconBg="bg-teal-500/10"
+                iconColor="text-teal-600"
+                size="md"
+                closeOnOutsideClick={!zipBlast?.active}
+            >
+                {zipBlast && (
+                    <ZipBlastProgressContent
+                        progress={(zipBlast.done || 0) + (zipBlast.failed || 0)}
+                        total={zipBlast.queue?.length || zipBlast.total || 0}
+                        done={zipBlast.done || 0}
+                        failed={zipBlast.failed || 0}
+                        activeName={zipBlast.activeName || zipBlast.active}
+                        active={!!zipBlast.active}
+                        status={zipBlast.status}
+                        onCancel={() => {
+                            if (zipAbortRef.current) zipAbortRef.current.aborted = true
+                            setZipBlast(prev => prev ? { ...prev, status: 'aborted', active: false } : null)
+                        }}
+                    />
+                )}
+            </Modal>
+
+            {/* Hidden Print Container for PDF Generation & Batch Printing */}
+            {printQueue?.length > 0 && (
+                <div ref={printContainerRef} style={{ position: 'fixed', left: '-9999px', top: 0, width: '1000px', visibility: 'hidden', pointerEvents: 'none' }}>
+                    {printQueue.length > 1 && (
+                        <RaportSummaryPage
+                            students={students.filter(s => printQueue.includes(s.id))}
+                            scores={scores}
+                            extras={extras}
+                            bulanObj={bulanObj}
+                            tahun={selectedYear}
+                            musyrif={musyrif}
+                            className={selectedClass?.name}
+                            reportType={reportType}
+                            selectedSemester={selectedSemester}
+                            academicYear={academicYear}
+                            selectedClass={selectedClass}
+                            onRendered={() => setPrintRenderedCount(c => c + 1)}
+                            behaviorReports={behaviorReports}
+                            pageSize={pageSize}
+                            settings={settings}
+                        />
+                    )}
+                    {students.filter(s => printQueue.includes(s.id)).map((s, idx) => (
+                        <RaportPrintCard
+                            key={s.id}
+                            student={s}
+                            scores={scores[s.id]}
+                            extra={extras[s.id]}
+                            bulanObj={bulanObj}
+                            tahun={selectedYear}
+                            musyrif={musyrif}
+                            className={selectedClass?.name}
+                            lang={lang}
+                            settings={settings}
+                            pageSize={pageSize}
+                            catatanArab={catatanArabMap ? catatanArabMap[s.id] : null}
+                            studentIndex={idx + 1}
+                            onRendered={() => setPrintRenderedCount(c => c + 1)}
+                            reportType={reportType}
+                            selectedSemester={selectedSemester}
+                            academicYear={academicYear}
+                            selectedClass={selectedClass}
+                            layoutConfig={layoutConfig}
+                            signMode={signMode}
+                            signatures={signatures}
+                            behaviorReports={behaviorReports ? behaviorReports[s.id] : undefined}
+                        />
+                    ))}
+                </div>
+            )}
+
             {/* Confirm Modal */}
             {confirmModal && (
-                <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-                    <div className="bg-[var(--color-surface)] rounded-2xl shadow-2xl p-6 max-w-sm w-full space-y-4 border border-[var(--color-border)]">
-                        <div className="flex items-center gap-3">
-                            {confirmModal.icon && (
-                                <div className={`w-10 h-10 rounded-xl ${confirmModal.iconBg} flex items-center justify-center shrink-0`}>
-                                    <confirmModal.icon className={`w-5 h-5 ${confirmModal.iconColor}`} />
-                                </div>
-                            )}
-                            <div>
-                                <p className="font-black text-sm text-[var(--color-text)]">{confirmModal.title}</p>
-                                {confirmModal.description && (
-                                    <p className="text-[11px] text-[var(--color-text-muted)]">{confirmModal.description}</p>
-                                )}
-                            </div>
-                        </div>
-                        {confirmModal.body && (
-                            <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed">{confirmModal.body}</p>
-                        )}
-                        <div className="flex gap-2 justify-end">
-                            <button
-                                onClick={() => setConfirmModal(null)}
-                                className="px-4 py-2 rounded-xl border border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all"
-                            >
-                                Batal
-                            </button>
-                            <button
-                                onClick={confirmModal.onConfirm}
-                                className={`px-4 py-2 rounded-xl text-white text-[11px] font-black transition-all ${confirmModal.variant === 'red' ? 'bg-red-500 hover:bg-red-600' : 'bg-indigo-500 hover:bg-indigo-600'}`}
-                            >
-                                {confirmModal.confirmLabel || 'Konfirmasi'}
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <ConfirmDialog
+                    isOpen={!!confirmModal}
+                    onClose={() => setConfirmModal(null)}
+                    onConfirm={confirmModal.onConfirm}
+                    title={confirmModal.title}
+                    description={confirmModal.description}
+                    icon={confirmModal.icon || AlertTriangle}
+                    iconBg={confirmModal.iconBg || 'bg-rose-500/10'}
+                    iconColor={confirmModal.iconColor || 'text-rose-500'}
+                    confirmText={confirmModal.confirmText || confirmModal.confirmLabel || 'Konfirmasi'}
+                    confirmIcon={confirmModal.confirmIcon}
+                >
+                    {confirmModal.body}
+                </ConfirmDialog>
             )}
         </div>
     )

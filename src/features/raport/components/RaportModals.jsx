@@ -8,7 +8,7 @@ import Modal from '@shared/components/Modal'
 import RichSelect from '@shared/components/RichSelect'
 
 // Simple SVG replacement for WhatsApp icon
-const WhatsAppIcon = (props) => (
+export const WhatsAppIcon = (props) => (
     <svg viewBox="0 0 24 24" fill="currentColor" className={props.className} style={props.style} width={props.width || "1em"} height={props.height || "1em"}>
         <path d="M12.012 1c-6.067 0-11 4.934-11 11a10.957 10.957 0 001.605 5.679L1 23l5.52-1.748A10.949 10.949 0 0012.012 23c6.067 0 11-4.933 11-11s-4.933-11-11-11zm5.12 15.65c-.218.614-1.077 1.15-1.636 1.218-.557.068-1.229.098-3.003-.618-2.28-.92-3.738-3.23-3.852-3.38-.114-.15-.92-1.227-.92-2.355 0-1.127.59-1.682.802-1.912.213-.23.46-.287.613-.287.154 0 .307.003.44.01.14.007.327-.052.51.393.187.456.64 1.56.697 1.674.057.115.095.249.019.402-.077.153-.153.249-.306.42-.154.173-.326.288-.135.614.19.326.85 1.397 1.82 2.261.97.864 1.787 1.132 2.094 1.266.307.135.48.115.652-.076.173-.192.748-.864.947-1.161.2-.298.4-.249.671-.15.27.097 1.722.812 2.018.96.297.147.494.22.567.346.073.125.073.722-.145 1.336z" />
     </svg>
@@ -102,11 +102,10 @@ export const WaBlastConfirmContent = memo(({ isOpen, onClose, queue, onConfirm, 
                         Batal
                     </button>
                     <div className="flex-1" />
-                    <button onClick={handleConfirm} disabled={selectedIds.size === 0} className={`h-10 px-6 rounded-xl text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center gap-2 disabled:opacity-50 ${
-                        isDebug
-                            ? 'bg-amber-500 hover:bg-amber-600 shadow-amber-500/20'
-                            : 'bg-green-500 hover:bg-green-600 shadow-green-500/20'
-                    }`}>
+                    <button onClick={handleConfirm} disabled={selectedIds.size === 0} className={`h-10 px-6 rounded-xl text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center gap-2 disabled:opacity-50 ${isDebug
+                        ? 'bg-amber-500 hover:bg-amber-600 shadow-amber-500/20'
+                        : 'bg-green-500 hover:bg-green-600 shadow-green-500/20'
+                        }`}>
                         <WhatsAppIcon className="w-4 h-4" />
                         {isDebug ? `Simulasikan Blast (${selectedIds.size})` : `Kirim ke ${selectedIds.size} Santri`}
                     </button>
@@ -152,11 +151,10 @@ export const WaBlastConfirmContent = memo(({ isOpen, onClose, queue, onConfirm, 
                             <button
                                 type="button"
                                 onClick={() => setIsDebug(d => !d)}
-                                className={`h-[34px] w-full flex items-center justify-center gap-1.5 px-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all ${
-                                    isDebug
-                                        ? 'bg-amber-500/10 border-amber-500/30 text-amber-600'
-                                        : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
-                                }`}
+                                className={`h-[34px] w-full flex items-center justify-center gap-1.5 px-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all ${isDebug
+                                    ? 'bg-amber-500/10 border-amber-500/30 text-amber-600'
+                                    : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
+                                    }`}
                             >
                                 <span className={`w-2 h-2 rounded-full ${isDebug ? 'bg-amber-500 animate-pulse' : 'bg-slate-300'}`} />
                                 {isDebug ? 'Mode Debug' : 'Kirim Asli'}
@@ -287,7 +285,7 @@ export const WaBlastConfirmContent = memo(({ isOpen, onClose, queue, onConfirm, 
                                         )}
                                     </div>
                                 </div>
-                                <div 
+                                <div
                                     className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 p-3 rounded-lg rounded-tl-none relative shadow-sm border border-zinc-200/50 dark:border-zinc-700 font-mono text-[10.5px] leading-relaxed whitespace-pre-wrap select-text"
                                     style={{ fontFamily: "Segoe UI, -apple-system, sans-serif" }}
                                 >
@@ -303,201 +301,319 @@ export const WaBlastConfirmContent = memo(({ isOpen, onClose, queue, onConfirm, 
     )
 })
 
-export const WaBlastProgressContent = memo(({ progress, total, done, failed, activeName, active, onCancel, status }) => {
-    const pct = total > 0 ? Math.round((progress / total) * 100) : 0
-    const isFinished = pct === 100 || !active
-
+// ─── Circular SVG Ring Progress ──────────────────────────────────────────────
+// ─── Circular SVG Ring — Larger, with subtle glow shadow ─────────────────────
+const CircleRing = ({ pct, color, trackColor, size = 112, stroke = 9 }) => {
+    const r = (size / 2) - stroke - 2
+    const circ = 2 * Math.PI * r
+    const offset = circ - (pct / 100) * circ
     return (
-        <div className="space-y-6 py-4">
-            {/* Header: Icon & Title */}
-            <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-3">
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${isFinished
-                        ? 'bg-emerald-500/10 text-emerald-500'
-                        : 'bg-green-500/10 text-green-500'
-                        }`}>
-                        {isFinished ? (
-                            <Check className="w-6 h-6" />
-                        ) : (
-                            <div className="relative flex items-center justify-center">
-                                <WhatsAppIcon className="w-6 h-6" />
-                                <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full animate-ping" />
-                            </div>
-                        )}
-                    </div>
-                    <div>
-                        <p className="text-base font-black text-[var(--color-text)] tracking-tight">
-                            {isFinished ? 'Blast Selesai!' : (status === 'simulating' ? 'Sedang Mensimulasikan...' : 'Sedang Mengirim...')}
-                        </p>
-                        <p className="text-xs text-[var(--color-text-muted)] font-bold">
-                            {progress} dari {total} santri terproses
-                        </p>
-                    </div>
-                </div>
-                <span className={`text-3xl font-black tabular-nums tracking-tighter ${isFinished ? 'text-emerald-500' : 'text-[var(--color-text)]'}`}>
-                    {pct}<span className="text-lg opacity-50">%</span>
-                </span>
-            </div>
+        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: 'rotate(-90deg)' }}>
+            <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={trackColor} strokeWidth={stroke} />
+            <circle
+                cx={size / 2} cy={size / 2} r={r} fill="none"
+                stroke={color} strokeWidth={stroke}
+                strokeLinecap="round"
+                strokeDasharray={circ}
+                strokeDashoffset={offset}
+                style={{ transition: 'stroke-dashoffset 0.7s cubic-bezier(0.34,1.56,0.64,1), stroke 0.4s ease' }}
+            />
+        </svg>
+    )
+}
 
-            {/* Progress Bar Container */}
-            <div className="h-4 w-full rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] p-1">
-                <div
-                    className={`h-full rounded-full transition-all duration-500 ${isFinished ? 'bg-emerald-500' : (status === 'simulating' ? 'bg-amber-500' : 'bg-green-500')
-                        }`}
-                    style={{ width: `${pct}%` }}
-                />
-            </div>
-
-            {/* Stats Breakdown */}
-            <div className="grid grid-cols-3 gap-3">
-                <div className="p-3 rounded-2xl bg-emerald-500/5 border border-emerald-500/15 flex flex-col items-center">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600 mb-0.5">Terkirim</span>
-                    <span className="text-xl font-black text-emerald-600 tabular-nums">{done || 0}</span>
-                </div>
-                <div className="p-3 rounded-2xl bg-rose-500/5 border border-rose-500/15 flex flex-col items-center">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-rose-600 mb-0.5">Gagal</span>
-                    <span className="text-xl font-black text-rose-600 tabular-nums">{failed || 0}</span>
-                </div>
-                <div className="p-3 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex flex-col items-center">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-0.5">Tersisa</span>
-                    <span className="text-xl font-black text-[var(--color-text-muted)] tabular-nums">{Math.max(0, total - progress)}</span>
-                </div>
-            </div>
-
-            {/* Active processing element */}
-            {!isFinished && activeName && (
-                <div className="p-4 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-between gap-3 animate-in fade-in zoom-in-95 duration-200">
-                    <div className="min-w-0 flex-1">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">
-                            {status === 'generating' && 'Men-generate PDF raport...'}
-                            {status === 'uploading' && 'Mengunggah PDF ke Supabase...'}
-                            {status === 'sending' && 'Mengirim pesan WhatsApp...'}
-                            {status === 'simulating' && '🧪 Men-simulasikan pengiriman ke console...'}
-                            {!status && 'Sekarang Mengirim Ke:'}
-                        </p>
-                        <p className="text-sm font-black text-[var(--color-text)] truncate">{activeName}</p>
-                    </div>
-                    <div className="w-6 h-6 rounded-full border-2 border-green-500/20 border-t-green-500 animate-spin shrink-0" />
-                </div>
-            )}
-
-            {/* Actions */}
-            {active && onCancel && (
-                <div className="flex justify-end pt-2">
-                    <button
-                        onClick={onCancel}
-                        className="h-10 px-5 rounded-xl border border-red-500/20 text-red-500 text-[11px] font-black uppercase tracking-widest hover:bg-red-500/10 transition-all"
-                    >
-                        Batalkan Antrean
-                    </button>
-                </div>
-            )}
+// ─── Initials Avatar ──────────────────────────────────────────────────────────
+const InitialAvatar = ({ name, color = 'bg-slate-500' }) => {
+    const initials = name ? name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase() : '?'
+    return (
+        <div className={`w-9 h-9 rounded-xl ${color} flex items-center justify-center text-white text-xs font-black shrink-0`}>
+            {initials}
         </div>
     )
-})
+}
 
-// ─── ZIP Blast Progress Content ──────────────────────────────────────────────
+// ─── Step Pipeline ────────────────────────────────────────────────────────────
+const STEPS_WA = [
+    { key: 'generating', label: 'PDF' },
+    { key: 'uploading', label: 'Upload' },
+    { key: 'sending', label: 'Kirim' },
+]
+const STEPS_ZIP = [
+    { key: 'generating', label: 'Generate PDF' },
+    { key: 'zipping', label: 'Compress ZIP' },
+]
 
-export const ZipBlastProgressContent = memo(({ progress, total, done, failed, activeName, active, onCancel, status }) => {
-    const pct = total > 0 ? Math.round((progress / total) * 100) : 0
-    const isFinished = pct === 100 || !active
+const StepPipeline = ({ steps, currentStatus, accentColor = '#22c55e' }) => {
+    const currentIdx = steps.findIndex(s => s.key === currentStatus)
+    return (
+        <div className="flex items-center gap-1">
+            {steps.map((s, i) => {
+                const isDone = i < currentIdx
+                const isActive = i === currentIdx
+                return (
+                    <div key={s.key} className="flex items-center gap-1">
+                        <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[8.5px] font-black uppercase tracking-wider transition-all duration-300 ${isDone ? 'bg-emerald-500/15 text-emerald-600' :
+                                isActive ? 'text-white' :
+                                    'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] opacity-50'
+                            }`} style={isActive ? { backgroundColor: accentColor } : {}}>
+                            {isDone && <span className="mr-0.5">✓</span>}
+                            {isActive && <span className="w-1.5 h-1.5 rounded-full bg-white/70 animate-pulse mr-0.5 inline-block" />}
+                            {s.label}
+                        </div>
+                        {i < steps.length - 1 && (
+                            <div className={`w-3 h-px ${isDone ? 'bg-emerald-400' : 'bg-[var(--color-border)]'}`} />
+                        )}
+                    </div>
+                )
+            })}
+        </div>
+    )
+}
+
+// ─── WA Blast Progress ────────────────────────────────────────────────────────
+export const WaBlastProgressContent = memo(({ progress, total, done, failed, activeName, active, onCancel, status }) => {
+    const pct = total > 0 ? Math.min(100, Math.round((progress / total) * 100)) : 0
+    const isFinished = status === 'done' || (!active && total > 0 && progress >= total)
+    const isAborted = status === 'aborted'
+    const remaining = Math.max(0, total - progress)
+    const isSimulating = status === 'simulating'
+
+    // Color tokens
+    const accent = isAborted ? '#ef4444' : isFinished ? '#10b981' : isSimulating ? '#f59e0b' : '#22c55e'
+    const track = isAborted ? '#fecaca' : isFinished ? '#a7f3d0' : isSimulating ? '#fde68a' : '#bbf7d0'
 
     return (
-        <div className="space-y-6 py-4">
+        <div className="space-y-4">
             <style>{`
-                @keyframes zipShimmer {
-                    0% { transform: translateX(-100%); }
-                    100% { transform: translateX(100%); }
-                }
-                .zip-shimmer-bar {
-                    animation: zipShimmer 1.8s ease-in-out infinite;
-                }
+                @keyframes blast-scan { 0%{opacity:0;transform:translateX(-100%)} 20%{opacity:1} 80%{opacity:1} 100%{opacity:0;transform:translateX(100%)} }
+                .blast-scan { animation: blast-scan 2.2s ease-in-out infinite; }
+                @keyframes ring-glow { 0%,100%{opacity:0.3} 50%{opacity:0.7} }
+                .ring-glow { animation: ring-glow 2s ease-in-out infinite; }
             `}</style>
 
-            <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-3">
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 ${isFinished
-                        ? 'bg-emerald-500/10 text-emerald-500 shadow-lg shadow-emerald-500/5'
-                        : 'bg-teal-500/10 text-teal-500 animate-pulse'
-                        }`}>
-                        {isFinished ? (
-                            <Check className="w-5 h-5" />
-                        ) : (
-                            <div className="relative flex items-center justify-center">
-                                <FileText className="w-5 h-5" />
-                                <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-teal-500 rounded-full border-2 border-white animate-ping" />
+            {/* ── Top Hero: Ring centered, flanked by stats ── */}
+            <div className={`relative rounded-[1.75rem] overflow-hidden border p-5 transition-colors duration-700 ${isAborted ? 'bg-rose-50/80 border-rose-200 dark:bg-rose-950/30 dark:border-rose-800/50' :
+                    isFinished ? 'bg-emerald-50/80 border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-800/50' :
+                        isSimulating ? 'bg-amber-50/80 border-amber-200 dark:bg-amber-950/30 dark:border-amber-800/50' :
+                            'bg-green-50/80 border-green-200 dark:bg-green-950/30 dark:border-green-800/50'
+                }`}>
+                {/* Scan line */}
+                {active && !isFinished && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent blast-scan pointer-events-none" />
+                )}
+
+                <div className="flex items-center gap-4">
+                    {/* Ring */}
+                    <div className="relative shrink-0">
+                        {/* Glow */}
+                        {active && !isFinished && (
+                            <div className="absolute inset-0 rounded-full ring-glow blur-md" style={{ backgroundColor: accent, opacity: 0.2 }} />
+                        )}
+                        <CircleRing pct={pct} color={accent} trackColor={track} size={100} stroke={8} />
+                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                            {isFinished && !isAborted ? (
+                                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            ) : isAborted ? (
+                                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="2.5" strokeLinecap="round">
+                                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                            ) : (
+                                <>
+                                    <span className="text-lg font-black tabular-nums leading-none" style={{ color: accent }}>{pct}</span>
+                                    <span className="text-[9px] font-black opacity-60" style={{ color: accent }}>%</span>
+                                </>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Text block */}
+                    <div className="flex-1 min-w-0">
+                        <p className="text-[17px] font-black tracking-tight leading-snug" style={{ color: isAborted ? '#dc2626' : isFinished ? '#059669' : 'var(--color-text)' }}>
+                            {isAborted ? 'Blast Dibatalkan' :
+                                isFinished ? 'Blast Selesai!' :
+                                    isSimulating ? 'Mensimulasikan...' :
+                                        'Mengirim Raport...'}
+                        </p>
+                        <p className="text-[11px] text-[var(--color-text-muted)] font-semibold mt-0.5 tabular-nums">
+                            <span className="font-black" style={{ color: accent }}>{progress}</span> / {total} santri
+                        </p>
+                        {active && !isFinished && (
+                            <div className="mt-2">
+                                <StepPipeline steps={STEPS_WA} currentStatus={status} accentColor={accent} />
                             </div>
                         )}
                     </div>
-                    <div>
-                        <p className="text-base font-black text-[var(--color-text)] tracking-tight">
-                            {isFinished ? 'Ekspor Selesai!' : 'Mengekspor ke ZIP...'}
-                        </p>
-                        <p className="text-xs text-[var(--color-text-muted)] font-bold">
-                            {progress} dari {total} raport terproses
-                        </p>
+                </div>
+
+                {/* Bottom progress rail */}
+                <div className="mt-4 relative h-2 rounded-full overflow-hidden bg-black/8 dark:bg-white/8">
+                    <div
+                        className="absolute inset-y-0 left-0 rounded-full transition-all duration-700 ease-out"
+                        style={{ width: `${pct}%`, backgroundColor: accent }}
+                    />
+                </div>
+            </div>
+
+            {/* ── Stat Cards ── */}
+            <div className="grid grid-cols-3 gap-2">
+                {[
+                    { label: 'Terkirim', val: done || 0, color: '#059669', bg: 'bg-emerald-50 dark:bg-emerald-950/30', border: 'border-emerald-200 dark:border-emerald-800/50', icon: '✓' },
+                    { label: 'Gagal', val: failed || 0, color: '#dc2626', bg: 'bg-rose-50 dark:bg-rose-950/30', border: 'border-rose-200 dark:border-rose-800/50', icon: '✕' },
+                    { label: 'Tersisa', val: remaining, color: '#64748b', bg: 'bg-slate-50 dark:bg-slate-900/30', border: 'border-slate-200 dark:border-slate-700/50', icon: '…' },
+                ].map(({ label, val, color, bg, border, icon }) => (
+                    <div key={label} className={`${bg} border ${border} rounded-2xl py-3 px-2 flex flex-col items-center gap-0.5 transition-all`}>
+                        <span className="text-[8px] font-black uppercase tracking-widest opacity-60" style={{ color }}>{label}</span>
+                        <span className="text-[22px] font-black tabular-nums leading-none" style={{ color }}>{val}</span>
                     </div>
-                </div>
-                <span className="text-2xl font-black text-[var(--color-text)] tracking-tight tabular-nums">
-                    {pct}%
-                </span>
+                ))}
             </div>
 
-            {/* Progress track */}
-            <div className="relative h-4 w-full rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] p-1 overflow-hidden">
-                <div
-                    className={`h-full rounded-full transition-all duration-500 relative overflow-hidden ${isFinished ? 'bg-emerald-500' : 'bg-gradient-to-r from-teal-400 to-emerald-500'
-                        }`}
-                    style={{ width: `${pct}%` }}
-                >
-                    {/* Pulsing highlight effect */}
-                    {!isFinished && (
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent zip-shimmer-bar" />
-                    )}
-                </div>
-            </div>
-
-            {/* Stats Breakdown */}
-            <div className="grid grid-cols-3 gap-2.5">
-                <div className="p-3 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 flex flex-col items-center">
-                    <span className="text-[9px] font-black uppercase text-emerald-600 tracking-wider">Sukses</span>
-                    <span className="text-base font-black text-emerald-500 mt-0.5 tabular-nums">{done}</span>
-                </div>
-                <div className="p-3 rounded-2xl bg-rose-500/5 border border-rose-500/10 flex flex-col items-center">
-                    <span className="text-[9px] font-black uppercase text-rose-600 tracking-wider">Gagal</span>
-                    <span className="text-base font-black text-rose-500 mt-0.5 tabular-nums">{failed}</span>
-                </div>
-                <div className="p-3 rounded-2xl bg-slate-500/5 border border-slate-500/10 flex flex-col items-center">
-                    <span className="text-[9px] font-black uppercase text-slate-500 tracking-wider">Tersisa</span>
-                    <span className="text-base font-black text-slate-400 mt-0.5 tabular-nums">{Math.max(0, total - progress)}</span>
-                </div>
-            </div>
-
-            {/* Active processing element */}
-            {!isFinished && activeName && (
-                <div className="p-4 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-2 duration-200">
-                    <div className="min-w-0 flex-1">
-                        <p className="text-[9px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
-                            {status === 'generating' && 'Men-generate PDF raport...'}
-                            {!status && 'Sedang Memproses:'}
-                        </p>
-                        <p className="text-xs font-black text-[var(--color-text)] mt-0.5 truncate">{activeName}</p>
+            {/* ── Active Student ── */}
+            {active && activeName && (
+                <div className="flex items-center gap-3 px-3.5 py-3 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
+                    <InitialAvatar name={activeName} color="bg-green-600" />
+                    <div className="flex-1 min-w-0">
+                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] leading-none">Dikirim ke</p>
+                        <p className="text-[13px] font-black text-[var(--color-text)] truncate mt-1 leading-none">{activeName}</p>
                     </div>
-                    <div className="w-5 h-5 rounded-full border-2 border-teal-500/35 border-t-teal-500 animate-spin shrink-0" />
+                    {/* Triple dot pulse */}
+                    <div className="flex items-center gap-1 shrink-0">
+                        {[0, 1, 2].map(i => (
+                            <div key={i} className="w-1.5 h-1.5 rounded-full bg-green-500" style={{ animation: `bounce 1.2s ${i * 0.2}s ease-in-out infinite` }} />
+                        ))}
+                    </div>
                 </div>
             )}
 
-            {/* Actions */}
-            {active && (
-                <div className="flex justify-end pt-1">
-                    <button
-                        onClick={onCancel}
-                        className="h-10 px-5 rounded-xl border border-red-500/20 bg-red-500/8 hover:bg-red-500/15 text-red-500 text-[10px] font-black uppercase tracking-widest transition-all"
-                    >
-                        Batal Ekspor
-                    </button>
-                </div>
+            {/* ── Cancel ── */}
+            {active && onCancel && (
+                <button
+                    onClick={onCancel}
+                    className="w-full h-10 rounded-2xl text-rose-500 text-[10px] font-black uppercase tracking-widest transition-all active:scale-[0.98] hover:bg-rose-50 dark:hover:bg-rose-950/30 border border-rose-200 dark:border-rose-800/50 flex items-center justify-center gap-1.5"
+                >
+                    <X className="w-3.5 h-3.5" />
+                    Batalkan Antrean
+                </button>
             )}
         </div>
     )
 })
+
+// ─── ZIP Blast Progress ───────────────────────────────────────────────────────
+export const ZipBlastProgressContent = memo(({ progress, total, done, failed, activeName, active, onCancel, status }) => {
+    const pct = total > 0 ? Math.min(100, Math.round((progress / total) * 100)) : 0
+    const isFinished = status === 'done' || (!active && total > 0 && progress >= total)
+    const isAborted = status === 'aborted'
+    const remaining = Math.max(0, total - progress)
+
+    const accent = isAborted ? '#ef4444' : isFinished ? '#10b981' : '#0d9488'
+    const track = isAborted ? '#fecaca' : isFinished ? '#a7f3d0' : '#99f6e4'
+
+    return (
+        <div className="space-y-4">
+            <style>{`
+                @keyframes zip-scan { 0%{opacity:0;transform:translateX(-100%)} 20%{opacity:1} 80%{opacity:1} 100%{opacity:0;transform:translateX(100%)} }
+                .zip-scan { animation: zip-scan 2.4s ease-in-out infinite; }
+            `}</style>
+
+            {/* Hero */}
+            <div className={`relative rounded-[1.75rem] overflow-hidden border p-5 transition-colors duration-700 ${isAborted ? 'bg-rose-50/80 border-rose-200 dark:bg-rose-950/30 dark:border-rose-800/50' :
+                    isFinished ? 'bg-emerald-50/80 border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-800/50' :
+                        'bg-teal-50/80 border-teal-200 dark:bg-teal-950/30 dark:border-teal-800/50'
+                }`}>
+                {active && !isFinished && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent zip-scan pointer-events-none" />
+                )}
+
+                <div className="flex items-center gap-4">
+                    <div className="relative shrink-0">
+                        <CircleRing pct={pct} color={accent} trackColor={track} size={100} stroke={8} />
+                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                            {isFinished && !isAborted ? (
+                                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            ) : isAborted ? (
+                                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="2.5" strokeLinecap="round">
+                                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                            ) : (
+                                <>
+                                    <span className="text-lg font-black tabular-nums leading-none" style={{ color: accent }}>{pct}</span>
+                                    <span className="text-[9px] font-black opacity-60" style={{ color: accent }}>%</span>
+                                </>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                        <p className="text-[17px] font-black tracking-tight leading-snug" style={{ color: isAborted ? '#dc2626' : isFinished ? '#059669' : 'var(--color-text)' }}>
+                            {isAborted ? 'Ekspor Dibatalkan' :
+                                isFinished ? 'Ekspor Selesai!' :
+                                    'Mengemas ZIP...'}
+                        </p>
+                        <p className="text-[11px] text-[var(--color-text-muted)] font-semibold mt-0.5 tabular-nums">
+                            <span className="font-black" style={{ color: accent }}>{progress}</span> / {total} raport
+                        </p>
+                        {active && !isFinished && (
+                            <div className="mt-2">
+                                <StepPipeline steps={STEPS_ZIP} currentStatus={status} accentColor={accent} />
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <div className="mt-4 relative h-2 rounded-full overflow-hidden bg-black/8 dark:bg-white/8">
+                    <div
+                        className="absolute inset-y-0 left-0 rounded-full transition-all duration-700 ease-out"
+                        style={{ width: `${pct}%`, backgroundColor: accent }}
+                    />
+                </div>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-2">
+                {[
+                    { label: 'Sukses', val: done || 0, color: '#059669', bg: 'bg-emerald-50 dark:bg-emerald-950/30', border: 'border-emerald-200 dark:border-emerald-800/50' },
+                    { label: 'Gagal', val: failed || 0, color: '#dc2626', bg: 'bg-rose-50 dark:bg-rose-950/30', border: 'border-rose-200 dark:border-rose-800/50' },
+                    { label: 'Tersisa', val: remaining, color: '#64748b', bg: 'bg-slate-50 dark:bg-slate-900/30', border: 'border-slate-200 dark:border-slate-700/50' },
+                ].map(({ label, val, color, bg, border }) => (
+                    <div key={label} className={`${bg} border ${border} rounded-2xl py-3 px-2 flex flex-col items-center gap-0.5`}>
+                        <span className="text-[8px] font-black uppercase tracking-widest opacity-60" style={{ color }}>{label}</span>
+                        <span className="text-[22px] font-black tabular-nums leading-none" style={{ color }}>{val}</span>
+                    </div>
+                ))}
+            </div>
+
+            {/* Active */}
+            {active && activeName && (
+                <div className="flex items-center gap-3 px-3.5 py-3 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
+                    <InitialAvatar name={activeName} color="bg-teal-600" />
+                    <div className="flex-1 min-w-0">
+                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] leading-none">Sedang dikemas</p>
+                        <p className="text-[13px] font-black text-[var(--color-text)] truncate mt-1 leading-none">{activeName}</p>
+                    </div>
+                    <div className="flex items-center gap-1 shrink-0">
+                        {[0, 1, 2].map(i => (
+                            <div key={i} className="w-1.5 h-1.5 rounded-full bg-teal-500" style={{ animation: `bounce 1.2s ${i * 0.2}s ease-in-out infinite` }} />
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Cancel */}
+            {active && onCancel && (
+                <button
+                    onClick={onCancel}
+                    className="w-full h-10 rounded-2xl text-rose-500 text-[10px] font-black uppercase tracking-widest transition-all active:scale-[0.98] hover:bg-rose-50 dark:hover:bg-rose-950/30 border border-rose-200 dark:border-rose-800/50 flex items-center justify-center gap-1.5"
+                >
+                    <X className="w-3.5 h-3.5" />
+                    Batal Ekspor
+                </button>
+            )}
+        </div>
+    )
+})
+

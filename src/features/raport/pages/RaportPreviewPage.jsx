@@ -51,9 +51,11 @@ export default function RaportPreviewPage({ isAcademic = false }) {
     const [showSigDropdown, setShowSigDropdown] = useState(false)
     const [showPrintDropdown, setShowPrintDropdown] = useState(false)
     const [massPrintConfirm, setMassPrintConfirm] = useState(false)
+    const [rekapLandscape, setRekapLandscape] = useState(true) // landscape by default for rekap
     
     // ── Auto-Fit & Dynamic Zoom Logic ──
     const previewContainerRef = useRef(null)
+    const rekapContainerRef = useRef(null)
     const [zoomMode, setZoomMode] = useState('fit') // 'fit' | 'custom'
     const [fitZoom, setFitZoom] = useState(0.65)
     const [customZoom, setCustomZoom] = useState(0.65)
@@ -141,6 +143,26 @@ export default function RaportPreviewPage({ isAcademic = false }) {
             }, 800);
         }
     }, [selectedClass, bulanObj, selectedYear, addToast, pageSize, setPrintQueue, setPrintRenderedCount])
+
+    const handlePrintRekap = useCallback(() => {
+        const container = rekapContainerRef.current
+        if (!container) { addToast('Rekap belum siap, coba lagi sebentar.', 'warning'); return }
+        const cards = container.querySelectorAll('.raport-card')
+        if (!cards.length) { addToast('Tidak ada halaman rekap untuk dicetak.', 'error'); return }
+        const html = [...cards].map(c => c.outerHTML).join('')
+        const titleStr = `Rekapitulasi Kelas ${selectedClass?.name} — ${bulanObj?.id_str || ''} ${selectedYear}`
+        const win = window.open('', '_blank')
+        if (!win) { addToast('Popup diblokir browser. Izinkan popup untuk halaman ini.', 'error'); return }
+        win.document.write(buildRaportPrintDocumentHtml(html, pageSize, titleStr, rekapLandscape))
+        win.document.close()
+        win.focus()
+        if (win.document.fonts?.ready) {
+            win.document.fonts.ready.then(() => setTimeout(() => win.print(), 400))
+                .catch(() => setTimeout(() => win.print(), 800))
+        } else {
+            setTimeout(() => win.print(), 800)
+        }
+    }, [selectedClass, bulanObj, selectedYear, pageSize, rekapLandscape, addToast])
 
     useEffect(() => {
         if (!printQueue || !printQueue.length) { printExecutingRef.current = false; return }
@@ -390,6 +412,41 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                         )}
                     </div>
 
+                    {/* Cetak Rekapitulasi — hanya tampil saat tab rekap aktif */}
+                    {tabView === 'rekap' && (
+                        <>
+                            {/* Landscape toggle */}
+                            <button
+                                type="button"
+                                onClick={() => setRekapLandscape(p => !p)}
+                                className={`h-8.5 px-3 rounded-xl border text-[10px] font-black flex items-center gap-1.5 transition-all shadow-sm ${
+                                    rekapLandscape
+                                        ? 'bg-amber-500/10 border-amber-500/40 text-amber-700 dark:text-amber-300'
+                                        : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
+                                }`}
+                                title={rekapLandscape ? 'Mode: Landscape (klik untuk portrait)' : 'Mode: Portrait (klik untuk landscape)'}
+                            >
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    {rekapLandscape
+                                        ? <><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="9" y1="6" x2="9" y2="18"/></>                                        : <><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="6" y1="9" x2="18" y2="9"/></>
+                                    }
+                                </svg>
+                                <span>{rekapLandscape ? 'Landscape' : 'Portrait'}</span>
+                            </button>
+
+                            {/* Print button */}
+                            <button
+                                type="button"
+                                onClick={handlePrintRekap}
+                                className="h-8.5 px-4 rounded-xl bg-emerald-600 text-white text-[10px] font-black flex items-center gap-1.5 hover:bg-emerald-700 transition-all shadow-md shadow-emerald-500/20"
+                                title="Cetak halaman rekapitulasi kelas"
+                            >
+                                <Printer className="w-3.5 h-3.5" />
+                                <span>Cetak Rekapitulasi</span>
+                            </button>
+                        </>
+                    )}
+
                     {/* Print: siswa ini / semua kelas */}
                     <div className="relative" data-print-dropdown-anchor>
                         <button
@@ -454,7 +511,10 @@ export default function RaportPreviewPage({ isAcademic = false }) {
 
             {/* Main Content Area */}
             {tabView === 'rekap' ? (
-                <div className="overflow-x-auto p-4 bg-[var(--color-surface-alt)] rounded-2xl border border-[var(--color-border)] flex justify-center shadow-inner">
+                <div
+                    ref={rekapContainerRef}
+                    className="overflow-x-auto overflow-y-auto p-4 bg-[var(--color-surface-alt)] rounded-2xl border border-[var(--color-border)] flex flex-col items-center gap-6 shadow-inner max-h-[calc(100vh-160px)]"
+                >
                     <RaportSummaryPage
                         students={students}
                         scores={scores}
@@ -469,13 +529,14 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                         selectedClass={selectedClass}
                         behaviorReports={behaviorReports}
                         pageSize={pageSize}
+                        landscape={rekapLandscape}
                         settings={settings}
                     />
                 </div>
             ) : (
-                <div className="flex flex-col lg:flex-row gap-4 items-start">
+                <div className="flex flex-col lg:flex-row gap-4 items-stretch">
                     {/* ── Left Sidebar: Redesigned Student Container ── */}
-                    <div className="w-full lg:w-[320px] xl:w-[350px] shrink-0 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-sm flex flex-col overflow-hidden lg:sticky lg:top-4 max-h-[calc(100vh-120px)] transition-all">
+                    <div className="w-full lg:w-[320px] xl:w-[350px] shrink-0 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-sm flex flex-col overflow-hidden transition-all lg:self-stretch">
                         
                         {/* Sidebar Header */}
                         <div className="p-3.5 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 space-y-2.5">
@@ -536,7 +597,7 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                         </div>
 
                         {/* Student List Container with proper padding and custom scrollbar */}
-                        <div className="flex-1 overflow-y-auto p-2.5 space-y-1.5 custom-scrollbar min-h-[220px]">
+                        <div className="flex-1 min-h-0 overflow-y-auto p-2.5 space-y-1.5 custom-scrollbar">
                             {filteredStudents.length === 0 ? (
                                 <div className="py-12 px-4 text-center space-y-2">
                                     <div className="w-10 h-10 rounded-2xl bg-[var(--color-surface-alt)] flex items-center justify-center mx-auto text-[var(--color-text-muted)]">

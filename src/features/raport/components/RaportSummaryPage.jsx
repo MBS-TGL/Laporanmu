@@ -131,6 +131,7 @@ const RaportSummaryPage = memo(({
     onRendered,
     behaviorReports = {},
     pageSize = 'f4',
+    landscape = false,
 }) => {
     const rtObj = RAPORT_TYPES[reportType] || RAPORT_TYPES.bulanan
     const criteria = rtObj.getCriteria(selectedClass)
@@ -138,9 +139,14 @@ const RaportSummaryPage = memo(({
     const isA4 = pageSize === 'a4'
     const maxScore = rtObj.maxScore
 
-    const pad = isA4 ? '8mm 11mm 8mm 11mm' : '10mm 12mm 10mm 12mm'
-    const pageW = isA4 ? '210mm' : '215mm'
-    const pageH = isA4 ? '297mm' : '330mm'
+    // Portrait base dims, swap if landscape
+    const portraitW = isA4 ? '210mm' : '215mm'
+    const portraitH = isA4 ? '297mm' : '330mm'
+    const pageW = landscape ? portraitH : portraitW
+    const pageH = landscape ? portraitW : portraitH
+    const pad = landscape
+        ? (isA4 ? '7mm 12mm 7mm 12mm' : '8mm 13mm 8mm 13mm')
+        : (isA4 ? '8mm 11mm 8mm 11mm' : '10mm 12mm 10mm 12mm')
 
     const periodStr = rtObj.periodType === 'monthly'
         ? `${bulanObj?.id_str || ''} ${tahun}`
@@ -276,8 +282,13 @@ const RaportSummaryPage = memo(({
     const top3Set = new Set(sortedByAvg.slice(0, 3).map(r => r.idx))
 
     // ─── Multi-page pagination ──────────────────────────────────────
-    const ROWS_FIRST = isA4 ? 10 : 12
-    const ROWS_NEXT = isA4 ? 25 : 30
+    // Landscape is shorter vertically → fewer rows fit, especially first page (has summary strip)
+    const ROWS_FIRST = landscape
+        ? (isA4 ? 7 : 9)
+        : (isA4 ? 10 : 12)
+    const ROWS_NEXT = landscape
+        ? (isA4 ? 18 : 22)
+        : (isA4 ? 25 : 30)
 
     const pages = []
     const allRows = [...rows]
@@ -315,19 +326,33 @@ const RaportSummaryPage = memo(({
     // ─── Table styles ───────────────────────────────────────────────
     const displayCriteria = criteria
     const critCount = Math.max(displayCriteria.length, 1)
-    const critColW = `${(52 / critCount).toFixed(2)}%`
+    // Kompak: maks 6.5%, min 4% per kolom criteria — hanya butuh angka 1-2 digit
+    const critColW = `${Math.max(4, Math.min(6.5, 28 / critCount)).toFixed(2)}%`
+    const critFontSize = critCount > 10 ? '5pt' : critCount > 7 ? '5.5pt' : '6.5pt'
+
+    const shortCritLabel = (label = '') => {
+        if (!label) return ''
+        if (label.length <= 10) return label
+        const words = label.split(/\s+/).filter(Boolean)
+        if (words.length > 1) return words.map(w => w[0].toUpperCase()).join('')
+        return label.substring(0, 9) + '…'
+    }
 
     const thBase = {
-        border: '1px solid #cbd5e1', padding: '7px 6px',
-        textAlign: 'center', fontWeight: 700, fontSize: '7.5pt',
+        border: '1px solid #cbd5e1', padding: '6px 3px',
+        textAlign: 'center', fontWeight: 700, fontSize: '7pt',
         background: 'linear-gradient(180deg, #f1f5f9 0%, #e8ecf1 100%)',
-        color: '#334155', textTransform: 'uppercase', letterSpacing: '0.15px',
+        color: '#334155', textTransform: 'uppercase', letterSpacing: '0.1px',
         verticalAlign: 'middle',
     }
+    // Header kriteria: padding lebih ketat
+    const thCrit = { ...thBase, padding: '6px 2px', fontSize: critFontSize }
     const tdBase = {
-        border: '1px solid #cbd5e1', padding: '7px 6px',
+        border: '1px solid #cbd5e1', padding: '7px 5px',
         fontSize: '8.5pt', verticalAlign: 'middle',
     }
+    // Sel nilai: padding minimal agar kolom bisa lebih sempit
+    const tdCrit = { ...tdBase, padding: '7px 2px', textAlign: 'center' }
     const tdC = { ...tdBase, textAlign: 'center' }
     const tdL = { ...tdBase, textAlign: 'left' }
 
@@ -340,6 +365,11 @@ const RaportSummaryPage = memo(({
         position: 'relative', display: 'flex', flexDirection: 'column',
         boxSizing: 'border-box', margin: '0 auto',
     })
+
+    // ─── Print @page for landscape ──────────────────────────────────
+    const pageAtSize = landscape
+        ? (pageSize === 'f4' ? '330mm 215mm' : '297mm 210mm')
+        : (pageSize === 'f4' ? '215mm 330mm' : 'A4')
 
     useEffect(() => { onRendered?.() }, [onRendered])
 
@@ -356,7 +386,7 @@ const RaportSummaryPage = memo(({
                         {isFirst && (
                             <style>{`
                                 @media print {
-                                    @page { size: ${pageSize === 'f4' ? '215mm 330mm' : 'A4'}; margin: 0; }
+                                    @page { size: ${pageAtSize}; margin: 0; }
                                     body { margin: 0 !important; padding: 0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
                                     .raport-card { box-shadow: none !important; }
                                 }
@@ -450,24 +480,24 @@ const RaportSummaryPage = memo(({
                             <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed', fontSize: '8.5pt' }}>
                                 <thead>
                                     <tr>
-                                        <th style={{ ...thBase, width: '5%' }}>No</th>
-                                        <th style={{ ...thBase, width: hasHafalan ? '16%' : '18%', textAlign: 'left' }}>Nama</th>
+                                        <th style={{ ...thBase, width: '4%' }}>No</th>
+                                        <th style={{ ...thBase, width: hasHafalan ? '18%' : '20%', textAlign: 'left' }}>Nama</th>
                                         {displayCriteria.map(k => (
-                                            <th key={k.key} style={{ ...thBase, width: critColW }}>
-                                                <div style={{ fontSize: critFontSize, lineHeight: 1.25 }}>{shortCritLabel(k.id)}</div>
+                                            <th key={k.key} style={{ ...thCrit, width: critColW }}>
+                                                <div style={{ fontSize: critFontSize, lineHeight: 1.2 }}>{shortCritLabel(k.id)}</div>
                                             </th>
                                         ))}
-                                        <th style={{ ...thBase, width: '6%', background: 'linear-gradient(180deg, #e8ecf1 0%, #dde3eb 100%)' }}>Avg</th>
-                                        <th style={{ ...thBase, width: '10%' }}>Predikat</th>
+                                        <th style={{ ...thBase, width: '5%', background: 'linear-gradient(180deg, #e8ecf1 0%, #dde3eb 100%)' }}>Avg</th>
+                                        <th style={{ ...thBase, width: '9%' }}>Predikat</th>
                                         {hasHafalan && (
-                                            <th style={{ ...thBase, width: '12%', textAlign: 'left' }}>Hafalan</th>
+                                            <th style={{ ...thBase, width: '13%', textAlign: 'left' }}>Hafalan</th>
                                         )}
-                                        <th style={{ ...thBase, width: '11%', textAlign: 'left' }}>Pelanggaran</th>
+                                        <th style={{ ...thBase, width: '12%', textAlign: 'left' }}>Pelanggaran</th>
                                         <th style={{ ...thBase, width: '9%' }}>
                                             <div>Hadir</div>
                                             <div style={{ fontSize: '6pt', fontWeight: 600, textTransform: 'none', color: '#64748b', letterSpacing: 0, marginTop: 1 }}>Sholat · Alpa · Plg</div>
                                         </th>
-                                        <th style={{ ...thBase, width: hasHafalan ? '12%' : '16%', textAlign: 'left' }}>Catatan</th>
+                                        <th style={{ ...thBase, width: hasHafalan ? '14%' : '18%', textAlign: 'left' }}>Catatan</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -494,7 +524,7 @@ const RaportSummaryPage = memo(({
                                                         : null
                                                     return (
                                                         <td key={k.key} style={{
-                                                            ...tdC,
+                                                            ...tdCrit,
                                                             background: g?.bg || 'transparent',
                                                             fontWeight: 700,
                                                             color: g?.uiColor || '#cbd5e1',

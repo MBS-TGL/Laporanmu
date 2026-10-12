@@ -4,10 +4,19 @@ import { RAPORT_AR_FONT, RAPORT_FONT_LINKS, RAPORT_SANS, RAPORT_SERIF } from './
  * Base CSS for raport print/PDF — intentionally excludes Tailwind/app CSS
  * so preview, browser print, and Browserless PDF render identically.
  */
-export const getRaportPrintBaseCss = (pageSize = 'f4') => {
-  const pageW = pageSize === 'f4' ? '215mm' : '210mm'
-  const pageH = pageSize === 'f4' ? '330mm' : '297mm'
-  const pad = pageSize === 'f4' ? '8mm 10mm 8mm 20mm' : '4mm 10mm 4mm 20mm'
+export const getRaportPrintBaseCss = (pageSize = 'f4', landscape = false) => {
+  // Portrait dims
+  const portraitW = pageSize === 'f4' ? '215mm' : '210mm'
+  const portraitH = pageSize === 'f4' ? '330mm' : '297mm'
+  // Swap for landscape
+  const pageW = landscape ? portraitH : portraitW
+  const pageH = landscape ? portraitW : portraitH
+  const pad = landscape
+    ? (pageSize === 'f4' ? '8mm 12mm 8mm 12mm' : '6mm 10mm 6mm 10mm')
+    : (pageSize === 'f4' ? '8mm 10mm 8mm 20mm' : '4mm 10mm 4mm 20mm')
+  const pageAtSize = landscape
+    ? (pageSize === 'f4' ? '330mm 215mm' : '297mm 210mm')
+    : (pageSize === 'f4' ? '215mm 330mm' : 'A4')
 
   return `
     *, *::before, *::after { box-sizing: border-box; }
@@ -105,7 +114,7 @@ export const getRaportPrintBaseCss = (pageSize = 'f4') => {
       width: 100% !important;
     }
     @page {
-      size: ${pageSize === 'f4' ? '215mm 330mm' : 'A4'};
+      size: ${pageAtSize};
       margin: 0;
     }
     @media print {
@@ -152,14 +161,14 @@ export const buildRaportPDFHtml = (cardEl, pageSize = 'f4') => {
 /**
  * Build HTML for browser print window (one or more cards).
  */
-export const buildRaportPrintDocumentHtml = (cardsHtml, pageSize = 'f4', title = 'Raport') => `<!DOCTYPE html>
+export const buildRaportPrintDocumentHtml = (cardsHtml, pageSize = 'f4', title = 'Raport', landscape = false) => `<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="utf-8">
   <title>${title}</title>
   ${RAPORT_FONT_LINKS}
   <style>
-    ${getRaportPrintBaseCss(pageSize)}
+    ${getRaportPrintBaseCss(pageSize, landscape)}
   </style>
 </head>
 <body>${cardsHtml}</body>

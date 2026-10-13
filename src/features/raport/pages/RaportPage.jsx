@@ -398,7 +398,7 @@ export default function RaportPage() {
     }, [isFullScreenPreview, pageSize, isMobileViewport, getFullScreenFitZoom])
 
     const bumpFullScreenHud = useCallback(() => {
-        setShowFullScreenHud(prev => prev ? prev : true)
+        setShowFullScreenHud(true)
         if (fullScreenHudTimerRef.current) clearTimeout(fullScreenHudTimerRef.current)
         if (!isFullScreenPreview || isMobileViewport) return
         fullScreenHudTimerRef.current = setTimeout(() => setShowFullScreenHud(false), 2000)

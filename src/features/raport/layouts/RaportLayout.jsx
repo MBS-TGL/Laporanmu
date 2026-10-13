@@ -1,34 +1,54 @@
-import React, { useRef, useState, lazy, Suspense } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { createPortal } from 'react-dom'
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import PageHeader from '@shared/components/PageHeader'
 import { RaportProvider, useRaportContext } from '@features/raport/context/RaportContext'
-import { Check, Sliders, Keyboard, Lightbulb, Lock, Loader2, CheckCircle2, Upload, Download, Archive } from 'lucide-react'
-import { createPortal } from 'react-dom'
-import Modal from '@shared/components/Modal'
+import { Check, Keyboard, Lock, Loader2, CheckCircle2, Archive } from 'lucide-react'
 import { ShortcutModalContent } from '@features/raport/components/RaportModals'
-
-const LazyRaportImportModal = lazy(() => import('@features/raport/components/RaportImportModal'))
-const LazyRaportExportModal = lazy(() => import('@features/raport/components/RaportExportModal'))
 
 function RaportLayoutContent({ isAcademic = false }) {
     const location = useLocation()
     const navigate = useNavigate()
     const params = useParams()
-    const { core, importExport } = useRaportContext()
-    const { isAllowed, canEdit, globalSaveIndicator, selectedClass, step } = core
+    const { core } = useRaportContext()
+    const { isAllowed, canEdit, globalSaveIndicator, selectedClass } = core
 
-    const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false)
-    const [headerMenuRect, setHeaderMenuRect] = useState(null)
     const [showShortcutModal, setShowShortcutModal] = useState(false)
     const [shortcutRect, setShortcutRect] = useState(null)
-    const [showTutorialModal, setShowTutorialModal] = useState(false)
-
-    const headerMenuBtnRef = useRef(null)
     const shortcutBtnRef = useRef(null)
 
     const basePath = isAcademic ? '/academic/raport' : '/raport'
     const pathname = location.pathname
+
+    // Toggle shortcut modal on "?" key press
+    useEffect(() => {
+        const handler = (e) => {
+            if (e.key === '?' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target?.tagName)) {
+                if (!showShortcutModal && shortcutBtnRef.current) {
+                    setShortcutRect(shortcutBtnRef.current.getBoundingClientRect())
+                }
+                setShowShortcutModal(v => !v)
+            }
+            if (e.key === 'Escape') setShowShortcutModal(false)
+        }
+        window.addEventListener('keydown', handler)
+        return () => window.removeEventListener('keydown', handler)
+    }, [showShortcutModal])
+
+    // Update shortcut dropdown position on window scroll / resize
+    useEffect(() => {
+        if (!showShortcutModal) return
+        const update = () => {
+            if (shortcutBtnRef.current) setShortcutRect(shortcutBtnRef.current.getBoundingClientRect())
+        }
+        window.addEventListener('scroll', update, true)
+        window.addEventListener('resize', update)
+        return () => {
+            window.removeEventListener('scroll', update, true)
+            window.removeEventListener('resize', update)
+        }
+    }, [showShortcutModal])
 
     // Active step index determination based on URL path
     const activeStepIndex = (() => {
@@ -125,15 +145,6 @@ function RaportLayoutContent({ isAcademic = false }) {
                             )}
 
                             <button
-                                ref={headerMenuBtnRef}
-                                onClick={() => { if (!isHeaderMenuOpen) setHeaderMenuRect(headerMenuBtnRef.current?.getBoundingClientRect()); setIsHeaderMenuOpen(v => !v) }}
-                                className={`h-9 w-9 rounded-lg border flex items-center justify-center text-sm transition-all active:scale-95 ${isHeaderMenuOpen ? 'bg-indigo-500/10 border-indigo-500/30 text-indigo-500 shadow-sm' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
-                                title="Data & Backup Operations"
-                            >
-                                <Sliders className="w-3.5 h-3.5" />
-                            </button>
-
-                            <button
                                 ref={shortcutBtnRef}
                                 onClick={() => { if (!showShortcutModal) setShortcutRect(shortcutBtnRef.current?.getBoundingClientRect()); setShowShortcutModal(v => !v) }}
                                 className={`hidden sm:flex h-9 w-9 rounded-lg border items-center justify-center text-sm transition-all active:scale-95 ${showShortcutModal ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)] shadow-sm' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
@@ -154,6 +165,29 @@ function RaportLayoutContent({ isAcademic = false }) {
                 <div className="glass rounded-[1.5rem] border border-[var(--color-border)] p-4 sm:p-6">
                     <Outlet />
                 </div>
+
+                {/* Portaled Keyboard Shortcuts Dropdown */}
+                {showShortcutModal && shortcutRect && createPortal(
+                    <>
+                        <div className="fixed inset-0 z-[9990] bg-black/5 backdrop-blur-[1px]" onClick={() => setShowShortcutModal(false)} />
+                        <div
+                            className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl shadow-black/10 overflow-hidden text-left animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200"
+                            style={{
+                                top: shortcutRect.bottom + 8,
+                                left: Math.max(10, shortcutRect.right - 288)
+                            }}
+                        >
+                            <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between bg-[var(--color-surface)]">
+                                <p className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text)]">Pintasan Keyboard</p>
+                                <span className="text-[9px] text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
+                            </div>
+                            <div className="max-h-[60vh] overflow-y-auto">
+                                <ShortcutModalContent />
+                            </div>
+                        </div>
+                    </>,
+                    document.body
+                )}
             </div>
         </DashboardLayout>
     )

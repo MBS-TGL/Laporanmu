@@ -52,13 +52,14 @@ export default function RaportPreviewPage({ isAcademic = false }) {
     const [showPrintDropdown, setShowPrintDropdown] = useState(false)
     const [massPrintConfirm, setMassPrintConfirm] = useState(false)
     const [rekapLandscape, setRekapLandscape] = useState(true) // landscape by default for rekap
-    
+
     // ── Auto-Fit & Dynamic Zoom Logic ──
     const previewContainerRef = useRef(null)
     const rekapContainerRef = useRef(null)
     const [zoomMode, setZoomMode] = useState('fit') // 'fit' | 'custom'
     const [fitZoom, setFitZoom] = useState(0.65)
     const [customZoom, setCustomZoom] = useState(0.65)
+    const [rekapFitZoom, setRekapFitZoom] = useState(1)
 
     useEffect(() => {
         const el = previewContainerRef.current
@@ -68,15 +69,15 @@ export default function RaportPreviewPage({ isAcademic = false }) {
             const rect = el.getBoundingClientRect()
             const containerWidth = rect.width || el.clientWidth
             if (!containerWidth || containerWidth < 100) return
-            
+
             const computed = window.getComputedStyle(el)
             const padL = parseFloat(computed.paddingLeft) || 16
             const padR = parseFloat(computed.paddingRight) || 16
-            
+
             // Available space inside container with generous breathing room
             const availableWidth = Math.max(200, containerWidth - padL - padR - 32)
             const cardWidthPx = pageSize === 'f4' ? 813 : 794
-            
+
             // Comfortably fit within container (capped at 0.80 for clean framing)
             const calculated = Math.min(0.80, Math.max(0.35, (availableWidth / cardWidthPx) * 0.96))
             const rounded = Number(calculated.toFixed(2))
@@ -91,6 +92,43 @@ export default function RaportPreviewPage({ isAcademic = false }) {
             resizeObserver.disconnect()
         }
     }, [pageSize])
+
+    // ── Auto-Fit Zoom untuk Rekap Container (portrait & landscape) ──
+    useEffect(() => {
+        const el = rekapContainerRef.current
+        if (!el) return
+
+        const updateRekapZoom = () => {
+            const containerWidth = el.clientWidth
+            if (!containerWidth || containerWidth < 100) return
+
+            const computed = window.getComputedStyle(el)
+            const padL = parseFloat(computed.paddingLeft) || 16
+            const padR = parseFloat(computed.paddingRight) || 16
+
+            // Lebar fisik halaman rekap dalam px (1mm ≈ 3.7795px)
+            // Portrait F4=215mm, A4=210mm; Landscape: swap jadi 330mm / 297mm
+            const mmToPx = 3.7795
+            const pageWidthMm = rekapLandscape
+                ? (pageSize === 'f4' ? 330 : 297)
+                : (pageSize === 'f4' ? 215 : 210)
+            const pageWidthPx = pageWidthMm * mmToPx
+
+            const availableWidth = Math.max(200, containerWidth - padL - padR - 32)
+            // Sisakan ruang abu-abu di sisi kiri-kanan (portrait sedikit lebih lega)
+            const breathingRoom = rekapLandscape ? 0.86 : 0.88
+            const calculated = Math.min(0.96, Math.max(0.30, (availableWidth / pageWidthPx) * breathingRoom))
+            setRekapFitZoom(Number(calculated.toFixed(3)))
+        }
+
+        const raf = requestAnimationFrame(updateRekapZoom)
+        const resizeObserver = new ResizeObserver(updateRekapZoom)
+        resizeObserver.observe(el)
+        return () => {
+            cancelAnimationFrame(raf)
+            resizeObserver.disconnect()
+        }
+    }, [pageSize, rekapLandscape, tabView])
 
     const currentZoom = zoomMode === 'fit' ? fitZoom : customZoom
 
@@ -327,9 +365,14 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                         </button>
                         <button
                             onClick={() => setTabView('rekap')}
-                            className={`px-3 py-1.5 rounded-lg text-[10px] font-black transition-all ${tabView === 'rekap' ? 'bg-[var(--color-surface)] text-indigo-600 shadow-sm' : 'text-[var(--color-text-muted)]'}`}
+                            className={`px-3 py-1.5 rounded-lg text-[10px] font-black transition-all flex items-center gap-1.5 ${tabView === 'rekap' ? 'bg-[var(--color-surface)] text-indigo-600 shadow-sm' : 'text-[var(--color-text-muted)]'}`}
                         >
-                            Rekapitulasi Kelas
+                            <span>Rekapitulasi Kelas</span>
+                            {tabView === 'rekap' && (
+                                <span className="text-[9px] px-1 py-0.2 rounded bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-mono font-bold">
+                                    {Math.round(rekapFitZoom * 100)}%
+                                </span>
+                            )}
                         </button>
                     </div>
 
@@ -412,42 +455,7 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                         )}
                     </div>
 
-                    {/* Cetak Rekapitulasi — hanya tampil saat tab rekap aktif */}
-                    {tabView === 'rekap' && (
-                        <>
-                            {/* Landscape toggle */}
-                            <button
-                                type="button"
-                                onClick={() => setRekapLandscape(p => !p)}
-                                className={`h-8.5 px-3 rounded-xl border text-[10px] font-black flex items-center gap-1.5 transition-all shadow-sm ${
-                                    rekapLandscape
-                                        ? 'bg-amber-500/10 border-amber-500/40 text-amber-700 dark:text-amber-300'
-                                        : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
-                                }`}
-                                title={rekapLandscape ? 'Mode: Landscape (klik untuk portrait)' : 'Mode: Portrait (klik untuk landscape)'}
-                            >
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                    {rekapLandscape
-                                        ? <><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="9" y1="6" x2="9" y2="18"/></>                                        : <><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="6" y1="9" x2="18" y2="9"/></>
-                                    }
-                                </svg>
-                                <span>{rekapLandscape ? 'Landscape' : 'Portrait'}</span>
-                            </button>
-
-                            {/* Print button */}
-                            <button
-                                type="button"
-                                onClick={handlePrintRekap}
-                                className="h-8.5 px-4 rounded-xl bg-emerald-600 text-white text-[10px] font-black flex items-center gap-1.5 hover:bg-emerald-700 transition-all shadow-md shadow-emerald-500/20"
-                                title="Cetak halaman rekapitulasi kelas"
-                            >
-                                <Printer className="w-3.5 h-3.5" />
-                                <span>Cetak Rekapitulasi</span>
-                            </button>
-                        </>
-                    )}
-
-                    {/* Print: siswa ini / semua kelas */}
+                    {/* Print: siswa ini / semua kelas / rekapitulasi */}
                     <div className="relative" data-print-dropdown-anchor>
                         <button
                             type="button"
@@ -477,6 +485,35 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                                     <Printer className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
                                     <span>Semua kelas ({students.length})</span>
                                 </button>
+                                {/* Opsi Rekapitulasi — hanya muncul saat tab rekap aktif */}
+                                {tabView === 'rekap' && (
+                                    <>
+                                        <div className="mx-3 my-1 border-t border-[var(--color-border)]" />
+                                        {/* Toggle Landscape di dalam dropdown */}
+                                        <button
+                                            type="button"
+                                            onClick={() => setRekapLandscape(p => !p)}
+                                            className="w-full px-3.5 py-2.5 text-left text-[10px] font-black transition-colors flex items-center gap-2 text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]"
+                                        >
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+                                                {rekapLandscape
+                                                    ? <><rect x="2" y="6" width="20" height="12" rx="2" /><line x1="9" y1="6" x2="9" y2="18" /></>
+                                                    : <><rect x="6" y="2" width="12" height="20" rx="2" /><line x1="6" y1="9" x2="18" y2="9" /></>
+                                                }
+                                            </svg>
+                                            <span>Format : {rekapLandscape ? 'Landscape ' : 'Portrait'}</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => { setShowPrintDropdown(false); handlePrintRekap(); }}
+                                            className="w-full px-3.5 py-2.5 text-left text-[10px] font-black transition-colors flex items-center gap-2 text-emerald-600 dark:text-emerald-400 hover:bg-[var(--color-surface-alt)]"
+                                            title="Cetak halaman rekapitulasi kelas"
+                                        >
+                                            <Printer className="w-3.5 h-3.5 shrink-0" />
+                                            <span>Cetak Rekapitulasi</span>
+                                        </button>
+                                    </>
+                                )}
                             </div>
                         )}
                     </div>
@@ -513,31 +550,44 @@ export default function RaportPreviewPage({ isAcademic = false }) {
             {tabView === 'rekap' ? (
                 <div
                     ref={rekapContainerRef}
-                    className="overflow-x-auto overflow-y-auto p-4 bg-[var(--color-surface-alt)] rounded-2xl border border-[var(--color-border)] flex flex-col items-center gap-6 shadow-inner max-h-[calc(100vh-160px)]"
+                    className="overflow-x-hidden overflow-y-auto p-4 bg-[var(--color-surface-alt)] rounded-2xl border border-[var(--color-border)] flex flex-col items-center gap-6 shadow-inner max-h-[calc(100vh-160px)]"
                 >
-                    <RaportSummaryPage
-                        students={students}
-                        scores={scores}
-                        extras={extras}
-                        bulanObj={bulanObj}
-                        tahun={selectedYear}
-                        musyrif={musyrif}
-                        className={selectedClass.name}
-                        reportType={reportType}
-                        selectedSemester={selectedSemester}
-                        academicYear={academicYear}
-                        selectedClass={selectedClass}
-                        behaviorReports={behaviorReports}
-                        pageSize={pageSize}
-                        landscape={rekapLandscape}
-                        settings={settings}
-                    />
+                    {/* Wrapper scale agar halaman rekap selalu pas di container */}
+                    <div style={{
+                        transform: `scale(${rekapFitZoom})`,
+                        transformOrigin: 'top center',
+                        // Kompensasi ruang kosong akibat scale-down:
+                        // tinggi visual = naturalHeight * scale → kurangi selisihnya
+                        marginBottom: `calc((${rekapFitZoom} - 1) * 50%)`,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '24px',
+                    }}>
+                        <RaportSummaryPage
+                            students={students}
+                            scores={scores}
+                            extras={extras}
+                            bulanObj={bulanObj}
+                            tahun={selectedYear}
+                            musyrif={musyrif}
+                            className={selectedClass.name}
+                            reportType={reportType}
+                            selectedSemester={selectedSemester}
+                            academicYear={academicYear}
+                            selectedClass={selectedClass}
+                            behaviorReports={behaviorReports}
+                            pageSize={pageSize}
+                            landscape={rekapLandscape}
+                            settings={settings}
+                        />
+                    </div>
                 </div>
             ) : (
                 <div className="flex flex-col lg:flex-row gap-4 items-stretch">
                     {/* ── Left Sidebar: Redesigned Student Container ── */}
                     <div className="w-full lg:w-[320px] xl:w-[350px] shrink-0 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-sm flex flex-col overflow-hidden transition-all lg:self-stretch">
-                        
+
                         {/* Sidebar Header */}
                         <div className="p-3.5 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 space-y-2.5">
                             <div className="flex items-center justify-between">
@@ -584,11 +634,10 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                                     <button
                                         key={tab.id}
                                         onClick={() => setFilterStatus(tab.id)}
-                                        className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all ${
-                                            filterStatus === tab.id
-                                                ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-500/20'
-                                                : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'
-                                        }`}
+                                        className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all ${filterStatus === tab.id
+                                            ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-500/20'
+                                            : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'
+                                            }`}
                                     >
                                         {tab.label}
                                     </button>
@@ -626,11 +675,10 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                                         <div
                                             key={s.id}
                                             onClick={() => setPreviewStudentId(s.id)}
-                                            className={`group relative w-full text-left p-2.5 rounded-xl border transition-all duration-200 cursor-pointer flex items-center gap-2.5 ${
-                                                isSel
-                                                    ? 'bg-indigo-500/8 border-indigo-500/40 shadow-sm shadow-indigo-500/5'
-                                                    : 'bg-[var(--color-surface)] border-[var(--color-border)]/60 hover:border-indigo-500/30 hover:bg-[var(--color-surface-alt)]/70'
-                                            }`}
+                                            className={`group relative w-full text-left p-2.5 rounded-xl border transition-all duration-200 cursor-pointer flex items-center gap-2.5 ${isSel
+                                                ? 'bg-indigo-500/8 border-indigo-500/40 shadow-sm shadow-indigo-500/5'
+                                                : 'bg-[var(--color-surface)] border-[var(--color-border)]/60 hover:border-indigo-500/30 hover:bg-[var(--color-surface-alt)]/70'
+                                                }`}
                                         >
                                             {/* Left Indicator Accent Bar */}
                                             {isSel && (
@@ -638,20 +686,18 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                                             )}
 
                                             {/* Avatar Inisial */}
-                                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-[10px] font-black shrink-0 transition-all ${
-                                                isSel
-                                                    ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-500/30'
-                                                    : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] group-hover:border-indigo-500/30 group-hover:text-indigo-600'
-                                            }`}>
+                                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-[10px] font-black shrink-0 transition-all ${isSel
+                                                ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-500/30'
+                                                : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] group-hover:border-indigo-500/30 group-hover:text-indigo-600'
+                                                }`}>
                                                 {initials}
                                             </div>
 
                                             {/* Student Details */}
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center justify-between gap-1">
-                                                    <p className={`text-[11.5px] font-black truncate leading-tight transition-colors ${
-                                                        isSel ? 'text-indigo-600 dark:text-indigo-400' : 'text-[var(--color-text)]'
-                                                    }`}>
+                                                    <p className={`text-[11.5px] font-black truncate leading-tight transition-colors ${isSel ? 'text-indigo-600 dark:text-indigo-400' : 'text-[var(--color-text)]'
+                                                        }`}>
                                                         {s.name}
                                                     </p>
                                                     {isSel && (
@@ -699,11 +745,10 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                                                         setPrintRenderedCount(0)
                                                         setPrintQueue([s.id])
                                                     }}
-                                                    className={`p-1.5 rounded-lg border transition-all ${
-                                                        isSel
-                                                            ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20'
-                                                            : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'
-                                                    }`}
+                                                    className={`p-1.5 rounded-lg border transition-all ${isSel
+                                                        ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20'
+                                                        : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'
+                                                        }`}
                                                     title={`Cetak raport ${s.name}`}
                                                 >
                                                     <Printer className="w-3 h-3" />
@@ -716,11 +761,10 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                                                             e.stopPropagation()
                                                             handleDownloadPdf(s)
                                                         }}
-                                                        className={`p-1.5 rounded-lg border transition-all ${
-                                                            isSel
-                                                                ? 'border-indigo-500/20 bg-indigo-500/10 text-indigo-600 hover:bg-indigo-500/20'
-                                                                : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'
-                                                        }`}
+                                                        className={`p-1.5 rounded-lg border transition-all ${isSel
+                                                            ? 'border-indigo-500/20 bg-indigo-500/10 text-indigo-600 hover:bg-indigo-500/20'
+                                                            : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'
+                                                            }`}
                                                         title={`Download PDF ${s.name}`}
                                                     >
                                                         {generatingPdfIds?.has(s.id) ? (
@@ -781,11 +825,10 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                             <button
                                 type="button"
                                 onClick={() => setZoomMode('fit')}
-                                className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase transition-all flex items-center gap-1 ${
-                                    zoomMode === 'fit'
-                                        ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-500/20'
-                                        : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'
-                                }`}
+                                className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase transition-all flex items-center gap-1 ${zoomMode === 'fit'
+                                    ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-500/20'
+                                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'
+                                    }`}
                                 title="Otomatis sesuaikan skala agar pas di tengah layar"
                             >
                                 <Maximize2 className="w-2.5 h-2.5" />
@@ -794,44 +837,40 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                             <button
                                 type="button"
                                 onClick={() => handleZoomChange(0.5)}
-                                className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase transition-all ${
-                                    zoomMode === 'custom' && Math.round(currentZoom * 100) === 50
-                                        ? 'bg-indigo-500/10 text-indigo-600 font-black'
-                                        : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
-                                }`}
+                                className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase transition-all ${zoomMode === 'custom' && Math.round(currentZoom * 100) === 50
+                                    ? 'bg-indigo-500/10 text-indigo-600 font-black'
+                                    : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
+                                    }`}
                             >
                                 50%
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handleZoomChange(0.65)}
-                                className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase transition-all ${
-                                    zoomMode === 'custom' && Math.round(currentZoom * 100) === 65
-                                        ? 'bg-indigo-500/10 text-indigo-600 font-black'
-                                        : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
-                                }`}
+                                className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase transition-all ${zoomMode === 'custom' && Math.round(currentZoom * 100) === 65
+                                    ? 'bg-indigo-500/10 text-indigo-600 font-black'
+                                    : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
+                                    }`}
                             >
                                 65%
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handleZoomChange(0.8)}
-                                className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase transition-all ${
-                                    zoomMode === 'custom' && Math.round(currentZoom * 100) === 80
-                                        ? 'bg-indigo-500/10 text-indigo-600 font-black'
-                                        : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
-                                }`}
+                                className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase transition-all ${zoomMode === 'custom' && Math.round(currentZoom * 100) === 80
+                                    ? 'bg-indigo-500/10 text-indigo-600 font-black'
+                                    : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
+                                    }`}
                             >
                                 80%
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handleZoomChange(1.0)}
-                                className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase transition-all ${
-                                    zoomMode === 'custom' && Math.round(currentZoom * 100) === 100
-                                        ? 'bg-indigo-500/10 text-indigo-600 font-black'
-                                        : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
-                                }`}
+                                className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase transition-all ${zoomMode === 'custom' && Math.round(currentZoom * 100) === 100
+                                    ? 'bg-indigo-500/10 text-indigo-600 font-black'
+                                    : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
+                                    }`}
                             >
                                 100%
                             </button>

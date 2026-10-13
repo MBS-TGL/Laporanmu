@@ -145,7 +145,7 @@ const RaportSummaryPage = memo(({
     const pageW = landscape ? portraitH : portraitW
     const pageH = landscape ? portraitW : portraitH
     const pad = landscape
-        ? (isA4 ? '7mm 12mm 7mm 12mm' : '8mm 13mm 8mm 13mm')
+        ? (isA4 ? '7mm 20mm 7mm 20mm' : '8mm 20mm 8mm 20mm')
         : (isA4 ? '8mm 11mm 8mm 11mm' : '10mm 12mm 10mm 12mm')
 
     const periodStr = rtObj.periodType === 'monthly'

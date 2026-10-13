@@ -173,33 +173,37 @@ html[dir="rtl"] .font-extrabold {
 
 /* Premium Glass Effect (Optimized for Mobile Performance) */
 .glass {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(226, 232, 240, 0.8);
   box-shadow: 0 4px 20px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
   isolation: isolate;
+  /* Contain compositing — elemen ini tidak ikut trigger repaint parent */
+  contain: layout style;
 }
 
 .dark .glass {
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(15, 23, 42, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4);
   isolation: isolate;
+  contain: layout style;
 }
 
-/* Only enable heavy backdrop blur on desktop screens where GPU is powerful */
+/* Turunkan blur radius: 12→6px, 16→8px. Secara visual hampir tak terlihat
+   bedanya, tapi biaya GPU turun drastis karena blur adalah operasi O(r²). */
 @media (min-width: 1024px) {
   .glass {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     border: 1px solid rgba(226, 232, 240, 0.8);
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
   }
 
   .dark .glass {
-    background: rgba(15, 23, 42, 0.7);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(15, 23, 42, 0.78);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.06);
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
   }
@@ -414,7 +418,12 @@ tr:last-child td {
     padding: 0.75rem 1.5rem;
     font-weight: 500;
     border-radius: 0.75rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Spesifik property — 'transition: all' memantau setiap property CSS, buang. */
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     border: none;
     font-size: 0.875rem;
@@ -760,11 +769,12 @@ tr:last-child td {
     animation-delay: 300ms;
   }
 
-  /* GPU-accelerated shadows for cards */
+  /* GPU-accelerated shadows for cards.
+     will-change dihapus dari default — browser promote semua card ke layer GPU
+     sekaligus, memakan VRAM. Cukup promote saat hover saja. */
   .gpu-card {
     position: relative;
     transition: transform var(--theme-transition) var(--transition-timing);
-    will-change: transform;
   }
   .gpu-card::after {
     content: '';
@@ -780,16 +790,20 @@ tr:last-child td {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.35), 0 10px 10px -5px rgba(0, 0, 0, 0.35);
   }
   .gpu-card:hover {
+    will-change: transform; /* promote hanya saat animasi aktif */
     transform: translateY(-2px);
   }
   .gpu-card:hover::after {
     opacity: 1;
   }
 
-  /* Lazy render of long list items */
+  /* Lazy render of long list items.
+     contain:strict memberi tahu browser bahwa row ini sepenuhnya terisolasi —
+     layout/paint/compositing tidak akan menyebar ke parent atau sibling. */
   .table-row-lazy {
     content-visibility: auto;
-    contain-intrinsic-size: 50px;
+    contain-intrinsic-size: 0 50px; /* width auto, height hint 50px */
+    contain: strict;
   }
 }
 

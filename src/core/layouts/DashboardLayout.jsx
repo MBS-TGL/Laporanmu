@@ -34,7 +34,7 @@ export default function DashboardLayout({ children, title }) {
     }, [])
 
     // Sidebar dimensions (must match Sidebar.jsx)
-    const sidebarExpandedW = '220px'
+    const sidebarExpandedW = '250px'
     const sidebarCollapsedW = '56px'
     const currentW = sidebarCollapsed ? sidebarCollapsedW : sidebarExpandedW
 

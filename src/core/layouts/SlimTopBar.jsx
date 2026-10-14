@@ -54,7 +54,7 @@ function NavIcon({ icon, className = "" }) {
 }
 
 // ─── Avatar ───────────────────────────────────────────────────────────────────
-function Avatar({ url, name, size = "w-8 h-8", textSize = "text-xs", rounded = "rounded-xl" }) {
+function Avatar({ url, name, size = "w-9 h-9", textSize = "text-xs", rounded = "rounded-xl" }) {
     const [imgError, setImgError] = useState(false)
     const letter = name?.charAt(0)?.toUpperCase() || 'U'
     const showImg = url && !imgError
@@ -256,33 +256,33 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
             <header
                 className={`sticky top-0 z-40 bg-[var(--color-surface)]/85 backdrop-blur-xl border-b border-[var(--color-border)]
                     ${dir === 'rtl'
-                        ? (sidebarCollapsed ? 'lg:pr-[56px]' : 'lg:pr-[220px]')
-                        : (sidebarCollapsed ? 'lg:pl-[56px]' : 'lg:pl-[220px]')}`}
+                        ? (sidebarCollapsed ? 'lg:pr-[56px]' : 'lg:pr-[250px]')
+                        : (sidebarCollapsed ? 'lg:pl-[56px]' : 'lg:pl-[250px]')}`}
             >
-                <div className="flex items-center justify-between h-14 px-3 sm:px-4 lg:px-4 gap-2 sm:gap-4">
+                <div className="flex items-center justify-between h-15 px-3 sm:px-4 lg:px-5 gap-2 sm:gap-4">
 
                     {/* Left + Search Group to align search left next to the navigation controls */}
                     <div className={`flex items-center gap-2 sm:gap-3 min-w-0 transition-all duration-200 ${searchFocused ? 'flex-1' : 'flex-1 sm:flex-1'}`}>
                         {/* ── Left: Hamburger + Back — hidden when mobile search is open ── */}
-                        <div className={`flex items-center gap-1 shrink-0 ${searchFocused ? 'hidden sm:flex' : 'flex'}`}>
+                        <div className={`flex items-center gap-1.5 shrink-0 ${searchFocused ? 'hidden sm:flex' : 'flex'}`}>
                             {/* Hamburger — desktop only */}
                             <button
                                 onClick={onToggleSidebar}
                                 type="button"
                                 aria-label="Toggle sidebar"
-                                className="hidden lg:flex w-8 h-8 items-center justify-center rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+                                className="hidden lg:flex w-9 h-9 items-center justify-center rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
                             >
                                 {dir === 'rtl' ? (
                                     sidebarCollapsed ? (
-                                        <PanelRightOpen className="w-4.5 h-4.5" strokeWidth={2} />
+                                        <PanelRightOpen className="w-5 h-5" strokeWidth={2} />
                                     ) : (
-                                        <PanelRightClose className="w-4.5 h-4.5" strokeWidth={2} />
+                                        <PanelRightClose className="w-5 h-5" strokeWidth={2} />
                                     )
                                 ) : (
                                     sidebarCollapsed ? (
-                                        <PanelLeftOpen className="w-4.5 h-4.5" strokeWidth={2} />
+                                        <PanelLeftOpen className="w-5 h-5" strokeWidth={2} />
                                     ) : (
-                                        <PanelLeftClose className="w-4.5 h-4.5" strokeWidth={2} />
+                                        <PanelLeftClose className="w-5 h-5" strokeWidth={2} />
                                     )
                                 )}
                             </button>
@@ -292,9 +292,9 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                                 onClick={() => navigate(-1)}
                                 type="button"
                                 aria-label="Kembali"
-                                className="w-8 h-8 flex items-center justify-center rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+                                className="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
                             >
-                                <ChevronLeft className="w-4.5 h-4.5" strokeWidth={2} />
+                                <ChevronLeft className="w-5 h-5" strokeWidth={2} />
                             </button>
                         </div>
 
@@ -308,19 +308,19 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                                     type="button"
                                     aria-label="Cari halaman"
                                     onClick={() => setSearchFocused(true)}
-                                    className="sm:hidden w-8 h-8 flex items-center justify-center rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition"
+                                    className="sm:hidden w-9 h-9 flex items-center justify-center rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition"
                                 >
-                                    <Search className="w-4 h-4" strokeWidth={2} />
+                                    <Search className="w-4.5 h-4.5" strokeWidth={2} />
                                 </button>
                             )}
 
                             {/* Full search bar: always visible on sm+, expands on mobile when focused */}
-                            <div className={`w-full ${searchFocused ? 'flex' : 'hidden sm:flex'} items-center gap-2 h-8 px-3 rounded-xl border transition-all
+                            <div className={`w-full ${searchFocused ? 'flex' : 'hidden sm:flex'} items-center gap-2.5 h-9 px-3.5 rounded-xl border transition-all
                                 ${searchFocused
                                     ? 'border-[var(--color-primary)] bg-[var(--color-surface)] shadow-sm ring-2 ring-[var(--color-primary)]/20'
                                     : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-surface)]'}`}
                             >
-                                <Search className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" strokeWidth={2} />
+                                <Search className="w-4.5 h-4.5 text-[var(--color-text-muted)] shrink-0" strokeWidth={2} />
                                 <input
                                     type="text"
                                     placeholder={t("ui.search_placeholder")}
@@ -329,11 +329,11 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                                     onFocus={() => setSearchFocused(true)}
                                     onKeyDown={handleSearchKeyDown}
                                     autoFocus={searchFocused}
-                                    className="flex-1 min-w-0 bg-transparent outline-none text-[13px] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]"
+                                    className="flex-1 min-w-0 bg-transparent outline-none text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]"
                                 />
                                 {/* Keyboard shortcut badge — sm+ only */}
                                 {!searchFocused && (
-                                    <span className="hidden sm:flex items-center gap-0.5 text-[9px] font-bold text-[var(--color-text-muted)] bg-[var(--color-surface)] px-1.5 py-0.5 rounded-md border border-[var(--color-border)]">
+                                    <span className="hidden sm:flex items-center gap-0.5 text-[10px] font-bold text-[var(--color-text-muted)] bg-[var(--color-surface)] px-1.5 py-0.5 rounded-md border border-[var(--color-border)]">
                                         <span>⌘</span><span>K</span>
                                     </span>
                                 )}
@@ -343,7 +343,7 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                                     onClick={() => { setSearchQuery(''); setSearchFocused(false) }}
                                     className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] text-xs shrink-0"
                                 >
-                                    <X className="w-4 h-4" strokeWidth={2} />
+                                    <X className="w-4.5 h-4.5" strokeWidth={2} />
                                 </button>
                             </div>
 
@@ -381,21 +381,21 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                     </div>
 
                     {/* ── Right: Language + Theme + Bell + Avatar ── */}
-                    <div className="flex items-center gap-1 shrink-0">
+                    <div className="flex items-center gap-1.5 shrink-0">
                         {/* Language Selector */}
                         <div className={`relative ${searchFocused ? 'hidden' : 'block'}`} ref={langRef}>
                             <button
                                 onClick={() => setLangOpen(v => !v)}
-                                className={`w-8 h-8 sm:h-8 sm:w-auto flex items-center justify-center sm:gap-1.5 sm:px-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] transition text-[var(--color-text-muted)] hover:text-[var(--color-text)] border border-transparent sm:border-[var(--color-border)]/80
+                                className={`w-9 h-9 sm:h-9 sm:w-auto flex items-center justify-center sm:gap-1.5 sm:px-3 rounded-xl hover:bg-[var(--color-surface-alt)] transition text-[var(--color-text-muted)] hover:text-[var(--color-text)] border border-transparent sm:border-[var(--color-border)]/80
                                     ${langOpen
                                         ? 'bg-[var(--color-surface-alt)] text-[var(--color-primary)] border-[var(--color-primary)]/30'
                                         : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                                 aria-label="Pilih Bahasa / Language Selection"
                                 type="button"
                             >
-                                <Globe className="w-4 h-4 shrink-0" strokeWidth={2} />
-                                <span className="hidden sm:inline text-[11px] font-extrabold uppercase tracking-tight">{language}</span>
-                                <ChevronDown className={`hidden sm:block w-3 h-3 text-[var(--color-text-muted)] transition-transform duration-200 ${langOpen ? 'rotate-180 text-[var(--color-primary)]' : ''}`} />
+                                <Globe className="w-4.5 h-4.5 shrink-0" strokeWidth={2} />
+                                <span className="hidden sm:inline text-xs font-extrabold uppercase tracking-tight">{language}</span>
+                                <ChevronDown className={`hidden sm:block w-3.5 h-3.5 text-[var(--color-text-muted)] transition-transform duration-200 ${langOpen ? 'rotate-180 text-[var(--color-primary)]' : ''}`} />
                             </button>
 
                             {langOpen && (
@@ -417,7 +417,7 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                                             type="button"
                                         >
                                             <div className="flex items-center gap-2.5">
-                                                <span className={`w-6 h-4.5 flex items-center justify-center rounded text-[9px] font-black leading-none select-none shrink-0 transition-colors
+                                                <span className={`w-6 h-4.5 flex items-center justify-center rounded text-[10px] font-black leading-none select-none shrink-0 transition-colors
                                                     ${language === item.code
                                                         ? 'bg-[var(--color-primary)] text-white'
                                                         : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)]'}`}>
@@ -436,31 +436,31 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                         <button
                             onClick={toggleTheme}
                             aria-label={isDark ? "Aktifkan Mode Terang" : "Aktifkan Mode Gelap"}
-                            className={`w-8 h-8 items-center justify-center rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition ${searchFocused ? 'hidden' : 'flex'}`}
+                            className={`w-9 h-9 items-center justify-center rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition ${searchFocused ? 'hidden' : 'flex'}`}
                             type="button"
                         >
                             {isDark ? (
-                                <Sun className="w-4.5 h-4.5" strokeWidth={2} />
+                                <Sun className="w-5 h-5" strokeWidth={2} />
                             ) : (
-                                <Moon className="w-4.5 h-4.5" strokeWidth={2} />
+                                <Moon className="w-5 h-5" strokeWidth={2} />
                             )}
                         </button>
 
                         {/* Asisten button */}
                         <button
                             onClick={onOpenChatAssistant}
-                            className={`w-8 h-8 sm:w-auto sm:h-8 flex items-center justify-center sm:gap-1.5 sm:px-3 rounded-xl border border-transparent sm:border-[var(--color-border)]/80 hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-primary)] transition text-[11px] font-extrabold text-[var(--color-text-muted)] ${searchFocused ? 'hidden' : 'flex'}`}
+                            className={`w-9 h-9 sm:w-auto sm:h-9 flex items-center justify-center sm:gap-2 sm:px-3.5 rounded-xl border border-transparent sm:border-[var(--color-border)]/80 hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-primary)] transition text-xs font-extrabold text-[var(--color-text-muted)] ${searchFocused ? 'hidden' : 'flex'}`}
                             type="button"
                         >
-                            <Sparkles className="w-4 h-4 shrink-0" strokeWidth={2} />
-                            <span className="hidden sm:inline">{t('ui.assistant') || 'Asisten'}</span>
+                            <Sparkles className="w-4.5 h-4.5 shrink-0" strokeWidth={2} />
+                            <span className="hidden sm:inline">{t('ui.assistant') || 'Asisten AI'}</span>
                         </button>
 
                         {/* Notification bell */}
                         <div className={`relative ${searchFocused ? 'hidden' : 'block'}`} ref={notifBtnRef}>
                             <button
                                 onClick={() => setNotifOpen(v => !v)}
-                                className={`relative w-8 h-8 flex items-center justify-center rounded-xl transition
+                                className={`relative w-9 h-9 flex items-center justify-center rounded-xl transition
                                     ${notifOpen
                                         ? 'bg-[var(--color-surface-alt)] text-[var(--color-primary)]'
                                         : 'hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)]'}
@@ -468,31 +468,31 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                                 aria-label={t('notif.header')}
                                 type="button"
                             >
-                                <Bell className="w-4.5 h-4.5" strokeWidth={2} />
+                                <Bell className="w-5 h-5" strokeWidth={2} />
                                 <NotifBadge count={urgentCount || (totalCount > 0 ? totalCount : 0)} />
                             </button>
                         </div>
 
                         {/* Divider */}
-                        <div className="w-px h-6 bg-[var(--color-border)] mx-0.5 opacity-50" />
+                        <div className="w-px h-6 bg-[var(--color-border)] mx-1 opacity-50" />
 
                         {/* Profile — visible on all screen sizes */}
                         <div className="relative" ref={profileRef}>
                             <button
                                 onClick={() => setProfileOpen(v => !v)}
                                 aria-label="Menu Profil"
-                                className={`flex items-center gap-2 pl-1 pr-2 py-1 rounded-xl hover:bg-[var(--color-surface-alt)] transition border border-transparent hover:border-[var(--color-border)]
+                                className={`flex items-center gap-2.5 pl-1.5 pr-2.5 py-1 rounded-xl hover:bg-[var(--color-surface-alt)] transition border border-transparent hover:border-[var(--color-border)]
                                     ${profileOpen ? 'bg-[var(--color-surface-alt)] border-[var(--color-border)]' : ''}`}
                                 type="button"
                             >
                                 <Avatar url={profile?.avatar_url} name={profile?.name} />
                                 {/* Name + role — visible on lg+ */}
-                                <div className="hidden lg:flex flex-col min-w-0 max-w-[120px]">
-                                    <span className="text-[11px] font-extrabold text-[var(--color-text)] leading-tight truncate">{profile?.name || 'User'}</span>
-                                    <span className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider leading-none mt-0.5 truncate">{profile?.role || 'Staff'}</span>
+                                <div className="hidden lg:flex flex-col min-w-0 max-w-[130px]">
+                                    <span className="text-xs font-extrabold text-[var(--color-text)] leading-tight truncate">{profile?.name || 'User'}</span>
+                                    <span className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider leading-none mt-0.5 truncate">{profile?.role || 'Staff'}</span>
                                 </div>
                                 <ChevronDown
-                                    className={`w-3 h-3 text-[var(--color-text-muted)] transition-transform hidden sm:block ${profileOpen ? "rotate-180" : ""}`}
+                                    className={`w-3.5 h-3.5 text-[var(--color-text-muted)] transition-transform hidden sm:block ${profileOpen ? "rotate-180" : ""}`}
                                     strokeWidth={2}
                                 />
                             </button>

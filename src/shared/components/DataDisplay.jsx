@@ -35,7 +35,7 @@ export function StatCard({
     progressValue,    // 0-100, renders a thin fill bar at the bottom of card
     progressMax = 100,
     className = '',
-    valueClassName = 'text-xl sm:text-[22px] text-[var(--color-text)]',
+    valueClassName = 'text-2xl sm:text-[26px] text-[var(--color-text)]',
     onClick,
     title
 }) {
@@ -84,7 +84,7 @@ export function StatCard({
         <div 
             onClick={onClick} 
             title={title} 
-            className={`shrink-0 snap-center w-[200px] xs:w-[220px] sm:w-auto glass group relative overflow-hidden rounded-2xl border-t ${finalBorderTop} border border-[var(--color-border)] p-4 flex items-center gap-3.5 hover:border-[var(--color-primary)]/30 hover:shadow-lg hover:shadow-[var(--color-primary)]/5 transition-all duration-300 min-h-[78px] ${onClick ? 'cursor-pointer active:scale-95' : ''} ${activeRing} ${className}`}
+            className={`shrink-0 snap-center w-[210px] xs:w-[230px] sm:w-auto glass group relative overflow-hidden rounded-2xl border-t ${finalBorderTop} border border-[var(--color-border)] p-4 sm:p-5 flex items-center gap-4 hover:border-[var(--color-primary)]/30 hover:shadow-lg hover:shadow-[var(--color-primary)]/5 transition-all duration-300 min-h-[88px] ${onClick ? 'cursor-pointer active:scale-95' : ''} ${activeRing} ${className}`}
         >
             {/* Status Pulse Dot — top-right corner */}
             <div className="absolute top-3 right-3 rtl:right-auto rtl:left-3">
@@ -92,8 +92,8 @@ export function StatCard({
             </div>
 
             {/* Icon Container */}
-            <div className={`w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm ${finalBg} transform group-hover:scale-110 transition-all duration-500`}>
-                {renderIcon(icon, 'w-5 h-5')}
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm ${finalBg} transform group-hover:scale-110 transition-all duration-500`}>
+                {renderIcon(icon, 'w-5.5 h-5.5')}
             </div>
             
             {/* Content */}
@@ -101,18 +101,18 @@ export function StatCard({
                 {/* Label */}
                 {loading
                     ? <span className="inline-block w-20 h-2.5 rounded bg-[var(--color-border)] animate-pulse mb-1" />
-                    : <p className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] opacity-70 mb-0.5 truncate">{label}</p>
+                    : <p className="text-xs sm:text-[12.5px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] opacity-80 mb-1 truncate">{label}</p>
                 }
 
                 {/* Value + Trend */}
-                <div className="flex items-center gap-1.5">
-                    <h3 className={`font-black font-heading leading-none tabular-nums tracking-tighter ${valueClassName}`}>
+                <div className="flex items-center gap-2">
+                    <h3 className={`font-black font-heading leading-none tabular-nums tracking-tight ${valueClassName}`}>
                         {loading
                             ? <span className="inline-block w-10 h-5 rounded bg-[var(--color-border)] animate-pulse" />
                             : <>{tNum(displayValue)}{suffix && tNum(suffix)}</>}
                     </h3>
                     {!loading && trend && (
-                        <span className={`inline-flex items-center gap-0.5 text-[10px] font-black px-1.5 py-0.5 rounded-md leading-none ${
+                        <span className={`inline-flex items-center gap-0.5 text-[11px] font-black px-2 py-0.5 rounded-md leading-none ${
                             trendUp === true  ? 'text-emerald-500 bg-emerald-500/10' :
                             trendUp === false ? 'text-rose-500 bg-rose-500/10' :
                             'text-[var(--color-text-muted)] bg-[var(--color-surface-alt)]'
@@ -130,7 +130,7 @@ export function StatCard({
                 {loading
                     ? <span className="inline-block w-16 h-2 rounded bg-[var(--color-border)] animate-pulse mt-1" />
                     : subValue && (
-                        <p className="text-[10px] font-bold text-[var(--color-text-muted)] mt-0.5 opacity-60 uppercase tracking-wide truncate">{tNum(subValue)}</p>
+                        <p className="text-xs font-semibold text-[var(--color-text-muted)] mt-1 opacity-70 uppercase tracking-wide truncate">{tNum(subValue)}</p>
                     )
                 }
             </div>

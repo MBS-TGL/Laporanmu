@@ -58,18 +58,18 @@ export default function Breadcrumb({ items = [], badge = null, className = '' })
     if (safeItems.length === 0 && !badge) return null
 
     return (
-        <div className={`flex flex-wrap items-center gap-2 ${className}`.trim()}>
+        <div className={`flex flex-wrap items-center gap-2.5 ${className}`.trim()}>
             {badge ? (
-                <span className="px-2 py-1 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[9px] font-black uppercase tracking-[0.22em] text-[var(--color-text-muted)]">
+                <span className="px-2.5 py-1 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10.5px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
                     {translate(badge)}
                 </span>
             ) : null}
 
             {safeItems.length > 0 ? (
-                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">
+                <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] opacity-75">
                     {safeItems.map((it, idx) => (
                         <span key={`${it}-${idx}`}>
-                            {idx > 0 ? <span className="opacity-30 mx-1">›</span> : null}
+                            {idx > 0 ? <span className="opacity-40 mx-1.5">›</span> : null}
                             {translate(it)}
                         </span>
                     ))}

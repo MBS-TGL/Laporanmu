@@ -333,24 +333,24 @@ export default function DashboardPage() {
                     subtitle={
                         <span className="flex items-center gap-2">
                             Ringkasan aktivitas perilaku siswa hari ini.
-                            <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
-                            <span className="text-[10px] font-bold opacity-50 uppercase tracking-tighter">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-border)]" />
+                            <span className="text-xs font-bold opacity-60 uppercase tracking-tight">
                                 Updated: {lastUpdated.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
                             </span>
                         </span>
                     }
                     actions={
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2.5">
                             {/* ── EXPORT SUMMARY ── */}
                             <button
                                 onClick={handleExportPDF}
                                 disabled={loading || isRefreshing}
                                 data-html2canvas-ignore="true"
-                                className="h-9 w-9 sm:w-auto sm:px-3 rounded-lg border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+                                className="h-9.5 sm:h-10 w-9 sm:w-auto sm:px-3.5 rounded-xl border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
                                 title="Download Laporan PDF"
                             >
                                 <FontAwesomeIcon icon={faFilePdf} className="text-sm" />
-                                <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline">
+                                <span className="text-xs font-bold uppercase tracking-wider hidden md:inline">
                                     Export Summary
                                 </span>
                             </button>
@@ -360,11 +360,11 @@ export default function DashboardPage() {
                                 disabled={loading || isRefreshing}
                                 data-html2canvas-ignore="true"
                                 aria-label="Refresh Dashboard Data"
-                                className={`h-9 w-9 sm:w-auto sm:px-3 rounded-lg border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] ${isRefreshing ? 'opacity-50 cursor-not-allowed scale-95' : ''}`}
+                                className={`h-9.5 sm:h-10 w-9 sm:w-auto sm:px-3.5 rounded-xl border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] ${isRefreshing ? 'opacity-50 cursor-not-allowed scale-95' : ''}`}
                                 title="Refresh Data"
                             >
                                 <FontAwesomeIcon icon={faRotate} className={`text-sm ${isRefreshing ? 'animate-spin' : ''}`} />
-                                <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline">
+                                <span className="text-xs font-bold uppercase tracking-wider hidden md:inline">
                                     Refresh
                                 </span>
                             </button>
@@ -373,7 +373,7 @@ export default function DashboardPage() {
                 />
 
                 {/* ── STATS CAROUSEL ── */}
-                <div className="min-h-[110px] mb-4">
+                <div className="min-h-[120px] mb-5">
                     <StatsCarousel count={STATS.length}>
                         {STATS.map((stat, idx) => (
                             <StatCard
@@ -391,9 +391,9 @@ export default function DashboardPage() {
                     </StatsCarousel>
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-4 mb-6">
+                <div className="flex flex-col lg:flex-row gap-5 mb-6">
                     {/* ── LEFT MAIN COLUMN ── */}
-                    <div className="flex-1 min-w-0 flex flex-col gap-4">
+                    <div className="flex-1 min-w-0 flex flex-col gap-5">
                         <Suspense fallback={
                             <div className="glass rounded-[1.5rem] p-6 h-[400px] animate-pulse bg-[var(--color-surface-alt)] flex flex-col gap-4">
                                 <div className="flex justify-between items-center"><div className="h-4 w-32 bg-gray-400/20 rounded" /><div className="h-4 w-24 bg-gray-400/20 rounded" /></div>
@@ -415,7 +415,7 @@ export default function DashboardPage() {
                     </div>
 
                     {/* ── RIGHT STICKY SIDEBAR ── */}
-                    <div className="w-full lg:w-[320px] xl:w-[360px] shrink-0 flex flex-col gap-4 sticky top-6 self-start">
+                    <div className="w-full lg:w-[340px] xl:w-[380px] shrink-0 flex flex-col gap-5 sticky top-6 self-start">
                         <Suspense fallback={
                             <div className="glass rounded-[1.5rem] p-5 h-[200px] animate-pulse bg-[var(--color-surface-alt)]" />
                         }>

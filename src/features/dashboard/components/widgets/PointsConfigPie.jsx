@@ -15,11 +15,11 @@ export const PointsConfigPie = memo(function PointsConfigPie({ pieData, loading 
             <div className="absolute -right-4 -top-4 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 transition-colors" />
             <div className="mb-5 flex justify-between items-start relative z-10">
                 <div>
-                    <p className="text-[13px] font-black text-[var(--color-text)]">Konfigurasi Poin</p>
-                    <p className="text-[10px] text-[var(--color-text-muted)] opacity-70 mt-0.5">Minggu ini</p>
+                    <p className="text-base font-black text-[var(--color-text)]">Konfigurasi Poin</p>
+                    <p className="text-xs text-[var(--color-text-muted)] opacity-75 mt-0.5">Minggu ini</p>
                 </div>
-                <div className="w-8 h-8 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center shrink-0">
-                    <FontAwesomeIcon icon={faClipboardList} className="text-[10px]" />
+                <div className="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center shrink-0">
+                    <FontAwesomeIcon icon={faClipboardList} className="text-xs" />
                 </div>
             </div>
 
@@ -33,8 +33,8 @@ export const PointsConfigPie = memo(function PointsConfigPie({ pieData, loading 
                         <FontAwesomeIcon icon={faClipboardList} />
                     </div>
                     <div className="text-center">
-                        <p className="text-[12px] font-black text-[var(--color-text)]">Belum Ada Data</p>
-                        <p className="text-[9px] text-[var(--color-text-muted)] mt-0.5">Tidak ada konfigurasi poin</p>
+                        <p className="text-sm font-black text-[var(--color-text)]">Belum Ada Data</p>
+                        <p className="text-xs text-[var(--color-text-muted)] mt-0.5">Tidak ada konfigurasi poin</p>
                     </div>
                 </div>
             ) : (
@@ -47,14 +47,14 @@ export const PointsConfigPie = memo(function PointsConfigPie({ pieData, loading 
                                         <Cell key={`cell-${index}`} fill={entry.color} />
                                     ))}
                                 </Pie>
-                                <Tooltip contentStyle={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: '12px', fontSize: 11 }} />
+                                <Tooltip contentStyle={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: '12px', fontSize: 12 }} />
                             </PieChart>
                         </ResponsiveContainer>
                     </div>
                     <div className="grid grid-cols-2 gap-x-2 gap-y-3 mt-4 relative z-10">
                         {pieData.map((item, idx) => (
-                            <div key={idx} className="flex items-center gap-2 text-[10px] font-bold">
-                                <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
+                            <div key={idx} className="flex items-center gap-2 text-xs font-semibold">
+                                <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
                                 <span className="text-[var(--color-text-muted)] truncate">{item.name}</span>
                             </div>
                         ))}

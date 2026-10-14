@@ -15,11 +15,11 @@ export default function PageHeader({
                 {(breadcrumbs.length > 0 || badge) && (
                     <Breadcrumb badge={badge} items={breadcrumbs} className="mb-1" />
                 )}
-                <h1 className="text-2xl font-black font-heading tracking-tight text-[var(--color-text)] leading-tight">
+                <h1 className="text-2xl sm:text-3xl font-black font-heading tracking-tight text-[var(--color-text)] leading-tight">
                     {title}
                 </h1>
                 {subtitle && (
-                    <p className="text-[var(--color-text-muted)] text-[11px] mt-1 font-medium">
+                    <p className="text-[var(--color-text-muted)] text-xs sm:text-sm mt-1.5 font-medium">
                         {subtitle}
                     </p>
                 )}

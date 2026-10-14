@@ -25,7 +25,7 @@ function Avatar({ url, name, size = "w-10 h-10", textSize = "text-base", rounded
 
     return (
         <div className={`${size} ${rounded} overflow-hidden shrink-0 flex items-center justify-center font-black text-white
-            ${showImg ? 'bg-[var(--color-surface-alt)]' : 'bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)]'}`}>
+            ${showImg ? 'bg-[var(--color-surface-alt)]' : 'bg-[var(--color-primary)]'}`}>
             {showImg
                 ? <img src={url} alt={name} className="w-full h-full object-cover" onError={() => setImgError(true)} />
                 : <span className={textSize}>{letter}</span>

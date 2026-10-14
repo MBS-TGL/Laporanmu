@@ -13,7 +13,7 @@ export default function PresetPills({ presets, value, onSelect }) {
         const isSelected = value === p || value === translated
         return (
           <button key={p} type="button" onClick={() => onSelect(translated)}
-            className={`h-7 px-2.5 rounded-lg text-[10px] font-black transition-all border shrink-0 ${isSelected
+            className={`h-7.5 px-3 rounded-lg text-xs font-semibold transition-all border shrink-0 ${isSelected
               ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]'
               : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-border)]'}`}>
             {translated}

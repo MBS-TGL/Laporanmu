@@ -4,29 +4,24 @@
 
 /* Custom CSS Variables for theming (Dark Mode supported) */
 :root {
-  --color-primary: #4f46e5;
-  /* Indigo 600 - sleek and modern */
-  --color-primary-dark: #3730a3;
-  /* Indigo 800 */
-  --color-secondary: #0ea5e9;
-  /* Sky 500 */
-  --color-accent: #8b5cf6;
-  /* Violet 500 */
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-danger: #ef4444;
-  --color-app-bg: #f8fafc;
-  /* Slate 50 - page background */
-  --color-surface: #ffffff;
-  /* Pure White - cards, sidebars, panels */
-  --color-surface-alt: #f1f5f9;
-  /* Slate 100 - hovers, inactive inputs, section tabs */
-  --color-text: #0f172a;
-  /* Slate 900 */
-  --color-text-muted: #64748b;
-  /* Slate 500 */
-  --color-border: #e2e8f0;
-  /* Slate 200 */
+  /* ── Brand ──────────────────────────────────────────── */
+  --color-primary: #4f46e5;        /* Indigo 600  – brand, interactive, links */
+  --color-primary-dark: #3730a3;   /* Indigo 800  – hover state */
+  --color-primary-light: #e0e7ff;  /* Indigo 100  – subtle bg tint */
+
+  /* ── Semantic ────────────────────────────────────────── */
+  --color-success: #10b981;        /* Emerald 500 – prestasi, selesai, aman */
+  --color-warning: #f59e0b;        /* Amber 500   – urgent, partial, attention */
+  --color-danger: #ef4444;         /* Rose 500    – pelanggaran, error */
+
+  /* ── Surface / Layout ────────────────────────────────── */
+  --color-app-bg: #f8fafc;         /* Slate 50  – page background */
+  --color-surface: #ffffff;        /* White     – cards, sidebars, panels */
+  --color-surface-alt: #f1f5f9;    /* Slate 100 – hover, inactive, tabs */
+  --color-text: #0f172a;           /* Slate 900 – primary text */
+  --color-text-muted: #64748b;     /* Slate 500 – secondary/helper text */
+  --color-border: #e2e8f0;         /* Slate 200 – dividers, borders */
+
   --sidebar-width: 250px;
   --floating-bar-bottom: 16px;
 }

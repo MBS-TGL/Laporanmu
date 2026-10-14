@@ -60,7 +60,7 @@ function Avatar({ url, name, size = "w-9 h-9", textSize = "text-xs", rounded = "
     const showImg = url && !imgError
 
     return (
-        <div className={`${size} ${rounded} bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white font-extrabold shadow-sm overflow-hidden shrink-0`}>
+        <div className={`${size} ${rounded} bg-[var(--color-primary)] flex items-center justify-center text-white font-extrabold shadow-sm overflow-hidden shrink-0`}>
             {showImg ? (
                 <img
                     src={url}
@@ -254,12 +254,12 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
             `}</style>
 
             <header
-                className={`sticky top-0 z-40 bg-[var(--color-surface)]/85 backdrop-blur-xl border-b border-[var(--color-border)]
+                className={`sticky top-0 z-40 bg-[var(--color-surface)]/85 backdrop-blur-xl border-b border-[var(--color-border)] h-[60px] flex items-center
                     ${dir === 'rtl'
                         ? (sidebarCollapsed ? 'lg:pr-[56px]' : 'lg:pr-[250px]')
                         : (sidebarCollapsed ? 'lg:pl-[56px]' : 'lg:pl-[250px]')}`}
             >
-                <div className="flex items-center justify-between h-15 px-3 sm:px-4 lg:px-5 gap-2 sm:gap-4">
+                <div className="flex items-center justify-between w-full h-full px-3 sm:px-4 lg:px-5 gap-2 sm:gap-4">
 
                     {/* Left + Search Group to align search left next to the navigation controls */}
                     <div className={`flex items-center gap-2 sm:gap-3 min-w-0 transition-all duration-200 ${searchFocused ? 'flex-1' : 'flex-1 sm:flex-1'}`}>
@@ -489,7 +489,7 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                                 {/* Name + role — visible on lg+ */}
                                 <div className="hidden lg:flex flex-col min-w-0 max-w-[130px]">
                                     <span className="text-xs font-extrabold text-[var(--color-text)] leading-tight truncate">{profile?.name || 'User'}</span>
-                                    <span className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider leading-none mt-0.5 truncate">{profile?.role || 'Staff'}</span>
+                                    <span className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider leading-normal mt-0.5 truncate">{profile?.role || 'Staff'}</span>
                                 </div>
                                 <ChevronDown
                                     className={`w-3.5 h-3.5 text-[var(--color-text-muted)] transition-transform hidden sm:block ${profileOpen ? "rotate-180" : ""}`}

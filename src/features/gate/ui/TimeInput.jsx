@@ -7,7 +7,7 @@ export default function TimeInput({ value, onChange, label, clearable = true }) 
   const tp = (key) => PAGE_T[language]?.[key] || PAGE_T["id"]?.[key] || key
   return (
     <div>
-      <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">
+      <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5 block">
         {label} <span className="normal-case opacity-70">({tp('formEtaDesc')})</span>
       </label>
       <RichTimePicker

@@ -19,7 +19,7 @@ export default function TeacherSearch({ teacherList, value, onChange, label, ico
 
   return (
     <div>
-      <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">{label}</label>
+      <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5 block">{label}</label>
       <RichSelect
         value={value}
         onChange={onChange}
@@ -28,7 +28,7 @@ export default function TeacherSearch({ teacherList, value, onChange, label, ico
         searchable={true}
         icon={icon}
         className="w-full"
-        buttonClassName="h-10 rounded-xl"
+        buttonClassName="h-10.5 rounded-xl text-sm"
       />
     </div>
   )

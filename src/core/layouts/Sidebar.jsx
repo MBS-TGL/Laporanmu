@@ -21,24 +21,22 @@ function NavIcon({ icon, className = "" }) {
 // ─── Sidebar Persistence ──────────────────────────────────────────────────────
 const GROUPS_KEY = 'sidebar-groups-open'
 
+const DEFAULT_GROUPS_OPEN = {
+    boarding: true,
+    academic: true,
+    finance: false,
+    master: false,
+    admin: false,
+}
+
 function getInitialGroupsOpen() {
     try {
         const stored = localStorage.getItem(GROUPS_KEY)
-        return stored ? JSON.parse(stored) : {
-            boarding: true,
-            academic: true,
-            finance: true,
-            master: true,
-            admin: true
-        }
+        return stored
+            ? { ...DEFAULT_GROUPS_OPEN, ...JSON.parse(stored) }
+            : DEFAULT_GROUPS_OPEN
     } catch {
-        return {
-            boarding: true,
-            academic: true,
-            finance: true,
-            master: true,
-            admin: true
-        }
+        return DEFAULT_GROUPS_OPEN
     }
 }
 
@@ -51,20 +49,20 @@ function SidebarItem({ item, collapsed }) {
             to={item.to}
             end={item.to === '/dashboard' || item.to === '/admin'}
             className={({ isActive }) =>
-                `group/item flex items-center rounded-xl text-[13.5px] font-semibold transition-all duration-300 relative min-w-0
+                `group/item flex items-center rounded-xl text-[13px] font-medium transition-all duration-300 relative min-w-0
                 ${isActive
-                    ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-bold'
+                    ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-semibold'
                     : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)]'}
                 ${collapsed
-                    ? 'w-10 h-10 justify-center p-2 mx-auto group-hover/sidebar:w-full group-hover/sidebar:px-3 group-hover/sidebar:py-1.5 group-hover/sidebar:gap-3 group-hover/sidebar:justify-start group-hover/sidebar:mx-0'
-                    : 'w-full px-3 py-1.5 gap-3'}`
+                    ? 'w-10 h-10 justify-center p-2 mx-auto group-hover/sidebar:w-full group-hover/sidebar:px-2.5 group-hover/sidebar:py-1.5 group-hover/sidebar:gap-2.5 group-hover/sidebar:justify-start group-hover/sidebar:mx-0'
+                    : 'w-full px-2.5 py-1.5 gap-2.5'}`
             }
         >
             {({ isActive }) => (
                 <>
                     {/* Active indicator bar */}
                     {isActive && (
-                        <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-[3.5px] h-5 rounded-r-full bg-[var(--color-primary)] transition-all duration-300
+                        <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4.5 rounded-r-full bg-[var(--color-primary)] transition-all duration-300
                             ${collapsed ? 'opacity-0 group-hover/sidebar:opacity-100' : 'opacity-100'}`}
                         />
                     )}
@@ -75,11 +73,11 @@ function SidebarItem({ item, collapsed }) {
                             ? 'text-[var(--color-primary)]'
                             : 'text-[var(--color-text-muted)] group-hover/item:text-[var(--color-text)]'}`}
                     >
-                        <NavIcon icon={item.icon} className="w-[19px] h-[19px]" />
+                        <NavIcon icon={item.icon} className="w-[18px] h-[18px]" />
                     </div>
 
                     {/* Label — animated slide/fade */}
-                    <span className={`truncate leading-none text-left transition-all duration-300
+                    <span className={`truncate leading-5 text-left transition-all duration-300
                         ${collapsed ? 'w-0 opacity-0 group-hover/sidebar:w-44 group-hover/sidebar:opacity-100 overflow-hidden' : 'w-auto opacity-100'}`}
                     >
                         {tNav(item)}
@@ -104,15 +102,15 @@ function SidebarGroup({ group, items, collapsed, isOpen, onToggle }) {
     const showChildren = isOpen || hasActiveChild
 
     return (
-        <div className="relative group/grp flex flex-col">
+        <div className="relative group/grp flex flex-col pt-0.5">
             {/* Group Header Button */}
             <button
                 type="button"
                 onClick={collapsed ? undefined : onToggle}
                 className={`flex items-center justify-between rounded-xl min-w-0 outline-none transition-all duration-300
                     ${collapsed
-                        ? 'w-10 h-10 justify-center mx-auto hover:bg-[var(--color-surface-alt)] group-hover/sidebar:w-full group-hover/sidebar:px-3 group-hover/sidebar:py-1.5 group-hover/sidebar:justify-between group-hover/sidebar:mx-0'
-                        : 'w-full justify-between px-3 py-1.5'}
+                        ? 'w-10 h-10 justify-center mx-auto hover:bg-[var(--color-surface-alt)] group-hover/sidebar:w-full group-hover/sidebar:px-2.5 group-hover/sidebar:py-1 group-hover/sidebar:justify-between group-hover/sidebar:mx-0'
+                        : 'w-full justify-between px-2.5 py-1'}
                     ${(!collapsed && hasActiveChild)
                         ? 'text-[var(--color-primary)]'
                         : 'text-[var(--color-text-muted)]/70 hover:text-[var(--color-text-muted)]'}`}
@@ -127,10 +125,9 @@ function SidebarGroup({ group, items, collapsed, isOpen, onToggle }) {
                     </div>
 
                     {/* Group Label — hidden when collapsed, shown when expanded or sidebar hover */}
-                    <span className={`truncate text-left leading-none transition-all duration-300
-                        ${collapsed
-                            ? 'w-0 opacity-0 group-hover/sidebar:w-44 group-hover/sidebar:opacity-100 overflow-hidden text-[10.5px] font-black tracking-wider uppercase text-[var(--color-text-muted)]/80'
-                            : 'text-[10.5px] font-black tracking-wider uppercase text-[var(--color-text-muted)]/80'}`}
+                    <span className={`truncate text-left leading-5 transition-all duration-300
+                        text-[10.5px] font-semibold tracking-wider uppercase text-[var(--color-text-muted)]/70
+                        ${collapsed ? 'w-0 opacity-0 group-hover/sidebar:w-44 group-hover/sidebar:opacity-100 overflow-hidden' : ''}`}
                     >
                         {tGroup(group.key, group.label)}
                     </span>
@@ -223,18 +220,22 @@ export default function Sidebar({ collapsed, onToggle }) {
                 ${isRtl ? 'right-0 border-l' : 'left-0 border-r'} border-[var(--color-border)]`}
         >
             {/* ── Logo Section ── */}
-            <div className={`shrink-0 border-b border-[var(--color-border)] ${collapsed ? 'px-2 py-3.5 group-hover/sidebar:px-4 group-hover/sidebar:py-3.5' : 'px-4 py-3.5'} transition-all duration-300`}>
+            <div className={`shrink-0 h-[60px] flex items-center border-b border-[var(--color-border)] ${collapsed ? 'px-2 justify-center group-hover/sidebar:px-4 group-hover/sidebar:justify-start' : 'px-4'} transition-all duration-300`}>
                 <div className={`flex items-center ${collapsed ? 'justify-center group-hover/sidebar:justify-start group-hover/sidebar:gap-3' : 'gap-3'} transition-all duration-300`}>
-                    {/* Logo badge */}
-                    <div className="rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white font-black flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/20 w-9 h-9 text-sm">
-                        <span>L</span>
+                    {/* Logo badge — Solid modern brand mark, no cheap gradients */}
+                    <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)] text-white flex items-center justify-center shrink-0 shadow-sm transition-transform active:scale-95">
+                        <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M6 4v14a2 2 0 0 0 2 2h10" />
+                            <path d="M10 8h6" />
+                            <path d="M10 12h4" />
+                        </svg>
                     </div>
 
                     {/* Text — hidden smoothly, expands on hover */}
                     <div className={`min-w-0 flex flex-col transition-all duration-300
                         ${collapsed ? 'w-0 opacity-0 group-hover/sidebar:w-44 group-hover/sidebar:opacity-100 overflow-hidden' : 'w-auto opacity-100'}`}
                     >
-                        <p className="text-[14px] font-extrabold text-[var(--color-text)] leading-tight truncate font-heading">
+                        <p className="text-[14px] font-extrabold text-[var(--color-text)] leading-snug py-0.5 truncate font-heading">
                             Laporanmu
                         </p>
                         <p className="text-[9.5px] font-bold tracking-widest uppercase text-[var(--color-text-muted)] whitespace-nowrap mt-0.5">
@@ -248,15 +249,15 @@ export default function Sidebar({ collapsed, onToggle }) {
             <nav
                 ref={navRef}
                 onScroll={handleScroll}
-                className={`flex-1 overflow-y-auto overflow-x-hidden py-3 space-y-0.5 scrollbar-none transition-all duration-300
-                    ${collapsed ? 'px-1.5 group-hover/sidebar:px-3' : 'px-3'}`}
+                className={`flex-1 overflow-y-auto overflow-x-hidden py-2 space-y-0.5 scrollbar-none transition-all duration-300
+                    ${collapsed ? 'px-1.5 group-hover/sidebar:px-2.5' : 'px-2.5'}`}
             >
                 {/* Dashboard — always first, standalone */}
                 <SidebarItem item={DASHBOARD_ITEM} collapsed={collapsed} />
                 <SidebarItem item={TASK_CENTER_ITEM} collapsed={collapsed} />
 
                 {/* Divider */}
-                <div className={`h-px bg-[var(--color-border)]/60 !my-2 transition-all duration-300
+                <div className={`h-px bg-[var(--color-border)]/60 !my-1.5 transition-all duration-300
                     ${collapsed ? 'mx-1 group-hover/sidebar:mx-1.5' : 'mx-1.5'}`}
                 />
 

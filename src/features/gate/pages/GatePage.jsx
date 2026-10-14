@@ -453,10 +453,10 @@ export default function GatePage() {
             <Lock className="w-8 h-8 text-red-500" />
           </div>
           <div>
-            <h2 className="text-xl font-black text-[var(--color-text)] mb-1">{accessDeniedTitle}</h2>
-            <p className="text-[12px] text-[var(--color-text-muted)] max-w-xs">{accessDeniedDesc}</p>
+            <h2 className="text-xl font-bold text-[var(--color-text)] mb-1">{accessDeniedTitle}</h2>
+            <p className="text-sm text-[var(--color-text-muted)] max-w-xs">{accessDeniedDesc}</p>
           </div>
-          <button onClick={() => navigate(-1)} className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black hover:opacity-90 transition-all">{accessDeniedBack}</button>
+          <button onClick={() => navigate(-1)} className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:opacity-90 transition-all">{accessDeniedBack}</button>
         </div>
       </DashboardLayout>
     )
@@ -479,17 +479,17 @@ export default function GatePage() {
               <LiveClock />
               <div className="flex items-center gap-2">
                 <button onClick={() => navigate('/boarding/gate/kiosk')}
-                  className="h-9 px-3 rounded-lg border flex items-center justify-center text-xs font-black uppercase tracking-wider transition-all active:scale-95 bg-[var(--color-primary)] text-white hover:opacity-95 gap-1.5 shadow-sm"
+                  className="h-9 w-9 rounded-lg border border-transparent flex items-center justify-center transition-all active:scale-95 bg-[var(--color-primary)] text-white hover:opacity-95 shadow-sm"
                   title="Buka Mode Kios Mandiri (Self-Service)">
-                  <Monitor className="w-3.5 h-3.5" />
+                  <Monitor className="w-4 h-4" />
                 </button>
                 <button onClick={handleRefresh} disabled={isRefreshing || cooldown}
-                  className="h-9 w-10 rounded-lg border flex items-center justify-center text-sm transition-all bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] enabled:hover:text-[var(--color-text)] enabled:hover:bg-[var(--color-border)] enabled:active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="h-9 w-9 rounded-lg border flex items-center justify-center transition-all bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] enabled:hover:text-[var(--color-text)] enabled:hover:bg-[var(--color-border)] enabled:active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
                   title={tp('btnRefresh')}>
                   <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
                 </button>
                 <button onClick={() => setShowConfig(true)}
-                  className="h-9 w-9 rounded-lg border flex items-center justify-center text-sm transition-all active:scale-95 bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]"
+                  className="h-9 w-9 rounded-lg border flex items-center justify-center transition-all active:scale-95 bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]"
                   title={tp('btnConfig')}>
                   <Settings className="w-4 h-4" />
                 </button>
@@ -519,17 +519,17 @@ export default function GatePage() {
         </StatsCarousel>
 
         {/* TABS — full width on mobile, auto on desktop */}
-        <div className="flex gap-1 p-1 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] mb-6 w-full lg:w-fit overflow-x-auto scrollbar-hide">
+        <div className="flex gap-1.5 p-1 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] mb-6 w-full lg:w-fit overflow-x-auto scrollbar-hide">
           {TABS.map(t => {
             const IconComp = t.icon
             return (
               <button key={t.key} onClick={() => setActiveTab(t.key)}
-                className={`flex-1 lg:flex-none h-8 px-3 sm:px-4 rounded-xl text-[11px] font-black flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === t.key
+                className={`flex-1 lg:flex-none h-9 px-3.5 sm:px-4 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === t.key
                   ? 'bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/20'
                   : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                <IconComp className="w-3.5 h-3.5" />{t.label}
+                <IconComp className="w-4 h-4" />{t.label}
                 {t.key === 'log' && todayLogs.length > 0 && (
-                  <span className={`text-[8px] font-black px-1.5 py-0.5 rounded-full ${activeTab === t.key ? 'bg-white/20 text-white' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'}`}>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${activeTab === t.key ? 'bg-white/20 text-white' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'}`}>
                     {tNum(todayLogs.length)}
                   </span>
                 )}
@@ -544,7 +544,7 @@ export default function GatePage() {
             {/* Kolom kiri: Form */}
             <div className="glass rounded-[1.5rem] p-5 h-fit">
               {/* Mode switcher Internal / Tamu */}
-              <div className="flex gap-2 mb-5">
+              <div className="flex gap-2.5 mb-5">
                 {[
                   { k: 'internal', l: tp('internalLabel'), icon: Building2, desc: tp('internalDesc'), active: 'border-[var(--color-primary)]/30 bg-[var(--color-primary)]/5', activeText: 'text-[var(--color-primary)]' },
                   { k: 'tamu', l: tp('tamuLabel'), icon: Users, desc: tp('tamuDesc'), active: 'border-emerald-500/30 bg-emerald-500/5', activeText: 'text-emerald-600' },
@@ -552,11 +552,11 @@ export default function GatePage() {
                   const IconComp = m.icon
                   return (
                     <button key={m.k} onClick={() => setInputMode(m.k)}
-                      className={`flex-1 py-2.5 px-3 rounded-xl border transition-all text-left ${inputMode === m.k ? m.active : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-surface)]'}`}>
-                      <div className={`flex items-center gap-1.5 font-black text-[11px] sm:text-[12px] ${inputMode === m.k ? m.activeText : 'text-[var(--color-text-muted)]'}`}>
-                        <IconComp className="w-3.5 h-3.5 shrink-0" /><span className="truncate">{m.l}</span>
+                      className={`flex-1 py-3 px-3.5 rounded-xl border transition-all text-left ${inputMode === m.k ? m.active : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-surface)]'}`}>
+                      <div className={`flex items-center gap-2 font-bold text-xs sm:text-sm ${inputMode === m.k ? m.activeText : 'text-[var(--color-text)]'}`}>
+                        <IconComp className="w-4 h-4 shrink-0" /><span className="truncate">{m.l}</span>
                       </div>
-                      <p className="text-[8px] sm:text-[9px] text-[var(--color-text-muted)] mt-0.5 font-medium line-clamp-1">{m.desc}</p>
+                      <p className="text-[11px] sm:text-xs text-[var(--color-text-muted)] mt-1 font-normal line-clamp-1">{m.desc}</p>
                     </button>
                   )
                 })}
@@ -581,13 +581,13 @@ export default function GatePage() {
 
               {/* Sedang Keluar */}
               <div className="glass rounded-[1.5rem] p-5">
-                <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-[13px] font-black text-[var(--color-text)]">{tp('sedangKeluarTitle')}</p>
-                    <p className="text-[10px] text-[var(--color-text-muted)] opacity-70 mt-0.5">{tp('sedangKeluarSub')}</p>
+                    <h3 className="text-sm sm:text-base font-bold text-[var(--color-text)] leading-tight">{tp('sedangKeluarTitle')}</h3>
+                    <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{tp('sedangKeluarSub')}</p>
                   </div>
-                  <div className={`px-2 py-1 rounded-lg text-[9px] font-black tabular-nums transition-all ${stats.keluar > 0 ? 'bg-rose-500/10 text-rose-600 shadow-sm' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]/50'}`}>
-                    {tNum(stats.keluar)} {language === 'en' ? 'PEOPLE' : language === 'ar' ? 'أشخاص' : 'ORANG'}
+                  <div className={`px-2.5 py-1 rounded-lg text-xs font-bold tabular-nums transition-all ${stats.keluar > 0 ? 'bg-rose-500/10 text-rose-600' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
+                    {tNum(stats.keluar)} {language === 'en' ? 'PEOPLE' : language === 'ar' ? 'أشخاص' : 'Orang'}
                   </div>
                 </div>
 
@@ -595,7 +595,7 @@ export default function GatePage() {
                 {stats.keluar > 0 && (
                   <div className="flex items-center justify-between mb-3 px-1">
                     <button onClick={() => { setSelectionMode(!selectionMode); setSelectedIds([]) }}
-                      className={`text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-md transition-all ${selectionMode ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                      className={`text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg transition-all ${selectionMode ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                       {selectionMode ? tp('btnCancelSelect') : tp('btnMultiSelect')}
                     </button>
                   </div>
@@ -622,13 +622,13 @@ export default function GatePage() {
 
               {/* Tamu di Dalam */}
               <div className="glass rounded-[1.5rem] p-5">
-                <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-[13px] font-black text-[var(--color-text)]">{tp('tamuDiDalamTitle')}</p>
-                    <p className="text-[10px] text-[var(--color-text-muted)] opacity-70 mt-0.5">{tp('tamuDiDalamSub')}</p>
+                    <h3 className="text-sm sm:text-base font-bold text-[var(--color-text)] leading-tight">{tp('tamuDiDalamTitle')}</h3>
+                    <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{tp('tamuDiDalamSub')}</p>
                   </div>
-                  <div className={`px-2 py-1 rounded-lg text-[9px] font-black tabular-nums transition-all ${stats.dalamTamu > 0 ? 'bg-emerald-500/10 text-emerald-600 shadow-sm' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]/50'}`}>
-                    {tNum(stats.dalamTamu)} {language === 'en' ? 'PEOPLE' : language === 'ar' ? 'أشخاص' : 'ORANG'}
+                  <div className={`px-2.5 py-1 rounded-lg text-xs font-bold tabular-nums transition-all ${stats.dalamTamu > 0 ? 'bg-emerald-500/10 text-emerald-600' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
+                    {tNum(stats.dalamTamu)} {language === 'en' ? 'PEOPLE' : language === 'ar' ? 'أشخاص' : 'Orang'}
                   </div>
                 </div>
                 {loadingLogs
@@ -715,40 +715,40 @@ export default function GatePage() {
                       const IconComp = meta.icon
                       return (
                         <div key={log.id}
-                          className={`flex items-center gap-2.5 px-3 py-2.5 transition-colors ${selectedIds.includes(log.id) ? 'bg-[var(--color-primary)]/5' : ''} ${etaPassed ? 'bg-red-500/5' : overTime ? 'bg-amber-500/5' : ''}`}
+                          className={`flex items-center gap-2.5 px-3 py-3 transition-colors ${selectedIds.includes(log.id) ? 'bg-[var(--color-primary)]/5' : ''} ${etaPassed ? 'bg-red-500/5' : overTime ? 'bg-amber-500/5' : ''}`}
                           onClick={selectionMode ? () => toggleSelect(log.id) : undefined}>
                           {selectionMode && (
                             <input type="checkbox" checked={selectedIds.includes(log.id)}
                               onChange={() => toggleSelect(log.id)}
                               className="w-4 h-4 rounded border-2 border-[var(--color-border)] text-[var(--color-primary)] shrink-0 cursor-pointer" />
                           )}
-                          <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${meta.bg}`}>
-                            <IconComp className={`w-3.5 h-3.5 ${meta.color}`} />
+                          <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${meta.bg}`}>
+                            <IconComp className={`w-4 h-4 ${meta.color}`} />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-1.5 min-w-0">
-                              <span className="text-[12px] font-black text-[var(--color-text)] truncate">{log.visitor_name}</span>
-                              <span className={`text-[8.5px] font-black px-1.5 py-0.5 rounded shrink-0 ${meta.bg} ${meta.color}`}>{meta.label}</span>
-                              {isActive && <span className={`text-[8px] font-black px-1 py-0.5 rounded shrink-0 ${isInternal ? 'bg-red-500/10 text-red-500' : 'bg-emerald-500/10 text-emerald-500'}`}>
+                            <div className="flex items-center gap-1.5 min-w-0 flex-wrap">
+                              <span className="text-sm font-bold text-[var(--color-text)] truncate">{log.visitor_name}</span>
+                              <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0 ${meta.bg} ${meta.color}`}>{meta.label}</span>
+                              {isActive && <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0 ${isInternal ? 'bg-red-500/10 text-red-500' : 'bg-emerald-500/10 text-emerald-500'}`}>
                                 {isInternal ? '● Keluar' : '● Masuk'}
                               </span>}
-                              {etaPassed && <span className="text-[8px] font-black px-1 py-0.5 rounded shrink-0 bg-red-600 text-white">Lewat ETA</span>}
+                              {etaPassed && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0 bg-red-600 text-white">Lewat ETA</span>}
                             </div>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              <span className="text-[10px] text-[var(--color-text-muted)] font-medium truncate">{translatePurpose(log.purpose, language)}</span>
-                              <span className="text-[9px] text-[var(--color-text-muted)] shrink-0 opacity-70">{fmtTime(log.check_in, language)}{dur ? ` · ${dur}` : ''}</span>
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="text-xs text-[var(--color-text-muted)] font-medium truncate">{translatePurpose(log.purpose, language)}</span>
+                              <span className="text-[11px] text-[var(--color-text-muted)] shrink-0">{fmtTime(log.check_in, language)}{dur ? ` · ${dur}` : ''}</span>
                             </div>
                           </div>
-                          <div className="flex items-center gap-1 shrink-0">
+                          <div className="flex items-center gap-1.5 shrink-0">
                             {isActive && (
                               <button onClick={e => { e.stopPropagation(); isInternal ? onReturn(log) : onCheckout(log) }}
-                                className={`h-7 w-7 rounded-lg flex items-center justify-center transition-all active:scale-95 ${isInternal ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'}`}>
-                                {isInternal ? <LogIn className="w-3.5 h-3.5" /> : <LogOut className="w-3.5 h-3.5" />}
+                                className={`h-8 w-8 rounded-lg flex items-center justify-center transition-all active:scale-95 ${isInternal ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'}`}>
+                                {isInternal ? <LogIn className="w-4 h-4" /> : <LogOut className="w-4 h-4" />}
                               </button>
                             )}
                             <button onClick={e => { e.stopPropagation(); setEditLog(log) }}
-                              className="h-7 w-7 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] flex items-center justify-center transition-all">
-                              <Edit2 className="w-3 h-3" />
+                              className="h-8 w-8 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] flex items-center justify-center transition-all">
+                              <Edit2 className="w-3.5 h-3.5" />
                             </button>
                           </div>
                         </div>
@@ -762,7 +762,7 @@ export default function GatePage() {
                       <thead>
                         <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/60">
                           {selectionMode && (
-                            <th className="w-10 px-3 py-1.5 text-left">
+                            <th className="w-10 px-3 py-2 text-left">
                               <input
                                 type="checkbox"
                                 checked={allSelected}
@@ -771,22 +771,22 @@ export default function GatePage() {
                               />
                             </th>
                           )}
-                          <th className="px-4 py-1.5 text-start text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
+                          <th className="px-4 py-2 text-start text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                             {language === 'en' ? 'Name' : language === 'ar' ? 'الاسم' : 'Nama'}
                           </th>
-                          <th className="px-4 py-1.5 text-start text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
+                          <th className="px-4 py-2 text-start text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                             {language === 'en' ? 'Purpose' : language === 'ar' ? 'الغرض' : 'Keperluan'}
                           </th>
-                          <th className="px-4 py-1.5 text-start text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
+                          <th className="px-4 py-2 text-start text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                             {language === 'en' ? 'In / ETA' : language === 'ar' ? 'الدخول / المتوقع' : 'Masuk / ETA'}
                           </th>
-                          <th className="px-4 py-1.5 text-start text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
+                          <th className="px-4 py-2 text-start text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                             {language === 'en' ? 'Duration' : language === 'ar' ? 'المدة' : 'Durasi'}
                           </th>
-                          <th className="px-4 py-1.5 text-start text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
+                          <th className="px-4 py-2 text-start text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                             {language === 'en' ? 'Status' : language === 'ar' ? 'الحالة' : 'Status'}
                           </th>
-                          <th className="px-4 py-1.5 text-center text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] w-24">
+                          <th className="px-4 py-2 text-center text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] w-24">
                             {language === 'en' ? 'Action' : language === 'ar' ? 'إجراء' : 'Aksi'}
                           </th>
                         </tr>
@@ -828,7 +828,7 @@ export default function GatePage() {
                     <div className="flex gap-1 p-0.5 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] shrink-0">
                       {[{ k: 'harian', l: tp('modeHarian') }, { k: 'mingguan', l: tp('modeMingguan') }, { k: 'bulanan', l: tp('modeBulanan') }].map(m => (
                         <button key={m.k} onClick={() => setRekapMode(m.k)}
-                          className={`h-7 px-3 rounded-md text-[10px] font-black transition-all whitespace-nowrap ${rekapMode === m.k ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                          className={`h-8 px-3.5 rounded-md text-xs font-semibold transition-all whitespace-nowrap ${rekapMode === m.k ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                           {m.l}
                         </button>
                       ))}
@@ -840,7 +840,7 @@ export default function GatePage() {
                     <div className="flex gap-1 p-0.5 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] shrink-0">
                       {[{ k: 'log', l: tp('viewDetailLog') || 'Detail Log' }, { k: 'ringkasan', l: tp('viewRingkasan') || 'Ringkasan' }].map(v => (
                         <button key={v.k} onClick={() => setRekapView(v.k)}
-                          className={`h-7 px-3 rounded-md text-[10px] font-black transition-all ${rekapView === v.k ? 'bg-[var(--color-surface)] shadow-sm text-[var(--color-text)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                          className={`h-8 px-3.5 rounded-md text-xs font-semibold transition-all ${rekapView === v.k ? 'bg-[var(--color-surface)] shadow-sm text-[var(--color-text)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                           {v.l}
                         </button>
                       ))}
@@ -849,12 +849,12 @@ export default function GatePage() {
 
                   {/* Navigasi tanggal di tengah */}
                   <div className="flex items-center gap-2">
-                    <button onClick={() => navRekap(-1)} className="w-7.5 h-7.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all active:scale-95">
-                      <ChevronLeft className="w-3.5 h-3.5" />
+                    <button onClick={() => navRekap(-1)} className="w-8 h-8 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all active:scale-95">
+                      <ChevronLeft className="w-4 h-4" />
                     </button>
-                    <span className="text-[12.5px] font-black text-[var(--color-text)] min-w-[120px] text-center tracking-tight">{rekapLabel}</span>
-                    <button onClick={() => navRekap(1)} className="w-7.5 h-7.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all active:scale-95">
-                      <ChevronRight className="w-3.5 h-3.5" />
+                    <span className="text-sm font-bold text-[var(--color-text)] min-w-[120px] text-center tracking-tight">{rekapLabel}</span>
+                    <button onClick={() => navRekap(1)} className="w-8 h-8 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all active:scale-95">
+                      <ChevronRight className="w-4 h-4" />
                     </button>
                   </div>
 
@@ -862,13 +862,13 @@ export default function GatePage() {
                   <div className="flex items-center gap-1.5 shrink-0">
                     <button onClick={() => handleExportCSV('rekap')}
                       disabled={filteredRekapData.length === 0}
-                      className="h-7.5 w-7.5 rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-emerald-600 hover:border-emerald-500/30 flex items-center justify-center transition-all bg-[var(--color-surface)] disabled:opacity-40 disabled:pointer-events-none" title="Export CSV">
-                      <FileSpreadsheet className="w-3.5 h-3.5" />
+                      className="h-8 w-8 rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-emerald-600 hover:border-emerald-500/30 flex items-center justify-center transition-all bg-[var(--color-surface)] disabled:opacity-40 disabled:pointer-events-none" title="Export CSV">
+                      <FileSpreadsheet className="w-4 h-4" />
                     </button>
                     <button onClick={handlePrint}
                       disabled={filteredRekapData.length === 0}
-                      className="h-7.5 w-7.5 rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-red-500 hover:border-red-500/30 flex items-center justify-center transition-all bg-[var(--color-surface)] disabled:opacity-40 disabled:pointer-events-none" title="Export PDF / Cetak">
-                      <FileText className="w-3.5 h-3.5" />
+                      className="h-8 w-8 rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-red-500 hover:border-red-500/30 flex items-center justify-center transition-all bg-[var(--color-surface)] disabled:opacity-40 disabled:pointer-events-none" title="Export PDF / Cetak">
+                      <FileText className="w-4 h-4" />
                     </button>
                     <button onClick={async () => {
                       const res = await sendDailySummary(rekapData)
@@ -876,8 +876,8 @@ export default function GatePage() {
                       else addToast(t('toastErrorUnexpected') + ': ' + res.error, 'error')
                     }}
                       disabled={rekapData.length === 0}
-                      className="h-7.5 px-3 rounded-lg border border-indigo-500/30 bg-indigo-500/5 text-indigo-600 hover:bg-indigo-500 hover:text-white transition-all text-[9.5px] font-black flex items-center gap-1.5 whitespace-nowrap disabled:opacity-40 disabled:pointer-events-none">
-                      <Send className="w-3 h-3" />
+                      className="h-8 px-3.5 rounded-lg border border-indigo-500/30 bg-indigo-500/5 text-indigo-600 hover:bg-indigo-500 hover:text-white transition-all text-xs font-semibold flex items-center gap-1.5 whitespace-nowrap disabled:opacity-40 disabled:pointer-events-none">
+                      <Send className="w-3.5 h-3.5" />
                       <span>{tp('sendTelegram') || 'Telegram'}</span>
                     </button>
                   </div>
@@ -886,27 +886,27 @@ export default function GatePage() {
                 {/* Baris 2: Search + Role Filter Pills */}
                 <div className="flex items-center gap-3 px-3 py-2.5 bg-[var(--color-surface)]">
                   <div className="relative flex-1 min-w-[200px]">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[var(--color-text-muted)] pointer-events-none" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)] pointer-events-none" />
                     <input value={searchRekap} onChange={e => setSearchRekap(e.target.value)}
                       placeholder={tp('placeholderSearch')}
-                      className="w-full h-8 pl-8 pr-7 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition-all" />
+                      className="w-full h-8.5 pl-9 pr-7 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] transition-all" />
                     {searchRekap && (
-                      <button onClick={() => setSearchRekap('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-                        <X className="w-3 h-3" />
+                      <button onClick={() => setSearchRekap('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
+                        <X className="w-3.5 h-3.5" />
                       </button>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide min-w-0 shrink-0">
+                  <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide min-w-0 shrink-0">
                     {[{ k: 'all', l: tp('presetFilterAll') }, ...VISITOR_TYPES.map(t => ({ k: t.key, l: TYPE_META[t.key]?.label || t.label }))].map(f => {
                       const count = f.k === 'all' ? rekapSummary.total : rekapSummary[f.k] || 0
                       return (
                         <button key={f.k} onClick={() => setFilterRekap(f.k)}
-                          className={`h-7 px-2.5 rounded-lg text-[9.5px] font-black flex items-center gap-1.5 transition-all whitespace-nowrap shrink-0 ${filterRekap === f.k
+                          className={`h-8 px-3 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all whitespace-nowrap shrink-0 ${filterRekap === f.k
                             ? 'bg-[var(--color-primary)] text-white shadow-sm'
                             : 'border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                           <span>{f.l}</span>
-                          <span className={`text-[8px] font-black px-1.5 py-0.5 rounded transition-all leading-none ${filterRekap === f.k
+                          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded transition-all leading-none ${filterRekap === f.k
                             ? 'bg-white/20 text-white'
                             : 'bg-[var(--color-border)] text-[var(--color-text-muted)]'}`}>
                             {tNum(count)}
@@ -916,7 +916,7 @@ export default function GatePage() {
                     })}
                   </div>
 
-                  <span className="text-[10px] font-bold text-[var(--color-text-muted)] ml-auto shrink-0 select-none">
+                  <span className="text-xs font-medium text-[var(--color-text-muted)] ml-auto shrink-0 select-none">
                     {rekapView === 'log'
                       ? `${tNum(filteredRekapData.length)} ${language === 'en' ? 'entries' : language === 'ar' ? 'سجلات' : 'entri'}`
                       : `${tNum(rekapRingkasan.length)} ${language === 'en' ? 'people' : language === 'ar' ? 'أشخاص' : 'orang'}`}
@@ -929,25 +929,25 @@ export default function GatePage() {
                 {/* Baris 1: Date Navigation + Telegram/Export Icons */}
                 <div className="flex items-center justify-between gap-3 px-3 pt-2.5 pb-2 border-b border-[var(--color-border)]/40 bg-[var(--color-surface-alt)]/10">
                   <div className="flex items-center gap-1.5">
-                    <button onClick={() => navRekap(-1)} className="w-8 h-8 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-                      <ChevronLeft className="w-3.5 h-3.5" />
+                    <button onClick={() => navRekap(-1)} className="w-8.5 h-8.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
+                      <ChevronLeft className="w-4 h-4" />
                     </button>
-                    <span className="text-[11.5px] font-black text-[var(--color-text)] min-w-[95px] text-center tracking-tight">{rekapLabel}</span>
-                    <button onClick={() => navRekap(1)} className="w-8 h-8 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-                      <ChevronRight className="w-3.5 h-3.5" />
+                    <span className="text-xs sm:text-sm font-bold text-[var(--color-text)] min-w-[95px] text-center tracking-tight">{rekapLabel}</span>
+                    <button onClick={() => navRekap(1)} className="w-8.5 h-8.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
+                      <ChevronRight className="w-4 h-4" />
                     </button>
                   </div>
 
                   <div className="flex items-center gap-1 shrink-0">
                     <button onClick={() => handleExportCSV('rekap')}
                       disabled={filteredRekapData.length === 0}
-                      className="h-8 w-8 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface)] flex items-center justify-center transition-all disabled:opacity-40 disabled:pointer-events-none" title="Export CSV">
-                      <FileSpreadsheet className="w-3.5 h-3.5" />
+                      className="h-8.5 w-8.5 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface)] flex items-center justify-center transition-all disabled:opacity-40 disabled:pointer-events-none" title="Export CSV">
+                      <FileSpreadsheet className="w-4 h-4" />
                     </button>
                     <button onClick={handlePrint}
                       disabled={filteredRekapData.length === 0}
-                      className="h-8 w-8 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface)] flex items-center justify-center transition-all disabled:opacity-40 disabled:pointer-events-none" title="Export PDF">
-                      <FileText className="w-3.5 h-3.5" />
+                      className="h-8.5 w-8.5 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface)] flex items-center justify-center transition-all disabled:opacity-40 disabled:pointer-events-none" title="Export PDF">
+                      <FileText className="w-4 h-4" />
                     </button>
                     <button onClick={async () => {
                       const res = await sendDailySummary(rekapData)
@@ -955,8 +955,8 @@ export default function GatePage() {
                       else addToast(t('toastErrorUnexpected') + ': ' + res.error, 'error')
                     }}
                       disabled={rekapData.length === 0}
-                      className="h-8 w-8 rounded-xl border border-indigo-500/20 bg-indigo-500/5 text-indigo-600 flex items-center justify-center transition-all disabled:opacity-40 disabled:pointer-events-none" title="Kirim ke Telegram">
-                      <Send className="w-3.5 h-3.5" />
+                      className="h-8.5 w-8.5 rounded-xl border border-indigo-500/20 bg-indigo-500/5 text-indigo-600 flex items-center justify-center transition-all disabled:opacity-40 disabled:pointer-events-none" title="Kirim ke Telegram">
+                      <Send className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -967,7 +967,7 @@ export default function GatePage() {
                   <div className="flex gap-0.5 p-0.5 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] w-full">
                     {[{ k: 'harian', l: tp('modeHarian') }, { k: 'mingguan', l: tp('modeMingguan') }, { k: 'bulanan', l: tp('modeBulanan') }].map(m => (
                       <button key={m.k} onClick={() => setRekapMode(m.k)}
-                        className={`h-6.5 flex-1 rounded-md text-[8.5px] font-black transition-all whitespace-nowrap ${rekapMode === m.k ? 'bg-[var(--color-primary)] text-white shadow-xs' : 'text-[var(--color-text-muted)]'}`}>
+                        className={`h-7.5 flex-1 rounded-md text-[11px] sm:text-xs font-semibold transition-all whitespace-nowrap ${rekapMode === m.k ? 'bg-[var(--color-primary)] text-white shadow-xs' : 'text-[var(--color-text-muted)]'}`}>
                         {m.l}
                       </button>
                     ))}
@@ -977,7 +977,7 @@ export default function GatePage() {
                   <div className="flex gap-0.5 p-0.5 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] w-full">
                     {[{ k: 'log', l: tp('viewDetailLog') || 'Log' }, { k: 'ringkasan', l: tp('viewRingkasan') || 'Ringkas' }].map(v => (
                       <button key={v.k} onClick={() => setRekapView(v.k)}
-                        className={`h-6.5 flex-1 rounded-md text-[8.5px] font-black transition-all ${rekapView === v.k ? 'bg-[var(--color-surface)] shadow-xs text-[var(--color-text)]' : 'text-[var(--color-text-muted)]'}`}>
+                        className={`h-7.5 flex-1 rounded-md text-[11px] sm:text-xs font-semibold transition-all ${rekapView === v.k ? 'bg-[var(--color-surface)] shadow-xs text-[var(--color-text)]' : 'text-[var(--color-text-muted)]'}`}>
                         {v.l}
                       </button>
                     ))}
@@ -987,17 +987,17 @@ export default function GatePage() {
                 {/* Baris 3: Search Bar */}
                 <div className="flex items-center gap-2 px-3 py-2 border-b border-[var(--color-border)]/40">
                   <div className="relative flex-1 min-w-0">
-                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[var(--color-text-muted)] pointer-events-none" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)] pointer-events-none" />
                     <input value={searchRekap} onChange={e => setSearchRekap(e.target.value)}
                       placeholder={tp('placeholderSearch')}
-                      className="w-full h-8 pl-8 pr-7 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition-all" />
+                      className="w-full h-9.5 pl-9 pr-7 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] transition-all" />
                     {searchRekap && (
-                      <button onClick={() => setSearchRekap('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]">
-                        <X className="w-3 h-3" />
+                      <button onClick={() => setSearchRekap('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]">
+                        <X className="w-3.5 h-3.5" />
                       </button>
                     )}
                   </div>
-                  <span className="text-[9.5px] font-black text-[var(--color-text-muted)] shrink-0 select-none bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-2 py-1.5 rounded-lg">
+                  <span className="text-xs font-bold text-[var(--color-text-muted)] shrink-0 select-none bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-2.5 py-1.5 rounded-lg">
                     {rekapView === 'log'
                       ? `${tNum(filteredRekapData.length)} entri`
                       : `${tNum(rekapRingkasan.length)} orang`}
@@ -1005,16 +1005,16 @@ export default function GatePage() {
                 </div>
 
                 {/* Baris 4: Role filter pills (grid 5 columns) */}
-                <div className="grid grid-cols-5 gap-1 px-3 py-2 bg-[var(--color-surface)]">
+                <div className="grid grid-cols-5 gap-1.5 px-3 py-2 bg-[var(--color-surface)]">
                   {[{ k: 'all', l: tp('presetFilterAll') }, ...VISITOR_TYPES.map(t => ({ k: t.key, l: TYPE_META[t.key]?.label || t.label }))].map(f => {
                     const count = f.k === 'all' ? rekapSummary.total : rekapSummary[f.k] || 0
                     return (
                       <button key={f.k} onClick={() => setFilterRekap(f.k)}
-                        className={`h-7.5 rounded-lg text-[8.5px] font-black flex flex-col items-center justify-center transition-all ${filterRekap === f.k
+                        className={`h-8 rounded-lg text-[10px] sm:text-xs font-semibold flex flex-col items-center justify-center transition-all ${filterRekap === f.k
                           ? 'bg-[var(--color-primary)] text-white shadow-xs'
                           : 'border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
-                        <span className="leading-none scale-90">{f.l}</span>
-                        <span className={`text-[7px] font-black px-1.5 mt-0.5 rounded leading-none ${filterRekap === f.k
+                        <span className="leading-none">{f.l}</span>
+                        <span className={`text-[9px] font-bold px-1.5 mt-0.5 rounded leading-none ${filterRekap === f.k
                           ? 'bg-white/20 text-white'
                           : 'bg-[var(--color-border)] text-[var(--color-text-muted)]'}`}>
                           {tNum(count)}
@@ -1062,7 +1062,7 @@ export default function GatePage() {
                                   language === 'en' ? 'Duration' : language === 'ar' ? 'المدة' : 'Durasi',
                                   language === 'en' ? 'Vehicle' : language === 'ar' ? 'المركبة' : 'Kendaraan'
                                 ].map(h => (
-                                  <th key={h} className="px-3 py-2.5 text-left text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] border-b border-[var(--color-border)] whitespace-nowrap">{h}</th>
+                                  <th key={h} className="px-4 py-2 text-start text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] border-b border-[var(--color-border)] whitespace-nowrap">{h}</th>
                                 ))}
                               </tr>
                             </thead>
@@ -1072,18 +1072,18 @@ export default function GatePage() {
                                 const isG = log.visitor_type !== 'tamu'
                                 const dur = durasi(log.check_in, log.check_out, language)
                                 return (
-                                  <tr key={log.id} className="border-b border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]/40 transition-colors cursor-pointer"
+                                  <tr key={log.id} className="border-b border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]/50 transition-colors cursor-pointer"
                                     onClick={() => setEditLog(log)}>
-                                    <td className="px-3 py-2.5 text-[11px] text-[var(--color-text-muted)]">{i + 1}</td>
-                                    <td className="px-3 py-2.5 text-[12px] font-black text-[var(--color-text)]">{log.visitor_name}</td>
-                                    <td className="px-3 py-2.5"><span className={`text-[9px] font-black px-2 py-0.5 rounded-md ${meta.bg} ${meta.color}`}>{meta.label}</span></td>
-                                    <td className="px-3 py-2.5 text-[11px] text-[var(--color-text-muted)]">{log.visitor_nip || '-'}</td>
-                                    <td className="px-3 py-2.5 text-[11px] text-[var(--color-text)]">{translatePurpose(log.purpose, language)}</td>
-                                    <td className="px-3 py-2.5 text-[11px] font-bold text-red-500">{isG ? fmtTime(log.check_in) : '-'}</td>
-                                    <td className="px-3 py-2.5 text-[11px] font-bold text-emerald-600">{isG ? fmtTime(log.check_out) : fmtTime(log.check_in)}</td>
-                                    <td className="px-3 py-2.5 text-[11px] font-bold text-red-500">{!isG ? fmtTime(log.check_out) : '-'}</td>
-                                    <td className="px-3 py-2.5 text-[11px] text-[var(--color-text-muted)] font-bold">{dur || '-'}</td>
-                                    <td className="px-3 py-2.5 text-[11px] text-[var(--color-text-muted)]">{log.vehicle_plate || '-'}</td>
+                                    <td className="px-4 py-2 text-xs text-[var(--color-text-muted)]">{i + 1}</td>
+                                    <td className="px-4 py-2 text-sm font-bold text-[var(--color-text)]">{log.visitor_name}</td>
+                                    <td className="px-4 py-2"><span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${meta.bg} ${meta.color}`}>{meta.label}</span></td>
+                                    <td className="px-4 py-2 text-xs text-[var(--color-text-muted)]">{log.visitor_nip || '-'}</td>
+                                    <td className="px-4 py-2 text-xs text-[var(--color-text)]">{translatePurpose(log.purpose, language)}</td>
+                                    <td className="px-4 py-2 text-xs font-bold text-red-500">{isG ? fmtTime(log.check_in) : '-'}</td>
+                                    <td className="px-4 py-2 text-xs font-bold text-emerald-600">{isG ? fmtTime(log.check_out) : fmtTime(log.check_in)}</td>
+                                    <td className="px-4 py-2 text-xs font-bold text-red-500">{!isG ? fmtTime(log.check_out) : '-'}</td>
+                                    <td className="px-4 py-2 text-xs text-[var(--color-text-muted)] font-bold">{dur || '-'}</td>
+                                    <td className="px-4 py-2 text-xs text-[var(--color-text-muted)]">{log.vehicle_plate || '-'}</td>
                                   </tr>
                                 )
                               })}
@@ -1107,7 +1107,7 @@ export default function GatePage() {
 
                             return (
                               <div key={log.id}
-                                className="p-3 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl flex items-center gap-3 shadow-xs">
+                                className="p-3.5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl flex items-center gap-3 shadow-xs">
 
                                 {/* Left: Icon circle */}
                                 <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${meta.bg}`}>
@@ -1117,14 +1117,14 @@ export default function GatePage() {
                                 {/* Middle: Text and details */}
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2">
-                                    <h4 className="text-[12.5px] font-bold text-[var(--color-text)] truncate leading-none">
+                                    <h4 className="text-sm font-bold text-[var(--color-text)] truncate leading-none">
                                       {log.visitor_name}
                                     </h4>
-                                    <span className={`text-[8.5px] font-bold px-1.5 py-0.5 rounded ${meta.bg} ${meta.color} leading-none`}>
+                                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${meta.bg} ${meta.color} leading-none`}>
                                       {meta.label}
                                     </span>
                                   </div>
-                                  <p className="text-[11px] text-[var(--color-text-muted)] mt-1.5 leading-tight truncate">
+                                  <p className="text-xs text-[var(--color-text-muted)] mt-1.5 leading-tight truncate">
                                     <span className="font-semibold text-[var(--color-text)]">{translatePurpose(log.purpose, language)}</span>
                                     <span className="mx-1.5 opacity-60">·</span>
                                     <span className="font-medium tabular-nums">{timeLabel}</span>
@@ -1139,8 +1139,8 @@ export default function GatePage() {
 
                                 {/* Right: Circle Edit Button */}
                                 <button onClick={() => setEditLog(log)}
-                                  className="h-8 w-8 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 flex items-center justify-center transition-colors shrink-0">
-                                  <Edit2 className="w-3.5 h-3.5" />
+                                  className="h-8.5 w-8.5 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 flex items-center justify-center transition-colors shrink-0">
+                                  <Edit2 className="w-4 h-4" />
                                 </button>
                               </div>
                             )
@@ -1171,10 +1171,10 @@ export default function GatePage() {
                             <thead>
                               <tr style={{ backgroundColor: 'var(--color-surface-alt)' }}>
                                 {['#', 'Nama', 'Jenis', 'Jml Keluar', 'Total Durasi Keluar', 'Rata-rata', 'Belum Kembali', 'Keperluan'].map(h => (
-                                  <th key={h} className="px-3 py-2.5 text-left text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] border-b border-[var(--color-border)] whitespace-nowrap">{h}</th>
+                                  <th key={h} className="px-4 py-2 text-start text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] border-b border-[var(--color-border)] whitespace-nowrap">{h}</th>
                                 ))}
-                                <th className="px-3 py-2.5 border-b border-[var(--color-border)]">
-                                  <span className="text-[8px] text-[var(--color-text-muted)]/50 font-bold normal-case tracking-normal">klik baris → detail log</span>
+                                <th className="px-4 py-2 border-b border-[var(--color-border)] text-end">
+                                  <span className="text-[10px] text-[var(--color-text-muted)] font-medium normal-case tracking-normal">klik baris → detail log</span>
                                 </th>
                               </tr>
                             </thead>
@@ -1195,40 +1195,40 @@ export default function GatePage() {
                                 return (
                                   <tr key={r.id}
                                     onClick={() => { setRekapView('log'); setSearchRekap(r.name) }}
-                                    className="border-b border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]/60 transition-colors cursor-pointer group"
+                                    className="border-b border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]/50 transition-colors cursor-pointer group"
                                     title={`Klik untuk lihat detail log ${r.name}`}>
-                                    <td className="px-3 py-3 text-[11px] text-[var(--color-text-muted)]">{i + 1}</td>
-                                    <td className="px-3 py-3">
-                                      <p className="text-[12px] font-black text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{r.name}</p>
-                                      {r.nip !== '-' && <p className="text-[9px] text-[var(--color-text-muted)]">{r.nip}</p>}
+                                    <td className="px-4 py-2.5 text-xs text-[var(--color-text-muted)]">{i + 1}</td>
+                                    <td className="px-4 py-2.5">
+                                      <p className="text-sm font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{r.name}</p>
+                                      {r.nip !== '-' && <p className="text-xs text-[var(--color-text-muted)]">{r.nip}</p>}
                                     </td>
-                                    <td className="px-3 py-3">
-                                      <span className={`text-[9px] font-black px-2 py-0.5 rounded-md ${meta.bg} ${meta.color}`}>{meta.label}</span>
+                                    <td className="px-4 py-2.5">
+                                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${meta.bg} ${meta.color}`}>{meta.label}</span>
                                     </td>
-                                    <td className="px-3 py-3 text-[13px] font-black text-[var(--color-text)] tabular-nums">{r.count}×</td>
-                                    <td className="px-3 py-3">
+                                    <td className="px-4 py-2.5 text-sm font-bold text-[var(--color-text)] tabular-nums">{r.count}×</td>
+                                    <td className="px-4 py-2.5">
                                       {isInternal ? (
                                         <div className="flex items-center gap-2">
-                                          <span className={`text-[12px] font-black tabular-nums ${r.totalMs > 0 ? 'text-red-500' : 'text-[var(--color-text-muted)]'}`}>{totalStr}</span>
+                                          <span className={`text-xs font-bold tabular-nums ${r.totalMs > 0 ? 'text-red-500' : 'text-[var(--color-text-muted)]'}`}>{totalStr}</span>
                                           {barPct > 0 && (
                                             <div className="flex-1 max-w-[60px] h-1.5 rounded-full bg-[var(--color-surface-alt)]">
                                               <div className="h-1.5 rounded-full bg-red-400" style={{ width: `${barPct}%` }} />
                                             </div>
                                           )}
                                         </div>
-                                      ) : <span className="text-[11px] text-[var(--color-text-muted)]">-</span>}
+                                      ) : <span className="text-xs text-[var(--color-text-muted)]">-</span>}
                                     </td>
-                                    <td className="px-3 py-3 text-[11px] font-bold text-[var(--color-text-muted)] tabular-nums">{isInternal ? avgStr : '-'}</td>
-                                    <td className="px-3 py-3">
+                                    <td className="px-4 py-2.5 text-xs font-medium text-[var(--color-text-muted)] tabular-nums">{isInternal ? avgStr : '-'}</td>
+                                    <td className="px-4 py-2.5">
                                       {r.belumKembali > 0
-                                        ? <span className="text-[10px] font-black px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-600">{r.belumKembali}×</span>
-                                        : <span className="text-[10px] text-[var(--color-text-muted)] opacity-40">-</span>}
+                                        ? <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-600">{r.belumKembali}×</span>
+                                        : <span className="text-xs text-[var(--color-text-muted)] opacity-40">-</span>}
                                     </td>
-                                    <td className="px-3 py-3 text-[10px] text-[var(--color-text-muted)] max-w-[180px]">
+                                    <td className="px-4 py-2.5 text-xs text-[var(--color-text-muted)] max-w-[180px]">
                                       <p className="truncate">{r.purposes.slice(0, 3).map(p => translatePurpose(p, language)).join(', ')}{r.purposes.length > 3 ? ` +${r.purposes.length - 3}` : ''}</p>
                                     </td>
-                                    <td className="px-3 py-3">
-                                      <span className="text-[9px] text-[var(--color-primary)]/50 font-black opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Detail →</span>
+                                    <td className="px-4 py-2.5 text-end">
+                                      <span className="text-xs text-[var(--color-primary)] font-semibold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Detail →</span>
                                     </td>
                                   </tr>
                                 )
@@ -1254,7 +1254,7 @@ export default function GatePage() {
 
                             return (
                               <div key={i}
-                                className="p-3 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl flex items-center gap-3 shadow-xs">
+                                className="p-3.5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl flex items-center gap-3 shadow-xs">
 
                                 {/* Left: Icon circle */}
                                 <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${meta.bg}`}>
@@ -1264,14 +1264,14 @@ export default function GatePage() {
                                 {/* Middle: Text and details */}
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2">
-                                    <h4 className="text-[12.5px] font-bold text-[var(--color-text)] truncate leading-none">
+                                    <h4 className="text-sm font-bold text-[var(--color-text)] truncate leading-none">
                                       {r.name}
                                     </h4>
-                                    <span className={`text-[8.5px] font-bold px-1.5 py-0.5 rounded ${meta.bg} ${meta.color} leading-none`}>
+                                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${meta.bg} ${meta.color} leading-none`}>
                                       {meta.label}
                                     </span>
                                   </div>
-                                  <p className="text-[11px] text-[var(--color-text-muted)] mt-1.5 leading-tight truncate font-medium">
+                                  <p className="text-xs text-[var(--color-text-muted)] mt-1.5 leading-tight truncate font-medium">
                                     <span>Keluar: <span className="font-bold text-[var(--color-text)]">{r.count}×</span></span>
                                     {isInternal && (
                                       <>
@@ -1282,7 +1282,7 @@ export default function GatePage() {
                                     {r.belumKembali > 0 && (
                                       <>
                                         <span className="mx-1.5 opacity-60">·</span>
-                                        <span className="font-bold text-amber-600 bg-amber-500/10 px-1 py-0.2 rounded text-[9px] uppercase">
+                                        <span className="font-bold text-amber-600 bg-amber-500/10 px-1.5 py-0.5 rounded text-[10px] uppercase">
                                           {r.belumKembali}× Aktif
                                         </span>
                                       </>
@@ -1292,7 +1292,7 @@ export default function GatePage() {
 
                                 {/* Right: Circle Navigation Button */}
                                 <button onClick={() => { setRekapView('log'); setSearchRekap(r.name) }}
-                                  className="h-8 w-8 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 flex items-center justify-center transition-colors shrink-0">
+                                  className="h-8.5 w-8.5 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 flex items-center justify-center transition-colors shrink-0">
                                   <ChevronRight className="w-4 h-4" />
                                 </button>
                               </div>

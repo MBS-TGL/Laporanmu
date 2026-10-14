@@ -31,18 +31,18 @@ export default function QuickGuide({ mode = 'internal' }) {
 
   return (
     <div className="animate-in slide-in-from-bottom-4 duration-500">
-      <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-4 flex items-center gap-2">
-        <Keyboard className="w-3.5 h-3.5" /> {tp('guideTitle')}
+      <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-3 flex items-center gap-2">
+        <Keyboard className="w-4 h-4" /> {tp('guideTitle')}
       </p>
-      <div className="space-y-3">
+      <div className="space-y-2.5">
         {items.map((t, i) => {
           const IconComp = t.icon
           return (
-            <div key={i} className="flex items-start gap-3 group">
-              <div className={`w-6 h-6 rounded-lg ${t.color}/10 ${t.color.replace('bg-', 'text-')} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
-                <IconComp className="w-3 h-3" />
+            <div key={i} className="flex items-start gap-2.5 group">
+              <div className={`w-6 h-6 rounded-lg ${t.color}/10 ${t.color.replace('bg-', 'text-')} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform mt-0.5`}>
+                <IconComp className="w-3.5 h-3.5" />
               </div>
-              <p className="text-[11px] text-[var(--color-text-muted)] font-medium leading-relaxed group-hover:text-[var(--color-text)] transition-colors">
+              <p className="text-xs text-[var(--color-text-muted)] font-medium leading-relaxed group-hover:text-[var(--color-text)] transition-colors">
                 {t.text}
               </p>
             </div>

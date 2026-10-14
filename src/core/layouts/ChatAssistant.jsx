@@ -118,7 +118,7 @@ export default function ChatAssistant({ isOpen: controlledIsOpen, onOpenChange }
             {/* Balanced Integrated Header */}
             <div className="px-6 py-4 flex items-center justify-between border-b border-black/[0.02]">
                 <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-700 flex items-center justify-center shadow-lg shadow-indigo-500/10">
+                    <div className="w-10 h-10 rounded-2xl bg-[var(--color-primary)] flex items-center justify-center shadow-md shadow-[var(--color-primary)]/20 text-white">
                         <FontAwesomeIcon icon={faRobot} className="text-white text-[14px]" />
                     </div>
                     <div>

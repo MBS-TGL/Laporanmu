@@ -16,13 +16,13 @@ export default function LiveClock() {
 
   return (
     <div className="flex flex-col items-end">
-      <div className="flex items-center gap-2 text-[var(--color-text)]">
-        <Clock className="w-3.5 h-3.5 text-[var(--color-primary)] animate-pulse" />
-        <span className="text-[15px] font-black tabular-nums tracking-tight">
+      <div className="flex items-center gap-1.5 text-[var(--color-text)]">
+        <Clock className="w-4 h-4 text-[var(--color-primary)] animate-pulse" />
+        <span className="text-sm sm:text-base font-bold tabular-nums tracking-tight">
           {time.toLocaleTimeString(locales[language] || 'id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}
         </span>
       </div>
-      <div className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] opacity-50 mt-0.5">
+      <div className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mt-0.5">
         {fmtDate(time, language)}
       </div>
     </div>

@@ -61,7 +61,7 @@ export default function DashboardLayout({ children, title }) {
             {/* Ambient glows — desktop only, lightweight */}
             <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden hidden lg:block">
                 <div className="absolute -top-24 -right-24 w-[400px] h-[400px] bg-[var(--color-primary)]/4 rounded-full blur-[80px]" />
-                <div className="absolute -bottom-24 -left-24 w-[400px] h-[400px] bg-[var(--color-accent)]/4 rounded-full blur-[80px]" />
+                <div className="absolute -bottom-24 -left-24 w-[400px] h-[400px] bg-[var(--color-primary)]/3 rounded-full blur-[80px]" />
             </div>
 
             {/* Page Content — shifts right on desktop to make room for sidebar */}

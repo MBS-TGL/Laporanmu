@@ -71,7 +71,7 @@ export default function FormInternal({ internalList, onSubmit, loading }) {
           const IconComp = t.icon
           return (
             <button key={t.key} onClick={() => { setVisitorType(t.key); setPersonId('') }}
-              className={`shrink-0 flex-1 min-w-0 h-8 rounded-xl text-[10px] font-black flex items-center justify-center gap-1.5 border transition-all ${visitorType === t.key
+              className={`shrink-0 flex-1 min-w-0 h-9 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 border transition-all ${visitorType === t.key
                 ? `${t.bg} ${t.color} ${t.border}`
                 : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
               <IconComp className="w-3.5 h-3.5 shrink-0" />
@@ -101,15 +101,15 @@ export default function FormInternal({ internalList, onSubmit, loading }) {
 
       {/* Datetime: tanggal + jam keluar + estimasi */}
       <div className="space-y-3 pt-1">
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2.5">
           <div>
-            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">
+            <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5 block">
               {tanggalLabel}
             </label>
             <RichDatePicker value={dateOut} onChange={setDateOut} clearable={false} />
           </div>
           <div>
-            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">
+            <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5 block">
               {jamKeluarLabel}
             </label>
             <RichTimePicker value={timeOut} onChange={setTimeOut} />
@@ -117,24 +117,24 @@ export default function FormInternal({ internalList, onSubmit, loading }) {
         </div>
 
         <div>
-          <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">
-            {tp('formEta')} <span className="normal-case font-medium opacity-65">({opsionalText})</span>
+          <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5 block">
+            {tp('formEta')} <span className="normal-case font-normal text-[var(--color-text-muted)]/75">{opsionalText}</span>
           </label>
           <RichTimePicker value={timeEst} onChange={setTimeEst} clearable={true} />
         </div>
       </div>
 
       <button onClick={submit} disabled={loading || !canSubmit}
-        className="w-full h-10 rounded-xl text-[12px] font-black flex items-center justify-center gap-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 active:scale-[0.98] text-white shadow-lg shadow-[var(--color-primary)]/20 px-4">
+        className="w-full h-11 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 active:scale-[0.98] text-white shadow-md shadow-[var(--color-primary)]/20 px-4">
         {loading
           ? <Loader2 className="w-4 h-4 animate-spin" />
           : <LogOut className="w-4 h-4" />}
         <span className="whitespace-nowrap">{tp('formSubmitOut')}</span>
       </button>
 
-      <div className="flex items-center gap-1.5 justify-end opacity-30 mt-1.5 cursor-default hover:opacity-100 transition-opacity">
+      <div className="flex items-center gap-1.5 justify-end opacity-40 mt-1 cursor-default hover:opacity-100 transition-opacity">
         <Keyboard className="w-3.5 h-3.5" />
-        <span className="text-[9px] font-bold">{tp('formEnterHint')}</span>
+        <span className="text-xs font-medium">{tp('formEnterHint')}</span>
       </div>
     </div>
   )

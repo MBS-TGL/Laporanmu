@@ -92,7 +92,7 @@ export default function DashboardPage() {
     const [recentGate, setRecentGate] = useState([])      // [{id, name, type, time}]
 
     const COLORS = useMemo(() => ([
-        '#ef4444', '#f59e0b', '#6366f1', '#8b5cf6', '#10b981', '#3b82f6'
+        '#ef4444', '#f97316', '#f59e0b', '#6366f1', '#94a3b8'
     ]), [])
 
     const fetchDashboardData = useCallback(async (isSilent = false) => {
@@ -179,11 +179,11 @@ export default function DashboardPage() {
                     const sorted = [...freq.entries()].sort((a, b) => b[1] - a[1])
                     const top = sorted.slice(0, 4)
                     const restSum = sorted.slice(4).reduce((acc, [, v]) => acc + v, 0)
-                    const COLORS = ['#ef4444', '#f59e0b', '#6366f1', '#10b981', '#3b82f6']
+                    const PIE_COLORS = ['#ef4444', '#f97316', '#f59e0b', '#6366f1', '#94a3b8']
 
                     pie = [
-                        ...top.map(([name, value], idx) => ({ name, value, color: COLORS[idx % COLORS.length] })),
-                        ...(restSum > 0 ? [{ name: 'Lainnya', value: restSum, color: COLORS[3] }] : []),
+                        ...top.map(([name, value], idx) => ({ name, value, color: PIE_COLORS[idx % PIE_COLORS.length] })),
+                        ...(restSum > 0 ? [{ name: 'Lainnya', value: restSum, color: PIE_COLORS[4] }] : []),
                     ]
                 }
             }
@@ -284,7 +284,7 @@ export default function DashboardPage() {
             label: 'Total Siswa',
             value: loading ? '…' : String(stats.totalStudents),
             subValue: stats.trendStudents,
-            color: 'indigo',
+            color: 'primary',
             onClick: () => navigate('/students')
         },
         {
@@ -292,8 +292,7 @@ export default function DashboardPage() {
             label: 'Laporan Hari Ini',
             value: loading ? '…' : String(stats.todayReports),
             subValue: stats.trendReports,
-            borderColor: 'blue-500',
-            iconBg: 'bg-blue-500/10 text-blue-600',
+            color: 'primary',
             onClick: () => navigate('/reports')
         },
         {
@@ -384,6 +383,7 @@ export default function DashboardPage() {
                                 trend={stat.trend}
                                 trendUp={stat.trendUp}
                                 loading={loading}
+                                color={stat.color}
                                 borderColor={stat.borderColor}
                                 iconBg={stat.iconBg}
                             />

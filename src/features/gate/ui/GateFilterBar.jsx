@@ -35,24 +35,24 @@ const GateFilterBar = memo(function GateFilterBar({
   return (
     <>
       {/* === DESKTOP TOOLBAR === */}
-      <div className="hidden sm:flex items-center gap-2 px-3 py-2.5 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/10">
+      <div className="hidden sm:flex items-center gap-2.5 px-3.5 py-2.5 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/10">
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[var(--color-text-muted)] pointer-events-none" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)] pointer-events-none" />
           <input value={searchLog} onChange={e => setSearchLog(e.target.value)}
             placeholder={tp('placeholderSearch')}
-            className="w-full h-8 pl-8 pr-7 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition-all" />
+            className="w-full h-8.5 pl-9 pr-7 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] transition-all" />
           {searchLog && (
-            <button onClick={() => setSearchLog('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-              <X className="w-3 h-3" />
+            <button onClick={() => setSearchLog('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
+              <X className="w-3.5 h-3.5" />
             </button>
           )}
         </div>
 
-        <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide min-w-0 shrink-0">
+        <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide min-w-0 shrink-0">
           {[{ k: 'all', l: tp('presetFilterAll') }, ...VISITOR_TYPES.map(t => ({ k: t.key, l: TYPE_META[t.key]?.label || t.label }))].map(f => (
             <button key={f.k} onClick={() => setFilterType(f.k)}
-              className={`h-7 px-2.5 rounded-lg text-[9.5px] font-black transition-all whitespace-nowrap shrink-0 ${filterType === f.k
-                ? 'bg-[var(--color-primary)] text-white'
+              className={`h-8 px-3 rounded-lg text-xs font-semibold transition-all whitespace-nowrap shrink-0 ${filterType === f.k
+                ? 'bg-[var(--color-primary)] text-white shadow-sm'
                 : 'border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
               {f.l}
             </button>
@@ -74,27 +74,27 @@ const GateFilterBar = memo(function GateFilterBar({
             const IconComp = f.icon
             return (
               <button key={f.k} onClick={() => setFilterStatus(f.k)}
-                className={`h-7 px-2.5 rounded-lg text-[9.5px] font-black flex items-center gap-1 transition-all whitespace-nowrap shrink-0 ${filterStatus === f.k ? activeColor : 'border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                <IconComp className="w-3 h-3 shrink-0" />{f.l}
-                <span className={`text-[8px] font-black px-1 py-0.5 rounded min-w-[14px] text-center ${filterStatus === f.k ? 'bg-white/25' : 'bg-[var(--color-border)]'}`}>{tNum(count)}</span>
+                className={`h-8 px-3 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all whitespace-nowrap shrink-0 ${filterStatus === f.k ? activeColor : 'border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                <IconComp className="w-3.5 h-3.5 shrink-0" />{f.l}
+                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded min-w-[16px] text-center ${filterStatus === f.k ? 'bg-white/25 text-white' : 'bg-[var(--color-border)] text-[var(--color-text-muted)]'}`}>{tNum(count)}</span>
               </button>
             )
           })}
         </div>
-        <div className="flex items-center gap-1 shrink-0">
+        <div className="flex items-center gap-1.5 shrink-0">
           <button onClick={handleCheckboxAllClick} disabled={filteredLogs.length === 0}
-            className={`h-7 w-7 rounded-lg border flex items-center justify-center transition-all ${selectionMode ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] bg-[var(--color-surface)] disabled:opacity-50'}`}
+            className={`h-8 w-8 rounded-lg border flex items-center justify-center transition-all ${selectionMode ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] bg-[var(--color-surface)] disabled:opacity-50'}`}
             title={selectionMode ? tp('btnCancelSelect') : tp('btnMultiSelect')}>
             <MultiSelectIcon className="w-3.5 h-3.5" />
           </button>
           <button onClick={() => handleExportCSV('log')}
             disabled={filteredLogs.length === 0}
-            className="h-7 w-7 rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-emerald-600 hover:border-emerald-500/30 flex items-center justify-center transition-all disabled:opacity-40 disabled:pointer-events-none" title="Export CSV">
+            className="h-8 w-8 rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-emerald-600 hover:border-emerald-500/30 flex items-center justify-center transition-all disabled:opacity-40 disabled:pointer-events-none" title="Export CSV">
             <FileSpreadsheet className="w-3.5 h-3.5" />
           </button>
           <button onClick={handlePrint}
             disabled={filteredLogs.length === 0}
-            className="h-7 w-7 rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-red-500 hover:border-red-500/30 flex items-center justify-center transition-all disabled:opacity-40 disabled:pointer-events-none" title="Export PDF / Cetak">
+            className="h-8 w-8 rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-red-500 hover:border-red-500/30 flex items-center justify-center transition-all disabled:opacity-40 disabled:pointer-events-none" title="Export PDF / Cetak">
             <FileText className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -105,41 +105,41 @@ const GateFilterBar = memo(function GateFilterBar({
         {/* Baris 1: Search + Actions */}
         <div className="flex items-center gap-2 px-3 pt-2.5 pb-2">
           <div className="relative flex-1 min-w-0">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[var(--color-text-muted)] pointer-events-none" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)] pointer-events-none" />
             <input value={searchLog} onChange={e => setSearchLog(e.target.value)}
               placeholder={tp('placeholderSearch')}
-              className="w-full h-8 pl-8 pr-7 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition-all" />
+              className="w-full h-9.5 pl-9 pr-7 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] transition-all" />
             {searchLog && (
-              <button onClick={() => setSearchLog('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]">
-                <X className="w-3 h-3" />
+              <button onClick={() => setSearchLog('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]">
+                <X className="w-3.5 h-3.5" />
               </button>
             )}
           </div>
-          <div className="flex items-center gap-1 shrink-0">
+          <div className="flex items-center gap-1.5 shrink-0">
             <button onClick={handleCheckboxAllClick} disabled={filteredLogs.length === 0}
-              className={`h-8 w-8 rounded-xl border flex items-center justify-center transition-all ${selectionMode ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface)] disabled:opacity-40'}`}
+              className={`h-9.5 w-9.5 rounded-xl border flex items-center justify-center transition-all ${selectionMode ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface)] disabled:opacity-40'}`}
               title={selectionMode ? tp('btnCancelSelect') : tp('btnMultiSelect')}>
-              <MultiSelectIcon className="w-3.5 h-3.5" />
+              <MultiSelectIcon className="w-4 h-4" />
             </button>
             <button onClick={() => handleExportCSV('log')}
               disabled={filteredLogs.length === 0}
-              className="h-8 w-8 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-emerald-600 flex items-center justify-center transition-all disabled:opacity-40 disabled:pointer-events-none" title="Export CSV">
-              <FileSpreadsheet className="w-3.5 h-3.5" />
+              className="h-9.5 w-9.5 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-emerald-600 flex items-center justify-center transition-all disabled:opacity-40 disabled:pointer-events-none" title="Export CSV">
+              <FileSpreadsheet className="w-4 h-4" />
             </button>
             <button onClick={handlePrint}
               disabled={filteredLogs.length === 0}
-              className="h-8 w-8 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-red-500 flex items-center justify-center transition-all disabled:opacity-40 disabled:pointer-events-none" title="Export PDF / Cetak">
-              <FileText className="w-3.5 h-3.5" />
+              className="h-9.5 w-9.5 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-red-500 flex items-center justify-center transition-all disabled:opacity-40 disabled:pointer-events-none" title="Export PDF / Cetak">
+              <FileText className="w-4 h-4" />
             </button>
           </div>
         </div>
 
         {/* Baris 2: Preset Type Filters */}
-        <div className="flex items-center gap-1 px-3 pb-2 overflow-x-auto scrollbar-hide">
+        <div className="flex items-center gap-1.5 px-3 pb-2 overflow-x-auto scrollbar-hide">
           {[{ k: 'all', l: tp('presetFilterAll') }, ...VISITOR_TYPES.map(t => ({ k: t.key, l: TYPE_META[t.key]?.label || t.label }))].map(f => (
             <button key={f.k} onClick={() => setFilterType(f.k)}
-              className={`h-7 px-3 rounded-lg text-[9px] font-black transition-all whitespace-nowrap ${filterType === f.k
-                ? 'bg-[var(--color-primary)] text-white shadow-sm shadow-[var(--color-primary)]/15'
+              className={`h-7.5 px-3 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${filterType === f.k
+                ? 'bg-[var(--color-primary)] text-white shadow-sm'
                 : 'border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)]'}`}>
               {f.l}
             </button>
@@ -147,7 +147,7 @@ const GateFilterBar = memo(function GateFilterBar({
         </div>
 
         {/* Baris 3: Status Filters */}
-        <div className="flex items-center gap-1 px-3 pb-2.5 overflow-x-auto scrollbar-hide">
+        <div className="flex items-center gap-1.5 px-3 pb-2.5 overflow-x-auto scrollbar-hide">
           {[
             { k: 'all', l: tp('filterStatusAll'), icon: Filter },
             { k: 'aktif', l: tp('filterStatusActive'), icon: CircleDot },
@@ -164,9 +164,9 @@ const GateFilterBar = memo(function GateFilterBar({
             const IconComp = f.icon
             return (
               <button key={f.k} onClick={() => setFilterStatus(f.k)}
-                className={`h-7 px-3 rounded-lg text-[9px] font-black flex items-center gap-1 transition-all whitespace-nowrap ${filterStatus === f.k ? activeColor : 'border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)]'}`}>
-                <IconComp className="w-2.5 h-2.5 shrink-0" />{f.l}
-                <span className={`text-[8px] font-black px-1 rounded ${filterStatus === f.k ? 'bg-white/20' : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)]'}`}>{tNum(count)}</span>
+                className={`h-7.5 px-3 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all whitespace-nowrap ${filterStatus === f.k ? activeColor : 'border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)]'}`}>
+                <IconComp className="w-3 h-3 shrink-0" />{f.l}
+                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${filterStatus === f.k ? 'bg-white/25 text-white' : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)]'}`}>{tNum(count)}</span>
               </button>
             )
           })}

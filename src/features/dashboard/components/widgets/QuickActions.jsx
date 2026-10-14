@@ -27,7 +27,7 @@ export const QuickActions = memo(function QuickActions() {
                     </div>
                 </Link>
                 <Link to="/master/students" className="flex items-center gap-3 p-3.5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-primary)]/40 hover:shadow-lg group/btn transition-all">
-                    <div className="w-9 h-9 bg-blue-500/10 text-blue-500 rounded-xl flex items-center justify-center shrink-0 group-hover/btn:scale-110 transition-transform">
+                    <div className="w-9 h-9 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-xl flex items-center justify-center shrink-0 group-hover/btn:scale-110 transition-transform">
                         <FontAwesomeIcon icon={faUsers} />
                     </div>
                     <div className="min-w-0">
@@ -36,7 +36,7 @@ export const QuickActions = memo(function QuickActions() {
                     </div>
                 </Link>
                 <Link to="/raport" className="flex items-center gap-3 p-3.5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-primary)]/40 hover:shadow-lg group/btn transition-all">
-                    <div className="w-9 h-9 bg-amber-500/10 text-amber-500 rounded-xl flex items-center justify-center shrink-0 group-hover/btn:scale-110 transition-transform">
+                    <div className="w-9 h-9 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-xl flex items-center justify-center shrink-0 group-hover/btn:scale-110 transition-transform">
                         <FontAwesomeIcon icon={faClipboardList} />
                     </div>
                     <div className="min-w-0">
@@ -44,8 +44,8 @@ export const QuickActions = memo(function QuickActions() {
                         <p className="text-[9px] text-[var(--color-text-muted)] font-bold uppercase tracking-widest opacity-60 mt-0.5">Progress Pengisian</p>
                     </div>
                 </Link>
-                <Link to="/boarding/counseling" className="flex items-center gap-3 p-3.5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:border-purple-500/40 hover:shadow-lg group/btn transition-all">
-                    <div className="w-9 h-9 bg-purple-500/10 text-purple-500 rounded-xl flex items-center justify-center shrink-0 group-hover/btn:scale-110 transition-transform">
+                <Link to="/boarding/counseling" className="flex items-center gap-3 p-3.5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-primary)]/40 hover:shadow-lg group/btn transition-all">
+                    <div className="w-9 h-9 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-xl flex items-center justify-center shrink-0 group-hover/btn:scale-110 transition-transform">
                         <HeartHandshake className="w-4 h-4" />
                     </div>
                     <div className="min-w-0">

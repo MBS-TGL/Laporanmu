@@ -11,25 +11,25 @@ import { faClipboardList } from '@fortawesome/free-solid-svg-icons'
 
 export const PointsConfigPie = memo(function PointsConfigPie({ pieData, loading }) {
     return (
-        <div className="glass rounded-[1.5rem] p-5 flex flex-col relative overflow-hidden group hover:shadow-2xl hover:shadow-indigo-500/10 transition-shadow duration-500">
-            <div className="absolute -right-4 -top-4 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 transition-colors" />
+        <div className="glass rounded-[1.5rem] p-5 flex flex-col relative overflow-hidden group hover:shadow-2xl hover:shadow-[var(--color-primary)]/10 transition-shadow duration-500">
+            <div className="absolute -right-4 -top-4 w-24 h-24 bg-[var(--color-primary)]/5 rounded-full blur-2xl group-hover:bg-[var(--color-primary)]/10 transition-colors" />
             <div className="mb-5 flex justify-between items-start relative z-10">
                 <div>
                     <p className="text-base font-black text-[var(--color-text)]">Konfigurasi Poin</p>
                     <p className="text-xs text-[var(--color-text-muted)] opacity-75 mt-0.5">Minggu ini</p>
                 </div>
-                <div className="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0">
                     <FontAwesomeIcon icon={faClipboardList} className="text-xs" />
                 </div>
             </div>
 
             {loading ? (
                 <div className="h-40 flex items-center justify-center">
-                    <div className="w-20 h-20 border-4 border-[var(--color-border)] border-t-indigo-500 rounded-full animate-spin" />
+                    <div className="w-20 h-20 border-4 border-[var(--color-border)] border-t-[var(--color-primary)] rounded-full animate-spin" />
                 </div>
             ) : pieData.length === 0 ? (
                 <div className="flex-1 flex flex-col items-center justify-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 flex items-center justify-center text-xl shadow-lg shadow-indigo-500/10">
+                    <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 flex items-center justify-center text-xl shadow-lg shadow-[var(--color-primary)]/10">
                         <FontAwesomeIcon icon={faClipboardList} />
                     </div>
                     <div className="text-center">

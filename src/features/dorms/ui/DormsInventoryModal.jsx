@@ -51,13 +51,13 @@ function InventoryModalContent({
                 <div className="flex items-center gap-2 w-full sm:flex-1">
                     {/* Search */}
                     <div className="relative flex-1">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[var(--color-text-muted)] opacity-40" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[var(--color-text-muted)] opacity-50" />
                         <input
                             type="text"
                             value={invSearch}
                             onChange={e => setInvSearch(e.target.value)}
                             placeholder={t('dorms.inventory.placeholderSearch')}
-                            className="w-full h-8 pl-8 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition"
+                            className="w-full h-9 pl-8 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-medium focus:outline-none focus:border-[var(--color-primary)] transition"
                         />
                     </div>
 
@@ -85,7 +85,7 @@ function InventoryModalContent({
                             <button
                                 key={f}
                                 onClick={() => setInvFilter(f)}
-                                className={`h-8 px-3 rounded-xl text-[10px] font-black uppercase tracking-wider border transition-all shrink-0 ${invFilter === f
+                                className={`h-8 px-3 rounded-xl text-xs font-semibold uppercase tracking-wider border transition-all shrink-0 ${invFilter === f
                                     ? 'bg-[var(--color-primary)] text-white border-transparent'
                                     : 'bg-[var(--color-surface)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]'
                                     }`}
@@ -95,7 +95,7 @@ function InventoryModalContent({
                         ))}
                     </div>
 
-                    <span className="text-[10px] text-[var(--color-text-muted)] font-black opacity-50 shrink-0 pl-1">
+                    <span className="text-xs text-[var(--color-text-muted)] font-medium shrink-0 pl-1">
                         {tNum(filtered.length)}/{tNum(roomItems.length)}
                     </span>
                 </div>
@@ -120,10 +120,10 @@ function InventoryModalContent({
                         <table className="w-full text-left table-fixed border-separate border-spacing-0">
                             <thead className="bg-[var(--color-surface-alt)]/60 border-b border-[var(--color-border)]">
                                 <tr>
-                                    <th className="pl-4 pr-2 py-3 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] w-[40%]">{t('dorms.inventory.thItemName')}</th>
-                                    <th className="px-2 py-3 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] text-center w-[17%]">{t('dorms.inventory.thTotal')}</th>
-                                    <th className="px-2 py-3 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] text-center w-[25%]">{t('dorms.inventory.thCondition')}</th>
-                                    <th className="px-2 py-3 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] text-center w-[18%]">{t('dorms.inventory.thAction')}</th>
+                                    <th className="pl-4 pr-2 py-3 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] w-[40%]">{t('dorms.inventory.thItemName')}</th>
+                                    <th className="px-2 py-3 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] text-center w-[17%]">{t('dorms.inventory.thTotal')}</th>
+                                    <th className="px-2 py-3 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] text-center w-[25%]">{t('dorms.inventory.thCondition')}</th>
+                                    <th className="px-2 py-3 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] text-center w-[18%]">{t('dorms.inventory.thAction')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-[var(--color-border)]">
@@ -134,24 +134,24 @@ function InventoryModalContent({
                                             <tr className={`transition-colors ${isExpanded ? 'bg-[var(--color-surface-alt)]/25' : 'hover:bg-[var(--color-surface-alt)]/25'}`}>
                                                 {/* Nama Item */}
                                                 <td className="pl-4 pr-2 py-3.5 text-left">
-                                                    <p className="text-[12px] font-black text-[var(--color-text)]">{item.item_name}</p>
-                                                    {item.notes && <p className="text-[9px] text-[var(--color-text-muted)] opacity-60 mt-0.5">{item.notes}</p>}
+                                                    <p className="text-sm font-bold text-[var(--color-text)]">{item.item_name}</p>
+                                                    {item.notes && <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{item.notes}</p>}
                                                 </td>
 
                                                 {/* Total */}
                                                 <td className="px-2 py-3.5 text-center">
-                                                    <p className="text-[13px] font-black text-[var(--color-text)]">{tNum(item.total_quantity)}</p>
+                                                    <p className="text-sm font-bold text-[var(--color-text)]">{tNum(item.total_quantity)}</p>
                                                 </td>
 
                                                 {/* Kondisi */}
                                                 <td className="px-2 py-3.5 text-center">
                                                     <div className="flex items-center justify-center gap-2.5">
-                                                        <span className="flex items-center gap-1 text-[11px] font-black text-emerald-600">
+                                                        <span className="flex items-center gap-1 text-xs font-bold text-emerald-600">
                                                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
                                                             {tNum(item.good_condition_count)}
                                                         </span>
                                                         <span className="text-[var(--color-border)]">|</span>
-                                                        <span className={`flex items-center gap-1 text-[11px] font-black ${item.damaged_condition_count > 0 ? 'text-rose-500' : 'text-[var(--color-text-muted)] opacity-30'}`}>
+                                                        <span className={`flex items-center gap-1 text-xs font-bold ${item.damaged_condition_count > 0 ? 'text-rose-500' : 'text-[var(--color-text-muted)] opacity-30'}`}>
                                                             <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${item.damaged_condition_count > 0 ? 'bg-rose-500' : 'bg-[var(--color-border)]'}`} />
                                                             {tNum(item.damaged_condition_count)}
                                                         </span>
@@ -256,7 +256,7 @@ export function DormsInventoryModal({
             mobileVariant="bottom-sheet"
             footer={
                 <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-[var(--color-text-muted)] font-black opacity-60">
+                    <span className="text-xs text-[var(--color-text-muted)] font-medium">
                         {t('dorms.inventory.footerCount').replace('{count}', tNum(inventories.filter(i => i.dorm_id === inventoryModalDorm?.id).length))}
                     </span>
                     <button
@@ -268,7 +268,7 @@ export function DormsInventoryModal({
                             setInventoryModalDorm(null)
                             setIsInventoryModalOpen(true)
                         }}
-                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 transition-all"
+                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 transition-all"
                     >
                         <Plus className="w-3.5 h-3.5" />
                         {t('dorms.inventory.addItemBtn')}
@@ -329,11 +329,11 @@ export function DormsInventoryFormModal({
                         }
                         setEditingInventoryItem(null)
                     }}
-                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition">
+                        className="h-9.5 px-4 sm:px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider transition">
                         {t('dorms.inventoryForm.cancel')}
                     </button>
                     <button type="submit" form="inventory-form" disabled={submittingInventory}
-                        className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-[var(--color-primary)]/20 transition flex items-center justify-center gap-2 ml-auto">
+                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-[var(--color-primary)]/20 transition flex items-center justify-center gap-2 ml-auto disabled:opacity-50">
                         {submittingInventory ? <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Check className="w-3.5 h-3.5" />}
                         {t('dorms.inventoryForm.save')}
                     </button>
@@ -342,38 +342,38 @@ export function DormsInventoryFormModal({
         >
             <form id="inventory-form" onSubmit={handleSaveInventoryItem} className="space-y-4">
                 <div>
-                    <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.inventoryForm.labelItemName')}</label>
+                    <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">{t('dorms.inventoryForm.labelItemName')}</label>
                     <input type="text" required value={newInventoryItem.item_name}
                         onChange={e => setNewInventoryItem(p => ({ ...p, item_name: e.target.value }))}
                         placeholder={t('dorms.inventoryForm.placeholderItemName')}
-                        className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition" />
+                        className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] transition" />
                 </div>
                 <div className="grid grid-cols-3 gap-3">
                     <div>
-                        <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.inventoryForm.labelTotal')}</label>
+                        <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">{t('dorms.inventoryForm.labelTotal')}</label>
                         <input type="number" min="0" required value={newInventoryItem.total_quantity}
                             onChange={e => setNewInventoryItem(p => ({ ...p, total_quantity: Number(e.target.value) }))}
-                            className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition" />
+                            className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] transition" />
                     </div>
                     <div>
-                        <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.inventoryForm.labelGood')}</label>
+                        <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">{t('dorms.inventoryForm.labelGood')}</label>
                         <input type="number" min="0" value={newInventoryItem.good_condition_count}
                             onChange={e => setNewInventoryItem(p => ({ ...p, good_condition_count: Number(e.target.value) }))}
-                            className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition" />
+                            className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] transition" />
                     </div>
                     <div>
-                        <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.inventoryForm.labelDamaged')}</label>
+                        <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">{t('dorms.inventoryForm.labelDamaged')}</label>
                         <input type="number" min="0" value={newInventoryItem.damaged_condition_count}
                             onChange={e => setNewInventoryItem(p => ({ ...p, damaged_condition_count: Number(e.target.value) }))}
-                            className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition" />
+                            className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] transition" />
                     </div>
                 </div>
                 <div>
-                    <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.inventoryForm.labelNotes')}</label>
+                    <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">{t('dorms.inventoryForm.labelNotes')}</label>
                     <input type="text" value={newInventoryItem.notes}
                         onChange={e => setNewInventoryItem(p => ({ ...p, notes: e.target.value }))}
                         placeholder={t('dorms.inventoryForm.placeholderNotes')}
-                        className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition" />
+                        className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] transition" />
                 </div>
             </form>
         </Modal>

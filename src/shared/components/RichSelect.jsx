@@ -223,21 +223,21 @@ const RichSelect = memo(({
             {searchable && (
                 <div className="p-2 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/30 shrink-0">
                     <div className="relative">
-                        <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] opacity-40" />
+                        <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[var(--color-text-muted)] opacity-40" />
                         <input
                             ref={searchInputRef}
                             type="text"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Cari..."
-                            className="w-full h-8 pl-8 pr-8 rounded-lg border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] focus:border-[var(--color-primary)] focus:ring-0 outline-none transition-all font-bold"
+                            className="w-full h-8.5 pl-8 pr-8 rounded-lg border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-medium focus:border-[var(--color-primary)] focus:ring-0 outline-none transition-all"
                         />
                         {search && (
                             <button
                                 onClick={() => setSearch('')}
                                 className="absolute right-2 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 transition-colors"
                             >
-                                <FontAwesomeIcon icon={faXmark} className="text-[10px]" />
+                                <FontAwesomeIcon icon={faXmark} className="text-xs" />
                             </button>
                         )}
                     </div>
@@ -250,7 +250,7 @@ const RichSelect = memo(({
                     <button
                         type="button"
                         onClick={() => setActiveGroup('All')}
-                        className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider transition-all border ${activeGroup === 'All'
+                        className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider transition-all border ${activeGroup === 'All'
                                 ? 'bg-[var(--color-primary)] text-white border-transparent shadow-sm'
                                 : 'bg-[var(--color-surface)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]'
                             }`}
@@ -271,7 +271,7 @@ const RichSelect = memo(({
                                 key={g}
                                 type="button"
                                 onClick={() => setActiveGroup(g)}
-                                className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider transition-all border shrink-0 ${isActive
+                                className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider transition-all border shrink-0 ${isActive
                                         ? activeClasses
                                         : 'bg-[var(--color-surface)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]'
                                     }`}
@@ -292,13 +292,13 @@ const RichSelect = memo(({
                     <button
                         type="button"
                         onClick={(e) => { e.stopPropagation(); handleSelect(extraOption.id) }}
-                        className={`w-full text-left px-3 py-1.5 text-[11px] font-bold hover:bg-[var(--color-primary)]/5 transition-all flex items-center justify-between group whitespace-nowrap ${value === extraOption.id ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/5' : 'text-amber-600'}`}
+                        className={`w-full text-left px-3.5 py-2 text-xs font-medium hover:bg-[var(--color-primary)]/5 transition-all flex items-center justify-between group whitespace-nowrap ${value === extraOption.id ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/5 font-bold' : 'text-amber-600'}`}
                     >
                         <div className="flex items-center gap-2.5">
                             <div className={`w-1.5 h-1.5 rounded-full ${value === extraOption.id ? 'bg-[var(--color-primary)]' : 'bg-amber-600'}`} />
                             {extraOption.name}
                         </div>
-                        {value === extraOption.id && <FontAwesomeIcon icon={faCheck} className="text-[10px]" />}
+                        {value === extraOption.id && <FontAwesomeIcon icon={faCheck} className="text-xs" />}
                     </button>
                 )}
 
@@ -306,26 +306,26 @@ const RichSelect = memo(({
                     <button
                         type="button"
                         onClick={(e) => { e.stopPropagation(); handleSelect(search) }}
-                        className="w-full text-left px-3 py-1.5 text-[11px] font-bold text-[var(--color-primary)] bg-[var(--color-primary)]/5 hover:bg-[var(--color-primary)]/10 transition-all flex items-center justify-between group whitespace-nowrap border-b border-[var(--color-border)]"
+                        className="w-full text-left px-3.5 py-2 text-xs font-medium text-[var(--color-primary)] bg-[var(--color-primary)]/5 hover:bg-[var(--color-primary)]/10 transition-all flex items-center justify-between group whitespace-nowrap border-b border-[var(--color-border)]"
                     >
                         <div className="flex items-center gap-2.5">
                             <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse" />
                             <span>Gunakan "{search}"</span>
                         </div>
-                        <FontAwesomeIcon icon={faCheck} className="text-[10px]" />
+                        <FontAwesomeIcon icon={faCheck} className="text-xs" />
                     </button>
                 )}
 
                 {filteredOptions.length === 0 ? (
                     <div className="px-4 py-6 text-center">
-                        <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-40">{allowCustom ? 'Ketik untuk menambahkan' : 'Tidak ditemukan'}</p>
+                        <p className="text-xs font-medium text-[var(--color-text-muted)] opacity-60">{allowCustom ? 'Ketik untuk menambahkan' : 'Tidak ditemukan'}</p>
                     </div>
                 ) : groupedOptions ? (
                     /* ─── Grouped Rendering ─── */
                     Object.keys(groupedOptions).map(groupName => (
                         <div key={groupName} className="flex flex-col">
                             {/* Sticky Color-coded Group Header */}
-                            <div className={`px-4 py-1.5 text-[9px] font-black uppercase tracking-widest border-y border-[var(--color-border)]/35 sticky top-0 backdrop-blur-md z-10 select-none ${groupName.toLowerCase().includes('pelanggaran')
+                            <div className={`px-4 py-1.5 text-xs font-bold uppercase tracking-wider border-y border-[var(--color-border)]/35 sticky top-0 backdrop-blur-md z-10 select-none ${groupName.toLowerCase().includes('pelanggaran')
                                     ? 'text-rose-500 bg-rose-50/90 dark:bg-rose-950/20'
                                     : groupName.toLowerCase().includes('prestasi')
                                         ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50/90 dark:bg-emerald-950/20'
@@ -340,13 +340,13 @@ const RichSelect = memo(({
                                     key={opt.id}
                                     type="button"
                                     onClick={(e) => { e.stopPropagation(); handleSelect(opt.id) }}
-                                    className={`w-full text-left ${compact ? 'px-3 py-1.5' : 'px-4 py-2'} text-[11px] font-bold hover:bg-[var(--color-primary)]/5 transition-all flex items-center justify-between group whitespace-nowrap ${String(value) === String(opt.id) ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/5' : 'text-[var(--color-text)]'}`}
+                                    className={`w-full text-left ${compact ? 'px-3 py-1.5' : 'px-3.5 py-2'} text-xs font-medium hover:bg-[var(--color-primary)]/5 transition-all flex items-center justify-between group whitespace-nowrap ${String(value) === String(opt.id) ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/5 font-bold' : 'text-[var(--color-text)]'}`}
                                 >
                                     <div className="flex items-center gap-2.5">
                                         <div className={`w-1.5 h-1.5 rounded-full transition-all ${String(value) === String(opt.id) ? 'bg-[var(--color-primary)] scale-125 shadow-[0_0_8px_rgba(var(--color-primary-rgb),0.4)]' : 'bg-[var(--color-border)] group-hover:bg-[var(--color-text-muted)]'}`} />
                                         {opt.render ? opt.render : opt.name}
                                     </div>
-                                    {String(value) === String(opt.id) && <FontAwesomeIcon icon={faCheck} className="text-[10px] animate-in zoom-in-50 duration-300" />}
+                                    {String(value) === String(opt.id) && <FontAwesomeIcon icon={faCheck} className="text-xs animate-in zoom-in-50 duration-300" />}
                                 </button>
                             ))}
                         </div>
@@ -358,13 +358,13 @@ const RichSelect = memo(({
                             key={opt.id}
                             type="button"
                             onClick={(e) => { e.stopPropagation(); handleSelect(opt.id) }}
-                            className={`w-full text-left ${compact ? 'px-3 py-1.5' : 'px-4 py-2'} text-[11px] font-bold hover:bg-[var(--color-primary)]/5 transition-all flex items-center justify-between group whitespace-nowrap ${String(value) === String(opt.id) ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/5' : 'text-[var(--color-text)]'}`}
+                            className={`w-full text-left ${compact ? 'px-3 py-1.5' : 'px-3.5 py-2'} text-xs font-medium hover:bg-[var(--color-primary)]/5 transition-all flex items-center justify-between group whitespace-nowrap ${String(value) === String(opt.id) ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/5 font-bold' : 'text-[var(--color-text)]'}`}
                         >
                             <div className="flex items-center gap-2.5">
                                 <div className={`w-1.5 h-1.5 rounded-full transition-all ${String(value) === String(opt.id) ? 'bg-[var(--color-primary)] scale-125 shadow-[0_0_8px_rgba(var(--color-primary-rgb),0.4)]' : 'bg-[var(--color-border)] group-hover:bg-[var(--color-text-muted)]'}`} />
                                 {opt.render ? opt.render : opt.name}
                             </div>
-                            {String(value) === String(opt.id) && <FontAwesomeIcon icon={faCheck} className="text-[10px] animate-in zoom-in-50 duration-300" />}
+                            {String(value) === String(opt.id) && <FontAwesomeIcon icon={faCheck} className="text-xs animate-in zoom-in-50 duration-300" />}
                         </button>
                     ))
                 )}
@@ -393,7 +393,7 @@ const RichSelect = memo(({
                 type="button"
                 onClick={disabled ? undefined : toggle}
                 disabled={disabled}
-                className={`w-full flex items-center justify-between gap-2 ${hasCustomHeight ? '' : heightClass} ${paddingClass} rounded-lg sm:rounded-xl border ${statusClasses[status]} bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)]/50 focus:ring-1 outline-none transition-all text-[11px] sm:text-[12px] font-bold relative group shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${buttonClassName}`}
+                className={`w-full flex items-center justify-between gap-2 ${hasCustomHeight ? '' : heightClass} ${paddingClass} rounded-lg sm:rounded-xl border ${statusClasses[status]} bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)]/50 focus:ring-1 outline-none transition-all ${compact || small ? 'text-xs font-semibold' : 'text-xs sm:text-sm font-medium'} relative group shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${buttonClassName}`}
             >
                 <div className="flex items-center gap-2 truncate">
                     {icon && !compact && renderIcon(icon, `absolute ${small ? 'left-3 rtl:left-auto rtl:right-3 w-3 h-3 text-[10px]' : 'left-3.5 rtl:left-auto rtl:right-3.5 w-3.5 h-3.5 text-xs'} top-1/2 -translate-y-1/2 transition-colors ${iconStatusClasses[status]}`)}
@@ -401,7 +401,7 @@ const RichSelect = memo(({
                         {selectedOption ? (selectedOption.render ? selectedOption.render : selectedOption.name) : placeholder}
                     </span>
                 </div>
-                <FontAwesomeIcon icon={faChevronDown} className={`text-[9px] opacity-40 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
+                <FontAwesomeIcon icon={faChevronDown} className={`text-xs opacity-40 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
             </button>
 
             {isOpen && (!usePortal || compact ? (

@@ -53,12 +53,12 @@ export default function BulkActionsBar({
 
           {/* Count Indicator */}
           <div className="flex items-center gap-3 pl-1.5 rtl:pl-0 rtl:pr-1.5 shrink-0">
-            <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)] flex items-center justify-center font-black text-[14px] shadow-lg shadow-[var(--color-primary)]/30 shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)] flex items-center justify-center font-bold text-sm shadow-lg shadow-[var(--color-primary)]/30 shrink-0">
               {selectedCount}
             </div>
             <div className="hidden sm:block">
-              <p className="text-[9px] font-black uppercase tracking-widest opacity-60 leading-none">{title}</p>
-              <p className="text-[11px] font-bold leading-none mt-0.5">{subtitle}</p>
+              <p className="text-xs font-bold uppercase tracking-wider opacity-70 leading-none">{title}</p>
+              <p className="text-xs font-medium leading-none mt-1">{subtitle}</p>
             </div>
           </div>
 
@@ -78,7 +78,7 @@ export default function BulkActionsBar({
               className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-all flex items-center justify-center translate-x-0 active:scale-90"
               title={dir === 'rtl' ? 'إلغاء وإغلاق' : 'Batal & Tutup'}
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
         </div>

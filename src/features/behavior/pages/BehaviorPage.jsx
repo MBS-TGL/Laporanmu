@@ -325,6 +325,7 @@ export default function BehaviorPage() {
                                     onClick={() => { if (!isHeaderMenuOpen) setHeaderMenuRect(headerMenuBtnRef.current?.getBoundingClientRect()); setIsHeaderMenuOpen(v => !v) }}
                                     className={`h-9 w-9 rounded-lg border flex items-center justify-center text-sm transition-all ${isHeaderMenuOpen ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
                                     title={tp('reportOptions')}
+                                    aria-label={tp('reportOptions')}
                                 >
                                     <Sliders className="w-4 h-4" />
                                 </button>
@@ -344,15 +345,15 @@ export default function BehaviorPage() {
                                                 left: Math.max(10, headerMenuRect.right - 224)
                                             }}
                                         >
-                                            <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">{tp('reportOptions')}</p>
+                                            <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] px-3 py-2">{tp('reportOptions')}</p>
                                             <button onClick={() => { setIsImportModalOpen(true); setIsHeaderMenuOpen(false) }}
                                                 className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group text-left">
                                                 <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                                                     <Upload className="w-4 h-4 text-xs" />
                                                 </div>
                                                 <div className="text-left">
-                                                    <p className="text-[11px] font-black leading-tight">{tp('importData')}</p>
-                                                    <p className="text-[9px] opacity-40 font-bold uppercase tracking-wider">xls, csv</p>
+                                                    <p className="text-xs font-bold leading-tight">{tp('importData')}</p>
+                                                    <p className="text-[10px] opacity-40 font-bold uppercase tracking-wider">xls, csv</p>
                                                 </div>
                                             </button>
                                             <button onClick={() => { setIsExportModalOpen(true); setIsHeaderMenuOpen(false) }}
@@ -361,8 +362,8 @@ export default function BehaviorPage() {
                                                     <Download className="w-4 h-4 text-xs" />
                                                 </div>
                                                 <div className="text-left">
-                                                    <p className="text-[11px] font-black leading-tight">{tp('exportData')}</p>
-                                                    <p className="text-[9px] opacity-40 font-bold uppercase tracking-wider">xls, csv</p>
+                                                    <p className="text-xs font-bold leading-tight">{tp('exportData')}</p>
+                                                    <p className="text-[10px] opacity-40 font-bold uppercase tracking-wider">xls, csv</p>
                                                 </div>
                                             </button>
                                         </div>
@@ -378,6 +379,7 @@ export default function BehaviorPage() {
                                     onClick={() => { if (!isShortcutOpen) setShortcutRect(shortcutBtnRef.current?.getBoundingClientRect()); setIsShortcutOpen(v => !v) }}
                                     className={`h-9 w-9 rounded-lg border flex items-center justify-center transition-all ${isShortcutOpen ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                                     title={tp('shortcutTitle')}
+                                    aria-label={tp('shortcutTitle')}
                                 >
                                     <Keyboard className="w-4 h-4 text-sm" />
                                 </button>
@@ -395,8 +397,8 @@ export default function BehaviorPage() {
                                             }}
                                         >
                                             <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
-                                                <p className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text)]">{tp('shortcuts')}</p>
-                                                <span className="text-[9px] text-[var(--color-text-muted)] font-bold">{tp('shortcutToggle')}</span>
+                                                <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text)]">{tp('shortcuts')}</p>
+                                                <span className="text-[10px] text-[var(--color-text-muted)] font-medium">{tp('shortcutToggle')}</span>
                                             </div>
                                             <div className="p-3 space-y-0.5">
                                                 {[
@@ -413,13 +415,13 @@ export default function BehaviorPage() {
                                                     { keys: ['X'], label: tp('shortcutReset') },
                                                     { keys: ['?'], label: tp('shortcutShow') },
                                                 ].map((item, i) => item.section ? (
-                                                    <p key={i} className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
+                                                    <p key={i} className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
                                                 ) : (
                                                     <div key={i} className="flex items-center justify-between px-1 py-1 rounded-lg hover:bg-[var(--color-surface-alt)] transition-all">
-                                                        <span className="text-[11px] font-semibold text-[var(--color-text)]">{item.label}</span>
+                                                        <span className="text-xs font-medium text-[var(--color-text)]">{item.label}</span>
                                                         <div className="flex items-center gap-1">
                                                             {item.keys.map((k, ki) => (
-                                                                <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[9px] font-black text-[var(--color-text-muted)] font-mono">{k}</span>
+                                                                <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-muted)] font-mono">{k}</span>
                                                             ))}
                                                         </div>
                                                     </div>
@@ -438,19 +440,20 @@ export default function BehaviorPage() {
                                 }}
                                 className={`h-9 px-3 rounded-lg border flex items-center gap-2 transition-all ${isPrivacyMode ? 'bg-amber-500/10 border-amber-500/30 text-amber-600' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'} `}
                                 title={isPrivacyMode ? tp('disablePrivacy') : tp('enablePrivacy')}
+                                aria-label={isPrivacyMode ? tp('disablePrivacy') : tp('enablePrivacy')}
                             >
                                 {isPrivacyMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline">
+                                <span className="text-xs font-bold uppercase tracking-wider hidden md:inline">
                                     {tp('privacy')}
                                 </span>
                             </button>
 
                             {/* Primary Add Button */}
                             <button onClick={handleAdd} disabled={!canInput}
-                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 disabled:opacity-40 disabled:cursor-not-allowed border border-white/10"
+                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 disabled:opacity-40 disabled:cursor-not-allowed border border-white/10"
                             >
-                                <Plus className="w-3.5 h-3.5" />
-                                <span className="text-[10px] font-black uppercase tracking-widest">{canInput ? tp('createReport') : tp('readOnly')}</span>
+                                <Plus className="w-4 h-4" />
+                                <span>{canInput ? tp('createReport') : tp('readOnly')}</span>
                             </button>
                         </>
                     ) : null}
@@ -484,20 +487,20 @@ export default function BehaviorPage() {
                     <div className="flex gap-1 sm:gap-1.5 p-1 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] w-full lg:w-fit overflow-x-auto scrollbar-hide">
                         <button
                             onClick={() => handleTabChange('reports')}
-                            className={`flex-1 lg:flex-none h-9 px-6 rounded-xl text-[11px] font-black flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'reports'
+                            className={`flex-1 lg:flex-none h-9 px-6 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'reports'
                                 ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm'
                                 : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                         >
-                            <ClipboardList className="w-3.5 h-3.5" />
+                            <ClipboardList className="w-4 h-4" />
                             <span>{tp('tabReports')}</span>
                         </button>
                         <button
                             onClick={() => handleTabChange('rules')}
-                            className={`flex-1 lg:flex-none h-9 px-6 rounded-xl text-[11px] font-black flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'rules'
+                            className={`flex-1 lg:flex-none h-9 px-6 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'rules'
                                 ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm'
                                 : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                         >
-                            <Sliders className="w-3.5 h-3.5" />
+                            <Sliders className="w-4 h-4" />
                             <span>{tp('tabRules')}</span>
                         </button>
                     </div>
@@ -581,7 +584,7 @@ export default function BehaviorPage() {
                                 title={tp('noReports')}
                                 description={tp('noReportsDesc')}
                                 action={
-                                    <button onClick={handleAdd} disabled={!canInput} className="btn btn-primary h-10 px-6 text-[10px] font-black uppercase tracking-widest shadow-lg shadow-[var(--color-primary)]/20 disabled:opacity-40 disabled:cursor-not-allowed">
+                                    <button onClick={handleAdd} disabled={!canInput} className="btn btn-primary h-10 px-6 text-xs font-bold uppercase tracking-wider shadow-lg shadow-[var(--color-primary)]/20 disabled:opacity-40 disabled:cursor-not-allowed">
                                         {canInput ? tp('createNow') : tp('readOnly')}
                                     </button>
                                 }
@@ -631,9 +634,9 @@ export default function BehaviorPage() {
                                                 <div className="w-2 h-2 rounded-full bg-[var(--color-primary)] ring-2 ring-[var(--color-surface)]" />
                                             </div>
                                             <div className="flex items-center gap-3 bg-[var(--color-surface)]/95 backdrop-blur-md pl-4 pr-5 py-1.5 rounded-2xl border border-[var(--color-border)] w-fit shadow-md shadow-black/[0.02] shrink-0">
-                                                <span className="text-[11px] font-black uppercase text-[var(--color-text)] tracking-wider leading-none whitespace-nowrap">{fmtDayLabel(date)}</span>
+                                                <span className="text-xs font-bold uppercase text-[var(--color-text)] tracking-wider leading-none whitespace-nowrap">{fmtDayLabel(date)}</span>
                                                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] opacity-40 animate-pulse shrink-0" />
-                                                <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider font-extrabold leading-none whitespace-nowrap">{tNum(items.length)} {tp('reportCount')}</span>
+                                                <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider font-bold leading-none whitespace-nowrap">{tNum(items.length)} {tp('reportCount')}</span>
                                             </div>
                                         </div>
 
@@ -716,12 +719,12 @@ export default function BehaviorPage() {
                                                         onChange={() => setSelectedIds(allSelected ? [] : reports.map(r => r.id))}
                                                         className="w-4 h-4 rounded border-[var(--color-border)] cursor-pointer" />
                                                 </th>
-                                                <th className="px-4 py-3.5 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] w-[25%]">{tp('studentCol')}</th>
-                                                {visibleCols.type && <th className="px-4 py-3.5 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] w-[35%]">{tp('reportType')}</th>}
-                                                {visibleCols.points && <th className="px-4 py-3.5 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] text-center w-[10%]">{tp('points')}</th>}
-                                                {visibleCols.time && <th className="px-4 py-3.5 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] w-[15%]">{tp('time')}</th>}
-                                                {visibleCols.teacher && <th className="px-4 py-3.5 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] w-[15%]">{tp('recordedBy')}</th>}
-                                                <th className="px-4 py-3.5 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] text-center w-28 relative">
+                                                <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] w-[25%]">{tp('studentCol')}</th>
+                                                {visibleCols.type && <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] w-[35%]">{tp('reportType')}</th>}
+                                                {visibleCols.points && <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] text-center w-[10%]">{tp('points')}</th>}
+                                                {visibleCols.time && <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] w-[15%]">{tp('time')}</th>}
+                                                {visibleCols.teacher && <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] w-[15%]">{tp('recordedBy')}</th>}
+                                                <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] text-center w-28 relative">
                                                     <span>{tp('actions')}</span>
                                                     <div className="absolute right-2 top-1/2 -translate-y-1/2">
                                                         <button
@@ -747,7 +750,7 @@ export default function BehaviorPage() {
                                                                     right: menuPos.right,
                                                                     transform: menuPos.showUp ? 'translateY(-100%)' : undefined
                                                                 }}>
-                                                                <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">{tp('manageColumns')}</p>
+                                                                <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] px-3 py-2">{tp('manageColumns')}</p>
                                                                 {[
                                                                     { key: 'type', label: tp('reportType') },
                                                                     { key: 'points', label: tp('points') },
@@ -874,14 +877,14 @@ export default function BehaviorPage() {
                                     return parts.map((part, i) => {
                                         if (part === '___STUDENT___') {
                                             return (
-                                                <span key={i} className="text-red-500 font-black px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">
+                                                <span key={i} className="text-red-500 font-bold px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">
                                                     {mask(students.find(s => s.id === itemToDelete?.student_id)?.name || '')}
                                                 </span>
                                             );
                                         }
                                         if (part === '___POINTS___') {
                                             return (
-                                                <span key={i} className="text-red-500 font-black px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">
+                                                <span key={i} className="text-red-500 font-bold px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">
                                                     {itemToDelete?.points > 0 ? `+${tNum(itemToDelete.points)}` : tNum(itemToDelete?.points)}
                                                 </span>
                                             );
@@ -911,7 +914,7 @@ export default function BehaviorPage() {
                         <div className="px-1 space-y-3">
                             {/* Warning text */}
                             <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
-                                {tp('bulkDeleteWarning1')} <span className="text-red-500 font-black px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">{tNum(selectedIds.length)} {tp('reportCount')}</span> {tp('bulkDeleteWarning2')}
+                                {tp('bulkDeleteWarning1')} <span className="text-red-500 font-bold px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">{tNum(selectedIds.length)} {tp('reportCount')}</span> {tp('bulkDeleteWarning2')}
                             </p>
 
                             {/* Preview list of reports to be deleted */}
@@ -924,16 +927,16 @@ export default function BehaviorPage() {
                                     return (
                                         <div key={id} className={`flex items-center gap-2.5 px-3 py-2 ${idx < selectedIds.length - 1 ? 'border-b border-red-500/10' : ''}`}>
                                             {/* Avatar */}
-                                            <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-black text-[10px] shrink-0 ${isPos ? 'bg-emerald-500/10 text-emerald-600' : 'bg-red-500/10 text-red-600'}`}>
+                                            <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-bold text-[10px] shrink-0 ${isPos ? 'bg-emerald-500/10 text-emerald-600' : 'bg-red-500/10 text-red-600'}`}>
                                                 {(s?.name || '?')[0].toUpperCase()}
                                             </div>
                                             {/* Info */}
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-[11px] font-black text-[var(--color-text)] truncate">{isPrivacyMode ? mask(s?.name || '—') : (s?.name || '—')}</p>
-                                                <p className="text-[9px] text-[var(--color-text-muted)] opacity-60 truncate">{getTypeName(r.violation_type_id)}</p>
+                                                <p className="text-xs font-bold text-[var(--color-text)] truncate">{isPrivacyMode ? mask(s?.name || '—') : (s?.name || '—')}</p>
+                                                <p className="text-[10px] text-[var(--color-text-muted)] opacity-60 truncate">{getTypeName(r.violation_type_id)}</p>
                                             </div>
                                             {/* Points badge */}
-                                            <span className={`shrink-0 text-[10px] font-black px-1.5 py-0.5 rounded-lg border ${isPos ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : 'bg-red-500/10 text-red-600 border-red-500/20'}`}>
+                                            <span className={`shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-lg border ${isPos ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : 'bg-red-500/10 text-red-600 border-red-500/20'}`}>
                                                 {isPos ? '+' : ''}{tNum(r.points)}
                                             </span>
                                         </div>
@@ -965,7 +968,7 @@ export default function BehaviorPage() {
                     <React.Suspense fallback={
                         <div className="h-64 flex flex-col items-center justify-center gap-3 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl">
                             <Loader2 className="w-8 h-8 animate-spin text-[var(--color-primary)]" />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] animate-pulse">{t('behavior.loading')}</span>
+                            <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] animate-pulse">{t('behavior.loading')}</span>
                         </div>
                     }>
                         <LazyPointRulesTab

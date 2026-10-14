@@ -967,7 +967,7 @@ export default function HealthPage() {
                                             }
                                             setIsDataMenuOpen(v => !v)
                                         }}
-                                        className={`h-9 w-9 rounded-xl border flex items-center justify-center transition-all ${
+                                        className={`h-9 w-9 rounded-lg border flex items-center justify-center transition-all ${
                                             isDataMenuOpen
                                                 ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]'
                                                 : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'
@@ -990,7 +990,7 @@ export default function HealthPage() {
                                                 }`}
                                                 style={{ top: dataMenuRect.bottom + 8, left: Math.max(10, dataMenuRect.right - 224) }}
                                             >
-                                                <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">Opsi Data</p>
+                                                <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] px-3 py-2">Opsi Data</p>
                                                 <button
                                                     onClick={() => { setIsDataMenuOpen(false); handlePrintLogs(); }}
                                                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group text-left"
@@ -999,8 +999,8 @@ export default function HealthPage() {
                                                         <Printer className="w-4 h-4" />
                                                     </div>
                                                     <div className="text-left">
-                                                        <p className="text-[11px] font-black leading-tight">Cetak Jurnal Medis</p>
-                                                        <p className="text-[9px] opacity-40 font-bold uppercase tracking-wider">pdf / kertas</p>
+                                                        <p className="text-xs font-bold leading-tight">Cetak Jurnal Medis</p>
+                                                        <p className="text-[10px] text-[var(--color-text-muted)] font-medium uppercase tracking-wider mt-0.5">pdf / kertas</p>
                                                     </div>
                                                 </button>
                                                 <div className="h-px bg-[var(--color-border)] my-1" />
@@ -1012,8 +1012,8 @@ export default function HealthPage() {
                                                         <Download className="w-4 h-4" />
                                                     </div>
                                                     <div className="text-left">
-                                                        <p className="text-[11px] font-black leading-tight">Unduh Data Rekam Medis</p>
-                                                        <p className="text-[9px] opacity-40 font-bold uppercase tracking-wider">xlsx / csv</p>
+                                                        <p className="text-xs font-bold leading-tight">Unduh Data Rekam Medis</p>
+                                                        <p className="text-[10px] text-[var(--color-text-muted)] font-medium uppercase tracking-wider mt-0.5">xlsx / csv</p>
                                                     </div>
                                                 </button>
                                             </div>
@@ -1026,7 +1026,7 @@ export default function HealthPage() {
                             {/* Privasi — di tengah, selalu tampil */}
                             <button
                                 onClick={() => setIsPrivacyMode(v => !v)}
-                                className={`h-9 px-3 rounded-xl border flex items-center gap-2 transition-all ${
+                                className={`h-9 px-3 rounded-lg border flex items-center gap-2 transition-all ${
                                     isPrivacyMode
                                         ? 'bg-amber-500/10 border-amber-500/30 text-amber-600'
                                         : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
@@ -1034,7 +1034,7 @@ export default function HealthPage() {
                                 title={isPrivacyMode ? tp('privacyModeOn') : tp('privacyModeOff')}
                             >
                                 {isPrivacyMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline">{tp('privacy')}</span>
+                                <span className="text-xs font-bold uppercase tracking-wider hidden md:inline">{tp('privacy')}</span>
                             </button>
                             {activeTab === 'medical' && (
                                 <button
@@ -1056,7 +1056,7 @@ export default function HealthPage() {
                                         ])
                                         setIsRecordModalOpen(true)
                                     }}
-                                    className="h-9 px-4 sm:px-5 rounded-xl transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest bg-[var(--color-primary)] text-white hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 border border-white/10"
+                                    className="h-9 px-4 sm:px-5 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-[var(--color-primary)] text-white hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 border border-white/10"
                                 >
                                     <Plus className="w-3.5 h-3.5" />
                                     <span>{tp('btnRecordAdd')}</span>
@@ -1076,7 +1076,7 @@ export default function HealthPage() {
                                         })
                                         setIsMedModalOpen(true)
                                     }}
-                                    className="h-9 px-4 sm:px-5 rounded-xl transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest bg-emerald-600 text-white hover:scale-[1.02] active:scale-95 shadow-md shadow-emerald-600/20 border border-white/10"
+                                    className="h-9 px-4 sm:px-5 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-emerald-600 text-white hover:scale-[1.02] active:scale-95 shadow-md shadow-emerald-600/20 border border-white/10"
                                 >
                                     <Plus className="w-3.5 h-3.5" />
                                     <span>{tp('btnMedAdd')}</span>
@@ -1124,21 +1124,21 @@ export default function HealthPage() {
                 <div className="flex gap-1 sm:gap-1.5 p-1 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] w-full sm:w-fit overflow-x-auto scrollbar-hide shrink-0">
                     <button
                         onClick={() => { setActiveTab('medical'); setSearchQuery(''); }}
-                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-[11px] font-black flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'medical' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'medical' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                     >
                         <FileText className="w-3.5 h-3.5 shrink-0" />
                         <span>{tp('tabMedical')}</span>
                     </button>
                     <button
                         onClick={() => { setActiveTab('resting'); setSearchQuery(''); }}
-                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-[11px] font-black flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'resting' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'resting' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                     >
                         <Bed className="w-3.5 h-3.5 shrink-0" />
                         <span>{tp('tabResting')} ({tNum(restingStudents.length)})</span>
                     </button>
                     <button
                         onClick={() => { setActiveTab('inventory'); setSearchQuery(''); }}
-                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-[11px] font-black flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'inventory' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'inventory' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                     >
                         <Pill className="w-3.5 h-3.5 shrink-0" />
                         <span>{tp('tabInventory')}</span>
@@ -1157,7 +1157,7 @@ export default function HealthPage() {
                                     value={searchQuery}
                                     onChange={e => setSearchQuery(e.target.value)}
                                     placeholder={tp('searchPlaceholder')}
-                                    className="w-full h-9 pl-9 pr-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition-all"
+                                    className="w-full h-9 pl-9 pr-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] transition-all"
                                 />
                                 {searchQuery && (
                                     <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
@@ -1176,7 +1176,7 @@ export default function HealthPage() {
                                         placeholder="Semua Observasi"
                                         small
                                         extraOption={{ id: 'All', name: 'Semua Observasi' }}
-                                        buttonClassName="!h-9 !rounded-xl text-[11px] font-black"
+                                        buttonClassName="!h-9 !rounded-xl text-xs font-semibold"
                                     />
                                 </div>
 
@@ -1188,7 +1188,7 @@ export default function HealthPage() {
                                         placeholder="Semua Kelas"
                                         small
                                         extraOption={{ id: 'All', name: 'Semua Kelas' }}
-                                        buttonClassName="!h-9 !rounded-xl text-[11px] font-black"
+                                        buttonClassName="!h-9 !rounded-xl text-xs font-semibold"
                                     />
                                 </div>
 
@@ -1200,7 +1200,7 @@ export default function HealthPage() {
                             {loading ? (
                                 <div className="p-12 flex flex-col items-center justify-center gap-3">
                                     <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-                                    <p className="text-[11px] text-[var(--color-text-muted)] font-black uppercase tracking-widest">Memuat rekam medis...</p>
+                                    <p className="text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-wider">Memuat rekam medis...</p>
                                 </div>
                             ) : logs.length === 0 ? (
                                 <EmptyState
@@ -1223,7 +1223,7 @@ export default function HealthPage() {
                                                 setSelectedStatusFilter('All')
                                                 setSelectedClassFilter('All')
                                             }}
-                                            className="h-9 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition"
+                                            className="h-9 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition"
                                         >
                                             Reset Filter
                                         </button>
@@ -1232,7 +1232,7 @@ export default function HealthPage() {
                             ) : (
                                 <table className="w-full text-left border-collapse">
                                     <thead>
-                                        <tr className="bg-[var(--color-surface-alt)]/60 border-b border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                                        <tr className="bg-[var(--color-surface-alt)]/60 border-b border-[var(--color-border)] text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                                             <th className="px-4 py-3.5">Santri</th>
                                             <th className="px-4 py-3.5">Tanggal & Waktu</th>
                                             <th className="px-4 py-3.5">Keluhan Utama</th>
@@ -1248,57 +1248,57 @@ export default function HealthPage() {
                                             <tr key={log.id} className="group hover:bg-[var(--color-surface-alt)]/10 transition-colors">
                                                 <td className="px-4 py-3">
                                                     <div className="flex flex-col">
-                                                        <span className={`text-[12px] font-black text-[var(--color-text)] ${isPrivacyMode ? 'blur-sm select-none' : ''}`}>{isPrivacyMode ? maskInfo(log.student_name, 3) : log.student_name}</span>
-                                                        <span className="text-[10px] text-[var(--color-text-muted)] font-bold">Kelas {isPrivacyMode ? maskInfo(log.class_name, 2) : log.class_name}</span>
+                                                        <span className={`text-sm font-bold text-[var(--color-text)] ${isPrivacyMode ? 'blur-sm select-none' : ''}`}>{isPrivacyMode ? maskInfo(log.student_name, 3) : log.student_name}</span>
+                                                        <span className="text-xs text-[var(--color-text-muted)] font-medium mt-0.5">Kelas {isPrivacyMode ? maskInfo(log.class_name, 2) : log.class_name}</span>
                                                     </div>
                                                 </td>
-                                                <td className="px-4 py-3 text-[11px] text-[var(--color-text-muted)] font-bold tabular-nums">
+                                                <td className="px-4 py-3 text-xs text-[var(--color-text-muted)] font-medium tabular-nums">
                                                     <div>{log.date}</div>
-                                                    <div className="text-[10px] opacity-75">{log.time}</div>
+                                                    <div className="text-[10px] text-[var(--color-text-muted)] font-normal">{log.time}</div>
                                                 </td>
-                                                <td className="px-4 py-3 text-[12px] text-[var(--color-text)] font-semibold max-w-[200px] truncate" title={!isPrivacyMode ? log.complaint : undefined}>
+                                                <td className="px-4 py-3 text-xs text-[var(--color-text)] font-medium max-w-[200px] truncate" title={!isPrivacyMode ? log.complaint : undefined}>
                                                     <span className={isPrivacyMode ? 'blur-sm select-none' : ''}>{isPrivacyMode ? maskInfo(log.complaint, 4) : log.complaint}</span>
                                                 </td>
-                                                <td className="px-4 py-3 text-[11px] text-[var(--color-text-muted)] font-black">
+                                                <td className="px-4 py-3 text-xs text-[var(--color-text)] font-semibold">
                                                     <span className={isPrivacyMode ? 'blur-sm select-none' : ''}>{isPrivacyMode ? maskInfo(log.diagnosis, 4) : (log.diagnosis || '-')}</span>
                                                 </td>
-                                                <td className="px-4 py-3 text-[11px] text-[var(--color-text-muted)] max-w-[220px] truncate" title={!isPrivacyMode ? log.treatment : undefined}>
+                                                <td className="px-4 py-3 text-xs text-[var(--color-text-muted)] font-normal max-w-[220px] truncate" title={!isPrivacyMode ? log.treatment : undefined}>
                                                     <span className={isPrivacyMode ? 'blur-sm select-none' : ''}>{isPrivacyMode ? maskInfo(log.treatment, 4) : log.treatment}</span>
                                                 </td>
                                                 <td className="px-4 py-3">
                                                     {log.medicine_name && log.medicine_name !== '-' ? (
-                                                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 text-[10px] font-black">
+                                                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 text-xs font-semibold">
                                                             <Pill className="w-3 h-3" />
                                                             <span>{log.medicine_name} ({tNum(log.medicine_qty)})</span>
                                                         </span>
-                                                    ) : <span className="text-[10px] text-[var(--color-text-muted)] opacity-50">-</span>}
+                                                    ) : <span className="text-xs text-[var(--color-text-muted)] opacity-50">-</span>}
                                                 </td>
                                                 <td className="px-4 py-3">
                                                     {log.status === 'UKS' && (
-                                                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-600 border border-amber-500/20 text-[10px] font-black">
+                                                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-amber-500/10 text-amber-600 border border-amber-500/20 text-xs font-bold">
                                                             <Bed className="w-3.5 h-3.5" />
                                                             <span>UKS</span>
                                                         </span>
                                                     )}
                                                     {log.status === 'Asrama' && (
-                                                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-600 border border-indigo-500/20 text-[10px] font-black">
+                                                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-indigo-500/10 text-indigo-600 border border-indigo-500/20 text-xs font-bold">
                                                             <ArrowRightLeft className="w-3.5 h-3.5" />
                                                             <span>Kamar</span>
                                                         </span>
                                                     )}
                                                     {log.status === 'Kembali' && (
-                                                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 border border-emerald-500/20 text-[10px] font-black">
+                                                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 text-xs font-bold">
                                                             <CheckCircle2 className="w-3.5 h-3.5" />
                                                             <span>Kembali KBM</span>
                                                         </span>
                                                     )}
                                                 </td>
                                                 <td className="px-4 py-3 text-right">
-                                                    <div className="flex items-center justify-end gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <div className="flex items-center justify-end gap-1.5 sm:opacity-0 group-hover:opacity-100 transition-opacity">
                                                         {log.status !== 'Kembali' && (
                                                             <button
                                                                 onClick={() => { setLogToSembuh(log); setIsConfirmSembuhOpen(true) }}
-                                                                className="w-7 h-7 rounded-lg border border-emerald-500/20 text-emerald-600 bg-emerald-500/5 hover:bg-emerald-500 hover:text-white flex items-center justify-center transition-all"
+                                                                className="w-8 h-8 rounded-lg border border-emerald-500/20 text-emerald-600 bg-emerald-500/5 hover:bg-emerald-500 hover:text-white flex items-center justify-center transition-all"
                                                                 title="Tandai Sembuh"
                                                             >
                                                                 <Check className="w-3.5 h-3.5" />
@@ -1306,14 +1306,14 @@ export default function HealthPage() {
                                                         )}
                                                         <button
                                                             onClick={() => openEditLogModal(log)}
-                                                            className="w-7 h-7 rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-indigo-600 flex items-center justify-center transition-all bg-[var(--color-surface)]"
+                                                            className="w-8 h-8 rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-indigo-600 flex items-center justify-center transition-all bg-[var(--color-surface)]"
                                                             title="Edit Catatan"
                                                         >
                                                             <Edit2 className="w-3.5 h-3.5" />
                                                         </button>
                                                         <button
                                                             onClick={() => { setLogToDelete(log); setIsConfirmDeleteOpen(true) }}
-                                                            className="w-7 h-7 rounded-lg border border-rose-500/20 text-rose-500 bg-rose-500/5 hover:bg-rose-500 hover:text-white flex items-center justify-center transition-all"
+                                                            className="w-8 h-8 rounded-lg border border-rose-500/20 text-rose-500 bg-rose-500/5 hover:bg-rose-500 hover:text-white flex items-center justify-center transition-all"
                                                             title="Hapus Catatan"
                                                         >
                                                             <Trash2 className="w-3.5 h-3.5" />
@@ -1359,12 +1359,12 @@ export default function HealthPage() {
                                         {/* Status Tag */}
                                         <div className="absolute top-4 right-4">
                                             {log.status === 'UKS' ? (
-                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 text-amber-600 border border-amber-500/20 text-[10px] font-black">
+                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-600 border border-amber-500/20 text-xs font-bold">
                                                     <Bed className="w-3.5 h-3.5" />
                                                     <span>Observasi UKS</span>
                                                 </span>
                                             ) : (
-                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/15 text-indigo-600 border border-indigo-500/20 text-[10px] font-black">
+                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-600 border border-indigo-500/20 text-xs font-bold">
                                                     <ArrowRightLeft className="w-3.5 h-3.5" />
                                                     <span>Istirahat Kamar</span>
                                                 </span>
@@ -1376,20 +1376,20 @@ export default function HealthPage() {
                                                 <User className="w-6 h-6 text-[var(--color-text-muted)]" />
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <h4 className={`text-[14px] font-black text-[var(--color-text)] truncate ${isPrivacyMode ? 'blur-sm select-none' : ''}`}>{isPrivacyMode ? maskInfo(log.student_name, 3) : log.student_name}</h4>
-                                                <p className="text-[11px] text-[var(--color-text-muted)] font-bold mb-3">Kelas {isPrivacyMode ? maskInfo(log.class_name, 2) : log.class_name}</p>
+                                                <h4 className={`text-base font-bold text-[var(--color-text)] truncate ${isPrivacyMode ? 'blur-sm select-none' : ''}`}>{isPrivacyMode ? maskInfo(log.student_name, 3) : log.student_name}</h4>
+                                                <p className="text-xs text-[var(--color-text-muted)] font-medium mb-3">Kelas {isPrivacyMode ? maskInfo(log.class_name, 2) : log.class_name}</p>
 
-                                                <div className="space-y-2 text-[12px] text-[var(--color-text)] font-medium">
+                                                <div className="space-y-2.5 text-xs text-[var(--color-text)] font-medium">
                                                     <div>
-                                                        <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider block font-bold">Keluhan</span>
-                                                        <p className={`font-semibold text-rose-500 text-[12px] ${isPrivacyMode ? 'blur-sm select-none' : ''}`}>{isPrivacyMode ? maskInfo(log.complaint, 4) : log.complaint}</p>
+                                                        <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1">Keluhan</span>
+                                                        <p className={`font-semibold text-rose-500 text-sm ${isPrivacyMode ? 'blur-sm select-none' : ''}`}>{isPrivacyMode ? maskInfo(log.complaint, 4) : log.complaint}</p>
                                                     </div>
                                                     <div>
-                                                        <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider block font-bold">Rencana Tindakan & Obat</span>
-                                                        <p className={`text-[11px] text-[var(--color-text-muted)] ${isPrivacyMode ? 'blur-sm select-none' : ''}`}>{isPrivacyMode ? maskInfo(log.treatment, 4) : log.treatment} • <strong className="text-[var(--color-text)] font-black">{log.medicine_name}</strong></p>
+                                                        <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1">Rencana Tindakan & Obat</span>
+                                                        <p className={`text-xs text-[var(--color-text-muted)] font-medium ${isPrivacyMode ? 'blur-sm select-none' : ''}`}>{isPrivacyMode ? maskInfo(log.treatment, 4) : log.treatment} • <strong className="text-[var(--color-text)] font-bold">{log.medicine_name}</strong></p>
                                                     </div>
-                                                    <div className="pt-1 text-[10px] text-[var(--color-text-muted)] flex items-center gap-1.5">
-                                                        <Clock className="w-3.5 h-3.5" />
+                                                    <div className="pt-1 text-xs text-[var(--color-text-muted)] flex items-center gap-1.5 font-medium">
+                                                        <Clock className="w-3.5 h-3.5 text-[var(--color-text-muted)]" />
                                                         <span>Mulai istirahat: {log.date} {log.time}</span>
                                                     </div>
                                                 </div>
@@ -1397,14 +1397,14 @@ export default function HealthPage() {
                                                 <div className="mt-5 flex gap-2">
                                                     <button
                                                         onClick={() => { setLogToSembuh(log); setIsConfirmSembuhOpen(true) }}
-                                                        className="flex-1 h-9 bg-emerald-500 hover:bg-emerald-600 text-white text-[11px] font-black rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm"
+                                                        className="flex-1 h-9.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm"
                                                     >
                                                         <Check className="w-4 h-4" />
                                                         <span>Sudah Sembuh & Kembali</span>
                                                     </button>
                                                     <button
                                                         onClick={() => openEditLogModal(log)}
-                                                        className="w-9 h-9 border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]/20 text-[var(--color-text-muted)] hover:text-[var(--color-text)] rounded-xl flex items-center justify-center transition-all bg-[var(--color-surface)]"
+                                                        className="w-9.5 h-9.5 border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]/60 text-[var(--color-text-muted)] hover:text-[var(--color-text)] rounded-xl flex items-center justify-center transition-all bg-[var(--color-surface)]"
                                                         title="Edit Log Medis"
                                                     >
                                                         <Edit2 className="w-4 h-4" />
@@ -1431,7 +1431,7 @@ export default function HealthPage() {
                                     value={searchQuery}
                                     onChange={e => setSearchQuery(e.target.value)}
                                     placeholder="Cari nama obat, kategori..."
-                                    className="w-full h-9 pl-9 pr-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition-all"
+                                    className="w-full h-9 pl-9 pr-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] transition-all"
                                 />
                                 {searchQuery && (
                                     <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
@@ -1461,7 +1461,7 @@ export default function HealthPage() {
                                     action={
                                         <button
                                             onClick={() => setSearchQuery('')}
-                                            className="h-9 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition"
+                                            className="h-9 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition"
                                         >
                                             Reset Filter
                                         </button>
@@ -1470,7 +1470,7 @@ export default function HealthPage() {
                             ) : (
                                 <table className="w-full text-left border-collapse">
                                     <thead>
-                                        <tr className="bg-[var(--color-surface-alt)]/60 border-b border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                                        <tr className="bg-[var(--color-surface-alt)]/60 border-b border-[var(--color-border)] text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                                             <th className="px-4 py-3.5">Nama Obat</th>
                                             <th className="px-4 py-3.5">Kategori</th>
                                             <th className="px-4 py-3.5">Deskripsi / Indikasi</th>
@@ -1485,13 +1485,13 @@ export default function HealthPage() {
                                             const percentage = Math.min(100, Math.round((med.stock / (med.min_stock * 3)) * 100))
                                             return (
                                                 <tr key={med.id} className="group hover:bg-[var(--color-surface-alt)]/10 transition-colors">
-                                                    <td className="px-4 py-3 font-black text-[12px] text-[var(--color-text)]">{med.name}</td>
+                                                    <td className="px-4 py-3 font-bold text-sm text-[var(--color-text)]">{med.name}</td>
                                                     <td className="px-4 py-3">
-                                                        <span className="text-[10px] font-black px-2 py-0.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]">
+                                                        <span className="text-xs font-semibold px-2 py-0.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]">
                                                             {med.category}
                                                         </span>
                                                     </td>
-                                                    <td className="px-4 py-3 text-[11px] text-[var(--color-text-muted)] max-w-[200px] truncate" title={med.description}>
+                                                    <td className="px-4 py-3 text-xs text-[var(--color-text-muted)] max-w-[200px] truncate" title={med.description}>
                                                         {med.description || '-'}
                                                     </td>
                                                     <td className="px-4 py-3 min-w-[120px]">
@@ -1502,27 +1502,27 @@ export default function HealthPage() {
                                                                     style={{ width: `${percentage}%` }}
                                                                 />
                                                             </div>
-                                                            <span className="text-[10px] font-bold text-[var(--color-text-muted)] tabular-nums">{tNum(percentage)}%</span>
+                                                            <span className="text-xs font-semibold text-[var(--color-text-muted)] tabular-nums">{tNum(percentage)}%</span>
                                                         </div>
                                                     </td>
                                                     <td className="px-4 py-3">
                                                         <div className="flex items-center gap-1.5">
-                                                            <span className={`text-[12px] font-black tabular-nums ${isLow ? 'text-rose-600 font-extrabold' : 'text-[var(--color-text)]'}`}>
+                                                            <span className={`text-sm font-bold tabular-nums ${isLow ? 'text-rose-600 font-extrabold' : 'text-[var(--color-text)]'}`}>
                                                                 {tNum(med.stock)}
                                                             </span>
-                                                            <span className="text-[10px] text-[var(--color-text-muted)] font-bold">{med.unit}</span>
+                                                            <span className="text-xs text-[var(--color-text-muted)] font-medium">{med.unit}</span>
                                                             {isLow && (
-                                                                <span className="inline-flex items-center text-[8.5px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-600 border border-rose-500/20 ml-2">
+                                                                <span className="inline-flex items-center text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-rose-500/10 text-rose-600 border border-rose-500/20 ml-2">
                                                                     LOW STOCK
                                                                 </span>
                                                             )}
                                                         </div>
                                                     </td>
                                                     <td className="px-4 py-3 text-right">
-                                                        <div className="flex items-center justify-end gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <div className="flex items-center justify-end gap-1.5 sm:opacity-0 group-hover:opacity-100 transition-opacity">
                                                             <button
                                                                 onClick={() => openEditMedModal(med)}
-                                                                className="w-7 h-7 rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-indigo-600 flex items-center justify-center transition-all bg-[var(--color-surface)]"
+                                                                className="w-8 h-8 rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-indigo-600 flex items-center justify-center transition-all bg-[var(--color-surface)]"
                                                                 title="Edit Obat"
                                                             >
                                                                 <Edit2 className="w-3.5 h-3.5" />
@@ -1535,7 +1535,7 @@ export default function HealthPage() {
                                                                     setMedicines(prev => prev.filter(m => m.id !== med.id))
                                                                     addToast('Obat berhasil dihapus dari inventaris', 'success')
                                                                 }}
-                                                                className="w-7 h-7 rounded-lg border border-rose-500/20 text-rose-500 bg-rose-500/5 hover:bg-rose-500 hover:text-white flex items-center justify-center transition-all"
+                                                                className="w-8 h-8 rounded-lg border border-rose-500/20 text-rose-500 bg-rose-500/5 hover:bg-rose-500 hover:text-white flex items-center justify-center transition-all"
                                                                 title="Hapus Obat"
                                                             >
                                                                 <Trash2 className="w-3.5 h-3.5" />
@@ -1562,12 +1562,13 @@ export default function HealthPage() {
                     iconBg="bg-emerald-500/10"
                     iconColor="text-emerald-600"
                     size="lg"
+                    mobileVariant="bottom-sheet"
                     footer={
                         <div className="flex items-center justify-between gap-2.5 w-full">
                             <button
                                 type="button"
                                 onClick={() => setIsRecordModalOpen(false)}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition"
+                                className="h-9.5 px-4 sm:px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider transition"
                             >
                                 Batal
                             </button>
@@ -1575,7 +1576,7 @@ export default function HealthPage() {
                                 type="submit"
                                 form="record-form"
                                 disabled={submitting}
-                                className="h-10 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-600/20 transition flex items-center justify-center gap-2"
+                                className="h-9.5 px-5 sm:px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-emerald-600/20 transition flex items-center justify-center gap-2 disabled:opacity-50"
                             >
                                 <Check className="w-3.5 h-3.5" />
                                 <span>{submitting ? 'Menyimpan...' : 'Simpan Catatan'}</span>
@@ -1586,7 +1587,7 @@ export default function HealthPage() {
                     <form id="record-form" onSubmit={handleSaveRecord} className="space-y-4 text-left">
                         {/* Pilih Santri */}
                         <div>
-                            <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">Santri / Pasien</label>
+                            <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">Santri / Pasien</label>
                             <RichSelect
                                 value={formLog.student_id}
                                 onChange={val => setFormLog(prev => ({ ...prev, student_id: val }))}
@@ -1600,7 +1601,7 @@ export default function HealthPage() {
                         {/* Tanggal & Waktu Custom Pickers */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">Tanggal Masuk</label>
+                                <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">Tanggal Masuk</label>
                                 <RichDatePicker
                                     value={formLog.date}
                                     onChange={val => setFormLog(prev => ({ ...prev, date: val }))}
@@ -1608,7 +1609,7 @@ export default function HealthPage() {
                                 />
                             </div>
                             <div>
-                                <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">Waktu / Jam</label>
+                                <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">Waktu / Jam</label>
                                 <RichTimePicker
                                     value={formLog.time}
                                     onChange={val => setFormLog(prev => ({ ...prev, time: val }))}
@@ -1620,20 +1621,20 @@ export default function HealthPage() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <div className="flex justify-between items-center mb-1.5">
-                                    <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Keluhan Santri</label>
+                                    <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">Keluhan Santri</label>
                                     {formLog.complaint.trim().length >= 3 && (
                                         <button
                                             type="button"
                                             onClick={handleAIAnalyze}
                                             disabled={aiLoading}
-                                            className={`text-[8.5px] font-black uppercase tracking-wider flex items-center gap-1 px-2 py-0.5 rounded-lg transition-all duration-300 ${
+                                            className={`text-xs font-semibold flex items-center gap-1 px-2.5 py-0.5 rounded-lg transition-all duration-300 ${
                                                 aiLoading
                                                     ? 'bg-purple-100 text-purple-600 dark:bg-purple-950/40 dark:text-purple-400 animate-pulse'
                                                     : 'bg-purple-500/10 text-purple-600 hover:bg-purple-600 hover:text-white dark:bg-purple-500/20 dark:text-purple-400 dark:hover:bg-purple-600 dark:hover:text-white active:scale-95'
                                             }`}
                                             title="Gunakan AI untuk mendeteksi Diagnosis Awal, Tindakan, dan Obat secara otomatis"
                                         >
-                                            <Sparkles className={`w-2.5 h-2.5 ${aiLoading ? 'animate-spin' : ''}`} />
+                                            <Sparkles className={`w-3 h-3 ${aiLoading ? 'animate-spin' : ''}`} />
                                             <span>{aiLoading ? 'Menganalisis...' : 'Rekomendasi AI'}</span>
                                         </button>
                                     )}
@@ -1642,29 +1643,29 @@ export default function HealthPage() {
                                     value={formLog.complaint}
                                     onChange={e => setFormLog(prev => ({ ...prev, complaint: e.target.value }))}
                                     placeholder="Contoh: Panas dingin, mual, sakit tenggorokan..."
-                                    className="w-full h-20 p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] resize-none"
+                                    className="w-full h-20 p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] resize-none"
                                     required
                                 />
                             </div>
                             <div>
-                                <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">Diagnosis Awal</label>
+                                <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">Diagnosis Awal</label>
                                 <textarea
                                     value={formLog.diagnosis}
                                     onChange={e => setFormLog(prev => ({ ...prev, diagnosis: e.target.value }))}
                                     placeholder="Contoh: Gejala Influenza, Maag akut..."
-                                    className="w-full h-20 p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] resize-none"
+                                    className="w-full h-20 p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] resize-none"
                                 />
                             </div>
                         </div>
 
                         {/* Penanganan & Obat */}
                         <div>
-                            <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">Tindakan / Penanganan</label>
+                            <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">Tindakan / Penanganan</label>
                             <input
                                 value={formLog.treatment}
                                 onChange={e => setFormLog(prev => ({ ...prev, treatment: e.target.value }))}
                                 placeholder="Contoh: Diberi kompres hangat, disuruh tidur bedrest"
-                                className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)]"
+                                className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)]"
                                 required
                             />
                         </div>
@@ -1672,13 +1673,13 @@ export default function HealthPage() {
                         {/* Daftar Obat Diberikan (Mendukung Multi-Obat) */}
                         <div className="space-y-3">
                             <div className="flex justify-between items-center">
-                                <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Obat Diberikan</label>
+                                <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">Obat Diberikan</label>
                                 <button
                                     type="button"
                                     onClick={() => setSelectedMeds(prev => [...prev, { medicine_id: '', qty: 1 }])}
-                                    className="text-[8.5px] font-black uppercase tracking-wider text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 flex items-center gap-1 transition"
+                                    className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 flex items-center gap-1 transition"
                                 >
-                                    <Plus className="w-3 h-3" />
+                                    <Plus className="w-3.5 h-3.5" />
                                     <span>Tambah Obat</span>
                                 </button>
                             </div>
@@ -1710,7 +1711,7 @@ export default function HealthPage() {
                                                 next[index].qty = Math.max(1, Number(e.target.value) || 1)
                                                 setSelectedMeds(next)
                                             }}
-                                            className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] text-center"
+                                            className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] text-center"
                                         />
                                     </div>
                                     <div className="col-span-1 flex justify-center pb-2">
@@ -1735,7 +1736,7 @@ export default function HealthPage() {
 
                         {/* Status Rekomendasi */}
                         <div>
-                            <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">Rekomendasi Observasi</label>
+                            <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">Rekomendasi Observasi</label>
                             <div className="grid grid-cols-3 gap-2">
                                 {[
                                     { k: 'UKS', l: 'Rawat di UKS' },
@@ -1746,7 +1747,7 @@ export default function HealthPage() {
                                         type="button"
                                         key={s.k}
                                         onClick={() => setFormLog(prev => ({ ...prev, status: s.k }))}
-                                        className={`h-10 rounded-xl border text-[11px] font-black transition-all ${formLog.status === s.k
+                                        className={`h-10 rounded-xl border text-xs font-semibold transition-all ${formLog.status === s.k
                                             ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
                                             : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)]'
                                             }`}
@@ -1769,19 +1770,20 @@ export default function HealthPage() {
                     iconBg="bg-indigo-500/10"
                     iconColor="text-indigo-600"
                     size="md"
+                    mobileVariant="bottom-sheet"
                     footer={
                         <div className="flex items-center justify-between gap-2.5 w-full">
                             <button
                                 type="button"
                                 onClick={() => setIsMedModalOpen(false)}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition"
+                                className="h-9.5 px-4 sm:px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider transition"
                             >
                                 Batal
                             </button>
                             <button
                                 type="submit"
                                 form="med-form"
-                                className="h-10 px-6 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-indigo-500/20 transition flex items-center justify-center gap-2"
+                                className="h-9.5 px-5 sm:px-6 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-indigo-500/20 transition flex items-center justify-center gap-2"
                             >
                                 <Check className="w-3.5 h-3.5" />
                                 <span>Simpan Obat</span>
@@ -1792,12 +1794,12 @@ export default function HealthPage() {
                     <form id="med-form" onSubmit={handleSaveMedicine} className="space-y-4 text-left">
                         {/* Nama Obat */}
                         <div>
-                            <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">Nama Obat / Merek</label>
+                            <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">Nama Obat / Merek</label>
                             <input
                                 value={formMed.name}
                                 onChange={e => setFormMed(prev => ({ ...prev, name: e.target.value }))}
                                 placeholder="Contoh: Paracetamol 500mg, Sanaflu..."
-                                className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)]"
+                                className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)]"
                                 required
                             />
                         </div>
@@ -1805,11 +1807,11 @@ export default function HealthPage() {
                         {/* Kategori & Satuan */}
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">Kategori</label>
+                                <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">Kategori</label>
                                 <select
                                     value={formMed.category}
                                     onChange={e => setFormMed(prev => ({ ...prev, category: e.target.value }))}
-                                    className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] cursor-pointer"
+                                    className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] cursor-pointer"
                                     required
                                 >
                                     <option value="Analgesik / Antipiretik">Analgesik / Antipiretik</option>
@@ -1822,11 +1824,11 @@ export default function HealthPage() {
                                 </select>
                             </div>
                             <div>
-                                <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">Satuan</label>
+                                <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">Satuan</label>
                                 <select
                                     value={formMed.unit}
                                     onChange={e => setFormMed(prev => ({ ...prev, unit: e.target.value }))}
-                                    className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] cursor-pointer"
+                                    className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] cursor-pointer"
                                 >
                                     <option value="tablet">Tablet / Kaplet</option>
                                     <option value="botol">Botol / Syrup</option>
@@ -1839,24 +1841,24 @@ export default function HealthPage() {
                         {/* Stok Awal & Stok Minimum */}
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">Stok Tersedia</label>
+                                <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">Stok Tersedia</label>
                                 <input
                                     type="number"
                                     min="0"
                                     value={formMed.stock}
                                     onChange={e => setFormMed(prev => ({ ...prev, stock: e.target.value }))}
-                                    className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)]"
+                                    className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)]"
                                     required
                                 />
                             </div>
                             <div>
-                                <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">Stok Minimum (Alert)</label>
+                                <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">Stok Minimum (Alert)</label>
                                 <input
                                     type="number"
                                     min="0"
                                     value={formMed.min_stock}
                                     onChange={e => setFormMed(prev => ({ ...prev, min_stock: e.target.value }))}
-                                    className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)]"
+                                    className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)]"
                                     required
                                 />
                             </div>
@@ -1864,12 +1866,12 @@ export default function HealthPage() {
 
                         {/* Deskripsi */}
                         <div>
-                            <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">Indikasi / Keterangan</label>
+                            <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">Indikasi / Keterangan</label>
                             <textarea
                                 value={formMed.description}
                                 onChange={e => setFormMed(prev => ({ ...prev, description: e.target.value }))}
                                 placeholder="Contoh: Digunakan untuk meredakan nyeri ringan & demam tinggi..."
-                                className="w-full h-20 p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] resize-none"
+                                className="w-full h-20 p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] resize-none"
                             />
                         </div>
                     </form>
@@ -1885,26 +1887,27 @@ export default function HealthPage() {
                     iconBg="bg-rose-500/10"
                     iconColor="text-rose-600"
                     size="sm"
+                    mobileVariant="bottom-sheet"
                     footer={
                         <div className="flex items-center justify-end gap-2 w-full">
                             <button
                                 onClick={() => setIsConfirmDeleteOpen(false)}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition"
+                                className="h-9.5 px-4 sm:px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider transition"
                             >
                                 Batal
                             </button>
                             <button
                                 onClick={handleDeleteRecord}
                                 disabled={submitting}
-                                className="h-10 px-6 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-black uppercase tracking-widest transition flex items-center justify-center gap-2 shadow-lg shadow-rose-600/20"
+                                className="h-9.5 px-5 sm:px-6 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-md shadow-rose-600/20 disabled:opacity-50"
                             >
                                 {submitting ? 'Menghapus...' : 'Ya, Hapus'}
                             </button>
                         </div>
                     }
                 >
-                    <p className="text-[12px] text-[var(--color-text)] font-semibold leading-relaxed">
-                        Apakah kamu yakin ingin menghapus rekam medis santri <strong className="text-rose-500">{logToDelete?.student_name}</strong> tanggal <strong>{logToDelete?.date}</strong>?
+                    <p className="text-xs sm:text-[13px] text-[var(--color-text-muted)] font-medium leading-relaxed">
+                        Apakah kamu yakin ingin menghapus rekam medis santri <strong className="text-rose-500 font-bold">{logToDelete?.student_name}</strong> tanggal <strong>{logToDelete?.date}</strong>?
                     </p>
                 </Modal>
 
@@ -1918,26 +1921,27 @@ export default function HealthPage() {
                     iconBg="bg-emerald-500/10"
                     iconColor="text-emerald-600"
                     size="sm"
+                    mobileVariant="bottom-sheet"
                     footer={
                         <div className="flex items-center justify-end gap-2 w-full">
                             <button
                                 onClick={() => setIsConfirmSembuhOpen(false)}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition"
+                                className="h-9.5 px-4 sm:px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider transition"
                             >
                                 Batal
                             </button>
                             <button
                                 onClick={handleSembuh}
                                 disabled={submitting}
-                                className="h-10 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black uppercase tracking-widest transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20"
+                                className="h-9.5 px-5 sm:px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20 disabled:opacity-50"
                             >
                                 {submitting ? 'Memproses...' : 'Ya, Santri Sembuh'}
                             </button>
                         </div>
                     }
                 >
-                    <p className="text-[12px] text-[var(--color-text)] font-semibold leading-relaxed">
-                        Apakah santri <strong className="text-emerald-600">{logToSembuh?.student_name}</strong> sudah pulih sepenuhnya dan diizinkan kembali ke kelas / aktivitas KBM pesantren?
+                    <p className="text-xs sm:text-[13px] text-[var(--color-text-muted)] font-medium leading-relaxed">
+                        Apakah santri <strong className="text-emerald-600 font-bold">{logToSembuh?.student_name}</strong> sudah pulih sepenuhnya dan diizinkan kembali ke kelas / aktivitas KBM pesantren?
                     </p>
                 </Modal>
 

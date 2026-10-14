@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Plus, FileText, Printer, Search,
   Loader2, Trash2, AlertCircle, LogOut, LogIn, Send
@@ -9,20 +9,17 @@ import {
   Modal, Pagination
 } from '@shared/components'
 import { useToast } from '@context/Toast'
-import { useAuth } from '@context/Auth'
 import useLeavePermitCore from '../hooks/useLeavePermitCore'
 import LeavePermitForm from '../components/LeavePermitForm'
 import LeavePermitPrint from '../components/LeavePermitPrint'
 import LeavePermitStatusBadge from '../components/LeavePermitStatusBadge'
-import { STATUS_MAP, fmtDateIndo, fmtDateTimeShort, fmtDateShort } from '../utils/leavePermitConstants'
-import { buildLeavePermitPDFHtml } from '../utils/leavePermitPdfHtml'
+import { fmtDateTimeShort, fmtDateShort } from '../utils/leavePermitConstants'
 import { supabase } from '@lib/supabase'
 
 const PAGE_SIZE = 15
 
 export default function LeavePermitPage() {
   const { addToast } = useToast()
-  const { user } = useAuth()
   const {
     permits, loading, stats,
     fetchPermits, fetchStats, createPermit, cancelPermit,
@@ -153,7 +150,7 @@ export default function LeavePermitPage() {
           actions={
             <button
               onClick={() => setShowForm(true)}
-              className="h-9 px-3 rounded-lg flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider transition-all active:scale-95 bg-[var(--color-primary)] text-white hover:opacity-95 shadow-sm"
+              className="h-9 px-3.5 rounded-lg flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-all active:scale-95 bg-[var(--color-primary)] text-white hover:opacity-95 shadow-sm"
             >
               <Plus className="w-3.5 h-3.5" /> Terbitkan Izin
             </button>
@@ -198,7 +195,7 @@ export default function LeavePermitPage() {
                 <button
                   key={f.key}
                   onClick={() => { setFilterStatus(f.key); setPage(1) }}
-                  className={`px-3 py-1.5 rounded-lg text-[10px] font-black transition-all ${
+                  className={`h-7 px-3 rounded-lg text-xs font-semibold transition-all ${
                     filterStatus === f.key
                       ? 'bg-[var(--color-primary)] text-white shadow-sm shadow-[var(--color-primary)]/20'
                       : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
@@ -209,13 +206,13 @@ export default function LeavePermitPage() {
               ))}
             </div>
             <div className="relative flex-1 min-w-[180px]">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[var(--color-text-muted)] pointer-events-none" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)] pointer-events-none" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setPage(1) }}
                 placeholder="Cari nama santri..."
-                className="w-full h-9 pl-9 pr-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text)] text-[11px] placeholder:text-[var(--color-text-muted)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 transition-all"
+                className="w-full h-9 pl-9 pr-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text)] text-sm font-medium placeholder:text-[var(--color-text-muted)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 transition-all"
               />
             </div>
           </div>
@@ -225,7 +222,7 @@ export default function LeavePermitPage() {
             {loading && permits.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 gap-2">
                 <Loader2 className="w-6 h-6 animate-spin text-[var(--color-primary)]" />
-                <p className="text-[11px] text-[var(--color-text-muted)]">Memuat data...</p>
+                <p className="text-xs text-[var(--color-text-muted)]">Memuat data...</p>
               </div>
             ) : pagedPermits.length === 0 ? (
               <EmptyState
@@ -242,13 +239,13 @@ export default function LeavePermitPage() {
                   <table className="w-full text-left">
                     <thead>
                       <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/60">
-                        <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">Santri</th>
-                        <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] hidden md:table-cell">Kelas</th>
-                        <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">Tujuan</th>
-                        <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] hidden lg:table-cell">Tanggal</th>
-                        <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] hidden lg:table-cell">Batas Waktu</th>
-                        <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">Status</th>
-                        <th className="px-4 py-3 text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] text-right">Aksi</th>
+                        <th className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">Santri</th>
+                        <th className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] hidden md:table-cell">Kelas</th>
+                        <th className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">Tujuan</th>
+                        <th className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] hidden lg:table-cell">Tanggal</th>
+                        <th className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] hidden lg:table-cell">Batas Waktu</th>
+                        <th className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">Status</th>
+                        <th className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] text-right">Aksi</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[var(--color-border)]">
@@ -257,47 +254,49 @@ export default function LeavePermitPage() {
                         const isOverdue = permit.status === 'departed' && new Date(permit.return_deadline) < new Date()
                         return (
                           <tr key={permit.id} className={`hover:bg-[var(--color-surface-alt)]/60 transition-colors ${isOverdue ? 'bg-red-500/5' : ''}`}>
-                            <td className="px-4 py-3">
+                            <td className="px-4 py-2.5">
                               <div className="flex items-center gap-2.5">
-                                <div className="w-7 h-7 rounded-full bg-[var(--color-surface-alt)] flex items-center justify-center shrink-0 overflow-hidden">
+                                <div className="w-8 h-8 rounded-xl bg-[var(--color-surface-alt)] flex items-center justify-center shrink-0 overflow-hidden">
                                   {student.photo_url
                                     ? <img src={student.photo_url} alt="" className="w-full h-full object-cover" />
-                                    : <span className="text-[10px] font-black text-[var(--color-primary)]">{student.name?.charAt(0)}</span>
+                                    : <span className="text-xs font-bold text-[var(--color-primary)]">{student.name?.charAt(0)}</span>
                                   }
                                 </div>
                                 <div>
-                                  <p className="text-[11px] font-black text-[var(--color-text)]">{student.name}</p>
-                                  <p className="text-[9px] text-[var(--color-text-muted)] md:hidden">{student.classes?.name || '-'}</p>
+                                  <p className="text-sm font-bold text-[var(--color-text)] leading-tight">{student.name}</p>
+                                  <p className="text-[11px] text-[var(--color-text-muted)] md:hidden">{student.classes?.name || '-'}</p>
                                 </div>
                               </div>
                             </td>
-                            <td className="px-4 py-3 text-[11px] text-[var(--color-text-muted)] hidden md:table-cell">{student.classes?.name || '-'}</td>
-                            <td className="px-4 py-3 text-[11px] text-[var(--color-text)] max-w-[140px] truncate">{permit.destination}</td>
-                            <td className="px-4 py-3 text-[11px] text-[var(--color-text-muted)] hidden lg:table-cell">{fmtDateShort(permit.leave_date)}</td>
-                            <td className="px-4 py-3 text-[11px] hidden lg:table-cell">
-                              <span className={isOverdue ? 'text-red-500 font-black' : 'text-[var(--color-text-muted)]'}>
+                            <td className="px-4 py-2.5 text-xs text-[var(--color-text-muted)] hidden md:table-cell">{student.classes?.name || '-'}</td>
+                            <td className="px-4 py-2.5 text-xs text-[var(--color-text)] max-w-[140px] truncate">{permit.destination}</td>
+                            <td className="px-4 py-2.5 text-xs text-[var(--color-text-muted)] hidden lg:table-cell">{fmtDateShort(permit.leave_date)}</td>
+                            <td className="px-4 py-2.5 text-xs hidden lg:table-cell">
+                              <span className={isOverdue ? 'text-red-500 font-bold' : 'text-[var(--color-text-muted)]'}>
                                 {fmtDateTimeShort(permit.return_deadline)}
                               </span>
                             </td>
-                            <td className="px-4 py-3">
+                            <td className="px-4 py-2.5">
                               <LeavePermitStatusBadge status={permit.status} size="xs" />
                             </td>
-                            <td className="px-4 py-3 text-right">
-                              <div className="flex items-center justify-end gap-1">
+                            <td className="px-4 py-2.5 text-right">
+                              <div className="flex items-center justify-end gap-1.5">
                                 <button
                                   onClick={() => setShowPrint(permit)}
-                                  className="h-7 w-7 rounded-lg flex items-center justify-center hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all"
+                                  className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all"
                                   title="Cetak"
+                                  aria-label="Cetak surat izin"
                                 >
-                                  <Printer className="w-3.5 h-3.5" />
+                                  <Printer className="w-4 h-4" />
                                 </button>
                                 {(permit.status === 'issued' || permit.status === 'departed') && (
                                   <button
                                     onClick={() => handleCancel(permit)}
-                                    className="h-7 w-7 rounded-lg flex items-center justify-center hover:bg-red-500/10 text-[var(--color-text-muted)] hover:text-red-500 transition-all"
+                                    className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-red-500/10 text-[var(--color-text-muted)] hover:text-red-500 transition-all"
                                     title="Batalkan"
+                                    aria-label="Batalkan izin"
                                   >
-                                    <Trash2 className="w-3.5 h-3.5" />
+                                    <Trash2 className="w-4 h-4" />
                                   </button>
                                 )}
                               </div>
@@ -338,7 +337,7 @@ export default function LeavePermitPage() {
             type="submit"
             form="leave-permit-form"
             disabled={!formCanSubmit || loading}
-            className="w-full h-11 rounded-2xl text-[12px] font-black flex items-center justify-center gap-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 active:scale-[0.98] text-white shadow-lg shadow-[var(--color-primary)]/20"
+            className="w-full h-11 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 active:scale-[0.98] text-white shadow-lg shadow-[var(--color-primary)]/20"
           >
             {loading ? (
               <Loader2 className="w-4 h-4 animate-spin" />

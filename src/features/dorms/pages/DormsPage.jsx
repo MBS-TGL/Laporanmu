@@ -117,7 +117,7 @@ export default function DormsPage() {
                                             }`}
                                             style={{ top: headerMenuRect.bottom + 8, left: Math.max(10, headerMenuRect.right - 224) }}
                                         >
-                                            <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">{t('dorms.dataOptions')}</p>
+                                            <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] px-3 py-2">{t('dorms.dataOptions')}</p>
                                             <button
                                                 onClick={() => {
                                                     setIsHeaderMenuOpen(false);
@@ -130,8 +130,8 @@ export default function DormsPage() {
                                                     <Download className="w-4 h-4" />
                                                 </div>
                                                 <div className="text-left">
-                                                    <p className="text-[11px] font-black leading-tight">{t('dorms.exportDormData')}</p>
-                                                    <p className="text-[9px] opacity-40 font-bold uppercase tracking-wider">xlsx / csv / pdf</p>
+                                                    <p className="text-xs font-bold leading-tight">{t('dorms.exportDormData')}</p>
+                                                    <p className="text-[10px] text-[var(--color-text-muted)] font-medium uppercase tracking-wider mt-0.5">xlsx / csv / pdf</p>
                                                 </div>
                                             </button>
                                             <div className="h-px bg-[var(--color-border)] my-1" />
@@ -143,8 +143,8 @@ export default function DormsPage() {
                                                     <Download className="w-4 h-4 rotate-180" />
                                                 </div>
                                                 <div className="text-left">
-                                                    <p className="text-[11px] font-black leading-tight">{t('dorms.importPlotting')}</p>
-                                                    <p className="text-[9px] opacity-40 font-bold uppercase tracking-wider">xlsx / csv</p>
+                                                    <p className="text-xs font-bold leading-tight">{t('dorms.importPlotting')}</p>
+                                                    <p className="text-[10px] text-[var(--color-text-muted)] font-medium uppercase tracking-wider mt-0.5">xlsx / csv</p>
                                                 </div>
                                             </button>
                                         </div>
@@ -164,13 +164,13 @@ export default function DormsPage() {
                                 title={isPrivacyMode ? t('dorms.privacyModeOn') : t('dorms.privacyModeOff')}
                             >
                                 {isPrivacyMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline">{t('dorms.privacy')}</span>
+                                <span className="text-xs font-bold uppercase tracking-wider hidden md:inline">{t('dorms.privacy')}</span>
                             </button>
 
                             {/* Primary: Assign Santri */}
                             <button
                                 onClick={() => data.handleOpenAssignModal(null)}
-                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 border border-white/10"
+                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 border border-white/10"
                             >
                                 <Plus className="w-3.5 h-3.5" />
                                 <span>{t('dorms.assignStudent')}</span>
@@ -226,14 +226,14 @@ export default function DormsPage() {
                 <div className="flex gap-1 sm:gap-1.5 p-1 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] w-full sm:w-fit overflow-x-auto scrollbar-hide shrink-0">
                     <button
                         onClick={() => setActiveTab('plotting')}
-                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-[11px] font-black flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'plotting' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'plotting' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                     >
                         <Bed className="w-3.5 h-3.5 shrink-0" />
                         <span>{t('dorms.tabPlotting')}</span>
                     </button>
                     <button
                         onClick={() => setActiveTab('kelola_kamar')}
-                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-[11px] font-black flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'kelola_kamar' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'kelola_kamar' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                     >
                         <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
                         <span>{t('dorms.tabManage')}</span>

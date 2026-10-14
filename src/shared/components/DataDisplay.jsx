@@ -101,7 +101,7 @@ export function StatCard({
                 {/* Label */}
                 {loading
                     ? <span className="inline-block w-20 h-2.5 rounded bg-[var(--color-border)] animate-pulse mb-1" />
-                    : <p className="text-xs sm:text-[12.5px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] opacity-80 mb-1 truncate">{label}</p>
+                    : <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] opacity-80 mb-1 truncate">{label}</p>
                 }
 
                 {/* Value + Trend */}
@@ -112,7 +112,7 @@ export function StatCard({
                             : <>{tNum(displayValue)}{suffix && tNum(suffix)}</>}
                     </h3>
                     {!loading && trend && (
-                        <span className={`inline-flex items-center gap-0.5 text-[11px] font-black px-2 py-0.5 rounded-md leading-none ${
+                        <span className={`inline-flex items-center gap-0.5 text-xs font-bold px-2 py-0.5 rounded-md leading-none ${
                             trendUp === true  ? 'text-emerald-500 bg-emerald-500/10' :
                             trendUp === false ? 'text-rose-500 bg-rose-500/10' :
                             'text-[var(--color-text-muted)] bg-[var(--color-surface-alt)]'
@@ -256,10 +256,10 @@ export function EmptyState({ icon, title, description, action, variant = 'glass'
                         {renderIcon(icon, isMinimal ? 'w-6 h-6' : 'w-8 h-8 text-3xl')}
                     </div>
                 )}
-                <h3 className={`${isMinimal ? 'text-[15px] font-black mb-1' : 'text-lg font-black font-heading uppercase tracking-widest mb-1.5'} text-[var(--color-text)]`}>
+                <h3 className={`${isMinimal ? 'text-base font-bold mb-1' : 'text-base sm:text-lg font-bold font-heading mb-1.5'} text-[var(--color-text)]`}>
                     {title}
                 </h3>
-                <p className={`${isMinimal ? 'text-[11px] max-w-xs px-4 opacity-60 font-medium' : 'text-[10px] max-w-[240px] mx-auto opacity-60 font-bold mb-8'} text-[var(--color-text-muted)] leading-relaxed`}>
+                <p className={`${isMinimal ? 'text-xs max-w-xs px-4 font-normal' : 'text-xs sm:text-sm max-w-xs mx-auto font-normal mb-6'} text-[var(--color-text-muted)] leading-relaxed`}>
                     {description}
                 </p>
                 {action && <div className={`${isMinimal ? 'mt-4' : 'mt-6'}`}>{action}</div>}

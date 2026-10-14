@@ -27,7 +27,7 @@ export function ConfirmEvictModal({
                     <button
                         type="button"
                         onClick={onClose}
-                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                        className="h-9.5 px-4 sm:px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider transition-all shrink-0"
                     >
                         {t('dorms.confirm.evict.cancel')}
                     </button>
@@ -36,7 +36,7 @@ export function ConfirmEvictModal({
                         type="button"
                         onClick={onConfirm}
                         disabled={submitting}
-                        className="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-red-500/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-red-500/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
                     >
                         {submitting ? (
                             <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -49,14 +49,14 @@ export function ConfirmEvictModal({
             }
         >
             <div className="px-1">
-                <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
+                <p className="text-xs sm:text-[13px] text-[var(--color-text-muted)] leading-relaxed font-medium">
                     {t('dorms.confirm.evict.text')
                         .split('{name}')
                         .reduce((acc, part, i) => {
                             if (i === 0) return [part.replace('{room}', studentToEvict?.metadata?.kamar || 'Kamar')]
                             return [
                                 ...acc,
-                                <span key={i} className="text-red-500 font-black px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">
+                                <span key={i} className="text-red-500 font-bold px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">
                                     {studentToEvict?.name}
                                 </span>,
                                 part.replace('{room}', studentToEvict?.metadata?.kamar || 'Kamar')
@@ -93,7 +93,7 @@ export function ConfirmDeleteDormModal({
                     <button
                         type="button"
                         onClick={onClose}
-                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                        className="h-9.5 px-4 sm:px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider transition-all shrink-0"
                     >
                         {t('dorms.confirm.deleteDorm.cancel')}
                     </button>
@@ -102,7 +102,7 @@ export function ConfirmDeleteDormModal({
                         type="button"
                         onClick={onConfirm}
                         disabled={submitting}
-                        className="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-red-500/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-red-500/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
                     >
                         {submitting ? (
                             <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -119,14 +119,14 @@ export function ConfirmDeleteDormModal({
                     const occupants = students.filter(s => s.metadata?.kamar === dormToDelete.id)
                     if (occupants.length > 0) {
                         return (
-                            <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
+                            <p className="text-xs sm:text-[13px] text-[var(--color-text-muted)] leading-relaxed font-medium">
                                 {t('dorms.confirm.deleteDorm.occupantsText')
                                     .split('{room}')
                                     .reduce((acc, part, i) => {
                                         if (i === 0) return [part.replace('{count}', tNum(occupants.length))]
                                         return [
                                             ...acc,
-                                            <span key={i} className="text-red-500 font-black px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">{dormToDelete.id}</span>,
+                                            <span key={i} className="text-red-500 font-bold px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">{dormToDelete.id}</span>,
                                             part.replace('{count}', tNum(occupants.length))
                                         ]
                                     }, [])}
@@ -134,14 +134,14 @@ export function ConfirmDeleteDormModal({
                         )
                     }
                     return (
-                        <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
+                        <p className="text-xs sm:text-[13px] text-[var(--color-text-muted)] leading-relaxed font-medium">
                             {t('dorms.confirm.deleteDorm.noOccupantsText')
                                 .split('{room}')
                                 .reduce((acc, part, i) => {
                                     if (i === 0) return [part]
                                     return [
                                         ...acc,
-                                        <span key={i} className="text-[var(--color-text)] font-black">{dormToDelete.id}</span>,
+                                        <span key={i} className="text-[var(--color-text)] font-bold">{dormToDelete.id}</span>,
                                         part
                                     ]
                                 }, [])}
@@ -177,7 +177,7 @@ export function ConfirmDeleteAuditModal({
                     <button
                         type="button"
                         onClick={onClose}
-                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                        className="h-9.5 px-4 sm:px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider transition-all shrink-0"
                     >
                         {t('dorms.confirm.deleteAudit.cancel')}
                     </button>
@@ -186,7 +186,7 @@ export function ConfirmDeleteAuditModal({
                         type="button"
                         onClick={onConfirm}
                         disabled={submitting}
-                        className="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-red-500/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-red-500/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
                     >
                         {submitting ? (
                             <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -200,19 +200,19 @@ export function ConfirmDeleteAuditModal({
         >
             <div className="px-1">
                 {auditToDelete && (
-                    <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
+                    <p className="text-xs sm:text-[13px] text-[var(--color-text-muted)] leading-relaxed font-medium">
                         {t('dorms.confirm.deleteAudit.text')
                             .split('{room}')
                             .reduce((acc, part, i) => {
                                 if (i === 0) return [part.replace('{date}', auditToDelete.date)]
                                 return [
                                     ...acc,
-                                    <span key={`room-${i}`} className="text-[var(--color-text)] font-black">{auditToDelete.room}</span>,
+                                    <span key={`room-${i}`} className="text-[var(--color-text)] font-bold">{auditToDelete.room}</span>,
                                     ...part.split('{date}').reduce((dAcc, dPart, dI) => {
                                         if (dI === 0) return [dPart]
                                         return [
                                             ...dAcc,
-                                            <span key={`date-${dI}`} className="text-[var(--color-text)] font-black">{auditToDelete.date}</span>,
+                                            <span key={`date-${dI}`} className="text-[var(--color-text)] font-bold">{auditToDelete.date}</span>,
                                             dPart
                                         ]
                                     }, [])
@@ -257,7 +257,7 @@ export function ConfirmDeleteInventoryModal({
                                 setPendingInventoryDorm(null)
                             }
                         }}
-                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                        className="h-9.5 px-4 sm:px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider transition-all shrink-0"
                     >
                         {t('dorms.confirm.deleteInventory.cancel')}
                     </button>
@@ -265,7 +265,7 @@ export function ConfirmDeleteInventoryModal({
                     <button
                         type="button"
                         onClick={onConfirm}
-                        className="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-red-500/20 transition-all flex items-center justify-center gap-2 shrink-0"
+                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-red-500/20 transition-all flex items-center justify-center gap-2 shrink-0"
                     >
                         <Trash2 className="w-3.5 h-3.5 opacity-70" /> {t('dorms.confirm.deleteInventory.confirm')}
                     </button>
@@ -274,14 +274,14 @@ export function ConfirmDeleteInventoryModal({
         >
             <div className="px-1">
                 {inventoryToDelete && (
-                    <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
+                    <p className="text-xs sm:text-[13px] text-[var(--color-text-muted)] leading-relaxed font-medium">
                         {t('dorms.confirm.deleteInventory.text')
                             .split('{item}')
                             .reduce((acc, part, i) => {
                                 if (i === 0) return [part]
                                 return [
                                     ...acc,
-                                    <span key={i} className="text-[var(--color-text)] font-black">{inventoryToDelete.item_name}</span>,
+                                    <span key={i} className="text-[var(--color-text)] font-bold">{inventoryToDelete.item_name}</span>,
                                     part
                                 ]
                             }, [])}

@@ -49,7 +49,7 @@ export default function DormsAssignModal({
                     {assignStep === 1 ? (
                         <button
                             onClick={onClose}
-                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                            className="h-9.5 px-4 sm:px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider transition-all shrink-0"
                         >
                             {t('dorms.assign.cancel')}
                         </button>
@@ -58,14 +58,14 @@ export default function DormsAssignModal({
                             {isHeaderAssign ? (
                                 <button
                                     onClick={() => setAssignStep(1)}
-                                    className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                                    className="h-9.5 px-4 sm:px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider transition-all shrink-0"
                                 >
                                     {t('dorms.assign.back')}
                                 </button>
                             ) : (
                                 <button
                                     onClick={onClose}
-                                    className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                                    className="h-9.5 px-4 sm:px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider transition-all shrink-0"
                                 >
                                     {t('dorms.assign.cancel')}
                                 </button>
@@ -74,7 +74,7 @@ export default function DormsAssignModal({
                             <button
                                 onClick={onSave}
                                 disabled={submitting}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-[var(--color-primary)]/20 transition-all flex items-center justify-center gap-2 shrink-0"
+                                className="h-9.5 px-5 sm:px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-[var(--color-primary)]/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
                             >
                                 {submitting ? (
                                     <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -100,21 +100,21 @@ export default function DormsAssignModal({
                                 value={localQuery}
                                 onChange={(e) => setLocalQuery(e.target.value)}
                                 placeholder={t('dorms.assign.search')}
-                                className="w-full h-10 pl-9 pr-8 text-xs bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] focus:outline-none transition-all rounded-xl font-bold"
+                                className="w-full h-10 pl-9 pr-8 text-sm bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] focus:outline-none transition-all rounded-xl font-medium"
                             />
                             {localQuery && (
                                 <button
                                     onClick={() => setLocalQuery('')}
                                     className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
                                 >
-                                    <X className="w-3 h-3" />
+                                    <X className="w-3.5 h-3.5" />
                                 </button>
                             )}
                         </div>
                         <div className="bg-[var(--color-surface-alt)]/30 border border-[var(--color-border)]/50 rounded-2xl p-2">
                             <div className="grid grid-cols-1 gap-1.5 max-h-[250px] overflow-y-auto pr-1 custom-scrollbar">
                                 {filteredAssignStudents.length === 0 ? (
-                                    <p className="text-[11px] text-[var(--color-text-muted)] text-center py-6 font-bold">
+                                    <p className="text-xs text-[var(--color-text-muted)] text-center py-6 font-medium">
                                         {t('dorms.assign.notFound')}
                                     </p>
                                 ) : (
@@ -132,18 +132,18 @@ export default function DormsAssignModal({
                                                     className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)]/60 hover:border-[var(--color-border-hover)] transition-all text-left flex items-center justify-between"
                                                 >
                                                     <div>
-                                                        <p className="text-[11.5px] font-black text-[var(--color-text)]">{student.name}</p>
-                                                        <p className="text-[9px] text-[var(--color-text-muted)] font-black uppercase tracking-wider mt-0.5">
+                                                        <p className="text-sm font-bold text-[var(--color-text)]">{student.name}</p>
+                                                        <p className="text-xs text-[var(--color-text-muted)] font-medium uppercase tracking-wider mt-0.5">
                                                             {student.classes?.name || t('dorms.plotting.classEmpty')}
                                                         </p>
                                                     </div>
                                                     <div>
                                                         {room ? (
-                                                            <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-600 border border-indigo-500/20">
+                                                            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg bg-indigo-500/10 text-indigo-600 border border-indigo-500/20">
                                                                 {room}
                                                             </span>
                                                         ) : (
-                                                            <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-amber-500/10 text-amber-500 border border-dashed border-amber-500/20">
+                                                            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg bg-amber-500/10 text-amber-500 border border-dashed border-amber-500/20">
                                                                 {t('dorms.assign.unassigned')}
                                                             </span>
                                                         )}
@@ -152,7 +152,7 @@ export default function DormsAssignModal({
                                             )
                                         })}
                                         {filteredAssignStudents.length > 20 && (
-                                            <p className="text-[9px] text-center text-[var(--color-text-muted)] py-2.5 font-black uppercase tracking-widest border-t border-[var(--color-border)]/30 mt-2 bg-[var(--color-surface-alt)]/20 rounded-lg">
+                                            <p className="text-xs text-center text-[var(--color-text-muted)] py-2 font-medium border-t border-[var(--color-border)]/30 mt-2 bg-[var(--color-surface-alt)]/20 rounded-lg">
                                                 {t('dorms.assign.showingLimit').replace('{total}', tNum(filteredAssignStudents.length))}
                                             </p>
                                         )}
@@ -168,20 +168,20 @@ export default function DormsAssignModal({
                                 <User className="w-4.5 h-4.5" />
                             </div>
                             <div>
-                                <p className="text-[12px] font-black text-[var(--color-text)]">{studentToAssign?.name}</p>
-                                <p className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider mt-0.5">
+                                <p className="text-sm font-bold text-[var(--color-text)]">{studentToAssign?.name}</p>
+                                <p className="text-xs font-medium text-[var(--color-text-muted)] uppercase tracking-wider mt-0.5">
                                     {studentToAssign?.classes?.name || t('dorms.plotting.classEmpty')}
                                 </p>
                             </div>
                         </div>
 
                         <div>
-                            <label className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-2">{t('dorms.assign.selectTargetRoom')}</label>
+                            <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-2">{t('dorms.assign.selectTargetRoom')}</label>
                             <div className="bg-[var(--color-surface-alt)]/30 border border-[var(--color-border)]/50 rounded-2xl p-2">
                                 <div className="grid grid-cols-1 gap-1.5 max-h-[220px] overflow-y-auto pr-1 custom-scrollbar">
                                     <button
                                         onClick={() => setSelectedTargetRoom('')}
-                                        className={`p-3 rounded-xl border text-[11px] font-black transition-all text-left flex items-center justify-between ${!selectedTargetRoom
+                                        className={`p-3 rounded-xl border text-xs font-bold transition-all text-left flex items-center justify-between ${!selectedTargetRoom
                                             ? 'border-amber-500 bg-amber-500/10 text-amber-600 shadow-sm'
                                             : 'border-dashed border-amber-500/30 bg-amber-500/5 text-amber-600/70 hover:bg-amber-500/10 hover:border-amber-500/50'
                                             }`}
@@ -199,15 +199,15 @@ export default function DormsAssignModal({
                                             <button
                                                 key={room.id}
                                                 onClick={() => setSelectedTargetRoom(room.id)}
-                                                className={`p-3 rounded-xl border text-[11px] transition-all text-left flex items-center justify-between ${isSelected
-                                                    ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5 text-[var(--color-primary)] font-black'
-                                                    : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]/60 hover:border-[var(--color-border-hover)] font-bold'
+                                                className={`p-3 rounded-xl border text-xs transition-all text-left flex items-center justify-between ${isSelected
+                                                    ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5 text-[var(--color-primary)] font-bold'
+                                                    : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]/60 hover:border-[var(--color-border-hover)] font-semibold'
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-2">
                                                     <Bed className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}`} />
                                                     <span>{room.id}</span>
-                                                    <span className="text-[9px] opacity-40 ml-1.5" dir="rtl">{room.ar}</span>
+                                                    {room.ar && <span className="text-xs opacity-60 ml-1.5 font-medium" dir="rtl">{room.ar}</span>}
                                                 </div>
                                                 {isSelected && <Check className="w-3.5 h-3.5 stroke-[3px]" />}
                                             </button>

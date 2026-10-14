@@ -31,7 +31,7 @@ export default function DormsMasterModal({
                     <button
                         type="button"
                         onClick={onClose}
-                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition"
+                        className="h-9.5 px-4 sm:px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider transition"
                     >
                         {t('dorms.master.cancel')}
                     </button>
@@ -39,7 +39,7 @@ export default function DormsMasterModal({
                         type="submit"
                         form="dorm-form"
                         disabled={submitting}
-                        className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-[var(--color-primary)]/20 transition flex items-center justify-center gap-2"
+                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-[var(--color-primary)]/20 transition flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                         {submitting ? (
                             <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -53,7 +53,7 @@ export default function DormsMasterModal({
         >
             <form id="dorm-form" onSubmit={onSave} className="space-y-4">
                 <div>
-                    <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.master.labelRoomName')}</label>
+                    <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">{t('dorms.master.labelRoomName')}</label>
                     <input
                         type="text"
                         required
@@ -61,24 +61,24 @@ export default function DormsMasterModal({
                         value={newDorm.id}
                         onChange={(e) => setNewDorm(prev => ({ ...prev, id: e.target.value }))}
                         placeholder={t('dorms.master.placeholderRoomName')}
-                        className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] transition disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                 </div>
 
                 <div>
-                    <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.master.labelRoomArab')}</label>
+                    <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">{t('dorms.master.labelRoomArab')}</label>
                     <input
                         type="text"
                         value={newDorm.ar || ''}
                         onChange={(e) => setNewDorm(prev => ({ ...prev, ar: e.target.value }))}
                         placeholder={t('dorms.master.placeholderRoomArab')}
                         dir="rtl"
-                        className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition"
+                        className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] transition"
                     />
                 </div>
 
                 <div>
-                    <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.master.labelCapacity')}</label>
+                    <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">{t('dorms.master.labelCapacity')}</label>
                     <input
                         type="number"
                         required
@@ -86,13 +86,13 @@ export default function DormsMasterModal({
                         value={newDorm.capacity}
                         onChange={(e) => setNewDorm(prev => ({ ...prev, capacity: Number(e.target.value) }))}
                         placeholder={t('dorms.master.placeholderCapacity')}
-                        className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition"
+                        className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] transition"
                     />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                     <div>
-                        <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.master.labelGender')}</label>
+                        <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">{t('dorms.master.labelGender')}</label>
                         <RichSelect
                             usePortal={true}
                             value={newDorm.gender || ''}
@@ -107,7 +107,7 @@ export default function DormsMasterModal({
                         />
                     </div>
                     <div>
-                        <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.master.labelStatus')}</label>
+                        <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">{t('dorms.master.labelStatus')}</label>
                         <RichSelect
                             usePortal={true}
                             value={newDorm.status || 'active'}
@@ -124,18 +124,18 @@ export default function DormsMasterModal({
                 </div>
 
                 <div>
-                    <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.master.labelBuilding')}</label>
+                    <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">{t('dorms.master.labelBuilding')}</label>
                     <input
                         type="text"
                         value={newDorm.building || ''}
                         onChange={(e) => setNewDorm(prev => ({ ...prev, building: e.target.value }))}
                         placeholder={t('dorms.master.placeholderBuilding')}
-                        className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition"
+                        className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium focus:outline-none focus:border-[var(--color-primary)] transition"
                     />
                 </div>
 
                 <div>
-                    <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.master.labelMusyrif')}</label>
+                    <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">{t('dorms.master.labelMusyrif')}</label>
                     <RichSelect
                         usePortal={true}
                         value={newDorm.musyrif_id || ''}

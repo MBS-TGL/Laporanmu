@@ -179,11 +179,11 @@ const Modal = memo(function Modal({
                                 </div>
                             )}
                             <div className="min-w-0">
-                                <h3 className={`font-black font-heading tracking-tight text-[var(--color-text)] leading-tight ${icon ? 'text-[15px]' : 'text-lg md:text-xl'}`}>
+                                <h3 className="text-base sm:text-lg font-bold font-heading tracking-tight text-[var(--color-text)] leading-tight">
                                     {title}
                                 </h3>
                                 {description && (
-                                    <div className="text-[10px] font-bold text-[var(--color-text-muted)] leading-relaxed mt-0.5 opacity-50">
+                                    <div className="text-xs font-normal text-[var(--color-text-muted)] leading-relaxed mt-0.5">
                                         {description}
                                     </div>
                                 )}

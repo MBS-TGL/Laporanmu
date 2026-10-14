@@ -33,8 +33,8 @@ export const ActionBadge = ({ action }) => {
     const c = config[action] || { label: action, color: 'bg-gray-500/10 text-gray-500', icon: faHistory }
 
     return (
-        <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest flex items-center gap-1 w-fit ${c.color}`}>
-            <FontAwesomeIcon icon={c.icon} className="text-[7px]" />
+        <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 w-fit ${c.color}`}>
+            <FontAwesomeIcon icon={c.icon} className="text-[9px]" />
             {c.label}
         </span>
     )
@@ -96,17 +96,17 @@ export const DiffViewer = ({ oldData, newData, changedFields }) => {
     if (keys.length === 0) return (
         <div className="flex flex-col items-center justify-center py-8 opacity-40">
             <FontAwesomeIcon icon={faCircleInfo} className="text-xl mb-2" />
-            <p className="text-[10px] font-bold uppercase tracking-widest">Tidak ada perubahan terbaca</p>
+            <p className="text-xs font-semibold text-[var(--color-text-muted)]">Tidak ada perubahan terbaca</p>
         </div>
     )
 
     return (
         <div className="space-y-3">
             <div className="hidden lg:grid grid-cols-2 gap-4 mb-2">
-                <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50 px-2">
+                <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] opacity-70 px-2">
                     Data Sebelumnya
                 </p>
-                <p className="text-[9px] font-black uppercase tracking-widest text-emerald-500 opacity-80 px-2 text-right">
+                <p className="text-xs font-bold uppercase tracking-wider text-emerald-500 opacity-90 px-2 text-right">
                     Data Terbaru
                 </p>
             </div>
@@ -120,11 +120,11 @@ export const DiffViewer = ({ oldData, newData, changedFields }) => {
                     <div key={key} className="group">
                         <div className="px-2 py-1.5 rounded-lg border border-[var(--color-border)]/20 bg-[var(--color-surface-alt)]/30 group-hover:border-[var(--color-primary)]/30 transition-all">
                             <div className="flex items-center justify-between mb-2">
-                                <span className="text-[9px] font-black uppercase text-[var(--color-text-muted)] tracking-tighter">
+                                <span className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wider">
                                     {key.replace(/_/g, ' ')}
                                 </span>
                                 {isSensitive && (
-                                    <span className="text-[8px] font-black text-rose-500 border border-rose-500/20 px-1.5 py-0.5 rounded uppercase">
+                                    <span className="text-[10px] font-bold text-rose-500 border border-rose-500/20 px-1.5 py-0.5 rounded uppercase">
                                         Sensitif
                                     </span>
                                 )}
@@ -132,7 +132,7 @@ export const DiffViewer = ({ oldData, newData, changedFields }) => {
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                                 {/* Old Value */}
                                 <div className="p-2 rounded-lg bg-rose-500/5 border border-rose-500/10 min-h-[32px] flex items-center">
-                                    <code className="text-[10px] font-mono break-all text-rose-600/70 line-through">
+                                    <code className="text-xs font-mono break-all text-rose-600/70 line-through">
                                         {isSensitive
                                             ? '••••••••'
                                             : (typeof valOld === 'object'
@@ -393,16 +393,16 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
                                 <div className="flex items-center justify-between mb-0.5">
                                     <div className="flex items-center gap-2">
                                         <ActionBadge action={log.action} />
-                                        <span className="text-[11px] font-black text-[var(--color-text)] tracking-tight">
+                                        <span className="text-xs font-bold text-[var(--color-text)] tracking-tight">
                                             {log.actor_name}
                                         </span>
                                     </div>
-                                    <span className="text-[9px] font-bold text-[var(--color-text-muted)] tabular-nums opacity-50">
+                                    <span className="text-xs font-medium text-[var(--color-text-muted)] tabular-nums opacity-60">
                                         {fmtRelative(log.created_at)}
                                     </span>
                                 </div>
 
-                                <p className="text-[9.5px] text-[var(--color-text-muted)] font-medium leading-tight opacity-60">
+                                <p className="text-xs text-[var(--color-text-muted)] font-normal leading-relaxed">
                                     {log.action === 'UPDATE' ? 'Melakukan perubahan data record'
                                         : log.action === 'INSERT' ? 'Membuat record baru di sistem'
                                             : log.action === 'DELETE' ? 'Menghapus record dari sistem'
@@ -416,12 +416,12 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
                                         <div className="p-2.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50 space-y-2.5">
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-2">
-                                                    <FontAwesomeIcon icon={faClock} className="text-[10px] text-indigo-500" />
-                                                    <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                                                    <FontAwesomeIcon icon={faClock} className="text-xs text-indigo-500" />
+                                                    <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                                                         Forensic Diff
                                                     </span>
                                                 </div>
-                                                <div className="text-[8px] font-mono text-[var(--color-text-muted)] opacity-50">
+                                                <div className="text-xs font-mono text-[var(--color-text-muted)] opacity-60">
                                                     IP: {log.ip_address || '?.?.?.?'}
                                                 </div>
                                             </div>

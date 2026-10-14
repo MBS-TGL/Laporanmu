@@ -58,7 +58,7 @@ export default function BehaviorFilterBar({
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder={tp('searchPlaceholder')}
-                            className="input-field pl-10 w-full h-9 text-xs sm:text-sm bg-[var(--color-surface-alt)]/50 border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10 transition-all rounded-xl font-bold placeholder:font-normal placeholder:opacity-40"
+                            className="input-field pl-10 w-full h-9 text-sm bg-[var(--color-surface-alt)]/50 border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10 transition-all rounded-xl font-medium placeholder:font-normal placeholder:opacity-40"
                         />
                         {searchQuery && (
                             <button
@@ -88,13 +88,13 @@ export default function BehaviorFilterBar({
                                     setFilterType(s.id)
                                     setPage(1)
                                 }}
-                                className={`flex items-center gap-1 lg:gap-2 px-2 lg:px-3 py-1.5 rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-normal sm:tracking-widest whitespace-nowrap transition-all border ${
+                                className={`flex items-center gap-1 lg:gap-2 px-2 lg:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold uppercase tracking-wide whitespace-nowrap transition-all border ${
                                     filterType === s.id
                                         ? `${s.activeCls} text-white`
                                         : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5 hover:text-[var(--color-primary)]'
                                 }`}
                             >
-                                <s.icon className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${filterType === s.id ? 'opacity-100' : 'opacity-30'}`} />
+                                <s.icon className={`w-3.5 h-3.5 ${filterType === s.id ? 'opacity-100' : 'opacity-30'}`} />
                                 {s.label}
                             </button>
                         ))}
@@ -105,13 +105,13 @@ export default function BehaviorFilterBar({
                             setSortBy(sortBy === 'newest' ? 'oldest' : 'newest')
                             setPage(1)
                         }}
-                        className={`flex items-center gap-1 lg:gap-2 px-2 lg:px-3 py-1.5 rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-normal sm:tracking-widest whitespace-nowrap transition-all border shrink-0 ${
+                        className={`flex items-center gap-1 lg:gap-2 px-2 lg:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold uppercase tracking-wide whitespace-nowrap transition-all border shrink-0 ${
                             sortBy === 'oldest'
                                 ? 'bg-amber-500 border-amber-500 text-white'
                                 : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-amber-500/30 hover:bg-amber-500/5 hover:text-amber-600'
                         }`}
                     >
-                        {sortBy === 'newest' ? <ArrowDown className="w-3 h-3 sm:w-3.5 sm:h-3.5 opacity-30" /> : <ArrowUp className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
+                        {sortBy === 'newest' ? <ArrowDown className="w-3.5 h-3.5 opacity-30" /> : <ArrowUp className="w-3.5 h-3.5" />}
                         {sortBy === 'newest' ? tp('newest') : tp('oldest')}
                     </button>
                 </div>
@@ -126,7 +126,8 @@ export default function BehaviorFilterBar({
                         <button
                             onClick={() => setViewMode('timeline')}
                             title={tp('timeline')}
-                            className={`h-7 px-2 lg:px-2.5 rounded-lg text-[10px] font-black tracking-widest uppercase transition-all flex items-center gap-1.5 ${
+                            aria-label={tp('timeline')}
+                            className={`h-7 px-2 lg:px-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all flex items-center gap-1.5 ${
                                 viewMode === 'timeline' ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
                             }`}
                         >
@@ -136,7 +137,8 @@ export default function BehaviorFilterBar({
                         <button
                             onClick={() => setViewMode('table')}
                             title={tp('tableView')}
-                            className={`h-7 px-2 lg:px-2.5 rounded-lg text-[10px] font-black tracking-widest uppercase transition-all flex items-center gap-1.5 ${
+                            aria-label={tp('tableView')}
+                            className={`h-7 px-2 lg:px-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all flex items-center gap-1.5 ${
                                 viewMode === 'table' ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
                             }`}
                         >
@@ -148,15 +150,16 @@ export default function BehaviorFilterBar({
                     {/* Pilih Semua / Batal */}
                     <button
                         onClick={() => setSelectedIds(allSelected ? [] : reports.map((r) => r.id))}
-                        className={`h-9 px-2.5 lg:px-3 rounded-xl border text-[10px] font-black uppercase tracking-wider lg:tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${
+                        className={`h-9 px-2.5 lg:px-3 rounded-xl border text-xs font-bold uppercase tracking-wider transition-all active:scale-95 flex items-center justify-center gap-2 ${
                             selectedIds.length > 0 ? 'bg-indigo-500 border-indigo-500 text-white shadow-md shadow-indigo-500/20' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
                         }`}
                         title={tp('selectAll')}
+                        aria-label={tp('selectAll')}
                     >
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         <span className="hidden xl:inline">{selectedIds.length > 0 ? tp('selected') : tp('selectAll')}</span>
                         {selectedIds.length > 0 && (
-                            <span className="w-4 h-4 rounded-full bg-white/20 text-white text-[9px] font-black flex items-center justify-center">
+                            <span className="w-4 h-4 rounded-full bg-white/20 text-white text-[10px] font-bold flex items-center justify-center">
                                 {tNum(selectedIds.length)}
                             </span>
                         )}
@@ -165,17 +168,18 @@ export default function BehaviorFilterBar({
                     {/* Advanced Filter Sliders */}
                     <button
                         onClick={() => setShowAdvFilter((v) => !v)}
-                        className={`h-9 px-2.5 lg:px-3 rounded-xl border text-[10px] font-black uppercase tracking-wider lg:tracking-widest transition-all flex items-center justify-center gap-2 ${
+                        className={`h-9 px-2.5 lg:px-3 rounded-xl border text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
                             showAdvFilter || activeFilters.length > 0
                                 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/30'
                                 : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
                         }`}
                         title={tp('advancedFilter')}
+                        aria-label={tp('advancedFilter')}
                     >
                         <Sliders className="w-3.5 h-3.5" />
                         <span className="hidden xl:inline">{tp('filterShort')}</span>
                         {activeFilters.length > 0 && (
-                            <span className="w-4 h-4 rounded-full bg-white/30 text-white text-[9px] font-black flex items-center justify-center">
+                            <span className="w-4 h-4 rounded-full bg-white/30 text-white text-[10px] font-bold flex items-center justify-center">
                                 {tNum(activeFilters.length)}
                             </span>
                         )}
@@ -191,7 +195,7 @@ export default function BehaviorFilterBar({
                             key={i}
                             type="button"
                             onClick={f.clear}
-                            className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-[10px] font-black text-[var(--color-text)]"
+                            className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-xs font-semibold text-[var(--color-text)]"
                             title={tp('deleteFilter')}
                         >
                             {f.label}
@@ -203,7 +207,7 @@ export default function BehaviorFilterBar({
                     <button
                         type="button"
                         onClick={resetAllFilters}
-                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-red-500/20 bg-red-500/5 text-[10px] font-black text-red-600"
+                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-red-500/20 bg-red-500/5 text-xs font-semibold text-red-600"
                         title={tp('resetAllFilters')}
                     >
                         <RotateCcw className="w-3.5 h-3.5" />
@@ -218,7 +222,7 @@ export default function BehaviorFilterBar({
                     <div className="flex items-center justify-between mb-3.5">
                         <div className="flex items-center gap-2.5">
                             <div className="w-1 h-3.5 bg-[var(--color-primary)] rounded-full" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-primary)] flex items-center gap-2">
+                            <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-primary)] flex items-center gap-2">
                                 <Sliders className="w-3 h-3 opacity-60" />
                                 <span className="sm:hidden">{tp('filterShort')}</span>
                                 <span className="hidden sm:inline">{tp('advancedFilter')}</span>
@@ -226,7 +230,7 @@ export default function BehaviorFilterBar({
                         </div>
                         <button
                             onClick={resetAllFilters}
-                            className="text-[9px] font-black uppercase tracking-widest text-red-500 hover:bg-red-500/5 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-500/10"
+                            className="text-[10px] font-bold uppercase tracking-wider text-red-500 hover:bg-red-500/5 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-500/10"
                         >
                             <RotateCcw className="w-3 h-3" />
                             <span className="sm:hidden">{tp('resetShort')}</span>
@@ -236,7 +240,7 @@ export default function BehaviorFilterBar({
 
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                         <div>
-                            <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">{tp('filterCategory')}</label>
+                            <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">{tp('filterCategory')}</label>
                             <RichSelect
                                 value={filterType}
                                 onChange={(val) => {
@@ -253,7 +257,7 @@ export default function BehaviorFilterBar({
                             />
                         </div>
                         <div>
-                            <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">{tp('classLabel')}</label>
+                            <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">{tp('classLabel')}</label>
                             <RichSelect
                                 value={filterClass}
                                 onChange={(val) => {
@@ -271,7 +275,7 @@ export default function BehaviorFilterBar({
                             />
                         </div>
                         <div>
-                            <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">{tp('sortLabel')}</label>
+                            <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">{tp('sortLabel')}</label>
                             <RichSelect
                                 value={sortBy}
                                 onChange={(val) => {
@@ -288,7 +292,7 @@ export default function BehaviorFilterBar({
                         <div className="flex items-end justify-end">
                             <button
                                 onClick={() => setShowAdvFilter(false)}
-                                className="h-9 px-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[9px] font-black uppercase tracking-widest text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
+                                className="h-9 px-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] font-bold uppercase tracking-wider text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
                             >
                                 {tp('closePanel')}
                             </button>

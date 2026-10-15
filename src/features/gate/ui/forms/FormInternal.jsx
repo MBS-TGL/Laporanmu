@@ -71,7 +71,7 @@ export default function FormInternal({ internalList, onSubmit, loading }) {
           const IconComp = t.icon
           return (
             <button key={t.key} onClick={() => { setVisitorType(t.key); setPersonId('') }}
-              className={`shrink-0 flex-1 min-w-0 h-9 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 border transition-all ${visitorType === t.key
+              className={`shrink-0 flex-1 min-w-0 h-9 rounded-xl text-sm font-semibold flex items-center justify-center gap-1.5 border transition-all ${visitorType === t.key
                 ? `${t.bg} ${t.color} ${t.border}`
                 : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
               <IconComp className="w-3.5 h-3.5 shrink-0" />
@@ -103,13 +103,13 @@ export default function FormInternal({ internalList, onSubmit, loading }) {
       <div className="space-y-3 pt-1">
         <div className="grid grid-cols-2 gap-2.5">
           <div>
-            <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5 block">
+            <label className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-muted)]/70 mb-1.5 block">
               {tanggalLabel}
             </label>
             <RichDatePicker value={dateOut} onChange={setDateOut} clearable={false} />
           </div>
           <div>
-            <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5 block">
+            <label className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-muted)]/70 mb-1.5 block">
               {jamKeluarLabel}
             </label>
             <RichTimePicker value={timeOut} onChange={setTimeOut} />

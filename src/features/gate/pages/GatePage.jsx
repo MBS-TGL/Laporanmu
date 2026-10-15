@@ -148,6 +148,67 @@ function TableSkeleton({ cols = 5, rows = 6 }) {
 
 // ConfigModal now imported from GateModals.jsx
 
+// ─── UI tokens & small shared pieces (konsistensi tipografi) ────────────────
+const UI = {
+  card: 'glass rounded-2xl p-4 sm:p-5',
+  cardTitle: 'text-sm font-semibold text-[var(--color-text)] leading-tight',
+  hint: 'text-xs text-[var(--color-text-muted)]',
+  control: 'h-10 rounded-lg',
+}
+
+const CHIP_COLORS = {
+  indigo: 'text-indigo-600 bg-indigo-500/10',
+  rose: 'text-rose-600 bg-rose-500/10',
+  emerald: 'text-emerald-600 bg-emerald-500/10',
+  amber: 'text-amber-600 bg-amber-500/10',
+}
+
+function StatChip({ icon: Icon, label, value, color, loading }) {
+  return (
+    <div className="flex items-center gap-2 h-9 pl-1.5 pr-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] shrink-0">
+      <span className={`w-6 h-6 rounded-md flex items-center justify-center ${CHIP_COLORS[color]}`}>
+        <Icon className="w-3.5 h-3.5" />
+      </span>
+      <span className="text-sm font-semibold tabular-nums text-[var(--color-text)]">{loading ? '–' : value}</span>
+      <span className={`${UI.hint} whitespace-nowrap`}>{label}</span>
+    </div>
+  )
+}
+
+function StatusPanel({ title, subtitle, count, countLabel, tone, loading, emptyIcon: EmptyIcon, emptyText, headerExtra, children }) {
+  const isEmpty = !loading && count === 0
+  const toneActive = tone === 'rose' ? 'bg-rose-500/10 text-rose-600' : 'bg-emerald-500/10 text-emerald-600'
+  return (
+    <div className={UI.card}>
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className={UI.cardTitle}>{title}</h3>
+          <p className={`${UI.hint} mt-0.5`}>{subtitle}</p>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          {headerExtra}
+          <span className={`px-2.5 py-1 rounded-lg text-xs font-semibold tabular-nums ${count > 0 ? toneActive : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
+            {countLabel}
+          </span>
+        </div>
+      </div>
+
+      {loading && (
+        <div className="space-y-2 mt-3">{[1, 2].map(i => <div key={i} className="h-14 rounded-xl bg-[var(--color-surface-alt)] animate-pulse" />)}</div>
+      )}
+
+      {isEmpty && (
+        <div className="mt-3 flex items-center gap-2.5 rounded-xl bg-[var(--color-surface-alt)]/60 px-3 py-2.5">
+          <EmptyIcon className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" />
+          <p className={UI.hint}>{emptyText}</p>
+        </div>
+      )}
+
+      {!loading && count > 0 && <div className="space-y-2 mt-3">{children}</div>}
+    </div>
+  )
+}
+
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export default function GatePage() {
@@ -176,6 +237,7 @@ export default function GatePage() {
   const [searchRekap, setSearchRekap] = useState('')
   const [rekapView, setRekapView] = useState('log')
   const [showConfig, setShowConfig] = useState(false)
+  const [showGuide, setShowGuide] = useState(false)
   const [showPrintModal, setShowPrintModal] = useState(false)
   const [showBulkCheckoutModal, setShowBulkCheckoutModal] = useState(false)
   const [showBulkDeleteModal, setShowBulkDeleteModal] = useState(false)
@@ -498,38 +560,26 @@ export default function GatePage() {
           }
         />
 
-        {/* STATS */}
-        <StatsCarousel count={4} className="mb-4">
-          {[
-            { key: 'total',     label: tp('totalToday'),      value: stats.total,     icon: ClipboardList, color: 'indigo' },
-            { key: 'keluar',    label: tp('siswaGuruKeluar'), value: stats.keluar,    icon: LogOut,        color: 'rose'   },
-            { key: 'dalamTamu', label: tp('tamuDiDalam'),     value: stats.dalamTamu, icon: Building2,     color: 'emerald'},
-            { key: 'tamu',      label: tp('kunjunganTamu'),   value: stats.tamu,      icon: Users,         color: 'amber'  },
-          ].map((s, i) => (
-            <StatCard
-              key={i}
-              icon={s.icon}
-              label={s.label}
-              value={s.value}
-              color={s.color}
-              loading={loadingLogs}
-              className="min-w-[200px]"
-            />
-          ))}
-        </StatsCarousel>
+        {/* STATS — strip ringkas satu baris */}
+        <div className="flex gap-2 mb-4 overflow-x-auto scrollbar-hide">
+          <StatChip icon={ClipboardList} label={tp('totalToday')} value={tNum(stats.total)} color="indigo" loading={loadingLogs} />
+          <StatChip icon={LogOut} label={tp('siswaGuruKeluar')} value={tNum(stats.keluar)} color="rose" loading={loadingLogs} />
+          <StatChip icon={Building2} label={tp('tamuDiDalam')} value={tNum(stats.dalamTamu)} color="emerald" loading={loadingLogs} />
+          <StatChip icon={Users} label={tp('kunjunganTamu')} value={tNum(stats.tamu)} color="amber" loading={loadingLogs} />
+        </div>
 
         {/* TABS — full width on mobile, auto on desktop */}
-        <div className="flex gap-1.5 p-1 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] mb-6 w-full lg:w-fit overflow-x-auto scrollbar-hide">
+        <div className="flex gap-1 p-1 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] mb-4 w-full lg:w-fit overflow-x-auto scrollbar-hide">
           {TABS.map(t => {
             const IconComp = t.icon
             return (
               <button key={t.key} onClick={() => setActiveTab(t.key)}
-                className={`flex-1 lg:flex-none h-9 px-3.5 sm:px-4 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === t.key
-                  ? 'bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/20'
+                className={`flex-1 lg:flex-none h-9 px-3.5 sm:px-4 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === t.key
+                  ? 'bg-[var(--color-primary)] text-white shadow-sm'
                   : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                 <IconComp className="w-4 h-4" />{t.label}
                 {t.key === 'log' && todayLogs.length > 0 && (
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${activeTab === t.key ? 'bg-white/20 text-white' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'}`}>
+                  <span className={`text-xs font-semibold px-1.5 rounded-full ${activeTab === t.key ? 'bg-white/20 text-white' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'}`}>
                     {tNum(todayLogs.length)}
                   </span>
                 )}
@@ -539,120 +589,90 @@ export default function GatePage() {
         </div>
 
         {/* ── TAB: INPUT ── */}
-        {activeTab === 'input' && (
-          <div className="grid lg:grid-cols-2 gap-6 items-start animate-in fade-in duration-200">
-            {/* Kolom kiri: Form */}
-            <div className="glass rounded-[1.5rem] p-5 h-fit">
-              {/* Mode switcher Internal / Tamu */}
-              <div className="flex gap-2.5 mb-5">
-                {[
-                  { k: 'internal', l: tp('internalLabel'), icon: Building2, desc: tp('internalDesc'), active: 'border-[var(--color-primary)]/30 bg-[var(--color-primary)]/5', activeText: 'text-[var(--color-primary)]' },
-                  { k: 'tamu', l: tp('tamuLabel'), icon: Users, desc: tp('tamuDesc'), active: 'border-emerald-500/30 bg-emerald-500/5', activeText: 'text-emerald-600' },
-                ].map(m => {
-                  const IconComp = m.icon
-                  return (
-                    <button key={m.k} onClick={() => setInputMode(m.k)}
-                      className={`flex-1 py-3 px-3.5 rounded-xl border transition-all text-left ${inputMode === m.k ? m.active : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-surface)]'}`}>
-                      <div className={`flex items-center gap-2 font-bold text-xs sm:text-sm ${inputMode === m.k ? m.activeText : 'text-[var(--color-text)]'}`}>
+        {activeTab === 'input' && (() => {
+          const outList = todayLogs.filter(l => l.visitor_type !== 'tamu' && !l.check_out)
+          const guestList = todayLogs.filter(l => l.visitor_type === 'tamu' && !l.check_out)
+          const peopleLabel = (n) => `${tNum(n)} ${language === 'en' ? 'people' : language === 'ar' ? 'أشخاص' : 'Orang'}`
+          const renderCard = (log) => (
+            <LogCard key={log.id} log={log} onReturn={handleReturn} onCheckout={handleCheckout} onEdit={setEditLog}
+              selectionMode={selectionMode} onToggleSelect={toggleSelect} isSelected={selectedIds.includes(log.id)} />
+          )
+          return (
+            <div className="grid lg:grid-cols-2 gap-4 items-start animate-in fade-in duration-200">
+              {/* Kolom kiri: Form */}
+              <div className={UI.card}>
+                {/* Mode switcher: satu segmented control, satu baris */}
+                <div className="grid grid-cols-2 gap-1 p-1 mb-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
+                  {[
+                    { k: 'internal', l: tp('internalLabel'), icon: Building2, activeText: 'text-[var(--color-primary)]' },
+                    { k: 'tamu', l: tp('tamuLabel'), icon: Users, activeText: 'text-emerald-600' },
+                  ].map(m => {
+                    const IconComp = m.icon
+                    const on = inputMode === m.k
+                    return (
+                      <button key={m.k} onClick={() => setInputMode(m.k)}
+                        title={m.k === 'internal' ? tp('internalDesc') : tp('tamuDesc')}
+                        className={`h-9 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all ${on ? `bg-[var(--color-surface)] shadow-sm ${m.activeText}` : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                         <IconComp className="w-4 h-4 shrink-0" /><span className="truncate">{m.l}</span>
-                      </div>
-                      <p className="text-[11px] sm:text-xs text-[var(--color-text-muted)] mt-1 font-normal line-clamp-1">{m.desc}</p>
-                    </button>
-                  )
-                })}
-              </div>
+                      </button>
+                    )
+                  })}
+                </div>
 
-              {/* Form content — flex-1 agar mendorong tombol submit ke bawah */}
-              <div className="flex-1">
                 {inputMode === 'internal'
                   ? <FormInternal internalList={internalList} onSubmit={handleSubmit} loading={submitting} />
                   : <FormTamu onSubmit={handleSubmit} loading={submitting} />
                 }
-              </div>
 
-              {/* Cara Penggunaan / Guide moved back to Left Column below search/form */}
-              <div className="mt-4 pt-4 border-t border-[var(--color-border)]/40">
-                <QuickGuide mode={inputMode} />
-              </div>
-            </div>
-
-            {/* Kolom kanan: Status — Mengikuti konten agar tidak terlalu ditarik ke bawah */}
-            <div className="flex flex-col gap-4">
-
-              {/* Sedang Keluar */}
-              <div className="glass rounded-[1.5rem] p-5">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="text-sm sm:text-base font-bold text-[var(--color-text)] leading-tight">{tp('sedangKeluarTitle')}</h3>
-                    <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{tp('sedangKeluarSub')}</p>
-                  </div>
-                  <div className={`px-2.5 py-1 rounded-lg text-xs font-bold tabular-nums transition-all ${stats.keluar > 0 ? 'bg-rose-500/10 text-rose-600' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
-                    {tNum(stats.keluar)} {language === 'en' ? 'PEOPLE' : language === 'ar' ? 'أشخاص' : 'Orang'}
-                  </div>
+                {/* Panduan: tersembunyi secara default */}
+                <div className="mt-4 pt-3 border-t border-[var(--color-border)]/40">
+                  <button type="button" onClick={() => setShowGuide(v => !v)}
+                    className={`${UI.hint} flex items-center gap-1.5 hover:text-[var(--color-text)] transition-colors`}>
+                    <Keyboard className="w-3.5 h-3.5" />
+                    <span className="font-semibold uppercase tracking-wide">Cara penggunaan</span>
+                    <ChevronRight className={`w-3.5 h-3.5 transition-transform ${showGuide ? 'rotate-90' : ''}`} />
+                  </button>
+                  {showGuide && <div className="mt-3"><QuickGuide mode={inputMode} /></div>}
                 </div>
+              </div>
 
-                {/* Bulk Selection Toolbar */}
-                {stats.keluar > 0 && (
-                  <div className="flex items-center justify-between mb-3 px-1">
+              {/* Kolom kanan: Status */}
+              <div className="flex flex-col gap-4">
+                <StatusPanel
+                  title={tp('sedangKeluarTitle')}
+                  subtitle={tp('sedangKeluarSub')}
+                  count={outList.length}
+                  countLabel={peopleLabel(stats.keluar)}
+                  tone="rose"
+                  loading={loadingLogs}
+                  emptyIcon={Check}
+                  emptyText={tp('emptyHadirTitle')}
+                  headerExtra={outList.length > 0 && (
                     <button onClick={() => { setSelectionMode(!selectionMode); setSelectedIds([]) }}
-                      className={`text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg transition-all ${selectionMode ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                      className={`h-7 px-2.5 rounded-lg text-xs font-semibold transition-all ${selectionMode ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                       {selectionMode ? tp('btnCancelSelect') : tp('btnMultiSelect')}
                     </button>
-                  </div>
-                )}
+                  )}
+                >
+                  {outList.map(renderCard)}
+                </StatusPanel>
 
-                {loadingLogs
-                  ? <div className="space-y-2">{[1, 2, 3].map(i => <div key={i} className="h-16 rounded-xl bg-[var(--color-surface-alt)] animate-pulse" />)}</div>
-                  : todayLogs.filter(l => (l.visitor_type !== 'tamu') && !l.check_out).length === 0
-                    ? <EmptyState
-                      variant="plain"
-                      color="emerald"
-                      icon={Check}
-                      title={tp('emptyHadirTitle')}
-                      description={tp('emptyHadirDesc')}
-                    />
-                    : <div className="space-y-2">
-                      {todayLogs.filter(l => (l.visitor_type !== 'tamu') && !l.check_out).map(log => (
-                        <LogCard key={log.id} log={log} onReturn={handleReturn} onCheckout={handleCheckout} onEdit={setEditLog}
-                          selectionMode={selectionMode} onToggleSelect={toggleSelect} isSelected={selectedIds.includes(log.id)} />
-                      ))}
-                    </div>
-                }
-              </div>
-
-              {/* Tamu di Dalam */}
-              <div className="glass rounded-[1.5rem] p-5">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="text-sm sm:text-base font-bold text-[var(--color-text)] leading-tight">{tp('tamuDiDalamTitle')}</h3>
-                    <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{tp('tamuDiDalamSub')}</p>
-                  </div>
-                  <div className={`px-2.5 py-1 rounded-lg text-xs font-bold tabular-nums transition-all ${stats.dalamTamu > 0 ? 'bg-emerald-500/10 text-emerald-600' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
-                    {tNum(stats.dalamTamu)} {language === 'en' ? 'PEOPLE' : language === 'ar' ? 'أشخاص' : 'Orang'}
-                  </div>
-                </div>
-                {loadingLogs
-                  ? <div className="space-y-2">{[1, 2, 3].map(i => <div key={i} className="h-16 rounded-xl bg-[var(--color-surface-alt)] animate-pulse" />)}</div>
-                  : todayLogs.filter(l => l.visitor_type === 'tamu' && !l.check_out).length === 0
-                    ? <EmptyState
-                      variant="plain"
-                      color="slate"
-                      icon={Users}
-                      title={tp('emptyTamuTitle')}
-                      description={tp('emptyTamuDesc')}
-                    />
-                    : <div className="space-y-2">
-                      {todayLogs.filter(l => l.visitor_type === 'tamu' && !l.check_out).map(log => (
-                        // FIX UX #2: tambahkan selectionMode support ke panel Tamu di Dalam
-                        <LogCard key={log.id} log={log} onReturn={handleReturn} onCheckout={handleCheckout} onEdit={setEditLog}
-                          selectionMode={selectionMode} onToggleSelect={toggleSelect} isSelected={selectedIds.includes(log.id)} />
-                      ))}
-                    </div>
-                }
+                <StatusPanel
+                  title={tp('tamuDiDalamTitle')}
+                  subtitle={tp('tamuDiDalamSub')}
+                  count={guestList.length}
+                  countLabel={peopleLabel(stats.dalamTamu)}
+                  tone="emerald"
+                  loading={loadingLogs}
+                  emptyIcon={Users}
+                  emptyText={tp('emptyTamuTitle')}
+                >
+                  {guestList.map(renderCard)}
+                </StatusPanel>
               </div>
             </div>
-          </div>
-        )}
+          )
+        })()}
 
         {/* ── TAB: LOG HARI INI ── */}
         {activeTab === 'log' && (

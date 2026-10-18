@@ -30,6 +30,7 @@ export default function LeavePermitPage() {
   const [showForm, setShowForm] = useState(false)
   const [showPrint, setShowPrint] = useState(null)
   const [generatingPdf, setGeneratingPdf] = useState(false)
+  const [paperMode, setPaperMode] = useState('a4')
   const [filterStatus, setFilterStatus] = useState('all')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
@@ -76,11 +77,13 @@ export default function LeavePermitPage() {
 
   const handlePrint = (printEl) => {
     if (!printEl) return
+    // A4 portrait (2 letters, cut in half) vs A5 landscape (1 letter)
+    const pageCss = paperMode === 'a4' ? 'size:210mm 297mm' : 'size:210mm 148mm'
     const printWindow = window.open('', '_blank')
     printWindow.document.write(`
       <!DOCTYPE html>
       <html><head><title>Cetak Izin Keluar Pondok</title>
-      <style>@page{size:148mm 210mm;margin:0}body{margin:0;padding:0}</style>
+      <style>@page{${pageCss};margin:0}body{margin:0;padding:0}</style>
       </head><body></body></html>
     `)
     printWindow.document.body.appendChild(printEl.cloneNode(true))
@@ -107,9 +110,14 @@ export default function LeavePermitPage() {
       const canvas = await html2canvas(clone, { scale: 3, useCORS: true, backgroundColor: '#ffffff' })
       const imgData = canvas.toDataURL('image/png')
 
-      // A5 dimensions in mm
-      const pdf = new jsPDF({ unit: 'mm', format: [148, 210], orientation: 'portrait' })
-      pdf.addImage(imgData, 'PNG', 0, 0, 148, 210)
+      // A4 portrait (2 letters) or A5 landscape (1 letter), both in mm
+      const isA4 = paperMode === 'a4'
+      const pageW = 210
+      const pageH = isA4 ? 297 : 148
+      const pdf = isA4
+        ? new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' })
+        : new jsPDF({ unit: 'mm', format: [210, 148], orientation: 'landscape' })
+      pdf.addImage(imgData, 'PNG', 0, 0, pageW, pageH)
 
       const studentName = showPrint.student?.name || 'Santri'
       const safeName = studentName.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '')
@@ -374,6 +382,8 @@ export default function LeavePermitPage() {
               onPrint={handlePrint}
               onPdf={handlePdf}
               generatingPdf={generatingPdf}
+              paperMode={paperMode}
+              onPaperModeChange={setPaperMode}
             />
           </div>
         )}

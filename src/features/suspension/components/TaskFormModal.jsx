@@ -3,7 +3,7 @@ import { BookOpenCheck, Loader2 } from 'lucide-react'
 import { Modal, RichDatePicker } from '@shared/components'
 
 const inputCls = 'w-full h-10 px-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text)] text-sm placeholder:text-[var(--color-text-muted)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)] transition-all'
-const labelCls = 'text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-70 mb-1.5 block'
+const labelCls = 'text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-70 mb-1.5 block'
 
 // Form tambah/ubah tugas. Guru mengisi mapel sendiri + target tahfidz & Wafa opsional.
 function TaskFormModal({ isOpen, onClose, onSubmit, editing, saving }) {
@@ -87,12 +87,12 @@ function TaskFormModal({ isOpen, onClose, onSubmit, editing, saving }) {
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40">
-            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Target tahfidz</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-2">Target tahfidz</p>
             <input value={tahfidzSurah} onChange={(e) => setTahfidzSurah(e.target.value)} placeholder="Surah" aria-label="Target surah" className={`${inputCls} mb-2`} />
             <input value={tahfidzAyat} onChange={(e) => setTahfidzAyat(e.target.value)} placeholder="Ayat (cth. 1–10)" aria-label="Target ayat" className={inputCls} />
           </div>
           <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40">
-            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Target Wafa / BTA</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-2">Target Wafa / BTA</p>
             <input value={wafaJilid} onChange={(e) => setWafaJilid(e.target.value)} placeholder="Jilid" aria-label="Target jilid" className={`${inputCls} mb-2`} />
             <input value={wafaHalaman} onChange={(e) => setWafaHalaman(e.target.value)} placeholder="Halaman" aria-label="Target halaman" className={inputCls} />
           </div>

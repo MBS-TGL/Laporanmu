@@ -28,10 +28,10 @@ export default memo(function TeacherProfileModal({
 
     const InfoRow = ({ label, value }) => (
         <div className="space-y-1">
-            <p className="text-[9px] font-black uppercase text-[var(--color-text-muted)] tracking-widest opacity-80">
+            <p className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide opacity-80">
                 {label}
             </p>
-            <p className="text-[12px] font-bold text-[var(--color-text)] truncate">{value || '-'}</p>
+            <p className="text-xs font-bold text-[var(--color-text)] truncate">{value || '-'}</p>
         </div>
     )
 
@@ -53,7 +53,7 @@ export default memo(function TeacherProfileModal({
             contentClassName="!pb-4"
             footer={
                 <div className="flex items-center w-full gap-3">
-                    <button onClick={onClose} className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center">
+                    <button onClick={onClose} className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center">
                         Tutup
                     </button>
                     <div className="flex-1" />
@@ -63,9 +63,9 @@ export default memo(function TeacherProfileModal({
                                 onClose();
                                 handleEdit(selectedTeacher);
                             }}
-                            className="h-10 px-8 rounded-xl bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 transition-all flex items-center justify-center gap-2 border border-white/10"
+                            className="h-10 px-8 rounded-xl bg-indigo-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg hover:brightness-110 transition-all flex items-center justify-center gap-2 border border-white/10"
                         >
-                            <SquarePen className="opacity-70" /> Edit Data Guru
+                            <SquarePen className="w-4 h-4 opacity-70" /> Edit Data Guru
                         </button>
                     )}
                 </div>
@@ -76,30 +76,30 @@ export default memo(function TeacherProfileModal({
                 <div className="relative overflow-hidden rounded-2xl bg-slate-900 p-5 text-white shadow-xl">
                     <div className="relative flex items-center gap-5">
                         <div className="relative shrink-0">
-                            <div className="w-20 h-20 rounded-xl bg-white/10 border border-white/20 p-1 flex items-center justify-center text-2xl font-black overflow-hidden shadow-lg">
+                            <div className="w-20 h-20 rounded-xl bg-white/10 border border-white/20 p-1 flex items-center justify-center text-2xl font-bold overflow-hidden shadow-lg">
                                 {selectedTeacher.avatar_url || selectedTeacher.photo_url ? (
                                     <img src={selectedTeacher.avatar_url || selectedTeacher.photo_url} className="w-full h-full object-cover rounded-lg" alt="" loading="lazy" decoding="async" />
                                 ) : (
                                     <span>{selectedTeacher.name?.charAt(0) || '?'}</span>
                                 )}
                             </div>
-                            <div className={`absolute -bottom-2 -right-2 px-2 py-0.5 rounded-md text-[8px] font-black shadow-lg border border-white/20 ${STATUS_CONFIG[selectedTeacher.status]?.color || 'bg-slate-500 text-white'}`}>
+                            <div className={`absolute -bottom-2 -right-2 px-2 py-0.5 rounded-md text-xs font-bold shadow-lg border border-white/20 ${STATUS_CONFIG[selectedTeacher.status]?.color || 'bg-slate-500 text-white'}`}>
                                 {STATUS_CONFIG[selectedTeacher.status]?.label || selectedTeacher.status}
                             </div>
                         </div>
 
                         <div className="flex-1 min-w-0">
-                            <h2 className="text-xl font-black tracking-tight truncate mb-1">
+                            <h2 className="text-xl font-bold tracking-tight truncate mb-1">
                                 {selectedTeacher.name}
                             </h2>
-                            <div className="flex flex-wrap gap-3 items-center text-[10px] font-bold text-white/70 uppercase tracking-wider">
-                                <span className="flex items-center gap-1.5"><IdCard className="text-indigo-400" /> {selectedTeacher.nbm || 'Tanpa NBM'}</span>
+                            <div className="flex flex-wrap gap-3 items-center text-xs font-bold text-white/70 uppercase tracking-wider">
+                                <span className="flex items-center gap-1.5"><IdCard className="w-4 h-4 text-indigo-400" /> {selectedTeacher.nbm || 'Tanpa NBM'}</span>
                                 <span className="w-1 h-1 rounded-full bg-white/30" />
-                                <span className="flex items-center gap-1.5"><Briefcase className="text-indigo-400" /> {selectedTeacher.type === 'karyawan' ? 'Karyawan' : selectedTeacher.type === 'pengabdian' ? 'Pengabdian' : 'Guru'}</span>
+                                <span className="flex items-center gap-1.5"><Briefcase className="w-4 h-4 text-indigo-400" /> {selectedTeacher.type === 'karyawan' ? 'Karyawan' : selectedTeacher.type === 'pengabdian' ? 'Pengabdian' : 'Guru'}</span>
                                 {selectedTeacher.subject && (
                                     <>
                                         <span className="w-1 h-1 rounded-full bg-white/30" />
-                                        <span className="flex items-center gap-1.5 text-emerald-300"><Presentation /> {selectedTeacher.subject}</span>
+                                        <span className="flex items-center gap-1.5 text-emerald-300"><Presentation className="w-4 h-4" /> {selectedTeacher.subject}</span>
                                     </>
                                 )}
                             </div>
@@ -110,8 +110,8 @@ export default memo(function TeacherProfileModal({
 
                         {profileStats && (
                             <div className="shrink-0 text-center px-4 py-2 bg-white/10 rounded-2xl border border-white/10">
-                                <p className="text-[8px] font-black text-white/50 uppercase tracking-widest mb-1">Poin</p>
-                                <p className={`text-2xl font-black ${profileStats.totalPts >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                                <p className="text-xs font-bold text-white/50 uppercase tracking-wide mb-1">Poin</p>
+                                <p className={`text-2xl font-bold ${profileStats.totalPts >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                                     {profileStats.totalPts > 0 ? '+' : ''}{profileStats.totalPts || 0}
                                 </p>
                             </div>
@@ -134,7 +134,7 @@ export default memo(function TeacherProfileModal({
                                 ${profileTab === t.id ? 'text-indigo-500' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                         >
                             <t.icon className="text-sm mb-1" />
-                            <span className="text-[10px] font-black uppercase tracking-widest">{t.label}</span>
+                            <span className="text-xs font-bold uppercase tracking-wide">{t.label}</span>
                             {profileTab === t.id && <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-indigo-500 rounded-full" />}
                         </button>
                     ))}
@@ -147,8 +147,8 @@ export default memo(function TeacherProfileModal({
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                             <div className="flex items-center gap-2.5 pt-1">
                                 <div className="w-1 h-4 bg-indigo-500 rounded-full" />
-                                <IdCard className="text-indigo-500 text-[10px] opacity-70" />
-                                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Identitas & Biodata</span>
+                                <IdCard className="w-4 h-4 text-indigo-500 opacity-70" />
+                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Identitas & Biodata</span>
                                 <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                             </div>
                             <div className="grid grid-cols-2 gap-y-5 gap-x-6">
@@ -163,8 +163,8 @@ export default memo(function TeacherProfileModal({
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                             <div className="flex items-center gap-2.5 pt-1">
                                 <div className="w-1 h-4 bg-emerald-500 rounded-full" />
-                                <Briefcase className="text-emerald-500 text-[10px] opacity-70" />
-                                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Kepegawaian</span>
+                                <Briefcase className="w-4 h-4 text-emerald-500 opacity-70" />
+                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Kepegawaian</span>
                                 <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                             </div>
                             <div className="grid grid-cols-2 gap-y-5 gap-x-6">
@@ -179,8 +179,8 @@ export default memo(function TeacherProfileModal({
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                             <div className="flex items-center gap-2.5 pt-1">
                                 <div className="w-1 h-4 bg-blue-500 rounded-full" />
-                                <GraduationCap className="text-blue-500 text-[10px] opacity-70" />
-                                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Pendidikan Terakhir</span>
+                                <GraduationCap className="w-4 h-4 text-blue-500 opacity-70" />
+                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Pendidikan Terakhir</span>
                                 <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                             </div>
                             <div className="grid grid-cols-2 gap-y-5 gap-x-6">
@@ -197,30 +197,30 @@ export default memo(function TeacherProfileModal({
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                                 <div className="flex items-center gap-2.5 pt-1">
                                     <div className="w-1 h-4 bg-emerald-500 rounded-full" />
-                                    <Phone className="text-emerald-500 text-[10px] opacity-70" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Kontak</span>
+                                    <Phone className="w-4 h-4 text-emerald-500 opacity-70" />
+                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Kontak</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
                                 <div className="space-y-4">
                                     <div className="space-y-1">
-                                        <p className="text-[9px] font-black uppercase text-[var(--color-text-muted)] tracking-widest mb-1 opacity-80">
+                                        <p className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide mb-1 opacity-80">
                                             No. HP / WhatsApp
                                         </p>
                                         <div className="flex items-center justify-between group/wa">
-                                            <p className="text-[13px] font-bold text-[var(--color-text)] tracking-wider">
+                                            <p className="text-sm font-bold text-[var(--color-text)] tracking-wider">
                                                 {selectedTeacher.phone || '---'}
                                             </p>
                                             {selectedTeacher.phone && (
                                                 <div className="flex gap-1.5">
-                                                    <button onClick={() => copyToClipboard(selectedTeacher.phone, 'HP')} className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[11px] hover:bg-[var(--color-border)] transition-colors">
-                                                        <Copy className="opacity-40" />
+                                                    <button onClick={() => copyToClipboard(selectedTeacher.phone, 'HP')} className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-xs hover:bg-[var(--color-border)] transition-colors">
+                                                        <Copy className="w-4 h-4 opacity-40" />
                                                     </button>
                                                     <a
                                                         href={`https://wa.me/${selectedTeacher.phone.replace(/\D/g, '').replace(/^0/, '62')}`}
                                                         target="_blank" rel="noopener noreferrer"
-                                                        className="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-[11px] hover:brightness-110 transition-all shadow-sm"
+                                                        className="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs hover:brightness-110 transition-all shadow-sm"
                                                     >
-                                                        <WhatsAppIcon />
+                                                        <WhatsAppIcon className="w-4 h-4" />
                                                     </a>
                                                 </div>
                                             )}
@@ -233,19 +233,19 @@ export default memo(function TeacherProfileModal({
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                                 <div className="flex items-center gap-2.5 pt-1">
                                     <div className="w-1 h-4 bg-amber-500 rounded-full" />
-                                    <FingerprintPattern className="text-amber-500 text-[10px] opacity-70" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Presensi</span>
+                                    <FingerprintPattern className="w-4 h-4 text-amber-500 opacity-70" />
+                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Presensi</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
                                 <div className="space-y-4">
                                     <InfoRow label="ID Mesin Fingerspot" value={selectedTeacher.fingerspot_name} />
                                     <div className="space-y-1">
-                                        <p className="text-[9px] font-black uppercase text-[var(--color-text-muted)] tracking-widest mb-1.5 opacity-80">Hari Kerja Aktif</p>
+                                        <p className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide mb-1.5 opacity-80">Hari Kerja Aktif</p>
                                         <div className="flex flex-wrap gap-1.5">
                                             {['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'].map(day => {
                                                 const isActive = selectedTeacher.work_days?.includes(day)
                                                 return (
-                                                    <div key={day} className={`px-2 py-1 rounded-lg border text-[9px] font-bold transition-all ${isActive ? 'bg-indigo-500/10 border-indigo-500/20 text-indigo-600' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] opacity-40'}`}>
+                                                    <div key={day} className={`px-2 py-1 rounded-lg border text-xs font-bold transition-all ${isActive ? 'bg-indigo-500/10 border-indigo-500/20 text-indigo-600' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] opacity-40'}`}>
                                                         {workDaysMap[day] || day}
                                                     </div>
                                                 )
@@ -261,12 +261,12 @@ export default memo(function TeacherProfileModal({
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                                 <div className="flex items-center gap-2.5 pt-1">
                                     <div className="w-1 h-4 bg-blue-500 rounded-full" />
-                                    <MapPin className="text-blue-500 text-[10px] opacity-70" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Domisili</span>
+                                    <MapPin className="w-4 h-4 text-blue-500 opacity-70" />
+                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Domisili</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
                                 <div className="p-3.5 rounded-xl bg-[var(--color-surface-alt)]/50 border border-[var(--color-border)]/50">
-                                    <p className="text-[11px] font-bold leading-relaxed text-[var(--color-text)]">
+                                    <p className="text-xs font-bold leading-relaxed text-[var(--color-text)]">
                                         {selectedTeacher.address || 'Alamat belum dilengkapi.'}
                                     </p>
                                 </div>
@@ -274,12 +274,12 @@ export default memo(function TeacherProfileModal({
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                                 <div className="flex items-center gap-2.5 pt-1">
                                     <div className="w-1 h-4 bg-amber-500 rounded-full" />
-                                    <StickyNote className="text-amber-500 text-[10px] opacity-70" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Catatan Internal</span>
+                                    <StickyNote className="w-4 h-4 text-amber-500 opacity-70" />
+                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Catatan Internal</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
                                 <div className="p-3.5 rounded-xl bg-amber-50/10 border border-amber-200/20">
-                                    <p className="text-[11px] font-medium leading-relaxed text-[var(--color-text)]">
+                                    <p className="text-xs font-medium leading-relaxed text-[var(--color-text)]">
                                         {selectedTeacher.notes || 'Tidak ada catatan tambahan.'}
                                     </p>
                                 </div>
@@ -292,7 +292,7 @@ export default memo(function TeacherProfileModal({
                     <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
                         {loadingProfile ? (
                             <div className="py-20 flex flex-col items-center justify-center text-[var(--color-text-muted)] gap-3">
-                                <ChartLine className="text-2xl opacity-20 animate-pulse" />
+                                <ChartLine className="w-6 h-6 opacity-20 animate-pulse" />
                                 <p className="text-xs font-bold animate-pulse">Menganalisis data statistik...</p>
                             </div>
                         ) : profileStats ? (
@@ -335,12 +335,12 @@ export default memo(function TeacherProfileModal({
                                     const isPos = pts >= 0
                                     return (
                                         <div key={i} className={`flex items-start gap-4 p-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)]/50 transition-all group border-l-4 ${isPos ? 'border-l-emerald-500' : 'border-l-rose-500'}`}>
-                                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 font-black text-xs ${isPos ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600'}`}>
+                                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 font-bold text-xs ${isPos ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600'}`}>
                                                 {pts > 0 ? '+' : ''}{pts}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-[11px] font-bold text-[var(--color-text)] leading-snug">{r.description || 'Laporan Aktivitas'}</p>
-                                                <div className="flex items-center gap-3 mt-1.5 opacity-50 text-[8px] font-black uppercase tracking-widest">
+                                                <p className="text-xs font-bold text-[var(--color-text)] leading-snug">{r.description || 'Laporan Aktivitas'}</p>
+                                                <div className="flex items-center gap-3 mt-1.5 opacity-50 text-xs font-bold uppercase tracking-wide">
                                                     <span>{new Date(r.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                                                     <span className="w-1 h-1 rounded-full bg-current" />
                                                     <span className="text-indigo-500">{r.teacher_name || 'System Audit'}</span>

@@ -333,7 +333,7 @@ function ArchiveDetail(props) {
 
     const nav = { index, total: pStu.length, onPrev: () => go(-1), onNext: () => go(1) }
 
-    const sectionTitle = 'text-[11px] font-black uppercase tracking-wider text-[var(--color-text-muted)]'
+    const sectionTitle = 'text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]'
     const fieldBox = 'flex items-center gap-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-2.5 h-10'
 
     const editForm = (
@@ -343,7 +343,7 @@ function ArchiveDetail(props) {
                     <Sliders className="w-4 h-4" />
                 </div>
                 <div className="min-w-0">
-                    <h4 className="text-sm font-black text-[var(--color-text)] truncate">Edit: {pStudent.name}</h4>
+                    <h4 className="text-sm font-bold text-[var(--color-text)] truncate">Edit: {pStudent.name}</h4>
                     <p className="text-xs text-[var(--color-text-muted)]">Perubahan tiap santri tersimpan sementara sampai kamu menekan Simpan.</p>
                 </div>
             </div>
@@ -359,8 +359,8 @@ function ArchiveDetail(props) {
                         const g = val !== '' ? getGradePredicate(val, reportType, classLevel) : null
                         return (
                             <label key={k.key} className="flex flex-col p-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]">
-                                <span className="text-[11px] font-black" style={{ color: k.color || 'inherit' }}>{k.id}</span>
-                                <span className="text-[10px] text-[var(--color-text-muted)] font-medium mb-1.5 truncate">{k.label || ''}</span>
+                                <span className="text-xs font-bold" style={{ color: k.color || 'inherit' }}>{k.id}</span>
+                                <span className="text-xs text-[var(--color-text-muted)] font-medium mb-1.5 truncate">{k.label || ''}</span>
                                 <div className="flex items-center gap-1.5 mt-auto">
                                     <input
                                         type="text"
@@ -368,10 +368,10 @@ function ArchiveDetail(props) {
                                         value={val}
                                         onChange={(e) => handleScoreEdit(k.key, e.target.value)}
                                         placeholder="—"
-                                        className="w-full h-9 text-center text-sm font-black rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-indigo-500 outline-none text-[var(--color-text)]"
+                                        className="w-full h-9 text-center text-sm font-bold rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-indigo-500 outline-none text-[var(--color-text)]"
                                     />
                                     {g && (
-                                        <span className="text-[10px] font-black px-1.5 py-0.5 rounded shrink-0" style={{ background: g.bg, color: g.color }}>{g.id}</span>
+                                        <span className="text-xs font-bold px-1.5 py-0.5 rounded shrink-0" style={{ background: g.bg, color: g.color }}>{g.id}</span>
                                     )}
                                 </div>
                             </label>
@@ -392,7 +392,7 @@ function ArchiveDetail(props) {
                                         <div key={f.key} className={fieldBox}>
                                             <Icon style={{ color: f.color }} className="w-3.5 h-3.5 shrink-0 opacity-80" />
                                             <input type="number" inputMode="decimal" placeholder={f.label} value={editEx(pStudent.id)?.[f.key] ?? ''} onChange={(e) => handleExtraEdit(f.key, e.target.value)} className="flex-1 w-0 text-xs font-bold bg-transparent text-[var(--color-text)] outline-none" />
-                                            <span className="text-[10px] text-[var(--color-text-muted)] font-black">{f.unit}</span>
+                                            <span className="text-xs text-[var(--color-text-muted)] font-bold">{f.unit}</span>
                                         </div>
                                     )
                                 })}
@@ -429,10 +429,10 @@ function ArchiveDetail(props) {
                             { key: 'hari_pulang', label: 'Pulang' },
                         ].map((item) => (
                             <label key={item.key} className="flex flex-col gap-1 p-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-center">
-                                <span className="text-[11px] font-black text-[var(--color-text-muted)]">{item.label}</span>
+                                <span className="text-xs font-bold text-[var(--color-text-muted)]">{item.label}</span>
                                 <div className="flex items-center justify-center gap-1">
-                                    <input type="number" min="0" placeholder="0" value={editEx(pStudent.id)?.[item.key] ?? ''} onChange={(e) => handleExtraEdit(item.key, e.target.value)} className="w-12 h-8 text-center text-sm font-black rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] outline-none focus:border-indigo-500" />
-                                    <span className="text-[10px] font-bold text-[var(--color-text-muted)]">hari</span>
+                                    <input type="number" min="0" placeholder="0" value={editEx(pStudent.id)?.[item.key] ?? ''} onChange={(e) => handleExtraEdit(item.key, e.target.value)} className="w-12 h-8 text-center text-sm font-bold rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] outline-none focus:border-indigo-500" />
+                                    <span className="text-xs font-bold text-[var(--color-text-muted)]">hari</span>
                                 </div>
                             </label>
                         ))}
@@ -453,10 +453,10 @@ function ArchiveDetail(props) {
             )}
 
             <div className="flex items-center gap-3 pt-4 border-t border-[var(--color-border)]">
-                <button type="button" onClick={cancelEdit} disabled={archiveEditSaving} className="h-10 px-5 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] text-xs font-black transition-colors disabled:opacity-60">
+                <button type="button" onClick={cancelEdit} disabled={archiveEditSaving} className="h-10 px-5 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] text-xs font-bold transition-colors disabled:opacity-60">
                     Batalkan semua
                 </button>
-                <button type="button" onClick={saveArchiveEdit} disabled={archiveEditSaving || dirtyCount === 0} className="flex-1 h-10 rounded-xl bg-indigo-500 text-white text-xs font-black hover:bg-indigo-600 disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
+                <button type="button" onClick={saveArchiveEdit} disabled={archiveEditSaving || dirtyCount === 0} className="flex-1 h-10 rounded-xl bg-indigo-500 text-white text-xs font-bold hover:bg-indigo-600 disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
                     {archiveEditSaving ? 'Menyimpan...' : dirtyCount ? `Simpan perubahan (${dirtyCount} santri)` : 'Belum ada perubahan'}
                 </button>
             </div>
@@ -472,17 +472,17 @@ function ArchiveDetail(props) {
                         <ArrowLeft className="w-4 h-4" />
                     </button>
                     <div>
-                        <h3 className="text-base font-black text-[var(--color-text)]">Detail arsip: {pClass}</h3>
+                        <h3 className="text-base font-bold text-[var(--color-text)]">Detail arsip: {pClass}</h3>
                         <p className="text-xs text-[var(--color-text-muted)] font-medium">
                             {periodLabel(entry)} · {pStu.length} santri · {completeCount} lengkap
                         </p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
-                    <button type="button" onClick={() => exportBulkPDF(entry)} className="h-10 px-4 rounded-xl bg-amber-500 text-white text-xs font-black hover:bg-amber-600 transition-colors flex items-center gap-2">
+                    <button type="button" onClick={() => exportBulkPDF(entry)} className="h-10 px-4 rounded-xl bg-amber-500 text-white text-xs font-bold hover:bg-amber-600 transition-colors flex items-center gap-2">
                         <Download className="w-4 h-4" /> Export PDF
                     </button>
-                    <button type="button" onClick={() => openPrintWindow(pStu)} className="h-10 px-4 rounded-xl bg-indigo-500 text-white text-xs font-black hover:bg-indigo-600 transition-colors flex items-center gap-2">
+                    <button type="button" onClick={() => openPrintWindow(pStu)} className="h-10 px-4 rounded-xl bg-indigo-500 text-white text-xs font-bold hover:bg-indigo-600 transition-colors flex items-center gap-2">
                         <Printer className="w-4 h-4" /> Cetak raport ini
                     </button>
                 </div>
@@ -494,7 +494,7 @@ function ArchiveDetail(props) {
                     <div className="p-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] lg:sticky lg:top-4">
                         <div className="flex items-center justify-between mb-2">
                             <span className={sectionTitle}>Daftar santri</span>
-                            <span className="text-[11px] font-bold text-[var(--color-text-muted)] tabular-nums">{completeCount}/{pStu.length} lengkap</span>
+                            <span className="text-xs font-bold text-[var(--color-text-muted)] tabular-nums">{completeCount}/{pStu.length} lengkap</span>
                         </div>
                         {pStu.length > 10 && (
                             <div className="relative mb-2">
@@ -519,7 +519,7 @@ function ArchiveDetail(props) {
                                         <span className="truncate">{s.name}</span>
                                         <span className="flex items-center gap-1.5 shrink-0">
                                             {dirty && <span title="Ada perubahan belum disimpan" className="w-2 h-2 rounded-full bg-violet-500" />}
-                                            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-black ${complete ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'}`} title={complete ? 'Nilai lengkap' : 'Nilai belum lengkap'}>
+                                            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${complete ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'}`} title={complete ? 'Nilai lengkap' : 'Nilai belum lengkap'}>
                                                 {complete ? '✓' : '…'}
                                             </span>
                                         </span>
@@ -536,14 +536,14 @@ function ArchiveDetail(props) {
                     <div className="p-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] flex flex-wrap items-center justify-between gap-3">
                         <div className="flex items-center gap-2">
                             {archiveEditMode ? (
-                                <span className="text-xs font-black text-violet-500 px-2">Mode edit aktif</span>
+                                <span className="text-xs font-bold text-violet-500 px-2">Mode edit aktif</span>
                             ) : (
-                                <button type="button" onClick={() => setArchiveEditMode(true)} className="h-9 px-3 rounded-lg border border-[var(--color-border)] text-indigo-500 hover:bg-indigo-500/5 text-xs font-black flex items-center gap-1.5 transition-colors">
+                                <button type="button" onClick={() => setArchiveEditMode(true)} className="h-9 px-3 rounded-lg border border-[var(--color-border)] text-indigo-500 hover:bg-indigo-500/5 text-xs font-bold flex items-center gap-1.5 transition-colors">
                                     <Sliders className="w-4 h-4" /> Edit nilai
                                 </button>
                             )}
                             {sendWATextOnly && (
-                                <button type="button" onClick={() => sendWATextOnly(pStudent, editSc(pStudent.id), editEx(pStudent.id))} className="h-9 px-3 rounded-lg border border-[var(--color-border)] text-emerald-600 hover:bg-emerald-500/5 text-xs font-black flex items-center gap-1.5 transition-colors">
+                                <button type="button" onClick={() => sendWATextOnly(pStudent, editSc(pStudent.id), editEx(pStudent.id))} className="h-9 px-3 rounded-lg border border-[var(--color-border)] text-emerald-600 hover:bg-emerald-500/5 text-xs font-bold flex items-center gap-1.5 transition-colors">
                                     <WhatsAppIcon className="w-4 h-4" /> Kirim WA
                                 </button>
                             )}
@@ -583,7 +583,7 @@ function ArchiveDetail(props) {
             {isFullScreenPreview && (
                 <div className="fixed inset-0 z-[90] bg-slate-900/90 flex flex-col p-3 sm:p-6" role="dialog" aria-modal="true" aria-label={`Preview raport ${pStudent.name}`}>
                     <div className="flex items-center justify-between mb-3 text-white">
-                        <p className="text-sm font-black truncate">{pStudent.name} · {pClass}</p>
+                        <p className="text-sm font-bold truncate">{pStudent.name} · {pClass}</p>
                         <button type="button" onClick={() => setIsFullScreenPreview(false)} aria-label="Tutup layar penuh" className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
                             <X className="w-4 h-4" />
                         </button>
@@ -608,12 +608,12 @@ function ArchiveCard({ entry, loadArchiveDetail, exportBulkPDF, setConfirmDelete
         <article className="flex flex-col h-full p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:border-indigo-500/30 transition-colors">
             <div className="flex items-start justify-between gap-3 mb-3">
                 <div className="min-w-0">
-                    <h4 className="text-sm font-black text-[var(--color-text)] truncate">{entry.class_name}</h4>
+                    <h4 className="text-sm font-bold text-[var(--color-text)] truncate">{entry.class_name}</h4>
                     <p className="text-xs text-[var(--color-text-muted)] font-semibold mt-0.5">
                         {periodLabel(entry)} · {entry.lang === 'ar' ? 'عربي' : 'Indonesia'}
                     </p>
                 </div>
-                <span className={`text-[10px] font-black px-2 py-0.5 rounded-full shrink-0 ${entry.lang === 'ar' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-indigo-500/10 text-indigo-600'}`}>
+                <span className={`text-xs font-bold px-2 py-0.5 rounded-full shrink-0 ${entry.lang === 'ar' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-indigo-500/10 text-indigo-600'}`}>
                     {entry.lang === 'ar' ? 'Pondok' : 'Reguler'}
                 </span>
             </div>
@@ -641,10 +641,10 @@ function ArchiveCard({ entry, loadArchiveDetail, exportBulkPDF, setConfirmDelete
             </div>
 
             <div className="flex gap-2 mt-auto">
-                <button type="button" onClick={() => loadArchiveDetail(entry)} className="flex-1 h-9 rounded-lg bg-indigo-500 text-white text-xs font-black flex items-center justify-center gap-1.5 hover:bg-indigo-600 transition-colors">
+                <button type="button" onClick={() => loadArchiveDetail(entry)} className="flex-1 h-9 rounded-lg bg-indigo-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-indigo-600 transition-colors">
                     <Search className="w-3.5 h-3.5" /> Buka
                 </button>
-                <button type="button" onClick={() => exportBulkPDF(entry)} className="flex-1 h-9 rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-700 text-xs font-black flex items-center justify-center gap-1.5 hover:bg-amber-500/20 transition-colors">
+                <button type="button" onClick={() => exportBulkPDF(entry)} className="flex-1 h-9 rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-700 text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-amber-500/20 transition-colors">
                     <Download className="w-3.5 h-3.5" /> PDF
                 </button>
                 <button type="button" onClick={() => setConfirmDelete(entry)} aria-label={`Hapus arsip ${entry.class_name}`} title="Hapus arsip" className="h-9 w-9 rounded-lg text-[var(--color-text-muted)] flex items-center justify-center hover:bg-red-500/10 hover:text-red-500 transition-colors">
@@ -673,14 +673,14 @@ function ArchiveStats({ summary, loadArchiveDetail }) {
     const sorted = [...entries].sort((a, b) => pctOf(a) - pctOf(b))
     const stat = (label, value) => (
         <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]">
-            <p className="text-[11px] font-bold text-[var(--color-text-muted)]">{label}</p>
-            <p className="text-xl font-black text-[var(--color-text)] tabular-nums">{value}</p>
+            <p className="text-xs font-bold text-[var(--color-text-muted)]">{label}</p>
+            <p className="text-xl font-bold text-[var(--color-text)] tabular-nums">{value}</p>
         </div>
     )
 
     return (
         <div className="space-y-4">
-            <h4 className="text-sm font-black text-[var(--color-text)]">{title}</h4>
+            <h4 className="text-sm font-bold text-[var(--color-text)]">{title}</h4>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                 {stat('Kelas', entries.length)}
                 {stat('Kelas lengkap', `${completeClasses}/${entries.length}`)}
@@ -697,8 +697,8 @@ function ArchiveStats({ summary, loadArchiveDetail }) {
                         <button key={entry.key} type="button" onClick={() => loadArchiveDetail(entry)} className="w-full text-left flex items-center gap-3 p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:border-indigo-500/30 transition-colors">
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center justify-between mb-1.5">
-                                    <span className="text-sm font-black text-[var(--color-text)] truncate">{entry.class_name}</span>
-                                    <span className="text-xs font-black ml-2 tabular-nums" style={{ color }}>{pct}%</span>
+                                    <span className="text-sm font-bold text-[var(--color-text)] truncate">{entry.class_name}</span>
+                                    <span className="text-xs font-bold ml-2 tabular-nums" style={{ color }}>{pct}%</span>
                                 </div>
                                 <div className="h-2 rounded-full bg-[var(--color-surface-alt)] overflow-hidden">
                                     <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: color }} />
@@ -789,7 +789,7 @@ function ArchiveOverview(props) {
                         <ArrowLeft className="w-4 h-4" />
                     </button>
                     <div>
-                        <h3 className="text-base font-black text-[var(--color-text)]">Riwayat &amp; Arsip</h3>
+                        <h3 className="text-base font-bold text-[var(--color-text)]">Riwayat &amp; Arsip</h3>
                         <p className="text-xs text-[var(--color-text-muted)] font-medium">Lihat dan kelola database raport yang telah disimpan.</p>
                     </div>
                 </div>
@@ -803,7 +803,7 @@ function ArchiveOverview(props) {
                     <div role="tablist" className="flex items-center gap-1 p-1 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
                         {tabs.map(({ id, label, icon: Icon }) => (
                             <button key={id} type="button" role="tab" aria-selected={archiveTab === id} onClick={() => setArchiveTab(id)}
-                                className={`h-9 px-4 rounded-xl text-xs font-black flex items-center gap-2 transition-colors ${archiveTab === id ? 'bg-[var(--color-surface)] text-indigo-500 shadow-sm border border-[var(--color-border)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                                className={`h-9 px-4 rounded-xl text-xs font-bold flex items-center gap-2 transition-colors ${archiveTab === id ? 'bg-[var(--color-surface)] text-indigo-500 shadow-sm border border-[var(--color-border)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                                 <Icon className="w-4 h-4" /> {label}
                             </button>
                         ))}
@@ -909,7 +909,7 @@ function ArchiveOverview(props) {
                     }
                     action={
                         (hasActiveFilter || hasPeriodFilter) && (
-                            <button type="button" onClick={resetAll} className="h-9 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-black hover:text-[var(--color-text)] transition-colors flex items-center gap-2 mx-auto">
+                            <button type="button" onClick={resetAll} className="h-9 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold hover:text-[var(--color-text)] transition-colors flex items-center gap-2 mx-auto">
                                 <X className="w-3.5 h-3.5" /> Reset semua filter
                             </button>
                         )
@@ -927,7 +927,7 @@ function ArchiveOverview(props) {
                     </div>
                     {filtered.length > archiveVisibleCount && (
                         <div className="flex justify-center mt-8">
-                            <button type="button" onClick={() => setArchiveVisibleCount((prev) => prev + PAGE_STEP)} className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] hover:text-indigo-500 hover:border-indigo-500/30 text-[var(--color-text)] text-xs font-black transition-colors flex items-center gap-2">
+                            <button type="button" onClick={() => setArchiveVisibleCount((prev) => prev + PAGE_STEP)} className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] hover:text-indigo-500 hover:border-indigo-500/30 text-[var(--color-text)] text-xs font-bold transition-colors flex items-center gap-2">
                                 <ChevronDown className="w-4 h-4" />
                                 Muat lebih banyak ({filtered.length - archiveVisibleCount} tersisa)
                             </button>

@@ -28,8 +28,8 @@ export const ActionBadge = ({ action }) => {
     const IconComp = c.icon
 
     return (
-        <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 w-fit ${c.color}`}>
-            <IconComp className="text-[9px]" />
+        <span className={`px-2 py-0.5 rounded-md text-xs font-bold uppercase tracking-wider flex items-center gap-1 w-fit ${c.color}`}>
+            <IconComp className="w-3 h-3" />
             {c.label}
         </span>
     )
@@ -53,7 +53,7 @@ export const JsonVisualizer = ({ data }) => {
     }
 
     return (
-        <div className="space-y-1 font-mono text-[10px]">
+        <div className="space-y-1 font-mono text-xs">
             {Object.entries(data).map(([key, val]) => (
                 <div key={key} className="flex gap-2">
                     <span className="text-[var(--color-primary)] opacity-70 shrink-0">{key}:</span>
@@ -90,7 +90,7 @@ export const DiffViewer = ({ oldData, newData, changedFields }) => {
 
     if (keys.length === 0) return (
         <div className="flex flex-col items-center justify-center py-8 opacity-40">
-            <Info className="text-xl mb-2" />
+            <Info className="w-5 h-5 mb-2" />
             <p className="text-xs font-semibold text-[var(--color-text-muted)]">Tidak ada perubahan terbaca</p>
         </div>
     )
@@ -119,7 +119,7 @@ export const DiffViewer = ({ oldData, newData, changedFields }) => {
                                     {key.replace(/_/g, ' ')}
                                 </span>
                                 {isSensitive && (
-                                    <span className="text-[10px] font-bold text-rose-500 border border-rose-500/20 px-1.5 py-0.5 rounded uppercase">
+                                    <span className="text-xs font-bold text-rose-500 border border-rose-500/20 px-1.5 py-0.5 rounded uppercase">
                                         Sensitif
                                     </span>
                                 )}
@@ -138,9 +138,9 @@ export const DiffViewer = ({ oldData, newData, changedFields }) => {
                                 {/* New Value */}
                                 <div className="relative p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 min-h-[32px] flex items-center">
                                     <div className="absolute -left-2 top-1/2 -translate-y-1/2 hidden lg:flex w-4 h-4 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] items-center justify-center z-10">
-                                        <ChevronRight className="text-[8px] text-[var(--color-text-muted)] opacity-30" />
+                                        <ChevronRight className="w-3 h-3 text-[var(--color-text-muted)] opacity-30" />
                                     </div>
-                                    <code className="text-[10px] font-mono font-black break-all text-emerald-600">
+                                    <code className="text-xs font-mono font-bold break-all text-emerald-600">
                                         {isSensitive
                                             ? '••••••••'
                                             : (typeof valNew === 'object'
@@ -164,8 +164,8 @@ export const DeleteTombstone = ({ data }) => {
     if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-6 opacity-40">
-                <Database className="text-xl mb-2" />
-                <p className="text-[10px] font-bold uppercase tracking-widest">Data forensik tidak tersedia</p>
+                <Database className="w-5 h-5 mb-2" />
+                <p className="text-xs font-bold uppercase tracking-wide">Data forensik tidak tersedia</p>
             </div>
         )
     }
@@ -177,8 +177,8 @@ export const DeleteTombstone = ({ data }) => {
         <div className="space-y-2">
             <div className="flex items-center gap-2 mb-3">
                 <div className="flex-1 h-px bg-rose-500/20" />
-                <span className="text-[8px] font-black uppercase tracking-widest text-rose-500/70 flex items-center gap-1.5">
-                    <Trash2 className="text-[7px]" /> Snapshot Record Sebelum Dihapus
+                <span className="text-xs font-bold uppercase tracking-wide text-rose-500/70 flex items-center gap-1.5">
+                    <Trash2 className="w-3 h-3" /> Snapshot Record Sebelum Dihapus
                 </span>
                 <div className="flex-1 h-px bg-rose-500/20" />
             </div>
@@ -187,17 +187,17 @@ export const DeleteTombstone = ({ data }) => {
                     const isSensitive = sensitiveKeys.some(s => key.toLowerCase().includes(s))
                     return (
                         <div key={key} className="p-2.5 rounded-xl bg-rose-500/5 border border-rose-500/10 group">
-                            <div className="text-[8px] font-black uppercase tracking-widest text-rose-400/70 mb-1">
+                            <div className="text-xs font-bold uppercase tracking-wide text-rose-400/70 mb-1">
                                 {key.replace(/_/g, ' ')}
                             </div>
-                            <code className="text-[10px] font-mono text-rose-600/80 break-all block">
+                            <code className="text-xs font-mono text-rose-600/80 break-all block">
                                 {isSensitive ? '••••••••' : (typeof val === 'object' ? JSON.stringify(val) : String(val))}
                             </code>
                         </div>
                     )
                 })}
             </div>
-            <p className="text-[9px] text-[var(--color-text-muted)] opacity-50 text-center pt-2">
+            <p className="text-xs text-[var(--color-text-muted)] opacity-50 text-center pt-2">
                 Record ini tidak lagi ada di database. Gunakan tombol "Pulihkan" untuk restore.
             </p>
         </div>
@@ -217,18 +217,18 @@ export const InsertViewer = ({ data }) => {
         <div className="space-y-2">
             <div className="flex items-center gap-2 mb-3">
                 <div className="flex-1 h-px bg-emerald-500/20" />
-                <span className="text-[8px] font-black uppercase tracking-widest text-emerald-500/70 flex items-center gap-1.5">
-                    <Plus className="text-[7px]" /> Data Record Baru
+                <span className="text-xs font-bold uppercase tracking-wide text-emerald-500/70 flex items-center gap-1.5">
+                    <Plus className="w-3 h-3" /> Data Record Baru
                 </span>
                 <div className="flex-1 h-px bg-emerald-500/20" />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {entries.map(([key, val]) => (
                     <div key={key} className="p-2.5 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
-                        <div className="text-[8px] font-black uppercase tracking-widest text-emerald-500/70 mb-1">
+                        <div className="text-xs font-bold uppercase tracking-wide text-emerald-500/70 mb-1">
                             {key.replace(/_/g, ' ')}
                         </div>
-                        <code className="text-[10px] font-mono text-emerald-600 break-all block">
+                        <code className="text-xs font-mono text-emerald-600 break-all block">
                             {typeof val === 'object' ? JSON.stringify(val) : String(val)}
                         </code>
                     </div>
@@ -338,11 +338,11 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
     if (logs.length === 0) return (
         <div className="py-12 flex flex-col items-center justify-center text-center opacity-30 gap-3">
             <div className="w-12 h-12 rounded-2xl bg-[var(--color-surface-alt)] flex items-center justify-center">
-                <History className="text-xl" />
+                <History className="w-5 h-5" />
             </div>
             <div>
-                <p className="text-[10px] font-black uppercase tracking-widest">Belum ada jejak audit</p>
-                <p className="text-[9px] font-bold">Aktivitas forensik untuk data ini tidak ditemukan.</p>
+                <p className="text-xs font-bold uppercase tracking-wide">Belum ada jejak audit</p>
+                <p className="text-xs font-bold">Aktivitas forensik untuk data ini tidak ditemukan.</p>
             </div>
         </div>
     )
@@ -351,13 +351,13 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
         <div className={`space-y-1 ${containerClassName} ${stickyHeader ? 'pt-0' : ''}`}>
             {showSearch && (
                 <div className={`relative ${stickyHeader ? 'sticky top-0 z-[30] bg-[var(--color-surface)] py-1.5 px-3 -mx-0 border-b border-[var(--color-border)]/50 shadow-sm transition-shadow' : 'mb-4'}`}>
-                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-[10px]" />
+                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] w-4 h-4" />
                     <input
                         type="text"
                         value={search}
                         onChange={e => setSearch(e.target.value)}
                         placeholder="Cari dalam riwayat..."
-                        className="w-full h-8 pl-9 pr-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 text-[10px] font-bold outline-none focus:border-[var(--color-primary)] transition-all"
+                        className="w-full h-8 pl-9 pr-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 text-xs font-bold outline-none focus:border-[var(--color-primary)] transition-colors"
                     />
                 </div>
             )}
@@ -411,7 +411,7 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
                                         <div className="p-2.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50 space-y-2.5">
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-2">
-                                                    <Clock className="text-xs text-indigo-500" />
+                                                    <Clock className="w-4 h-4 text-indigo-500" />
                                                     <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                                                         Forensic Diff
                                                     </span>
@@ -445,11 +445,11 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
                                                         return (
                                                             <div className="flex items-center gap-2 pr-4 border-r border-[var(--color-border)] last:border-0 border-opacity-30">
                                                                 <div className={`w-6 h-6 rounded-lg ${sev.color.split(' ')[0]} flex items-center justify-center`}>
-                                                                    <TriangleAlert className="text-[9px]" />
+                                                                    <TriangleAlert className="w-3 h-3" />
                                                                 </div>
                                                                 <div className="flex flex-col">
-                                                                    <span className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Severity</span>
-                                                                    <span className={`text-[9.5px] font-black uppercase ${sev.color.split(' ')[1]}`}>
+                                                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">Severity</span>
+                                                                    <span className={`text-xs font-bold uppercase ${sev.color.split(' ')[1]}`}>
                                                                         {sev.label}
                                                                     </span>
                                                                 </div>
@@ -460,11 +460,11 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
                                                     {log.duration_ms != null && (
                                                         <div className="flex items-center gap-2 pr-4 border-r border-[var(--color-border)] last:border-0 border-opacity-30">
                                                             <div className="w-6 h-6 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)]">
-                                                                <Timer className="text-[9px]" />
+                                                                <Timer className="w-3 h-3" />
                                                             </div>
                                                             <div className="flex flex-col">
-                                                                <span className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Durasi</span>
-                                                                <span className={`text-[9px] font-mono font-bold ${log.duration_ms > 2000 ? 'text-rose-500' : log.duration_ms > 500 ? 'text-amber-500' : 'text-emerald-500'}`}>
+                                                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">Durasi</span>
+                                                                <span className={`text-xs font-mono font-bold ${log.duration_ms > 2000 ? 'text-rose-500' : log.duration_ms > 500 ? 'text-amber-500' : 'text-emerald-500'}`}>
                                                                     {log.duration_ms}ms
                                                                 </span>
                                                             </div>
@@ -474,11 +474,11 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
                                                     {log.session_id && (
                                                         <div className="flex items-center gap-2 group cursor-help" title={log.session_id}>
                                                             <div className="w-6 h-6 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:bg-[var(--color-primary)]/10 group-hover:text-[var(--color-primary)] transition-colors">
-                                                                <Fingerprint className="text-[9px]" />
+                                                                <Fingerprint className="w-3 h-3" />
                                                             </div>
                                                             <div className="flex flex-col min-w-0">
-                                                                <span className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Session</span>
-                                                                <span className="text-[9px] font-mono font-bold text-[var(--color-text)] truncate max-w-[100px] block">
+                                                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">Session</span>
+                                                                <span className="text-xs font-mono font-bold text-[var(--color-text)] truncate max-w-[100px] block">
                                                                     {log.session_id.slice(0, 12)}...
                                                                 </span>
                                                             </div>
@@ -491,12 +491,12 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
                                                         <button
                                                             onClick={e => { e.stopPropagation(); handleRestore(log) }}
                                                             disabled={restoringId === log.id}
-                                                            className={`h-7 px-3 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-2
+                                                            className={`h-7 px-3 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors flex items-center gap-2
                                                                 ${restoringId === log.id
                                                                     ? 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] animate-pulse'
                                                                     : 'bg-amber-500 text-white hover:bg-amber-600 shadow-lg active:scale-95'}`}
                                                         >
-                                                            <History className={restoringId === log.id ? 'animate-spin' : ''} />
+                                                            <History className={restoringId === log.id ? 'animate-spin' : ''} className="w-4 h-4" />
                                                             {restoringId === log.id
                                                                 ? 'Memulihkan...'
                                                                 : log.action === 'DELETE' ? 'Pulihkan Record' : 'Revert ke State ini'}
@@ -510,8 +510,8 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
 
                                 {!isExpanded && (
                                     <div className="flex items-center justify-end mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <span className="text-[8px] font-black uppercase text-[var(--color-primary)] flex items-center gap-1.5">
-                                            Detail Forensik <ChevronRight className="text-[7px]" />
+                                        <span className="text-xs font-bold uppercase text-[var(--color-primary)] flex items-center gap-1.5">
+                                            Detail Forensik <ChevronRight className="w-3 h-3" />
                                         </span>
                                     </div>
                                 )}

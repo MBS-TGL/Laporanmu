@@ -83,7 +83,7 @@ export default function StudentInlineAddRow({
                     <div className="flex gap-1 justify-center">
                         {['L', 'P'].map(g => (
                             <button key={g} type="button" onClick={() => setLocalForm(p => ({ ...p, gender: g }))}
-                                className={`w-8 h-8 rounded-lg text-[10px] font-black border transition-all ${localForm.gender === g ? (g === 'L' ? 'bg-blue-500 text-white border-blue-500 shadow-lg' : 'bg-pink-500 text-white border-pink-500 shadow-lg') : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] bg-[var(--color-surface)]'}`}
+                                className={`w-8 h-8 rounded-lg text-xs font-bold border transition-all ${localForm.gender === g ? (g === 'L' ? 'bg-blue-500 text-white border-blue-500 shadow-lg' : 'bg-pink-500 text-white border-pink-500 shadow-lg') : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] bg-[var(--color-surface)]'}`}
                             >{g}</button>
                         ))}
                     </div>
@@ -113,7 +113,7 @@ export default function StudentInlineAddRow({
                         onChange={e => setLocalForm(p => ({ ...p, phone: e.target.value.replace(/\D/g, '') }))}
                         onKeyDown={handleKeyDown}
                         placeholder="No. WhatsApp"
-                        className="input-field text-[10px] h-9 px-3 rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] w-full text-center font-bold"
+                        className="input-field text-xs h-9 px-3 rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] w-full text-center font-bold"
                     />
                 </td>
             )}
@@ -127,7 +127,7 @@ export default function StudentInlineAddRow({
                         onChange={e => setLocalForm(p => ({ ...p, nisn: e.target.value.replace(/\D/g, '').slice(0, 10) }))}
                         onKeyDown={handleKeyDown}
                         placeholder="NISN"
-                        className="input-field text-[10px] h-9 px-2 rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] w-full text-center font-bold"
+                        className="input-field text-xs h-9 px-2 rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] w-full text-center font-bold"
                     />
                 </td>
             )}
@@ -141,7 +141,7 @@ export default function StudentInlineAddRow({
                         onChange={e => setLocalForm(p => ({ ...p, nis: e.target.value }))}
                         onKeyDown={handleKeyDown}
                         placeholder="NIS"
-                        className="input-field text-[10px] h-9 px-2 rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] w-full text-center font-bold"
+                        className="input-field text-xs h-9 px-2 rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] w-full text-center font-bold"
                     />
                 </td>
             )}
@@ -168,12 +168,12 @@ export default function StudentInlineAddRow({
                 <td className="px-4 py-3 text-center w-[280px]">
                     <div className="flex items-center justify-center gap-1.5">
                         <button onClick={handleSubmit} disabled={submitting || !canEdit || !localForm.name || !localForm.class_id}
-                            className="h-9 px-3 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg transition-all disabled:opacity-50 flex items-center gap-1.5">
-                            {submitting ? <LoaderCircle className="animate-spin" /> : <><Check /> Simpan</>}
+                            className="h-9 px-3 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 shadow-lg transition-all disabled:opacity-50 flex items-center gap-1.5">
+                            {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <><Check className="w-4 h-4" /> Simpan</>}
                         </button>
                         <button onClick={onCancel}
                             className="h-9 w-9 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-red-500 hover:text-white hover:border-red-500 transition-all flex items-center justify-center">
-                            <X />
+                            <X className="w-4 h-4" />
                         </button>
                     </div>
                 </td>

@@ -53,10 +53,10 @@ export default function StudentAccessCardModal({
             <div className="space-y-4 py-1">
                 {newlyCreatedStudent && (
                     <div className="p-2.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center gap-3 text-emerald-600">
-                        <div className="w-7 h-7 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 text-[10px]">
-                            <CircleCheck />
+                        <div className="w-7 h-7 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 text-xs">
+                            <CircleCheck className="w-4 h-4" />
                         </div>
-                        <p className="text-[9px] font-black uppercase tracking-widest">Registrasi Berhasil! Data akses & kartu tersedia di bawah.</p>
+                        <p className="text-xs font-bold uppercase tracking-wide">Registrasi Berhasil! Data akses & kartu tersedia di bawah.</p>
                     </div>
                 )}
 
@@ -66,8 +66,8 @@ export default function StudentAccessCardModal({
                         <div key={student.id || idx} className="space-y-4 border-b border-[var(--color-border)]/30 pb-6 last:border-0">
                             {isBulk && (
                                 <div className="flex items-center gap-2 mb-2">
-                                    <span className="w-5 h-5 rounded-full bg-[var(--color-primary)] text-white text-[9px] flex items-center justify-center font-black">{idx + 1}</span>
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">{student.name}</span>
+                                    <span className="w-5 h-5 rounded-full bg-[var(--color-primary)] text-white text-xs flex items-center justify-center font-bold">{idx + 1}</span>
+                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">{student.name}</span>
                                 </div>
                             )}
 
@@ -84,9 +84,9 @@ export default function StudentAccessCardModal({
 
                                     <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10">
                                         <div className="w-5 h-5 rounded-md bg-white/10 flex items-center justify-center border border-white/10 shadow-sm">
-                                            <span className="font-black text-[9px]">L</span>
+                                            <span className="font-bold text-xs">L</span>
                                         </div>
-                                        <span className="text-[7px] font-black uppercase tracking-[0.2em] opacity-80 text-white">Laporanmu</span>
+                                        <span className="text-[7px] font-bold uppercase tracking-wide opacity-80 text-white">Laporanmu</span>
                                     </div>
                                     <div className="absolute top-9 left-4 right-4 bottom-7 flex gap-3 z-10">
                                         <div className="w-[62px] h-[78px] rounded-lg bg-white/10 border border-white/20 p-1.5 shrink-0 shadow-lg overflow-hidden relative group">
@@ -94,34 +94,34 @@ export default function StudentAccessCardModal({
                                                 <img src={student.photo_url} alt="" className="w-full h-full object-cover rounded-md" loading="lazy" decoding="async" />
                                             ) : (
                                                 <div className="w-full h-full rounded-md bg-white/5 flex items-center justify-center border border-white/10">
-                                                    <span className="text-2xl font-black opacity-30">{isPrivacyMode ? '*' : student.name.charAt(0)}</span>
+                                                    <span className="text-2xl font-bold opacity-30">{isPrivacyMode ? '*' : student.name.charAt(0)}</span>
                                                 </div>
                                             )}
                                         </div>
                                         <div className="min-w-0 flex-1 flex flex-col justify-between py-0.5">
                                             <div>
-                                                <h3 className="text-[12px] font-black leading-[1.1] uppercase mb-0.5 drop-shadow-md line-clamp-2 tracking-tight">
+                                                <h3 className="text-xs font-bold leading-[1.1] uppercase mb-0.5 drop-shadow-md line-clamp-2 tracking-tight">
                                                     {isPrivacyMode ? maskInfo(student.name, 4) : student.name}
                                                 </h3>
                                                 <div className="space-y-0.5">
-                                                    <p className="text-[8px] font-black text-white/90 uppercase tracking-tight leading-tight flex items-center gap-1">
-                                                        <GraduationCap className="text-[7px] opacity-60" />
+                                                    <p className="text-xs font-bold text-white/90 uppercase tracking-tight leading-tight flex items-center gap-1">
+                                                        <GraduationCap className="w-4 h-4 opacity-60" />
                                                         {student.className}
                                                     </p>
-                                                    <p className="text-[5.5px] font-bold text-white/40 uppercase tracking-[0.1em] leading-none">MUHAMMADIYAH BOARDING SCHOOL TANGGUL</p>
+                                                    <p className="text-[5.5px] font-bold text-white/40 uppercase tracking-wide leading-none">MUHAMMADIYAH BOARDING SCHOOL TANGGUL</p>
                                                 </div>
                                             </div>
                                             <div className="pt-2 border-t border-white/10">
-                                                <p className="text-[5px] font-black opacity-40 uppercase tracking-[0.2em] mb-0.5 leading-none">NOMOR REGISTRASI</p>
-                                                <p className="text-[10px] font-mono font-black tracking-widest text-white leading-tight">
+                                                <p className="text-[5px] font-bold opacity-40 uppercase tracking-wide mb-0.5 leading-none">NOMOR REGISTRASI</p>
+                                                <p className="text-xs font-mono font-bold tracking-wide text-white leading-tight">
                                                     {isPrivacyMode ? maskInfo(student.code || student.registration_code, 3) : (student.code || student.registration_code)}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="absolute bottom-2.5 left-4 right-4 flex items-center justify-between opacity-30">
-                                        <span className="text-[6px] font-black uppercase tracking-[0.4em]">KARTU PELAJAR</span>
-                                        <span className="text-[6px] font-black uppercase tracking-[0.2em] text-white">2026/2027</span>
+                                        <span className="text-[6px] font-bold uppercase tracking-wide">KARTU PELAJAR</span>
+                                        <span className="text-[6px] font-bold uppercase tracking-wide text-white">2026/2027</span>
                                     </div>
                                 </div>
 
@@ -144,13 +144,13 @@ export default function StudentAccessCardModal({
                                             />
                                         </React.Suspense>
                                     </div>
-                                    <h4 className="text-[8px] font-black text-gray-900 dark:text-white uppercase tracking-[0.15em] mb-1 leading-tight">AKSES PORTAL ORANG TUA</h4>
-                                    <p className="text-[6px] text-gray-400 font-bold uppercase tracking-widest leading-relaxed max-w-[180px]">
+                                    <h4 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wide mb-1 leading-tight">AKSES PORTAL ORANG TUA</h4>
+                                    <p className="text-[6px] text-gray-400 font-bold uppercase tracking-wide leading-relaxed max-w-[180px]">
                                         Silakan scan kode di atas untuk<br />mengecek perkembangan siswa
                                     </p>
                                     <div className="absolute bottom-3 w-full left-0 px-5 flex justify-between items-center opacity-20">
-                                        <span className="text-[5px] font-black uppercase tracking-[0.25em]">TAHUN 2026/2027</span>
-                                        <span className="text-[5px] font-black uppercase tracking-[0.25em]">MBS TANGGUL</span>
+                                        <span className="text-[5px] font-bold uppercase tracking-wide">TAHUN 2026/2027</span>
+                                        <span className="text-[5px] font-bold uppercase tracking-wide">MBS TANGGUL</span>
                                     </div>
                                 </div>
                             </div>
@@ -171,13 +171,13 @@ export default function StudentAccessCardModal({
                                             <div className="w-1 h-3.5 bg-emerald-500 rounded-full" />
                                             <div className="absolute w-2 h-4 bg-emerald-500/30 rounded-full animate-pulse" />
                                         </div>
-                                        <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)] flex items-center gap-2">
+                                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)] flex items-center gap-2">
                                             Status Akses: <span className="text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/10">Aktif</span>
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-indigo-500/5 border border-indigo-500/10 shadow-sm">
-                                        <GraduationCap className="text-[8px] text-indigo-500 opacity-60" />
-                                        <span className="text-[9px] font-black uppercase tracking-widest text-indigo-600">{studentsToShow[0].className}</span>
+                                        <GraduationCap className="w-4 h-4 text-indigo-500 opacity-60" />
+                                        <span className="text-xs font-bold uppercase tracking-wide text-indigo-600">{studentsToShow[0].className}</span>
                                     </div>
                                 </div>
 
@@ -186,10 +186,10 @@ export default function StudentAccessCardModal({
                                     <div className="lg:col-span-5 group relative">
                                         <div className="relative h-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm group-hover:border-indigo-500/40 transition-all flex items-center overflow-hidden">
                                             <div className="px-3 h-full bg-[var(--color-surface-alt)]/50 border-r border-[var(--color-border)] flex items-center shrink-0">
-                                                <label className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-70">ID</label>
+                                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-70">ID</label>
                                             </div>
                                             <div className="flex-1 px-3 flex items-center justify-between gap-2">
-                                                <span className="text-[12px] font-black text-indigo-600 font-mono tracking-wider whitespace-nowrap">
+                                                <span className="text-xs font-bold text-indigo-600 font-mono tracking-wider whitespace-nowrap">
                                                     {isPrivacyMode ? maskInfo(studentsToShow[0].code || studentsToShow[0].registration_code, 2) : (studentsToShow[0].code || studentsToShow[0].registration_code)}
                                                 </span>
                                                 <button
@@ -199,9 +199,9 @@ export default function StudentAccessCardModal({
                                                         addToast?.('ID Berhasil disalin', 'success');
                                                     }}
                                                     title="Salin ID"
-                                                    className="shrink-0 w-7 h-7 rounded-lg bg-indigo-500/5 text-indigo-600 text-[10px] hover:bg-indigo-500 hover:text-white transition-all transform active:scale-90 flex items-center justify-center"
+                                                    className="shrink-0 w-7 h-7 rounded-lg bg-indigo-500/5 text-indigo-600 text-xs hover:bg-indigo-500 hover:text-white transition-all transform active:scale-90 flex items-center justify-center"
                                                 >
-                                                    <Copy />
+                                                    <Copy className="w-4 h-4" />
                                                 </button>
                                             </div>
                                         </div>
@@ -211,10 +211,10 @@ export default function StudentAccessCardModal({
                                     <div className="lg:col-span-3 group relative">
                                         <div className="relative h-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm group-hover:border-emerald-500/40 transition-all flex items-center overflow-hidden">
                                             <div className="px-2.5 h-full bg-emerald-500/5 border-r border-emerald-500/10 flex items-center shrink-0">
-                                                <label className="text-[8px] font-black uppercase tracking-widest text-emerald-600 opacity-70">PIN</label>
+                                                <label className="text-xs font-bold uppercase tracking-wide text-emerald-600 opacity-70">PIN</label>
                                             </div>
                                             <div className="flex-1 px-2.5 flex items-center justify-between gap-2">
-                                                <span className="text-[12px] font-black text-emerald-600 font-mono tracking-[0.15em]">
+                                                <span className="text-xs font-bold text-emerald-600 font-mono tracking-wide">
                                                     {isPrivacyMode ? '••••' : studentsToShow[0].pin}
                                                 </span>
                                                 <button
@@ -224,9 +224,9 @@ export default function StudentAccessCardModal({
                                                         addToast?.('PIN Berhasil disalin', 'success');
                                                     }}
                                                     title="Salin PIN"
-                                                    className="shrink-0 w-7 h-7 rounded-lg bg-emerald-500/5 text-emerald-600 text-[10px] hover:bg-emerald-500 hover:text-white transition-all transform active:scale-90 flex items-center justify-center"
+                                                    className="shrink-0 w-7 h-7 rounded-lg bg-emerald-500/5 text-emerald-600 text-xs hover:bg-emerald-500 hover:text-white transition-all transform active:scale-90 flex items-center justify-center"
                                                 >
-                                                    <Copy />
+                                                    <Copy className="w-4 h-4" />
                                                 </button>
                                             </div>
                                         </div>
@@ -234,9 +234,9 @@ export default function StudentAccessCardModal({
 
                                     <button
                                         onClick={() => openWAForStudent?.(studentsToShow[0], buildWAMessage?.(studentsToShow[0], waTemplate))}
-                                        className="lg:col-span-4 h-10 rounded-xl bg-emerald-500 text-white shadow-lg text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 px-4 group whitespace-nowrap"
+                                        className="lg:col-span-4 h-10 rounded-xl bg-emerald-500 text-white shadow-lg text-xs font-bold uppercase tracking-wide hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 px-4 group whitespace-nowrap"
                                     >
-                                        <WhatsAppIcon className="text-[13px] transition-transform group-hover:rotate-12 shrink-0" />
+                                        <WhatsAppIcon className="w-4 h-4 transition-transform group-hover:rotate-12 shrink-0" />
                                         <span>Bagikan ke Wali</span>
                                     </button>
                                 </div>
@@ -244,7 +244,7 @@ export default function StudentAccessCardModal({
                                 {/* Section Header: System Management */}
                                 <div className="flex items-center gap-2.5 pt-2">
                                     <div className="w-1 h-3.5 bg-slate-500 rounded-full" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Manajemen Sistem</span>
+                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Manajemen Sistem</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
 
@@ -257,9 +257,9 @@ export default function StudentAccessCardModal({
                                                 handleResetPin?.(studentsToShow[0]);
                                             }}
                                             disabled={resettingPin}
-                                            className="h-10 px-4 rounded-xl border border-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all flex items-center gap-2 group active:scale-95 whitespace-nowrap"
+                                            className="h-10 px-4 rounded-xl border border-red-500/10 text-red-500 text-xs font-bold uppercase tracking-wide hover:bg-red-500 hover:text-white transition-all flex items-center gap-2 group active:scale-95 whitespace-nowrap"
                                         >
-                                            resettingPin ? <LoaderCircle className={`${resettingPin ? 'animate-spin' : 'group-hover:-rotate-180 transition-transform duration-300'}`} /> : <RotateCcw className={`${resettingPin ? 'animate-spin' : 'group-hover:-rotate-180 transition-transform duration-300'}`} />
+                                            resettingPin ? <LoaderCircle className={`w-4 h-4 ${resettingPin ? 'animate-spin' : 'group-hover:-rotate-180 transition-transform duration-300'}`} /> : <RotateCcw className={`w-4 h-4 ${resettingPin ? 'animate-spin' : 'group-hover:-rotate-180 transition-transform duration-300'}`} />
                                             Reset PIN
                                         </button>
                                         <p className="hidden xl:block text-[7px] text-[var(--color-text-muted)] italic opacity-40 leading-none">PIN otomatis digenerate.</p>
@@ -269,11 +269,11 @@ export default function StudentAccessCardModal({
                                         <button
                                             onClick={() => setShowExportMenu(v => !v)}
                                             disabled={generatingPdf}
-                                            className="h-10 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg transition-all flex items-center gap-2 active:scale-95 whitespace-nowrap"
+                                            className="h-10 px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 shadow-lg transition-all flex items-center gap-2 active:scale-95 whitespace-nowrap"
                                         >
                                             {generatingPdf
-                                                ? <><LoaderCircle className="animate-spin" /> Proses...</>
-                                                : <><Download /> Cetak & Ekspor <ChevronDown className={`text-[8px] transition-transform duration-300 ${showExportMenu ? 'rotate-180' : ''}`} /></>
+                                                ? <><LoaderCircle className="w-4 h-4 animate-spin" /> Proses...</>
+                                                : <><Download className="w-4 h-4" /> Cetak & Ekspor <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${showExportMenu ? 'rotate-180' : ''}`} /></>
                                             }
                                         </button>
                                         {showExportMenu && (
@@ -281,26 +281,26 @@ export default function StudentAccessCardModal({
                                                 <div className="fixed inset-0 z-10" onClick={() => setShowExportMenu(false)} />
                                                 <div className="absolute bottom-full mb-2 right-0 z-20 w-52 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200">
                                                     <div className="bg-[var(--color-surface-alt)]/80 px-3 py-2 border-b border-[var(--color-border)]">
-                                                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text)] leading-none">Format Ekspor</p>
+                                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)] leading-none">Format Ekspor</p>
                                                     </div>
                                                     <div className="p-1 space-y-0.5">
                                                         <button
                                                             onClick={() => { handlePrintSingle?.(studentsToShow[0]); setShowExportMenu(false); }}
-                                                            className="w-full flex items-center gap-3 px-2 py-2 text-[10px] font-bold text-[var(--color-text)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] rounded-lg transition-all text-left group"
+                                                            className="w-full flex items-center gap-3 px-2 py-2 text-xs font-bold text-[var(--color-text)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] rounded-lg transition-all text-left group"
                                                         >
                                                             <FileText className="w-4 text-[var(--color-primary)]" />
                                                             Surat Akses PDF
                                                         </button>
                                                         <button
                                                             onClick={() => { handleSavePNG?.(studentsToShow[0]); setShowExportMenu(false); }}
-                                                            className="w-full flex items-center gap-3 px-2 py-2 text-[10px] font-bold text-[var(--color-text)] hover:bg-emerald-500/10 hover:text-emerald-600 rounded-lg transition-all text-left group"
+                                                            className="w-full flex items-center gap-3 px-2 py-2 text-xs font-bold text-[var(--color-text)] hover:bg-emerald-500/10 hover:text-emerald-600 rounded-lg transition-all text-left group"
                                                         >
                                                             <Image className="w-4 text-emerald-500" />
                                                             Simpan Gambar (PNG)
                                                         </button>
                                                         <button
                                                             onClick={() => { handlePrintThermal?.(studentsToShow[0]); setShowExportMenu(false); }}
-                                                            className="w-full flex items-center gap-3 px-2 py-2 text-[10px] font-bold text-[var(--color-text)] hover:bg-orange-500/10 hover:text-orange-600 rounded-lg transition-all text-left group"
+                                                            className="w-full flex items-center gap-3 px-2 py-2 text-xs font-bold text-[var(--color-text)] hover:bg-orange-500/10 hover:text-orange-600 rounded-lg transition-all text-left group"
                                                         >
                                                             <Printer className="w-4 text-orange-500" />
                                                             Struk Kasir (Thermal)
@@ -319,11 +319,11 @@ export default function StudentAccessCardModal({
                             <button
                                 onClick={() => generateStudentPDF?.(studentsToShow)}
                                 disabled={generatingPdf}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-60 shrink-0"
+                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-60 shrink-0"
                             >
                                 {generatingPdf
-                                    ? <><LoaderCircle className="animate-spin" /> Proses...</>
-                                    : <><Printer className="text-[11px]" /> Cetak Semua ({studentsToShow.length})</>
+                                    ? <><LoaderCircle className="w-4 h-4 animate-spin" /> Proses...</>
+                                    : <><Printer className="w-4 h-4" /> Cetak Semua ({studentsToShow.length})</>
                                 }
                             </button>
                         </div>

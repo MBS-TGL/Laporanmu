@@ -68,16 +68,16 @@ const StudentTagModal = ({
                     <div className="flex items-center w-full gap-3">
                         <button
                             onClick={onClose}
-                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center shrink-0"
+                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center shrink-0"
                         >
                             Tutup
                         </button>
                         <div className="flex-1" />
                         <button
                             onClick={onClose}
-                            className="h-10 px-8 rounded-xl bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 border border-white/10 shrink-0"
+                            className="h-10 px-8 rounded-xl bg-indigo-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 border border-white/10 shrink-0"
                         >
-                            <CircleCheck className="text-xs opacity-80" />
+                            <CircleCheck className="w-4 h-4 opacity-80" />
                             Selesai & Simpan
                         </button>
                     </div>
@@ -90,12 +90,12 @@ const StudentTagModal = ({
                             <div className="space-y-4">
                                 <div className="flex items-center gap-2.5 px-1">
                                     <div className="w-1 h-3.5 bg-indigo-500 rounded-full" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Cari atau Buat Baru</span>
+                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Cari atau Buat Baru</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
                                 <div className="relative group">
                                     <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-40 group-focus-within:text-indigo-500 group-focus-within:opacity-100 transition-all">
-                                        <Tags className="text-sm" />
+                                        <Tags className="w-4 h-4" />
                                     </div>
                                     <input
                                         type="text"
@@ -117,7 +117,7 @@ const StudentTagModal = ({
                                                     tagInputRef.current.value = '';
                                                 }
                                             }}
-                                            className="h-8 px-4 rounded-xl bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-lg"
+                                            className="h-8 px-4 rounded-xl bg-indigo-600 text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 active:scale-95 transition-all shadow-lg"
                                         >
                                             Tambah
                                         </button>
@@ -129,31 +129,31 @@ const StudentTagModal = ({
                             <div className="space-y-4">
                                 <div className="flex items-center gap-2.5 px-1">
                                     <div className="w-1 h-3.5 bg-emerald-500 rounded-full" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Label Tersemat</span>
+                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Label Tersemat</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
                                 <div className="flex flex-wrap gap-2.5 p-4 rounded-3xl bg-emerald-500/5 border border-emerald-500/10 min-h-[70px] content-start transition-all relative">
                                     <div className="absolute -top-3 right-6">
-                                        <span className="text-[10px] font-black text-emerald-600 bg-white px-3 py-1 rounded-full ring-1 ring-emerald-500/20 uppercase tracking-tighter shadow-md">
+                                        <span className="text-xs font-bold text-emerald-600 bg-white px-3 py-1 rounded-full ring-1 ring-emerald-500/20 uppercase tracking-tighter shadow-md">
                                             {studentTags.length} - Aktif
                                         </span>
                                     </div>
                                     {studentTags.length === 0 ? (
                                         <div className="w-full py-2 flex flex-col items-center justify-center opacity-30">
-                                            <Tags className="mb-1 text-sm text-[var(--color-text-muted)]" />
-                                            <span className="text-[8px] font-bold uppercase tracking-widest">Belum ada label</span>
+                                            <Tags className="w-4 h-4 mb-1 text-[var(--color-text-muted)]" />
+                                            <span className="text-xs font-bold uppercase tracking-wide">Belum ada label</span>
                                         </div>
                                     ) : (
                                         studentTags.map(tag => (
                                             <button
                                                 key={tag}
                                                 onClick={() => handleToggleTag(student, tag)}
-                                                className="group flex items-center gap-2 pl-3 pr-2 py-1.5 bg-white border border-[var(--color-border)] rounded-full text-[11px] font-black text-[var(--color-text)] shadow-sm hover:border-red-500 hover:text-red-600 hover:bg-red-50 transition-all active:scale-95"
+                                                className="group flex items-center gap-2 pl-3 pr-2 py-1.5 bg-white border border-[var(--color-border)] rounded-full text-xs font-bold text-[var(--color-text)] shadow-sm hover:border-red-500 hover:text-red-600 hover:bg-red-50 transition-all active:scale-95"
                                             >
                                                 <span className="opacity-70 group-hover:hidden text-emerald-500">#</span>
                                                 {tag}
                                                 <div className="w-4 h-4 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-red-500/10 transition-colors">
-                                                    <X className="text-[8px]" />
+                                                    <X className="w-4 h-4" />
                                                 </div>
                                             </button>
                                         ))
@@ -165,7 +165,7 @@ const StudentTagModal = ({
                             <div className="space-y-4 pt-2">
                                 <div className="flex items-center gap-2.5 px-1">
                                     <div className="w-1 h-3.5 bg-violet-500 rounded-full" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Katalog Label Global</span>
+                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Katalog Label Global</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
 
@@ -182,7 +182,7 @@ const StudentTagModal = ({
                                                         type="text"
                                                         value={renameInput}
                                                         onChange={e => setRenameInput(e.target.value)}
-                                                        className="w-32 pl-4 pr-2 py-1.5 text-[11px] font-black text-violet-700 outline-none bg-transparent"
+                                                        className="w-32 pl-4 pr-2 py-1.5 text-xs font-bold text-violet-700 outline-none bg-transparent"
                                                         onKeyDown={e => {
                                                             if (e.key === 'Enter') handleGlobalRenameTag(tag, renameInput)
                                                             if (e.key === 'Escape') setTagToEdit(null)
@@ -194,14 +194,14 @@ const StudentTagModal = ({
                                                             className="w-8 h-8 flex items-center justify-center text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all"
                                                             title="Simpan"
                                                         >
-                                                            <Check className="text-[8px]" />
+                                                            <Check className="w-4 h-4" />
                                                         </button>
                                                         <button
                                                             onClick={() => setTagToEdit(null)}
                                                             className="w-8 h-8 flex items-center justify-center text-red-400 hover:bg-red-500 hover:text-white transition-all"
                                                             title="Batal"
                                                         >
-                                                            <X className="text-[9px]" />
+                                                            <X className="w-4 h-4" />
                                                         </button>
                                                     </div>
                                                 </div>
@@ -217,12 +217,12 @@ const StudentTagModal = ({
                                                     <button
                                                         type="button"
                                                         onClick={() => handleToggleTag(student, tag)}
-                                                        className={`flex-1 flex items-center gap-2 pl-4 pr-3 py-2 text-[11px] font-black transition-all ${isActive ? 'text-white' : 'text-[var(--color-text-muted)] hover:text-[var(--color-primary)]'
+                                                        className={`flex-1 flex items-center gap-2 pl-4 pr-3 py-2 text-xs font-bold transition-all ${isActive ? 'text-white' : 'text-[var(--color-text-muted)] hover:text-[var(--color-primary)]'
                                                             }`}
                                                     >
                                                         <div className="shrink-0 flex items-center justify-center">
                                                             {isActive ? (
-                                                                <Check className="text-[8px]" />
+                                                                <Check className="w-4 h-4" />
                                                             ) : (
                                                                 <div className="w-1.5 h-1.5 rounded-full bg-slate-200 group-hover:bg-[var(--color-primary)]/40 transition-colors" />
                                                             )}
@@ -237,7 +237,7 @@ const StudentTagModal = ({
                                                             className={`w-8 h-8 flex items-center justify-center transition-colors ${isActive ? 'text-white/70 hover:text-white' : 'text-blue-500 hover:bg-blue-50'}`}
                                                             title="Ubah Nama"
                                                         >
-                                                            <Pen className="text-[7px]" />
+                                                            <Pen className="w-4 h-4" />
                                                         </button>
                                                         <button
                                                             type="button"
@@ -245,7 +245,7 @@ const StudentTagModal = ({
                                                             className={`w-8 h-8 flex items-center justify-center transition-colors ${isActive ? 'text-white/70 hover:text-white' : 'text-red-500 hover:bg-red-50'}`}
                                                             title="Hapus Global"
                                                         >
-                                                            <X className="text-[8px]" />
+                                                            <X className="w-4 h-4" />
                                                         </button>
                                                     </div>
                                                 </div>
@@ -255,9 +255,9 @@ const StudentTagModal = ({
                                 </div>
 
                                 <div className="p-3 rounded-xl bg-blue-50/50 border border-blue-100 flex items-start gap-3 mt-2">
-                                    <Info className="text-blue-500 text-[11px] mt-0.5 opacity-60" />
-                                    <p className="text-[11px] text-blue-700 font-medium leading-relaxed">
-                                        Klik label untuk menyematkan ke siswa. Gunakan ikon <Pen className="text-blue-500 mx-0.5" /> untuk ubah nama atau <X className="text-red-500 mx-0.5" /> untuk hapus global.
+                                    <Info className="w-4 h-4 text-blue-500 mt-0.5 opacity-60" />
+                                    <p className="text-xs text-blue-700 font-medium leading-relaxed">
+                                        Klik label untuk menyematkan ke siswa. Gunakan ikon <Pen className="w-4 h-4 text-blue-500 mx-0.5" /> untuk ubah nama atau <X className="w-4 h-4 text-red-500 mx-0.5" /> untuk hapus global.
                                     </p>
                                 </div>
                             </div>
@@ -280,7 +280,7 @@ const StudentTagModal = ({
                     <div className="flex items-center w-full gap-3">
                         <button
                             onClick={() => setConfirmDeleteTag(null)}
-                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all flex items-center justify-center shrink-0"
+                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-slate-50 transition-all flex items-center justify-center shrink-0"
                         >
                             Batal
                         </button>
@@ -291,19 +291,19 @@ const StudentTagModal = ({
                                 setConfirmDeleteTag(null);
                                 await handleGlobalDeleteTag(tag, true);
                             }}
-                            className="h-10 px-6 rounded-xl bg-red-500 text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-red-600 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
+                            className="h-10 px-6 rounded-xl bg-red-500 text-white text-xs font-bold uppercase tracking-wide shadow-lg hover:bg-red-600 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
                         >
-                            <Trash2 className="text-[10px] opacity-80" />
+                            <Trash2 className="w-4 h-4 opacity-80" />
                             Hapus Global
                         </button>
                     </div>
                 }
             >
                 <div className="py-2">
-                    <p className="text-[11px] text-slate-500 leading-relaxed font-bold">
-                        Label <span className="px-2 py-0.5 rounded-md bg-red-50 text-red-600 font-black border border-red-100 mx-1">#{confirmDeleteTag}</span> akan dihapus dari seluruh data siswa.
+                    <p className="text-xs text-slate-500 leading-relaxed font-bold">
+                        Label <span className="px-2 py-0.5 rounded-md bg-red-50 text-red-600 font-bold border border-red-100 mx-1">#{confirmDeleteTag}</span> akan dihapus dari seluruh data siswa.
                     </p>
-                    <p className="text-[10px] text-slate-400 font-medium mt-3 leading-relaxed">
+                    <p className="text-xs text-slate-400 font-medium mt-3 leading-relaxed">
                         Tindakan ini akan membersihkan label tersebut secara permanen dari database. Data siswa lainnya tidak akan terpengaruh.
                     </p>
                 </div>

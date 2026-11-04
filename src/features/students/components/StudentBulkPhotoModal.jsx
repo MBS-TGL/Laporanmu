@@ -89,7 +89,7 @@ export default function StudentBulkPhotoModal({
                     <button 
                         onClick={() => { if (!uploadingBulkPhotos) onClose() }} 
                         disabled={uploadingBulkPhotos}
-                        className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center shrink-0"
+                        className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center shrink-0"
                     >
                         {bulkPhotoMatches.length > 0 ? 'Batal' : 'Tutup'}
                     </button>
@@ -98,15 +98,15 @@ export default function StudentBulkPhotoModal({
 
                     {bulkPhotoMatches.length > 0 && (
                         <div className="flex items-center gap-3">
-                            <p className="hidden md:block text-[10px] font-bold text-[var(--color-text-muted)] animate-in fade-in duration-500">
-                                Siap simpan: <span className="text-emerald-600 font-black px-1.5 py-0.5 bg-emerald-500/10 rounded border border-emerald-500/20">{matchedCount}</span>
+                            <p className="hidden md:block text-xs font-bold text-[var(--color-text-muted)] animate-in fade-in duration-500">
+                                Siap simpan: <span className="text-emerald-600 font-bold px-1.5 py-0.5 bg-emerald-500/10 rounded border border-emerald-500/20">{matchedCount}</span>
                             </p>
                             <button
                                 onClick={handleBulkPhotoUpload}
                                 disabled={uploadingBulkPhotos || matchedCount === 0}
-                                className="h-10 px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10"
+                                className="h-10 px-8 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10"
                             >
-                                {uploadingBulkPhotos ? <><LoaderCircle className="animate-spin" /> Mengupload...</> : <><Check /> Simpan Foto</>}
+                                {uploadingBulkPhotos ? <><LoaderCircle className="w-4 h-4 animate-spin" /> Mengupload...</> : <><Check className="w-4 h-4" /> Simpan Foto</>}
                             </button>
                         </div>
                     )}
@@ -116,13 +116,13 @@ export default function StudentBulkPhotoModal({
             <div className="space-y-5">
                 {/* Match Method */}
                 <div className="space-y-2">
-                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] opacity-70">Metode Pencocokan</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-70">Metode Pencocokan</p>
                     <div className="flex p-1 bg-[var(--color-surface-alt)]/50 rounded-xl border border-[var(--color-border)]">
                         {methods.map(m => (
                             <button
                                 key={m.id}
                                 onClick={() => setMatchMethod(m.id)}
-                                className={`flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2
+                                className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2
                                 ${matchMethod === m.id ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]'}
                                 `}
                             >
@@ -138,11 +138,11 @@ export default function StudentBulkPhotoModal({
                         <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${autoCompress ? 'translate-x-4' : 'translate-x-0.5'}`} />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <div className="text-[10px] font-black uppercase tracking-wider text-[var(--color-text)]">
-                            <Minimize2 className="mr-1.5 text-[var(--color-primary)]" />
+                        <div className="text-xs font-bold uppercase tracking-wider text-[var(--color-text)]">
+                            <Minimize2 className="w-4 h-4 mr-1.5 text-[var(--color-primary)]" />
                             Auto Kompres Gambar
                         </div>
-                        <div className="text-[9px] text-[var(--color-text-muted)] mt-0.5">Kompres ke max 800×800px, kualitas 70% (hemat storage)</div>
+                        <div className="text-xs text-[var(--color-text-muted)] mt-0.5">Kompres ke max 800×800px, kualitas 70% (hemat storage)</div>
                     </div>
                 </label>
 
@@ -158,28 +158,28 @@ export default function StudentBulkPhotoModal({
                     />
                     {matchingPhotos ? (
                         <div className="flex items-center gap-3 py-1">
-                            <LoaderCircle className="animate-spin text-lg text-[var(--color-primary)]" />
+                            <LoaderCircle className="w-5 h-5 animate-spin text-[var(--color-primary)]" />
                             <span className="text-xs font-bold text-[var(--color-text-muted)]">Mencocokkan foto...</span>
                         </div>
                     ) : bulkPhotoMatches.length > 0 ? (
                         <div className="flex items-center gap-3">
                             <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] group-hover:scale-110 transition-transform shrink-0">
-                                <Camera className="text-sm" />
+                                <Camera className="w-4 h-4" />
                             </div>
                             <div className="text-left">
-                                <div className="text-xs font-black text-[var(--color-text)]">Tambah File Foto Lain</div>
-                                <div className="text-[10px] text-[var(--color-text-muted)]">Klik atau drag foto ke sini</div>
+                                <div className="text-xs font-bold text-[var(--color-text)]">Tambah File Foto Lain</div>
+                                <div className="text-xs text-[var(--color-text-muted)]">Klik atau drag foto ke sini</div>
                             </div>
                         </div>
                     ) : (
                         <>
                             <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] mb-4 group-hover:scale-110 transition-transform">
-                                <Camera className="text-2xl" />
+                                <Camera className="w-6 h-6" />
                             </div>
-                            <h4 className="text-sm font-black text-[var(--color-text)] mb-1">
+                            <h4 className="text-sm font-bold text-[var(--color-text)] mb-1">
                                 Drag & Drop atau Pilih Foto Massal
                             </h4>
-                            <p className="text-[11px] text-[var(--color-text-muted)] max-w-xs transition-all">
+                            <p className="text-xs text-[var(--color-text-muted)] max-w-xs transition-all">
                                 Pastikan nama file foto menggunakan <b>{methods.find(m => m.id === matchMethod).label}</b> siswa ({methods.find(m => m.id === matchMethod).desc})
                             </p>
                         </>
@@ -190,7 +190,7 @@ export default function StudentBulkPhotoModal({
                 {bulkPhotoMatches.length > 0 && (
                     <div className="space-y-2">
                         {/* Stats Summary */}
-                        <div className="flex items-center gap-2 text-[10px] font-bold">
+                        <div className="flex items-center gap-2 text-xs font-bold">
                             <span className="text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">{matchedCount} Matched</span>
                             {unmatchedCount > 0 && <span className="text-amber-600 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full">{unmatchedCount} Unmatched</span>}
                             <span className="text-[var(--color-text-muted)] ml-auto">{bulkPhotoMatches.length} total</span>
@@ -198,9 +198,9 @@ export default function StudentBulkPhotoModal({
 
                         <div className="border border-[var(--color-border)] rounded-xl overflow-hidden bg-[var(--color-surface)] shadow-sm">
                             <div className="max-h-[35vh] overflow-auto scrollbar-none">
-                                <table className="w-full text-[11px]">
+                                <table className="w-full text-xs">
                                     <thead className="bg-[var(--color-surface-alt)] sticky top-0 z-10 border-b border-[var(--color-border)]">
-                                        <tr className="text-left font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                                        <tr className="text-left font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                             <th className="p-3 w-14 text-center">Foto</th>
                                             <th className="p-3">Nama File</th>
                                             <th className="p-3">Siswa Cocok</th>
@@ -222,7 +222,7 @@ export default function StudentBulkPhotoModal({
                                                 <td className="p-3">
                                                     <div className="font-medium opacity-70 truncate max-w-[120px]" title={item.file.name}>{item.originalFile?.name || item.file.name}</div>
                                                     {autoCompress && item.originalSize !== item.compressedSize && (
-                                                        <div className="text-[8px] text-emerald-600 font-bold mt-0.5">
+                                                        <div className="text-xs text-emerald-600 font-bold mt-0.5">
                                                             {formatSize(item.originalSize)} → {formatSize(item.compressedSize)}
                                                         </div>
                                                     )}
@@ -246,11 +246,11 @@ export default function StudentBulkPhotoModal({
                                                 </td>
                                                 <td className="p-3 text-center">
                                                     {item.status === 'matched' ? (
-                                                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 font-black uppercase tracking-wider text-[8px] inline-flex items-center gap-1 border border-emerald-500/20">
+                                                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 font-bold uppercase tracking-wider text-xs inline-flex items-center gap-1 border border-emerald-500/20">
                                                             Matched
                                                         </span>
                                                     ) : (
-                                                        <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 font-black uppercase tracking-wider text-[8px] inline-flex items-center gap-1 border border-amber-500/20">
+                                                        <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 font-bold uppercase tracking-wider text-xs inline-flex items-center gap-1 border border-amber-500/20">
                                                             Unmatched
                                                         </span>
                                                     )}
@@ -262,7 +262,7 @@ export default function StudentBulkPhotoModal({
                                                         className="w-7 h-7 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors opacity-50 group-hover:opacity-100 disabled:opacity-20 flex items-center justify-center mx-auto"
                                                         title="Hapus"
                                                     >
-                                                        <Trash2 className="text-[10px]" />
+                                                        <Trash2 className="w-4 h-4" />
                                                     </button>
                                                 </td>
                                             </tr>

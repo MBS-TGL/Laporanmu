@@ -167,9 +167,9 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                 {isDragging && (
                     <div className="absolute inset-0 z-[12000] bg-[var(--color-primary)]/10 border-4 border-dashed border-[var(--color-primary)] m-4 rounded-[2rem] flex flex-col items-center justify-center pointer-events-none animate-in fade-in duration-200">
                         <div className="w-20 h-20 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-3xl shadow-xl animate-bounce">
-                            <CloudUpload />
+                            <CloudUpload className="w-6 h-6" />
                         </div>
-                        <p className="mt-4 text-lg font-black text-[var(--color-primary)] uppercase tracking-widest">Lepaskan untuk Upload</p>
+                        <p className="mt-4 text-lg font-bold text-[var(--color-primary)] uppercase tracking-wide">Lepaskan untuk Upload</p>
                     </div>
                 )}
                 
@@ -177,22 +177,22 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                 <div className="p-6 border-b border-[var(--color-border)] flex items-center justify-between shrink-0 bg-[var(--color-surface-alt)]/30">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center text-xl">
-                            <Image />
+                            <Image className="w-6 h-6" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-black text-[var(--color-text)] tracking-tight">Media Library</h2>
-                            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Kelola & Pilih Aset Visual Informasi</p>
+                            <h2 className="text-xl font-bold text-[var(--color-text)] tracking-tight">Media Library</h2>
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60">Kelola & Pilih Aset Visual Informasi</p>
                         </div>
                     </div>
                     
                     <div className="flex items-center gap-3">
-                        <label className={`h-10 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer hover:brightness-110 active:scale-95 transition-all shadow-lg ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
-                            {uploading ? <LoaderCircle className="animate-spin" /> : <CloudUpload />}
+                        <label className={`h-10 px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide flex items-center gap-2 cursor-pointer hover:brightness-110 active:scale-95 transition-all shadow-lg ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                            {uploading ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <CloudUpload className="w-4 h-4" />}
                             {uploading ? `Uploading ${uploadProgress}%` : 'Upload Baru'}
                             <input type="file" className="hidden" accept="image/*" multiple onChange={(e) => handleFiles(Array.from(e.target.files || []))} />
                         </label>
                         <button onClick={onClose} className="w-10 h-10 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-rose-500 transition-colors">
-                            <X />
+                            <X className="w-4 h-4" />
                         </button>
                     </div>
                 </div>
@@ -200,7 +200,7 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                 {/* Toolbar */}
                 <div className="p-4 border-b border-[var(--color-border)] flex flex-col sm:flex-row items-center gap-4 bg-[var(--color-surface-alt)]/10 shrink-0">
                     <div className="relative flex-1 group w-full">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors" />
+                        <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors" />
                         <input 
                             type="text" 
                             placeholder="Cari file berdasarkan nama..."
@@ -219,7 +219,7 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                             <button 
                                 key={t.id}
                                 onClick={() => setFilter(t.id)}
-                                className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${filter === t.id ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all ${filter === t.id ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                             >
                                 {t.label}
                             </button>
@@ -233,8 +233,8 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                     <div className="flex-1 overflow-y-auto p-6 custom-scrollbar bg-[var(--color-surface)]">
                         {loading ? (
                             <div className="h-full flex flex-col items-center justify-center gap-4 text-[var(--color-text-muted)]">
-                                <LoaderCircle className="text-4xl animate-spin text-[var(--color-primary)]" />
-                                <p className="text-[10px] font-black uppercase tracking-widest">Memuat Library...</p>
+                                <LoaderCircle className="w-6 h-6 animate-spin text-[var(--color-primary)]" />
+                                <p className="text-xs font-bold uppercase tracking-wide">Memuat Library...</p>
                             </div>
                         ) : filteredImages.length === 0 ? (
                             <div className="h-full flex flex-col items-center justify-center gap-4 text-[var(--color-text-muted)] opacity-40">
@@ -254,8 +254,8 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                                         
                                         {/* Select Indicator */}
                                         {currentSelection === img.url && (
-                                            <div className="absolute top-2 left-2 w-6 h-6 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-[10px] shadow-lg animate-in zoom-in-50">
-                                                <Check />
+                                            <div className="absolute top-2 left-2 w-6 h-6 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs shadow-lg animate-in zoom-in-50">
+                                                <Check className="w-4 h-4" />
                                             </div>
                                         )}
 
@@ -268,11 +268,11 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                                             className="absolute top-2 right-2 w-8 h-8 rounded-lg bg-rose-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-rose-600 shadow-lg active:scale-95"
                                             title="Hapus aset"
                                         >
-                                            <Trash2 className="text-xs" />
+                                            <Trash2 className="w-4 h-4" />
                                         </button>
 
                                         {/* Type Badge */}
-                                        <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/60 text-[8px] font-black text-white uppercase tracking-tighter opacity-70">
+                                        <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/60 text-xs font-bold text-white uppercase tracking-tighter opacity-70">
                                             {img.type}
                                         </div>
                                     </div>
@@ -291,29 +291,29 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                                 
                                 <div className="space-y-4">
                                     <div className="pb-4 border-b border-[var(--color-border)]">
-                                        <h3 className="text-xs font-black text-[var(--color-text)] uppercase tracking-widest mb-1 truncate" title={selectedAsset.name}>
+                                        <h3 className="text-xs font-bold text-[var(--color-text)] uppercase tracking-wide mb-1 truncate" title={selectedAsset.name}>
                                             {selectedAsset.name}
                                         </h3>
-                                        <p className="text-[9px] font-bold text-[var(--color-text-muted)] opacity-60">
+                                        <p className="text-xs font-bold text-[var(--color-text-muted)] opacity-60">
                                             Diunggah {new Date(selectedAsset.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
                                         </p>
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-3">
                                         <div className="p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
-                                            <p className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-tighter mb-1">Ukuran</p>
-                                            <p className="text-[10px] font-black text-[var(--color-text)]">{(selectedAsset.size / 1024 / 1024).toFixed(2)} MB</p>
+                                            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tighter mb-1">Ukuran</p>
+                                            <p className="text-xs font-bold text-[var(--color-text)]">{(selectedAsset.size / 1024 / 1024).toFixed(2)} MB</p>
                                         </div>
                                         <div className="p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
-                                            <p className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-tighter mb-1">Format</p>
-                                            <p className="text-[10px] font-black text-[var(--color-text)] uppercase">{selectedAsset.mimetype?.split('/')[1] || 'IMG'}</p>
+                                            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tighter mb-1">Format</p>
+                                            <p className="text-xs font-bold text-[var(--color-text)] uppercase">{selectedAsset.mimetype?.split('/')[1] || 'IMG'}</p>
                                         </div>
                                     </div>
 
                                     <div className="space-y-2">
-                                        <label className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest ml-1">Asset URL</label>
+                                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide ml-1">Asset URL</label>
                                         <div className="flex gap-2">
-                                            <input readOnly value={selectedAsset.url} className="flex-1 h-9 px-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] font-medium outline-none" />
+                                            <input readOnly value={selectedAsset.url} className="flex-1 h-9 px-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-medium outline-none" />
                                             <button 
                                                 onClick={() => {
                                                     navigator.clipboard.writeText(selectedAsset.url)
@@ -321,14 +321,14 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                                                 }}
                                                 className="w-9 h-9 shrink-0 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"
                                             >
-                                                <Check className="text-xs" />
+                                                <Check className="w-4 h-4" />
                                             </button>
                                         </div>
                                     </div>
 
                                     <button 
                                         onClick={() => onSelect(selectedAsset.url)}
-                                        className="w-full h-11 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 active:scale-95 transition-all"
+                                        className="w-full h-11 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide shadow-lg hover:brightness-110 active:scale-95 transition-all"
                                     >
                                         Pilih Gambar Ini
                                     </button>
@@ -340,11 +340,11 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
 
                 {/* Footer Selection Info */}
                 <div className="p-4 border-t border-[var(--color-border)] bg-[var(--color-surface-alt)]/30 flex items-center justify-between shrink-0">
-                    <p className="text-[10px] font-bold text-[var(--color-text-muted)] italic">
+                    <p className="text-xs font-bold text-[var(--color-text-muted)] italic">
                         * Pilih gambar untuk menjadikannya thumbnail berita.
                     </p>
                     <div className="flex items-center gap-3">
-                        <button onClick={onClose} className="px-6 py-2.5 rounded-xl border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">Tutup</button>
+                        <button onClick={onClose} className="px-6 py-2.5 rounded-xl border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">Tutup</button>
                     </div>
                 </div>
 
@@ -353,28 +353,28 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                     <div className="absolute inset-0 z-[11000] flex items-center justify-center p-6 bg-black/10 animate-in fade-in duration-300">
                         <div className="w-full max-w-sm bg-[var(--color-surface)] rounded-[2rem] border border-[var(--color-border)] shadow-xl p-8 animate-in zoom-in-95 duration-300">
                             <div className="w-16 h-16 rounded-3xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-2xl mx-auto mb-6">
-                                <Trash2 />
+                                <Trash2 className="w-6 h-6" />
                             </div>
-                            <h3 className="text-lg font-black text-[var(--color-text)] text-center mb-2">Hapus Aset Permanen?</h3>
+                            <h3 className="text-lg font-bold text-[var(--color-text)] text-center mb-2">Hapus Aset Permanen?</h3>
                             <p className="text-xs text-[var(--color-text-muted)] text-center mb-8 leading-relaxed">
-                                File <span className="text-[var(--color-text)] font-black">"{deleteConfirm.img?.name}"</span> akan dihapus selamanya dari server. Berita yang menggunakan gambar ini mungkin akan mengalami error.
+                                File <span className="text-[var(--color-text)] font-bold">"{deleteConfirm.img?.name}"</span> akan dihapus selamanya dari server. Berita yang menggunakan gambar ini mungkin akan mengalami error.
                             </p>
                             <div className="grid grid-cols-2 gap-3">
                                 <button 
                                     onClick={() => setDeleteConfirm({ isOpen: false, img: null, isDeleting: false })}
                                     disabled={deleteConfirm.isDeleting}
-                                    className="h-12 rounded-xl border border-[var(--color-border)] text-[11px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-colors disabled:opacity-50"
+                                    className="h-12 rounded-xl border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-colors disabled:opacity-50"
                                 >
                                     Batal
                                 </button>
                                 <button 
                                     onClick={handleDelete}
                                     disabled={deleteConfirm.isDeleting}
-                                    className="h-12 rounded-xl bg-rose-500 text-white text-[11px] font-black uppercase tracking-widest hover:bg-rose-600 transition-all shadow-lg active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
+                                    className="h-12 rounded-xl bg-rose-500 text-white text-xs font-bold uppercase tracking-wide hover:bg-rose-600 transition-all shadow-lg active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
                                 >
                                     {deleteConfirm.isDeleting ? (
                                         <>
-                                            <LoaderCircle className="animate-spin" />
+                                            <LoaderCircle className="w-4 h-4 animate-spin" />
                                             Menghapus...
                                         </>
                                     ) : 'Ya, Hapus'}

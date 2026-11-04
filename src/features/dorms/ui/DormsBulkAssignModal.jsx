@@ -106,7 +106,7 @@ export default function DormsBulkAssignModal({
                                             <Bed className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}`} />
                                             <div className="flex flex-col min-w-0 leading-tight">
                                                 <span className="truncate">{room.id}</span>
-                                                {room.ar && <span className="text-[10px] opacity-60 font-medium truncate" dir="rtl">{room.ar}</span>}
+                                                {room.ar && <span className="text-xs opacity-60 font-medium truncate" dir="rtl">{room.ar}</span>}
                                             </div>
                                         </div>
                                         {isSelected && <Check className="w-3 h-3 stroke-[3px] shrink-0 ml-1 text-[var(--color-primary)]" />}

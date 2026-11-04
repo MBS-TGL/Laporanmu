@@ -1,6 +1,6 @@
 import React, { memo, useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { Archive, Briefcase, Check, ChevronDown, Crown, Flame, History, IdCard, Minus, Pencil, Pin, Plus, SquarePen, Star, Tags, TrendingDown, TrendingUp, TriangleAlert, X, Zap } from 'lucide-react'
+import { Archive, Briefcase, Check, ChevronDown, Crown, Flame, History, IdCard, Medal, Minus, Pencil, Pin, Plus, SquarePen, Star, Tags, TrendingDown, TrendingUp, TriangleAlert, X, Zap } from 'lucide-react'
 import { WhatsAppIcon } from '@shared/components'
 import useLongPress from '@hooks/useLongPress'
 import { getTagColor, calculateCompleteness } from '@features/students/utils/studentsConstants'
@@ -36,13 +36,13 @@ const InlineEditName = ({ value, onSave, onCancel }) => {
                     if (e.key === 'Enter') onSave(val.trim())
                     if (e.key === 'Escape') onCancel()
                 }}
-                className="input-field h-7 px-2 rounded-lg border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-extrabold w-36 focus:border-[var(--color-primary)] outline-none"
+                className="input-field h-7 px-2 rounded-lg border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold w-36 focus:border-[var(--color-primary)] outline-none"
             />
-            <button onClick={() => onSave(val.trim())} className="w-7 h-7 rounded-md bg-emerald-500 text-white flex items-center justify-center text-[10px] hover:brightness-110 transition-all shadow-sm">
-                <Check />
+            <button onClick={() => onSave(val.trim())} className="w-7 h-7 rounded-md bg-emerald-500 text-white flex items-center justify-center text-xs hover:brightness-110 transition-all shadow-sm">
+                <Check className="w-4 h-4" />
             </button>
-            <button onClick={onCancel} className="w-7 h-7 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] flex items-center justify-center text-[10px] hover:bg-[var(--color-border)] transition-all">
-                <X />
+            <button onClick={onCancel} className="w-7 h-7 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] flex items-center justify-center text-xs hover:bg-[var(--color-border)] transition-all">
+                <X className="w-4 h-4" />
             </button>
         </div>
     )
@@ -55,17 +55,17 @@ const InlineEditGender = ({ value, onSave, onCancel }) => (
             <button
                 key={g}
                 onClick={() => onSave(g)}
-                className={`w-8 h-8 rounded-lg text-xs font-black border-2 transition-all
+                className={`w-8 h-8 rounded-lg text-xs font-bold border-2 transition-all
                     ${value === g
                         ? (g === 'L' ? 'bg-blue-500 text-white border-blue-500' : 'bg-pink-500 text-white border-pink-500')
                         : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)] bg-[var(--color-surface)]'
                     }`}
             >
-                {g === 'L' ? <MarsIcon /> : <VenusIcon />}
+                {g === 'L' ? <MarsIcon className="w-4 h-4" /> : <VenusIcon className="w-4 h-4" />}
             </button>
         ))}
-        <button onClick={onCancel} className="w-8 h-8 rounded-lg flex items-center justify-center bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-all text-[10px]">
-            <X />
+        <button onClick={onCancel} className="w-8 h-8 rounded-lg flex items-center justify-center bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-all text-xs">
+            <X className="w-4 h-4" />
         </button>
     </div>
 )
@@ -79,16 +79,16 @@ const InlineEditKelas = ({ value, classesList, onSave, onCancel }) => {
                 value={val}
                 onChange={e => setVal(e.target.value)}
                 autoFocus
-                className="select-field h-8 px-2 rounded-lg border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black outline-none focus:border-[var(--color-primary)] w-32"
+                className="select-field h-8 px-2 rounded-lg border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold outline-none focus:border-[var(--color-primary)] w-32"
             >
                 <option value="">Pilih kelas</option>
                 {classesList.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
-            <button onClick={() => onSave(val)} disabled={!val} className="w-8 h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-[10px] hover:brightness-110 disabled:opacity-40 transition-all">
-                <Check />
+            <button onClick={() => onSave(val)} disabled={!val} className="w-8 h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs hover:brightness-110 disabled:opacity-40 transition-all">
+                <Check className="w-4 h-4" />
             </button>
-            <button onClick={onCancel} className="w-8 h-8 rounded-lg flex items-center justify-center border border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] transition-all text-[10px]">
-                <X />
+            <button onClick={onCancel} className="w-8 h-8 rounded-lg flex items-center justify-center border border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] transition-all text-xs">
+                <X className="w-4 h-4" />
             </button>
         </div>
     )
@@ -112,15 +112,15 @@ const InlineEditPoin = ({ value, onSave, onCancel }) => {
                     if (e.key === 'Escape') onCancel()
                 }}
                 placeholder="Poin"
-                className="input-field h-7 w-16 px-2 rounded-lg border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black text-center outline-none focus:border-[var(--color-primary)] shadow-sm"
+                className="input-field h-7 w-16 px-2 rounded-lg border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-center outline-none focus:border-[var(--color-primary)] shadow-sm"
             />
             {val !== '' && (
-                <button onClick={() => onSave(parsed)} className="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-[10px] hover:brightness-110 transition-all shadow-sm">
-                    <Check />
+                <button onClick={() => onSave(parsed)} className="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs hover:brightness-110 transition-all shadow-sm">
+                    <Check className="w-4 h-4" />
                 </button>
             )}
-            <button onClick={onCancel} className="w-7 h-7 rounded-lg flex items-center justify-center border border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] transition-all text-[10px]">
-                <X />
+            <button onClick={onCancel} className="w-7 h-7 rounded-lg flex items-center justify-center border border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] transition-all text-xs">
+                <X className="w-4 h-4" />
             </button>
         </div>
     )
@@ -316,7 +316,7 @@ export const StudentRow = memo(({
                                 : 'text-[var(--color-text-muted)] opacity-0 group-hover/row:opacity-100 hover:text-amber-500'
                             }`}
                     >
-                        <Pin className={`text-[9px] transition-transform ${student.is_pinned ? 'rotate-0' : 'rotate-45'}`} />
+                        <Pin className={`w-4 h-4 transition-transform ${student.is_pinned ? 'rotate-0' : 'rotate-45'}`} />
                     </button>
                 </div>
             </td>
@@ -327,7 +327,7 @@ export const StudentRow = memo(({
                     {/* Avatar + rank badge overlay */}
                     <div className="relative shrink-0">
                         <div
-                            className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-black shadow-sm overflow-hidden relative cursor-pointer transition-transform hover:scale-110
+                            className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold shadow-sm overflow-hidden relative cursor-pointer transition-transform hover:scale-110
                                 ${isRisk ? 'bg-red-500/10 text-red-500' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'}
                                 ${isPrivacyMode ? 'blur-sm grayscale opacity-60' : ''}`}
                             onClick={() => { if (isPrivacyMode) return; student.photo_url && onPhotoZoom({ url: student.photo_url, name: student.name, registrationCode: student.registration_code, className: student.className }) }}
@@ -346,7 +346,7 @@ export const StudentRow = memo(({
                                     : student._rank === 2 ? 'bg-slate-300'
                                         : 'bg-orange-400'}`}
                             >
-                                {student._rank === 1 ? <Crown className="text-white text-[8px]" /> : <Medal className="text-white text-[8px]" />}
+                                {student._rank === 1 ? <Crown className="w-4 h-4 text-white" /> : <Medal className="w-4 h-4 text-white" />}
                             </div>
                         )}
                     </div>
@@ -370,7 +370,7 @@ export const StudentRow = memo(({
                                     >
                                         <button
                                             onClick={() => onViewProfile(student)}
-                                            className="font-extrabold text-sm text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors text-left truncate"
+                                            className="font-bold text-sm text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors text-left truncate"
                                         >
                                             {isPrivacyMode ? maskInfo(student.name, 4) : student.name}
                                         </button>
@@ -389,7 +389,7 @@ export const StudentRow = memo(({
                                             >
                                                 {/* Header Profile Section */}
                                                 <div className="flex items-center gap-4 mb-4 pb-4 border-b border-[var(--color-border)]/50">
-                                                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-lg font-black shadow-inner relative group/pop-img
+                                                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-lg font-bold shadow-inner relative group/pop-img
                                                         ${isRisk ? 'bg-red-500/10 text-red-500' : 'bg-[var(--color-primary)]/20 text-[var(--color-primary)]'}`}>
                                                         {student.photo_url ? (
                                                             <img src={student.photo_url} className="w-full h-full object-cover rounded-2xl" onError={(e) => { e.target.onerror = null; e.target.parentElement.innerHTML = `<span>${(student.name || 'S').charAt(0)}</span>` }} loading="lazy" decoding="async" />
@@ -397,32 +397,32 @@ export const StudentRow = memo(({
                                                             <span>{(student.name || 'S').charAt(0)}</span>
                                                         )}
                                                         <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/pop-img:opacity-100 transition-opacity rounded-2xl flex items-center justify-center">
-                                                            <Plus className="text-white text-xs" />
+                                                            <Plus className="w-4 h-4 text-white" />
                                                         </div>
                                                     </div>
                                                     <div className="min-w-0">
-                                                        <p className="text-sm font-black text-[var(--color-text)] truncate mb-0.5">{student.name}</p>
-                                                        <p className="text-[10px] font-bold text-[var(--color-primary)] uppercase tracking-[0.2em]">{student.className || 'Tanpa Kelas'}</p>
-                                                        <p className="text-[9px] font-bold text-[var(--color-text-muted)] opacity-40 uppercase tracking-widest mt-1">{student.registration_code || student.code || 'NO ID'}</p>
+                                                        <p className="text-sm font-bold text-[var(--color-text)] truncate mb-0.5">{student.name}</p>
+                                                        <p className="text-xs font-bold text-[var(--color-primary)] uppercase tracking-wide">{student.className || 'Tanpa Kelas'}</p>
+                                                        <p className="text-xs font-bold text-[var(--color-text-muted)] opacity-40 uppercase tracking-wide mt-1">{student.registration_code || student.code || 'NO ID'}</p>
                                                     </div>
                                                 </div>
 
                                                 {/* Quick Stats Grid */}
                                                 <div className="grid grid-cols-2 gap-3 mb-4">
                                                     <div className="p-3 rounded-2xl bg-[var(--color-surface-alt)]/50 border border-[var(--color-border)] hover:border-[var(--color-primary)]/30 transition-colors">
-                                                        <p className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mb-1 opacity-60">Status Poin</p>
+                                                        <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mb-1 opacity-60">Status Poin</p>
                                                         <div className="flex items-center gap-2">
                                                             <div className={`w-1.5 h-1.5 rounded-full ${p >= 0 ? 'bg-emerald-500 animate-pulse' : 'bg-red-500 animate-pulse'}`} />
-                                                            <p className={`text-xs font-black ${p >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>{p} Poin</p>
+                                                            <p className={`text-xs font-bold ${p >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>{p} Poin</p>
                                                         </div>
                                                     </div>
                                                     <div className="p-3 rounded-2xl bg-[var(--color-surface-alt)]/50 border border-[var(--color-border)] hover:border-[var(--color-primary)]/30 transition-colors">
-                                                        <p className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mb-1 opacity-60">Kelengkapan</p>
+                                                        <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mb-1 opacity-60">Kelengkapan</p>
                                                         <div className="flex items-center gap-2">
                                                             <div className="flex-1 h-1 rounded-full bg-[var(--color-border)] overflow-hidden">
                                                                 <div className="h-full bg-[var(--color-primary)]" style={{ width: `${calculateCompleteness(student)}%` }} />
                                                             </div>
-                                                            <p className="text-xs font-black text-[var(--color-primary)]">{calculateCompleteness(student)}%</p>
+                                                            <p className="text-xs font-bold text-[var(--color-primary)]">{calculateCompleteness(student)}%</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -431,7 +431,7 @@ export const StudentRow = memo(({
                                                 <div className="flex items-center gap-2">
                                                     <button
                                                         onClick={(e) => { e.stopPropagation(); onViewProfile(student) }}
-                                                        className="flex-1 h-10 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-lg"
+                                                        className="flex-1 h-10 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 active:scale-95 transition-all shadow-lg"
                                                     >
                                                         Lihat Profil
                                                     </button>
@@ -445,7 +445,7 @@ export const StudentRow = memo(({
                                                             className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20"
                                                             title="Chat WhatsApp"
                                                         >
-                                                            <WhatsAppIcon className="text-sm" />
+                                                            <WhatsAppIcon className="w-4 h-4" />
                                                         </button>
                                                     )}
                                                 </div>
@@ -466,7 +466,7 @@ export const StudentRow = memo(({
                                             className="shrink-0 w-5 h-5 rounded-md flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 transition-all opacity-0 group-hover/name:opacity-100"
                                             title="Edit nama"
                                         >
-                                            <Pencil className="text-[9px]" />
+                                            <Pencil className="w-4 h-4" />
                                         </button>
                                     )}
                                 </div>
@@ -478,34 +478,34 @@ export const StudentRow = memo(({
                             {/* Badges prioritize visibility */}
                             <div className="flex items-center gap-1 flex-shrink-0">
                                 {isRisk ? (
-                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[8px] font-black bg-red-500/10 text-red-500 border border-red-500/20 uppercase tracking-widest animate-pulse">
-                                        <TriangleAlert className="text-[7px]" />
+                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-bold bg-red-500/10 text-red-500 border border-red-500/20 uppercase tracking-wide animate-pulse">
+                                        <TriangleAlert className="w-4 h-4" />
                                         Risiko
                                     </span>
                                 ) : p < 0 ? (
-                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[8px] font-black bg-amber-500/10 text-amber-600 border border-amber-500/20 uppercase tracking-widest">
-                                        <TriangleAlert className="text-[7px]" />
+                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20 uppercase tracking-wide">
+                                        <TriangleAlert className="w-4 h-4" />
                                         Monitor
                                     </span>
                                 ) : p >= 200 ? (
-                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[8px] font-black bg-orange-500/10 text-orange-600 border border-orange-500/20 uppercase tracking-widest">
-                                        <Flame className="text-[7px]" />
+                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-bold bg-orange-500/10 text-orange-600 border border-orange-500/20 uppercase tracking-wide">
+                                        <Flame className="w-4 h-4" />
                                         Legendary
                                     </span>
                                 ) : p >= 100 ? (
-                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[8px] font-black bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 uppercase tracking-widest">
-                                        <Crown className="text-[7px]" />
+                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 uppercase tracking-wide">
+                                        <Crown className="w-4 h-4" />
                                         Excellent
                                     </span>
                                 ) : p >= 50 ? (
-                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[8px] font-black bg-amber-500/10 text-amber-600 border border-amber-500/20 uppercase tracking-widest">
-                                        <Star className="text-[7px]" />
+                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20 uppercase tracking-wide">
+                                        <Star className="w-4 h-4" />
                                         Star
                                     </span>
                                 ) : null}
                             </div>
 
-                            <span className="text-[10px] font-bold text-[var(--color-text-muted)] opacity-60 uppercase tracking-wider truncate">
+                            <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-60 uppercase tracking-wider truncate">
                                 {isPrivacyMode ? maskInfo(student.registration_code || student.code, 2) : (student.registration_code || student.code)}
                             </span>
                         </div>
@@ -527,14 +527,14 @@ export const StudentRow = memo(({
                             <div className="relative">
                                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs shadow-inner transition-all
                                     ${student.gender === 'L' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' : 'bg-pink-500/10 text-pink-500 border border-pink-500/20'}`}>
-                                    {student.gender === 'L' ? <MarsIcon /> : <VenusIcon />}
+                                    {student.gender === 'L' ? <MarsIcon className="w-4 h-4" /> : <VenusIcon className="w-4 h-4" />}
                                 </div>
                                 <button
                                     onClick={() => setEditingField('gender')}
                                     className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all opacity-0 group-hover/gender:opacity-100 shadow-sm"
                                     title="Edit gender"
                                 >
-                                    <Pencil className="text-[7px]" />
+                                    <Pencil className="w-4 h-4" />
                                 </button>
                             </div>
                         </div>
@@ -557,7 +557,7 @@ export const StudentRow = memo(({
                             <div className="relative">
                                 <button
                                     onClick={() => onClassBreakdown(student.class_id, student.className)}
-                                    className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-black bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 uppercase tracking-widest leading-none hover:bg-[var(--color-primary)]/20 transition-colors"
+                                    className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 uppercase tracking-wide leading-none hover:bg-[var(--color-primary)]/20 transition-colors"
                                 >
                                     {student.className}
                                 </button>
@@ -566,7 +566,7 @@ export const StudentRow = memo(({
                                     className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all opacity-0 group-hover/kelas:opacity-100 shadow-sm"
                                     title="Edit kelas"
                                 >
-                                    <Pencil className="text-[7px]" />
+                                    <Pencil className="w-4 h-4" />
                                 </button>
                             </div>
                         </div>
@@ -577,7 +577,7 @@ export const StudentRow = memo(({
             {/* ── Status ────────────────────────────────────────────────── */}
             {vc.status && (
                 <td className="px-4 py-4 text-center whitespace-nowrap">
-                    <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider
+                    <span className={`px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider
                         ${student.status === 'aktif' ? 'bg-emerald-500/10 text-emerald-600' :
                             student.status === 'lulus' ? 'bg-blue-500/10 text-blue-600' :
                                 'bg-slate-500/10 text-slate-500'}`}>
@@ -597,7 +597,7 @@ export const StudentRow = memo(({
                     ) : (
                         <div className="flex flex-col items-start gap-1 group/point">
                             <div className="flex items-center gap-1.5">
-                                <span className={`text-sm font-black tracking-tight ${p < 0 ? 'text-red-500' : p > 0 ? 'text-emerald-500' : 'text-[var(--color-text)] opacity-40'}`}>
+                                <span className={`text-sm font-bold tracking-tight ${p < 0 ? 'text-red-500' : p > 0 ? 'text-emerald-500' : 'text-[var(--color-text)] opacity-40'}`}>
                                     {p > 0 ? '+' : ''}{p}
                                 </span>
                                 <Sparkline data={student.trendHistory} />
@@ -608,7 +608,7 @@ export const StudentRow = memo(({
                                     className="w-5 h-5 rounded-md flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 transition-all opacity-0 group-hover/point:opacity-100"
                                     title="Edit poin"
                                 >
-                                    <Pencil className="text-[9px]" />
+                                    <Pencil className="w-4 h-4" />
                                 </button>
 
                                 {/* Quick Action bolt */}
@@ -626,7 +626,7 @@ export const StudentRow = memo(({
                                         ${showQuickAction ? 'bg-amber-500 text-white shadow-lg' : 'bg-amber-500/10 text-amber-500 opacity-0 group-hover/point:opacity-100 hover:bg-amber-500 hover:text-white'}`}
                                         title="Aksi Cepat"
                                     >
-                                        <Zap className="text-[10px]" />
+                                        <Zap className="w-4 h-4" />
                                     </button>
                                     {showQuickAction && boltRect && createPortal(
                                         <>
@@ -638,15 +638,15 @@ export const StudentRow = memo(({
                                                     left: boltRect.left + (boltRect.width / 2) - 80
                                                 }}
                                             >
-                                                <div className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] p-2 mb-1 border-b border-[var(--color-border)] text-center">Quick Points</div>
+                                                <div className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] p-2 mb-1 border-b border-[var(--color-border)] text-center">Quick Points</div>
                                                 {quickActions.map((act, idx) => (
                                                     <button
                                                         key={idx}
                                                         onClick={() => { handleQuickPointInternal(student, act.amount, act.label); setShowQuickAction(false) }}
                                                         className="w-full text-left px-3 py-2 rounded-xl hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-between group/act"
                                                     >
-                                                        <span className="text-[10px] font-bold text-[var(--color-text-muted)] group-hover/act:text-[var(--color-text)]">{act.label}</span>
-                                                        <span className={`text-[10px] font-black ${act.color}`}>{act.amount > 0 ? `+${act.amount}` : act.amount}</span>
+                                                        <span className="text-xs font-bold text-[var(--color-text-muted)] group-hover/act:text-[var(--color-text)]">{act.label}</span>
+                                                        <span className={`text-xs font-bold ${act.color}`}>{act.amount > 0 ? `+${act.amount}` : act.amount}</span>
                                                     </button>
                                                 ))}
                                             </div>
@@ -665,9 +665,9 @@ export const StudentRow = memo(({
                                             openWAForStudent?.(student, msg)
                                             setLastAction(null)
                                         }}
-                                        className="h-8 px-3 rounded-xl bg-emerald-500 text-white text-[9px] font-black uppercase tracking-widest shadow-lg flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all"
+                                        className="h-8 px-3 rounded-xl bg-emerald-500 text-white text-xs font-bold uppercase tracking-wide shadow-lg flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all"
                                     >
-                                        <WhatsAppIcon className="text-xs" />
+                                        <WhatsAppIcon className="w-4 h-4" />
                                         Laporkan ke WA
                                     </button>
                                 </div>
@@ -681,11 +681,11 @@ export const StudentRow = memo(({
             {vc.last_report && (
                 <td className="px-4 py-4 text-center whitespace-nowrap">
                     <div className="flex flex-col gap-0.5">
-                        <p className="text-[11px] font-black text-[var(--color-text)] whitespace-nowrap">
+                        <p className="text-xs font-bold text-[var(--color-text)] whitespace-nowrap">
                             {lastReportMap?.[student.id] ? formatRelativeDate(lastReportMap[student.id]) : '---'}
                         </p>
                         {lastReportMap?.[student.id] && (
-                            <p className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Aktif</p>
+                            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Aktif</p>
                         )}
                     </div>
                 </td>
@@ -705,7 +705,7 @@ export const StudentRow = memo(({
                                             style={{ width: `${score}%` }}
                                         />
                                     </div>
-                                    <span className={`text-[10px] font-black ${score >= 80 ? 'text-emerald-600' : score >= 50 ? 'text-amber-600' : 'text-red-600'}`}>
+                                    <span className={`text-xs font-bold ${score >= 80 ? 'text-emerald-600' : score >= 50 ? 'text-amber-600' : 'text-red-600'}`}>
                                         {score}%
                                     </span>
                                 </>
@@ -721,12 +721,12 @@ export const StudentRow = memo(({
                     <div className="flex flex-wrap items-center gap-1 max-w-[120px]">
                         {(student.tags || []).length > 0 ? (
                             student.tags.map(tag => (
-                                <span key={tag} className={`text-[8px] font-black px-1.5 py-0.5 rounded-md border uppercase tracking-wider whitespace-nowrap transition-all hover:scale-105 cursor-default ${getTagColor(tag)}`}>
+                                <span key={tag} className={`text-xs font-bold px-1.5 py-0.5 rounded-md border uppercase tracking-wider whitespace-nowrap transition-all hover:scale-105 cursor-default ${getTagColor(tag)}`}>
                                     {tag}
                                 </span>
                             ))
                         ) : (
-                            <span className="text-[9px] font-bold text-[var(--color-text-muted)] opacity-30 italic">No Label</span>
+                            <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-30 italic">No Label</span>
                         )}
                     </div>
                 </td>
@@ -737,7 +737,7 @@ export const StudentRow = memo(({
                 <td className="px-4 py-3 text-center w-[280px] whitespace-nowrap">
                     <div className="flex items-center justify-center gap-1">
                         <button onClick={() => onViewProfile(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-emerald-500 hover:bg-emerald-500/10 transition-all text-sm" title="Lihat Profil">
-                            <Briefcase />
+                            <Briefcase className="w-4 h-4" />
                         </button>
 
                         <button
@@ -749,26 +749,26 @@ export const StudentRow = memo(({
                                     : 'text-slate-400 opacity-60 grayscale cursor-not-allowed'}`}
                             title={student.phone ? "Hubungi via WhatsApp" : "Nomer WA belum diatur"}
                         >
-                            <WhatsAppIcon />
+                            <WhatsAppIcon className="w-4 h-4" />
                         </button>
                         {onEdit && (
                             <button onClick={() => onEdit(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-blue-500 hover:bg-blue-500/10 transition-all text-sm" title="Edit">
-                                <SquarePen />
+                                <SquarePen className="w-4 h-4" />
                             </button>
                         )}
                         <button onClick={() => onViewPrint(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-amber-500 hover:bg-amber-500/10 transition-all text-sm" title="ID Card">
-                            <IdCard />
+                            <IdCard className="w-4 h-4" />
                         </button>
                         <button onClick={() => onViewTags(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-violet-500 hover:bg-violet-500/10 transition-all text-sm" title="Label">
-                            <Tags />
+                            <Tags className="w-4 h-4" />
                         </button>
                         <button onClick={() => onViewClassHistory(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-purple-500 hover:bg-purple-500/10 transition-all text-sm" title="Riwayat Perilaku">
-                            <History />
+                            <History className="w-4 h-4" />
                         </button>
 
                         {onConfirmDelete && (
                             <button onClick={() => onConfirmDelete(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-red-400 hover:text-red-500 hover:bg-red-500/10 transition-all text-sm" title="Arsipkan">
-                                <Archive />
+                                <Archive className="w-4 h-4" />
                             </button>
                         )}
                     </div>
@@ -890,8 +890,8 @@ export const StudentMobileCard = memo(({
             {/* PIN INDICATOR (Visual Only) */}
             {student.is_pinned && (
                 <div className="absolute top-2.5 right-4 flex items-center gap-1">
-                    <div className="text-[8px] font-black text-amber-500 uppercase tracking-widest opacity-60">Pinned</div>
-                    <Pin className="text-[9px] text-amber-500" />
+                    <div className="text-xs font-bold text-amber-500 uppercase tracking-wide opacity-60">Pinned</div>
+                    <Pin className="w-4 h-4 text-amber-500" />
                 </div>
             )}
 
@@ -901,7 +901,7 @@ export const StudentMobileCard = memo(({
                     {/* AVATAR SECTION */}
                     <div className="relative pointer-events-none">
                         <div
-                            className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-black shadow-inner border-2 transition-all overflow-hidden
+                            className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold shadow-inner border-2 transition-all overflow-hidden
                                 ${isSelected ? 'border-[var(--color-primary)] scale-110' : 'border-white dark:border-gray-800'}
                                 ${isRisk ? 'bg-red-500/10 text-red-500' : 'bg-[var(--color-primary)] text-white'}
                                 ${isPrivacyMode ? 'blur-md grayscale opacity-60' : ''}`}
@@ -915,7 +915,7 @@ export const StudentMobileCard = memo(({
                             {/* Selection Checkmark Badge - Top Left of Avatar */}
                             {isSelected && (
                                 <div className="absolute -top-1 -left-1 w-5.5 h-5.5 rounded-full bg-[var(--color-primary)] border-2 border-white dark:border-gray-800 flex items-center justify-center shadow-md z-30 animate-in zoom-in-50 duration-200">
-                                    <Check className="text-white text-[8px]" />
+                                    <Check className="w-4 h-4 text-white" />
                                 </div>
                             )}
                         </div>
@@ -923,22 +923,22 @@ export const StudentMobileCard = memo(({
                         {/* Status Dot */}
                         <div className={`absolute -bottom-0.5 -right-0.5 w-4.5 h-4.5 rounded-full border-2 border-white dark:border-gray-800 flex items-center justify-center shadow-lg
                             ${p < 0 ? 'bg-amber-500' : p > 0 ? 'bg-emerald-500' : 'bg-gray-300'}`}>
-                            {p < 0 ? <TrendingDown className="text-white text-[7px]" /> : p > 0 ? <TrendingUp className="text-white text-[7px]" /> : <Zap className="text-white text-[7px]" />}
+                            {p < 0 ? <TrendingDown className="w-4 h-4 text-white" /> : p > 0 ? <TrendingUp className="w-4 h-4 text-white" /> : <Zap className="w-4 h-4 text-white" />}
                         </div>
                     </div>
 
                     {/* NAME & IDENTITY */}
                     <div className="flex-1 min-w-0 pr-4 pointer-events-none">
                         <div className="flex flex-col">
-                            <h3 className="font-extrabold text-[15px] text-[var(--color-text)] leading-tight tracking-tight mb-0.5 line-clamp-2 break-words">
+                            <h3 className="font-bold text-[15px] text-[var(--color-text)] leading-tight tracking-tight mb-0.5 line-clamp-2 break-words">
                                 {isPrivacyMode ? maskInfo(student.name, 4) : student.name}
                             </h3>
                             <div className="flex items-center gap-2">
-                                <span className="text-[10px] font-black text-[var(--color-text-muted)] opacity-40 uppercase tracking-[0.1em]">
+                                <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-40 uppercase tracking-wide">
                                     {isPrivacyMode ? maskInfo(student.registration_code || student.code, 2) : (student.registration_code || student.code)}
                                 </span>
                                 <div className="w-1 h-1 rounded-full bg-[var(--color-text-muted)] opacity-20" />
-                                <span className={`text-[10px] font-bold ${student.gender === 'L' ? 'text-blue-500/60' : 'text-pink-500/60'}`}>
+                                <span className={`text-xs font-bold ${student.gender === 'L' ? 'text-blue-500/60' : 'text-pink-500/60'}`}>
                                     {student.gender === 'L' ? 'Putra' : 'Putri'}
                                 </span>
                             </div>
@@ -950,13 +950,13 @@ export const StudentMobileCard = memo(({
                 <div className="mt-3 flex items-center justify-between gap-2">
                     <div className="flex items-center gap-1.5 min-w-0 flex-1">
                         <div className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[var(--color-surface-alt)]/80 border border-[var(--color-border)]/40 min-w-0">
-                            <Briefcase className="text-[9px] text-[var(--color-text-muted)] shrink-0" />
-                            <span className="text-[10px] font-black text-[var(--color-text)] uppercase tracking-tight truncate">
+                            <Briefcase className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" />
+                            <span className="text-xs font-bold text-[var(--color-text)] uppercase tracking-tight truncate">
                                 {student.className}
                             </span>
                         </div>
 
-                        <div className={`flex items-center gap-1 px-2.5 py-1 rounded-xl border font-black text-[10px] transition-all shrink-0
+                        <div className={`flex items-center gap-1 px-2.5 py-1 rounded-xl border font-bold text-xs transition-all shrink-0
                             ${p < 0 ? 'bg-red-500/10 border-red-500/10 text-red-600' : p > 0 ? 'bg-emerald-500/10 border-emerald-500/10 text-emerald-600' : 'bg-[var(--color-surface-alt)]/80 border-[var(--color-border)]/40 text-[var(--color-text-muted)]'}`}>
                             <div className={`w-1.5 h-1.5 rounded-full ${p < 0 ? 'bg-red-500' : p > 0 ? 'bg-emerald-500' : 'bg-gray-400 opacity-40'}`} />
                             {p > 0 ? '+' : ''}{p} Poin
@@ -989,7 +989,7 @@ export const StudentMobileCard = memo(({
                                     ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white hover:shadow-lg active:scale-90'
                                     : 'border-[var(--color-border)]/40 bg-[var(--color-surface-alt)]/80 text-[var(--color-text-muted)] opacity-40 cursor-not-allowed'}`}
                         >
-                            <WhatsAppIcon className="text-[12px]" />
+                            <WhatsAppIcon className="w-4 h-4" />
                         </button>
                     </div>
                 </div>
@@ -998,15 +998,15 @@ export const StudentMobileCard = memo(({
                 {((student.tags || []).length > 0 || p >= 50) && (
                     <div className="mt-2 flex flex-wrap items-center gap-1">
                         {p >= 200 ? (
-                            <span className="text-[8px] font-black px-2 py-0.5 rounded-md border border-orange-500/20 bg-orange-500/10 text-orange-600 uppercase tracking-wider">Legendary</span>
+                            <span className="text-xs font-bold px-2 py-0.5 rounded-md border border-orange-500/20 bg-orange-500/10 text-orange-600 uppercase tracking-wider">Legendary</span>
                         ) : p >= 100 ? (
-                            <span className="text-[8px] font-black px-2 py-0.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 text-emerald-600 uppercase tracking-wider">Perfect</span>
+                            <span className="text-xs font-bold px-2 py-0.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 text-emerald-600 uppercase tracking-wider">Perfect</span>
                         ) : p >= 50 ? (
-                            <span className="text-[8px] font-black px-2 py-0.5 rounded-md border border-amber-500/20 bg-amber-500/10 text-amber-600 uppercase tracking-wider">Star</span>
+                            <span className="text-xs font-bold px-2 py-0.5 rounded-md border border-amber-500/20 bg-amber-500/10 text-amber-600 uppercase tracking-wider">Star</span>
                         ) : null}
 
                         {(student.tags || []).slice(0, 3).map(tag => (
-                            <span key={tag} className={`text-[8px] font-black px-2 py-0.5 rounded-md border uppercase tracking-wider ${getTagColor(tag)}`}>
+                            <span key={tag} className={`text-xs font-bold px-2 py-0.5 rounded-md border uppercase tracking-wider ${getTagColor(tag)}`}>
                                 {tag}
                             </span>
                         ))}
@@ -1027,8 +1027,8 @@ export const StudentMobileCard = memo(({
                         onClick={(e) => { e.stopPropagation(); onViewProfile(student) }}
                         className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-[var(--color-text-muted)] hover:text-emerald-500 hover:bg-[var(--color-surface)] active:scale-95 transition-all"
                     >
-                        <IdCard className="text-[11px]" />
-                        <span className="text-[8px] font-black uppercase tracking-wider leading-none">Profil</span>
+                        <IdCard className="w-4 h-4" />
+                        <span className="text-xs font-bold uppercase tracking-wider leading-none">Profil</span>
                     </button>
 
                     {/* Edit */}
@@ -1036,8 +1036,8 @@ export const StudentMobileCard = memo(({
                         onClick={(e) => { e.stopPropagation(); onEdit(student) }}
                         className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-[var(--color-text-muted)] hover:text-indigo-500 hover:bg-[var(--color-surface)] active:scale-95 transition-all"
                     >
-                        <SquarePen className="text-[11px]" />
-                        <span className="text-[8px] font-black uppercase tracking-wider leading-none">Edit</span>
+                        <SquarePen className="w-4 h-4" />
+                        <span className="text-xs font-bold uppercase tracking-wider leading-none">Edit</span>
                     </button>
 
                     {/* Pin */}
@@ -1046,8 +1046,8 @@ export const StudentMobileCard = memo(({
                         className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl transition-all active:scale-95
                             ${student.is_pinned ? 'text-amber-500 bg-[var(--color-surface)] shadow-sm border border-[var(--color-border)]/50' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] border border-transparent'}`}
                     >
-                        <Pin className={`text-[10px] ${student.is_pinned ? 'rotate-0' : 'rotate-45'}`} />
-                        <span className="text-[8px] font-black uppercase tracking-wider leading-none">
+                        <Pin className={`w-4 h-4 ${student.is_pinned ? 'rotate-0' : 'rotate-45'}`} />
+                        <span className="text-xs font-bold uppercase tracking-wider leading-none">
                             {student.is_pinned ? 'Unpin' : 'Pin'}
                         </span>
                     </button>
@@ -1069,8 +1069,8 @@ export const StudentMobileCard = memo(({
                                     ? 'bg-amber-500 text-white border-amber-500 shadow-lg'
                                     : 'bg-amber-500/10 border-amber-500/20 text-amber-500 hover:bg-amber-500 hover:text-white'}`}
                         >
-                            <Zap className="text-[11px]" />
-                            <span className="text-[8px] font-black uppercase tracking-wider leading-none">Poin</span>
+                            <Zap className="w-4 h-4" />
+                            <span className="text-xs font-bold uppercase tracking-wider leading-none">Poin</span>
                         </button>
 
                         {showQuickAction && boltRect && createPortal(
@@ -1085,8 +1085,8 @@ export const StudentMobileCard = memo(({
                                         transform: 'translateY(-100%)'
                                     }}
                                 >
-                                    <div className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] p-2 mb-1.5 border-b border-[var(--color-border)] text-center flex items-center justify-center gap-2">
-                                        <Zap className="text-[8px]" />
+                                    <div className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] p-2 mb-1.5 border-b border-[var(--color-border)] text-center flex items-center justify-center gap-2">
+                                        <Zap className="w-4 h-4" />
                                         Input Poin Cepat
                                     </div>
                                     <div className="grid grid-cols-2 gap-1.5">
@@ -1096,15 +1096,15 @@ export const StudentMobileCard = memo(({
                                                 onClick={() => { handleQuickPointInternal(student, act.amount, act.label); setShowQuickAction(false) }}
                                                 className="flex flex-col items-center justify-center gap-1 p-2.5 rounded-xl bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] transition-all border border-[var(--color-border)] active:scale-95"
                                             >
-                                                <act.icon className={`text-[10px] ${act.color}`} />
-                                                <span className="text-[8px] font-black uppercase tracking-widest leading-none mt-0.5">{act.label.split(' ')[0]}</span>
-                                                <span className={`text-[10px] font-black ${act.color}`}>{act.amount > 0 ? `+${act.amount}` : act.amount}</span>
+                                                <act.icon className={`text-xs ${act.color}`} />
+                                                <span className="text-xs font-bold uppercase tracking-wide leading-none mt-0.5">{act.label.split(' ')[0]}</span>
+                                                <span className={`text-xs font-bold ${act.color}`}>{act.amount > 0 ? `+${act.amount}` : act.amount}</span>
                                             </button>
                                         ))}
                                     </div>
                                     <button
                                         onClick={() => { handleQuickPointInternal(student, 0, 'custom'); setShowQuickAction(false) }}
-                                        className="w-full mt-2 py-3 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg transition-all active:scale-[0.98]"
+                                        className="w-full mt-2 py-3 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 shadow-lg transition-all active:scale-[0.98]"
                                     >
                                         Input Kustom
                                     </button>
@@ -1120,8 +1120,8 @@ export const StudentMobileCard = memo(({
                             onClick={(e) => { e.stopPropagation(); onConfirmDelete(student) }}
                             className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-red-400/50 hover:text-red-500 hover:bg-red-500/10 active:scale-95 transition-all"
                         >
-                            <Archive className="text-[11px]" />
-                            <span className="text-[8px] font-black uppercase tracking-wider leading-none">Arsip</span>
+                            <Archive className="w-4 h-4" />
+                            <span className="text-xs font-bold uppercase tracking-wider leading-none">Arsip</span>
                         </button>
                     )}
                 </div>
@@ -1137,14 +1137,14 @@ export const StudentMobileCard = memo(({
                             }}
                             className="w-full h-full flex flex-col items-center justify-center gap-1 active:scale-90 transition-transform"
                         >
-                            <WhatsAppIcon className="text-xl" />
-                            <span className="text-[8px] font-black uppercase tracking-widest">Kirim WA</span>
+                            <WhatsAppIcon className="w-5 h-5" />
+                            <span className="text-xs font-bold uppercase tracking-wide">Kirim WA</span>
                         </button>
                         <button
                             onClick={() => setLastAction(null)}
-                            className="absolute top-4 right-5 w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-[12px] active:scale-95 transition-all"
+                            className="absolute top-4 right-5 w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-xs active:scale-95 transition-all"
                         >
-                            <X />
+                            <X className="w-4 h-4" />
                         </button>
                     </div>
                 )}
@@ -1355,7 +1355,7 @@ export const StudentMobileListRow = memo(({
                             ${isSelected
                                 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] scale-110 shadow-lg'
                                 : 'border-[var(--color-border)] bg-[var(--color-surface-alt)]/50'}`}>
-                            {isSelected && <Check className="text-white text-[8px]" />}
+                            {isSelected && <Check className="w-4 h-4 text-white" />}
                         </div>
                     </div>
                 )}
@@ -1363,29 +1363,29 @@ export const StudentMobileListRow = memo(({
                 {/* Avatar (Slim) */}
                 <div className="relative shrink-0 pointer-events-none">
                     <div
-                        className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-black shadow-inner border transition-all overflow-hidden
+                        className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold shadow-inner border transition-all overflow-hidden
                         ${isRisk ? 'bg-red-500/10 text-red-500 border-red-200' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-border)]'}
                             ${isPrivacyMode ? 'blur-md grayscale opacity-60' : ''}`}
                     >
                         {student.photo_url && !isPrivacyMode ? (
-                            <img src={student.photo_url} className="w-full h-full object-cover rounded-lg" alt="" onError={(e) => { e.target.onerror = null; e.target.parentElement.innerHTML = `<span class="text-[11px]">${(student.name || 'S').charAt(0)}</span>` }} />
+                            <img src={student.photo_url} className="w-full h-full object-cover rounded-lg" alt="" onError={(e) => { e.target.onerror = null; e.target.parentElement.innerHTML = `<span class="text-xs">${(student.name || 'S').charAt(0)}</span>` }} />
                         ) : (
-                            <span className="text-[11px]">{isPrivacyMode ? '*' : (student.name || 'S').charAt(0)}</span>
+                            <span className="text-xs">{isPrivacyMode ? '*' : (student.name || 'S').charAt(0)}</span>
                         )}
                     </div>
                 </div>
 
                 {/* Name & Basic Info (Wrap up to 2 lines) */}
                 <div className="flex-1 min-w-0 pointer-events-none">
-                    <h3 className="font-extrabold text-[13px] text-[var(--color-text)] leading-snug line-clamp-2 break-words">
+                    <h3 className="font-bold text-sm text-[var(--color-text)] leading-snug line-clamp-2 break-words">
                         {isPrivacyMode ? maskInfo(student.name, 4) : student.name}
                     </h3>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                        <span className="text-[9px] font-black text-[var(--color-text-muted)] opacity-50 uppercase tracking-wider">
+                        <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-wider">
                             {student.className}
                         </span>
                         <div className="w-1 h-1 rounded-full bg-[var(--color-text-muted)] opacity-20" />
-                        <span className={`text-[9px] font-bold ${student.gender === 'L' ? 'text-blue-500/60' : 'text-pink-500/60'}`}>
+                        <span className={`text-xs font-bold ${student.gender === 'L' ? 'text-blue-500/60' : 'text-pink-500/60'}`}>
                             {student.gender === 'L' ? 'L' : 'P'}
                         </span>
                     </div>
@@ -1393,7 +1393,7 @@ export const StudentMobileListRow = memo(({
 
                 {/* Points Block (Slim) */}
                 <div className="flex items-center gap-2 shrink-0 pl-1 pointer-events-none">
-                    <div className={`text-[10px] font-black px-2 py-0.5 rounded-lg border text-center min-w-[45px] flex items-center justify-center gap-1
+                    <div className={`text-xs font-bold px-2 py-0.5 rounded-lg border text-center min-w-[45px] flex items-center justify-center gap-1
                         ${p < 0 ? 'bg-red-500/10 border-red-500/10 text-red-600 shadow-sm' : p > 0 ? 'bg-emerald-500/10 border-emerald-500/10 text-emerald-600 shadow-sm' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)]/60 text-[var(--color-text-muted)] opacity-70'}`}>
                         <span className="tracking-tight">{p > 0 ? '+' : ''}{p}</span>
                     </div>
@@ -1402,7 +1402,7 @@ export const StudentMobileListRow = memo(({
                 {/* Expanded State indicator (Chevron) */}
                 {!hasSelection && (
                     <div className="shrink-0 pl-1 text-[var(--color-text-muted)] opacity-40">
-                        <ChevronDown className={`text-[10px] transition-transform duration-300 ${isExpanded ? 'rotate-180 text-[var(--color-primary)] opacity-100' : ''}`} />
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180 text-[var(--color-primary)] opacity-100' : ''}`} />
                     </div>
                 )}
             </div>
@@ -1422,8 +1422,8 @@ export const StudentMobileListRow = memo(({
                         onClick={(e) => { e.stopPropagation(); onViewProfile(student) }}
                         className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-[var(--color-text-muted)] hover:text-emerald-500 hover:bg-[var(--color-surface)] active:scale-95 transition-all animate-in fade-in duration-300"
                     >
-                        <IdCard className="text-[11px]" />
-                        <span className="text-[8px] font-black uppercase tracking-wider leading-none">Profil</span>
+                        <IdCard className="w-4 h-4" />
+                        <span className="text-xs font-bold uppercase tracking-wider leading-none">Profil</span>
                     </button>
 
                     {/* Edit */}
@@ -1432,8 +1432,8 @@ export const StudentMobileListRow = memo(({
                             onClick={(e) => { e.stopPropagation(); onEdit(student) }}
                             className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-[var(--color-text-muted)] hover:text-indigo-500 hover:bg-[var(--color-surface)] active:scale-95 transition-all animate-in fade-in duration-300"
                         >
-                            <SquarePen className="text-[11px]" />
-                            <span className="text-[8px] font-black uppercase tracking-wider leading-none">Edit</span>
+                            <SquarePen className="w-4 h-4" />
+                            <span className="text-xs font-bold uppercase tracking-wider leading-none">Edit</span>
                         </button>
                     )}
 
@@ -1456,8 +1456,8 @@ export const StudentMobileListRow = memo(({
                                 ? 'text-emerald-600 hover:text-emerald-500 hover:bg-[var(--color-surface)]'
                                 : 'text-[var(--color-text-muted)] opacity-35 cursor-not-allowed'}`}
                     >
-                        <WhatsAppIcon className="text-[11px]" />
-                        <span className="text-[8px] font-black uppercase tracking-wider leading-none">WA</span>
+                        <WhatsAppIcon className="w-4 h-4" />
+                        <span className="text-xs font-bold uppercase tracking-wider leading-none">WA</span>
                     </button>
 
                     {/* Pin */}
@@ -1466,8 +1466,8 @@ export const StudentMobileListRow = memo(({
                         className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl transition-all active:scale-95 animate-in fade-in duration-300
                             ${student.is_pinned ? 'text-amber-500 bg-[var(--color-surface)] shadow-sm border border-[var(--color-border)]/50' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] border border-transparent'}`}
                     >
-                        <Pin className={`text-[10px] ${student.is_pinned ? 'rotate-0' : 'rotate-45'}`} />
-                        <span className="text-[8px] font-black uppercase tracking-wider leading-none">
+                        <Pin className={`w-4 h-4 ${student.is_pinned ? 'rotate-0' : 'rotate-45'}`} />
+                        <span className="text-xs font-bold uppercase tracking-wider leading-none">
                             {student.is_pinned ? 'Unpin' : 'Pin'}
                         </span>
                     </button>
@@ -1489,8 +1489,8 @@ export const StudentMobileListRow = memo(({
                                     ? 'bg-amber-500 text-white border-amber-500 shadow-lg'
                                     : 'bg-amber-500/10 border-amber-500/20 text-amber-500 hover:bg-amber-500 hover:text-white'}`}
                         >
-                            <Zap className="text-[11px]" />
-                            <span className="text-[8px] font-black uppercase tracking-wider leading-none">Poin</span>
+                            <Zap className="w-4 h-4" />
+                            <span className="text-xs font-bold uppercase tracking-wider leading-none">Poin</span>
                         </button>
 
                         {showQuickAction && boltRect && createPortal(
@@ -1505,8 +1505,8 @@ export const StudentMobileListRow = memo(({
                                         transform: 'translateY(-100%)'
                                     }}
                                 >
-                                    <div className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] p-2 mb-1.5 border-b border-[var(--color-border)] text-center flex items-center justify-center gap-2">
-                                        <Zap className="text-[8px]" />
+                                    <div className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] p-2 mb-1.5 border-b border-[var(--color-border)] text-center flex items-center justify-center gap-2">
+                                        <Zap className="w-4 h-4" />
                                         Input Poin Cepat
                                     </div>
                                     <div className="grid grid-cols-2 gap-1.5">
@@ -1516,15 +1516,15 @@ export const StudentMobileListRow = memo(({
                                                 onClick={() => { handleQuickPointInternal(student, act.amount, act.label); setShowQuickAction(false) }}
                                                 className="flex flex-col items-center justify-center gap-1 p-2.5 rounded-xl bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] transition-all border border-[var(--color-border)] active:scale-95"
                                             >
-                                                <act.icon className={`text-[10px] ${act.color}`} />
-                                                <span className="text-[8px] font-black uppercase tracking-widest leading-none mt-0.5">{act.label.split(' ')[0]}</span>
-                                                <span className={`text-[10px] font-black ${act.color}`}>{act.amount > 0 ? `+${act.amount}` : act.amount}</span>
+                                                <act.icon className={`text-xs ${act.color}`} />
+                                                <span className="text-xs font-bold uppercase tracking-wide leading-none mt-0.5">{act.label.split(' ')[0]}</span>
+                                                <span className={`text-xs font-bold ${act.color}`}>{act.amount > 0 ? `+${act.amount}` : act.amount}</span>
                                             </button>
                                         ))}
                                     </div>
                                     <button
                                         onClick={() => { handleQuickPointInternal(student, 0, 'custom'); setShowQuickAction(false) }}
-                                        className="w-full mt-2 py-3 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg transition-all active:scale-[0.98]"
+                                        className="w-full mt-2 py-3 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 shadow-lg transition-all active:scale-[0.98]"
                                     >
                                         Input Kustom
                                     </button>
@@ -1540,8 +1540,8 @@ export const StudentMobileListRow = memo(({
                             onClick={(e) => { e.stopPropagation(); onConfirmDelete(student) }}
                             className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-red-400/50 hover:text-red-500 hover:bg-red-500/10 active:scale-95 transition-all animate-in fade-in duration-300"
                         >
-                            <Archive className="text-[11px]" />
-                            <span className="text-[8px] font-black uppercase tracking-wider leading-none">Arsip</span>
+                            <Archive className="w-4 h-4" />
+                            <span className="text-xs font-bold uppercase tracking-wider leading-none">Arsip</span>
                         </button>
                     )}
                 </div>

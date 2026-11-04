@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, useCallback, memo, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createPortal } from 'react-dom'
 import { createRoot } from 'react-dom/client'
-import { Archive, ArrowDownAZ, ArrowUpNarrowWide, Briefcase, Camera, ChartPie, Check, CircleAlert, CircleCheck, Crown, DoorOpen, Download, EyeOff, FileInput, FileOutput, FileText, GraduationCap, Image, Info, Keyboard, Link, LoaderCircle, PenTool, Plus, Printer, Rocket, RotateCcw, School, Search, Send, ShieldHalf, SlidersHorizontal, Table, TableProperties, Tags, Trash2, TriangleAlert, Trophy, Users, X, Zap } from 'lucide-react'
+import { Archive, ArrowDownAZ, ArrowUpNarrowWide, Briefcase, Camera, ChartPie, Check, CircleAlert, CircleCheck, Crown, DoorOpen, Download, Eye, EyeOff, FileInput, FileOutput, FileText, GraduationCap, Image, Info, Keyboard, Link, LoaderCircle, PenTool, Plus, Printer, Rocket, RotateCcw, School, Search, Send, ShieldHalf, SlidersHorizontal, Table, TableProperties, Tags, Trash2, TriangleAlert, Trophy, Users, X, Zap } from 'lucide-react'
 import { LIST_KAMAR } from '@utils/reports/raportConstants'
 
 import DashboardLayout from '@core/layouts/DashboardLayout'
@@ -89,9 +89,9 @@ const DebouncedSearchInput = memo(({ searchQuery, onSearch, inputRef, isLoading 
         <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--color-text-muted)] text-sm group-focus-within:text-[var(--color-primary)] transition-colors">
                 {isLoading ? (
-                    <LoaderCircle className="animate-spin text-xs text-[var(--color-primary)]" />
+                    <LoaderCircle className="w-4 h-4 animate-spin text-[var(--color-primary)]" />
                 ) : (
-                    <Search />
+                    <Search className="w-4 h-4" />
                 )}
             </div>
             <input
@@ -136,10 +136,10 @@ const SelectedStudentsCarousel = memo(({
     return (
         <div className="space-y-3">
             <div className="flex items-center justify-between px-1">
-                <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest flex items-center gap-2">
-                    <Users className="opacity-40" /> Siswa Terpilih
+                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide flex items-center gap-2">
+                    <Users className="w-4 h-4 opacity-40" /> Siswa Terpilih
                 </label>
-                <span className="text-[10px] font-black text-[var(--color-primary)] bg-[var(--color-primary)]/10 px-2 py-0.5 rounded-full">{selectedStudents.length} Orang</span>
+                <span className="text-xs font-bold text-[var(--color-primary)] bg-[var(--color-primary)]/10 px-2 py-0.5 rounded-full">{selectedStudents.length} Orang</span>
             </div>
             <div
                 ref={scrollRef}
@@ -191,20 +191,20 @@ const SelectedStudentsCarousel = memo(({
                             className={`flex-shrink-0 flex items-center gap-2.5 p-2 rounded-xl border transition-all duration-300 min-w-[170px] shadow-sm text-left group relative snap-center ${statusColor} ${isRemoving ? 'opacity-0 scale-95 blur-md translate-y-2' : 'hover:border-[var(--color-primary)]/40 hover:shadow-md active:scale-95'}`}
                         >
                             <div className="flex items-center gap-2.5 w-full transition-all duration-300 group-hover:blur-[2px] group-hover:opacity-30">
-                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-black overflow-hidden shrink-0 transition-all duration-500 group-hover:rotate-6 ${iconColor}`}>
+                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold overflow-hidden shrink-0 transition-all duration-500 group-hover:rotate-6 ${iconColor}`}>
                                     {student.foto ? <img src={student.foto} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" /> : (student.name?.charAt(0) || '?')}
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-[10px] font-black text-[var(--color-text)] truncate leading-tight tracking-tight">{student.name}</p>
-                                    <p className="text-[8px] truncate font-bold uppercase tracking-wider mt-0.5 flex items-center gap-1 text-[var(--color-text-muted)] opacity-60">
-                                        {isPromoteMode && bulkClassId ? <Icon className="text-[7px]" /> : <Briefcase className="text-[7px]" />}
+                                    <p className="text-xs font-bold text-[var(--color-text)] truncate leading-tight tracking-tight">{student.name}</p>
+                                    <p className="text-xs truncate font-bold uppercase tracking-wider mt-0.5 flex items-center gap-1 text-[var(--color-text-muted)] opacity-60">
+                                        {isPromoteMode && bulkClassId ? <Icon className="w-4 h-4" /> : <Briefcase className="w-4 h-4" />}
                                         {student.className || 'Tanpa Kelas'}
                                     </p>
                                 </div>
                             </div>
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-20">
                                 <div className="w-7 h-7 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg scale-75 group-hover:scale-110 transition-transform duration-300">
-                                    <X className="text-[10px]" loading="lazy" decoding="async" />
+                                    <X className="w-4 h-4" loading="lazy" decoding="async" />
                                 </div>
                             </div>
                         </button>
@@ -554,14 +554,14 @@ export default function StudentsPage() {
                 ` : ''}
             </style>
 
-            <div className="p-4 md:p-6 space-y-4 max-w-[1800px] mx-auto min-h-screen relative">
+            <div className="space-y-4 min-h-[calc(100dvh-6rem)] relative">
 
 
                 {/* Read-only Banner */}
                 {!canEdit && (
                     <div className="px-4 py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center gap-2">
-                        <EyeOff className="text-rose-500 shrink-0 text-xs" />
-                        <p className="text-[11px] font-bold text-rose-600">Mode Read-only —” Edit data siswa dinonaktifkan oleh administrator.</p>
+                        <EyeOff className="w-4 h-4 text-rose-500 shrink-0" />
+                        <p className="text-xs font-bold text-rose-600">Mode Read-only —” Edit data siswa dinonaktifkan oleh administrator.</p>
                     </div>
                 )}
 
@@ -580,7 +580,7 @@ export default function StudentsPage() {
                             className={`h-9 w-9 rounded-lg border flex items-center justify-center text-sm transition-all active:scale-95 ${isHeaderMenuOpen ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
                             title="Aksi lainnya"
                         >
-                            <SlidersHorizontal />
+                            <SlidersHorizontal className="w-4 h-4" />
                         </button>
 
                         {/* Portaled Header Menu Dropdown */}
@@ -598,16 +598,16 @@ export default function StudentsPage() {
                                         left: Math.max(10, headerMenuRect.right - 224)
                                     }}
                                 >
-                                    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">Data</p>
+                                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-2">Data</p>
                                     {canImportCSV && (
                                         <button onClick={() => { setIsHeaderMenuOpen(false); handleImportClick() }}
                                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                             <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <FileInput className="text-xs" />
+                                                <FileInput className="w-4 h-4" />
                                             </div>
                                             <div className="text-left">
-                                                <p className="text-[11px] font-black leading-tight">Import CSV / Excel</p>
-                                                <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Unggah data murid masal dari file Excel/CSV</p>
+                                                <p className="text-xs font-bold leading-tight">Import CSV / Excel</p>
+                                                <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Unggah data murid masal dari file Excel/CSV</p>
                                             </div>
                                         </button>
                                     )}
@@ -615,11 +615,11 @@ export default function StudentsPage() {
                                         <button onClick={() => { setIsHeaderMenuOpen(false); setActiveModal('gsheets') }}
                                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                             <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <Link className="text-xs" />
+                                                <Link className="w-4 h-4" />
                                             </div>
                                             <div className="text-left">
-                                                <p className="text-[11px] font-black leading-tight">Import GSheets</p>
-                                                <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Sinkronisasi data otomatis via Google Sheets</p>
+                                                <p className="text-xs font-bold leading-tight">Import GSheets</p>
+                                                <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Sinkronisasi data otomatis via Google Sheets</p>
                                             </div>
                                         </button>
                                     )}
@@ -627,11 +627,11 @@ export default function StudentsPage() {
                                         <button onClick={() => { setIsHeaderMenuOpen(false); setIsExportModalOpen(true) }}
                                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                             <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <FileOutput className="text-xs" />
+                                                <FileOutput className="w-4 h-4" />
                                             </div>
                                             <div className="text-left">
-                                                <p className="text-[11px] font-black leading-tight">Export Data</p>
-                                                <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Cadangkan seluruh database ke format Excel</p>
+                                                <p className="text-xs font-bold leading-tight">Export Data</p>
+                                                <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Cadangkan seluruh database ke format Excel</p>
                                             </div>
                                         </button>
                                     )}
@@ -639,27 +639,27 @@ export default function StudentsPage() {
                                         <button onClick={() => { setIsHeaderMenuOpen(false); setActiveModal('bulkPhoto') }}
                                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--text-color)] transition-all group">
                                             <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <Camera className="text-xs" />
+                                                <Camera className="w-4 h-4" />
                                             </div>
                                             <div className="text-left">
-                                                <p className="text-[11px] font-black leading-tight">Bulk Foto</p>
-                                                <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Update foto siswa secara masal via NISN</p>
+                                                <p className="text-xs font-bold leading-tight">Bulk Foto</p>
+                                                <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Update foto siswa secara masal via NISN</p>
                                             </div>
                                         </button>
                                     )}
 
                                     {(canArchive || canResetPoints) && <div className="h-px bg-[var(--color-border)] my-1 mx-2" />}
-                                    {(canArchive || canResetPoints) && <p className="px-3 py-2 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Manajemen</p>}
+                                    {(canArchive || canResetPoints) && <p className="px-3 py-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Manajemen</p>}
 
                                     {canArchive && (
                                         <button onClick={() => { setIsHeaderMenuOpen(false); fetchArchivedStudents(); setActiveModal('archived') }}
                                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                             <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <Archive className="text-xs" />
+                                                <Archive className="w-4 h-4" />
                                             </div>
                                             <div className="text-left">
-                                                <p className="text-[11px] font-black leading-tight">Arsip Siswa</p>
-                                                <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Lihat & pulihkan data siswa tidak aktif</p>
+                                                <p className="text-xs font-bold leading-tight">Arsip Siswa</p>
+                                                <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Lihat & pulihkan data siswa tidak aktif</p>
                                             </div>
                                         </button>
                                     )}
@@ -670,11 +670,11 @@ export default function StudentsPage() {
                                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[var(--color-text)] transition-all group ${!canEdit ? 'opacity-40 cursor-not-allowed' : 'hover:bg-[var(--color-surface-alt)]'}`}
                                         >
                                             <div className="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <RotateCcw className="text-xs" />
+                                                <RotateCcw className="w-4 h-4" />
                                             </div>
                                             <div className="text-left">
-                                                <p className="text-[11px] font-black leading-tight">Reset Poin</p>
-                                                <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Bersihkan semua poin untuk semester baru</p>
+                                                <p className="text-xs font-bold leading-tight">Reset Poin</p>
+                                                <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Bersihkan semua poin untuk semester baru</p>
                                             </div>
                                         </button>
                                     )}
@@ -694,7 +694,7 @@ export default function StudentsPage() {
                                 }`}
                             title="Keyboard Shortcuts (?)"
                         >
-                            <Keyboard className="text-sm" />
+                            <Keyboard className="w-4 h-4" />
                         </button>
 
                         {/* Portaled Keyboard Shortcuts Dropdown */}
@@ -709,8 +709,8 @@ export default function StudentsPage() {
                                     }}
                                 >
                                     <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
-                                        <p className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text)]">Keyboard Shortcuts</p>
-                                        <span className="text-[9px] text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
+                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Keyboard Shortcuts</p>
+                                        <span className="text-xs text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
                                     </div>
                                     <div className="p-3 space-y-0.5">
                                         {[
@@ -728,13 +728,13 @@ export default function StudentsPage() {
                                             { keys: ['X'], label: 'Reset semua filter' },
                                             { keys: ['?'], label: 'Tampilkan shortcut ini' },
                                         ].map((item, i) => item.section ? (
-                                            <p key={i} className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
+                                            <p key={i} className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
                                         ) : (
                                             <div key={i} className="flex items-center justify-between px-1 py-1 rounded-lg hover:bg-[var(--color-surface-alt)] transition-all">
-                                                <span className="text-[11px] font-semibold text-[var(--color-text)]">{item.label}</span>
+                                                <span className="text-xs font-semibold text-[var(--color-text)]">{item.label}</span>
                                                 <div className="flex items-center gap-1">
                                                     {item.keys.map((k, ki) => (
-                                                        <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[9px] font-black text-[var(--color-text-muted)] font-mono">{k}</span>
+                                                        <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] font-mono">{k}</span>
                                                     ))}
                                                 </div>
                                             </div>
@@ -763,8 +763,8 @@ export default function StudentsPage() {
                                 className={`h-9 w-9 sm:w-auto sm:px-3 rounded-lg border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 ${isPrivacyMode ? 'bg-amber-500/10 border-amber-500/30 text-amber-600' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'} `}
                                 title={isPrivacyMode ? "Matikan Mode Privasi" : "Aktifkan Mode Privasi"}
                             >
-                                {isPrivacyMode ? <EyeOff className="text-sm" /> : <Eye className="text-sm" />}
-                                <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline">
+                                {isPrivacyMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                <span className="text-xs font-bold uppercase tracking-wide hidden md:inline">
                                     Privasi
                                 </span>
                             </button>
@@ -774,9 +774,9 @@ export default function StudentsPage() {
                             <button
                                 onClick={handleAdd}
                                 disabled={!canEdit}
-                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10"
+                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10"
                             >
-                                <Plus className="text-[10px]" />
+                                <Plus className="w-4 h-4" />
                                 <span>{canEdit ? 'Tambah Siswa' : 'Read-only'}</span>
                             </button>
                         )}
@@ -836,11 +836,11 @@ export default function StudentsPage() {
                                 className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all hover:scale-[1.02] active:scale-95 shrink-0 ${filterPointMode === 'risk' ? 'border-red-500 bg-red-500/5 ring-1 ring-red-500' : 'bg-red-500/[0.08] border-red-500/20 hover:bg-red-500/[0.15] text-red-600'}`}
                             >
                                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${filterPointMode === 'risk' ? 'bg-red-500 text-white' : 'bg-red-500/15'}`}>
-                                    <TriangleAlert className="text-[10px]" />
+                                    <TriangleAlert className="w-4 h-4" />
                                 </div>
                                 <div className="text-left whitespace-nowrap">
-                                    <p className="text-[10px] font-black leading-none">{globalStats.risk} Berisiko</p>
-                                    <p className="text-[9px] text-[var(--color-text-muted)] font-bold mt-0.5">Poin rendah</p>
+                                    <p className="text-xs font-bold leading-none">{globalStats.risk} Berisiko</p>
+                                    <p className="text-xs text-[var(--color-text-muted)] font-bold mt-0.5">Poin rendah</p>
                                 </div>
                             </button>
                         )}
@@ -852,11 +852,11 @@ export default function StudentsPage() {
                                 className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all hover:scale-[1.02] active:scale-95 shrink-0 ${filterMissing === 'all' ? 'border-amber-500 bg-amber-500/5 ring-1 ring-amber-500' : 'bg-amber-500/[0.08] border-amber-500/20 hover:bg-amber-500/[0.15]'}`}
                             >
                                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${filterMissing === 'all' ? 'bg-amber-500 text-white' : 'bg-amber-500/15'}`}>
-                                    <CircleAlert className="text-amber-500 text-[10px]" />
+                                    <CircleAlert className="w-4 h-4 text-amber-500" />
                                 </div>
                                 <div className="text-left whitespace-nowrap">
-                                    <p className={`text-[10px] font-black leading-none ${filterMissing === 'photo' ? 'text-amber-600' : 'text-amber-600 dark:text-amber-400'}`}>{globalStats.incompleteCount} Tidak Lengkap</p>
-                                    <p className="text-[9px] text-[var(--color-text-muted)] font-bold mt-0.5">Foto / NISN / Whatsapp</p>
+                                    <p className={`text-xs font-bold leading-none ${filterMissing === 'photo' ? 'text-amber-600' : 'text-amber-600 dark:text-amber-400'}`}>{globalStats.incompleteCount} Tidak Lengkap</p>
+                                    <p className="text-xs text-[var(--color-text-muted)] font-bold mt-0.5">Foto / NISN / Whatsapp</p>
                                 </div>
                             </button>
                         )}
@@ -865,13 +865,13 @@ export default function StudentsPage() {
                         {globalStats.avgPointsLastWeek !== null && (
                             <div className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all shrink-0 ${globalStats.avgPointsLastWeek >= 0 ? 'bg-emerald-500/[0.08] border-emerald-500/20' : 'bg-red-500/[0.08] border-red-500/20'}`}>
                                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${globalStats.avgPointsLastWeek >= 0 ? 'bg-emerald-500/15' : 'bg-red-500/15'}`}>
-                                    {globalStats.avgPointsLastWeek >= 0 ? <TrendingUp className={`text-[10px] ${globalStats.avgPointsLastWeek >= 0 ? 'text-emerald-500' : 'text-red-500'}`} /> : <TrendingDown className={`text-[10px] ${globalStats.avgPointsLastWeek >= 0 ? 'text-emerald-500' : 'text-red-500'}`} />}
+                                    {globalStats.avgPointsLastWeek >= 0 ? <TrendingUp className={`text-xs ${globalStats.avgPointsLastWeek >= 0 ? 'text-emerald-500' : 'text-red-500'}`} /> : <TrendingDown className={`text-xs ${globalStats.avgPointsLastWeek >= 0 ? 'text-emerald-500' : 'text-red-500'}`} />}
                                 </div>
                                 <div className="text-left whitespace-nowrap">
-                                    <p className={`text-[10px] font-black leading-none ${globalStats.avgPointsLastWeek >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
+                                    <p className={`text-xs font-bold leading-none ${globalStats.avgPointsLastWeek >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
                                         Tren {globalStats.avgPointsLastWeek >= 0 ? '▲' : '▼'} {globalStats.avgPointsLastWeek > 0 ? '+' : ''}{globalStats.avgPointsLastWeek} / siswa
                                     </p>
-                                    <p className="text-[9px] text-[var(--color-text-muted)] font-bold mt-0.5">Delta 7 hari</p>
+                                    <p className="text-xs text-[var(--color-text-muted)] font-bold mt-0.5">Delta 7 hari</p>
                                 </div>
                             </div>
                         )}
@@ -880,11 +880,11 @@ export default function StudentsPage() {
                         {globalStats.topPerformer && (
                             <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-indigo-500/[0.08] border border-indigo-500/20 transition-all shrink-0">
                                 <div className="w-7 h-7 rounded-lg bg-indigo-500/15 flex items-center justify-center shrink-0">
-                                    <Crown className="text-indigo-500 text-[10px]" />
+                                    <Crown className="w-4 h-4 text-indigo-500" />
                                 </div>
                                 <div className="text-left whitespace-nowrap">
-                                    <p className="text-[10px] font-black text-indigo-500 leading-none truncate max-w-[140px]">{globalStats.topPerformer.name}</p>
-                                    <p className="text-[9px] text-[var(--color-text-muted)] font-bold mt-0.5">Top Performer Â· +{globalStats.topPerformer.points}</p>
+                                    <p className="text-xs font-bold text-indigo-500 leading-none truncate max-w-[140px]">{globalStats.topPerformer.name}</p>
+                                    <p className="text-xs text-[var(--color-text-muted)] font-bold mt-0.5">Top Performer Â· +{globalStats.topPerformer.points}</p>
                                 </div>
                             </div>
                         )}
@@ -896,11 +896,11 @@ export default function StudentsPage() {
                                 className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all hover:scale-[1.02] active:scale-95 shrink-0 ${filterClass === globalStats.worstClass.id ? 'border-orange-500 bg-orange-500/5 ring-1 ring-orange-500' : 'bg-orange-500/[0.08] border-orange-500/20 hover:bg-orange-500/[0.15]'}`}
                             >
                                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${filterClass === globalStats.worstClass.id ? 'bg-orange-500 text-white' : 'bg-orange-500/15'}`}>
-                                    <School className="text-orange-500 text-[10px]" />
+                                    <School className="w-4 h-4 text-orange-500" />
                                 </div>
                                 <div className="text-left whitespace-nowrap">
-                                    <p className={`text-[10px] font-black leading-none truncate max-w-[140px] ${filterClass === globalStats.worstClass.id ? 'text-orange-600' : 'text-orange-600 dark:text-orange-400'}`}>{globalStats.worstClass.name}</p>
-                                    <p className="text-[9px] text-[var(--color-text-muted)] font-bold mt-0.5">Rata terendah ({globalStats.worstClass.avg})</p>
+                                    <p className={`text-xs font-bold leading-none truncate max-w-[140px] ${filterClass === globalStats.worstClass.id ? 'text-orange-600' : 'text-orange-600 dark:text-orange-400'}`}>{globalStats.worstClass.name}</p>
+                                    <p className="text-xs text-[var(--color-text-muted)] font-bold mt-0.5">Rata terendah ({globalStats.worstClass.avg})</p>
                                 </div>
                             </button>
                         )}
@@ -938,12 +938,12 @@ export default function StudentsPage() {
                                     <button
                                         key={s.id}
                                         onClick={() => setFilterStatus(s.id)}
-                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${filterStatus === s.id
+                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${filterStatus === s.id
                                             ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white'
                                             : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5 hover:text-[var(--color-primary)]'
                                             }`}
                                     >
-                                        <s.icon className={`text-[10px] ${filterStatus === s.id ? 'opacity-100' : 'opacity-30'}`} />
+                                        <s.icon className={`text-xs ${filterStatus === s.id ? 'opacity-100' : 'opacity-30'}`} />
                                         {s.label}
                                     </button>
                                 ))}
@@ -961,12 +961,12 @@ export default function StudentsPage() {
                                     <button
                                         key={g.id}
                                         onClick={() => setFilterGender(filterGender === g.id ? '' : g.id)}
-                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${filterGender === g.id
+                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${filterGender === g.id
                                             ? `${g.activeCls} text-white`
                                             : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5 hover:text-[var(--color-primary)]'
                                             }`}
                                     >
-                                        <g.icon className={`text-[10px] ${filterGender === g.id ? 'opacity-100' : 'opacity-30'}`} />
+                                        <g.icon className={`text-xs ${filterGender === g.id ? 'opacity-100' : 'opacity-30'}`} />
                                         {g.label}
                                     </button>
                                 ))}
@@ -975,22 +975,22 @@ export default function StudentsPage() {
                             <div className="flex items-center gap-1.5 shrink-0">
                                 <button
                                     onClick={() => setSortBy(sortBy === 'name' ? '-name' : 'name')}
-                                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${sortBy.includes('name')
+                                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${sortBy.includes('name')
                                         ? 'bg-amber-500 border-amber-500 text-white'
                                         : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-amber-500/30 hover:bg-amber-500/5 hover:text-amber-600'
                                         }`}
                                 >
-                                    <ArrowDownAZ className={`text-[10px] ${sortBy.includes('name') ? 'opacity-100' : 'opacity-30'}`} />
+                                    <ArrowDownAZ className={`w-4 h-4 ${sortBy.includes('name') ? 'opacity-100' : 'opacity-30'}`} />
                                     Nama {sortBy === 'name' ? 'A-Z' : 'Z-A'}
                                 </button>
                                 <button
                                     onClick={() => setSortBy(sortBy === '-points' ? 'points' : '-points')}
-                                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${sortBy.includes('points')
+                                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${sortBy.includes('points')
                                         ? 'bg-emerald-500 border-emerald-500 text-white'
                                         : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-emerald-500/30 hover:bg-emerald-500/5 hover:text-emerald-600'
                                         }`}
                                 >
-                                    <ArrowUpNarrowWide className={`text-[10px] ${sortBy.includes('points') ? 'opacity-100' : 'opacity-30'}`} />
+                                    <ArrowUpNarrowWide className={`w-4 h-4 ${sortBy.includes('points') ? 'opacity-100' : 'opacity-30'}`} />
                                     {sortBy === '-points' ? 'Poin Tertinggi' : 'Poin Terendah'}
                                 </button>
                             </div>
@@ -1004,13 +1004,13 @@ export default function StudentsPage() {
                         <div className="flex items-center justify-end gap-2 shrink-0 lg:ml-auto">
                             <button
                                 onClick={toggleSelectAll}
-                                className={`h-9 px-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${selectedStudentIds.length > 0 ? 'bg-indigo-500 border-indigo-500 text-white' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
+                                className={`h-9 px-3 rounded-xl border text-xs font-bold uppercase tracking-wide transition-all active:scale-95 flex items-center justify-center gap-2 ${selectedStudentIds.length > 0 ? 'bg-indigo-500 border-indigo-500 text-white' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
                                 title="Pilih Semua / Batal"
                             >
                                 {selectedStudentIds.length > 0 ? <CheckCheck /> : <SquareCheck />}
                                 <span className="hidden xs:inline">{selectedStudentIds.length > 0 ? 'Terpilih' : 'Pilih'}</span>
                                 {selectedStudentIds.length > 0 && (
-                                    <span className="w-4 h-4 rounded-full bg-white/20 text-white text-[9px] font-black flex items-center justify-center">
+                                    <span className="w-4 h-4 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center">
                                         {selectedStudentIds.length}
                                     </span>
                                 )}
@@ -1019,12 +1019,12 @@ export default function StudentsPage() {
                             {canAdvancedFilter && (
                                 <button
                                     onClick={() => setShowAdvancedFilter(!showAdvancedFilter)}
-                                    className={`h-9 px-3 sm:px-4 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${showAdvancedFilter || activeFilterCount > 0 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
+                                    className={`h-9 px-3 sm:px-4 rounded-xl border text-xs font-bold uppercase tracking-wide transition-all active:scale-95 flex items-center justify-center gap-2 ${showAdvancedFilter || activeFilterCount > 0 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
                                 >
-                                    <SlidersHorizontal />
+                                    <SlidersHorizontal className="w-4 h-4" />
                                     <span className="hidden xs:inline">Lainnya</span>
                                     {activeFilterCount > 0 && (
-                                        <span className="w-4 h-4 rounded-full bg-white/30 text-white text-[9px] font-black flex items-center justify-center">
+                                        <span className="w-4 h-4 rounded-full bg-white/30 text-white text-xs font-bold flex items-center justify-center">
                                             {activeFilterCount}
                                         </span>
                                     )}
@@ -1040,74 +1040,74 @@ export default function StudentsPage() {
                             <div className="flex flex-wrap gap-2">
                                 {searchQuery && (
                                     <button type="button" onClick={() => setSearchQuery('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-[10px] font-black text-[var(--color-text)]" title="Hapus pencarian">
-                                        <Search className="text-[10px] opacity-60" />
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-xs font-bold text-[var(--color-text)]" title="Hapus pencarian">
+                                        <Search className="w-4 h-4 opacity-60" />
                                         <span className="max-w-[180px] truncate">"{searchQuery}"</span>
                                         <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500 transition-colors">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterClass && (
                                     <button type="button" onClick={() => { setFilterClass(''); setFilterClasses([]) }}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 text-[10px] font-black text-[var(--color-primary)]" title="Hapus filter kelas">
-                                        <School className="text-[10px] opacity-70" />
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 text-xs font-bold text-[var(--color-primary)]" title="Hapus filter kelas">
+                                        <School className="w-4 h-4 opacity-70" />
                                         {classesList.find(c => c.id === filterClass)?.name || 'Kelas'}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-[var(--color-primary)]/20 flex items-center justify-center text-[var(--color-primary)] opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterGender && (
                                     <button type="button" onClick={() => setFilterGender('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-[10px] font-black text-[var(--color-text)]" title="Hapus filter gender">
-                                        {filterGender === 'L' ? <MarsIcon className="text-[10px] opacity-70" /> : <VenusIcon className="text-[10px] opacity-70" />}
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-xs font-bold text-[var(--color-text)]" title="Hapus filter gender">
+                                        {filterGender === 'L' ? <MarsIcon className="w-4 h-4 opacity-70" /> : <VenusIcon className="w-4 h-4 opacity-70" />}
                                         Gender: {filterGender === 'L' ? 'Putra' : 'Putri'}
                                         <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500 transition-colors">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterStatus && (
                                     <button type="button" onClick={() => setFilterStatus('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-[10px] font-black text-amber-600" title="Hapus filter status">
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-xs font-bold text-amber-600" title="Hapus filter status">
                                         Status: {(filterStatus?.charAt(0).toUpperCase() || '') + (filterStatus?.slice(1) || '')}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-amber-500/20 flex items-center justify-center text-amber-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterTag && (
                                     <button type="button" onClick={() => setFilterTag('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-indigo-500/20 bg-indigo-500/10 text-[10px] font-black text-indigo-600" title="Hapus filter label">
-                                        <Tags className="text-[10px] opacity-70" />
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-indigo-500/20 bg-indigo-500/10 text-xs font-bold text-indigo-600" title="Hapus filter label">
+                                        <Tags className="w-4 h-4 opacity-70" />
                                         {filterTag}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-indigo-500/20 flex items-center justify-center text-indigo-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterMissing && (
                                     <button type="button" onClick={() => setFilterMissing('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-orange-500/20 bg-orange-500/10 text-[10px] font-black text-orange-600" title="Hapus filter data hilang">
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-orange-500/20 bg-orange-500/10 text-xs font-bold text-orange-600" title="Hapus filter data hilang">
                                         {filterMissing === 'photo' ? 'Foto Kosong' : filterMissing === 'wa' ? 'Tanpa WA' : filterMissing === 'all' ? 'Data Tidak Lengkap' : filterMissing}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-orange-500/20 flex items-center justify-center text-orange-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterPointMode && (
                                     <button type="button" onClick={() => { setFilterPointMode(''); setFilterPointMin(''); setFilterPointMax('') }}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-[10px] font-black text-emerald-600" title="Hapus filter poin">
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-xs font-bold text-emerald-600" title="Hapus filter poin">
                                         Poin: {filterPointMode === 'risk' ? 'Risiko' : filterPointMode === 'positive' ? 'Positif' : filterPointMode === 'custom' ? `${filterPointMin || '∞'}—${filterPointMax || '∞'}` : filterPointMode}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-emerald-500/20 flex items-center justify-center text-emerald-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 <button type="button" onClick={resetAllFilters}
-                                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-red-500/20 bg-red-500/5 text-[10px] font-black text-red-600" title="Reset semua filter">
-                                    <RotateCcw className="text-[10px]" />
+                                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-red-500/20 bg-red-500/5 text-xs font-bold text-red-600" title="Reset semua filter">
+                                    <RotateCcw className="w-4 h-4" />
                                     Reset semua
                                 </button>
                             </div>
@@ -1121,16 +1121,16 @@ export default function StudentsPage() {
                             <div className="flex items-center justify-between mb-3">
                                 <div className="flex items-center gap-2.5">
                                     <div className="w-1 h-3.5 bg-indigo-500 rounded-full" />
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-600 flex items-center gap-2">
-                                        <SlidersHorizontal className="text-[9px] opacity-60" />
+                                    <span className="text-xs font-bold uppercase tracking-wide text-indigo-600 flex items-center gap-2">
+                                        <SlidersHorizontal className="w-4 h-4 opacity-60" />
                                         Filter Lanjutan
                                     </span>
                                 </div>
                                 <button
                                     onClick={resetAllFilters}
-                                    className="text-[9px] font-black uppercase tracking-widest text-red-500 hover:bg-red-50 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-100"
+                                    className="text-xs font-bold uppercase tracking-wide text-red-500 hover:bg-red-50 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-100"
                                 >
-                                    <RotateCcw className="text-[9px]" />
+                                    <RotateCcw className="w-4 h-4" />
                                     Reset Semua Filter
                                 </button>
                             </div>
@@ -1138,7 +1138,7 @@ export default function StudentsPage() {
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-3 gap-y-3 mb-3">
                                 {/* Kelas */}
                                 <div>
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Kelas</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Kelas</label>
                                     <RichSelect
                                         value={filterClass}
                                         onChange={(val) => { setFilterClass(val); setFilterClasses([]); setPage(1) }}
@@ -1151,7 +1151,7 @@ export default function StudentsPage() {
 
                                 {/* Gender */}
                                 <div>
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Gender</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Gender</label>
                                     <RichSelect
                                         value={filterGender}
                                         onChange={(val) => { setFilterGender(val); setPage(1) }}
@@ -1167,7 +1167,7 @@ export default function StudentsPage() {
 
                                 {/* Status */}
                                 <div>
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Status</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Status</label>
                                     <RichSelect
                                         value={filterStatus}
                                         onChange={(val) => { setFilterStatus(val); setPage(1) }}
@@ -1185,7 +1185,7 @@ export default function StudentsPage() {
 
                                 {/* Label/Tag */}
                                 <div>
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Label</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Label</label>
                                     <RichSelect
                                         value={filterTag}
                                         onChange={(val) => { setFilterTag(val); setPage(1) }}
@@ -1198,7 +1198,7 @@ export default function StudentsPage() {
 
                                 {/* Urutkan */}
                                 <div className="col-span-1">
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Urutkan</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Urutkan</label>
                                     <RichSelect
                                         value={sortBy}
                                         onChange={(val) => setSortBy(val)}
@@ -1209,29 +1209,29 @@ export default function StudentsPage() {
 
                                 {/* Custom Poin Range */}
                                 <div className="col-span-1">
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Rentang Poin (Min - Max)</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Rentang Poin (Min - Max)</label>
                                     <div className="flex items-center gap-2">
                                         <input
                                             type="number"
                                             value={filterPointMin}
                                             onChange={(e) => { setFilterPointMin(e.target.value); setFilterPointMode(e.target.value || filterPointMax ? 'custom' : ''); setPage(1) }}
                                             placeholder="Min"
-                                            className="input-field h-8 sm:h-9 text-[11px] sm:text-xs w-full rounded-lg sm:rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] px-2.5"
+                                            className="input-field h-8 sm:h-9 text-xs sm:text-xs w-full rounded-lg sm:rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] px-2.5"
                                         />
-                                        <span className="text-[10px] text-[var(--color-text-muted)] font-black">-</span>
+                                        <span className="text-xs text-[var(--color-text-muted)] font-bold">-</span>
                                         <input
                                             type="number"
                                             value={filterPointMax}
                                             onChange={(e) => { setFilterPointMax(e.target.value); setFilterPointMode(filterPointMin || e.target.value ? 'custom' : ''); setPage(1) }}
                                             placeholder="Max"
-                                            className="input-field h-8 sm:h-9 text-[11px] sm:text-xs w-full rounded-lg sm:rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] px-2.5"
+                                            className="input-field h-8 sm:h-9 text-xs sm:text-xs w-full rounded-lg sm:rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] px-2.5"
                                         />
                                     </div>
                                 </div>
 
                                 {/* Preset Poin - Inline with Rentang */}
                                 <div className="col-span-2 lg:col-span-1">
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Preset Poin</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Preset Poin</label>
                                     <div className="flex items-center gap-1.5">
                                         {[
                                             { value: '', label: 'Semua', icon: null },
@@ -1240,9 +1240,9 @@ export default function StudentsPage() {
                                         ].map(opt => (
                                             <button key={opt.value} type="button"
                                                 onClick={() => { setFilterPointMode(opt.value); setFilterPointMin(''); setFilterPointMax(''); setPage(1) }}
-                                                className={`h-8 px-2.5 rounded-lg text-[9px] font-black uppercase border transition-all flex items-center justify-center gap-1.5 shrink-0 ${filterPointMode === opt.value && opt.value !== '' ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] bg-[var(--color-surface)]'}`}
+                                                className={`h-8 px-2.5 rounded-lg text-xs font-bold uppercase border transition-all flex items-center justify-center gap-1.5 shrink-0 ${filterPointMode === opt.value && opt.value !== '' ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] bg-[var(--color-surface)]'}`}
                                             >
-                                                {opt.icon && <opt.icon className="text-[9px]" />}
+                                                {opt.icon && <opt.icon className="text-xs" />}
                                                 {opt.label}
                                             </button>
                                         ))}
@@ -1251,7 +1251,7 @@ export default function StudentsPage() {
 
                                 {/* Desktop Only: Quick Menu & Actions Relocation */}
                                 <div className="hidden lg:block lg:col-span-3 pl-4 ml-4 border-l border-[var(--color-border)]/30">
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Menu Cepat & Aksi</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Menu Cepat & Aksi</label>
                                     <div className="flex items-center justify-between">
                                         <div className="flex flex-wrap items-center gap-1.5">
                                             {[
@@ -1263,8 +1263,8 @@ export default function StudentsPage() {
                                             ].map((s, i) => (
                                                 <button key={i} onClick={s.onClick}
                                                     className={`h-8 px-2.5 rounded-lg border flex items-center gap-2 transition-all ${s.active ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm' : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                                    <s.icon className="text-[9px]" />
-                                                    <span className="text-[9px] font-black uppercase tracking-widest whitespace-nowrap">{s.label}</span>
+                                                    <s.icon className="text-xs" />
+                                                    <span className="text-xs font-bold uppercase tracking-wide whitespace-nowrap">{s.label}</span>
                                                 </button>
                                             ))}
                                         </div>
@@ -1285,15 +1285,15 @@ export default function StudentsPage() {
                                                             addToast(`${rows.length} baris berhasil diekspor sebagai Excel`, 'success')
                                                         } catch { addToast('Gagal export', 'error') }
                                                     }}
-                                                    className="h-8 px-3 rounded-lg bg-teal-500/10 text-teal-600 hover:bg-teal-500 hover:text-white transition-all text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 border border-teal-500/20"
+                                                    className="h-8 px-3 rounded-lg bg-teal-500/10 text-teal-600 hover:bg-teal-500 hover:text-white transition-all text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 border border-teal-500/20"
                                                 >
-                                                    <Download className="text-[8px]" />
+                                                    <Download className="w-4 h-4" />
                                                     Export
                                                 </button>
                                             )}
                                             <button
                                                 onClick={() => setShowAdvancedFilter(false)}
-                                                className="h-8 px-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[9px] font-black uppercase tracking-widest text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
+                                                className="h-8 px-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
                                             >
                                                 Tutup Panel
                                             </button>
@@ -1306,7 +1306,7 @@ export default function StudentsPage() {
                             <div className="lg:hidden pt-3 border-t border-[var(--color-border)]/30 mt-1">
                                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                                     <div className="flex flex-wrap items-center gap-1.5">
-                                        <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mr-2">Cepat:</span>
+                                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mr-2">Cepat:</span>
                                         {[
                                             { label: 'Semua', icon: Users, active: !filterMissing && sortBy !== 'created_at' && sortBy !== 'total_points_desc', onClick: () => { setFilterMissing(''); setSortBy('name_asc'); } },
                                             { label: 'Foto Kosong', icon: Image, active: filterMissing === 'photo', onClick: () => { setFilterMissing('photo'); setPage(1); } },
@@ -1316,8 +1316,8 @@ export default function StudentsPage() {
                                         ].map((s, i) => (
                                             <button key={i} onClick={s.onClick}
                                                 className={`h-7 px-2.5 rounded-lg border flex items-center gap-2 transition-all ${s.active ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm' : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                                <s.icon className="text-[9px]" />
-                                                <span className="text-[9px] font-black uppercase tracking-widest whitespace-nowrap">{s.label}</span>
+                                                <s.icon className="text-xs" />
+                                                <span className="text-xs font-bold uppercase tracking-wide whitespace-nowrap">{s.label}</span>
                                             </button>
                                         ))}
                                     </div>
@@ -1338,15 +1338,15 @@ export default function StudentsPage() {
                                                         addToast(`${rows.length} baris berhasil diekspor sebagai Excel`, 'success')
                                                     } catch { addToast('Gagal export', 'error') }
                                                 }}
-                                                className="h-7 px-3 rounded-lg bg-teal-500/10 text-teal-600 hover:bg-teal-500 hover:text-white transition-all text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 border border-teal-500/20"
+                                                className="h-7 px-3 rounded-lg bg-teal-500/10 text-teal-600 hover:bg-teal-500 hover:text-white transition-all text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 border border-teal-500/20"
                                             >
-                                                <Download className="text-[8px]" />
+                                                <Download className="w-4 h-4" />
                                                 Export
                                             </button>
                                         )}
                                         <button
                                             onClick={() => setShowAdvancedFilter(false)}
-                                            className="h-7 px-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[9px] font-black uppercase tracking-widest text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
+                                            className="h-7 px-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
                                         >
                                             Tutup Panel
                                         </button>
@@ -1363,7 +1363,7 @@ export default function StudentsPage() {
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead className="bg-[var(--color-surface-alt)]">
-                                    <tr className="text-left text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                                    <tr className="text-left text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                         <th className="px-6 py-4 w-10"></th>
                                         <th className="px-6 py-4">Siswa</th>
                                         <th className="px-6 py-4 text-center">Gender</th>
@@ -1405,7 +1405,7 @@ export default function StudentsPage() {
                                 <div className="hidden md:block overflow-x-auto">
                                     <table className="w-full text-sm">
                                         <thead className="bg-[var(--color-surface-alt)] sticky top-0 z-10">
-                                            <tr className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                                            <tr className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                                 <th className="px-4 py-4 text-center w-12">
                                                     <input
                                                         type="checkbox"
@@ -1482,7 +1482,7 @@ export default function StudentsPage() {
                                                                 className={`absolute z-[9999] w-44 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 space-y-0.5 animate-in fade-in zoom-in-95 ${colMenuPos.showUp ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'}`}
                                                                 style={{ top: colMenuPos.top, right: colMenuPos.right }}
                                                             >
-                                                                <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">
+                                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-2">
                                                                     Tampilkan Kolom
                                                                 </p>
                                                                 {[
@@ -1500,7 +1500,7 @@ export default function StudentsPage() {
                                                                         onClick={() => toggleColumn(key)}
                                                                         className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] transition-all group text-left"
                                                                     >
-                                                                        <span className="text-[11px] font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{label}</span>
+                                                                        <span className="text-xs font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{label}</span>
                                                                         <div className={`w-8 h-4.5 rounded-full transition-all flex items-center px-0.5 ${visibleColumns[key] ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}`}>
                                                                             <div className={`w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-all ${visibleColumns[key] ? 'translate-x-[14px]' : 'translate-x-0'}`} />
                                                                         </div>
@@ -1534,16 +1534,16 @@ export default function StudentsPage() {
                                                                     <button
                                                                         type="button"
                                                                         onClick={resetAllFilters}
-                                                                        className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition"
+                                                                        className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition"
                                                                     >
                                                                         Reset Semua Filter
                                                                     </button>
                                                                 ) : (
                                                                     <button
                                                                         onClick={() => { setIsModalOpen(true); setActiveModal('add'); }}
-                                                                        className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest bg-[var(--color-primary)] text-white shadow-lg hover:scale-105 transition-all flex items-center gap-2"
+                                                                        className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide bg-[var(--color-primary)] text-white shadow-lg hover:scale-105 transition-all flex items-center gap-2"
                                                                     >
-                                                                        <Plus />
+                                                                        <Plus className="w-4 h-4" />
                                                                         Tambah Siswa Pertama
                                                                     </button>
                                                                 )
@@ -1607,9 +1607,9 @@ export default function StudentsPage() {
                                         onClick={() => {
                                             setIsInlineAddOpen(true)
                                         }}
-                                        className="w-full py-3 flex items-center justify-center gap-2 text-[11px] font-black uppercase tracking-widest text-[var(--color-primary)] bg-[var(--color-primary)]/[0.04] hover:bg-[var(--color-primary)]/10 active:scale-[0.99] transition-all border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/40 border-dashed rounded-2xl"
+                                        className="w-full py-3 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wide text-[var(--color-primary)] bg-[var(--color-primary)]/[0.04] hover:bg-[var(--color-primary)]/10 active:scale-[0.99] transition-all border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/40 border-dashed rounded-2xl"
                                     >
-                                        <Plus className="text-[10px]" />
+                                        <Plus className="w-4 h-4" />
                                         Quick Add Siswa
                                     </button>
                                 </div>
@@ -1617,17 +1617,17 @@ export default function StudentsPage() {
 
                             {/* Mobile View Selection Header */}
                             {isMobile && selectedStudentIds.length > 0 && (
-                                <div className="sticky top-0 z-40 -mx-3 mb-4 px-4 py-2 bg-[var(--color-surface)] border-b border-[var(--color-border)] flex items-center justify-between animate-in slide-in-from-top-4 duration-300">
+                                <div className="sticky top-0 z-40 -mx-3 sm:-mx-4 mb-4 px-3 sm:px-4 py-2 bg-[var(--color-surface)] border-b border-[var(--color-border)] flex items-center justify-between animate-in slide-in-from-top-4 duration-300">
                                     <div className="flex items-center gap-2">
-                                        <div className="w-6 h-6 rounded-lg bg-[var(--color-primary)] text-white flex items-center justify-center text-[10px] font-black">
+                                        <div className="w-6 h-6 rounded-lg bg-[var(--color-primary)] text-white flex items-center justify-center text-xs font-bold">
                                             {selectedStudentIds.length}
                                         </div>
-                                        <p className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text)]">Siswa Terpilih</p>
+                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Siswa Terpilih</p>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <button
                                             onClick={toggleSelectAll}
-                                            className="h-8 px-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text)] hover:bg-[var(--color-border)] transition-all"
+                                            className="h-8 px-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-text)] hover:bg-[var(--color-border)] transition-all"
                                         >
                                             {selectedStudentIds.length === students.length ? 'Batal Semua' : 'Pilih Semua'}
                                         </button>
@@ -1635,7 +1635,7 @@ export default function StudentsPage() {
                                             onClick={() => setSelectedStudentIds([])}
                                             className="h-8 w-8 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"
                                         >
-                                            <X />
+                                            <X className="w-4 h-4" />
                                         </button>
                                     </div>
                                 </div>
@@ -1687,16 +1687,16 @@ export default function StudentsPage() {
                                                     activeFilterCount > 0 || searchQuery ? (
                                                         <button
                                                             onClick={resetAllFilters}
-                                                            className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition"
+                                                            className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition"
                                                         >
                                                             Reset Semua Filter
                                                         </button>
                                                     ) : (
                                                         <button
                                                             onClick={() => { setIsModalOpen(true); setActiveModal('add'); }}
-                                                            className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest bg-[var(--color-primary)] text-white shadow-lg active:scale-95 transition-all flex items-center gap-2"
+                                                            className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide bg-[var(--color-primary)] text-white shadow-lg active:scale-95 transition-all flex items-center gap-2"
                                                         >
-                                                            <Plus />
+                                                            <Plus className="w-4 h-4" />
                                                             Tambah Siswa Pertama
                                                         </button>
                                                     )
@@ -1709,23 +1709,23 @@ export default function StudentsPage() {
                                             <div className="pt-3 pb-2 px-1 mb-1 flex items-center justify-between bg-[var(--color-surface)]/20 rounded-2xl -mx-3 px-3">
                                                 <div className="flex items-center gap-2">
                                                     <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse" />
-                                                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                                         {totalRows} Data ditemukan
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center bg-[var(--color-surface)] shadow-inner p-1 rounded-[1.2rem] border border-[var(--color-border)]">
                                                     <button
                                                         onClick={() => switchMobileView('card')}
-                                                        className={`h-8 px-4 rounded-xl flex items-center gap-2 text-[10px] font-black transition-all duration-200 ${pendingView === 'card' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
+                                                        className={`h-8 px-4 rounded-xl flex items-center gap-2 text-xs font-bold transition-all duration-200 ${pendingView === 'card' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
                                                     >
-                                                        <Table className="text-[11px]" />
+                                                        <Table className="w-4 h-4" />
                                                         Card
                                                     </button>
                                                     <button
                                                         onClick={() => switchMobileView('list')}
-                                                        className={`h-8 px-4 rounded-xl flex items-center gap-2 text-[10px] font-black transition-all duration-200 ${pendingView === 'list' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
+                                                        className={`h-8 px-4 rounded-xl flex items-center gap-2 text-xs font-bold transition-all duration-200 ${pendingView === 'list' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
                                                     >
-                                                        <TableProperties className="text-[11px]" />
+                                                        <TableProperties className="w-4 h-4" />
                                                         List
                                                     </button>
                                                 </div>
@@ -1795,8 +1795,8 @@ export default function StudentsPage() {
                                                         }}
                                                     >
                                                         {students.length > 0 && canEdit && (
-                                                            <div className="text-[9px] font-black text-[var(--color-text-muted)] opacity-50 text-center uppercase tracking-widest flex items-center justify-center gap-2 pb-1 animate-pulse">
-                                                                <Info />
+                                                            <div className="text-xs font-bold text-[var(--color-text-muted)] opacity-50 text-center uppercase tracking-wide flex items-center justify-center gap-2 pb-1 animate-pulse">
+                                                                <Info className="w-4 h-4" />
                                                                 Ketuk baris siswa untuk menu cepat & poin
                                                             </div>
                                                         )}
@@ -1832,9 +1832,9 @@ export default function StudentsPage() {
                                                             setIsInlineAddOpen(true)
                                                             setTimeout(() => quickAddRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80)
                                                         }}
-                                                        className="w-full py-3 flex items-center justify-center gap-2 text-[11px] font-black uppercase tracking-widest text-[var(--color-primary)] bg-[var(--color-primary)]/[0.04] hover:bg-[var(--color-primary)]/10 active:scale-[0.98] transition-all border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/40 border-dashed rounded-2xl mt-4 mb-2 shadow-sm"
+                                                        className="w-full py-3 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wide text-[var(--color-primary)] bg-[var(--color-primary)]/[0.04] hover:bg-[var(--color-primary)]/10 active:scale-[0.98] transition-all border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/40 border-dashed rounded-2xl mt-4 mb-2 shadow-sm"
                                                     >
-                                                        <Plus className="text-[10px]" />
+                                                        <Plus className="w-4 h-4" />
                                                         Quick Add Siswa
                                                     </button>
                                                 )}
@@ -1843,13 +1843,13 @@ export default function StudentsPage() {
                                                 {isInlineAddOpen && canEdit && canAddStudent && (
                                                     <div ref={quickAddRef} className="p-3 rounded-2xl border border-[var(--color-primary)]/25 bg-[var(--color-primary)]/[0.02] shadow-sm mt-2 animate-in slide-in-from-bottom-4 fade-in duration-300">
                                                         <div className="flex items-center justify-between gap-3 mb-2">
-                                                            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Quick Add Siswa</p>
+                                                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Quick Add Siswa</p>
                                                             <button
                                                                 type="button"
                                                                 onClick={() => setIsInlineAddOpen(false)}
                                                                 className="h-8 w-8 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center"
                                                             >
-                                                                <X />
+                                                                <X className="w-4 h-4" />
                                                             </button>
                                                         </div>
 
@@ -1885,7 +1885,7 @@ export default function StudentsPage() {
                                                                             key={g}
                                                                             type="button"
                                                                             onClick={() => setInlineForm(p => ({ ...p, gender: g }))}
-                                                                            className={`h-11 flex-1 rounded-xl text-[10px] font-black border transition-all ${inlineForm.gender === g
+                                                                            className={`h-11 flex-1 rounded-xl text-xs font-bold border transition-all ${inlineForm.gender === g
                                                                                 ? (g === 'L' ? 'bg-blue-500 text-white border-blue-500 shadow-lg' : 'bg-pink-500 text-white border-pink-500 shadow-lg')
                                                                                 : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] bg-[var(--color-surface)]'}`}
                                                                         >
@@ -1900,15 +1900,15 @@ export default function StudentsPage() {
                                                                 value={inlineForm.phone}
                                                                 onChange={e => setInlineForm(p => ({ ...p, phone: e.target.value.replace(/\D/g, '') }))}
                                                                 placeholder="No. HP/WA (opsional)"
-                                                                className="input-field text-[11px] h-11 px-3 rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] w-full font-bold"
+                                                                className="input-field text-xs h-11 px-3 rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] w-full font-bold"
                                                             />
 
                                                             <button
                                                                 type="submit"
                                                                 disabled={submittingInline || !canEdit || !inlineForm.name.trim()}
-                                                                className="h-11 w-full rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                                                                className="h-11 w-full rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                                                             >
-                                                                {submittingInline ? <LoaderCircle className="animate-spin" /> : <><Check /> Simpan</>}
+                                                                {submittingInline ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <><Check className="w-4 h-4" /> Simpan</>}
                                                             </button>
                                                         </form>
                                                     </div>
@@ -2037,7 +2037,7 @@ export default function StudentsPage() {
                             footer={
                                 <div className="p-0 bg-[var(--color-surface)] flex items-center justify-between gap-4">
                                     <div className="flex-1">
-                                        <div className="flex justify-between text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">
+                                        <div className="flex justify-between text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">
                                             <span>Kemajuan Hub</span>
                                             <span>{broadcastIndex + 1} / {selectedStudentsWithPhone.length}</span>
                                         </div>
@@ -2051,7 +2051,7 @@ export default function StudentsPage() {
                                     <div className="flex gap-2">
                                         <button
                                             onClick={() => closeModal()}
-                                            className="h-11 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-surface-alt)] transition-all"
+                                            className="h-11 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all"
                                         >
                                             Tutup
                                         </button>
@@ -2064,9 +2064,9 @@ export default function StudentsPage() {
                                                     }, i * 1200);
                                                 });
                                             }}
-                                            className="h-11 px-6 rounded-xl bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
+                                            className="h-11 px-6 rounded-xl bg-emerald-500 text-white text-xs font-bold uppercase tracking-wide shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
                                         >
-                                            <Send />
+                                            <Send className="w-4 h-4" />
                                             Mulai Siaran Massal
                                         </button>
                                     </div>
@@ -2077,7 +2077,7 @@ export default function StudentsPage() {
                                 {/* Selector Section */}
                                 <div className="lg:col-span-4 space-y-4">
                                     <div className="p-4 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] space-y-3">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Pilih Template Pesan</label>
+                                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Pilih Template Pesan</label>
                                         {[
                                             { id: 'summary', label: 'Laporan Akademik Lengkap', icon: FileText },
                                             { id: 'points', label: 'Ringkasan Poin Perilaku', icon: Trophy },
@@ -2092,7 +2092,7 @@ export default function StudentsPage() {
                                                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${broadcastTemplate === t.id ? 'bg-white/20' : 'bg-[var(--color-surface-alt)]'}`}>
                                                     <t.icon className="text-xs" />
                                                 </div>
-                                                <span className="text-[11px] font-bold leading-tight">{t.label}</span>
+                                                <span className="text-xs font-bold leading-tight">{t.label}</span>
                                             </button>
                                         ))}
                                     </div>
@@ -2111,9 +2111,9 @@ export default function StudentsPage() {
                                 <div className="lg:col-span-8 flex flex-col">
                                     <div className="flex-1 bg-[var(--color-surface-alt)]/30 border border-[var(--color-border)] rounded-2xl overflow-hidden flex flex-col min-h-[400px]">
                                         <div className="p-3 border-b border-[var(--color-border)] bg-[var(--color-surface)]/50 flex items-center justify-between">
-                                            <h5 className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Antrean Siaran ({selectedStudentsWithPhone.length} Wali)</h5>
+                                            <h5 className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Antrean Siaran ({selectedStudentsWithPhone.length} Wali)</h5>
                                             {broadcastIndex >= 0 && (
-                                                <div className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 text-[9px] font-black animate-pulse">SIARAN BERJALAN...</div>
+                                                <div className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 text-xs font-bold animate-pulse">SIARAN BERJALAN...</div>
                                             )}
                                         </div>
 
@@ -2122,17 +2122,17 @@ export default function StudentsPage() {
                                                 <div key={idx} className={`p-3 rounded-xl border transition-all ${broadcastIndex === idx ? 'bg-[var(--color-primary)]/5 border-[var(--color-primary)]' : 'bg-[var(--color-surface)] border-[var(--color-border)] opacity-70'}`}>
                                                     <div className="flex items-start justify-between gap-3 mb-2">
                                                         <div>
-                                                            <p className="text-[11px] font-black leading-none">{s.name}</p>
-                                                            <p className="text-[9px] text-[var(--color-text-muted)] mt-1 font-bold">Wali: {s.guardian_name || '---'} ({s.phone})</p>
+                                                            <p className="text-xs font-bold leading-none">{s.name}</p>
+                                                            <p className="text-xs text-[var(--color-text-muted)] mt-1 font-bold">Wali: {s.guardian_name || '---'} ({s.phone})</p>
                                                         </div>
                                                         <button
                                                             onClick={() => openWAForStudent(s, buildWAMessage(s, broadcastTemplate))}
-                                                            className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all flex items-center justify-center text-[10px]"
+                                                            className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all flex items-center justify-center text-xs"
                                                         >
-                                                            <WhatsAppIcon />
+                                                            <WhatsAppIcon className="w-4 h-4" />
                                                         </button>
                                                     </div>
-                                                    <div className="p-2.5 rounded-lg bg-[var(--color-surface-alt)]/50 border border-black/5 text-[10px] font-medium leading-relaxed line-clamp-2">
+                                                    <div className="p-2.5 rounded-lg bg-[var(--color-surface-alt)]/50 border border-black/5 text-xs font-medium leading-relaxed line-clamp-2">
                                                         {buildWAMessage(s, broadcastTemplate)}
                                                     </div>
                                                 </div>
@@ -2266,7 +2266,7 @@ export default function StudentsPage() {
                                     <button
                                         type="button"
                                         onClick={() => { closeModal(); setClassSearchQuery('') }}
-                                        className="flex-1 h-12 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] text-[11px] font-black uppercase tracking-widest transition-all"
+                                        className="flex-1 h-12 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all"
                                     >
                                         Batal
                                     </button>
@@ -2274,11 +2274,11 @@ export default function StudentsPage() {
                                         type="button"
                                         onClick={handleBulkPromote}
                                         disabled={submitting || !bulkClassId}
-                                        className="flex-[2] h-12 rounded-2xl bg-[var(--color-primary)] text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest hover:brightness-110 transition-all disabled:opacity-50 flex items-center justify-center gap-2 md:gap-3 shadow-xl active:scale-[0.98] whitespace-nowrap px-2"
+                                        className="flex-[2] h-12 rounded-2xl bg-[var(--color-primary)] text-white text-xs md:text-xs font-bold uppercase tracking-wide hover:brightness-110 transition-all disabled:opacity-50 flex items-center justify-center gap-2 md:gap-3 shadow-xl active:scale-[0.98] whitespace-nowrap px-2"
                                     >
-                                        {submitting ? <LoaderCircle className="animate-spin" /> : (
+                                        {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : (
                                             <>
-                                                <GraduationCap className="text-xs md:text-sm" />
+                                                <GraduationCap className="w-4 h-4 md:" />
                                                 <span>Proses Kenaikan <span className="hidden sm:inline">({selectedStudentIds.length} Siswa)</span></span>
                                             </>
                                         )}
@@ -2345,17 +2345,17 @@ export default function StudentsPage() {
                                                 <div className="p-2.5 rounded-xl bg-red-50 border border-red-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in slide-in-from-top-1 duration-300">
                                                     <div className="flex gap-2.5 items-center">
                                                         <div className="w-8 h-8 rounded-lg bg-red-500 text-white flex items-center justify-center shrink-0 shadow-lg">
-                                                            <TriangleAlert className="text-sm animate-pulse" />
+                                                            <TriangleAlert className="w-4 h-4 animate-pulse" />
                                                         </div>
                                                         <div className="min-w-0">
-                                                            <p className="text-[10px] font-black text-red-700 uppercase tracking-widest leading-none">Kritis: Penurunan Kelas!</p>
-                                                            <p className="text-[9px] text-red-600/80 font-bold mt-1 leading-tight">Ada siswa yang dipindahkan ke level yang lebih rendah.</p>
+                                                            <p className="text-xs font-bold text-red-700 uppercase tracking-wide leading-none">Kritis: Penurunan Kelas!</p>
+                                                            <p className="text-xs text-red-600/80 font-bold mt-1 leading-tight">Ada siswa yang dipindahkan ke level yang lebih rendah.</p>
                                                         </div>
                                                     </div>
                                                     <button
                                                         type="button"
                                                         onClick={() => removeBatch('downgrade')}
-                                                        className="px-3 py-1.5 rounded-lg bg-red-600 text-white text-[9px] font-black uppercase tracking-wider hover:bg-red-700 transition-all shadow-md active:scale-95 shrink-0"
+                                                        className="px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-bold uppercase tracking-wider hover:bg-red-700 transition-all shadow-md active:scale-95 shrink-0"
                                                     >
                                                         Keluarkan Siswa
                                                     </button>
@@ -2365,17 +2365,17 @@ export default function StudentsPage() {
                                                 <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in slide-in-from-top-1 duration-300">
                                                     <div className="flex gap-2.5 items-center">
                                                         <div className="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-lg">
-                                                            <RotateCcw className="text-sm" />
+                                                            <RotateCcw className="w-4 h-4" />
                                                         </div>
                                                         <div className="min-w-0">
-                                                            <p className="text-[10px] font-black text-amber-700 uppercase tracking-widest leading-none">Peringatan: Tetap di Kelas</p>
-                                                            <p className="text-[9px] text-amber-600/80 font-bold mt-1 leading-tight">Siswa ini akan tetap berada di tingkat yang sama.</p>
+                                                            <p className="text-xs font-bold text-amber-700 uppercase tracking-wide leading-none">Peringatan: Tetap di Kelas</p>
+                                                            <p className="text-xs text-amber-600/80 font-bold mt-1 leading-tight">Siswa ini akan tetap berada di tingkat yang sama.</p>
                                                         </div>
                                                     </div>
                                                     <button
                                                         type="button"
                                                         onClick={() => removeBatch('stay')}
-                                                        className="px-3 py-1.5 rounded-lg bg-amber-600 text-white text-[9px] font-black uppercase tracking-wider hover:bg-amber-700 transition-all shadow-md active:scale-95 shrink-0"
+                                                        className="px-3 py-1.5 rounded-lg bg-amber-600 text-white text-xs font-bold uppercase tracking-wider hover:bg-amber-700 transition-all shadow-md active:scale-95 shrink-0"
                                                     >
                                                         Keluarkan Siswa
                                                     </button>
@@ -2384,11 +2384,11 @@ export default function StudentsPage() {
                                             {hasSkip && (
                                                 <div className="p-2.5 rounded-xl bg-indigo-50 border border-indigo-200 flex gap-3 items-center animate-in fade-in slide-in-from-top-1 duration-300">
                                                     <div className="w-8 h-8 rounded-lg bg-indigo-500 text-white flex items-center justify-center shrink-0 shadow-lg">
-                                                        <Rocket className="text-sm" />
+                                                        <Rocket className="w-4 h-4" />
                                                     </div>
                                                     <div className="min-w-0">
-                                                        <p className="text-[10px] font-black text-indigo-700 uppercase tracking-widest leading-none">Info: Loncatan Kelas</p>
-                                                        <p className="text-[9px] text-indigo-600/80 font-bold mt-1 leading-tight">Ada siswa yang meloncat 1 tingkat atau lebih.</p>
+                                                        <p className="text-xs font-bold text-indigo-700 uppercase tracking-wide leading-none">Info: Loncatan Kelas</p>
+                                                        <p className="text-xs text-indigo-600/80 font-bold mt-1 leading-tight">Ada siswa yang meloncat 1 tingkat atau lebih.</p>
                                                     </div>
                                                 </div>
                                             )}
@@ -2399,19 +2399,19 @@ export default function StudentsPage() {
                                 {/* Class Selection Section */}
                                 <div className="space-y-4">
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-1">
-                                        <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest flex items-center gap-2 shrink-0">
-                                            <GraduationCap className="opacity-40" /> Pilih Kelas Tujuan
+                                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide flex items-center gap-2 shrink-0">
+                                            <GraduationCap className="w-4 h-4 opacity-40" /> Pilih Kelas Tujuan
                                         </label>
 
                                         {/* Quick Search Classes */}
                                         <div className="relative w-full sm:max-w-[200px]">
-                                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] opacity-30" />
+                                            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-30" />
                                             <input
                                                 type="text"
                                                 placeholder="Cari kelas..."
                                                 value={classSearchQuery}
                                                 onChange={(e) => setClassSearchQuery(e.target.value)}
-                                                className="w-full h-8 pl-8 pr-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[11px] font-bold outline-none focus:border-[var(--color-primary)] transition-all"
+                                                className="w-full h-8 pl-8 pr-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold outline-none focus:border-[var(--color-primary)] transition-all"
                                             />
                                         </div>
                                     </div>
@@ -2420,9 +2420,9 @@ export default function StudentsPage() {
                                         {classesList.filter(c => c.name.toLowerCase().includes(classSearchQuery.toLowerCase())).length === 0 ? (
                                             <div className="col-span-full py-12 text-center space-y-3 bg-[var(--color-surface-alt)] rounded-3xl border-2 border-dashed border-[var(--color-border)]">
                                                 <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/5 text-[var(--color-primary)] flex items-center justify-center mx-auto opacity-20">
-                                                    <Search className="text-xl" />
+                                                    <Search className="w-5 h-5" />
                                                 </div>
-                                                <p className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-40">Kelas tidak ditemukan</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-40">Kelas tidak ditemukan</p>
                                             </div>
                                         ) : classesList
                                             .filter(c => c.name.toLowerCase().includes(classSearchQuery.toLowerCase()))
@@ -2444,29 +2444,29 @@ export default function StudentsPage() {
                                                     >
                                                         <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all duration-500 ${isSelected ? 'bg-white/20 text-white rotate-[360deg]' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] group-hover:bg-[var(--color-primary)] group-hover:text-white'
                                                             }`}>
-                                                            <GraduationCap className="text-xs" />
+                                                            <GraduationCap className="w-4 h-4" />
                                                         </div>
                                                         <div className="flex-1 min-w-0 pr-10">
                                                             <div className="flex items-center gap-2">
-                                                                <p className="font-black text-[11px] uppercase tracking-wider truncate leading-tight">{c.name}</p>
+                                                                <p className="font-bold text-xs uppercase tracking-wider truncate leading-tight">{c.name}</p>
                                                                 {/* Inline Gender Icon */}
                                                                 {(isPutra || isPutri) && (isPutra
-                                                                    ? <MarsIcon className={`text-[8px] ${isSelected ? 'text-white' : 'text-blue-500'} opacity-70`} />
-                                                                    : <VenusIcon className={`text-[8px] ${isSelected ? 'text-white' : 'text-pink-500'} opacity-70`} />)}
+                                                                    ? <MarsIcon className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-blue-500'} opacity-70`} />
+                                                                    : <VenusIcon className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-pink-500'} opacity-70`} />)}
                                                             </div>
-                                                            <p className={`text-[9px] mt-0.5 font-medium ${isSelected ? 'text-white/60' : 'text-[var(--color-text-muted)]'}`}>Pilih sebagai tujuan</p>
+                                                            <p className={`text-xs mt-0.5 font-medium ${isSelected ? 'text-white/60' : 'text-[var(--color-text-muted)]'}`}>Pilih sebagai tujuan</p>
                                                         </div>
 
                                                         {/* Selection Indicator */}
                                                         <div className={`absolute right-4 top-1/2 -translate-y-1/2 transition-all duration-300 ${isSelected ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
                                                             <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center border border-white/40">
-                                                                <Check className="text-[10px]" />
+                                                                <Check className="w-4 h-4" />
                                                             </div>
                                                         </div>
 
                                                         {/* Bottom Gender Badge */}
                                                         {(isPutra || isPutri) && !isSelected && (
-                                                            <div className={`absolute bottom-0 right-0 px-2 py-0.5 rounded-tl-xl text-[7px] font-black uppercase tracking-tighter ${isPutra ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'
+                                                            <div className={`absolute bottom-0 right-0 px-2 py-0.5 rounded-tl-xl text-[7px] font-bold uppercase tracking-tighter ${isPutra ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'
                                                                 }`}>
                                                                 {isPutra ? 'Putra' : 'Putri'}
                                                             </div>
@@ -2485,11 +2485,11 @@ export default function StudentsPage() {
                                 {/* Information Alert */}
                                 <div className="p-4 rounded-2xl bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/15 flex gap-4 items-start">
                                     <div className="w-8 h-8 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0">
-                                        <Info className="text-sm" />
+                                        <Info className="w-4 h-4" />
                                     </div>
                                     <div className="space-y-1">
-                                        <p className="text-[11px] font-black text-[var(--color-primary)] uppercase tracking-widest">Informasi Sistem</p>
-                                        <p className="text-[10px] text-[var(--color-text-muted)] font-medium leading-relaxed">
+                                        <p className="text-xs font-bold text-[var(--color-primary)] uppercase tracking-wide">Informasi Sistem</p>
+                                        <p className="text-xs text-[var(--color-text-muted)] font-medium leading-relaxed">
                                             Proses ini akan memperbarui status kelas siswa secara permanen. Pastikan Anda telah melakukan verifikasi terhadap daftar siswa dan kelas tujuan sebelum menekan tombol konfirmasi.
                                         </p>
                                     </div>
@@ -2517,7 +2517,7 @@ export default function StudentsPage() {
                                     <button
                                         type="button"
                                         onClick={() => closeModal()}
-                                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
                                     >
                                         Batal
                                     </button>
@@ -2525,17 +2525,17 @@ export default function StudentsPage() {
                                     <button
                                         type="button"
                                         onClick={executeDelete}
-                                        className="h-10 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
+                                        className="h-10 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
                                     >
-                                        <Archive className="text-[11px] opacity-70" />
+                                        <Archive className="w-4 h-4 opacity-70" />
                                         Arsipkan
                                     </button>
                                 </div>
                             }
                         >
                             <div className="px-1">
-                                <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
-                                    Siswa <span className="text-amber-600 font-black px-1.5 py-0.5 bg-amber-500/10 rounded-md border border-amber-500/20">{studentToDelete?.name}</span> akan diarsipkan. Riwayat laporan & poin tetap tersimpan dengan aman.
+                                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
+                                    Siswa <span className="text-amber-600 font-bold px-1.5 py-0.5 bg-amber-500/10 rounded-md border border-amber-500/20">{studentToDelete?.name}</span> akan diarsipkan. Riwayat laporan & poin tetap tersimpan dengan aman.
                                 </p>
                             </div>
                         </Modal>
@@ -2560,7 +2560,7 @@ export default function StudentsPage() {
                                     <button
                                         type="button"
                                         onClick={() => closeModal()}
-                                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
                                     >
                                         Batal
                                     </button>
@@ -2569,11 +2569,11 @@ export default function StudentsPage() {
                                         type="button"
                                         onClick={handleBulkDelete}
                                         disabled={submitting}
-                                        className="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 shrink-0"
+                                        className="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 shrink-0"
                                     >
-                                        {submitting ? <LoaderCircle className="animate-spin" /> : (
+                                        {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : (
                                             <>
-                                                <Trash2 className="text-[11px] opacity-70" />
+                                                <Trash2 className="w-4 h-4 opacity-70" />
                                                 Hapus Permanen
                                             </>
                                         )}
@@ -2582,8 +2582,8 @@ export default function StudentsPage() {
                             }
                         >
                             <div className="px-1">
-                                <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
-                                    Anda akan menghapus <span className="text-red-500 font-black bg-red-500/10 px-1.5 py-0.5 rounded-md border border-red-500/20">{selectedStudentIds.length} siswa</span>. Tindakan ini tidak dapat dibatalkan. Riwayat behavior mereka akan hilang.
+                                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
+                                    Anda akan menghapus <span className="text-red-500 font-bold bg-red-500/10 px-1.5 py-0.5 rounded-md border border-red-500/20">{selectedStudentIds.length} siswa</span>. Tindakan ini tidak dapat dibatalkan. Riwayat behavior mereka akan hilang.
                                 </p>
                             </div>
                         </Modal>
@@ -2627,7 +2627,7 @@ export default function StudentsPage() {
                         >
                             {loadingBreakdown ? (
                                 <div className="text-center py-10 text-[var(--color-text-muted)]">
-                                    <LoaderCircle className="animate-spin text-2xl mb-2 block" />
+                                    <LoaderCircle className="w-6 h-6 animate-spin mb-2 block" />
                                     <p className="text-sm">Memuat statistik...</p>
                                 </div>
                             ) : classBreakdownData && (
@@ -2640,39 +2640,39 @@ export default function StudentsPage() {
                                             { label: 'Rata-rata Poin', value: classBreakdownData.avgPoints, color: classBreakdownData.avgPoints >= 0 ? 'text-emerald-500' : 'text-red-500' },
                                         ].map(item => (
                                             <div key={item.label} className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-center">
-                                                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mb-1">{item.label}</p>
-                                                <p className={`text-xl font-black ${item.color}`}>{item.value}</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mb-1">{item.label}</p>
+                                                <p className={`text-xl font-bold ${item.color}`}>{item.value}</p>
                                             </div>
                                         ))}
                                     </div>
                                     <div className="p-3 rounded-xl border border-red-500/20 bg-red-500/5 flex items-center gap-3">
-                                        <TriangleAlert className="text-red-500 shrink-0" />
+                                        <TriangleAlert className="w-4 h-4 text-red-500 shrink-0" />
                                         <div>
-                                            <p className="text-[10px] font-black text-red-600 dark:text-red-400 uppercase">Siswa Risiko (â‰¤ {RiskThreshold})</p>
-                                            <p className="text-lg font-black text-red-500">{classBreakdownData.riskCount} siswa</p>
+                                            <p className="text-xs font-bold text-red-600 dark:text-red-400 uppercase">Siswa Risiko (â‰¤ {RiskThreshold})</p>
+                                            <p className="text-lg font-bold text-red-500">{classBreakdownData.riskCount} siswa</p>
                                         </div>
                                     </div>
                                     <div>
-                                        <p className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mb-2 flex items-center gap-1.5">
-                                            <Trophy className="text-amber-500" />
+                                        <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                                            <Trophy className="w-4 h-4 text-amber-500" />
                                             Top 3 Poin Tertinggi
                                         </p>
                                         <div className="space-y-2">
                                             {classBreakdownData.topStudents.map((s, idx) => (
                                                 <div key={s.id} className="flex items-center gap-3 p-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/30">
-                                                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 ${idx === 0 ? 'bg-yellow-400/20 text-yellow-600' :
+                                                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${idx === 0 ? 'bg-yellow-400/20 text-yellow-600' :
                                                         idx === 1 ? 'bg-gray-400/20 text-gray-500' :
                                                             'bg-orange-400/20 text-orange-600'
                                                         }`}>#{idx + 1}</span>
                                                     <span className="flex-1 text-sm font-bold text-[var(--color-text)] truncate">{s.name}</span>
-                                                    <span className={`text-sm font-black ${s.total_points >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>{s.total_points}</span>
+                                                    <span className={`text-sm font-bold ${s.total_points >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>{s.total_points}</span>
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
                                     <div className="flex justify-end">
                                         <button onClick={() => { closeModal(); setFilterClass(''); const cls = classesList.find(c => c.name === classBreakdownData.className); if (cls) setFilterClass(cls.id) }}
-                                            className="btn bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 h-9 px-5 text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-[var(--color-primary)]/20 transition">
+                                            className="btn bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 h-9 px-5 text-xs font-bold uppercase tracking-wide rounded-lg hover:bg-[var(--color-primary)]/20 transition">
                                             Filter Kelas Ini
                                         </button>
                                     </div>
@@ -2733,12 +2733,12 @@ export default function StudentsPage() {
                             footer={
                                 <div className="flex items-center justify-between w-full gap-3">
                                     <div className="flex items-center gap-2 min-w-0">
-                                        <div className="w-8 h-8 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] text-xs font-black shrink-0">
+                                        <div className="w-8 h-8 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] text-xs font-bold shrink-0">
                                             {(photoZoom.name || '?').charAt(0)}
                                         </div>
                                         <div className="min-w-0">
-                                            <p className="text-[10px] font-bold text-[var(--color-text)] truncate">{photoZoom.name}</p>
-                                            <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider truncate">
+                                            <p className="text-xs font-bold text-[var(--color-text)] truncate">{photoZoom.name}</p>
+                                            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider truncate">
                                                 {[photoZoom.registrationCode, photoZoom.className].filter(Boolean).join(' • ')}
                                             </p>
                                         </div>
@@ -2759,9 +2759,9 @@ export default function StudentsPage() {
                                                     URL.revokeObjectURL(url)
                                                 } catch { }
                                             }}
-                                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black uppercase tracking-widest hover:bg-[var(--color-primary)] hover:text-white transition-all flex items-center gap-2 border border-[var(--color-primary)]/20"
+                                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-primary)] hover:text-white transition-all flex items-center gap-2 border border-[var(--color-primary)]/20"
                                         >
-                                            <Download className="text-[10px]" /> Download
+                                            <Download className="w-4 h-4" /> Download
                                         </button>
                                     </div>
                                 </div>
@@ -2881,12 +2881,12 @@ export default function StudentsPage() {
 
                                     {/* Left: count badge + label */}
                                     <div className="flex items-center gap-2 shrink-0">
-                                        <div className="w-9 h-9 rounded-xl bg-indigo-500 flex items-center justify-center font-black text-sm shrink-0">
+                                        <div className="w-9 h-9 rounded-xl bg-indigo-500 flex items-center justify-center font-bold text-sm shrink-0">
                                             {selectedStudentIds.length}
                                         </div>
                                         <div className="hidden md:block">
-                                            <p className="text-[9px] font-black uppercase tracking-widest opacity-50 leading-none">Terpilih</p>
-                                            <p className="text-[10px] font-bold leading-none mt-0.5">Aksi Massal</p>
+                                            <p className="text-xs font-bold uppercase tracking-wide opacity-50 leading-none">Terpilih</p>
+                                            <p className="text-xs font-bold leading-none mt-0.5">Aksi Massal</p>
                                         </div>
                                     </div>
 
@@ -2897,20 +2897,20 @@ export default function StudentsPage() {
                                     <div className="flex items-center gap-1.5 py-0.5 overflow-x-auto no-scrollbar">
                                         <button
                                             onClick={handleBulkWA}
-                                            className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-[9px] font-black uppercase tracking-widest"
+                                            className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-xs font-bold uppercase tracking-wide"
                                             title="Broadcast WA"
                                         >
-                                            <WhatsAppIcon className="text-sm" />
+                                            <WhatsAppIcon className="w-4 h-4" />
                                             <span className="hidden md:inline">Whatsapp</span>
                                         </button>
 
                                         {canPrintCard && (
                                             <button
                                                 onClick={handleBulkPrint}
-                                                className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-[9px] font-black uppercase tracking-widest"
+                                                className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-xs font-bold uppercase tracking-wide"
                                                 title="Cetak Kartu"
                                             >
-                                                <Printer className="text-sm" />
+                                                <Printer className="w-4 h-4" />
                                                 <span className="hidden md:inline">Cetak</span>
                                             </button>
                                         )}
@@ -2918,10 +2918,10 @@ export default function StudentsPage() {
                                         {canBulkTag && (
                                             <button
                                                 onClick={() => setActiveModal('bulkTag')}
-                                                className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-violet-500/10 text-violet-400 border border-violet-500/20 hover:bg-violet-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-[9px] font-black uppercase tracking-widest"
+                                                className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-violet-500/10 text-violet-400 border border-violet-500/20 hover:bg-violet-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-xs font-bold uppercase tracking-wide"
                                                 title="Beri Label"
                                             >
-                                                <Tags className="text-sm" />
+                                                <Tags className="w-4 h-4" />
                                                 <span className="hidden md:inline">Label</span>
                                             </button>
                                         )}
@@ -2929,10 +2929,10 @@ export default function StudentsPage() {
                                         {canPromote && (
                                             <button
                                                 onClick={() => setActiveModal('bulkPromote')}
-                                                className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-[9px] font-black uppercase tracking-widest"
+                                                className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-xs font-bold uppercase tracking-wide"
                                                 title="Naik Kelas"
                                             >
-                                                <GraduationCap className="text-sm" />
+                                                <GraduationCap className="w-4 h-4" />
                                                 <span className="hidden md:inline">Naik</span>
                                             </button>
                                         )}
@@ -2940,20 +2940,20 @@ export default function StudentsPage() {
                                         {canBulkPoint && (
                                             <button
                                                 onClick={() => setActiveModal('bulkPoint')}
-                                                className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-[9px] font-black uppercase tracking-widest"
+                                                className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-xs font-bold uppercase tracking-wide"
                                                 title="Beri Poin"
                                             >
-                                                <Zap className="text-sm" />
+                                                <Zap className="w-4 h-4" />
                                                 <span className="hidden md:inline">Poin</span>
                                             </button>
                                         )}
                                         {canBulkRoom && (
                                             <button
                                                 onClick={() => setActiveModal('bulkRoom')}
-                                                className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20 hover:bg-teal-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-[9px] font-black uppercase tracking-widest"
+                                                className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20 hover:bg-teal-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-xs font-bold uppercase tracking-wide"
                                                 title="Tetapkan Kamar"
                                             >
-                                                <DoorOpen className="text-sm" />
+                                                <DoorOpen className="w-4 h-4" />
                                                 <span className="hidden md:inline">Kamar</span>
                                             </button>
                                         )}
@@ -2966,7 +2966,7 @@ export default function StudentsPage() {
                                         className="h-9 w-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-red-500/20 hover:text-red-400 transition-all text-white/50 shrink-0"
                                         title="Batal Pilih"
                                     >
-                                        <X />
+                                        <X className="w-4 h-4" />
                                     </button>
                                 </div>
                             </div>
@@ -2993,7 +2993,7 @@ export default function StudentsPage() {
                                 <div className="flex justify-end">
                                     <button
                                         onClick={() => closeModal()}
-                                        className="h-11 px-8 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-indigo-700 transition-all active:scale-95 shadow-lg"
+                                        className="h-11 px-8 bg-indigo-600 text-white text-xs font-bold uppercase tracking-wide rounded-xl hover:bg-indigo-700 transition-all active:scale-95 shadow-lg"
                                     >
                                         Selesai
                                     </button>
@@ -3014,20 +3014,20 @@ export default function StudentsPage() {
                                 <div className="flex p-1 bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)]">
                                     <button
                                         onClick={() => setBulkTagAction('add')}
-                                        className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${bulkTagAction === 'add' ? 'bg-indigo-500 text-white shadow-lg' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                                        className={`flex-1 py-2 text-xs font-bold uppercase tracking-wide rounded-lg transition-all ${bulkTagAction === 'add' ? 'bg-indigo-500 text-white shadow-lg' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                                     >
                                         Tambah Label
                                     </button>
                                     <button
                                         onClick={() => setBulkTagAction('remove')}
-                                        className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${bulkTagAction === 'remove' ? 'bg-red-500 text-white shadow-lg' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                                        className={`flex-1 py-2 text-xs font-bold uppercase tracking-wide rounded-lg transition-all ${bulkTagAction === 'remove' ? 'bg-red-500 text-white shadow-lg' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                                     >
                                         Hapus Label
                                     </button>
                                 </div>
 
                                 <div className="space-y-4">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Pilih Label untuk Diaplikasikan</label>
+                                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Pilih Label untuk Diaplikasikan</label>
                                     <div className="grid grid-cols-2 gap-2">
                                         {Array.from(new Set([...AvailableTags, ...allUsedTags])).sort().map(tag => (
                                             <button
@@ -3043,14 +3043,14 @@ export default function StudentsPage() {
                                                     <div className={`w-2 h-2 rounded-full shrink-0 ${getTagColor(tag).split(' ')[0]}`} />
                                                     <span className="truncate">{tag}</span>
                                                 </span>
-                                                {bulkTagAction === 'add' ? <Plus className={`text-[9px] opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ${bulkTagAction === 'add' ? 'text-indigo-500' : 'text-red-500'}`} /> : <Trash2 className={`text-[9px] opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ${bulkTagAction === 'add' ? 'text-indigo-500' : 'text-red-500'}`} />}
+                                                {bulkTagAction === 'add' ? <Plus className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ${bulkTagAction === 'add' ? 'text-indigo-500' : 'text-red-500'}`} /> : <Trash2 className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ${bulkTagAction === 'add' ? 'text-indigo-500' : 'text-red-500'}`} />}
                                             </button>
                                         ))}
                                     </div>
                                 </div>
 
                                 <div className="p-4 rounded-2xl bg-indigo-500/5 border border-indigo-500/10">
-                                    <p className="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold leading-relaxed">
+                                    <p className="text-xs text-indigo-600 dark:text-indigo-400 font-bold leading-relaxed">
                                         {bulkTagAction === 'add'
                                             ? `* Memilih label akan MENAMBAHKAN label tersebut ke SEMUA (${selectedStudentIds.length}) siswa yang Anda pilih.`
                                             : `* Memilih label akan MENGHAPUS label tersebut dari SEMUA (${selectedStudentIds.length}) siswa yang memiliki label itu.`}
@@ -3078,8 +3078,8 @@ export default function StudentsPage() {
                             footer={
                                 <div className="space-y-3">
                                     <div className="flex p-3 rounded-2xl bg-amber-500/5 border border-amber-500/10 gap-3 items-start">
-                                        <CircleAlert className="text-amber-500 mt-0.5" />
-                                        <p className="text-[10px] text-amber-700 dark:text-amber-400 font-bold leading-relaxed">
+                                        <CircleAlert className="w-4 h-4 text-amber-500 mt-0.5" />
+                                        <p className="text-xs text-amber-700 dark:text-amber-400 font-bold leading-relaxed">
                                             Poin akan ditambahkan ke total poin masing-masing siswa. Pastikan jumlah dan alasan sudah benar sebelum memproses.
                                         </p>
                                     </div>
@@ -3087,7 +3087,7 @@ export default function StudentsPage() {
                                         <button
                                             type="button"
                                             onClick={() => closeModal()}
-                                            className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-surface-alt)] transition-all"
+                                            className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all"
                                         >
                                             Batal
                                         </button>
@@ -3095,11 +3095,11 @@ export default function StudentsPage() {
                                             type="button"
                                             onClick={handleBulkPointUpdate}
                                             disabled={submitting || !bulkPointValue}
-                                            className="flex-[2] h-11 rounded-xl bg-orange-500 text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-all disabled:opacity-50 shadow-lg flex items-center justify-center gap-2"
+                                            className="flex-[2] h-11 rounded-xl bg-orange-500 text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 transition-all disabled:opacity-50 shadow-lg flex items-center justify-center gap-2"
                                         >
-                                            {submitting ? <LoaderCircle className="animate-spin" /> : (
+                                            {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : (
                                                 <>
-                                                    <Zap className="text-xs" />
+                                                    <Zap className="w-4 h-4" />
                                                     Proses Poin Massal
                                                 </>
                                             )}
@@ -3120,24 +3120,24 @@ export default function StudentsPage() {
 
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-2">Jumlah Poin</label>
+                                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] block mb-2">Jumlah Poin</label>
                                         <div className="relative">
                                             <input
                                                 type="number"
                                                 value={bulkPointValue}
                                                 onChange={e => setBulkPointValue(Number(e.target.value))}
                                                 placeholder="Contoh: 10 atau -10"
-                                                className="input-field w-full h-12 px-4 pr-24 rounded-xl border-[var(--color-border)] bg-[var(--color-surface-alt)] text-lg font-black [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none transition-all"
+                                                className="input-field w-full h-12 px-4 pr-24 rounded-xl border-[var(--color-border)] bg-[var(--color-surface-alt)] text-lg font-bold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none transition-all"
                                             />
                                             <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
-                                                <button onClick={() => setBulkPointValue(10)} className="h-7 px-2 rounded-lg bg-emerald-500/10 text-emerald-600 text-[9px] font-black hover:bg-emerald-500 hover:text-white transition-all">+10</button>
-                                                <button onClick={() => setBulkPointValue(-10)} className="h-7 px-2 rounded-lg bg-red-500/10 text-red-600 text-[9px] font-black hover:bg-red-500 hover:text-white transition-all">-10</button>
+                                                <button onClick={() => setBulkPointValue(10)} className="h-7 px-2 rounded-lg bg-emerald-500/10 text-emerald-600 text-xs font-bold hover:bg-emerald-500 hover:text-white transition-all">+10</button>
+                                                <button onClick={() => setBulkPointValue(-10)} className="h-7 px-2 rounded-lg bg-red-500/10 text-red-600 text-xs font-bold hover:bg-red-500 hover:text-white transition-all">-10</button>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-2">Alasan / Keterangan</label>
+                                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] block mb-2">Alasan / Keterangan</label>
                                         <input
                                             type="text"
                                             value={bulkPointLabel}
@@ -3170,10 +3170,10 @@ export default function StudentsPage() {
                                 <div className="space-y-3">
                                     {bulkRoomId && (
                                         <div className="flex p-3 rounded-2xl bg-teal-500/5 border border-teal-500/15 gap-3 items-start">
-                                            <CircleAlert className="text-teal-500 mt-0.5 shrink-0" />
-                                            <p className="text-[10px] text-teal-700 dark:text-teal-400 font-bold leading-relaxed">
+                                            <CircleAlert className="w-4 h-4 text-teal-500 mt-0.5 shrink-0" />
+                                            <p className="text-xs text-teal-700 dark:text-teal-400 font-bold leading-relaxed">
                                                 {selectedStudentIds.length} siswa akan ditetapkan ke kamar
-                                                <span className="font-black mx-1">
+                                                <span className="font-bold mx-1">
                                                     {bulkRoomId === '-' ? 'Lainnya / Kosong' : bulkRoomId}
                                                 </span>.
                                                 Kamar sebelumnya akan ditimpa.
@@ -3184,7 +3184,7 @@ export default function StudentsPage() {
                                         <button
                                             type="button"
                                             onClick={() => closeModal()}
-                                            className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all"
+                                            className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all"
                                         >
                                             Batal
                                         </button>
@@ -3192,10 +3192,10 @@ export default function StudentsPage() {
                                             type="button"
                                             onClick={handleBulkRoomAssign}
                                             disabled={submitting || !bulkRoomId}
-                                            className="flex-[2] h-11 rounded-xl bg-teal-500 text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg"
+                                            className="flex-[2] h-11 rounded-xl bg-teal-500 text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg"
                                         >
-                                            {submitting ? <LoaderCircle className="animate-spin" /> : (
-                                                <><DoorOpen className="text-xs" /> Tetapkan Kamar</>
+                                            {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : (
+                                                <><DoorOpen className="w-4 h-4" /> Tetapkan Kamar</>
                                             )}
                                         </button>
                                     </div>
@@ -3211,7 +3211,7 @@ export default function StudentsPage() {
                                 />}
 
                                 <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent" />
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-3">Pilih Kamar Tujuan</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] block mb-3">Pilih Kamar Tujuan</label>
 
                                 {/* Opsi Kosongkan */}
                                 <button
@@ -3223,13 +3223,13 @@ export default function StudentsPage() {
                                         }`}
                                 >
                                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${bulkRoomId === '-' ? 'bg-amber-500 text-white' : 'bg-amber-500/10 text-amber-500'}`}>
-                                        <DoorOpen className="text-xs" />
+                                        <DoorOpen className="w-4 h-4" />
                                     </div>
                                     <div className="flex-1">
-                                        <p className="font-black text-[11px]">Lainnya / Kosongkan</p>
-                                        <p className="text-[9px] opacity-60 mt-0.5">Hapus penugasan kamar untuk siswa terpilih</p>
+                                        <p className="font-bold text-xs">Lainnya / Kosongkan</p>
+                                        <p className="text-xs opacity-60 mt-0.5">Hapus penugasan kamar untuk siswa terpilih</p>
                                     </div>
-                                    {bulkRoomId === '-' && <Check className="ml-auto text-amber-600 text-xs" />}
+                                    {bulkRoomId === '-' && <Check className="w-4 h-4 ml-auto text-amber-600" />}
                                 </button>
 
                                 <div className="h-px bg-[var(--color-border)] my-1" />
@@ -3246,13 +3246,13 @@ export default function StudentsPage() {
                                             }`}
                                     >
                                         <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${bulkRoomId === kamar.id ? 'bg-teal-500 text-white' : 'bg-teal-500/10 text-teal-600'}`}>
-                                            <DoorOpen className="text-xs" />
+                                            <DoorOpen className="w-4 h-4" />
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="font-black text-[11px]">{kamar.id}</p>
-                                            <p className="text-[9px] opacity-50 mt-0.5 font-medium" dir="rtl">{kamar.ar}</p>
+                                            <p className="font-bold text-xs">{kamar.id}</p>
+                                            <p className="text-xs opacity-50 mt-0.5 font-medium" dir="rtl">{kamar.ar}</p>
                                         </div>
-                                        {bulkRoomId === kamar.id && <Check className="ml-auto text-teal-600 text-xs shrink-0" />}
+                                        {bulkRoomId === kamar.id && <Check className="w-4 h-4 ml-auto text-teal-600 shrink-0" />}
                                     </button>
                                 ))}
                             </div>

@@ -80,9 +80,9 @@ const DebouncedSearchInput = memo(({ searchQuery, onSearch, inputRef, isLoading 
         <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--color-text-muted)] text-sm group-focus-within:text-[var(--color-primary)] transition-colors">
                 {isLoading ? (
-                    <LoaderCircle className="animate-spin text-xs text-[var(--color-primary)]" />
+                    <LoaderCircle className="w-4 h-4 animate-spin text-[var(--color-primary)]" />
                 ) : (
-                    <Search />
+                    <Search className="w-4 h-4" />
                 )}
             </div>
             <input
@@ -122,7 +122,7 @@ function TimelineView({ years, onEdit, onHistory, onSetActive, onDuplicate, onDe
                 
                 {/* ── Premium Ambient Background ── */}
                 <div className="absolute inset-0 pointer-events-none opacity-[0.05] dark:opacity-[0.08]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, var(--color-text) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10rem] md:text-[16rem] font-black font-heading tracking-widest text-[var(--color-text)] opacity-5 dark:opacity-10 pointer-events-none whitespace-nowrap select-none flex items-center justify-center">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10rem] md:text-[16rem] font-bold font-heading tracking-wide text-[var(--color-text)] opacity-5 dark:opacity-10 pointer-events-none whitespace-nowrap select-none flex items-center justify-center">
                     TIMELINE
                 </div>
 
@@ -170,18 +170,18 @@ function TimelineView({ years, onEdit, onHistory, onSetActive, onDuplicate, onDe
 
                                         {/* Card Header & Badges (Centered) */}
                                         <div className="flex items-center justify-center gap-1.5 mb-3 flex-wrap">
-                                            <div className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest shrink-0 ${isGanjil ? 'bg-indigo-500/10 text-indigo-500 border border-indigo-500/10' : 'bg-purple-500/10 text-purple-600 border border-purple-500/10'}`}>
+                                            <div className={`px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide shrink-0 ${isGanjil ? 'bg-indigo-500/10 text-indigo-500 border border-indigo-500/10' : 'bg-purple-500/10 text-purple-600 border border-purple-500/10'}`}>
                                                 {year.semester}
                                             </div>
                                             {isActive && (
-                                                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[9px] font-black shadow-sm border border-emerald-500/20">
+                                                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-bold shadow-sm border border-emerald-500/20">
                                                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
                                                     AKTIF
                                                 </div>
                                             )}
                                             {year.is_locked && (
-                                                <span className="px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest bg-rose-500/10 text-rose-600 border border-rose-500/20 flex items-center gap-1">
-                                                    <Archive className="text-[7px]" />
+                                                <span className="px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide bg-rose-500/10 text-rose-600 border border-rose-500/20 flex items-center gap-1">
+                                                    <Archive className="w-4 h-4" />
                                                     TUTUP
                                                 </span>
                                             )}
@@ -189,40 +189,40 @@ function TimelineView({ years, onEdit, onHistory, onSetActive, onDuplicate, onDe
 
                                         {/* Content Block (Centered) */}
                                         <div className="relative space-y-1.5 w-full">
-                                            <p className="text-[8px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] opacity-50 leading-none">Periode Akademik</p>
-                                            <h4 className="text-2xl font-black font-heading tracking-tight text-[var(--color-text)] leading-none group-hover/card:text-[var(--color-primary)] transition-colors duration-500">
+                                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50 leading-none">Periode Akademik</p>
+                                            <h4 className="text-2xl font-bold font-heading tracking-tight text-[var(--color-text)] leading-none group-hover/card:text-[var(--color-primary)] transition-colors duration-500">
                                                 {year.name}
                                             </h4>
 
                                             {/* Curriculum */}
                                             <div className="flex justify-center pt-1.5 pb-0.5">
-                                                <span className={`px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest border ${year.curriculum === 'Merdeka' ? 'bg-blue-500/10 text-blue-600 border-blue-500/20' : 'bg-orange-500/10 text-orange-600 border-orange-500/20'}`}>
+                                                <span className={`px-2 py-0.5 rounded-lg text-xs font-bold uppercase tracking-wide border ${year.curriculum === 'Merdeka' ? 'bg-blue-500/10 text-blue-600 border-blue-500/20' : 'bg-orange-500/10 text-orange-600 border-orange-500/20'}`}>
                                                     Kurikulum {year.curriculum || 'Merdeka'}
                                                 </span>
                                             </div>
 
                                             {/* Duration */}
-                                            <div className="flex items-center justify-center gap-2 pt-3 mt-3 border-t border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-bold">
+                                            <div className="flex items-center justify-center gap-2 pt-3 mt-3 border-t border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold">
                                                 <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 bg-[var(--color-surface)] border border-[var(--color-border)] group-hover/card:border-[var(--color-primary)]/30 group-hover/card:text-[var(--color-primary)] transition-all`}>
-                                                    <CalendarDays className="text-[9px]" />
+                                                    <CalendarDays className="w-4 h-4" />
                                                 </div>
                                                 <div className="flex flex-col text-left">
-                                                    <span className="text-[7px] font-black uppercase tracking-widest opacity-50 leading-none mb-0.5">Masa Berlaku</span>
-                                                    <span className="leading-tight text-[9px] text-[var(--color-text)]">{new Date(year.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })} — {new Date(year.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: '2-digit' })}</span>
+                                                    <span className="text-[7px] font-bold uppercase tracking-wide opacity-50 leading-none mb-0.5">Masa Berlaku</span>
+                                                    <span className="leading-tight text-xs text-[var(--color-text)]">{new Date(year.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })} — {new Date(year.end_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: '2-digit' })}</span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         {/* Abstract Decorative SVG (Watermark) */}
                                         <div className="absolute right-4 bottom-4 opacity-[0.03] pointer-events-none group-hover/card:scale-150 group-hover/card:opacity-10 transition-all duration-1000 grayscale flex items-center justify-center">
-                                            <History className="text-6xl" />
+                                            <History className="w-6 h-6" />
                                         </div>
 
                                         {/* Premium Action Layer */}
                                         <div className="mt-4 pt-3 border-t border-[var(--color-border)] flex flex-col gap-2.5 opacity-0 group-hover/card:opacity-100 translate-y-3 group-hover/card:translate-y-0 transition-all duration-500 w-full">
                                             {/* Primary Action (Full Width) */}
                                             {canEdit && !isActive && !year.is_locked && (
-                                                <button onClick={() => onSetActive(year)} className="w-full h-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-[0.1em] hover:shadow-[0_10px_20px_-5px_rgba(var(--color-primary-rgb),0.4)] hover:scale-[1.02] transition-all active:scale-95 flex items-center justify-center gap-2">
+                                                <button onClick={() => onSetActive(year)} className="w-full h-8 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:shadow-[0_10px_20px_-5px_rgba(var(--color-primary-rgb),0.4)] hover:scale-[1.02] transition-all active:scale-95 flex items-center justify-center gap-2">
                                                     Aktifkan Periode
                                                 </button>
                                             )}
@@ -231,25 +231,25 @@ function TimelineView({ years, onEdit, onHistory, onSetActive, onDuplicate, onDe
                                             <div className="flex items-center justify-center gap-2 w-full">
                                                 {canEdit && (
                                                     <button onClick={() => onEdit(year)} className="w-8 h-8 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all flex items-center justify-center">
-                                                        <SquarePen className="text-[10px]" />
+                                                        <SquarePen className="w-4 h-4" />
                                                     </button>
                                                 )}
                                                 <button onClick={() => onHistory(year)} className="w-8 h-8 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-indigo-500 hover:border-indigo-500 transition-all flex items-center justify-center">
-                                                    <History className="text-[10px]" />
+                                                    <History className="w-4 h-4" />
                                                 </button>
                                                 {canEdit && (
                                                     <button onClick={() => onDuplicate(year)} title="Duplikat" className="w-8 h-8 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-emerald-500 hover:border-emerald-500 transition-all flex items-center justify-center">
-                                                        <Copy className="text-[10px]" />
+                                                        <Copy className="w-4 h-4" />
                                                     </button>
                                                 )}
                                                 {canEdit && !isActive && (
                                                     <button onClick={() => onToggleLock(year)} title={year.is_locked ? "Buka Buku" : "Tutup Buku"} className={`w-8 h-8 rounded-xl transition-all flex items-center justify-center ${year.is_locked ? 'bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white border border-rose-500/20' : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-rose-500 hover:border-rose-500'}`}>
-                                                        {year.is_locked ? <RotateCcw className="text-[10px]" /> : <Archive className="text-[10px]" />}
+                                                        {year.is_locked ? <RotateCcw className="w-4 h-4" /> : <Archive className="w-4 h-4" />}
                                                     </button>
                                                 )}
                                                 {canEdit && isActive && (
                                                     <button onClick={() => onDelete(year)} className="w-8 h-8 rounded-xl bg-red-500/10 text-red-500 border border-red-500/20 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
-                                                        <Archive className="text-[10px]" />
+                                                        <Archive className="w-4 h-4" />
                                                     </button>
                                                 )}
                                             </div>
@@ -1159,7 +1159,7 @@ export default function AcademicYearsPage() {
 
     return (
         <DashboardLayout title="Tahun Pelajaran">
-            <div className="p-4 md:p-6 space-y-4 max-w-[1800px] mx-auto">
+            <div className="space-y-4">
 
                 {/* Selection Action Bar ── */}
                 {selectedIds.length > 0 && (
@@ -1172,17 +1172,17 @@ export default function AcademicYearsPage() {
                         }}
                     >
                         <div className="bg-gray-900 text-white rounded-[2.5rem] p-2 pr-6 shadow-xl flex items-center gap-4 border border-white/10">
-                            <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center font-black text-sm shadow-lg animate-bounce">
+                            <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center font-bold text-sm shadow-lg animate-bounce">
                                 {selectedIds.length}
                             </div>
                             <div className="flex-1">
-                                <p className="text-[11px] font-black uppercase tracking-widest text-white/90">Data Terpilih</p>
-                                <p className="text-[9px] font-bold text-white/50 tracking-tight">Lakukan aksi massal pada data ini</p>
+                                <p className="text-xs font-bold uppercase tracking-wide text-white/90">Data Terpilih</p>
+                                <p className="text-xs font-bold text-white/50 tracking-tight">Lakukan aksi massal pada data ini</p>
                             </div>
                             <div className="h-8 w-px bg-white/10" />
-                            <button onClick={() => setSelectedIds([])} className="h-10 px-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white transition-all">Batal</button>
-                                <button onClick={() => setIsBulkDeleteOpen(true)} className="h-10 px-5 rounded-2xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center gap-2 active:scale-95">
-                                <Archive className="text-[9px]" />
+                            <button onClick={() => setSelectedIds([])} className="h-10 px-4 rounded-2xl text-xs font-bold uppercase tracking-wide text-white/40 hover:text-white transition-all">Batal</button>
+                                <button onClick={() => setIsBulkDeleteOpen(true)} className="h-10 px-5 rounded-2xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center gap-2 active:scale-95">
+                                <Archive className="w-4 h-4" />
                                 Arsipkan
                             </button>
                         </div>
@@ -1191,8 +1191,8 @@ export default function AcademicYearsPage() {
 
                 {!canEdit && (
                     <div className="px-4 py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center gap-2">
-                        <CircleCheck className="text-rose-500 shrink-0 text-xs" />
-                        <p className="text-[11px] font-bold text-rose-600">Mode Read-only — Edit tahun pelajaran dinonaktifkan oleh administrator.</p>
+                        <CircleCheck className="w-4 h-4 text-rose-500 shrink-0" />
+                        <p className="text-xs font-bold text-rose-600">Mode Read-only — Edit tahun pelajaran dinonaktifkan oleh administrator.</p>
                     </div>
                 )}
 
@@ -1211,7 +1211,7 @@ export default function AcademicYearsPage() {
                             className={`h-9 w-9 rounded-lg border flex items-center justify-center text-sm transition-all active:scale-95 ${isHeaderMenuOpen ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
                             title="Aksi lainnya"
                         >
-                            <SlidersHorizontal />
+                            <SlidersHorizontal className="w-4 h-4" />
                         </button>
 
                         {/* Portaled Header Menu Dropdown */}
@@ -1229,34 +1229,34 @@ export default function AcademicYearsPage() {
                                         left: Math.max(10, headerMenuRect.right - 224)
                                     }}
                                 >
-                                    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">Data</p>
+                                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-2">Data</p>
                                     <button onClick={() => { setIsHeaderMenuOpen(false); handleImportClick() }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                         <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <FileInput className="text-xs" />
+                                            <FileInput className="w-4 h-4" />
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-[11px] font-black leading-tight">Import CSV / Excel</p>
-                                            <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Unggah data periode masal dari file Excel/CSV</p>
+                                            <p className="text-xs font-bold leading-tight">Import CSV / Excel</p>
+                                            <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Unggah data periode masal dari file Excel/CSV</p>
                                         </div>
                                     </button>
                                     <button onClick={() => { setIsHeaderMenuOpen(false); setIsExportModalOpen(true) }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                         <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <FileOutput className="text-xs" />
+                                            <FileOutput className="w-4 h-4" />
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-[11px] font-black leading-tight">Export Data</p>
-                                            <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Cadangkan seluruh database ke format Excel</p>
+                                            <p className="text-xs font-bold leading-tight">Export Data</p>
+                                            <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Cadangkan seluruh database ke format Excel</p>
                                         </div>
                                     </button>
                                     <div className="h-px bg-[var(--color-border)] my-1 mx-2" />
-                                    <p className="px-3 py-2 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Manajemen</p>
+                                    <p className="px-3 py-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Manajemen</p>
                                     <button onClick={() => { setIsHeaderMenuOpen(false); fetchArchived(); setIsArchivedOpen(true) }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                         <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <Archive className="text-xs" />
+                                            <Archive className="w-4 h-4" />
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-[11px] font-black leading-tight">Arsip Periode</p>
-                                            <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Lihat & pulihkan data periode tidak aktif</p>
+                                            <p className="text-xs font-bold leading-tight">Arsip Periode</p>
+                                            <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Lihat & pulihkan data periode tidak aktif</p>
                                         </div>
                                     </button>
                                 </div>
@@ -1281,7 +1281,7 @@ export default function AcademicYearsPage() {
                                     : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
                                 }`}
                             title="Keyboard Shortcuts (?)">
-                            <Keyboard className="text-sm" />
+                            <Keyboard className="w-4 h-4" />
                         </button>
 
                         {/* Portaled Keyboard Shortcuts Dropdown */}
@@ -1294,16 +1294,16 @@ export default function AcademicYearsPage() {
                                         left: Math.max(10, shortcutRect.right - 288)
                                     }}>
                                     <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between bg-[var(--color-surface-alt)]/50">
-                                        <p className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text)]">Keyboard Shortcuts</p>
-                                        <span className="text-[9px] text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
+                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Keyboard Shortcuts</p>
+                                        <span className="text-xs text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
                                     </div>
                                     <div className="p-3 space-y-0.5">
                                         {[{ section: 'Navigasi' }, { keys: ['Ctrl', 'K'], label: 'Fokus ke search' }, { section: 'Aksi' }, { keys: ['N'], label: 'Tambah periode baru' }, { keys: ['X'], label: 'Reset semua filter' }, { keys: ['?'], label: 'Tampilkan shortcut ini' }].map((item, i) => item.section ? (
-                                            <p key={i} className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
+                                            <p key={i} className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
                                         ) : (
                                             <div key={i} className="flex items-center justify-between px-1 py-1 rounded-lg hover:bg-[var(--color-surface-alt)] transition-all">
-                                                <span className="text-[11px] font-semibold text-[var(--color-text)]">{item.label}</span>
-                                                <div className="flex items-center gap-1">{item.keys.map((k, ki) => <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[9px] font-black text-[var(--color-text-muted)] font-mono">{k}</span>)}</div>
+                                                <span className="text-xs font-semibold text-[var(--color-text)]">{item.label}</span>
+                                                <div className="flex items-center gap-1">{item.keys.map((k, ki) => <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] font-mono">{k}</span>)}</div>
                                             </div>
                                         ))}
                                     </div>
@@ -1320,14 +1320,14 @@ export default function AcademicYearsPage() {
                         }}
                             className={`h-9 w-9 sm:w-auto sm:px-3 rounded-lg border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 ${isPrivacyMode ? 'bg-amber-500/10 border-amber-500/30 text-amber-600' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'} `}
                             title={isPrivacyMode ? "Matikan Mode Privasi" : "Aktifkan Mode Privasi"}>
-                            {isPrivacyMode ? <EyeOff className="text-sm" /> : <Eye className="text-sm" />}
-                            <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline">Privasi</span>
+                            {isPrivacyMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                            <span className="text-xs font-bold uppercase tracking-wide hidden md:inline">Privasi</span>
                         </button>
 
                         {/* Add button */}
                         {canEdit && (
-                            <button onClick={handleAdd} className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10">
-                                <Plus className="text-[10px]" />
+                            <button onClick={handleAdd} className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10">
+                                <Plus className="w-4 h-4" />
                                 <span>Tambah Periode</span>
                             </button>
                         )}
@@ -1367,24 +1367,24 @@ export default function AcademicYearsPage() {
                         </div>
                         <div className="flex items-center gap-1.5 shrink-0">
                             <div className="hidden md:flex items-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/20 p-1 shadow-none">
-                                <button onClick={() => setViewMode('table')} className={`h-7 px-3 rounded-lg flex items-center gap-2 text-[9px] font-black uppercase tracking-wider transition-all ${viewMode === 'table' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                    <TableProperties className="text-[9px]" />
+                                <button onClick={() => setViewMode('table')} className={`h-7 px-3 rounded-lg flex items-center gap-2 text-xs font-bold uppercase tracking-wider transition-all ${viewMode === 'table' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
+                                    <TableProperties className="w-4 h-4" />
                                     <span>Tabel</span>
                                 </button>
-                                <button onClick={() => setViewMode('timeline')} className={`h-7 px-3 rounded-lg flex items-center gap-2 text-[9px] font-black uppercase tracking-wider transition-all ${viewMode === 'timeline' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                    <History className="text-[9px]" />
+                                <button onClick={() => setViewMode('timeline')} className={`h-7 px-3 rounded-lg flex items-center gap-2 text-xs font-bold uppercase tracking-wider transition-all ${viewMode === 'timeline' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
+                                    <History className="w-4 h-4" />
                                     <span>Linimasa</span>
                                 </button>
                             </div>
                             <button
                                 onClick={() => setIsFilterOpen(!isFilterOpen)}
-                                className={`h-9 px-3 sm:px-4 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${isFilterOpen || activeFilterCount > 0 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
+                                className={`h-9 px-3 sm:px-4 rounded-xl border text-xs font-bold uppercase tracking-wide transition-all flex items-center justify-center gap-2 ${isFilterOpen || activeFilterCount > 0 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
                             >
-                                <SlidersHorizontal />
+                                <SlidersHorizontal className="w-4 h-4" />
                                 <span className="hidden xs:inline">Filter</span>
-                                {activeFilterCount > 0 && <span className="w-4 h-4 rounded-full bg-white/30 text-white text-[9px] font-black flex items-center justify-center">{activeFilterCount}</span>}
+                                {activeFilterCount > 0 && <span className="w-4 h-4 rounded-full bg-white/30 text-white text-xs font-bold flex items-center justify-center">{activeFilterCount}</span>}
                             </button>
-                            {activeFilterCount > 0 && <button onClick={resetAllFilters} className="h-9 px-3 rounded-xl border border-red-500/20 bg-red-500/5 text-red-500 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-red-500/10 flex items-center gap-1.5"><X /><span className="hidden sm:inline">Reset</span></button>}
+                            {activeFilterCount > 0 && <button onClick={resetAllFilters} className="h-9 px-3 rounded-xl border border-red-500/20 bg-red-500/5 text-red-500 text-xs font-bold uppercase tracking-wide transition-all hover:bg-red-500/10 flex items-center gap-1.5"><X className="w-4 h-4" /><span className="hidden sm:inline">Reset</span></button>}
                         </div>
                     </div>
 
@@ -1392,29 +1392,29 @@ export default function AcademicYearsPage() {
                     {(searchQuery || filterSemester || filterTimeStatus) && (
                         <div className="px-3 pb-3 -mt-1 flex flex-wrap gap-2 animate-in fade-in slide-in-from-top-1 duration-300">
                             {searchQuery && (
-                                <button type="button" onClick={() => setSearchQuery('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-[10px] font-black text-[var(--color-text)]">
-                                    <Search className="opacity-40" />
+                                <button type="button" onClick={() => setSearchQuery('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-xs font-bold text-[var(--color-text)]">
+                                    <Search className="w-4 h-4 opacity-40" />
                                     <span>"{searchQuery.slice(0, 20)}{searchQuery.length > 20 ? '...' : ''}"</span>
-                                    <X className="text-[8px] opacity-40 group-hover:text-red-500 transition-colors" />
+                                    <X className="w-4 h-4 opacity-40 group-hover:text-red-500 transition-colors" />
                                 </button>
                             )}
                             {filterSemester && (
-                                <button type="button" onClick={() => setFilterSemester('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 text-[10px] font-black text-[var(--color-primary)]">
+                                <button type="button" onClick={() => setFilterSemester('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 text-xs font-bold text-[var(--color-primary)]">
                                     <span>{filterSemester}</span>
-                                    <X className="text-[8px] opacity-40 group-hover:text-red-500 transition-colors" />
+                                    <X className="w-4 h-4 opacity-40 group-hover:text-red-500 transition-colors" />
                                 </button>
                             )}
                             {filterTimeStatus && (
                                 <button type="button" onClick={() => setFilterTimeStatus('')}
-                                    className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-[10px] font-black text-amber-600">
+                                    className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-xs font-bold text-amber-600">
                                     Status: {filterTimeStatus}
                                     <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-amber-500/20 flex items-center justify-center text-amber-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                        <X className="text-[10px]" />
+                                        <X className="w-4 h-4" />
                                     </span>
                                 </button>
                             )}
-                            <button onClick={resetAllFilters} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black text-red-500 hover:bg-red-500/5 transition-all">
-                                <RotateCcw className="text-[9px]" />
+                            <button onClick={resetAllFilters} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold text-red-500 hover:bg-red-500/5 transition-all">
+                                <RotateCcw className="w-4 h-4" />
                                 Hapus Semua
                             </button>
                         </div>
@@ -1426,16 +1426,16 @@ export default function AcademicYearsPage() {
                             <div className="flex items-center justify-between mb-3">
                                 <div className="flex items-center gap-2.5">
                                     <div className="w-1 h-3.5 bg-indigo-500 rounded-full" />
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-600 flex items-center gap-2">
-                                        <SlidersHorizontal className="text-[9px] opacity-60" />
+                                    <span className="text-xs font-bold uppercase tracking-wide text-indigo-600 flex items-center gap-2">
+                                        <SlidersHorizontal className="w-4 h-4 opacity-60" />
                                         Filter Lanjutan
                                     </span>
                                 </div>
                                 <button
                                     onClick={resetAllFilters}
-                                    className="text-[9px] font-black uppercase tracking-widest text-red-500 hover:bg-red-50 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-100"
+                                    className="text-xs font-bold uppercase tracking-wide text-red-500 hover:bg-red-50 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-100"
                                 >
-                                    <RotateCcw className="text-[9px]" />
+                                    <RotateCcw className="w-4 h-4" />
                                     Reset Semua
                                 </button>
                             </div>
@@ -1444,7 +1444,7 @@ export default function AcademicYearsPage() {
                                 {/* Primary Grid: Selects */}
                                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                                     <div className="space-y-1.5">
-                                        <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Semester</label>
+                                        <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Semester</label>
                                         <select value={filterSemester} onChange={e => setFilterSemester(e.target.value)} className="w-full h-9 px-3 text-xs font-bold bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl appearance-none outline-none focus:border-[var(--color-primary)]">
                                             <option value="">Semua Semester</option>
                                             <option value="Ganjil">Ganjil</option>
@@ -1452,7 +1452,7 @@ export default function AcademicYearsPage() {
                                         </select>
                                     </div>
                                     <div className="space-y-1.5">
-                                        <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Status</label>
+                                        <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Status</label>
                                         <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className="w-full h-9 px-3 text-xs font-bold bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl appearance-none outline-none focus:border-[var(--color-primary)]">
                                             <option value="">Semua Status</option>
                                             <option value="active">Aktif</option>
@@ -1460,7 +1460,7 @@ export default function AcademicYearsPage() {
                                         </select>
                                     </div>
                                     <div className="space-y-1.5">
-                                        <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Kurikulum</label>
+                                        <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Kurikulum</label>
                                         <select value={filterCurriculum} onChange={e => setFilterCurriculum(e.target.value)} className="w-full h-9 px-3 text-xs font-bold bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl appearance-none outline-none focus:border-[var(--color-primary)]">
                                             <option value="">Semua Kurikulum</option>
                                             <option value="Merdeka">Kurikulum Merdeka</option>
@@ -1469,7 +1469,7 @@ export default function AcademicYearsPage() {
                                         </select>
                                     </div>
                                     <div className="space-y-1.5">
-                                        <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Kunci Data</label>
+                                        <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Kunci Data</label>
                                         <select value={filterLock} onChange={e => setFilterLock(e.target.value)} className="w-full h-9 px-3 text-xs font-bold bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl appearance-none outline-none focus:border-[var(--color-primary)]">
                                             <option value="">Semua</option>
                                             <option value="open">Bisa Diedit</option>
@@ -1477,7 +1477,7 @@ export default function AcademicYearsPage() {
                                         </select>
                                     </div>
                                     <div className="space-y-1.5">
-                                        <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Urutan</label>
+                                        <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Urutan</label>
                                         <select value={sortBy} onChange={e => setSortBy(e.target.value)} className="w-full h-9 px-3 text-xs font-bold bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl appearance-none outline-none focus:border-[var(--color-primary)]">
                                             <option value="name_desc">Terupate</option>
                                             <option value="name_asc">Terlama</option>
@@ -1488,9 +1488,9 @@ export default function AcademicYearsPage() {
                                 
                                 {/* Secondary Grid: Actions */}
                                 <div className="space-y-1.5 flex flex-col">
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5 opacity-0 hidden xl:block">Aksi</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5 opacity-0 hidden xl:block">Aksi</label>
                                     <div className="flex items-center gap-2 mt-auto h-9">
-                                        <button onClick={toggleSelectAll} className="h-full px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[9px] font-black uppercase tracking-widest text-[var(--color-text)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all">
+                                        <button onClick={toggleSelectAll} className="h-full px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold uppercase tracking-wide text-[var(--color-text)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all">
                                             {selectedIds.length === paged.length && paged.length > 0 ? 'Batal Pilih' : 'Pilih Semua'}
                                         </button>
                                     </div>
@@ -1529,7 +1529,7 @@ export default function AcademicYearsPage() {
                                     <div className="hidden md:block overflow-x-auto">
                                         <table className="w-full text-sm">
                                             <thead className="bg-[var(--color-surface-alt)] sticky top-0 z-10">
-                                                <tr className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                                                <tr className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                                     <th className="px-6 py-4 text-center w-12">
                                                         <input type="checkbox" checked={selectedIds.length === paged.length && paged.length > 0} onChange={toggleSelectAll} className="w-4 h-4 rounded border-[var(--color-border)] text-[var(--color-primary)] focus:ring-[var(--color-primary)] accent-[var(--color-primary)] cursor-pointer" />
                                                     </th>
@@ -1561,10 +1561,10 @@ export default function AcademicYearsPage() {
                                                             {isColMenuOpen && createPortal(
                                                                 <div ref={colMenuPortalRef} className={`absolute z-[9999] w-48 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 space-y-0.5 animate-in fade-in zoom-in-95 ${colMenuPos.showUp ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'}`}
                                                                     style={{ top: colMenuPos.top, right: colMenuPos.right }}>
-                                                                    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">Atur Kolom</p>
+                                                                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-2">Atur Kolom</p>
                                                                     {[{ key: 'period', label: 'Tahun Pelajaran' }, { key: 'semester', label: 'Semester' }, { key: 'curriculum', label: 'Kurikulum' }, { key: 'duration', label: 'Pelaksanaan' }, { key: 'status', label: 'Status' }].map(({ key, label }) => (
                                                                         <button key={key} onClick={() => setVisibleCols(p => ({ ...p, [key]: !p[key] }))} className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] transition-all group text-left">
-                                                                            <span className="text-[11px] font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{label}</span>
+                                                                            <span className="text-xs font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{label}</span>
                                                                             <div className={`w-8 h-4.5 rounded-full transition-all flex items-center px-0.5 ${visibleCols[key] ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}`}>
                                                                                 <div className={`w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-all ${visibleCols[key] ? 'translate-x-[14px]' : 'translate-x-0'}`} />
                                                                             </div>
@@ -1589,28 +1589,28 @@ export default function AcademicYearsPage() {
                                                             {visibleCols.period && (
                                                                 <td className="px-6 py-4">
                                                                     <div className="flex items-start gap-3">
-                                                                        <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-black shadow-sm relative transition-transform hover:scale-110 shrink-0 ${year.is_active ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
+                                                                        <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold shadow-sm relative transition-transform hover:scale-110 shrink-0 ${year.is_active ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
                                                                             <span className="relative z-10">{year.name?.slice(2, 4) || '??'}</span>
                                                                         </div>
                                                                         <div className="flex flex-col min-w-0 flex-1">
-                                                                            <span className="font-extrabold text-sm text-[var(--color-text)] leading-snug truncate">
+                                                                            <span className="font-bold text-sm text-[var(--color-text)] leading-snug truncate">
                                                                                 {year.name}
                                                                             </span>
-                                                                            <p className="text-[10px] text-[var(--color-text-muted)] font-mono opacity-60 uppercase tracking-wider mt-1">ID: {year.id.slice(0, 8)}</p>
+                                                                            <p className="text-xs text-[var(--color-text-muted)] font-mono opacity-60 uppercase tracking-wider mt-1">ID: {year.id.slice(0, 8)}</p>
                                                                         </div>
                                                                     </div>
                                                                 </td>
                                                             )}
                                                             {visibleCols.semester && (
                                                                 <td className="px-6 py-4">
-                                                                    <span className={`text-[9px] font-black px-2 py-1 rounded-lg uppercase tracking-widest border ${year.semester === 'Ganjil' ? 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20' : 'bg-purple-500/10 text-purple-600 border-purple-500/20'}`}>
+                                                                    <span className={`text-xs font-bold px-2 py-1 rounded-lg uppercase tracking-wide border ${year.semester === 'Ganjil' ? 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20' : 'bg-purple-500/10 text-purple-600 border-purple-500/20'}`}>
                                                                         {year.semester}
                                                                     </span>
                                                                 </td>
                                                             )}
                                                             {visibleCols.curriculum && (
                                                                 <td className="px-6 py-4">
-                                                                    <span className="text-[11px] font-bold text-[var(--color-text-muted)]">
+                                                                    <span className="text-xs font-bold text-[var(--color-text-muted)]">
                                                                         {year.curriculum || 'Merdeka'}
                                                                     </span>
                                                                 </td>
@@ -1618,8 +1618,8 @@ export default function AcademicYearsPage() {
                                                             {visibleCols.duration && (
                                                                 <td className="px-6 py-4">
                                                                     <div className="flex flex-col">
-                                                                        <span className="text-[11px] font-bold text-[var(--color-text)] whitespace-nowrap">{formatDate(year.start_date)} — {formatDate(year.end_date)}</span>
-                                                                        <span className="text-[10px] text-[var(--color-text-muted)] mt-0.5">{getDuration(year.start_date, year.end_date)}</span>
+                                                                        <span className="text-xs font-bold text-[var(--color-text)] whitespace-nowrap">{formatDate(year.start_date)} — {formatDate(year.end_date)}</span>
+                                                                        <span className="text-xs text-[var(--color-text-muted)] mt-0.5">{getDuration(year.start_date, year.end_date)}</span>
                                                                     </div>
                                                                 </td>
                                                             )}
@@ -1627,13 +1627,13 @@ export default function AcademicYearsPage() {
                                                                 <td className="px-6 py-4 text-left">
                                                                     <div className="flex flex-wrap items-center gap-1.5">
                                                                         {year.is_active ? (
-                                                                            <span className="text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 rounded-lg">Aktif</span>
+                                                                            <span className="text-xs font-bold uppercase tracking-wide px-2 py-1 bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 rounded-lg">Aktif</span>
                                                                         ) : (
-                                                                            <span className="text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)] rounded-lg">Tidak Aktif</span>
+                                                                            <span className="text-xs font-bold uppercase tracking-wide px-2 py-1 bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)] rounded-lg">Tidak Aktif</span>
                                                                         )}
                                                                         {year.is_locked && (
-                                                                            <span className="text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-lg flex items-center gap-1">
-                                                                                <Archive className="text-[8px]"/> Tutup
+                                                                            <span className="text-xs font-bold uppercase tracking-wide px-2 py-1 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-lg flex items-center gap-1">
+                                                                                <Archive className="w-4 h-4"/> Tutup
                                                                             </span>
                                                                         )}
                                                                     </div>
@@ -1642,11 +1642,11 @@ export default function AcademicYearsPage() {
                                                             <td className="px-6 py-4">
                                                                 <div className="flex items-center justify-center gap-1">
                                                                     {canEdit && (
-                                                                        <button onClick={() => handleEdit(year)} title="Edit" className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-blue-500 hover:bg-blue-500/10 transition-all text-sm"><SquarePen /></button>
+                                                                        <button onClick={() => handleEdit(year)} title="Edit" className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-blue-500 hover:bg-blue-500/10 transition-all text-sm"><SquarePen className="w-4 h-4" /></button>
                                                                     )}
-                                                                    <button onClick={() => handleOpenHistory(year)} title="Riwayat" className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-purple-500 hover:bg-purple-500/10 transition-all text-sm"><History /></button>
+                                                                    <button onClick={() => handleOpenHistory(year)} title="Riwayat" className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-purple-500 hover:bg-purple-500/10 transition-all text-sm"><History className="w-4 h-4" /></button>
                                                                     {canEdit && (
-                                                                        <button onClick={() => { setItemToDelete(year); setIsDeleteModalOpen(true) }} title="Hapus" className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-all text-sm"><Trash2 /></button>
+                                                                        <button onClick={() => { setItemToDelete(year); setIsDeleteModalOpen(true) }} title="Hapus" className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-all text-sm"><Trash2 className="w-4 h-4" /></button>
                                                                     )}
                                                                 </div>
                                                             </td>
@@ -1665,30 +1665,30 @@ export default function AcademicYearsPage() {
                                                         <div className="flex flex-col items-center gap-3 pt-1">
                                                             <input type="checkbox" checked={selectedIds.includes(year.id)} onChange={() => toggleSelect(year.id)} className="w-4 h-4 rounded border-[var(--color-border)] text-[var(--color-primary)] focus:ring-[var(--color-primary)] accent-[var(--color-primary)] cursor-pointer shrink-0 mt-1" />
                                                         </div>
-                                                        <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-black shadow-sm relative transition-transform shrink-0 ${year.is_active ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
+                                                        <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold shadow-sm relative transition-transform shrink-0 ${year.is_active ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
                                                             <span className="relative z-10">{year.name?.slice(2, 4) || '??'}</span>
                                                         </div>
                                                         <div className="flex-1 min-w-0">
                                                             <div className="flex items-start justify-between gap-2">
                                                                 <div className="min-w-0 flex-1" onClick={() => handleOpenReadOnlyDetail(year)}>
-                                                                    <button className="font-extrabold text-sm text-[var(--color-text)] hover:text-[var(--color-primary)] text-left truncate block w-full">{year.name}</button>
+                                                                    <button className="font-bold text-sm text-[var(--color-text)] hover:text-[var(--color-primary)] text-left truncate block w-full">{year.name}</button>
                                                                     <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                                                                        <span className={`text-[8px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-widest border ${year.semester === 'Ganjil' ? 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20' : 'bg-purple-500/10 text-purple-600 border-purple-500/20'}`}>{year.semester}</span>
-                                                                        <span className="text-[10px] font-bold text-[var(--color-text-muted)]">{formatDate(year.start_date)} — {formatDate(year.end_date)}</span>
+                                                                        <span className={`text-xs font-bold px-1.5 py-0.5 rounded-md uppercase tracking-wide border ${year.semester === 'Ganjil' ? 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20' : 'bg-purple-500/10 text-purple-600 border-purple-500/20'}`}>{year.semester}</span>
+                                                                        <span className="text-xs font-bold text-[var(--color-text-muted)]">{formatDate(year.start_date)} — {formatDate(year.end_date)}</span>
                                                                     </div>
-                                                                    <p className="text-[10px] text-[var(--color-text-muted)] font-mono mt-1 opacity-60 uppercase tracking-widest">ID: {year.id.slice(0, 8)}</p>
+                                                                    <p className="text-xs text-[var(--color-text-muted)] font-mono mt-1 opacity-60 uppercase tracking-wide">ID: {year.id.slice(0, 8)}</p>
                                                                 </div>
                                                                 <div className="flex items-center gap-1">
-                                                                    {canEdit && <button onClick={() => handleEdit(year)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]"><SquarePen className="text-xs" /></button>}
+                                                                    {canEdit && <button onClick={() => handleEdit(year)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]"><SquarePen className="w-4 h-4" /></button>}
                                                                 </div>
                                                             </div>
                                                             <div className="mt-3 flex items-center gap-2">
                                                                 {year.is_active ? (
-                                                                    <div className="flex-1 h-9 rounded-xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Aktif</div>
+                                                                    <div className="flex-1 h-9 rounded-xl flex items-center justify-center text-xs font-bold uppercase tracking-wide bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Aktif</div>
                                                                 ) : (
-                                                                    <div className="flex-1 h-9 rounded-xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]">Tidak Aktif</div>
+                                                                    <div className="flex-1 h-9 rounded-xl flex items-center justify-center text-xs font-bold uppercase tracking-wide bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]">Tidak Aktif</div>
                                                                 )}
-                                                                <button onClick={() => handleOpenHistory(year)} className="flex-1 h-9 rounded-xl bg-indigo-500/10 text-indigo-600 border border-indigo-500/20 flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all"><History className="text-xs" /> Riwayat</button>
+                                                                <button onClick={() => handleOpenHistory(year)} className="flex-1 h-9 rounded-xl bg-indigo-500/10 text-indigo-600 border border-indigo-500/20 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wide active:scale-95 transition-all"><History className="w-4 h-4" /> Riwayat</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1715,26 +1715,26 @@ export default function AcademicYearsPage() {
                             <div className="space-y-4 pb-2">
                                 <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/30 flex items-start justify-between gap-3">
                                     <div className="min-w-0">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Tahun Pelajaran</p>
-                                        <h4 className="text-lg font-black text-[var(--color-text)] leading-tight truncate">{readOnlyDetailItem.name}</h4>
+                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Tahun Pelajaran</p>
+                                        <h4 className="text-lg font-bold text-[var(--color-text)] leading-tight truncate">{readOnlyDetailItem.name}</h4>
                                         <div className="flex flex-wrap items-center gap-2 mt-2">
-                                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${readOnlyDetailItem.semester === 'Ganjil' ? 'bg-blue-500/10 text-blue-600 border border-blue-500/20' : 'bg-purple-500/10 text-purple-600 border border-purple-500/20'}`}>Semester {readOnlyDetailItem.semester}</span>
+                                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${readOnlyDetailItem.semester === 'Ganjil' ? 'bg-blue-500/10 text-blue-600 border border-blue-500/20' : 'bg-purple-500/10 text-purple-600 border border-purple-500/20'}`}>Semester {readOnlyDetailItem.semester}</span>
                                         </div>
                                     </div>
-                                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-black shrink-0 ${readOnlyDetailItem.is_active ? 'bg-[var(--color-primary)] text-white shadow-md' : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)]'}`}>{readOnlyDetailItem.name?.slice(2, 4) || '??'}</div>
+                                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-bold shrink-0 ${readOnlyDetailItem.is_active ? 'bg-[var(--color-primary)] text-white shadow-md' : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)]'}`}>{readOnlyDetailItem.name?.slice(2, 4) || '??'}</div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Periode</p>
+                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-2">Periode</p>
                                         <div className="text-xs font-bold">{formatDate(readOnlyDetailItem.start_date)} — {formatDate(readOnlyDetailItem.end_date)}</div>
                                     </div>
                                     <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Durasi</p>
-                                        <div className="text-xs font-black">{getDuration(readOnlyDetailItem.start_date, readOnlyDetailItem.end_date)}</div>
+                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-2">Durasi</p>
+                                        <div className="text-xs font-bold">{getDuration(readOnlyDetailItem.start_date, readOnlyDetailItem.end_date)}</div>
                                     </div>
                                 </div>
-                                <button onClick={() => { setIsReadOnlyDetailOpen(false); handleOpenHistory(readOnlyDetailItem) }} className="w-full h-12 rounded-xl bg-indigo-500/10 text-indigo-600 font-black text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-2 border border-indigo-500/20"><History />Riwayat Perubahan</button>
-                                <button onClick={() => { setIsReadOnlyDetailOpen(false); setReadOnlyDetailItem(null) }} className="w-full h-12 rounded-xl bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] font-black text-[10px] uppercase tracking-widest transition-all">Tutup</button>
+                                <button onClick={() => { setIsReadOnlyDetailOpen(false); handleOpenHistory(readOnlyDetailItem) }} className="w-full h-12 rounded-xl bg-indigo-500/10 text-indigo-600 font-bold text-xs uppercase tracking-wide transition-all flex items-center justify-center gap-2 border border-indigo-500/20"><History className="w-4 h-4" />Riwayat Perubahan</button>
+                                <button onClick={() => { setIsReadOnlyDetailOpen(false); setReadOnlyDetailItem(null) }} className="w-full h-12 rounded-xl bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] font-bold text-xs uppercase tracking-wide transition-all">Tutup</button>
                             </div>
                         )
                     })()}
@@ -1744,8 +1744,8 @@ export default function AcademicYearsPage() {
                     {historyItem && <div className="h-[60vh] overflow-hidden"><AuditTimeline tableName="academic_years" recordId={historyItem.id} limit={30} /></div>}
                 </Modal>
 
-                <Modal isOpen={isBulkDeleteOpen} onClose={() => setIsBulkDeleteOpen(false)} title="Arsipkan Massal" description={`Pindahkan ${selectedIds.length} data ke arsip.`} icon={Archive} iconBg="bg-red-500/10" iconColor="text-red-500" size="sm" footer={<div className="flex gap-3"><button onClick={() => setIsBulkDeleteOpen(false)} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] transition-all">Batal</button><div className="flex-1" /><button onClick={handleBulkDelete} disabled={submitting} className="h-9 px-5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-black text-[10px] transition-all flex items-center gap-2">Arsipkan Sekarang</button></div>}>
-                    <p className="text-[11px] font-bold text-red-700/70 p-4 rounded-2xl bg-red-500/5 border border-red-500/10">Anda akan mengarsipkan <span className="font-black text-red-600">{selectedIds.length} tahun pelajaran</span> secara bersamaan.</p>
+                <Modal isOpen={isBulkDeleteOpen} onClose={() => setIsBulkDeleteOpen(false)} title="Arsipkan Massal" description={`Pindahkan ${selectedIds.length} data ke arsip.`} icon={Archive} iconBg="bg-red-500/10" iconColor="text-red-500" size="sm" footer={<div className="flex gap-3"><button onClick={() => setIsBulkDeleteOpen(false)} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] transition-all">Batal</button><div className="flex-1" /><button onClick={handleBulkDelete} disabled={submitting} className="h-9 px-5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-bold text-xs transition-all flex items-center gap-2">Arsipkan Sekarang</button></div>}>
+                    <p className="text-xs font-bold text-red-700/70 p-4 rounded-2xl bg-red-500/5 border border-red-500/10">Anda akan mengarsipkan <span className="font-bold text-red-600">{selectedIds.length} tahun pelajaran</span> secara bersamaan.</p>
                 </Modal>
 
                 <AcademicYearArchiveModal

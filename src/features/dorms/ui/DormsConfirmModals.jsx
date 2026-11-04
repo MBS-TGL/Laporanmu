@@ -49,7 +49,7 @@ export function ConfirmEvictModal({
             }
         >
             <div className="px-1">
-                <p className="text-xs sm:text-[13px] text-[var(--color-text-muted)] leading-relaxed font-medium">
+                <p className="text-xs sm:text-sm text-[var(--color-text-muted)] leading-relaxed font-medium">
                     {t('dorms.confirm.evict.text')
                         .split('{name}')
                         .reduce((acc, part, i) => {
@@ -119,7 +119,7 @@ export function ConfirmDeleteDormModal({
                     const occupants = students.filter(s => s.metadata?.kamar === dormToDelete.id)
                     if (occupants.length > 0) {
                         return (
-                            <p className="text-xs sm:text-[13px] text-[var(--color-text-muted)] leading-relaxed font-medium">
+                            <p className="text-xs sm:text-sm text-[var(--color-text-muted)] leading-relaxed font-medium">
                                 {t('dorms.confirm.deleteDorm.occupantsText')
                                     .split('{room}')
                                     .reduce((acc, part, i) => {
@@ -134,7 +134,7 @@ export function ConfirmDeleteDormModal({
                         )
                     }
                     return (
-                        <p className="text-xs sm:text-[13px] text-[var(--color-text-muted)] leading-relaxed font-medium">
+                        <p className="text-xs sm:text-sm text-[var(--color-text-muted)] leading-relaxed font-medium">
                             {t('dorms.confirm.deleteDorm.noOccupantsText')
                                 .split('{room}')
                                 .reduce((acc, part, i) => {
@@ -200,7 +200,7 @@ export function ConfirmDeleteAuditModal({
         >
             <div className="px-1">
                 {auditToDelete && (
-                    <p className="text-xs sm:text-[13px] text-[var(--color-text-muted)] leading-relaxed font-medium">
+                    <p className="text-xs sm:text-sm text-[var(--color-text-muted)] leading-relaxed font-medium">
                         {t('dorms.confirm.deleteAudit.text')
                             .split('{room}')
                             .reduce((acc, part, i) => {
@@ -274,7 +274,7 @@ export function ConfirmDeleteInventoryModal({
         >
             <div className="px-1">
                 {inventoryToDelete && (
-                    <p className="text-xs sm:text-[13px] text-[var(--color-text-muted)] leading-relaxed font-medium">
+                    <p className="text-xs sm:text-sm text-[var(--color-text-muted)] leading-relaxed font-medium">
                         {t('dorms.confirm.deleteInventory.text')
                             .split('{item}')
                             .reduce((acc, part, i) => {

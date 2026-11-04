@@ -6,7 +6,7 @@ import {
 import { JENJANG_OPTIONS } from '../utils/suspensionConstants'
 
 const inputCls = 'w-full h-10 px-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text)] text-sm placeholder:text-[var(--color-text-muted)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)] transition-all'
-const labelCls = 'text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-70 mb-1.5 flex items-center gap-1.5'
+const labelCls = 'text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-70 mb-1.5 flex items-center gap-1.5'
 
 function StudentPicker({ value, onSelect, findStudents, suggestJenjang, disabled }) {
   const [term, setTerm] = useState('')
@@ -48,7 +48,7 @@ function StudentPicker({ value, onSelect, findStudents, suggestJenjang, disabled
       {value ? (
         <div className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20">
           <div className="w-9 h-9 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center shrink-0 overflow-hidden">
-            <span className="text-sm font-black text-[var(--color-primary)]">{value.name?.charAt(0)}</span>
+            <span className="text-sm font-bold text-[var(--color-primary)]">{value.name?.charAt(0)}</span>
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-sm font-bold text-[var(--color-text)] truncate">{value.name}</p>
@@ -228,7 +228,7 @@ function SuspensionFormModal({ isOpen, onClose, onSubmit, findStudents, findRepo
             placeholder="Contoh: Melanggar tata tertib berat (perkelahian). Dipulangkan 5 hari dengan tugas pembinaan…"
             className={`${inputCls} h-auto py-2.5 min-h-[76px] resize-y`}
           />
-          <p className="text-[11px] text-[var(--color-text-muted)] mt-1">
+          <p className="text-xs text-[var(--color-text-muted)] mt-1">
             Minimal 10 karakter. Hanya dibaca guru/BK di dashboard.
           </p>
         </div>

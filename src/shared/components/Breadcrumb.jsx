@@ -62,13 +62,13 @@ export default function Breadcrumb({ items = [], badge = null, className = '' })
     return (
         <div className={`flex flex-wrap items-center gap-2.5 ${className}`.trim()}>
             {badge ? (
-                <span className="px-2.5 py-1 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
+                <span className="px-2.5 py-1 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide leading-4 text-[var(--color-text-muted)]">
                     {translate(badge)}
                 </span>
             ) : null}
 
             {safeItems.length > 0 ? (
-                <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] opacity-75">
+                <span className="text-xs font-bold uppercase tracking-wide leading-4 text-[var(--color-text-muted)] opacity-75">
                     {safeItems.map((it, idx) => {
                         // Dukung bentuk string ('Skorsing') dan objek ({ label: 'Skorsing' })
                         const label = typeof it === 'object' ? (it?.label ?? it?.name ?? '') : it

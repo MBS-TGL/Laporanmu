@@ -159,17 +159,17 @@ export default function SuspensionTasksPage() {
               <article key={t.id} className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)]">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="text-[11px] font-black uppercase tracking-widest text-[var(--color-primary)]">{t.subject}</p>
-                    <h3 className="text-sm font-black text-[var(--color-text)] mt-0.5">{t.title}</h3>
+                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-primary)]">{t.subject}</p>
+                    <h3 className="text-sm font-bold text-[var(--color-text)] mt-0.5">{t.title}</h3>
                     {t.description && <p className="text-xs text-[var(--color-text-muted)] mt-1 whitespace-pre-wrap">{t.description}</p>}
-                    <div className="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-[11px] text-[var(--color-text-muted)]">
+                    <div className="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-xs text-[var(--color-text-muted)]">
                       {t.due_date && <span>Tenggat: {formatTanggalPendek(t.due_date)}</span>}
                       {t.target_tahfidz?.surah && <span>Tahfidz: {t.target_tahfidz.surah}{t.target_tahfidz.ayat ? ` : ${t.target_tahfidz.ayat}` : ''}</span>}
                       {t.target_wafa?.jilid && <span>Wafa: jilid {t.target_wafa.jilid}{t.target_wafa.halaman ? ` hal. ${t.target_wafa.halaman}` : ''}</span>}
                       {!mine && <span className="flex items-center gap-1"><Lock className="w-3 h-3" /> milik guru lain</span>}
                     </div>
                   </div>
-                  <span className={`shrink-0 text-[10px] font-black px-2 py-1 rounded-lg border ${
+                  <span className={`shrink-0 text-xs font-bold px-2 py-1 rounded-lg border ${
                     !sub ? 'bg-slate-500/10 text-[var(--color-text-muted)] border-[var(--color-border)]'
                     : sub.status === 'dinilai' ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
                     : 'bg-amber-500/10 text-amber-600 border-amber-500/20'
@@ -214,7 +214,7 @@ export default function SuspensionTasksPage() {
                       </button>
                     </>
                   ) : (
-                    <span className="text-[11px] text-[var(--color-text-muted)] self-center">
+                    <span className="text-xs text-[var(--color-text-muted)] self-center">
                       {isAdmin ? '' : 'Hanya pembuat tugas yang bisa mengubah.'}
                     </span>
                   )}

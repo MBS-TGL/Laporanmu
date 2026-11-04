@@ -10,7 +10,7 @@ export default function PageHeader({
     className = ''
 }) {
     return (
-        <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 ${className}`}>
+        <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 ${className}`}>
             <div>
                 {(breadcrumbs.length > 0 || badge) && (
                     <Breadcrumb badge={badge} items={breadcrumbs} className="mb-1" />

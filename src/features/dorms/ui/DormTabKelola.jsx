@@ -93,15 +93,15 @@ export default function DormTabKelola({
                                                     {room.ar || '—'}
                                                 </span>
                                                 {room.status === 'maintenance' ? (
-                                                    <span className="px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-rose-500/10 text-rose-600 border border-rose-500/20">
+                                                    <span className="px-2 py-0.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-rose-500/10 text-rose-600 border border-rose-500/20">
                                                         {t('dorms.manage.statusMaintenance')}
                                                     </span>
                                                 ) : room.status === 'full' ? (
-                                                    <span className="px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-amber-500/10 text-amber-600 border border-amber-500/20">
+                                                    <span className="px-2 py-0.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-amber-500/10 text-amber-600 border border-amber-500/20">
                                                         {t('dorms.manage.statusLocked')}
                                                     </span>
                                                 ) : (
-                                                    <span className="px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+                                                    <span className="px-2 py-0.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
                                                         {t('dorms.manage.statusActive')}
                                                     </span>
                                                 )}
@@ -113,7 +113,7 @@ export default function DormTabKelola({
                                         {/* Occupancy & PJ Musyrif */}
                                         <div className="grid grid-cols-2 gap-4 text-xs">
                                             <div className="space-y-1">
-                                                <span className="block text-[10px] font-bold uppercase tracking-wider text-[var(--color-text-muted)]">Okupansi</span>
+                                                <span className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">Okupansi</span>
                                                 <div className="flex items-center gap-1.5">
                                                     <span className={`font-bold ${percent >= 100 ? 'text-rose-500' : percent >= 85 ? 'text-amber-500' : 'text-[var(--color-primary)]'}`}>
                                                         {tNum(count)} / {tNum(cap)}
@@ -126,7 +126,7 @@ export default function DormTabKelola({
                                             </div>
                                             
                                             <div className="space-y-1">
-                                                <span className="block text-[10px] font-bold uppercase tracking-wider text-[var(--color-text-muted)]">{t('dorms.manage.thMusyrif')}</span>
+                                                <span className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">{t('dorms.manage.thMusyrif')}</span>
                                                 <span className="font-semibold text-[var(--color-text)] truncate block">
                                                     {musyrif ? musyrif.name : t('dorms.manage.noMusyrif')}
                                                 </span>
@@ -233,7 +233,7 @@ export default function DormTabKelola({
                                                             <span className={percent >= 100 ? 'text-rose-500' : percent >= 85 ? 'text-amber-500' : 'text-[var(--color-primary)]'}>
                                                                 {tNum(count)} / {tNum(cap)} {t('dorms.manage.occupancyText')}
                                                             </span>
-                                                            <span className="text-[10px] text-[var(--color-text-muted)] font-medium">
+                                                            <span className="text-xs text-[var(--color-text-muted)] font-medium">
                                                                 {tNum(Math.round(percent))}%
                                                             </span>
                                                         </div>
@@ -244,15 +244,15 @@ export default function DormTabKelola({
                                                 </td>
                                                 <td className="px-5 py-3.5 text-center">
                                                     {room.status === 'maintenance' ? (
-                                                        <span className="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-rose-500/10 text-rose-600 border border-rose-500/25">
+                                                        <span className="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-rose-500/10 text-rose-600 border border-rose-500/25">
                                                             {t('dorms.manage.statusMaintenance')}
                                                         </span>
                                                     ) : room.status === 'full' ? (
-                                                        <span className="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-amber-500/10 text-amber-600 border border-amber-500/25">
+                                                        <span className="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-amber-500/10 text-amber-600 border border-amber-500/25">
                                                             {t('dorms.manage.statusLocked')}
                                                         </span>
                                                     ) : (
-                                                        <span className="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-600 border border-emerald-500/25">
+                                                        <span className="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-600 border border-emerald-500/25">
                                                             {t('dorms.manage.statusActive')}
                                                         </span>
                                                     )}

@@ -139,11 +139,11 @@ export default function DormsAssignModal({
                                                     </div>
                                                     <div>
                                                         {room ? (
-                                                            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg bg-indigo-500/10 text-indigo-600 border border-indigo-500/20">
+                                                            <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg bg-indigo-500/10 text-indigo-600 border border-indigo-500/20">
                                                                 {room}
                                                             </span>
                                                         ) : (
-                                                            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg bg-amber-500/10 text-amber-500 border border-dashed border-amber-500/20">
+                                                            <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg bg-amber-500/10 text-amber-500 border border-dashed border-amber-500/20">
                                                                 {t('dorms.assign.unassigned')}
                                                             </span>
                                                         )}

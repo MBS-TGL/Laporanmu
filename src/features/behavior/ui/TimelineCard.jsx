@@ -72,7 +72,7 @@ export default function TimelineCard({
         <div className="relative group/item -ml-[28px] pl-[28px] sm:-ml-[64px] sm:pl-[64px]">
             {/* Time — right-aligned in 0→36px zone. Hidden on mobile. */}
             <div className="absolute pointer-events-none hidden sm:flex items-center justify-end left-0 top-1/2 -translate-y-1/2 w-[36px] z-[1]">
-                <span className="text-[10px] font-bold uppercase tracking-wider tabular-nums leading-none text-[var(--color-text-muted)] opacity-40 group-hover/item:opacity-75 transition-opacity">
+                <span className="text-xs font-bold uppercase tracking-wider tabular-nums leading-none text-[var(--color-text-muted)] opacity-40 group-hover/item:opacity-75 transition-opacity">
                     {fmtTime(r.reported_at)}
                 </span>
             </div>
@@ -139,18 +139,18 @@ export default function TimelineCard({
                                 {mask(tDb(stud?.name) || '—')}
                             </span>
                             {stud?.class_name && (
-                                <span className="px-2 py-0.5 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider flex-shrink-0 shadow-sm">
+                                <span className="px-2 py-0.5 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider flex-shrink-0 shadow-sm">
                                     {stud.class_name}
                                 </span>
                             )}
                         </div>
-                        <p className="text-[11px] font-bold text-[var(--color-text)] mt-1.5 flex items-center gap-2 leading-none">
+                        <p className="text-xs font-bold text-[var(--color-text)] mt-1.5 flex items-center gap-2 leading-none">
                             <span className={`inline-block w-1.5 h-1.5 rounded-full shrink-0 ${isPos ? 'bg-emerald-500 shadow-[0_0_4px_#10b981]' : 'bg-rose-500 shadow-[0_0_4px_#f43f5e]'}`} />
                             {getTypeName(r.violation_type_id)}
                         </p>
                         {r.notes && (
                             <div className={`mt-2 py-1 px-3 border-l-2 ${isPos ? 'border-emerald-500/40 bg-emerald-500/[0.02]' : 'border-rose-500/40 bg-rose-500/[0.02]'} rounded-r-xl max-w-xl shadow-inner`}>
-                                <p className="text-[11px] italic font-medium text-[var(--color-text-muted)] opacity-85 leading-relaxed break-words">
+                                <p className="text-xs italic font-medium text-[var(--color-text-muted)] opacity-85 leading-relaxed break-words">
                                     "{mask(tDb(r.notes))}"
                                 </p>
                             </div>
@@ -159,7 +159,7 @@ export default function TimelineCard({
                     {/* Points + Actions */}
                     <div className="flex items-center gap-2 shrink-0">
                         <div
-                            className={`flex items-center justify-center min-w-[46px] h-6 rounded-full text-[11px] font-bold tracking-tight border ${
+                            className={`flex items-center justify-center min-w-[46px] h-6 rounded-full text-xs font-bold tracking-tight border ${
                                 isPos
                                     ? 'bg-success/10 text-emerald-600 border-emerald-500/30 shadow-sm'
                                     : 'bg-danger/10 text-rose-600 border-rose-500/30 shadow-sm'
@@ -220,7 +220,7 @@ export default function TimelineCard({
                                     {mask(tDb(stud?.name) || '—')}
                                 </span>
                                 {stud?.class_name && (
-                                    <span className="block text-[11px] text-[var(--color-text-muted)] mt-0.5 font-medium truncate">
+                                    <span className="block text-xs text-[var(--color-text-muted)] mt-0.5 font-medium truncate">
                                         {stud.class_name}
                                     </span>
                                 )}
@@ -228,7 +228,7 @@ export default function TimelineCard({
                         </div>
 
                         <div
-                            className={`shrink-0 flex items-center justify-center min-w-[34px] h-5 rounded-full text-[10px] font-bold border ${
+                            className={`shrink-0 flex items-center justify-center min-w-[34px] h-5 rounded-full text-xs font-bold border ${
                                 isPos ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : 'bg-rose-500/10 text-rose-600 border-rose-500/20'
                             }`}
                         >
@@ -238,7 +238,7 @@ export default function TimelineCard({
 
                     {/* Type */}
                     <div className="pl-[42px]">
-                        <p className="text-[11px] font-bold text-[var(--color-text)] flex items-center gap-1.5 leading-snug">
+                        <p className="text-xs font-bold text-[var(--color-text)] flex items-center gap-1.5 leading-snug">
                             <span className={`inline-block w-1.5 h-1.5 rounded-full shrink-0 ${isPos ? 'bg-emerald-500 shadow-[0_0_4px_#10b981]' : 'bg-rose-500 shadow-[0_0_4px_#f43f5e]'}`} />
                             {getTypeName(r.violation_type_id)}
                         </p>
@@ -247,7 +247,7 @@ export default function TimelineCard({
                     {/* Notes */}
                     {r.notes && (
                         <div className="ml-[42px] py-1 px-2.5 border-l-2 border-[var(--color-border)] bg-[var(--color-surface-alt)]/35 rounded-r-lg">
-                            <p className="text-[11px] italic font-medium text-[var(--color-text-muted)] opacity-85 leading-relaxed break-words">
+                            <p className="text-xs italic font-medium text-[var(--color-text-muted)] opacity-85 leading-relaxed break-words">
                                 "{mask(tDb(r.notes))}"
                             </p>
                         </div>
@@ -255,7 +255,7 @@ export default function TimelineCard({
 
                     {/* Footer: Date/Reporter & Actions */}
                     <div className="flex items-center justify-between gap-2 mt-1 pt-2.5 border-t border-[var(--color-border)]/40 pl-[42px]">
-                        <div className="text-[11px] text-[var(--color-text-muted)] font-medium truncate leading-none">
+                        <div className="text-xs text-[var(--color-text-muted)] font-medium truncate leading-none">
                             {fmtTime(r.reported_at)}
                         </div>
                         <div className="flex items-center gap-1.5 shrink-0">

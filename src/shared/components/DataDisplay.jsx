@@ -8,7 +8,7 @@ const renderIcon = (icon, className = '') => {
 
     // Treat as Lucide React or standard React functional component
     const IconComp = icon;
-    return <IconComp className={className} />;
+    return <IconComp className={className} className="w-4 h-4" />;
 };
 
 export function StatCard({ 
@@ -86,7 +86,7 @@ export function StatCard({
 
             {/* Icon Container */}
             <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm ${finalBg} group-hover:scale-105 transition-transform duration-200`}>
-                {renderIcon(icon, 'w-5.5 h-5.5')}
+                {renderIcon(icon, 'w-5 h-5')}
             </div>
             
             {/* Content */}
@@ -94,7 +94,7 @@ export function StatCard({
                 {/* Label */}
                 {loading
                     ? <span className="inline-block w-20 h-2.5 rounded bg-[var(--color-border)] animate-pulse mb-1" />
-                    : <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] opacity-80 mb-1 truncate">{label}</p>
+                    : <p className="text-xs font-bold uppercase tracking-wide leading-none text-[var(--color-text-muted)] opacity-80 mb-1 truncate">{label}</p>
                 }
 
                 {/* Value + Trend */}

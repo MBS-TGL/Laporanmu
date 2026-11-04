@@ -193,7 +193,7 @@ export default function LeavePermitPrint({
       <div className="flex items-center gap-2">
         <button
           onClick={() => onPrint?.(printRef.current)}
-          className="h-9 flex items-center gap-2 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black uppercase tracking-wider hover:opacity-90 active:scale-95 transition-all shadow-sm shadow-[var(--color-primary)]/20"
+          className="h-9 flex items-center gap-2 px-4 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider hover:opacity-90 active:scale-95 transition-all shadow-sm shadow-[var(--color-primary)]/20"
         >
           <Printer className="w-3.5 h-3.5" /> Cetak
         </button>
@@ -201,7 +201,7 @@ export default function LeavePermitPrint({
           <button
             onClick={() => onPdf(printRef.current)}
             disabled={generatingPdf}
-            className="h-9 flex items-center gap-2 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[11px] font-black uppercase tracking-wider text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="h-9 flex items-center gap-2 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {generatingPdf ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
             PDF
@@ -222,7 +222,7 @@ export default function LeavePermitPrint({
                 type="button"
                 onClick={() => onPaperModeChange(opt.key)}
                 aria-pressed={paperMode === opt.key}
-                className={`h-8 rounded-lg px-3 text-[10px] font-bold uppercase tracking-wider transition-colors ${
+                className={`h-8 rounded-lg px-3 text-xs font-bold uppercase tracking-wider transition-colors ${
                   paperMode === opt.key
                     ? 'bg-[var(--color-primary)] text-white'
                     : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'

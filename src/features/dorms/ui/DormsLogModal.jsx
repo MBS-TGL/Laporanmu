@@ -26,14 +26,14 @@ export default function DormsLogModal({
                     <button
                         type="button"
                         onClick={onClose}
-                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition"
+                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition"
                     >
                         {t('dorms.log.cancel')}
                     </button>
                     <button
                         type="submit"
                         form="log-form"
-                        className="h-10 px-6 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition flex items-center justify-center gap-2"
+                        className="h-10 px-6 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition flex items-center justify-center gap-2"
                     >
                         <Check className="w-3.5 h-3.5" />
                         {t('dorms.log.save')}
@@ -44,18 +44,18 @@ export default function DormsLogModal({
             <form id="log-form" onSubmit={onSave} className="space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                     <div>
-                        <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.log.labelMusyrif')}</label>
+                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] block mb-1.5">{t('dorms.log.labelMusyrif')}</label>
                         <input
                             type="text"
                             required
                             value={newLog.musyrifName}
                             onChange={(e) => setNewLog(prev => ({ ...prev, musyrifName: e.target.value }))}
                             placeholder={t('dorms.log.placeholderMusyrif')}
-                            className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition"
+                            className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold focus:outline-none focus:border-[var(--color-primary)] transition"
                         />
                     </div>
                     <div>
-                        <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.log.labelShift')}</label>
+                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] block mb-1.5">{t('dorms.log.labelShift')}</label>
                         <div className="w-full">
                             <RichSelect
                                 value={newLog.shift}
@@ -72,24 +72,24 @@ export default function DormsLogModal({
                 </div>
 
                 <div>
-                    <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.log.labelNotes')}</label>
+                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] block mb-1.5">{t('dorms.log.labelNotes')}</label>
                     <textarea
                         value={newLog.notes}
                         onChange={(e) => setNewLog(prev => ({ ...prev, notes: e.target.value }))}
                         placeholder={t('dorms.log.placeholderNotes')}
                         rows="3"
-                        className="w-full p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition resize-none"
+                        className="w-full p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold focus:outline-none focus:border-[var(--color-primary)] transition resize-none"
                     />
                 </div>
 
                 <div>
-                    <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.log.labelIssues')}</label>
+                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] block mb-1.5">{t('dorms.log.labelIssues')}</label>
                     <input
                         type="text"
                         value={newLog.issues}
                         onChange={(e) => setNewLog(prev => ({ ...prev, issues: e.target.value }))}
                         placeholder={t('dorms.log.placeholderIssues')}
-                        className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition"
+                        className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold focus:outline-none focus:border-[var(--color-primary)] transition"
                     />
                 </div>
             </form>

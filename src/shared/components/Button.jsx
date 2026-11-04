@@ -17,9 +17,9 @@ const VARIANTS = {
 }
 
 const SIZES = {
-  sm: 'h-8 px-3 text-xs gap-1.5 rounded-lg',
-  md: 'h-10 px-4 text-sm gap-2 rounded-lg',
-  lg: 'h-11 px-6 text-sm gap-2 rounded-lg',
+  sm: 'h-8 px-3 text-xs leading-none gap-1.5 rounded-lg',
+  md: 'h-10 px-4 text-sm leading-none gap-2 rounded-lg',
+  lg: 'h-11 px-6 text-sm leading-none gap-2 rounded-lg',
   icon: 'h-10 w-10 rounded-lg',
 }
 
@@ -37,7 +37,7 @@ const Button = memo(function Button({
     <button
       type={type}
       disabled={disabled || loading}
-      className={`inline-flex items-center justify-center font-semibold transition-colors active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none select-none ${VARIANTS[variant]} ${SIZES[size]} ${className}`}
+      className={`inline-flex items-center justify-center whitespace-nowrap font-semibold transition-colors active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none select-none ${VARIANTS[variant]} ${SIZES[size]} ${className}`}
       {...props}
     >
       {loading && <LoaderCircle className="w-4 h-4 animate-spin shrink-0" />}

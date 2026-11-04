@@ -125,7 +125,7 @@ export default function FormTamu({ onSubmit, loading }) {
           </div>
           <div>
             <p className="text-xs font-bold text-[var(--color-text)] leading-tight">{tp('formIdentityPhoto')}</p>
-            <p className="text-[11px] text-[var(--color-text-muted)]">{tp('formIdentityPhotoDesc')}</p>
+            <p className="text-xs text-[var(--color-text-muted)]">{tp('formIdentityPhotoDesc')}</p>
           </div>
         </div>
         <IdCard className="w-4 h-4 text-emerald-500/30" />

@@ -17,10 +17,10 @@ function InfoRow({ icon, label, value, color = '' }) {
     const Icon = icon
     return (
         <div className="flex items-start gap-3 py-2 border-b border-[var(--color-border)]/30 last:border-0">
-            <Icon className={`text-[11px] mt-0.5 ${color || 'text-[var(--color-text-muted)] opacity-40'}`} />
+            <Icon className={`w-4 h-4 mt-0.5 ${color || 'text-[var(--color-text-muted)] opacity-40'}`} />
             <div className="flex-1 min-w-0">
-                <p className="text-[9px] font-bold uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">{label}</p>
-                <p className="text-[12px] font-medium text-[var(--color-text)] mt-0.5">{value}</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60">{label}</p>
+                <p className="text-xs font-medium text-[var(--color-text)] mt-0.5">{value}</p>
             </div>
         </div>
     )
@@ -137,17 +137,17 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                         {/* Secondary Actions grouped as Icon Buttons */}
                         <div className="flex items-center gap-1 bg-[var(--color-surface-alt)]/50 p-1 rounded-xl border border-[var(--color-border)] mr-auto">
                             <button onClick={() => onEdit(enrollment)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] shadow-sm transition-all" title="Edit Data">
-                                <Pen className="text-[11px]" />
+                                <Pen className="w-4 h-4" />
                             </button>
                             <button onClick={() => onManagePayment?.(enrollment)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-indigo-600 hover:bg-indigo-500/10 shadow-sm transition-all" title="Kelola Keuangan & Pembayaran">
-                                <Banknote className="text-[11px]" />
+                                <Banknote className="w-4 h-4" />
                             </button>
                             <button onClick={() => alert("Beralih ke pratinjau cetak Kartu Ujian (sedang dikembangkan)")} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-purple-600 hover:bg-purple-500/10 shadow-sm transition-all" title="Cetak Kartu Ujian Seleksi">
-                                <ClipboardList className="text-[11px]" />
+                                <ClipboardList className="w-4 h-4" />
                             </button>
                             <div className="w-px h-4 bg-[var(--color-border)] mx-0.5" />
                             <button onClick={() => onDelete(enrollment)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-amber-600 hover:bg-amber-500/10 shadow-sm transition-all" title="Arsipkan Pendaftar">
-                                <Archive className="text-[11px]" />
+                                <Archive className="w-4 h-4" />
                             </button>
                         </div>
 
@@ -156,10 +156,10 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                             {prevStatus && !isConverted && (
                                 <button
                                     onClick={() => onStatusChange(enrollment, prevStatus)}
-                                    className="h-10 px-3 sm:px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)] transition-all flex items-center gap-2"
+                                    className="h-10 px-3 sm:px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)] transition-all flex items-center gap-2"
                                     title={`Kembali ke ${prevStatus}`}
                                 >
-                                    <ArrowLeft className="text-[10px]" />
+                                    <ArrowLeft className="w-4 h-4" />
                                     <span className="hidden sm:inline">Mundur</span>
                                 </button>
                             )}
@@ -167,9 +167,9 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                             {status !== 'ditolak' && status !== 'diterima' && status !== 'daftar_ulang' && (
                                 <button
                                     onClick={() => onStatusChange(enrollment, 'ditolak')}
-                                    className="h-10 px-4 rounded-xl border border-rose-500/30 bg-rose-500/5 text-[10px] font-bold uppercase tracking-wider text-rose-600 hover:bg-rose-500/10 transition-all flex items-center gap-2"
+                                    className="h-10 px-4 rounded-xl border border-rose-500/30 bg-rose-500/5 text-xs font-bold uppercase tracking-wider text-rose-600 hover:bg-rose-500/10 transition-all flex items-center gap-2"
                                 >
-                                    <CircleX className="text-[10px]" /> Tolak
+                                    <CircleX className="w-4 h-4" /> Tolak
                                 </button>
                             )}
 
@@ -179,9 +179,9 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                         onClose();
                                         onConvertToStudent?.(enrollment);
                                     }}
-                                    className="h-10 px-4 sm:px-5 rounded-xl bg-indigo-600 text-white text-[10px] font-black uppercase tracking-wider shadow-md hover:shadow-lg hover:bg-indigo-700 transition-all flex items-center gap-2"
+                                    className="h-10 px-4 sm:px-5 rounded-xl bg-indigo-600 text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg hover:bg-indigo-700 transition-all flex items-center gap-2"
                                 >
-                                    <GraduationCap className="text-[10px]" />
+                                    <GraduationCap className="w-4 h-4" />
                                     <span className="hidden sm:inline">Konversi ke</span> Siswa
                                 </button>
                             )}
@@ -189,10 +189,10 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                             {nextStatus && (
                                 <button
                                     onClick={() => onStatusChange(enrollment, nextStatus)}
-                                    className="h-10 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+                                    className="h-10 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center gap-2"
                                 >
                                     {nextStatus === 'verifikasi' ? 'Verifikasi' : nextStatus === 'tes' ? 'Lanjut Tes' : nextStatus === 'diterima' ? 'Terima' : 'Daftar Ulang'}
-                                    <ArrowRight className="text-[10px] opacity-80" />
+                                    <ArrowRight className="w-4 h-4 opacity-80" />
                                 </button>
                             )}
                         </div>
@@ -208,7 +208,7 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
 
                     <div className="flex items-start gap-4 relative z-10">
                         {/* Avatar */}
-                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-black shrink-0 ${gender === 'L'
+                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-bold shrink-0 ${gender === 'L'
                             ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
                             : 'bg-rose-500/10 text-rose-500'}`}>
                             {name?.charAt(0) || '?'}
@@ -217,21 +217,21 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                         <div className="flex-1 min-w-0">
                             <h3 className="text-lg font-bold text-[var(--color-text)] leading-tight truncate">{name}</h3>
                             <div className="flex items-center gap-2 mt-1 flex-wrap">
-                                <span className="text-[9px] font-bold text-[var(--color-text-muted)] tracking-wider">{registration_number}</span>
-                                {gender === 'L' ? <MarsIcon className={`text-[9px] ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} /> : <VenusIcon className={`text-[9px] ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} />}
+                                <span className="text-xs font-bold text-[var(--color-text-muted)] tracking-wider">{registration_number}</span>
+                                {gender === 'L' ? <MarsIcon className={`w-4 h-4 ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} /> : <VenusIcon className={`w-4 h-4 ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} />}
                                 {enrollment?.metadata?.is_waiting_list && status === 'diterima' ? (
-                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-wider border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-500">
+                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-bold uppercase tracking-wider border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-500">
                                         <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                                         Waiting List
                                     </span>
                                 ) : (
-                                    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-wider border ${statusCfg.color}`}>
+                                    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-xs font-bold uppercase tracking-wider border ${statusCfg.color}`}>
                                         <span className={`w-1.5 h-1.5 rounded-full ${statusCfg.dot}`} />
                                         {statusCfg.label}
                                     </span>
                                 )}
                                 {enrollment?.metadata?.acceptance_confirmed && (status === 'diterima' || status === 'daftar_ulang') && (
-                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-wider bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 animate-fade-in">
+                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 animate-fade-in">
                                         Bersedia Bergabung ✓
                                     </span>
                                 )}
@@ -250,14 +250,14 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                             return (
                                 <div key={ps.key} className="flex items-center flex-1">
                                     <div className={`flex-1 flex flex-col items-center gap-1 transition-all ${isRejected ? 'opacity-30' : ''}`}>
-                                        <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-[9px] font-black ${isActive
+                                        <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold ${isActive
                                             ? `${STATUS_CONFIG[ps.key]?.dot} text-white shadow-sm`
                                             : isDone
                                                 ? 'bg-emerald-500 text-white'
                                                 : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}>
-                                            {isDone ? <CircleCheck className="text-[8px]" /> : i + 1}
+                                            {isDone ? <CircleCheck className="w-4 h-4" /> : i + 1}
                                         </div>
-                                        <span className={`text-[8px] font-bold uppercase tracking-wider ${isActive ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-50'}`}>
+                                        <span className={`text-xs font-bold uppercase tracking-wider ${isActive ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-50'}`}>
                                             {ps.label}
                                         </span>
                                     </div>
@@ -272,16 +272,16 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                     {/* Rejected badge */}
                     {status === 'ditolak' && (
                         <div className="mt-3 flex items-center gap-2 px-3 py-2 rounded-xl bg-rose-500/10 border border-rose-500/20">
-                            <CircleX className="text-rose-500 text-sm" />
-                            <span className="text-[11px] font-bold text-rose-600">Pendaftar ditolak</span>
+                            <CircleX className="w-4 h-4 text-rose-500" />
+                            <span className="text-xs font-bold text-rose-600">Pendaftar ditolak</span>
                         </div>
                     )}
 
                     {/* Converted badge */}
                     {isConverted && (
                         <div className="mt-3 flex items-center gap-2.5 px-3 py-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20">
-                            <GraduationCap className="text-indigo-600 text-sm animate-pulse" />
-                            <span className="text-[11px] font-black text-indigo-600">Telah Dikonversi ke Siswa Aktif</span>
+                            <GraduationCap className="w-4 h-4 text-indigo-600 animate-pulse" />
+                            <span className="text-xs font-bold text-indigo-600">Telah Dikonversi ke Siswa Aktif</span>
                         </div>
                     )}
                 </div>
@@ -293,8 +293,8 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                     <div className="bg-[var(--color-surface)] shadow-sm border border-[var(--color-border)] rounded-2xl p-4">
                         <div className="flex items-center gap-2.5 pt-1 mb-4">
                             <div className="w-1 h-4 bg-indigo-500 rounded-full" />
-                            <User className="text-indigo-500 text-[10px] opacity-70" />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Identitas</span>
+                            <User className="w-4 h-4 text-indigo-500 opacity-70" />
+                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Identitas</span>
                             <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                         </div>
                         <InfoRow icon={CalendarDays} label="Tempat, Tanggal Lahir" value={`${birth_place || '-'}, ${birth_date || '-'}`} />
@@ -308,27 +308,27 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                     <div className="bg-[var(--color-surface)] shadow-sm border border-[var(--color-border)] rounded-2xl p-4">
                         <div className="flex items-center gap-2.5 pt-1 mb-4">
                             <div className="w-1 h-4 bg-emerald-500 rounded-full" />
-                            <BookOpenText className="text-emerald-500 text-[10px] opacity-70" />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Kemampuan Al-Quran</span>
+                            <BookOpenText className="w-4 h-4 text-emerald-500 opacity-70" />
+                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Kemampuan Al-Quran</span>
                             <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                         </div>
                         <div className="flex items-center gap-4">
                             <div className="flex-1">
-                                <p className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Bacaan</p>
+                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Bacaan</p>
                                 {quranCfg ? (
-                                    <span className={`inline-block mt-1 px-3 py-1 rounded-lg text-[11px] font-bold ${quranCfg.color}`}>
+                                    <span className={`inline-block mt-1 px-3 py-1 rounded-lg text-xs font-bold ${quranCfg.color}`}>
                                         {quranCfg.name}
                                     </span>
-                                ) : <span className="text-[12px] text-[var(--color-text-muted)]">-</span>}
+                                ) : <span className="text-xs text-[var(--color-text-muted)]">-</span>}
                             </div>
                             <div className="flex-1">
-                                <p className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Hafalan</p>
-                                <p className="text-xl font-black text-emerald-600 mt-0.5">{hafalan_quran || 0} <span className="text-[10px] font-bold text-[var(--color-text-muted)]">Juz</span></p>
+                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Hafalan</p>
+                                <p className="text-xl font-bold text-emerald-600 mt-0.5">{hafalan_quran || 0} <span className="text-xs font-bold text-[var(--color-text-muted)]">Juz</span></p>
                             </div>
                             {testCfg && (
                                 <div className="flex-1">
-                                    <p className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Hasil Tes</p>
-                                    <span className={`inline-block mt-1 px-3 py-1 rounded-lg text-[11px] font-bold ${testCfg.color}`}>
+                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Hasil Tes</p>
+                                    <span className={`inline-block mt-1 px-3 py-1 rounded-lg text-xs font-bold ${testCfg.color}`}>
                                         {testCfg.name}
                                     </span>
                                 </div>
@@ -340,22 +340,22 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                     <div className="bg-[var(--color-surface)] shadow-sm border border-[var(--color-border)] rounded-2xl p-4">
                         <div className="flex items-center gap-2.5 pt-1 mb-4">
                             <div className="w-1 h-4 bg-purple-500 rounded-full" />
-                            <Users className="text-purple-500 text-[10px] opacity-70" />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Data Keluarga</span>
+                            <Users className="w-4 h-4 text-purple-500 opacity-70" />
+                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Data Keluarga</span>
                             <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                         </div>
                         <InfoRow icon={User} label="Ayah" value={`${father_name || '-'}${father_occupation ? ` · ${father_occupation}` : ''}`} />
                         {father_phone && (
                             <div className="flex items-center justify-between group">
                                 <div className="flex-1 min-w-0"><InfoRow icon={Phone} label="HP Ayah" value={father_phone} color="text-emerald-500" /></div>
-                                    <a href={`https://wa.me/${father_phone.replace(/^0/, '62')}?text=Assalamu'alaikum%20Bapak%20${encodeURIComponent(father_name)},%0A%0ATerkait%20pendaftaran%20ananda%20${encodeURIComponent(name)}...`} target="_blank" rel="noreferrer" className="text-[9px] font-black uppercase tracking-widest bg-emerald-500 text-white hover:bg-emerald-600 px-2.5 py-1.5 rounded-lg shadow-sm active:scale-95 transition-all ml-2">WA</a>
+                                    <a href={`https://wa.me/${father_phone.replace(/^0/, '62')}?text=Assalamu'alaikum%20Bapak%20${encodeURIComponent(father_name)},%0A%0ATerkait%20pendaftaran%20ananda%20${encodeURIComponent(name)}...`} target="_blank" rel="noreferrer" className="text-xs font-bold uppercase tracking-wide bg-emerald-500 text-white hover:bg-emerald-600 px-2.5 py-1.5 rounded-lg shadow-sm active:scale-95 transition-all ml-2">WA</a>
                             </div>
                         )}
                         <InfoRow icon={User} label="Ibu" value={`${mother_name || '-'}${mother_occupation ? ` · ${mother_occupation}` : ''}`} />
                         {mother_phone && (
                             <div className="flex items-center justify-between group">
                                 <div className="flex-1 min-w-0"><InfoRow icon={Phone} label="HP Ibu" value={mother_phone} color="text-emerald-500" /></div>
-                                    <a href={`https://wa.me/${mother_phone.replace(/^0/, '62')}?text=Assalamu'alaikum%20Ibu%20${encodeURIComponent(mother_name)},%0A%0ATerkait%20pendaftaran%20ananda%20${encodeURIComponent(name)}...`} target="_blank" rel="noreferrer" className="text-[9px] font-black uppercase tracking-widest bg-emerald-500 text-white hover:bg-emerald-600 px-2.5 py-1.5 rounded-lg shadow-sm active:scale-95 transition-all ml-2">WA</a>
+                                    <a href={`https://wa.me/${mother_phone.replace(/^0/, '62')}?text=Assalamu'alaikum%20Ibu%20${encodeURIComponent(mother_name)},%0A%0ATerkait%20pendaftaran%20ananda%20${encodeURIComponent(name)}...`} target="_blank" rel="noreferrer" className="text-xs font-bold uppercase tracking-wide bg-emerald-500 text-white hover:bg-emerald-600 px-2.5 py-1.5 rounded-lg shadow-sm active:scale-95 transition-all ml-2">WA</a>
                             </div>
                         )}
                     </div>
@@ -365,15 +365,15 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                         <div className="flex items-center justify-between pt-1 mb-4">
                             <div className="flex items-center gap-2.5">
                                 <div className="w-1 h-4 bg-indigo-500 rounded-full" />
-                                <Banknote className="text-indigo-500 text-[10px] opacity-70" />
-                                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Status Pembayaran & Keuangan</span>
+                                <Banknote className="w-4 h-4 text-indigo-500 opacity-70" />
+                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Status Pembayaran & Keuangan</span>
                             </div>
                             {canEdit && (
                                 <button
                                     onClick={() => onManagePayment?.(enrollment)}
-                                    className="px-2.5 py-1 rounded-lg border border-indigo-500/20 text-[9px] font-bold text-indigo-600 bg-indigo-500/5 hover:bg-indigo-500/10 transition-colors flex items-center gap-1"
+                                    className="px-2.5 py-1 rounded-lg border border-indigo-500/20 text-xs font-bold text-indigo-600 bg-indigo-500/5 hover:bg-indigo-500/10 transition-colors flex items-center gap-1"
                                 >
-                                    <Pen className="text-[8px]" /> Kelola Keuangan
+                                    <Pen className="w-4 h-4" /> Kelola Keuangan
                                 </button>
                             )}
                         </div>
@@ -390,24 +390,24 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                 return (
                                     <div key={item.key} className="p-3 border border-[var(--color-border)]/65 rounded-xl bg-[var(--color-surface-alt)]/25 flex flex-col justify-between min-h-[72px]">
                                         <div>
-                                            <p className="text-[8px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] opacity-60 truncate">{item.label}</p>
-                                            <p className="text-xs font-black text-[var(--color-text)] mt-0.5 tabular-nums">
+                                            <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] opacity-60 truncate">{item.label}</p>
+                                            <p className="text-xs font-bold text-[var(--color-text)] mt-0.5 tabular-nums">
                                                 Rp{Number(item.fee).toLocaleString('id-ID')}
                                             </p>
                                         </div>
                                         <div className="mt-2.5">
                                             {status === 'lunas' && (
-                                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-500/10">
+                                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-500/10">
                                                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Lunas
                                                 </span>
                                             )}
                                             {status === 'pending' && (
-                                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider text-amber-600 bg-amber-500/10 animate-pulse">
+                                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-500/10 animate-pulse">
                                                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500" /> Pending
                                                 </span>
                                             )}
                                             {status === 'belum' && (
-                                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] bg-[var(--color-border)]/40 opacity-70">
+                                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] bg-[var(--color-border)]/40 opacity-70">
                                                     <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-text-muted)]" /> Belum
                                                 </span>
                                             )}
@@ -422,15 +422,15 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                     <div className="bg-[var(--color-surface)] shadow-sm border border-[var(--color-border)] rounded-2xl p-4">
                         <div className="flex items-center gap-2.5 pt-1 mb-4">
                             <div className="w-1 h-4 bg-amber-500 rounded-full" />
-                            <ClipboardList className="text-amber-500 text-[10px] opacity-70" />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Info Tambahan</span>
+                            <ClipboardList className="w-4 h-4 text-amber-500 opacity-70" />
+                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Info Tambahan</span>
                             <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                         </div>
                         <InfoRow icon={MapPin} label="Alamat" value={address} color="text-indigo-500" />
                         {phone ? (
                             <div className="flex items-center justify-between group">
                                 <div className="flex-1 min-w-0"><InfoRow icon={Phone} label="HP Utama" value={phone} color="text-emerald-500" /></div>
-                                    <a href={`https://wa.me/${phone.replace(/^0/, '62')}?text=Assalamu'alaikum%20Bapak/Ibu%20wali%20dari%20ananda%20${encodeURIComponent(name)},%0A%0ATerkait%20pendaftaran...`} target="_blank" rel="noreferrer" className="text-[9px] font-black uppercase tracking-widest bg-emerald-500 text-white hover:bg-emerald-600 px-2.5 py-1.5 rounded-lg shadow-sm active:scale-95 transition-all ml-2">WA</a>
+                                    <a href={`https://wa.me/${phone.replace(/^0/, '62')}?text=Assalamu'alaikum%20Bapak/Ibu%20wali%20dari%20ananda%20${encodeURIComponent(name)},%0A%0ATerkait%20pendaftaran...`} target="_blank" rel="noreferrer" className="text-xs font-bold uppercase tracking-wide bg-emerald-500 text-white hover:bg-emerald-600 px-2.5 py-1.5 rounded-lg shadow-sm active:scale-95 transition-all ml-2">WA</a>
                             </div>
                         ) : (
                             <InfoRow icon={Phone} label="HP Utama" value={phone} color="text-emerald-500" />
@@ -441,20 +441,20 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
 
                         {/* Document Checklist Display */}
                         <div className="pt-3 mt-2 border-t border-[var(--color-border)]/50">
-                            <p className="text-[9px] font-bold uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-2">Kelengkapan Dokumen</p>
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 mb-2">Kelengkapan Dokumen</p>
                             <div className="flex flex-col gap-1.5">
                                 {REQUIRED_DOCUMENTS.map(doc => {
                                     const isChecked = !!documents?.[doc.id]
                                     return (
-                                        <div key={doc.id} className="flex items-center justify-between text-[11px]">
+                                        <div key={doc.id} className="flex items-center justify-between text-xs">
                                             <span className="text-[var(--color-text)] opacity-80">{doc.name}</span>
                                             {isChecked ? (
                                                 <div className="flex items-center gap-1.5 text-emerald-600 font-bold bg-emerald-500/10 px-2 py-0.5 rounded">
-                                                    <CircleCheck /> Lengkap
+                                                    <CircleCheck className="w-4 h-4" /> Lengkap
                                                 </div>
                                             ) : (
                                                 <div className="flex items-center gap-1.5 text-rose-500 font-bold bg-rose-500/10 px-2 py-0.5 rounded">
-                                                    <CircleX /> Belum
+                                                    <CircleX className="w-4 h-4" /> Belum
                                                 </div>
                                             )}
                                         </div>
@@ -470,8 +470,8 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                             <div className="flex items-center justify-between pt-1 mb-3">
                                 <div className="flex items-center gap-2.5">
                                     <div className="w-1 h-4 bg-indigo-500 rounded-full" />
-                                    <CalendarDays className="text-indigo-500 text-[10px] opacity-70" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-indigo-600">Jadwal Orientasi / MOS</span>
+                                    <CalendarDays className="w-4 h-4 text-indigo-500 opacity-70" />
+                                    <span className="text-xs font-bold uppercase tracking-wide text-indigo-600">Jadwal Orientasi / MOS</span>
                                 </div>
                                 {canEdit && !isEditingOrientation && (
                                     <button
@@ -484,9 +484,9 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                             })
                                             setIsEditingOrientation(true)
                                         }}
-                                        className="px-2.5 py-1 rounded-lg border border-indigo-500/20 text-[9px] font-bold text-indigo-600 bg-indigo-500/5 hover:bg-indigo-500/10 transition-colors flex items-center gap-1"
+                                        className="px-2.5 py-1 rounded-lg border border-indigo-500/20 text-xs font-bold text-indigo-600 bg-indigo-500/5 hover:bg-indigo-500/10 transition-colors flex items-center gap-1"
                                     >
-                                        <Pen className="text-[8px]" /> {enrollment.metadata?.orientation ? 'Edit Jadwal' : 'Atur Jadwal'}
+                                        <Pen className="w-4 h-4" /> {enrollment.metadata?.orientation ? 'Edit Jadwal' : 'Atur Jadwal'}
                                     </button>
                                 )}
                             </div>
@@ -495,7 +495,7 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                 <div className="space-y-3">
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         <div>
-                                            <label className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Tanggal Orientasi</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Tanggal Orientasi</label>
                                             <input
                                                 type="date"
                                                 value={orientationForm.date}
@@ -504,7 +504,7 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                             />
                                         </div>
                                         <div>
-                                            <label className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Waktu / Jam</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Waktu / Jam</label>
                                             <input
                                                 type="text"
                                                 placeholder="e.g. 08:00 - Selesai"
@@ -515,7 +515,7 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Lokasi / Tempat</label>
+                                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Lokasi / Tempat</label>
                                         <input
                                             type="text"
                                             placeholder="e.g. Aula Utama MBS Tanggul"
@@ -525,7 +525,7 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                         />
                                     </div>
                                     <div>
-                                        <label className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Catatan Tambahan / Perlengkapan</label>
+                                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Catatan Tambahan / Perlengkapan</label>
                                         <textarea
                                             placeholder="e.g. Membawa alat tulis, memakai seragam sekolah asal..."
                                             value={orientationForm.notes}
@@ -539,7 +539,7 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                             type="button"
                                             onClick={() => setIsEditingOrientation(false)}
                                             disabled={savingOrientation}
-                                            className="h-8 px-4 rounded-lg text-[10px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all"
+                                            className="h-8 px-4 rounded-lg text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all"
                                         >
                                             Batal
                                         </button>
@@ -554,16 +554,16 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                                 setSavingOrientation(false)
                                             }}
                                             disabled={savingOrientation}
-                                            className="h-8 px-4 rounded-lg bg-indigo-600 text-white text-[10px] font-black uppercase tracking-wider shadow-sm hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-1.5"
+                                            className="h-8 px-4 rounded-lg bg-indigo-600 text-white text-xs font-bold uppercase tracking-wider shadow-sm hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-1.5"
                                         >
                                             {savingOrientation ? (
                                                 <>
-                                                    <LoaderCircle className="animate-spin" />
+                                                    <LoaderCircle className="w-4 h-4 animate-spin" />
                                                     <span>Menyimpan...</span>
                                                 </>
                                             ) : (
                                                 <>
-                                                    <CircleCheck />
+                                                    <CircleCheck className="w-4 h-4" />
                                                     <span>Simpan</span>
                                                 </>
                                             )}
@@ -574,21 +574,21 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                 <div className="space-y-2.5">
                                     <div className="grid grid-cols-2 gap-4 bg-[var(--color-surface-alt)]/40 p-3 rounded-xl border border-[var(--color-border)]/50">
                                         <div>
-                                            <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Tanggal & Waktu</p>
-                                            <p className="text-xs font-black text-[var(--color-text)] mt-1">
+                                            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Tanggal & Waktu</p>
+                                            <p className="text-xs font-bold text-[var(--color-text)] mt-1">
                                                 {enrollment.metadata.orientation.date ? new Date(enrollment.metadata.orientation.date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' }) : '-'}
                                             </p>
-                                            <p className="text-[10px] font-bold text-indigo-600 mt-0.5">{enrollment.metadata.orientation.time || '-'}</p>
+                                            <p className="text-xs font-bold text-indigo-600 mt-0.5">{enrollment.metadata.orientation.time || '-'}</p>
                                         </div>
                                         <div>
-                                            <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Lokasi / Tempat</p>
-                                            <p className="text-xs font-black text-[var(--color-text)] mt-1 truncate" title={enrollment.metadata.orientation.location}>
+                                            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Lokasi / Tempat</p>
+                                            <p className="text-xs font-bold text-[var(--color-text)] mt-1 truncate" title={enrollment.metadata.orientation.location}>
                                                 {enrollment.metadata.orientation.location || '-'}
                                             </p>
                                         </div>
                                     </div>
                                     {enrollment.metadata.orientation.notes && (
-                                        <div className="text-[11px] leading-relaxed text-[var(--color-text-muted)]">
+                                        <div className="text-xs leading-relaxed text-[var(--color-text-muted)]">
                                             <span className="font-bold text-[var(--color-text)]">Catatan/Perlengkapan:</span> {enrollment.metadata.orientation.notes}
                                         </div>
                                     )}
@@ -603,16 +603,16 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                                 setSendingOrientationWa(false)
                                             }}
                                             disabled={sendingOrientationWa}
-                                            className="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-[9px] font-black uppercase tracking-widest shadow-sm active:scale-95 transition-all flex items-center gap-1.5"
+                                            className="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold uppercase tracking-wide shadow-sm active:scale-95 transition-all flex items-center gap-1.5"
                                         >
                                             {sendingOrientationWa ? (
                                                 <>
-                                                    <LoaderCircle className="animate-spin" />
+                                                    <LoaderCircle className="w-4 h-4 animate-spin" />
                                                     <span>Mengirim...</span>
                                                 </>
                                             ) : (
                                                 <>
-                                                    <Bell />
+                                                    <Bell className="w-4 h-4" />
                                                     <span>Kirim Jadwal via WA</span>
                                                 </>
                                             )}
@@ -621,16 +621,16 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                 </div>
                             ) : (
                                 <div className="text-center py-4">
-                                    <p className="text-[11px] text-[var(--color-text-muted)] opacity-60 mb-2.5">Belum ada jadwal Orientasi / MOS yang diatur.</p>
+                                    <p className="text-xs text-[var(--color-text-muted)] opacity-60 mb-2.5">Belum ada jadwal Orientasi / MOS yang diatur.</p>
                                     {canEdit && (
                                         <button
                                             onClick={() => {
                                                 setOrientationForm({ date: '', time: '', location: '', notes: '' })
                                                 setIsEditingOrientation(true)
                                             }}
-                                            className="px-4 py-2 rounded-xl border border-dashed border-indigo-500/40 text-[10px] font-bold text-indigo-600 bg-indigo-500/[0.02] hover:bg-indigo-500/[0.06] hover:border-indigo-500/60 transition-all inline-flex items-center gap-1.5"
+                                            className="px-4 py-2 rounded-xl border border-dashed border-indigo-500/40 text-xs font-bold text-indigo-600 bg-indigo-500/[0.02] hover:bg-indigo-500/[0.06] hover:border-indigo-500/60 transition-all inline-flex items-center gap-1.5"
                                         >
-                                            <CalendarDays className="text-[9px]" /> Buat Jadwal Orientasi
+                                            <CalendarDays className="w-4 h-4" /> Buat Jadwal Orientasi
                                         </button>
                                     )}
                                 </div>
@@ -644,11 +644,11 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                             <div className="flex items-center justify-between pt-1 mb-4">
                                 <div className="flex items-center gap-2.5">
                                     <div className="w-1 h-4 bg-indigo-500 rounded-full" />
-                                    <Star className="text-indigo-500 text-[10px] opacity-70" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-indigo-600">Hasil Seleksi & Wawancara</span>
+                                    <Star className="w-4 h-4 text-indigo-500 opacity-70" />
+                                    <span className="text-xs font-bold uppercase tracking-wide text-indigo-600">Hasil Seleksi & Wawancara</span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <span className="text-[9px] font-bold text-indigo-600 bg-indigo-500/10 px-2 py-0.5 rounded-lg border border-indigo-500/20">
+                                    <span className="text-xs font-bold text-indigo-600 bg-indigo-500/10 px-2 py-0.5 rounded-lg border border-indigo-500/20">
                                         Rata-rata: {((Number(enrollment.interview.akhlak || 0) + Number(enrollment.interview.kemandirian || 0) + Number(enrollment.interview.motivasi || 0) + Number(enrollment.interview.keislaman || 0)) / 4).toFixed(1)} / 10
                                     </span>
                                 </div>
@@ -669,10 +669,10 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                     };
                                     return (
                                         <div key={idx} className="bg-[var(--color-surface-alt)]/30 border border-[var(--color-border)]/50 rounded-xl p-2.5">
-                                            <p className="text-[8px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] opacity-60 truncate">{item.label}</p>
+                                            <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] opacity-60 truncate">{item.label}</p>
                                             <div className="flex items-baseline gap-1 mt-1">
-                                                <span className="text-sm font-black text-[var(--color-text)]">{item.val || '-'}</span>
-                                                <span className="text-[9px] font-bold text-[var(--color-text-muted)]">/10</span>
+                                                <span className="text-sm font-bold text-[var(--color-text)]">{item.val || '-'}</span>
+                                                <span className="text-xs font-bold text-[var(--color-text-muted)]">/10</span>
                                             </div>
                                             <div className="w-full bg-[var(--color-border)]/50 h-1 rounded-full overflow-hidden mt-1.5">
                                                 <div className={`h-full ${getColor(item.val || 0)}`} style={{ width: `${(item.val || 0) * 10}%` }} />
@@ -684,13 +684,13 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
 
                             <div className="space-y-2 border-t border-[var(--color-border)]/50 pt-3">
                                 {enrollment.interview.interviewer_name && (
-                                    <div className="flex gap-2 text-[11px]">
+                                    <div className="flex gap-2 text-xs">
                                         <span className="font-bold text-[var(--color-text-muted)] w-24 shrink-0">Pewawancara:</span>
                                         <span className="text-[var(--color-text)] font-semibold">{enrollment.interview.interviewer_name}</span>
                                     </div>
                                 )}
                                 {enrollment.interview.notes && (
-                                    <div className="flex gap-2 text-[11px] items-start">
+                                    <div className="flex gap-2 text-xs items-start">
                                         <span className="font-bold text-[var(--color-text-muted)] w-24 shrink-0 mt-0.5">Catatan Khusus:</span>
                                         <span className="text-[var(--color-text)] italic leading-relaxed">"{enrollment.interview.notes}"</span>
                                     </div>
@@ -704,8 +704,8 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                         <div className="flex items-center justify-between pt-1 mb-3">
                             <div className="flex items-center gap-2.5">
                                 <div className="w-1 h-4 bg-amber-500 rounded-full" />
-                                <ClipboardList className="text-amber-500 text-[10px] opacity-70" />
-                                <span className="text-[10px] font-black uppercase tracking-widest text-amber-600">Catatan Internal Panitia</span>
+                                <ClipboardList className="w-4 h-4 text-amber-500 opacity-70" />
+                                <span className="text-xs font-bold uppercase tracking-wide text-amber-600">Catatan Internal Panitia</span>
                             </div>
                             {canEdit && !isEditingNotes && notes && (
                                 <button
@@ -713,9 +713,9 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                         setNotesText(notes)
                                         setIsEditingNotes(true)
                                     }}
-                                    className="px-2.5 py-1 rounded-lg border border-amber-500/20 text-[9px] font-bold text-amber-600 bg-amber-500/5 hover:bg-amber-500/10 transition-colors flex items-center gap-1"
+                                    className="px-2.5 py-1 rounded-lg border border-amber-500/20 text-xs font-bold text-amber-600 bg-amber-500/5 hover:bg-amber-500/10 transition-colors flex items-center gap-1"
                                 >
-                                    <Pen className="text-[8px]" /> Edit Catatan
+                                    <Pen className="w-4 h-4" /> Edit Catatan
                                 </button>
                             )}
                         </div>
@@ -734,7 +734,7 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                         type="button"
                                         onClick={() => setIsEditingNotes(false)}
                                         disabled={savingNotes}
-                                        className="h-8 px-4 rounded-lg text-[10px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all"
+                                        className="h-8 px-4 rounded-lg text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all"
                                     >
                                         Batal
                                     </button>
@@ -749,16 +749,16 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                             setSavingNotes(false)
                                         }}
                                         disabled={savingNotes}
-                                        className="h-8 px-4 rounded-lg bg-amber-500 text-white text-[10px] font-black uppercase tracking-wider shadow-sm hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-1.5"
+                                        className="h-8 px-4 rounded-lg bg-amber-500 text-white text-xs font-bold uppercase tracking-wider shadow-sm hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-1.5"
                                     >
                                         {savingNotes ? (
                                             <>
-                                                <LoaderCircle className="animate-spin" />
+                                                <LoaderCircle className="w-4 h-4 animate-spin" />
                                                 <span>Menyimpan...</span>
                                             </>
                                         ) : (
                                             <>
-                                                <CircleCheck />
+                                                <CircleCheck className="w-4 h-4" />
                                                 <span>Simpan</span>
                                             </>
                                         )}
@@ -766,16 +766,16 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                 </div>
                             </div>
                         ) : notes ? (
-                            <p className="text-[12px] text-[var(--color-text)] whitespace-pre-line leading-relaxed">{notes}</p>
+                            <p className="text-xs text-[var(--color-text)] whitespace-pre-line leading-relaxed">{notes}</p>
                         ) : (
                             <div className="text-center py-4">
-                                <p className="text-[11px] text-[var(--color-text-muted)] opacity-60 mb-2.5">Belum ada catatan internal untuk pendaftar ini.</p>
+                                <p className="text-xs text-[var(--color-text-muted)] opacity-60 mb-2.5">Belum ada catatan internal untuk pendaftar ini.</p>
                                 {canEdit && (
                                     <button
                                         onClick={() => setIsEditingNotes(true)}
-                                        className="px-4 py-2 rounded-xl border border-dashed border-amber-500/40 text-[10px] font-bold text-amber-600 bg-amber-500/[0.02] hover:bg-amber-500/[0.06] hover:border-amber-500/60 transition-all inline-flex items-center gap-1.5"
+                                        className="px-4 py-2 rounded-xl border border-dashed border-amber-500/40 text-xs font-bold text-amber-600 bg-amber-500/[0.02] hover:bg-amber-500/[0.06] hover:border-amber-500/60 transition-all inline-flex items-center gap-1.5"
                                     >
-                                        <ClipboardList className="text-[9px]" /> Tambah Catatan Internal
+                                        <ClipboardList className="w-4 h-4" /> Tambah Catatan Internal
                                     </button>
                                 )}
                             </div>
@@ -787,8 +787,8 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                         <div className="bg-[var(--color-surface)] shadow-sm border border-[var(--color-border)] rounded-2xl p-4 mt-4">
                             <div className="flex items-center gap-2.5 pt-1 mb-4">
                                 <div className="w-1 h-4 bg-sky-500 rounded-full" />
-                                <History className="text-sky-500 text-[10px] opacity-70" />
-                                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Riwayat Aktivitas Status</span>
+                                <History className="w-4 h-4 text-sky-500 opacity-70" />
+                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Riwayat Aktivitas Status</span>
                                 <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                             </div>
                             <div className="space-y-4 relative before:absolute before:top-2 before:bottom-2 before:left-[7px] before:w-[2px] before:bg-gradient-to-b before:from-[var(--color-border)] before:to-transparent">
@@ -803,13 +803,13 @@ function EnrollmentProfileModal({ isOpen, onClose, enrollment, onEdit, onDelete,
                                             {/* Card content */}
                                             <div className="flex-1 min-w-0 p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-surface)] transition-colors shadow-sm">
                                                 <div className="flex items-center justify-between mb-1.5 gap-2">
-                                                    <span className="text-[10px] font-black uppercase tracking-widest text-sky-600 truncate">Perubahan Status</span>
-                                                    <span className="text-[9px] font-bold text-[var(--color-text-muted)] flex items-center gap-1 opacity-70 shrink-0">
-                                                        <Clock />
+                                                    <span className="text-xs font-bold uppercase tracking-wide text-sky-600 truncate">Perubahan Status</span>
+                                                    <span className="text-xs font-bold text-[var(--color-text-muted)] flex items-center gap-1 opacity-70 shrink-0">
+                                                        <Clock className="w-4 h-4" />
                                                         {new Date(log.timestamp).toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                                                     </span>
                                                 </div>
-                                                <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed">
+                                                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
                                                     Status diubah dari <span className="font-bold text-[var(--color-text)]">{fromCfg.label}</span> menjadi <span className="font-bold text-emerald-500">{toCfg.label}</span> oleh <span className="font-bold text-[var(--color-text)]">{log.by}</span>.
                                                 </p>
                                             </div>

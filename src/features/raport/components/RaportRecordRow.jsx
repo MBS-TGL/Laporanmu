@@ -98,7 +98,7 @@ export const ScoreCell = memo(({ value, studentId, kriteria, onScoreChange, onKe
                 onFocus={() => setFocused(true)}
                 onBlur={handleBlur}
                 aria-label={`Nilai ${kriteria.id}`}
-                className="w-9 h-8 text-center text-[13px] font-black rounded-lg outline-none transition-all appearance-none"
+                className="w-9 h-8 text-center text-sm font-bold rounded-lg outline-none transition-all appearance-none"
                 style={{
                     background: hasError ? '#ef444415' : g ? g.bg : 'var(--color-surface-alt)',
                     color: hasError ? '#ef4444' : g ? g.uiColor : 'var(--color-text-muted)',
@@ -178,7 +178,7 @@ export const ExtraInput = memo(({ value, studentId, fieldKey, onCommit, ...input
                     }}
                 >
                     <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/60 pb-1.5 mb-0.5">
-                        <span className="text-[8px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                        <span className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                             Pilih Cepat {fieldKey === 'ziyadah' ? 'Ziyadah' : "Muroja'ah"}
                         </span>
                     </div>
@@ -190,7 +190,7 @@ export const ExtraInput = memo(({ value, studentId, fieldKey, onCommit, ...input
                                     e.preventDefault()
                                     handleSelectPreset(p)
                                 }}
-                                className={`px-2.5 py-1 rounded-xl text-[9px] font-black tracking-tight border transition-all duration-200 hover:scale-105 active:scale-95 ${fieldKey === 'ziyadah'
+                                className={`px-2.5 py-1 rounded-xl text-xs font-bold tracking-tight border transition-all duration-200 hover:scale-105 active:scale-95 ${fieldKey === 'ziyadah'
                                     ? 'bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500 hover:text-white dark:hover:text-white hover:border-emerald-500 hover:shadow-lg'
                                     : 'bg-violet-500/10 dark:bg-violet-500/20 border-violet-500/20 text-violet-600 dark:text-violet-400 hover:bg-violet-500 hover:text-white dark:hover:text-white hover:border-violet-500 hover:shadow-lg'
                                     }`}
@@ -385,7 +385,7 @@ export const ExtraExpandingTextarea = memo(({ value, studentId, fieldKey, onComm
                     }}
                 >
                     <div className="flex items-center justify-between border-b border-[var(--color-border)] pb-1.5 mb-0.5">
-                        <span className="text-[9px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
+                        <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                             Pilihan Cepat {label || fieldKey}
                         </span>
                     </div>
@@ -398,7 +398,7 @@ export const ExtraExpandingTextarea = memo(({ value, studentId, fieldKey, onComm
                                     e.preventDefault()
                                     handleSelectPreset(p)
                                 }}
-                                className="px-2.5 py-1 rounded-lg text-[10px] font-black bg-[var(--color-surface-alt)] hover:bg-indigo-500 hover:text-white border border-[var(--color-border)] hover:border-indigo-500 text-[var(--color-text)] transition-all cursor-pointer"
+                                className="px-2.5 py-1 rounded-lg text-xs font-bold bg-[var(--color-surface-alt)] hover:bg-indigo-500 hover:text-white border border-[var(--color-border)] hover:border-indigo-500 text-[var(--color-text)] transition-all cursor-pointer"
                             >
                                 {p}
                             </button>
@@ -569,12 +569,12 @@ const StudentRow = memo(({
                     <div className="flex flex-col items-center justify-center text-center gap-1.5">
                         <RadarChart scores={sc} size={32} criteria={criteria} maxScore={maxScore} />
                         <div className="min-w-0">
-                            <div className="text-[12px] font-black text-[var(--color-text)] leading-tight whitespace-normal break-words uppercase tracking-tight">{student.name}</div>
+                            <div className="text-xs font-bold text-[var(--color-text)] leading-tight whitespace-normal break-words uppercase tracking-tight">{student.name}</div>
                             <div className="flex items-center justify-center gap-1 mt-0.5 flex-wrap">
-                                {avg ? <span className="text-[9px] font-black px-1.5 py-0.5 rounded-md" style={{ background: g?.bg || 'var(--color-surface-alt)', color: g?.uiColor || 'var(--color-text)' }}>{avg}</span> : <span className="text-[8px] text-[var(--color-text-muted)] font-bold">isi nilai</span>}
+                                {avg ? <span className="text-xs font-bold px-1.5 py-0.5 rounded-md" style={{ background: g?.bg || 'var(--color-surface-alt)', color: g?.uiColor || 'var(--color-text)' }}>{avg}</span> : <span className="text-xs text-[var(--color-text-muted)] font-bold">isi nilai</span>}
                                 {isSaving && <Loader2 className="w-2 h-2 text-amber-500 animate-spin" />}
                                 {!isSaving && isSaved && <CheckCircle2 className="w-2 h-2 text-emerald-500" />}
-                                {!isSaving && !isSaved && isDirty && <span className="text-[8px] font-black text-amber-500 flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse inline-block" /></span>}
+                                {!isSaving && !isSaved && isDirty && <span className="text-xs font-bold text-amber-500 flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse inline-block" /></span>}
                                 {trendData?.length >= 2 && <SparklineTrend trendData={trendData} criteria={criteria} />}
                             </div>
                         </div>
@@ -618,9 +618,9 @@ const StudentRow = memo(({
                                 : 'border-dashed border-[var(--color-border)] hover:border-teal-400 bg-[var(--color-surface)] hover:bg-teal-500/5'
                                 }`}
                         >
-                            <div className="flex items-center justify-between text-[10px] font-black text-teal-600 dark:text-teal-400 w-full">
+                            <div className="flex items-center justify-between text-xs font-bold text-teal-600 dark:text-teal-400 w-full">
                                 <span className="flex items-center gap-1.5"><HeartPulse className="w-3.5 h-3.5 shrink-0" /> Fisik &amp; Absensi</span>
-                                <span className="text-[9px] font-extrabold text-[var(--color-text-muted)] group-hover:text-teal-600 transition-colors">Edit ›</span>
+                                <span className="text-xs font-bold text-[var(--color-text-muted)] group-hover:text-teal-600 transition-colors">Edit ›</span>
                             </div>
 
                             {hasFisikData ? (
@@ -628,21 +628,21 @@ const StudentRow = memo(({
                                     {(ex.berat_badan || ex.tinggi_badan) ? (
                                         <div className="flex items-center gap-1.5 flex-wrap">
                                             {ex.berat_badan ? (
-                                                <span className="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-teal-500/10 text-teal-700 dark:text-teal-300 border border-teal-500/20">
+                                                <span className="inline-flex items-center gap-1 text-xs font-bold px-1.5 py-0.5 rounded-md bg-teal-500/10 text-teal-700 dark:text-teal-300 border border-teal-500/20">
                                                     <Scale className="w-2.5 h-2.5 shrink-0 text-teal-600 dark:text-teal-400" /> {ex.berat_badan} kg
                                                 </span>
                                             ) : null}
                                             {ex.tinggi_badan ? (
-                                                <span className="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-teal-500/10 text-teal-700 dark:text-teal-300 border border-teal-500/20">
+                                                <span className="inline-flex items-center gap-1 text-xs font-bold px-1.5 py-0.5 rounded-md bg-teal-500/10 text-teal-700 dark:text-teal-300 border border-teal-500/20">
                                                     <Ruler className="w-2.5 h-2.5 shrink-0 text-teal-600 dark:text-teal-400" /> {ex.tinggi_badan} cm
                                                 </span>
                                             ) : null}
                                         </div>
                                     ) : null}
 
-                                    <div className="flex items-center gap-1 flex-wrap text-[9px] font-bold">
+                                    <div className="flex items-center gap-1 flex-wrap text-xs font-bold">
                                         {Number(ex.hari_alpa) > 0 ? (
-                                            <span className="px-1.5 py-0.5 rounded-md bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 font-extrabold">
+                                            <span className="px-1.5 py-0.5 rounded-md bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 font-bold">
                                                 A: {ex.hari_alpa} hr
                                             </span>
                                         ) : null}
@@ -662,14 +662,14 @@ const StudentRow = memo(({
                                             </span>
                                         ) : null}
                                         {(!Number(ex.hari_alpa) && !Number(ex.hari_sakit) && !Number(ex.hari_izin) && !Number(ex.hari_pulang)) ? (
-                                            <span className="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-teal-500/10 text-teal-700 dark:text-teal-300 border border-teal-500/20">
+                                            <span className="inline-flex items-center gap-1 text-xs font-bold px-1.5 py-0.5 rounded-md bg-teal-500/10 text-teal-700 dark:text-teal-300 border border-teal-500/20">
                                                 <Check className="w-2.5 h-2.5 shrink-0 text-teal-600 dark:text-teal-400" /> Hadir Penuh
                                             </span>
                                         ) : null}
                                     </div>
                                 </div>
                             ) : (
-                                <span className="text-[9px] font-medium text-[var(--color-text-muted)] opacity-60">
+                                <span className="text-xs font-medium text-[var(--color-text-muted)] opacity-60">
                                     + Klik untuk isi fisik &amp; absensi
                                 </span>
                             )}
@@ -686,9 +686,9 @@ const StudentRow = memo(({
                                 : 'border-dashed border-[var(--color-border)] hover:border-amber-400 bg-[var(--color-surface)] hover:bg-amber-500/5'
                                 }`}
                         >
-                            <div className="flex items-center justify-between text-[10px] font-black text-amber-600 dark:text-amber-400 w-full">
+                            <div className="flex items-center justify-between text-xs font-bold text-amber-600 dark:text-amber-400 w-full">
                                 <span className="flex items-center gap-1.5"><ClipboardList className="w-3.5 h-3.5 shrink-0" /> Hafalan &amp; Catatan</span>
-                                <span className="text-[9px] font-extrabold text-[var(--color-text-muted)] group-hover:text-amber-600 transition-colors">Edit ›</span>
+                                <span className="text-xs font-bold text-[var(--color-text-muted)] group-hover:text-amber-600 transition-colors">Edit ›</span>
                             </div>
 
                             {hasHafalanCatatanData ? (
@@ -696,19 +696,19 @@ const StudentRow = memo(({
                                     {(ex.ziyadah || ex.murojaah || ex.total_hafalan) ? (
                                         <div className="flex items-center gap-1 flex-wrap">
                                             {ex.ziyadah ? (
-                                                <span className="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 truncate max-w-[140px]" title={`Ziyadah: ${ex.ziyadah}`}>
+                                                <span className="inline-flex items-center gap-1 text-xs font-bold px-1.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 truncate max-w-[140px]" title={`Ziyadah: ${ex.ziyadah}`}>
                                                     <BookOpen className="w-2.5 h-2.5 shrink-0 text-emerald-500" />
                                                     <span className="truncate">Ziyadah: {ex.ziyadah}</span>
                                                 </span>
                                             ) : null}
                                             {ex.murojaah ? (
-                                                <span className="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-500/20 truncate max-w-[140px]" title={`Muroja'ah: ${ex.murojaah}`}>
+                                                <span className="inline-flex items-center gap-1 text-xs font-bold px-1.5 py-0.5 rounded-md bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-500/20 truncate max-w-[140px]" title={`Muroja'ah: ${ex.murojaah}`}>
                                                     <Layers className="w-2.5 h-2.5 shrink-0 text-indigo-500" />
                                                     <span className="truncate">Muroja'ah: {ex.murojaah}</span>
                                                 </span>
                                             ) : null}
                                             {ex.total_hafalan ? (
-                                                <span className="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20 truncate max-w-[140px]" title={`Total Hafalan: ${ex.total_hafalan}`}>
+                                                <span className="inline-flex items-center gap-1 text-xs font-bold px-1.5 py-0.5 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20 truncate max-w-[140px]" title={`Total Hafalan: ${ex.total_hafalan}`}>
                                                     <Star className="w-2.5 h-2.5 shrink-0 text-amber-500" />
                                                     <span className="truncate">Hafalan: {ex.total_hafalan}</span>
                                                 </span>
@@ -719,25 +719,25 @@ const StudentRow = memo(({
                                     {(ex.catatan || ex.pelanggaran || ex.prestasi || ex.sholat) ? (
                                         <div className="flex items-center gap-1 flex-wrap min-w-0">
                                             {ex.catatan ? (
-                                                <span className="text-[9px] font-medium text-[var(--color-text)] opacity-85 truncate flex items-center gap-1 w-full leading-tight" title={ex.catatan}>
+                                                <span className="text-xs font-medium text-[var(--color-text)] opacity-85 truncate flex items-center gap-1 w-full leading-tight" title={ex.catatan}>
                                                     <MessageSquare className="w-2.5 h-2.5 shrink-0 text-amber-500" />
                                                     <span className="truncate">"{ex.catatan}"</span>
                                                 </span>
                                             ) : null}
                                             {ex.pelanggaran ? (
-                                                <span className="inline-flex items-center gap-1 text-[8px] font-extrabold px-1.5 py-0.5 rounded-md bg-rose-500/15 text-rose-600 border border-rose-500/30 truncate" title={`Pelanggaran: ${ex.pelanggaran}`}>
+                                                <span className="inline-flex items-center gap-1 text-xs font-bold px-1.5 py-0.5 rounded-md bg-rose-500/15 text-rose-600 border border-rose-500/30 truncate" title={`Pelanggaran: ${ex.pelanggaran}`}>
                                                     <AlertTriangle className="w-2.5 h-2.5 shrink-0 text-rose-500" />
                                                     <span className="truncate">{ex.pelanggaran}</span>
                                                 </span>
                                             ) : null}
                                             {ex.prestasi ? (
-                                                <span className="inline-flex items-center gap-1 text-[8px] font-extrabold px-1.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-600 border border-emerald-500/30 truncate" title={`Prestasi: ${ex.prestasi}`}>
+                                                <span className="inline-flex items-center gap-1 text-xs font-bold px-1.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-600 border border-emerald-500/30 truncate" title={`Prestasi: ${ex.prestasi}`}>
                                                     <Star className="w-2.5 h-2.5 shrink-0 text-emerald-500" />
                                                     <span className="truncate">{ex.prestasi}</span>
                                                 </span>
                                             ) : null}
                                             {ex.sholat ? (
-                                                <span className="inline-flex items-center gap-1 text-[8px] font-extrabold px-1.5 py-0.5 rounded-md bg-indigo-500/15 text-indigo-600 border border-indigo-500/30 truncate" title={`Catatan Sholat: ${ex.sholat}`}>
+                                                <span className="inline-flex items-center gap-1 text-xs font-bold px-1.5 py-0.5 rounded-md bg-indigo-500/15 text-indigo-600 border border-indigo-500/30 truncate" title={`Catatan Sholat: ${ex.sholat}`}>
                                                     <Compass className="w-2.5 h-2.5 shrink-0 text-indigo-500" />
                                                     <span className="truncate">{ex.sholat}</span>
                                                 </span>
@@ -746,7 +746,7 @@ const StudentRow = memo(({
                                     ) : null}
                                 </div>
                             ) : (
-                                <span className="text-[9px] font-medium text-[var(--color-text-muted)] opacity-60">
+                                <span className="text-xs font-medium text-[var(--color-text-muted)] opacity-60">
                                     + Klik untuk isi hafalan &amp; catatan
                                 </span>
                             )}
@@ -756,7 +756,7 @@ const StudentRow = memo(({
 
                 <td className={`px-2 py-3 sticky right-0 z-10 transition-colors ${si % 2 === 0 ? 'bg-[var(--color-surface)]' : 'bg-[var(--color-surface-alt)]'}`} style={{ verticalAlign: 'middle', borderLeft: '1px solid var(--color-border)', borderRight: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}>
                     <div className="flex flex-col gap-1.5">
-                        <button onClick={() => onSave(student.id)} disabled={isSaving} className="w-full h-8 rounded-lg flex items-center justify-center gap-1.5 text-[11px] font-black transition-all disabled:opacity-50" style={{ background: isSaved ? '#10b98115' : isDirty ? '#6366f115' : 'var(--color-surface-alt)', color: isSaved ? '#10b981' : isDirty ? '#6366f1' : 'var(--color-text-muted)', border: '1px solid', borderColor: isSaved ? '#10b98130' : isDirty ? '#6366f130' : 'var(--color-border)' }}>
+                        <button onClick={() => onSave(student.id)} disabled={isSaving} className="w-full h-8 rounded-lg flex items-center justify-center gap-1.5 text-xs font-bold transition-all disabled:opacity-50" style={{ background: isSaved ? '#10b98115' : isDirty ? '#6366f115' : 'var(--color-surface-alt)', color: isSaved ? '#10b981' : isDirty ? '#6366f1' : 'var(--color-text-muted)', border: '1px solid', borderColor: isSaved ? '#10b98130' : isDirty ? '#6366f130' : 'var(--color-border)' }}>
                             {isSaving ? (
                                 <Loader2 className="w-3 h-3 animate-spin" />
                             ) : isSaved ? (
@@ -767,11 +767,11 @@ const StudentRow = memo(({
                             {isSaving ? 'Menyimpan...' : isSaved ? 'Tersimpan' : 'Simpan'}
                         </button>
                         <div className="grid grid-cols-2 gap-1">
-                            <button onClick={() => onPDF(student.id)} aria-label={`Preview PDF ${student.name}`} className="h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 flex items-center justify-center gap-1 text-[11px] font-black hover:bg-indigo-500/20 transition-all">
+                            <button onClick={() => onPDF(student.id)} aria-label={`Preview PDF ${student.name}`} className="h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 flex items-center justify-center gap-1 text-xs font-bold hover:bg-indigo-500/20 transition-all">
                                 <FileText className="w-3 h-3" /> PDF
                             </button>
                             <button onClick={() => onWA(student)} disabled={!student.phone || (!!sendingWAStatus && sendingWAStatus !== 'done')} aria-label={`Kirim WA ke wali ${student.name}`}
-                                className={`h-8 rounded-lg border text-[11px] font-black flex items-center justify-center gap-1 transition-all ${!student.phone ? 'opacity-30 cursor-not-allowed bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)]' : sendingWAStatus === 'done' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 hover:bg-emerald-500/20' : sendingWAStatus ? 'bg-amber-500/10 border-amber-500/20 text-amber-500 cursor-wait' : 'bg-green-500/10 border-green-500/20 text-green-600 hover:bg-green-500/20'}`}>
+                                className={`h-8 rounded-lg border text-xs font-bold flex items-center justify-center gap-1 transition-all ${!student.phone ? 'opacity-30 cursor-not-allowed bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)]' : sendingWAStatus === 'done' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 hover:bg-emerald-500/20' : sendingWAStatus ? 'bg-amber-500/10 border-amber-500/20 text-amber-500 cursor-wait' : 'bg-green-500/10 border-green-500/20 text-green-600 hover:bg-green-500/20'}`}>
                                 {(() => {
                                     if (sendingWAStatus === 'generating' || sendingWAStatus === 'uploading') {
                                         return <Loader2 className="w-3 h-3 animate-spin" />
@@ -785,7 +785,7 @@ const StudentRow = memo(({
                             </button>
                         </div>
                         <button onClick={() => onReset(student)} aria-label={`Reset nilai ${student.name}`}
-                            className="w-full h-7 rounded-lg flex items-center justify-center gap-1 text-[10px] font-black transition-all hover:bg-red-500/10 hover:text-red-500 text-[var(--color-text-muted)] border border-dashed border-[var(--color-border)] hover:border-red-400/40 cursor-pointer">
+                            className="w-full h-7 rounded-lg flex items-center justify-center gap-1 text-xs font-bold transition-all hover:bg-red-500/10 hover:text-red-500 text-[var(--color-text-muted)] border border-dashed border-[var(--color-border)] hover:border-red-400/40 cursor-pointer">
                             <X className="w-2.5 h-2.5" />
                             Reset
                         </button>
@@ -809,14 +809,14 @@ const StudentRow = memo(({
                             <button
                                 type="button"
                                 onClick={() => setShowModal(false)}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all cursor-pointer"
+                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all cursor-pointer"
                             >
                                 Batal
                             </button>
                             <button
                                 type="button"
                                 onClick={() => { onSave(student.id); setShowModal(false) }}
-                                className="h-10 px-6 rounded-2xl bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-black text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                                className="h-10 px-6 rounded-2xl bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                             >
                                 <Save className="w-4 h-4" />
                                 <span>Simpan &amp; Selesai</span>
@@ -828,16 +828,16 @@ const StudentRow = memo(({
                         {/* Header Student Info Bar */}
                         <div className="p-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] flex items-center justify-between gap-3">
                             <div className="flex items-center gap-3 min-w-0">
-                                <div className="w-9 h-9 rounded-full bg-indigo-500 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-md">
+                                <div className="w-9 h-9 rounded-full bg-indigo-500 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-md">
                                     {student.name.charAt(0)}
                                 </div>
                                 <div className="min-w-0">
-                                    <h4 className="text-xs font-black text-[var(--color-text)] truncate">{student.name}</h4>
+                                    <h4 className="text-xs font-bold text-[var(--color-text)] truncate">{student.name}</h4>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-black">
+                            <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-bold">
                                 <span>Rata-rata:</span>
-                                <span className="text-xs font-black">{avg || '—'}</span>
+                                <span className="text-xs font-bold">{avg || '—'}</span>
                             </div>
                         </div>
 
@@ -847,7 +847,7 @@ const StudentRow = memo(({
                                 <button
                                     type="button"
                                     onClick={() => setActiveModalTab('fisik')}
-                                    className={`flex-1 py-2 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer ${activeModalTab === 'fisik'
+                                    className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${activeModalTab === 'fisik'
                                         ? 'bg-[var(--color-surface)] text-teal-600 dark:text-teal-400 shadow-sm border border-[var(--color-border)]'
                                         : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
                                         }`}
@@ -861,7 +861,7 @@ const StudentRow = memo(({
                                 <button
                                     type="button"
                                     onClick={() => setActiveModalTab('hafalan')}
-                                    className={`flex-1 py-2 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer ${activeModalTab === 'hafalan'
+                                    className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${activeModalTab === 'hafalan'
                                         ? 'bg-[var(--color-surface)] text-emerald-600 dark:text-emerald-400 shadow-sm border border-[var(--color-border)]'
                                         : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
                                         }`}
@@ -875,7 +875,7 @@ const StudentRow = memo(({
                                 <button
                                     type="button"
                                     onClick={() => setActiveModalTab('catatan')}
-                                    className={`flex-1 py-2 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer ${activeModalTab === 'catatan'
+                                    className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${activeModalTab === 'catatan'
                                         ? 'bg-[var(--color-surface)] text-amber-600 dark:text-amber-400 shadow-sm border border-[var(--color-border)]'
                                         : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
                                         }`}
@@ -888,7 +888,7 @@ const StudentRow = memo(({
                             <button
                                 type="button"
                                 onClick={() => setActiveModalTab('all')}
-                                className={`py-2 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer ${activeModalTab === 'all'
+                                className={`py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${activeModalTab === 'all'
                                     ? 'bg-[var(--color-surface)] text-indigo-600 dark:text-indigo-400 shadow-sm border border-[var(--color-border)]'
                                     : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
                                     }`}
@@ -902,7 +902,7 @@ const StudentRow = memo(({
                         {/* SECTION 1: FISIK & KEHADIRAN */}
                         {(rtObj.hasFisik || rtObj.hasAttendance) && (activeModalTab === 'fisik' || activeModalTab === 'all') && (
                             <div className="p-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] space-y-4 shadow-sm animate-in fade-in zoom-in-95 duration-200">
-                                <h5 className="text-[11px] font-black uppercase tracking-wider text-[var(--color-text)]">
+                                <h5 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text)]">
                                     Kondisi Fisik &amp; Kehadiran
                                 </h5>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -916,7 +916,7 @@ const StudentRow = memo(({
                                         }
                                         return (
                                             <div key={f.key} className="space-y-1.5">
-                                                <label className="text-[9px] font-black uppercase tracking-wider text-[var(--color-text)] flex items-center gap-1.5">
+                                                <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text)] flex items-center gap-1.5">
                                                     <IconComp className="w-3 h-3 shrink-0" style={{ color: f.color }} />
                                                     {f.fullLabel} <span className="opacity-40">({f.unit})</span>
                                                 </label>
@@ -955,7 +955,7 @@ const StudentRow = memo(({
                         {rtObj.hasHafalan && (activeModalTab === 'hafalan' || activeModalTab === 'all') && (
                             <div className="p-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] space-y-4 shadow-sm animate-in fade-in zoom-in-95 duration-200">
                                 <div className="flex items-center justify-between">
-                                    <h5 className="text-[11px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
+                                    <h5 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                                         Capaian Hafalan Al-Qur'an
                                     </h5>
                                 </div>
@@ -982,7 +982,7 @@ const StudentRow = memo(({
                                                     <button
                                                         type="button"
                                                         onClick={() => onExtraChange(student.id, f.key, prevVal)}
-                                                        className="self-start flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full border transition-all cursor-pointer hover:opacity-80 mt-0.5"
+                                                        className="self-start flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full border transition-all cursor-pointer hover:opacity-80 mt-0.5"
                                                         style={{ color: f.color, borderColor: `${f.color}30`, background: `${f.color}10` }}
                                                     >
                                                         <Copy className="w-2.5 h-2.5" />
@@ -1000,7 +1000,7 @@ const StudentRow = memo(({
                         {rtObj.hasCatatan && (activeModalTab === 'catatan' || activeModalTab === 'all') && (
                             <div className="p-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] space-y-4 shadow-sm animate-in fade-in zoom-in-95 duration-200">
                                 <div className="flex items-center justify-between">
-                                    <h5 className="text-[11px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
+                                    <h5 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                                         Catatan Musyrif &amp; Evaluasi Santri
                                     </h5>
                                     <div className="flex items-center gap-2">
@@ -1008,7 +1008,7 @@ const StudentRow = memo(({
                                             type="button"
                                             onClick={() => { const c = generateAutoComment(sc, student.id, trendData, criteria, reportType, classLevel); if (!c) return; onCatatanChange(student.id, 'catatan', c) }}
                                             disabled={!avg}
-                                            className="px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-[10px] flex items-center gap-1 transition-all cursor-pointer disabled:opacity-30"
+                                            className="px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold text-xs flex items-center gap-1 transition-all cursor-pointer disabled:opacity-30"
                                         >
                                             <Zap className="w-3.5 h-3.5" />
                                             Auto-Generate
@@ -1017,7 +1017,7 @@ const StudentRow = memo(({
                                             ref={templateBtnRef}
                                             type="button"
                                             onClick={() => onTemplateToggle(student.id)}
-                                            className={`px-3 py-1.5 rounded-lg font-bold text-[10px] flex items-center gap-1 transition-all cursor-pointer ${templateOpen
+                                            className={`px-3 py-1.5 rounded-lg font-bold text-xs flex items-center gap-1 transition-all cursor-pointer ${templateOpen
                                                 ? 'bg-indigo-600 text-white shadow-md'
                                                 : 'bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400'
                                                 }`}
@@ -1046,7 +1046,7 @@ const StudentRow = memo(({
                                                     }}
                                                 >
                                                     <div className="flex items-center justify-between px-2 py-1 border-b border-[var(--color-border)] mb-1">
-                                                        <p className="text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">Pilih Template Catatan:</p>
+                                                        <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">Pilih Template Catatan:</p>
                                                         <button
                                                             type="button"
                                                             onClick={() => onTemplateToggle(student.id)}
@@ -1091,7 +1091,7 @@ const StudentRow = memo(({
                                 />
 
                                 <div className="border-t border-[var(--color-border)] pt-3">
-                                    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2.5">Catatan Khusus</p>
+                                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-2.5">Catatan Khusus</p>
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                         {[
                                             { key: 'pelanggaran', label: 'Pelanggaran', color: '#ef4444', icon: AlertTriangle, ph: 'Pelanggaran' },

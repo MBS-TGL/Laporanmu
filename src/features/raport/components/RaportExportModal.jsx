@@ -159,13 +159,13 @@ export default function RaportExportModal({
                         })()}
                     </div>
                     <div className="flex-1 min-w-0">
-                        <div className={`text-[9px] font-black uppercase tracking-tight truncate 
+                        <div className={`text-xs font-bold uppercase tracking-tight truncate 
                             ${key === 'nama' ? 'text-emerald-700 dark:text-emerald-500' : ''}
                             ${isSelected && key !== 'nama' ? 'text-[var(--color-primary)]' : ''}
                             ${!isSelected && key !== 'nama' ? 'text-[var(--color-text-muted)]' : ''}`}>{label}</div>
                     </div>
                     {isSelected && key !== 'nama' && (
-                        <div className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[var(--color-primary)] text-white text-[8px] font-black flex items-center justify-center shadow-md border border-white dark:border-[var(--color-surface)] animate-in zoom-in duration-200">
+                        <div className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[var(--color-primary)] text-white text-xs font-bold flex items-center justify-center shadow-md border border-white dark:border-[var(--color-surface)] animate-in zoom-in duration-200">
                             {orderIdx}
                         </div>
                     )}
@@ -202,7 +202,7 @@ export default function RaportExportModal({
                 <div className="flex items-center w-full">
                     <button
                         onClick={onClose}
-                        className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center"
+                        className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center"
                     >
                         Tutup
                     </button>
@@ -227,8 +227,8 @@ export default function RaportExportModal({
                                 </div>
                             </div>
                             <div className="flex flex-col items-center">
-                                <span className="text-[10px] font-black uppercase tracking-[0.35em] text-[var(--color-primary)]">Mengolah Data</span>
-                                <span className="text-[8px] font-extrabold text-[var(--color-text-muted)] uppercase tracking-widest mt-1.5 flex items-center gap-1">
+                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-primary)]">Mengolah Data</span>
+                                <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mt-1.5 flex items-center gap-1">
                                     Proses ekspor berjalan
                                     <span className="inline-flex gap-0.5 items-center">
                                         <span className="w-1 h-1 rounded-full bg-[var(--color-text-muted)] animate-bounce" style={{ animationDelay: '0ms' }}></span>
@@ -244,7 +244,7 @@ export default function RaportExportModal({
                 <div className={`space-y-6 pb-2 transition-all duration-500 ${exporting ? 'blur-sm grayscale-[0.5] opacity-50 pointer-events-none' : ''}`}>
                     {/* Section 1: Scope */}
                     <div className="space-y-3">
-                        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] opacity-70">1 — Jangkauan Data Raport</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-70">1 — Jangkauan Data Raport</p>
                         <div className="grid grid-cols-3 gap-2.5">
                             {[
                                 { val: 'filtered', label: 'Kelas Aktif', desc: activeClassName || 'Pilih kelas dulu', icon: Sliders, disabled: !activeClassName },
@@ -269,8 +269,8 @@ export default function RaportExportModal({
                                             return <IconComp className="w-4 h-4" />
                                         })()}
                                     </div>
-                                    <div className="text-xs font-black text-[var(--color-text)] mb-0.5">{label}</div>
-                                    <div className="text-[9px] font-bold text-[var(--color-text-muted)] leading-tight truncate">{desc}</div>
+                                    <div className="text-xs font-bold text-[var(--color-text)] mb-0.5">{label}</div>
+                                    <div className="text-xs font-bold text-[var(--color-text-muted)] leading-tight truncate">{desc}</div>
                                 </button>
                             ))}
                         </div>
@@ -279,16 +279,16 @@ export default function RaportExportModal({
                     {/* Section 2: Columns */}
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
-                            <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] opacity-70">2 — Kolom & Presets Raport</p>
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-70">2 — Kolom & Presets Raport</p>
                             <div className="flex gap-2">
-                                <button onClick={() => handlePresetClick(COLUMN_DEFS.map(c => c.key))} className="text-[9px] font-black text-[var(--color-primary)] hover:underline uppercase tracking-widest bg-[var(--color-primary)]/5 px-2 py-1 rounded-lg transition-colors">Semua</button>
-                                <button onClick={() => handlePresetClick(['nama'])} className="text-[9px] font-black text-rose-500 hover:underline uppercase tracking-widest bg-rose-500/5 px-2 py-1 rounded-lg transition-colors">Reset</button>
+                                <button onClick={() => handlePresetClick(COLUMN_DEFS.map(c => c.key))} className="text-xs font-bold text-[var(--color-primary)] hover:underline uppercase tracking-wide bg-[var(--color-primary)]/5 px-2 py-1 rounded-lg transition-colors">Semua</button>
+                                <button onClick={() => handlePresetClick(['nama'])} className="text-xs font-bold text-rose-500 hover:underline uppercase tracking-wide bg-rose-500/5 px-2 py-1 rounded-lg transition-colors">Reset</button>
                             </div>
                         </div>
 
                         {/* Presets Grid */}
                         <div className="flex flex-col gap-2 p-3 bg-[var(--color-surface-alt)]/40 rounded-2xl border border-[var(--color-border)]/50">
-                            <div className="flex items-center gap-1.5 text-[8px] font-black uppercase tracking-wider text-[var(--color-text-muted)] opacity-60">
+                            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] opacity-60">
                                 <Tags className="w-3.5 h-3.5" />
                                 <span>Pilih Paket Kolom (Preset)</span>
                             </div>
@@ -299,7 +299,7 @@ export default function RaportExportModal({
                                         <button
                                             key={preset.id}
                                             onClick={() => handlePresetClick(preset.cols)}
-                                            className={`px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-wider transition-all active:scale-95 shrink-0
+                                            className={`px-3 py-1 rounded-full border text-xs font-bold uppercase tracking-wider transition-all active:scale-95 shrink-0
                                                 ${isActive
                                                     ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm'
                                                     : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/40 hover:text-[var(--color-primary)]'}`}
@@ -316,7 +316,7 @@ export default function RaportExportModal({
                             <div className="absolute inset-0 flex items-center">
                                 <div className="w-full border-t border-dashed border-[var(--color-border)]/65"></div>
                             </div>
-                            <div className="relative bg-[var(--color-surface)] px-3 text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">
+                            <div className="relative bg-[var(--color-surface)] px-3 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">
                                 Pilih Kolom Kustom
                             </div>
                         </div>
@@ -328,7 +328,7 @@ export default function RaportExportModal({
 
                     {/* Section 3: File Config */}
                     <div className="space-y-3">
-                        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] opacity-70">3 — Konfigurasi File</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-70">3 — Konfigurasi File</p>
                         <div className="flex flex-col sm:flex-row gap-3">
                             <div className="flex-1 relative">
                                 <input
@@ -338,13 +338,13 @@ export default function RaportExportModal({
                                     placeholder="Nama file export..."
                                     className="w-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl px-4 py-3 text-xs font-bold focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]/20 transition-all placeholder:opacity-50 pr-20"
                                 />
-                                <div className="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 rounded bg-[var(--color-border)] text-[8px] font-black uppercase text-[var(--color-text-muted)]">
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 rounded bg-[var(--color-border)] text-xs font-bold uppercase text-[var(--color-text-muted)]">
                                     .xlsx / .csv
                                 </div>
                             </div>
                             <button
                                 onClick={() => setAdvancedOpen(!advancedOpen)}
-                                className={`px-4 py-3 rounded-xl border transition-all flex items-center gap-2 text-xs font-black
+                                className={`px-4 py-3 rounded-xl border transition-all flex items-center gap-2 text-xs font-bold
                                     ${advancedOpen ? 'border-[var(--color-primary)] bg-[var(--color-primary)] text-white' : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/40'}`}
                             >
                                 <Settings className={`w-4 h-4 ${advancedOpen ? 'animate-spin-slow' : ''}`} />
@@ -355,7 +355,7 @@ export default function RaportExportModal({
                         {advancedOpen && (
                             <div className="p-4 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2 duration-200">
                                 <div className="space-y-2">
-                                    <label className="text-[9px] font-black uppercase tracking-wider text-[var(--color-text-muted)] flex items-center gap-1.5">
+                                    <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] flex items-center gap-1.5">
                                         <Heading className="w-3.5 h-3.5" />
                                         Sertakan Baris Header
                                     </label>
@@ -364,7 +364,7 @@ export default function RaportExportModal({
                                             <button
                                                 key={String(opt.v)}
                                                 onClick={() => setIncludeHeader(opt.v)}
-                                                className={`flex-1 py-1 rounded-md text-[9px] font-black uppercase transition-all ${includeHeader === opt.v ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
+                                                className={`flex-1 py-1 rounded-md text-xs font-bold uppercase transition-all ${includeHeader === opt.v ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
                                             >
                                                 {opt.l}
                                             </button>
@@ -377,7 +377,7 @@ export default function RaportExportModal({
 
                     {/* Section 4: Export Formats */}
                     <div className="space-y-3">
-                        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] opacity-70">4 — Mulai Ekspor</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-70">4 — Mulai Ekspor</p>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                             {[
                                 {
@@ -440,15 +440,15 @@ export default function RaportExportModal({
                                             return <IconComp className="w-5 h-5" />
                                         })()}
                                     </div>
-                                    <span className="text-[10px] font-black uppercase tracking-widest">{label}</span>
-                                    <span className="text-[8px] font-bold opacity-60 uppercase">{desc}</span>
+                                    <span className="text-xs font-bold uppercase tracking-wide">{label}</span>
+                                    <span className="text-xs font-bold opacity-60 uppercase">{desc}</span>
                                 </button>
                             ))}
                         </div>
                     </div>
 
                     {exportColumns.length === 0 && (
-                        <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-red-500/5 border border-red-500/10 text-red-600 text-xs font-black uppercase tracking-tight animate-pulse">
+                        <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-red-500/5 border border-red-500/10 text-red-600 text-xs font-bold uppercase tracking-tight animate-pulse">
                             <AlertTriangle className="w-4 h-4" />
                             Pilih minimal satu kolom untuk melanjutkan
                         </div>

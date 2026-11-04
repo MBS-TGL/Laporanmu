@@ -293,7 +293,7 @@ export default function TaskCenterPage() {
 
   return (
     <DashboardLayout title="Pusat Tugas">
-      <div className="p-4 md:p-6 max-w-[1800px] mx-auto space-y-6">
+      <div className="space-y-6">
         {/* PAGE HEADER */}
         <PageHeader
           badge="Operational"
@@ -304,7 +304,7 @@ export default function TaskCenterPage() {
             <div className="flex items-center gap-2">
               <button
                 onClick={resetAllTasks}
-                className="h-9 px-3 rounded-lg border border-[var(--color-border)] text-xs font-black uppercase tracking-wider transition-all active:scale-95 bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-rose-500 hover:border-rose-500/20"
+                className="h-9 px-3 rounded-lg border border-[var(--color-border)] text-xs font-bold uppercase tracking-wider transition-all active:scale-95 bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-rose-500 hover:border-rose-500/20"
               >
                 Reset Progress
               </button>
@@ -350,10 +350,10 @@ export default function TaskCenterPage() {
                 />
               </svg>
               <div className="absolute flex flex-col items-center">
-                <span className="text-2xl font-black tracking-tighter text-[var(--color-text)]">
+                <span className="text-2xl font-bold tracking-tighter text-[var(--color-text)]">
                   {progressPercentage}%
                 </span>
-                <span className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider">
+                <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">
                   Selesai
                 </span>
               </div>
@@ -362,26 +362,26 @@ export default function TaskCenterPage() {
             {/* Content Text */}
             <div className="text-center md:text-left space-y-2 flex-1">
               <div className="flex items-center justify-center md:justify-start gap-2">
-                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+                <span className="px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
                   Pusat Tugas Harian
                 </span>
-                <span className="text-[11px] text-[var(--color-text-muted)] font-semibold">
+                <span className="text-xs text-[var(--color-text-muted)] font-semibold">
                   Update otomatis dari database
                 </span>
               </div>
 
-              <h2 className="text-xl md:text-2xl font-black text-[var(--color-text)] tracking-tight">
+              <h2 className="text-xl md:text-2xl font-bold text-[var(--color-text)] tracking-tight">
                 Tugas Hari Ini
               </h2>
 
-              <p className="text-[12px] text-[var(--color-text-muted)] leading-relaxed font-medium">
+              <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-medium">
                 {new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
                 <span className="mx-2">•</span>
                 <span className="text-[var(--color-text)] font-bold">{completedCount} dari {totalCount}</span> tugas selesai
                 {urgentCount > 0 && (
                   <>
                     <span className="mx-2">•</span>
-                    <span className="text-rose-500 font-extrabold flex inline-flex items-center gap-1">
+                    <span className="text-rose-500 font-bold flex inline-flex items-center gap-1">
                       <AlertTriangle className="w-3.5 h-3.5" />
                       {urgentCount} mendesak
                     </span>
@@ -398,7 +398,7 @@ export default function TaskCenterPage() {
           <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide py-1">
             <button
               onClick={() => setActiveFilter('all')}
-              className={`h-8 px-4 rounded-xl text-[11px] font-black transition-all whitespace-nowrap ${activeFilter === 'all'
+              className={`h-8 px-4 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${activeFilter === 'all'
                 ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-sm'
                 : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
             >
@@ -412,7 +412,7 @@ export default function TaskCenterPage() {
                 <button
                   key={group.id}
                   onClick={() => setActiveFilter(group.id)}
-                  className={`h-8 px-3 rounded-xl text-[11px] font-black transition-all whitespace-nowrap flex items-center gap-2 ${isActive
+                  className={`h-8 px-3 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 ${isActive
                     ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-sm'
                     : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                 >
@@ -431,7 +431,7 @@ export default function TaskCenterPage() {
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Cari tugas..."
-              className="w-full h-9 pl-9 pr-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold outline-none focus:border-[var(--color-primary)] transition-all"
+              className="w-full h-9 pl-9 pr-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold outline-none focus:border-[var(--color-primary)] transition-all"
             />
           </div>
         </div>
@@ -442,8 +442,8 @@ export default function TaskCenterPage() {
             <div className="w-12 h-12 rounded-2xl bg-[var(--color-surface-alt)] flex items-center justify-center mx-auto mb-4 text-[var(--color-text-muted)]">
               <Sparkles className="w-5 h-5" />
             </div>
-            <h3 className="text-sm font-black text-[var(--color-text)]">Tidak ada tugas ditemukan</h3>
-            <p className="text-[11px] text-[var(--color-text-muted)] mt-1 max-w-xs mx-auto leading-relaxed">
+            <h3 className="text-sm font-bold text-[var(--color-text)]">Tidak ada tugas ditemukan</h3>
+            <p className="text-xs text-[var(--color-text-muted)] mt-1 max-w-xs mx-auto leading-relaxed">
               Coba ganti filter pencarian atau peran yang Anda pilih untuk melihat tugas lain.
             </p>
           </div>
@@ -472,11 +472,11 @@ export default function TaskCenterPage() {
                         <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${group.color}`}>
                           <group.icon className="w-4 h-4" />
                         </div>
-                        <h3 className="font-black text-[13px] text-[var(--color-text)] truncate">
+                        <h3 className="font-bold text-sm text-[var(--color-text)] truncate">
                           {group.name}
                         </h3>
                       </div>
-                      <div className="text-[10px] font-extrabold text-[var(--color-text-muted)] tracking-wider shrink-0 bg-[var(--color-surface-alt)] px-2 py-0.5 rounded-lg border border-[var(--color-border)]">
+                      <div className="text-xs font-bold text-[var(--color-text-muted)] tracking-wider shrink-0 bg-[var(--color-surface-alt)] px-2 py-0.5 rounded-lg border border-[var(--color-border)]">
                         {stats.completed}/{stats.total}
                       </div>
                     </div>
@@ -507,7 +507,7 @@ export default function TaskCenterPage() {
                             {/* Task Content */}
                             <div className="flex-1 min-w-0 space-y-1">
                               <div className="flex items-center gap-2 flex-wrap">
-                                <span className={`text-[12.5px] font-extrabold leading-tight transition-all ${
+                                <span className={`text-[12.5px] font-bold leading-tight transition-all ${
                                   isDone ? 'line-through text-[var(--color-text-muted)] font-medium' : 'text-[var(--color-text)]'
                                 }`}>
                                   {task.title}
@@ -515,21 +515,21 @@ export default function TaskCenterPage() {
 
                                 {/* DB count indicator */}
                                 {!isDone && task.count > 0 && (
-                                  <span className="px-1.5 py-0.2 rounded bg-rose-500 text-white text-[8px] font-black uppercase tracking-wider">
+                                  <span className="px-1.5 py-0.2 rounded bg-rose-500 text-white text-xs font-bold uppercase tracking-wider">
                                     {task.count} pending
                                   </span>
                                 )}
 
                                 {/* Urgent Badge */}
                                 {!isDone && task.urgent && (
-                                  <span className="px-1.5 py-0.2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 text-[8px] font-black uppercase tracking-wider flex items-center gap-1 animate-pulse">
+                                  <span className="px-1.5 py-0.2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 text-xs font-bold uppercase tracking-wider flex items-center gap-1 animate-pulse">
                                     <AlertTriangle className="w-2.5 h-2.5" />
                                     {task.urgentMsg || 'Penting'}
                                   </span>
                                 )}
                               </div>
 
-                              <p className={`text-[11px] leading-relaxed transition-all ${
+                              <p className={`text-xs leading-relaxed transition-all ${
                                 isDone ? 'text-[var(--color-text-muted)]/60' : 'text-[var(--color-text-muted)] font-medium'
                               }`}>
                                 {task.desc}
@@ -539,7 +539,7 @@ export default function TaskCenterPage() {
                               <div className="pt-2 flex items-center">
                                 <button
                                   onClick={() => navigate(task.link)}
-                                  className={`text-[10px] font-extrabold uppercase tracking-widest flex items-center gap-1 group/btn transition-all ${
+                                  className={`text-xs font-bold uppercase tracking-wide flex items-center gap-1 group/btn transition-all ${
                                     isDone ? 'text-[var(--color-text-muted)]/70' : 'text-[var(--color-primary)] hover:translate-x-1'
                                   }`}
                                 >

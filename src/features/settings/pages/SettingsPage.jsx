@@ -83,7 +83,7 @@ function Toggle({ checked, onChange, disabled = false }) {
 /** Field label — renamed from `FL` for readability */
 function FieldLabel({ children }) {
     return (
-        <label className="block text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-2 ml-0.5">
+        <label className="block text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mb-2 ml-0.5">
             {children}
         </label>
     )
@@ -107,7 +107,7 @@ function PwInput({ label, value, onChange }) {
                     onClick={() => setShow(v => !v)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
                 >
-                    {show ? <EyeOff className="text-xs" /> : <Eye className="text-xs" />}
+                    {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
             </div>
         </div>
@@ -124,25 +124,25 @@ function ConfirmPwModal({ onConfirm, onCancel }) {
             <div className="bg-surface border border-border rounded-2xl p-6 w-full max-w-sm shadow-xl">
                 <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0">
-                        <TriangleAlert />
+                        <TriangleAlert className="w-4 h-4" />
                     </div>
-                    <p className="font-black text-[var(--color-text)] text-sm">Konfirmasi Ubah Password</p>
+                    <p className="font-bold text-[var(--color-text)] text-sm">Konfirmasi Ubah Password</p>
                 </div>
-                <p className="text-[11px] text-[var(--color-text-muted)] mb-5 leading-relaxed">
+                <p className="text-xs text-[var(--color-text-muted)] mb-5 leading-relaxed">
                     Kamu akan mengubah password akun ini. Pastikan kamu mengingat password baru sebelum melanjutkan.
                 </p>
                 <div className="flex gap-2 justify-end">
                     <button
                         onClick={onCancel}
-                        className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-1.5"
+                        className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-1.5"
                     >
-                        <X className="text-[9px]" /> Batal
+                        <X className="w-4 h-4" /> Batal
                         </button>
                         <button
                             onClick={onConfirm}
-                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:opacity-90 transition-all flex items-center gap-2 shadow-lg"
+                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:opacity-90 transition-all flex items-center gap-2 shadow-lg"
                     >
-                        <Shield /> Ya, Ubah
+                        <Shield className="w-4 h-4" /> Ya, Ubah
                     </button>
                 </div>
             </div>
@@ -261,7 +261,7 @@ function AvatarUpload({ profile, onAvatarChange }) {
     return (
         <div className="flex items-center gap-5">
             <div className="relative shrink-0">
-                <div className={`w-20 h-20 rounded-2xl overflow-hidden border-2 border-[var(--color-border)] shadow-md flex items-center justify-center font-black text-white
+                <div className={`w-20 h-20 rounded-2xl overflow-hidden border-2 border-[var(--color-border)] shadow-md flex items-center justify-center font-bold text-white
                     ${showImg ? 'bg-[var(--color-surface-alt)]' : 'bg-[var(--color-primary)]'}`}>
                     {showImg
                         ? <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" onError={() => setImgError(true)} loading="lazy" decoding="async" />
@@ -275,23 +275,23 @@ function AvatarUpload({ profile, onAvatarChange }) {
                     className="absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-xl bg-[var(--color-primary)] text-white flex items-center justify-center shadow-lg hover:brightness-110 transition-all disabled:opacity-60"
                 >
                     {uploading
-                        ? <LoaderCircle className="text-[10px] animate-spin" />
-                        : <Camera className="text-[10px]" />}
+                        ? <LoaderCircle className="w-4 h-4 animate-spin" />
+                        : <Camera className="w-4 h-4" />}
                     
                 </button>
             </div>
             <div>
-                <p className="text-sm font-black text-[var(--color-text)]">Foto Profil</p>
-                <p className="text-[11px] text-[var(--color-text-muted)] mt-0.5">JPG, PNG, WebP · Maks 2MB</p>
+                <p className="text-sm font-bold text-[var(--color-text)]">Foto Profil</p>
+                <p className="text-xs text-[var(--color-text-muted)] mt-0.5">JPG, PNG, WebP · Maks 2MB</p>
                 <div className="mt-2 flex items-center gap-2">
                     <button
                         type="button"
                         onClick={() => fileRef.current?.click()}
                         disabled={busy}
-                        className="h-7 px-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all disabled:opacity-50 flex items-center gap-1.5"
+                        className="h-7 px-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all disabled:opacity-50 flex items-center gap-1.5"
                     >
                         {uploading
-                            ? <><LoaderCircle className="animate-spin" /> Mengupload...</>
+                            ? <><LoaderCircle className="w-4 h-4 animate-spin" /> Mengupload...</>
                             : 'Ganti Foto'
                         }
                     </button>
@@ -300,11 +300,11 @@ function AvatarUpload({ profile, onAvatarChange }) {
                             type="button"
                             onClick={handleDelete}
                             disabled={busy}
-                            className="h-7 px-3 rounded-lg border border-red-500/30 bg-red-500/10 text-[10px] font-black text-red-500 hover:bg-red-500/20 transition-all disabled:opacity-50 flex items-center gap-1.5"
+                            className="h-7 px-3 rounded-lg border border-red-500/30 bg-red-500/10 text-xs font-bold text-red-500 hover:bg-red-500/20 transition-all disabled:opacity-50 flex items-center gap-1.5"
                         >
                             {deleting
-                                ? <LoaderCircle className="animate-spin" />
-                                : <Trash2 />
+                                ? <LoaderCircle className="w-4 h-4 animate-spin" />
+                                : <Trash2 className="w-4 h-4" />
                             }
                             Hapus
                         </button>
@@ -442,12 +442,12 @@ export default function SettingsPage() {
                 />
             )}
 
-            <div className="p-4 md:p-6 space-y-5 max-w-[1800px] mx-auto">
+            <div className="space-y-5">
 
                 <div className="mb-6">
                     <Breadcrumb badge="Pengaturan" items={['Settings']} className="mb-1" />
-                    <h1 className="text-2xl font-black font-heading tracking-tight text-[var(--color-text)]">Pengaturan</h1>
-                    <p className="text-[11px] text-[var(--color-text-muted)] mt-1 font-medium">
+                    <h1 className="text-2xl font-bold font-heading tracking-tight text-[var(--color-text)]">Pengaturan</h1>
+                    <p className="text-xs text-[var(--color-text-muted)] mt-1 font-medium">
                         Kelola profil, tampilan, dan keamanan akun kamu.
                     </p>
                 </div>
@@ -459,7 +459,7 @@ export default function SettingsPage() {
 
                         {/* Profil */}
                         <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-5">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-4">
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">
                                 Foto & Identitas
                             </p>
                             <AvatarUpload
@@ -491,7 +491,7 @@ export default function SettingsPage() {
                                     <div>
                                         <FieldLabel>Email</FieldLabel>
                                         <div className="h-11 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 flex items-center gap-2">
-                                            <Mail className="text-[var(--color-text-muted)] text-xs shrink-0" />
+                                            <Mail className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" />
                                             <span className="text-sm text-[var(--color-text-muted)] font-medium truncate">
                                                 {user?.email || '—'}
                                             </span>
@@ -500,8 +500,8 @@ export default function SettingsPage() {
                                     <div>
                                         <FieldLabel>Role</FieldLabel>
                                         <div className="h-11 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 flex items-center gap-2">
-                                            <IdCard className="text-[var(--color-text-muted)] text-xs shrink-0" />
-                                            <span className={`text-[11px] font-black px-2 py-0.5 rounded-lg border ${roleMeta.color} ${roleMeta.bg} ${roleMeta.border}`}>
+                                            <IdCard className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" />
+                                            <span className={`text-xs font-bold px-2 py-0.5 rounded-lg border ${roleMeta.color} ${roleMeta.bg} ${roleMeta.border}`}>
                                                 {roleMeta.label}
                                             </span>
                                         </div>
@@ -512,18 +512,18 @@ export default function SettingsPage() {
                                 <div className="flex items-center justify-end gap-2 mt-4 pt-4 border-t border-[var(--color-border)]">
                                     <button
                                         onClick={() => { setName(profile?.name || ''); setProfileDirty(false) }}
-                                        className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-1.5"
+                                        className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-1.5"
                                     >
-                                        <X className="text-[9px]" /> Batal
+                                        <X className="w-4 h-4" /> Batal
                                     </button>
                                     <button
                                         onClick={handleSaveProfile}
                                         disabled={savingProfile}
-                                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:opacity-90 transition-all flex items-center gap-2 shadow-lg disabled:opacity-60"
+                                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:opacity-90 transition-all flex items-center gap-2 shadow-lg disabled:opacity-60"
                                     >
                                         {savingProfile
-                                            ? <LoaderCircle className="animate-spin" />
-                                            : <Check />
+                                            ? <LoaderCircle className="w-4 h-4 animate-spin" />
+                                            : <Check className="w-4 h-4" />
                                         }
                                         Simpan
                                     </button>
@@ -533,7 +533,7 @@ export default function SettingsPage() {
 
                         {/* Password */}
                         <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-5">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-4">
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-4">
                                 Ubah Password
                             </p>
                             <div className="space-y-4">
@@ -565,25 +565,25 @@ export default function SettingsPage() {
                                                     className={`h-1 flex-1 rounded-full transition-all duration-300 ${i <= pwStrength.bars ? pwStrength.color : 'bg-[var(--color-border)]'}`}
                                                 />
                                             ))}
-                                            <span className="text-[10px] font-black text-[var(--color-text-muted)] w-20 text-right shrink-0">
+                                            <span className="text-xs font-bold text-[var(--color-text-muted)] w-20 text-right shrink-0">
                                                 {pwStrength.label}
                                             </span>
                                         </div>
 
                                         {/* Min length hint — consistent with Tips Keamanan (12 chars) */}
                                         {pw.next.length < 12 && (
-                                            <p className="text-[10px] text-amber-500 font-bold">
+                                            <p className="text-xs text-amber-500 font-bold">
                                                 Minimal 12 karakter ({12 - pw.next.length} lagi)
                                             </p>
                                         )}
 
                                         {/* Confirm match feedback */}
                                         {pw.confirm && pw.next !== pw.confirm && (
-                                            <p className="text-[10px] text-red-500 font-bold">Password tidak cocok</p>
+                                            <p className="text-xs text-red-500 font-bold">Password tidak cocok</p>
                                         )}
                                         {pw.confirm && pw.next === pw.confirm && pw.confirm.length > 0 && (
-                                            <p className="text-[10px] text-emerald-500 font-bold flex items-center gap-1">
-                                                <Check className="text-[8px]" /> Password cocok
+                                            <p className="text-xs text-emerald-500 font-bold flex items-center gap-1">
+                                                <Check className="w-4 h-4" /> Password cocok
                                             </p>
                                         )}
                                     </div>
@@ -593,11 +593,11 @@ export default function SettingsPage() {
                                     <button
                                         onClick={() => setShowPwConfirm(true)}
                                         disabled={savingPw || !pwFormReady}
-                                        className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black uppercase tracking-widest hover:opacity-90 transition-all flex items-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:opacity-90 transition-all flex items-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         {savingPw
-                                            ? <LoaderCircle className="animate-spin" />
-                                            : <Shield />
+                                            ? <LoaderCircle className="w-4 h-4 animate-spin" />
+                                            : <Shield className="w-4 h-4" />
                                         }
                                         Ubah Password
                                     </button>
@@ -611,17 +611,17 @@ export default function SettingsPage() {
 
                         {/* Tampilan & Notifikasi */}
                         <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-5">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-3">
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-3">
                                 Tampilan
                             </p>
                             <div className="flex items-center justify-between p-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50">
                                 <div className="flex items-center gap-3">
                                     <div className="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-sm">
-                                        {isDark ? <Moon /> : <Sun />}
+                                        {isDark ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
                                     </div>
                                     <div>
                                         <p className="font-bold text-sm text-[var(--color-text)]">Mode Gelap</p>
-                                        <p className="text-[11px] text-[var(--color-text-muted)]">{isDark ? 'Aktif' : 'Nonaktif'}</p>
+                                        <p className="text-xs text-[var(--color-text-muted)]">{isDark ? 'Aktif' : 'Nonaktif'}</p>
                                     </div>
                                 </div>
                                 <Toggle checked={isDark} onChange={toggleTheme} />
@@ -629,14 +629,14 @@ export default function SettingsPage() {
 
                             <Divider />
 
-                            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-3">
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-3">
                                 Notifikasi
                             </p>
 
                             {/* Coming Soon Banner */}
                             <div className="mb-4 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center gap-2">
-                                <Clock className="text-amber-500 text-xs" />
-                                <p className="text-[11px] text-amber-600 dark:text-amber-400 font-medium">
+                                <Clock className="w-4 h-4 text-amber-500" />
+                                <p className="text-xs text-amber-600 dark:text-amber-400 font-medium">
                                     Fitur notifikasi sedang dalam pengembangan. Nantikan segera!
                                 </p>
                             </div>
@@ -649,11 +649,11 @@ export default function SettingsPage() {
                                 >
                                     <div className="flex items-center gap-3 min-w-0">
                                         <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-sm shrink-0">
-                                            <Bell />
+                                            <Bell className="w-4 h-4" />
                                         </div>
                                         <div className="min-w-0">
                                             <p className="font-bold text-sm text-[var(--color-text)]">Email</p>
-                                            <p className="text-[11px] text-[var(--color-text-muted)] truncate">Ringkasan otomatis</p>
+                                            <p className="text-xs text-[var(--color-text-muted)] truncate">Ringkasan otomatis</p>
                                         </div>
                                     </div>
                                     <div className="shrink-0 ml-3">
@@ -668,11 +668,11 @@ export default function SettingsPage() {
                                 >
                                     <div className="flex items-center gap-3 min-w-0">
                                         <div className="w-9 h-9 rounded-xl bg-green-500/10 text-green-500 flex items-center justify-center text-sm shrink-0">
-                                            <WhatsAppIcon />
+                                            <WhatsAppIcon className="w-4 h-4" />
                                         </div>
                                         <div className="min-w-0">
                                             <p className="font-bold text-sm text-[var(--color-text)]">WhatsApp</p>
-                                            <p className="text-[11px] text-[var(--color-text-muted)] truncate">Peringatan instan via WA</p>
+                                            <p className="text-xs text-[var(--color-text-muted)] truncate">Peringatan instan via WA</p>
                                         </div>
                                     </div>
                                     <div className="shrink-0 ml-3">
@@ -681,32 +681,32 @@ export default function SettingsPage() {
                                 </div>
                             </div>
 
-                            <p className="text-[9px] text-[var(--color-text-muted)] text-center mt-4">
+                            <p className="text-xs text-[var(--color-text-muted)] text-center mt-4">
                                 *Klik untuk mendapatkan notifikasi saat fitur tersedia
                             </p>
                         </div>
 
                         {/* Info Akun */}
                         <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-5">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-3">
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-3">
                                 Info Akun
                             </p>
                             <div className="divide-y divide-[var(--color-border)]">
                                 <div className="flex items-center justify-between py-3">
-                                    <span className="text-[11px] font-bold text-[var(--color-text-muted)]">User ID</span>
-                                    <span className="text-[11px] font-black text-[var(--color-text)] font-mono">
+                                    <span className="text-xs font-bold text-[var(--color-text-muted)]">User ID</span>
+                                    <span className="text-xs font-bold text-[var(--color-text)] font-mono">
                                         {profile?.id ? profile.id.slice(0, 8) + '...' : '—'}
                                     </span>
                                 </div>
                                 <div className="flex items-center justify-between py-3">
-                                    <span className="text-[11px] font-bold text-[var(--color-text-muted)]">Terdaftar</span>
-                                    <span className="text-[11px] font-black text-[var(--color-text)] font-mono">
+                                    <span className="text-xs font-bold text-[var(--color-text-muted)]">Terdaftar</span>
+                                    <span className="text-xs font-bold text-[var(--color-text)] font-mono">
                                         {formatDate(user?.created_at, { day: '2-digit', month: 'long', year: 'numeric' })}
                                     </span>
                                 </div>
                                 <div className="flex items-center justify-between py-3">
-                                    <span className="text-[11px] font-bold text-[var(--color-text-muted)]">Login Terakhir</span>
-                                    <span className="text-[11px] font-black text-[var(--color-text)] font-mono">
+                                    <span className="text-xs font-bold text-[var(--color-text-muted)]">Login Terakhir</span>
+                                    <span className="text-xs font-bold text-[var(--color-text)] font-mono">
                                         {user?.last_sign_in_at
                                             ? new Date(user.last_sign_in_at).toLocaleString('id-ID', {
                                                 day: '2-digit', month: 'short', year: 'numeric',
@@ -721,7 +721,7 @@ export default function SettingsPage() {
 
                         {/* Tips Keamanan */}
                         <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-5">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-3">
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-3">
                                 Tips Keamanan
                             </p>
                             <ul className="space-y-2.5">
@@ -731,7 +731,7 @@ export default function SettingsPage() {
                                     'Jangan pakai password yang sama di tempat lain',
                                     'Logout dari perangkat yang tidak dikenali',
                                 ].map((tip, i) => (
-                                    <li key={i} className="flex items-start gap-2 text-[11px] text-[var(--color-text-muted)]">
+                                    <li key={i} className="flex items-start gap-2 text-xs text-[var(--color-text-muted)]">
                                         <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)]/40 mt-1.5 shrink-0" />
                                         {tip}
                                     </li>

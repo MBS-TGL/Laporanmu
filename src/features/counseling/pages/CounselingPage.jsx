@@ -834,12 +834,12 @@ export default function CounselingPage() {
             karir: 'bg-teal-500/10 text-teal-600 border-teal-500/20'
         }
         const labels = { pribadi: 'Pribadi', sosial: 'Sosial', akademik: 'Belajar', karir: 'Karir' }
-        return <span className={`text-[10px] font-bold py-0.5 px-2 rounded-lg border uppercase tracking-wider ${styles[category] || ''}`}>{labels[category] || category}</span>
+        return <span className={`text-xs font-bold py-0.5 px-2 rounded-lg border uppercase tracking-wider ${styles[category] || ''}`}>{labels[category] || category}</span>
     }
 
     return (
         <DashboardLayout title="Konseling & BK">
-            <div className="p-4 md:p-6 space-y-5">
+            <div className="space-y-5">
 
                 {/* Header */}
                 <PageHeader
@@ -858,7 +858,7 @@ export default function CounselingPage() {
                             </button>
                             <button
                                 onClick={openAddModal}
-                                className="h-9 px-3.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-black flex items-center gap-2 shadow-lg hover:scale-[1.02] active:scale-95 transition-all"
+                                className="h-9 px-3.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg hover:scale-[1.02] active:scale-95 transition-all"
                             >
                                 <Plus className="w-4 h-4" />
                                 <span>Catat Konseling</span>
@@ -906,7 +906,7 @@ export default function CounselingPage() {
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Cari santri, konselor, keluhan..."
-                            className="w-full h-9 pl-9 pr-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 focus:bg-[var(--color-surface)] text-[12px] font-bold outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition-all"
+                            className="w-full h-9 pl-9 pr-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 focus:bg-[var(--color-surface)] text-xs font-bold outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition-all"
                         />
                         {searchQuery && (
                             <button
@@ -969,13 +969,13 @@ export default function CounselingPage() {
                         <div className="flex items-center rounded-xl bg-[var(--color-surface-alt)] p-0.5 border border-[var(--color-border)] ml-auto md:ml-0 shrink-0 select-none">
                             <button
                                 onClick={() => setViewMode('list')}
-                                className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all ${viewMode === 'list' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                                className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${viewMode === 'list' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                             >
                                 Tabel
                             </button>
                             <button
                                 onClick={() => setViewMode('timeline')}
-                                className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all ${viewMode === 'timeline' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                                className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${viewMode === 'timeline' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                             >
                                 Lini Masa
                             </button>
@@ -997,11 +997,11 @@ export default function CounselingPage() {
                             <div className="w-14 h-14 bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl transform rotate-3 shadow-lg">
                                 <HeartHandshake className="w-6 h-6" />
                             </div>
-                            <h3 className="text-lg font-black text-[var(--color-text)] mb-2">Belum Ada Sesi Konseling</h3>
+                            <h3 className="text-lg font-bold text-[var(--color-text)] mb-2">Belum Ada Sesi Konseling</h3>
                             <p className="text-sm text-[var(--color-text-muted)] max-w-xs mx-auto mb-6 opacity-70">
                                 Gunakan tombol "Catat Konseling" untuk mendaftarkan sesi bimbingan santri pertama.
                             </p>
-                            <button onClick={openAddModal} className="h-9 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all active:scale-95">
+                            <button onClick={openAddModal} className="h-9 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all active:scale-95">
                                 Catat Sekarang
                             </button>
                         </div>
@@ -1010,7 +1010,7 @@ export default function CounselingPage() {
                             <div className="w-14 h-14 bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl transform rotate-3 shadow-lg">
                                 <Search className="w-6 h-6" />
                             </div>
-                            <h3 className="text-lg font-black text-[var(--color-text)] mb-2">Pencarian Tidak Ditemukan</h3>
+                            <h3 className="text-lg font-bold text-[var(--color-text)] mb-2">Pencarian Tidak Ditemukan</h3>
                             <p className="text-sm text-[var(--color-text-muted)] max-w-xs mx-auto mb-6 opacity-70">
                                 Tidak ada santri yang sesuai dengan filter atau kata kunci pencarian Anda.
                             </p>
@@ -1021,7 +1021,7 @@ export default function CounselingPage() {
                                     setSelectedUrgencyFilter('All')
                                     setSelectedStatusFilter('All')
                                 }}
-                                className="h-9 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all active:scale-95"
+                                className="h-9 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all active:scale-95"
                             >
                                 Reset Filter
                             </button>
@@ -1033,7 +1033,7 @@ export default function CounselingPage() {
                         <div className="overflow-x-auto">
                             <table className="w-full text-left border-collapse">
                                 <thead>
-                                    <tr className="bg-[var(--color-surface-alt)]/80 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] border-b border-[var(--color-border)]">
+                                    <tr className="bg-[var(--color-surface-alt)]/80 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] border-b border-[var(--color-border)]">
                                         <th className="py-4 px-5">Waktu</th>
                                         <th className="py-4 px-5">Santri / Kelas</th>
                                         <th className="py-4 px-5">Kategori & Urgensi</th>
@@ -1055,25 +1055,25 @@ export default function CounselingPage() {
                                                 </div>
                                             </td>
                                             <td className="py-4 px-5">
-                                                <div className="font-extrabold text-[var(--color-text)] mb-0.5">{log.student_name}</div>
-                                                <div className="text-[10px] text-[var(--color-text-muted)] font-bold">{log.class_name}</div>
+                                                <div className="font-bold text-[var(--color-text)] mb-0.5">{log.student_name}</div>
+                                                <div className="text-xs text-[var(--color-text-muted)] font-bold">{log.class_name}</div>
                                             </td>
                                             <td className="py-4 px-5 space-y-1.5 whitespace-nowrap">
                                                 <div>{getCategoryBadge(log.category)}</div>
                                                 <div>{getUrgencyBadge(log.urgency)}</div>
                                             </td>
                                             <td className="py-4 px-5 max-w-[220px]">
-                                                <div className="font-extrabold text-[var(--color-text)] truncate" title={log.diagnosis}>
+                                                <div className="font-bold text-[var(--color-text)] truncate" title={log.diagnosis}>
                                                     {log.diagnosis || '—'}
                                                 </div>
-                                                <p className="text-[10px] text-[var(--color-text-muted)] line-clamp-1 mt-0.5 leading-relaxed" title={log.complaint}>
+                                                <p className="text-xs text-[var(--color-text-muted)] line-clamp-1 mt-0.5 leading-relaxed" title={log.complaint}>
                                                     {log.complaint}
                                                 </p>
                                             </td>
                                             <td className="py-4 px-5 whitespace-nowrap font-bold text-[var(--color-text-muted)]">
                                                 <div className="flex items-center gap-1.5">
                                                     <User className="w-3.5 h-3.5 opacity-40 text-purple-600" />
-                                                    <span className="text-[11px] truncate max-w-[140px]" title={log.counselor_name}>
+                                                    <span className="text-xs truncate max-w-[140px]" title={log.counselor_name}>
                                                         {log.counselor_name || 'BK'}
                                                     </span>
                                                 </div>
@@ -1081,7 +1081,7 @@ export default function CounselingPage() {
                                             <td className="py-4 px-5 whitespace-nowrap">
                                                 <button
                                                     onClick={() => handleToggleStatus(log)}
-                                                    className={`py-1 px-3 rounded-full text-[9px] font-black uppercase tracking-wider border transition-all ${log.status === 'selesai'
+                                                    className={`py-1 px-3 rounded-full text-xs font-bold uppercase tracking-wider border transition-all ${log.status === 'selesai'
                                                             ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20 hover:bg-emerald-500/20'
                                                             : 'bg-amber-500/10 text-amber-600 border-amber-500/20 hover:bg-amber-500/20 animate-pulse'
                                                         }`}
@@ -1123,7 +1123,7 @@ export default function CounselingPage() {
                         {/* Pagination Footer */}
                         {totalPages > 1 && (
                             <div className="py-4 px-5 bg-[var(--color-surface-alt)]/30 border-t border-[var(--color-border)] flex items-center justify-between">
-                                <p className="text-[10px] font-bold text-[var(--color-text-muted)] opacity-60">
+                                <p className="text-xs font-bold text-[var(--color-text-muted)] opacity-60">
                                     Menampilkan {tNum((page - 1) * pageSize + 1)} - {tNum(Math.min(page * pageSize, totalRows))} dari {tNum(totalRows)} sesi konseling
                                 </p>
                                 <Pagination
@@ -1146,7 +1146,7 @@ export default function CounselingPage() {
                                 </div>
 
                                 {/* Date Header Label */}
-                                <h3 className="text-sm font-black text-[var(--color-text)] font-heading uppercase tracking-wider">
+                                <h3 className="text-sm font-bold text-[var(--color-text)] font-heading uppercase tracking-wider">
                                     {new Date(dateString).toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' })}
                                 </h3>
 
@@ -1162,21 +1162,21 @@ export default function CounselingPage() {
                                                 {/* Left Details */}
                                                 <div className="space-y-2">
                                                     <div className="flex items-center gap-2 flex-wrap">
-                                                        <span className="text-[10px] font-black font-mono text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] px-2 py-0.5 rounded border border-[var(--color-border)]">
+                                                        <span className="text-xs font-bold font-mono text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] px-2 py-0.5 rounded border border-[var(--color-border)]">
                                                             {log.time} WIB
                                                         </span>
                                                         {getCategoryBadge(log.category)}
                                                         {getUrgencyBadge(log.urgency)}
                                                     </div>
 
-                                                    <h4 className="text-[15px] font-black text-[var(--color-text)]">
+                                                    <h4 className="text-[15px] font-bold text-[var(--color-text)]">
                                                         {log.student_name} <span className="text-xs font-bold text-[var(--color-text-muted)]">({log.class_name})</span>
                                                     </h4>
 
                                                     {log.diagnosis && (
                                                         <div className="flex items-center gap-1.5">
                                                             <Sparkles className="w-3.5 h-3.5 text-purple-600" />
-                                                            <span className="text-[11px] font-extrabold text-[var(--color-primary)]">
+                                                            <span className="text-xs font-bold text-[var(--color-primary)]">
                                                                 Diagnosis: {log.diagnosis}
                                                             </span>
                                                         </div>
@@ -1195,14 +1195,14 @@ export default function CounselingPage() {
                                                 {/* Right Actions */}
                                                 <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-4 shrink-0 border-t sm:border-t-0 border-[var(--color-border)] pt-3 sm:pt-0">
                                                     <div className="space-y-1.5 text-left sm:text-right">
-                                                        <p className="text-[9px] font-bold uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Konselor</p>
-                                                        <p className="text-xs font-extrabold text-[var(--color-text)]">{log.counselor_name}</p>
+                                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60">Konselor</p>
+                                                        <p className="text-xs font-bold text-[var(--color-text)]">{log.counselor_name}</p>
                                                     </div>
 
                                                     <div className="flex items-center gap-1.5">
                                                         <button
                                                             onClick={() => handleToggleStatus(log)}
-                                                            className={`py-1 px-2.5 rounded-xl text-[9px] font-black uppercase tracking-wider border transition-all ${log.status === 'selesai'
+                                                            className={`py-1 px-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all ${log.status === 'selesai'
                                                                     ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20 hover:bg-emerald-500/20'
                                                                     : 'bg-amber-500/10 text-amber-600 border-amber-500/20 hover:bg-amber-500/20 animate-pulse'
                                                                 }`}
@@ -1259,7 +1259,7 @@ export default function CounselingPage() {
                         {/* Student & Class Row */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
+                                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
                                     Pilih Santri <span className="text-red-500">*</span>
                                 </label>
                                 <RichSelect
@@ -1272,7 +1272,7 @@ export default function CounselingPage() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
+                                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
                                     Konselor / Pembimbing
                                 </label>
                                 <input
@@ -1280,7 +1280,7 @@ export default function CounselingPage() {
                                     value={formLog.counselor_name}
                                     onChange={(e) => setFormLog(prev => ({ ...prev, counselor_name: e.target.value }))}
                                     placeholder="Nama ustadz / ustadzah pembimbing"
-                                    className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
+                                    className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
                                 />
                             </div>
                         </div>
@@ -1288,7 +1288,7 @@ export default function CounselingPage() {
                         {/* Date & Time Row */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
-                                <label className="block text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
+                                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
                                     Tanggal Bimbingan
                                 </label>
                                 <div className="relative">
@@ -1297,12 +1297,12 @@ export default function CounselingPage() {
                                         type="date"
                                         value={formLog.date}
                                         onChange={(e) => setFormLog(prev => ({ ...prev, date: e.target.value }))}
-                                        className="w-full h-10 pl-10 pr-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
+                                        className="w-full h-10 pl-10 pr-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
                                     />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
+                                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
                                     Jam Sesi
                                 </label>
                                 <div className="relative">
@@ -1311,12 +1311,12 @@ export default function CounselingPage() {
                                         type="time"
                                         value={formLog.time}
                                         onChange={(e) => setFormLog(prev => ({ ...prev, time: e.target.value }))}
-                                        className="w-full h-10 pl-10 pr-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
+                                        className="w-full h-10 pl-10 pr-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
                                     />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
+                                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
                                     Kategori Bimbingan
                                 </label>
                                 <RichSelect
@@ -1336,14 +1336,14 @@ export default function CounselingPage() {
                         {/* Complaint (Keluhan) */}
                         <div className="relative">
                             <div className="flex justify-between items-center mb-1.5">
-                                <label className="block text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
+                                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                                     Keluhan & Masalah Santri <span className="text-red-500">*</span>
                                 </label>
                                 <button
                                     type="button"
                                     onClick={handleAIAnalyze}
                                     disabled={aiLoading}
-                                    className="h-7 px-3 bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 rounded-lg text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 active:scale-95 transition-all border border-purple-500/20"
+                                    className="h-7 px-3 bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 rounded-lg text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 active:scale-95 transition-all border border-purple-500/20"
                                 >
                                     <Sparkles className={`w-3.5 h-3.5 ${aiLoading ? 'animate-spin' : ''}`} />
                                     <span>{aiLoading ? 'Menganalisis...' : '✨ Asisten AI'}</span>
@@ -1354,14 +1354,14 @@ export default function CounselingPage() {
                                 onChange={(e) => setFormLog(prev => ({ ...prev, complaint: e.target.value }))}
                                 placeholder="Jelaskan secara detail keluhan santri, gejala psikososial, atau kebingungan yang dihadapi..."
                                 rows="3"
-                                className="w-full p-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 leading-relaxed"
+                                className="w-full p-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 leading-relaxed"
                             />
                         </div>
 
                         {/* Diagnosis & Action Plan */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
+                                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
                                     Diagnosis / Identifikasi Akar Masalah
                                 </label>
                                 <input
@@ -1369,11 +1369,11 @@ export default function CounselingPage() {
                                     value={formLog.diagnosis}
                                     onChange={(e) => setFormLog(prev => ({ ...prev, diagnosis: e.target.value }))}
                                     placeholder="Contoh: Homesickness Ringan, Penurunan Motivasi"
-                                    className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
+                                    className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
                                 />
                             </div>
                             <div>
-                                <label className="block text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
+                                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
                                     Rencana Tindakan / Solusi BK
                                 </label>
                                 <input
@@ -1381,7 +1381,7 @@ export default function CounselingPage() {
                                     value={formLog.action_plan}
                                     onChange={(e) => setFormLog(prev => ({ ...prev, action_plan: e.target.value }))}
                                     placeholder="Contoh: Bimbingan supportif, koordinasi asrama"
-                                    className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
+                                    className="w-full h-10 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
                                 />
                             </div>
                         </div>
@@ -1391,7 +1391,7 @@ export default function CounselingPage() {
 
                             {/* Urgency Radio Selector */}
                             <div>
-                                <label className="block text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] mb-2">
+                                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-2">
                                     Tingkat Urgensi
                                 </label>
                                 <div className="flex gap-2">
@@ -1414,7 +1414,7 @@ export default function CounselingPage() {
                                                 type="button"
                                                 key={urg}
                                                 onClick={() => setFormLog(prev => ({ ...prev, urgency: urg }))}
-                                                className={`flex-1 py-2 px-3 border rounded-xl text-center text-xs font-black uppercase tracking-wider transition-all select-none ${isChecked ? checkedStyles[urg] : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
+                                                className={`flex-1 py-2 px-3 border rounded-xl text-center text-xs font-bold uppercase tracking-wider transition-all select-none ${isChecked ? checkedStyles[urg] : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
                                             >
                                                 {label[urg]}
                                             </button>
@@ -1425,21 +1425,21 @@ export default function CounselingPage() {
 
                             {/* Status Selector */}
                             <div>
-                                <label className="block text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] mb-2">
+                                <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-2">
                                     Status Sesi Bimbingan
                                 </label>
                                 <div className="flex rounded-xl bg-[var(--color-surface-alt)] p-0.5 border border-[var(--color-border)] select-none">
                                     <button
                                         type="button"
                                         onClick={() => setFormLog(prev => ({ ...prev, status: 'proses' }))}
-                                        className={`flex-1 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider transition-all ${formLog.status === 'proses' ? 'bg-[var(--color-surface)] text-amber-600 border border-amber-500/10 shadow-sm' : 'text-[var(--color-text-muted)]'}`}
+                                        className={`flex-1 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${formLog.status === 'proses' ? 'bg-[var(--color-surface)] text-amber-600 border border-amber-500/10 shadow-sm' : 'text-[var(--color-text-muted)]'}`}
                                     >
                                         ⏳ Pembinaan
                                     </button>
                                     <button
                                         type="button"
                                         onClick={() => setFormLog(prev => ({ ...prev, status: 'selesai' }))}
-                                        className={`flex-1 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider transition-all ${formLog.status === 'selesai' ? 'bg-[var(--color-surface)] text-emerald-600 border border-emerald-500/10 shadow-sm' : 'text-[var(--color-text-muted)]'}`}
+                                        className={`flex-1 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${formLog.status === 'selesai' ? 'bg-[var(--color-surface)] text-emerald-600 border border-emerald-500/10 shadow-sm' : 'text-[var(--color-text-muted)]'}`}
                                     >
                                         ✓ Selesai
                                     </button>
@@ -1453,14 +1453,14 @@ export default function CounselingPage() {
                             <button
                                 type="button"
                                 onClick={() => setIsSessionModalOpen(false)}
-                                className="h-10 px-4 rounded-xl border border-[var(--color-border)] text-xs font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-colors active:scale-95"
+                                className="h-10 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-colors active:scale-95"
                             >
                                 Batal
                             </button>
                             <button
                                 type="submit"
                                 disabled={submitting}
-                                className="h-10 px-6 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-black flex items-center gap-2 active:scale-95 transition-all shadow-md disabled:opacity-50"
+                                className="h-10 px-6 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 active:scale-95 transition-all shadow-md disabled:opacity-50"
                             >
                                 {submitting ? 'Menyimpan...' : 'Simpan Sesi'}
                             </button>
@@ -1483,14 +1483,14 @@ export default function CounselingPage() {
                         <button
                             type="button"
                             onClick={() => setIsConfirmDeleteOpen(false)}
-                            className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-colors active:scale-95"
+                            className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-colors active:scale-95"
                         >
                             Batal
                         </button>
                         <button
                             type="button"
                             onClick={handleDeleteRecord}
-                            className="h-9 px-5 bg-rose-500 hover:bg-rose-600 text-white rounded-xl text-xs font-black transition-all active:scale-95 shadow-sm"
+                            className="h-9 px-5 bg-rose-500 hover:bg-rose-600 text-white rounded-xl text-xs font-bold transition-all active:scale-95 shadow-sm"
                         >
                             Ya, Hapus
                         </button>
@@ -1519,14 +1519,14 @@ export default function CounselingPage() {
                                 <button
                                     type="button"
                                     onClick={() => setIsPrintModalOpen(false)}
-                                    className="h-10 px-4 rounded-xl border border-[var(--color-border)] text-xs font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all active:scale-95"
+                                    className="h-10 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all active:scale-95"
                                 >
                                     Tutup
                                 </button>
                                 <button
                                     type="button"
                                     onClick={executePrintWindow}
-                                    className="h-10 px-5 bg-purple-600 hover:bg-purple-50 text-white rounded-xl text-xs font-black flex items-center gap-2 transition-all active:scale-95 shadow-md"
+                                    className="h-10 px-5 bg-purple-600 hover:bg-purple-50 text-white rounded-xl text-xs font-bold flex items-center gap-2 transition-all active:scale-95 shadow-md"
                                 >
                                     <Printer className="w-4 h-4" />
                                     <span>Cetak Sekarang</span>

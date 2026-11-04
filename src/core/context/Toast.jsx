@@ -142,16 +142,16 @@ export function ToastProvider({ children }) {
                                 />
                             )}
 
-                            <IconComp className="text-base sm:text-lg shrink-0" />
-                            <span className="flex-1 text-[11px] sm:text-sm font-semibold">{toast.message}</span>
+                            <IconComp className="w-5 h-5 sm: shrink-0" />
+                            <span className="flex-1 text-xs sm:text-sm font-semibold">{toast.message}</span>
 
                             {/* Tombol Batalkan — Hanya Tampil Untuk Toast Bertipe Undo */}
                             {isUndo && (
                                 <button
                                     onClick={() => handleUndo(toast)}
-                                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/20 hover:bg-white/30 transition-colors text-[10px] font-black uppercase tracking-widest shrink-0"
+                                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/20 hover:bg-white/30 transition-colors text-xs font-bold uppercase tracking-wide shrink-0"
                                 >
-                                    <RotateCcw className="text-[9px]" />
+                                    <RotateCcw className="w-4 h-4" />
                                     {t('toastUndoMsg') || 'Batalkan'}
                                 </button>
                             )}
@@ -160,7 +160,7 @@ export function ToastProvider({ children }) {
                                 onClick={() => removeToast(toast.id)}
                                 className="w-6 h-6 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors shrink-0"
                             >
-                                <X className="text-xs" />
+                                <X className="w-4 h-4" />
                             </button>
                         </div>
                     )

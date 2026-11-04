@@ -671,7 +671,7 @@ export default function RaportImportModal({
             return (
                 <input
                     ref={inputRef}
-                    className="w-full bg-[var(--color-surface)] border border-[var(--color-primary)] rounded px-1 py-0.5 text-[10px] font-bold outline-none"
+                    className="w-full bg-[var(--color-surface)] border border-[var(--color-primary)] rounded px-1 py-0.5 text-xs font-bold outline-none"
                     value={value || ''}
                     onChange={(e) => handleImportCellEdit(rowIdx, colKey, e.target.value)}
                     onBlur={() => setImportEditCell(null)}
@@ -721,14 +721,14 @@ export default function RaportImportModal({
             footer={
                 <div className="flex items-center w-full gap-3">
                     {importStep === 1 ? (
-                        <button onClick={onClose} className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-surface-alt)] transition-all">
+                        <button onClick={onClose} className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all">
                             Batal
                         </button>
                     ) : (
                         <button
                             onClick={() => setImportStep(v => v - 1)}
                             disabled={importing}
-                            className="h-10 px-6 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[11px] font-black uppercase tracking-widest disabled:opacity-50 hover:bg-[var(--color-border)] transition-all flex items-center gap-2"
+                            className="h-10 px-6 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide disabled:opacity-50 hover:bg-[var(--color-border)] transition-all flex items-center gap-2"
                         >
                             <ArrowLeft className="w-3.5 h-3.5" /> Kembali
                         </button>
@@ -738,7 +738,7 @@ export default function RaportImportModal({
 
                     <div className="flex items-center gap-3">
                         {importing && (
-                            <span className="text-[10px] font-bold text-[var(--color-text-muted)] flex items-center gap-2">
+                            <span className="text-xs font-bold text-[var(--color-text-muted)] flex items-center gap-2">
                                 <Loader2 className="w-3.5 h-3.5 animate-spin text-[var(--color-primary)]" />
                                 {importProgress.done}/{importProgress.total}
                             </span>
@@ -747,7 +747,7 @@ export default function RaportImportModal({
                         {importStep === 1 ? (
                             <button
                                 onClick={() => Object.keys(importRawSheets).length > 0 ? setImportStep(2) : handleImportClick()}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-[11px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center gap-2"
+                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center gap-2"
                             >
                                 {Object.keys(importRawSheets).length > 0 ? (
                                     <>Lanjutkan <ArrowRight className="w-3.5 h-3.5" /></>
@@ -762,7 +762,7 @@ export default function RaportImportModal({
                                     await buildImportPreview(importRawSheets, importColumnMapping)
                                 }}
                                 disabled={!importColumnMapping.name}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-[11px] font-black uppercase tracking-widest disabled:opacity-40 shadow-lg transition-all flex items-center gap-2"
+                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-xs font-bold uppercase tracking-wide disabled:opacity-40 shadow-lg transition-all flex items-center gap-2"
                             >
                                 Validasi Data <ArrowRight className="w-3.5 h-3.5" />
                             </button>
@@ -770,7 +770,7 @@ export default function RaportImportModal({
                             <button
                                 onClick={handleCommitImport}
                                 disabled={importing || hasImportBlockingErrors || importReadyRows.length === 0}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-[11px] font-black uppercase tracking-widest disabled:opacity-40 shadow-lg transition-all flex items-center gap-2"
+                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-xs font-bold uppercase tracking-wide disabled:opacity-40 shadow-lg transition-all flex items-center gap-2"
                             >
                                 {importing ? (
                                     <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Menyimpan...</>
@@ -792,13 +792,13 @@ export default function RaportImportModal({
                 ].map((s) => (
                     <React.Fragment key={s.step}>
                         <div className="flex items-center gap-3">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-black transition-all shadow-sm
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all shadow-sm
                                 ${importStep >= s.step ? 'bg-[var(--color-primary)] text-white scale-110' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)] opacity-40'}`}>
                                 {importStep > s.step ? <Check className="w-3 h-3" /> : s.step}
                             </div>
                             <div className="flex flex-col text-left">
-                                <span className={`text-[10px] md:text-[11px] font-black uppercase tracking-wider leading-none ${importStep >= s.step ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-50'}`}>{s.label}</span>
-                                <span className="text-[9px] font-bold text-[var(--color-text-muted)] opacity-40 uppercase tracking-tight mt-1">{s.desc}</span>
+                                <span className={`text-xs md:text-xs font-bold uppercase tracking-wider leading-none ${importStep >= s.step ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-50'}`}>{s.label}</span>
+                                <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-40 uppercase tracking-tight mt-1">{s.desc}</span>
                             </div>
                         </div>
                         {s.step < 3 && <div className={`w-6 h-0.5 rounded-full transition-all ${importStep > s.step ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)] opacity-30'}`} />}
@@ -810,18 +810,18 @@ export default function RaportImportModal({
             {importFileName && (
                 <div className="flex items-center justify-between gap-4 mb-5 px-1 animate-in fade-in slide-in-from-top-4 duration-500">
                     <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 shrink-0 text-[10px] font-black shadow-sm">
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 shrink-0 text-xs font-bold shadow-sm">
                             <FileText className="w-3.5 h-3.5" />
                             <span>{importFileName}</span>
                         </div>
-                        <span className="text-[10px] px-3 py-1.5 rounded-full bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border font-bold">
+                        <span className="text-xs px-3 py-1.5 rounded-full bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border font-bold">
                             {Object.keys(importRawSheets).length} Sheet terdeteksi
                         </span>
                     </div>
 
                     <button
                         onClick={handleImportClick}
-                        className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-red-500 hover:border-red-500/30 text-[10px] font-black uppercase tracking-wider transition-all active:scale-95 shadow-sm group"
+                        className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-red-500 hover:border-red-500/30 text-xs font-bold uppercase tracking-wider transition-all active:scale-95 shadow-sm group"
                     >
                         <ArrowLeftRight className="w-3 h-3 group-hover:rotate-180 transition-transform duration-500" />
                         Ganti File
@@ -851,10 +851,10 @@ export default function RaportImportModal({
                     >
                         <Upload className={`w-4 h-4 transition-all ${importDragOver ? 'text-[var(--color-primary)] scale-110' : 'text-[var(--color-primary)]/60'}`} />
                         <div className="text-left">
-                            <p className="text-[11px] font-black text-[var(--color-primary)] uppercase tracking-wider leading-none">
+                            <p className="text-xs font-bold text-[var(--color-primary)] uppercase tracking-wider leading-none">
                                 {importDragOver ? 'Lepaskan file di sini' : 'Drag & Drop atau Klik untuk memilih File Raport Excel'}
                             </p>
-                            <p className="text-[10px] text-[var(--color-text-muted)] font-bold mt-1 opacity-60">Mendukung format .csv, .xlsx, dan .xls</p>
+                            <p className="text-xs text-[var(--color-text-muted)] font-bold mt-1 opacity-60">Mendukung format .csv, .xlsx, dan .xls</p>
                         </div>
                     </div>
 
@@ -865,8 +865,8 @@ export default function RaportImportModal({
                                 <School className="w-4 h-4" />
                             </div>
                             <div className="flex flex-col text-left">
-                                <span className="text-[10px] font-black uppercase tracking-wider text-[var(--color-text)]">Bulan & Tahun Aktif</span>
-                                <span className="text-[9px] font-bold text-emerald-600">
+                                <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text)]">Bulan & Tahun Aktif</span>
+                                <span className="text-xs font-bold text-emerald-600">
                                     Periode: {selectedMonth} / {selectedYear}
                                 </span>
                             </div>
@@ -874,7 +874,7 @@ export default function RaportImportModal({
 
                         <button
                             onClick={handleDownloadTemplate}
-                            className="shrink-0 h-9 px-4 rounded-xl bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-emerald-600 hover:scale-[1.02] active:scale-95 transition-all shadow-lg"
+                            className="shrink-0 h-9 px-4 rounded-xl bg-emerald-500 text-white text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 hover:bg-emerald-600 hover:scale-[1.02] active:scale-95 transition-all shadow-lg"
                         >
                             <Download className="w-3.5 h-3.5" /> Download Template Raport
                         </button>
@@ -885,9 +885,9 @@ export default function RaportImportModal({
                         <div className="px-4 py-2 bg-[var(--color-surface-alt)] border-b border-[var(--color-border)] flex items-center justify-between">
                             <div className="flex items-center gap-2">
                                 <Table className="w-3.5 h-3.5 text-[var(--color-primary)]" />
-                                <span className="text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">Aturan Penulisan Sheet & Baris Excel</span>
+                                <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">Aturan Penulisan Sheet & Baris Excel</span>
                             </div>
-                            <div className="flex items-center gap-1.5 text-emerald-600 text-[8px] font-black uppercase tracking-widest">
+                            <div className="flex items-center gap-1.5 text-emerald-600 text-xs font-bold uppercase tracking-wide">
                                 <span className="relative flex h-1.5 w-1.5">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
@@ -908,8 +908,8 @@ export default function RaportImportModal({
             {importStep === 2 && (
                 <div className="space-y-4">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Cocokkan Kolom File Excel</span>
-                        <span className="text-[9px] font-bold py-1 px-2 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)]">
+                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Cocokkan Kolom File Excel</span>
+                        <span className="text-xs font-bold py-1 px-2 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)]">
                             {importFileHeaders.length} Kolom Excel terdeteksi
                         </span>
                     </div>
@@ -921,11 +921,11 @@ export default function RaportImportModal({
                                 <div key={sys.key} className={`p-2.5 rounded-xl border transition-all text-left ${mapped ? 'bg-emerald-500/5 border-emerald-500/20' : 'bg-[var(--color-surface-alt)]/50 border-[var(--color-border)]'}`}>
                                     <div className="flex items-center justify-between gap-3">
                                         <div className="flex flex-col w-[140px] shrink-0">
-                                            <span className="text-[10.5px] font-black text-[var(--color-text)] flex items-center gap-1">
+                                            <span className="text-[10.5px] font-bold text-[var(--color-text)] flex items-center gap-1">
                                                 {sys.label}
-                                                {sys.required && <span className="text-red-500 text-[9px]">*</span>}
+                                                {sys.required && <span className="text-red-500 text-xs">*</span>}
                                             </span>
-                                            <span className="text-[8px] font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-tight" title={sys.desc}>
+                                            <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-tight" title={sys.desc}>
                                                 {sys.key.replace('nilai_', '').replace('_', ' ').toUpperCase()}
                                             </span>
                                         </div>
@@ -977,7 +977,7 @@ export default function RaportImportModal({
                                                 const IconComp = stat.icon
                                                 return <IconComp className="w-3.5 h-3.5 opacity-70" />
                                             })()}
-                                            <span className="text-[11px] font-black">{stat.value}</span>
+                                            <span className="text-xs font-bold">{stat.value}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -985,7 +985,7 @@ export default function RaportImportModal({
                                 <div className="flex items-center gap-2">
                                     <button
                                         onClick={() => setImportSkipDupes(!importSkipDupes)}
-                                        className={`flex items-center gap-2 h-8 px-3 rounded-xl border text-[10px] font-black uppercase tracking-tight transition-all
+                                        className={`flex items-center gap-2 h-8 px-3 rounded-xl border text-xs font-bold uppercase tracking-tight transition-all
                                             ${importSkipDupes
                                                 ? 'bg-violet-500 text-white border-violet-500 shadow-md'
                                                 : 'bg-[var(--color-surface)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-violet-500/40 hover:text-violet-600'}`}
@@ -996,7 +996,7 @@ export default function RaportImportModal({
 
                                     <button
                                         onClick={() => setFilterIssuesOnly(!filterIssuesOnly)}
-                                        className={`flex items-center gap-2 h-8 px-3 rounded-xl border text-[10px] font-black uppercase tracking-tight transition-all
+                                        className={`flex items-center gap-2 h-8 px-3 rounded-xl border text-xs font-bold uppercase tracking-tight transition-all
                                             ${filterIssuesOnly
                                                 ? 'bg-red-500 text-white border-red-500 shadow-md'
                                                 : 'bg-[var(--color-surface)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-red-500/40 hover:text-red-500'}`}
@@ -1019,8 +1019,8 @@ export default function RaportImportModal({
                                             <Zap className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-amber-700">Perbaikan Massal Kelas Tersedia</p>
-                                            <p className="text-[9.5px] font-bold text-amber-600/80 leading-tight">Beberapa santri tidak ditemukan di kelas yang sesuai nama sheet. Pindahkan semua santri bermasalah tersebut ke kelas valid?</p>
+                                            <p className="text-xs font-bold uppercase tracking-wide text-amber-700">Perbaikan Massal Kelas Tersedia</p>
+                                            <p className="text-xs font-bold text-amber-600/80 leading-tight">Beberapa santri tidak ditemukan di kelas yang sesuai nama sheet. Pindahkan semua santri bermasalah tersebut ke kelas valid?</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
@@ -1031,7 +1031,7 @@ export default function RaportImportModal({
                                                     e.target.value = '';
                                                 }
                                             }}
-                                            className="h-8 px-3 rounded-xl bg-[var(--color-surface)] border border-amber-500/30 text-[9px] font-black uppercase tracking-widest outline-none focus:ring-4 focus:ring-amber-500/10 transition-all cursor-pointer"
+                                            className="h-8 px-3 rounded-xl bg-[var(--color-surface)] border border-amber-500/30 text-xs font-bold uppercase tracking-wide outline-none focus:ring-4 focus:ring-amber-500/10 transition-all cursor-pointer"
                                         >
                                             <option value="">-- Pilih Kelas Valid --</option>
                                             {classesList.map(c => (
@@ -1048,28 +1048,28 @@ export default function RaportImportModal({
                                     <table className="w-full border-collapse table-fixed min-w-[1200px]">
                                         <thead>
                                             <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 sticky top-0 z-10">
-                                                <th className="px-2 py-2 text-left text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[8%]">Sheet</th>
-                                                <th className="px-2 py-2 text-left text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[12%]">Nama Santri</th>
+                                                <th className="px-2 py-2 text-left text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[8%]">Sheet</th>
+                                                <th className="px-2 py-2 text-left text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[12%]">Nama Santri</th>
                                                 {criteria && criteria.length > 0 ? criteria.map(k => (
-                                                    <th key={k.key} className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">{k.id}</th>
+                                                    <th key={k.key} className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">{k.id}</th>
                                                 )) : (
                                                     <>
-                                                        <th className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">Akhlak</th>
-                                                        <th className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">Ibadah</th>
-                                                        <th className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">Bersih</th>
-                                                        <th className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">Quran</th>
-                                                        <th className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">Bahasa</th>
+                                                        <th className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">Akhlak</th>
+                                                        <th className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">Ibadah</th>
+                                                        <th className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">Bersih</th>
+                                                        <th className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">Quran</th>
+                                                        <th className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">Bahasa</th>
                                                     </>
                                                 )}
-                                                <th className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">BB(kg)</th>
-                                                <th className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">TB(cm)</th>
-                                                <th className="px-2 py-2 text-left text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[10%]">Ziyadah</th>
-                                                <th className="px-2 py-2 text-left text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[10%]">Murojaah</th>
-                                                <th className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[4%]">Skt</th>
-                                                <th className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[4%]">Izn</th>
-                                                <th className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[4%]">Alp</th>
-                                                <th className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">Status</th>
-                                                <th className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[4%]">Aksi</th>
+                                                <th className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">BB(kg)</th>
+                                                <th className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">TB(cm)</th>
+                                                <th className="px-2 py-2 text-left text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[10%]">Ziyadah</th>
+                                                <th className="px-2 py-2 text-left text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[10%]">Murojaah</th>
+                                                <th className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[4%]">Skt</th>
+                                                <th className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[4%]">Izn</th>
+                                                <th className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[4%]">Alp</th>
+                                                <th className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[6%]">Status</th>
+                                                <th className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[4%]">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1080,40 +1080,40 @@ export default function RaportImportModal({
                                                     const i = r.originalIdx
                                                     return (
                                                         <tr key={i} className={`hover:bg-[var(--color-surface-alt)]/40 transition-colors border-b border-[var(--color-border)]/30 last:border-0 ${r._hasError ? 'bg-red-500/5' : r._isDupe ? 'bg-violet-500/5' : ''}`}>
-                                                            <td className="px-2 py-1 text-[var(--color-text-muted)] text-[10px] font-medium truncate text-left">{r._sheetName}</td>
-                                                            <td className="px-2 py-1 font-bold text-[var(--color-text)] text-[10px] truncate text-left">
+                                                            <td className="px-2 py-1 text-[var(--color-text-muted)] text-xs font-medium truncate text-left">{r._sheetName}</td>
+                                                            <td className="px-2 py-1 font-bold text-[var(--color-text)] text-xs truncate text-left">
                                                                 <EditableCell rowIdx={i} colKey="name" value={r.name} />
                                                             </td>
                                                             {criteria && criteria.length > 0 ? criteria.map(k => (
-                                                                <td key={k.key} className="px-2 py-1 text-[10px]"><EditableCell rowIdx={i} colKey={k.key} value={r[k.key]} /></td>
+                                                                <td key={k.key} className="px-2 py-1 text-xs"><EditableCell rowIdx={i} colKey={k.key} value={r[k.key]} /></td>
                                                             )) : (
                                                                 <>
-                                                                    <td className="px-2 py-1 text-[10px]"><EditableCell rowIdx={i} colKey="nilai_akhlak" value={r.nilai_akhlak} /></td>
-                                                                    <td className="px-2 py-1 text-[10px]"><EditableCell rowIdx={i} colKey="nilai_ibadah" value={r.nilai_ibadah} /></td>
-                                                                    <td className="px-2 py-1 text-[10px]"><EditableCell rowIdx={i} colKey="nilai_kebersihan" value={r.nilai_kebersihan} /></td>
-                                                                    <td className="px-2 py-1 text-[10px]"><EditableCell rowIdx={i} colKey="nilai_quran" value={r.nilai_quran} /></td>
-                                                                    <td className="px-2 py-1 text-[10px]"><EditableCell rowIdx={i} colKey="nilai_bahasa" value={r.nilai_bahasa} /></td>
+                                                                    <td className="px-2 py-1 text-xs"><EditableCell rowIdx={i} colKey="nilai_akhlak" value={r.nilai_akhlak} /></td>
+                                                                    <td className="px-2 py-1 text-xs"><EditableCell rowIdx={i} colKey="nilai_ibadah" value={r.nilai_ibadah} /></td>
+                                                                    <td className="px-2 py-1 text-xs"><EditableCell rowIdx={i} colKey="nilai_kebersihan" value={r.nilai_kebersihan} /></td>
+                                                                    <td className="px-2 py-1 text-xs"><EditableCell rowIdx={i} colKey="nilai_quran" value={r.nilai_quran} /></td>
+                                                                    <td className="px-2 py-1 text-xs"><EditableCell rowIdx={i} colKey="nilai_bahasa" value={r.nilai_bahasa} /></td>
                                                                 </>
                                                             )}
-                                                            <td className="px-2 py-1 text-[10px]"><EditableCell rowIdx={i} colKey="berat_badan" value={r.berat_badan} /></td>
-                                                            <td className="px-2 py-1 text-[10px]"><EditableCell rowIdx={i} colKey="tinggi_badan" value={r.tinggi_badan} /></td>
-                                                            <td className="px-2 py-1 text-[10px] text-left"><EditableCell rowIdx={i} colKey="ziyadah" value={r.ziyadah} /></td>
-                                                            <td className="px-2 py-1 text-[10px] text-left"><EditableCell rowIdx={i} colKey="murojaah" value={r.murojaah} /></td>
-                                                            <td className="px-2 py-1 text-[10px]"><EditableCell rowIdx={i} colKey="hari_sakit" value={r.hari_sakit} /></td>
-                                                            <td className="px-2 py-1 text-[10px]"><EditableCell rowIdx={i} colKey="hari_izin" value={r.hari_izin} /></td>
-                                                            <td className="px-2 py-1 text-[10px]"><EditableCell rowIdx={i} colKey="hari_alpa" value={r.hari_alpa} /></td>
+                                                            <td className="px-2 py-1 text-xs"><EditableCell rowIdx={i} colKey="berat_badan" value={r.berat_badan} /></td>
+                                                            <td className="px-2 py-1 text-xs"><EditableCell rowIdx={i} colKey="tinggi_badan" value={r.tinggi_badan} /></td>
+                                                            <td className="px-2 py-1 text-xs text-left"><EditableCell rowIdx={i} colKey="ziyadah" value={r.ziyadah} /></td>
+                                                            <td className="px-2 py-1 text-xs text-left"><EditableCell rowIdx={i} colKey="murojaah" value={r.murojaah} /></td>
+                                                            <td className="px-2 py-1 text-xs"><EditableCell rowIdx={i} colKey="hari_sakit" value={r.hari_sakit} /></td>
+                                                            <td className="px-2 py-1 text-xs"><EditableCell rowIdx={i} colKey="hari_izin" value={r.hari_izin} /></td>
+                                                            <td className="px-2 py-1 text-xs"><EditableCell rowIdx={i} colKey="hari_alpa" value={r.hari_alpa} /></td>
 
                                                             <td className="px-2 py-1 text-center">
                                                                 {r._hasError ? (
-                                                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-red-500/10 text-red-600 text-[8px] font-black uppercase">
+                                                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-red-500/10 text-red-600 text-xs font-bold uppercase">
                                                                         <AlertCircle className="w-3.5 h-3.5" /> Error
                                                                     </span>
                                                                 ) : r._isDupe ? (
-                                                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-violet-500/10 text-violet-600 text-[8px] font-black uppercase">
+                                                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-violet-500/10 text-violet-600 text-xs font-bold uppercase">
                                                                         <Copy className="w-3.5 h-3.5" /> Tindih
                                                                     </span>
                                                                 ) : (
-                                                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 text-[8px] font-black uppercase">
+                                                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 text-xs font-bold uppercase">
                                                                         <CheckCircle2 className="w-3.5 h-3.5" /> Ready
                                                                     </span>
                                                                 )}
@@ -1133,7 +1133,7 @@ export default function RaportImportModal({
                                         </tbody>
                                     </table>
                                 </div>
-                                <div className="px-3 py-1.5 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] border-t border-[var(--color-border)] flex items-center justify-between">
+                                <div className="px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] border-t border-[var(--color-border)] flex items-center justify-between">
                                     <span>Menampilkan {importPreview.length} total baris</span>
                                     {filterIssuesOnly && <span className="text-red-500 animate-pulse">Filter "Hanya Error" Aktif</span>}
                                 </div>
@@ -1147,7 +1147,7 @@ export default function RaportImportModal({
                                         onClick={() => setImportValidationOpen(v => !v)}
                                         className="w-full px-3 py-2 bg-[var(--color-surface-alt)] border-b border-[var(--color-border)] flex items-center justify-between hover:bg-[var(--color-border)]/30 transition-colors cursor-pointer"
                                     >
-                                        <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-1.5">
+                                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] flex items-center gap-1.5">
                                             <ChevronDown className={`w-3 h-3 transition-transform ${importValidationOpen ? '' : '-rotate-90'}`} />
                                             Catatan Log Validasi ({importIssues.length} Isu Terdeteksi)
                                         </span>
@@ -1156,13 +1156,13 @@ export default function RaportImportModal({
                                         <div className="max-h-[120px] overflow-auto divide-y divide-[var(--color-border)]">
                                             {importIssues.map((issue, idx) => (
                                                 <div key={idx} className={`flex items-start gap-3 px-3 py-1.5 ${issue.level === 'error' ? 'border-l-2 border-l-red-500 bg-red-500/3' : 'border-l-2 border-l-violet-500 bg-violet-500/3'}`}>
-                                                    <span className={`px-1.5 py-0.5 rounded text-[8px] font-black uppercase shrink-0 ${issue.level === 'error' ? 'bg-red-500/15 text-red-600' : 'bg-violet-500/15 text-violet-600'}`}>
+                                                    <span className={`px-1.5 py-0.5 rounded text-xs font-bold uppercase shrink-0 ${issue.level === 'error' ? 'bg-red-500/15 text-red-600' : 'bg-violet-500/15 text-violet-600'}`}>
                                                         {issue.level}
                                                     </span>
                                                     <div className="flex-1 min-w-0">
-                                                        <p className="text-[9px] font-black text-[var(--color-text-muted)] leading-none mb-0.5">Sheet: {issue.sheet} — Baris {issue.row}</p>
+                                                        <p className="text-xs font-bold text-[var(--color-text-muted)] leading-none mb-0.5">Sheet: {issue.sheet} — Baris {issue.row}</p>
                                                         {issue.messages.map((msg, mi) => (
-                                                            <p key={mi} className="text-[10px] font-bold text-[var(--color-text)] leading-tight">{msg}</p>
+                                                            <p key={mi} className="text-xs font-bold text-[var(--color-text)] leading-tight">{msg}</p>
                                                         ))}
                                                     </div>
                                                 </div>

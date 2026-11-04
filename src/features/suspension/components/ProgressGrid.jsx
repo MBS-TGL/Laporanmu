@@ -15,7 +15,7 @@ function ProgressGrid({ suspension, logByDate, selected, onSelect }) {
 
   return (
     <div>
-      <div className="flex items-center gap-4 mb-3 text-[11px] font-bold text-[var(--color-text-muted)]">
+      <div className="flex items-center gap-4 mb-3 text-xs font-bold text-[var(--color-text-muted)]">
         <span className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded bg-emerald-500 inline-block" /> Terisi
         </span>
@@ -45,10 +45,10 @@ function ProgressGrid({ suspension, logByDate, selected, onSelect }) {
                     : 'border-[var(--color-border)] bg-[var(--color-surface)]'
               }`}
             >
-              <span className="block text-[10px] font-black uppercase text-[var(--color-text-muted)]">
+              <span className="block text-xs font-bold uppercase text-[var(--color-text-muted)]">
                 {DOW[dayOfWeek(d)]}
               </span>
-              <span className="block text-sm font-black text-[var(--color-text)] tabular-nums">
+              <span className="block text-sm font-bold text-[var(--color-text)] tabular-nums">
                 {d.slice(8, 10)}/{d.slice(5, 7)}
               </span>
               <span className="mt-1 flex justify-center">

@@ -115,7 +115,7 @@ export default function TeacherImportModal(props) {
 
                 return (
                     <div ref={cellRef} className="relative">
-                        <div className="bg-[var(--color-primary)]/10 rounded-lg px-2 py-1 text-[var(--color-primary)] font-black border border-[var(--color-primary)] shadow-sm">
+                        <div className="bg-[var(--color-primary)]/10 rounded-lg px-2 py-1 text-[var(--color-primary)] font-bold border border-[var(--color-primary)] shadow-sm">
                             {value || 'Pilih...'}
                         </div>
                         {renderDropdown(
@@ -123,7 +123,7 @@ export default function TeacherImportModal(props) {
                                 <div className="p-2 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/50">
                                     <input
                                         autoFocus
-                                        className="w-full bg-transparent text-[10px] font-bold outline-none placeholder:font-normal placeholder:opacity-30"
+                                        className="w-full bg-transparent text-xs font-bold outline-none placeholder:font-normal placeholder:opacity-30"
                                         placeholder="Cari mata pelajaran..."
                                         value={searchTerm}
                                         onChange={e => setSearchTerm(e.target.value)}
@@ -140,21 +140,21 @@ export default function TeacherImportModal(props) {
                                     {filteredSubjects.length > 0 ? filteredSubjects.map(s => (
                                         <button
                                             key={s}
-                                            className="w-full px-4 py-2 text-left text-[10px] font-bold hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-colors flex items-center justify-between group"
+                                            className="w-full px-4 py-2 text-left text-xs font-bold hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-colors flex items-center justify-between group"
                                             onClick={() => {
                                                 handleImportCellEdit(rowIdx, colKey, s)
                                                 setImportEditCell(null)
                                             }}
                                         >
                                             <span className="truncate">{s}</span>
-                                            {value === s && <Check className="text-[8px]" />}
+                                            {value === s && <Check className="w-4 h-4" />}
                                         </button>
                                     )) : (
-                                        <div className="px-3 py-3 text-[9px] text-[var(--color-text-muted)] italic text-center">Data tidak ditemukan</div>
+                                        <div className="px-3 py-3 text-xs text-[var(--color-text-muted)] italic text-center">Data tidak ditemukan</div>
                                     )}
                                 </div>
                                 <button
-                                    className="p-2 text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:text-red-500 transition-colors border-t border-[var(--color-border)]"
+                                    className="p-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hover:text-red-500 transition-colors border-t border-[var(--color-border)]"
                                     onClick={() => setImportEditCell(null)}
                                 >
                                     Batal
@@ -172,7 +172,7 @@ export default function TeacherImportModal(props) {
                 ]
                 return (
                     <div ref={cellRef} className="relative">
-                        <div className="bg-[var(--color-primary)]/10 rounded-lg px-2 py-1 text-[var(--color-primary)] font-black uppercase text-center border border-[var(--color-primary)] shadow-sm">
+                        <div className="bg-[var(--color-primary)]/10 rounded-lg px-2 py-1 text-[var(--color-primary)] font-bold uppercase text-center border border-[var(--color-primary)] shadow-sm">
                             {value || '-'}
                         </div>
                         {renderDropdown(
@@ -180,14 +180,14 @@ export default function TeacherImportModal(props) {
                                 {options.map(opt => (
                                     <button
                                         key={opt.id}
-                                        className="w-full px-4 py-2.5 text-left text-[10px] font-bold hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-colors flex items-center justify-between"
+                                        className="w-full px-4 py-2.5 text-left text-xs font-bold hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-colors flex items-center justify-between"
                                         onClick={() => {
                                             handleImportCellEdit(rowIdx, colKey, opt.id)
                                             setImportEditCell(null)
                                         }}
                                     >
                                         <span>{opt.name}</span>
-                                        {value === opt.id && <Check className="text-[8px]" />}
+                                        {value === opt.id && <Check className="w-4 h-4" />}
                                     </button>
                                 ))}
                             </div>
@@ -200,7 +200,7 @@ export default function TeacherImportModal(props) {
                 const options = Object.entries(STATUS_CONFIG).map(([k, v]) => ({ id: k, label: v.label }))
                 return (
                     <div ref={cellRef} className="relative">
-                        <div className="bg-[var(--color-primary)]/10 rounded-lg px-2 py-1 text-[var(--color-primary)] font-black uppercase text-center border border-[var(--color-primary)] shadow-sm">
+                        <div className="bg-[var(--color-primary)]/10 rounded-lg px-2 py-1 text-[var(--color-primary)] font-bold uppercase text-center border border-[var(--color-primary)] shadow-sm">
                             {STATUS_CONFIG[value]?.label || value || '-'}
                         </div>
                         {renderDropdown(
@@ -208,14 +208,14 @@ export default function TeacherImportModal(props) {
                                 {options.map(opt => (
                                     <button
                                         key={opt.id}
-                                        className="w-full px-4 py-2.5 text-left text-[10px] font-bold hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-colors flex items-center justify-between"
+                                        className="w-full px-4 py-2.5 text-left text-xs font-bold hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-colors flex items-center justify-between"
                                         onClick={() => {
                                             handleImportCellEdit(rowIdx, colKey, opt.id)
                                             setImportEditCell(null)
                                         }}
                                     >
                                         <span>{opt.label}</span>
-                                        {value === opt.id && <Check className="text-[8px]" />}
+                                        {value === opt.id && <Check className="w-4 h-4" />}
                                     </button>
                                 ))}
                             </div>
@@ -227,7 +227,7 @@ export default function TeacherImportModal(props) {
             return (
                 <input
                     autoFocus
-                    className="w-full bg-[var(--color-surface)] border-2 border-[var(--color-primary)] rounded-lg px-2 py-1 text-[10px] font-black outline-none shadow-lg transition-all"
+                    className="w-full bg-[var(--color-surface)] border-2 border-[var(--color-primary)] rounded-lg px-2 py-1 text-xs font-bold outline-none shadow-lg transition-all"
                     value={value || ''}
                     onChange={(e) => handleImportCellEdit(rowIdx, colKey, e.target.value)}
                     onBlur={() => setImportEditCell(null)}
@@ -246,7 +246,7 @@ export default function TeacherImportModal(props) {
                 onClick={() => setImportEditCell({ row: rowIdx, col: colKey })}
             >
                 <span className={isCentered ? '' : 'truncate'}>{displayValue}</span>
-                {!isCentered && <Pen className="text-[7px] opacity-0 group-hover:opacity-30 transition-opacity" />}
+                {!isCentered && <Pen className="w-4 h-4 opacity-0 group-hover:opacity-30 transition-opacity" />}
             </div>
         )
     })
@@ -270,15 +270,15 @@ export default function TeacherImportModal(props) {
                         <button
                             onClick={() => setImportStep(v => v - 1)}
                             disabled={importing}
-                            className="h-10 px-6 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[11px] font-black uppercase tracking-widest disabled:opacity-50 hover:bg-[var(--color-border)] transition-all flex items-center gap-2"
+                            className="h-10 px-6 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide disabled:opacity-50 hover:bg-[var(--color-border)] transition-all flex items-center gap-2"
                         >
-                            <ArrowLeft />
+                            <ArrowLeft className="w-4 h-4" />
                             Kembali
                         </button>
                     ) : (
                         <button
                             onClick={onClose}
-                            className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center"
+                            className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center"
                         >
                             Batal
                         </button>
@@ -288,8 +288,8 @@ export default function TeacherImportModal(props) {
 
                     <div className="flex items-center gap-3">
                         {importing && (
-                            <span className="text-[10px] font-bold text-[var(--color-text-muted)] flex items-center gap-2 mr-2">
-                                <LoaderCircle className="animate-spin text-[var(--color-primary)]" />
+                            <span className="text-xs font-bold text-[var(--color-text-muted)] flex items-center gap-2 mr-2">
+                                <LoaderCircle className="w-4 h-4 animate-spin text-[var(--color-primary)]" />
                                 {importProgress.done}/{importProgress.total}
                             </span>
                         )}
@@ -297,12 +297,12 @@ export default function TeacherImportModal(props) {
                         {importStep === 1 ? (
                             <button
                                 onClick={() => (importRawData.length > 0 && importFileName) ? setImportStep(2) : importFileInputRef.current?.click()}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-[11px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center gap-2"
+                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center gap-2"
                             >
                                 {(importRawData.length > 0 && importFileName) ? (
-                                    <>Lanjutkan <ArrowRight /></>
+                                    <>Lanjutkan <ArrowRight className="w-4 h-4" /></>
                                 ) : (
-                                    <>Pilih File <Upload /></>
+                                    <>Pilih File <Upload className="w-4 h-4" /></>
                                 )}
                             </button>
                         ) : importStep === 2 ? (
@@ -314,19 +314,19 @@ export default function TeacherImportModal(props) {
                                     setImportLoading(false)
                                 }}
                                 disabled={!importColumnMapping.name}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-[11px] font-black uppercase tracking-widest disabled:opacity-40 shadow-lg transition-all flex items-center gap-2"
+                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-xs font-bold uppercase tracking-wide disabled:opacity-40 shadow-lg transition-all flex items-center gap-2"
                             >
-                                Review Data <ArrowRight />
+                                Review Data <ArrowRight className="w-4 h-4" />
                             </button>
                         ) : (
                             <button
                                 onClick={handleCommitImport}
                                 disabled={importing || hasImportBlockingErrors || importReadyRows.length === 0}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-[11px] font-black uppercase tracking-widest disabled:opacity-40 shadow-lg transition-all flex items-center gap-2"
+                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-xs font-bold uppercase tracking-wide disabled:opacity-40 shadow-lg transition-all flex items-center gap-2"
                             >
                                 {importing
-                                    ? <><LoaderCircle className="animate-spin" /> Mengimport...</>
-                                    : <><Check /> Selesaikan Import</>}
+                                    ? <><LoaderCircle className="w-4 h-4 animate-spin" /> Mengimport...</>
+                                    : <><Check className="w-4 h-4" /> Selesaikan Import</>}
                             </button>
                         )}
                     </div>
@@ -342,13 +342,13 @@ export default function TeacherImportModal(props) {
                 ].map((s, idx) => (
                     <React.Fragment key={s.step}>
                         <div className="flex items-center gap-3">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-black transition-all shadow-sm
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all shadow-sm
                                 ${importStep >= s.step ? 'bg-[var(--color-primary)] text-white scale-110' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)] opacity-40'}`}>
-                                {importStep > s.step ? <Check className="text-[9px]" /> : s.step}
+                                {importStep > s.step ? <Check className="w-4 h-4" /> : s.step}
                             </div>
                             <div className="flex flex-col">
-                                <span className={`text-[10px] md:text-[11px] font-black uppercase tracking-wider leading-none ${importStep >= s.step ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-50'}`}>{s.label}</span>
-                                <span className="text-[9px] font-bold text-[var(--color-text-muted)] opacity-40 uppercase tracking-tight mt-1">{s.desc}</span>
+                                <span className={`text-xs md:text-xs font-bold uppercase tracking-wider leading-none ${importStep >= s.step ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-50'}`}>{s.label}</span>
+                                <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-40 uppercase tracking-tight mt-1">{s.desc}</span>
                             </div>
                         </div>
                         {s.step < 3 && <div className={`w-6 h-0.5 rounded-full transition-all ${importStep > s.step ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)] opacity-30'}`} />}
@@ -361,11 +361,11 @@ export default function TeacherImportModal(props) {
                 <div className="flex items-center justify-between gap-4 mb-6 px-1 animate-in fade-in slide-in-from-top-4 duration-700">
                     <div className="flex items-center gap-2.5 min-w-0">
                         <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 shrink-0 shadow-sm">
-                            <FileText className="text-[10px]" />
-                            <span className="text-[10.5px] font-black truncate max-w-[240px]">{importFileName}</span>
+                            <FileText className="w-4 h-4" />
+                            <span className="text-[10.5px] font-bold truncate max-w-[240px]">{importFileName}</span>
                         </div>
                         {importPreview.length > 0 && (
-                            <div className="px-3.5 py-1.5 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black shadow-sm shrink-0">
+                            <div className="px-3.5 py-1.5 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold shadow-sm shrink-0">
                                 {importPreview.length} baris
                             </div>
                         )}
@@ -373,9 +373,9 @@ export default function TeacherImportModal(props) {
 
                     <button
                         onClick={handleImportClick}
-                        className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-red-500 hover:border-red-500/30 text-[10px] font-black uppercase tracking-wider transition-all active:scale-95 shadow-sm group"
+                        className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-red-500 hover:border-red-500/30 text-xs font-bold uppercase tracking-wider transition-all active:scale-95 shadow-sm group"
                     >
-                        <ArrowLeftRight className="text-[9px] group-hover:rotate-180 transition-transform duration-500" />
+                        <ArrowLeftRight className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
                         Ganti File
                     </button>
                 </div>
@@ -398,12 +398,12 @@ export default function TeacherImportModal(props) {
                                 ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 scale-[1.01]'
                                 : 'border-[var(--color-primary)]/30 bg-[var(--color-primary)]/4 hover:border-[var(--color-primary)]/60 hover:bg-[var(--color-primary)]/8'}`}
                     >
-                        <Upload className={`text-sm transition-all ${importDragOver ? 'text-[var(--color-primary)] scale-110' : 'text-[var(--color-primary)]/60'}`} />
+                        <Upload className={`w-4 h-4 transition-all ${importDragOver ? 'text-[var(--color-primary)] scale-110' : 'text-[var(--color-primary)]/60'}`} />
                         <div className="text-left">
-                            <p className="text-[11px] font-black text-[var(--color-primary)] uppercase tracking-wider leading-none">
+                            <p className="text-xs font-bold text-[var(--color-primary)] uppercase tracking-wider leading-none">
                                 {importDragOver ? 'Lepaskan file di sini' : 'Drag & Drop atau Klik untuk Pilih File'}
                             </p>
-                            <p className="text-[10px] text-[var(--color-text-muted)] font-bold mt-1 opacity-60">Mendukung .csv dan .xlsx</p>
+                            <p className="text-xs text-[var(--color-text-muted)] font-bold mt-1 opacity-60">Mendukung .csv dan .xlsx</p>
                         </div>
                     </div>
 
@@ -414,11 +414,11 @@ export default function TeacherImportModal(props) {
                             <div className="flex items-center gap-6">
                                 <div className="flex items-center gap-2.5">
                                     <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-600">
-                                        <Book className="text-xs" />
+                                        <Book className="w-4 h-4" />
                                     </div>
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] font-black uppercase tracking-wider text-[var(--color-text)]">Data Referensi</span>
-                                        <span className="text-[8px] font-bold text-emerald-600">Guru & Mapel</span>
+                                        <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text)]">Data Referensi</span>
+                                        <span className="text-xs font-bold text-emerald-600">Guru & Mapel</span>
                                     </div>
                                 </div>
 
@@ -430,27 +430,27 @@ export default function TeacherImportModal(props) {
                                                 ? 'bg-emerald-500 text-white border-emerald-500 shadow-lg'
                                                 : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text)] hover:border-emerald-500/50 hover:bg-emerald-500/5'}`}
                                     >
-                                        <span className="text-[10px] font-black uppercase tracking-widest">Daftar Mapel Valid</span>
-                                        <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-lg ${showSubjectsDropdown ? 'bg-white/20' : 'bg-emerald-500/10 text-emerald-600'}`}>{subjectsList.length}</span>
-                                        <ChevronDown className={`text-[8px] transition-transform duration-300 ${showSubjectsDropdown ? 'rotate-180' : ''}`} />
+                                        <span className="text-xs font-bold uppercase tracking-wide">Daftar Mapel Valid</span>
+                                        <span className={`text-xs font-bold px-1.5 py-0.5 rounded-lg ${showSubjectsDropdown ? 'bg-white/20' : 'bg-emerald-500/10 text-emerald-600'}`}>{subjectsList.length}</span>
+                                        <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${showSubjectsDropdown ? 'rotate-180' : ''}`} />
                                     </button>
 
                                     {showSubjectsDropdown && (
                                         <div className="absolute top-full left-0 mt-2 w-[320px] bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
                                             <div className="p-3 border-b border-[var(--color-border)]/50">
-                                                <span className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest">Daftar Mapel (Copy & Paste):</span>
+                                                <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide">Daftar Mapel (Copy & Paste):</span>
                                             </div>
                                             <div className="p-2 max-h-[140px] overflow-y-auto custom-scrollbar">
                                                 <div className="grid grid-cols-2 gap-1.5">
                                                     {subjectsList.map(s => (
-                                                        <span key={s} className="px-2 py-1.5 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[9px] font-bold text-[var(--color-text)] hover:border-emerald-500/30 transition-colors truncate">
+                                                        <span key={s} className="px-2 py-1.5 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text)] hover:border-emerald-500/30 transition-colors truncate">
                                                             {s}
                                                         </span>
                                                     ))}
                                                 </div>
                                             </div>
                                             <div className="p-3 bg-[var(--color-surface-alt)]/30 rounded-b-2xl border-t border-[var(--color-border)]/50">
-                                                <p className="text-[8px] text-[var(--color-text-muted)] italic leading-tight">
+                                                <p className="text-xs text-[var(--color-text-muted)] italic leading-tight">
                                                     * Pastikan penulisan di Excel persis seperti di atas.
                                                 </p>
                                             </div>
@@ -461,9 +461,9 @@ export default function TeacherImportModal(props) {
 
                             <button
                                 onClick={handleDownloadTemplate}
-                                className="shrink-0 h-9 px-4 rounded-xl bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-emerald-600 hover:scale-[1.02] active:scale-95 transition-all shadow-lg"
+                                className="shrink-0 h-9 px-4 rounded-xl bg-emerald-500 text-white text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 hover:bg-emerald-600 hover:scale-[1.02] active:scale-95 transition-all shadow-lg"
                             >
-                                <Download /> Download Template
+                                <Download className="w-4 h-4" /> Download Template
                             </button>
                         </div>
 
@@ -471,15 +471,15 @@ export default function TeacherImportModal(props) {
                         <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] overflow-hidden shadow-sm flex flex-col">
                             <div className="px-4 py-2 bg-[var(--color-surface-alt)] border-b border-[var(--color-border)] flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                    <TableProperties className="text-[var(--color-primary)] text-xs" />
-                                    <span className="text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">Visualisasi Struktur Kolom Excel</span>
+                                    <TableProperties className="w-4 h-4 text-[var(--color-primary)]" />
+                                    <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">Visualisasi Struktur Kolom Excel</span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                     <span className="relative flex h-1.5 w-1.5">
                                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                         <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
                                     </span>
-                                    <span className="text-[8px] font-black text-emerald-600 uppercase tracking-widest">Auto-Match Active</span>
+                                    <span className="text-xs font-bold text-emerald-600 uppercase tracking-wide">Auto-Match Active</span>
                                 </div>
                             </div>
 
@@ -500,7 +500,7 @@ export default function TeacherImportModal(props) {
                                                 <th key={i} className={`px-2 py-1.5 border-r border-b border-[var(--color-border)] text-left ${col.w} min-w-0 overflow-hidden`}>
                                                     <div className="flex flex-col min-w-0">
                                                         <div className="flex items-center justify-between gap-1 min-w-0">
-                                                            <span className="text-[9px] font-black text-[var(--color-text)] shrink-0">{col.l}</span>
+                                                            <span className="text-xs font-bold text-[var(--color-text)] shrink-0">{col.l}</span>
                                                             <span className="text-[7.5px] font-bold text-emerald-600 opacity-80 truncate" title={col.k}>({col.k})</span>
                                                         </div>
                                                         <div className="h-0.5 w-full bg-emerald-500/20 rounded-full mt-1"></div>
@@ -515,12 +515,12 @@ export default function TeacherImportModal(props) {
                                             ['Siti Aminah, M.Pd', '87654321', 'Matematika', 'P', '08567...', 'siti@school.com', 'active']
                                         ].map((row, rIdx) => (
                                             <tr key={rIdx}>
-                                                <td className="bg-[var(--color-surface-alt)] border-r border-b border-[var(--color-border)] text-[8px] font-bold text-[var(--color-text-muted)] text-center py-1">
+                                                <td className="bg-[var(--color-surface-alt)] border-r border-b border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] text-center py-1">
                                                     {rIdx + 1}
                                                 </td>
                                                 {row.map((cell, cIdx) => (
                                                     <td key={cIdx} className="px-2 py-1 border-r border-b border-[var(--color-border)] bg-[var(--color-surface)]/40 overflow-hidden">
-                                                        <span className="text-[9px] font-medium text-[var(--color-text)] opacity-70 truncate block" title={cell}>{cell}</span>
+                                                        <span className="text-xs font-medium text-[var(--color-text)] opacity-70 truncate block" title={cell}>{cell}</span>
                                                     </td>
                                                 ))}
                                             </tr>
@@ -529,12 +529,12 @@ export default function TeacherImportModal(props) {
                                 </table>
                             </div>
                             <div className="px-4 py-1.5 bg-[var(--color-surface)] border-t border-[var(--color-border)] flex items-center justify-between">
-                                <p className="text-[8px] text-[var(--color-text-muted)] font-medium italic opacity-60">
+                                <p className="text-xs text-[var(--color-text-muted)] font-medium italic opacity-60">
                                     * Gunakan judul kolom yang mendekati nama di atas untuk pencocokan otomatis.
                                 </p>
                                 <div className="flex gap-1.5">
                                     {['.xlsx', '.csv'].map(ext => (
-                                        <span key={ext} className="text-[7px] font-black text-[var(--color-primary)] px-1 py-0.5 bg-[var(--color-primary)]/5 rounded border border-[var(--color-primary)]/10">{ext}</span>
+                                        <span key={ext} className="text-[7px] font-bold text-[var(--color-primary)] px-1 py-0.5 bg-[var(--color-primary)]/5 rounded border border-[var(--color-primary)]/10">{ext}</span>
                                     ))}
                                 </div>
                             </div>
@@ -546,8 +546,8 @@ export default function TeacherImportModal(props) {
             {importStep === 2 && (
                 <div className="space-y-4">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Cocokkan Kolom File</span>
-                        <span className="text-[9px] font-bold py-1 px-2 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)]">
+                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Cocokkan Kolom File</span>
+                        <span className="text-xs font-bold py-1 px-2 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)]">
                             {importFileHeaders.length} kolom ditemukan
                         </span>
                     </div>
@@ -559,15 +559,15 @@ export default function TeacherImportModal(props) {
                                 <div key={sys.key} className={`p-2.5 rounded-xl border transition-all ${mapped ? 'bg-emerald-500/4 border-emerald-500/20' : 'bg-[var(--color-surface-alt)]/50 border-[var(--color-border)]'}`}>
                                     <div className="flex items-center justify-between gap-3">
                                         <div className="flex flex-col w-[130px] shrink-0">
-                                            <span className="text-[10px] font-black text-[var(--color-text)] flex items-center gap-1">
+                                            <span className="text-xs font-bold text-[var(--color-text)] flex items-center gap-1">
                                                 {sys.label}
-                                                {['name'].includes(sys.key) && <span className="text-red-500 text-[9px]">*</span>}
+                                                {['name'].includes(sys.key) && <span className="text-red-500 text-xs">*</span>}
                                             </span>
-                                            <span className="text-[8px] font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-tight">Sistem</span>
+                                            <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-tight">Sistem</span>
                                         </div>
 
                                         <div className="flex items-center gap-1.5 opacity-30">
-                                            <ArrowRight className={`text-[8px] ${mapped ? 'text-emerald-500 opacity-100' : ''}`} />
+                                            <ArrowRight className={`w-4 h-4 ${mapped ? 'text-emerald-500 opacity-100' : ''}`} />
                                         </div>
 
                                         <div className="flex-1 min-w-0 relative">
@@ -594,7 +594,7 @@ export default function TeacherImportModal(props) {
                 <div className="space-y-4">
                     {importLoading ? (
                         <div className="flex items-center justify-center py-14 text-[var(--color-text-muted)] gap-2">
-                            <LoaderCircle className="animate-spin" />
+                            <LoaderCircle className="w-4 h-4 animate-spin" />
                             <span className="text-xs font-bold">Memproses preview...</span>
                         </div>
                     ) : (
@@ -607,8 +607,8 @@ export default function TeacherImportModal(props) {
                                         { label: 'Ada Isu/Error', value: importPreview.filter(r => r._hasError).length, color: 'text-red-600', bg: 'bg-red-500/10', icon: CircleAlert },
                                     ].map((stat, i) => (
                                         <div key={i} className={`flex items-center gap-2 px-2 py-1 rounded-lg ${stat.bg} ${stat.color} transition-all`} title={stat.label}>
-                                            <stat.icon className="text-[10px] opacity-70" />
-                                            <span className="text-[11px] font-black">{stat.value}</span>
+                                            <stat.icon className="text-xs opacity-70" />
+                                            <span className="text-xs font-bold">{stat.value}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -616,23 +616,23 @@ export default function TeacherImportModal(props) {
                                 <div className="flex items-center gap-2">
                                     <button
                                         onClick={() => setImportSkipDupes(!importSkipDupes)}
-                                        className={`flex items-center gap-2 h-8 px-3 rounded-xl border text-[10px] font-black uppercase tracking-tight transition-all
+                                        className={`flex items-center gap-2 h-8 px-3 rounded-xl border text-xs font-bold uppercase tracking-tight transition-all
                                             ${importSkipDupes
                                                 ? 'bg-violet-500 text-white border-violet-500 shadow-md'
                                                 : 'bg-[var(--color-surface)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-violet-500/40 hover:text-violet-600'}`}
                                     >
-                                        <Copy className="text-[9px]" />
+                                        <Copy className="w-4 h-4" />
                                         <span>{importSkipDupes ? 'Lewati Duplikat' : 'Ikutkan Duplikat'}</span>
                                     </button>
 
                                     <button
                                         onClick={() => setFilterIssuesOnly(!filterIssuesOnly)}
-                                        className={`flex items-center gap-2 h-8 px-3 rounded-xl border text-[10px] font-black uppercase tracking-tight transition-all
+                                        className={`flex items-center gap-2 h-8 px-3 rounded-xl border text-xs font-bold uppercase tracking-tight transition-all
                                             ${filterIssuesOnly
                                                 ? 'bg-red-500 text-white border-red-500 shadow-md'
                                                 : 'bg-[var(--color-surface)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-red-500/40 hover:text-red-500'}`}
                                     >
-                                        {filterIssuesOnly ? <Check className="text-[9px]" /> : <Funnel className="text-[9px]" />}
+                                        {filterIssuesOnly ? <Check className="w-4 h-4" /> : <Funnel className="w-4 h-4" />}
                                         <span>{filterIssuesOnly ? 'Hanya Isu' : 'Semua'}</span>
                                     </button>
                                 </div>
@@ -643,12 +643,12 @@ export default function TeacherImportModal(props) {
                                     <table className="w-full border-collapse table-fixed">
                                         <thead>
                                             <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/30">
-                                                <th className="px-2 py-2 text-left text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[20%]">Nama</th>
-                                                <th className="px-2 py-2 text-left text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[20%]">Mapel</th>
-                                                <th className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[10%]">L/P</th>
-                                                <th className="px-2 py-2 text-left text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[18%]">Kontak</th>
-                                                <th className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[15%]">Status</th>
-                                                <th className="px-2 py-2 text-center text-[8px] font-black uppercase tracking-tighter text-[var(--color-text-muted)] w-[10%]">Aksi</th>
+                                                <th className="px-2 py-2 text-left text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[20%]">Nama</th>
+                                                <th className="px-2 py-2 text-left text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[20%]">Mapel</th>
+                                                <th className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[10%]">L/P</th>
+                                                <th className="px-2 py-2 text-left text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[18%]">Kontak</th>
+                                                <th className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[15%]">Status</th>
+                                                <th className="px-2 py-2 text-center text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] w-[10%]">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -662,7 +662,7 @@ export default function TeacherImportModal(props) {
                                                     const isWarn = r._hasWarn
                                                     return (
                                                         <tr key={i} className={`hover:bg-[var(--color-surface-alt)]/40 transition-colors border-b border-[var(--color-border)]/30 last:border-0 ${isError ? 'bg-red-500/3' : isDupe ? 'bg-violet-500/3' : ''}`}>
-                                                            <td className="px-2 py-0.5 font-bold text-[var(--color-text)] text-[10px] truncate">
+                                                            <td className="px-2 py-0.5 font-bold text-[var(--color-text)] text-xs truncate">
                                                                 <EditableCell
                                                                     rowIdx={i} colKey="name" value={r.name}
                                                                     importPreview={importPreview} subjectsList={subjectsList}
@@ -670,7 +670,7 @@ export default function TeacherImportModal(props) {
                                                                     handleImportCellEdit={handleImportCellEdit} STATUS_CONFIG={STATUS_CONFIG}
                                                                 />
                                                             </td>
-                                                            <td className="px-2 py-0.5 text-[var(--color-text-muted)] font-bold text-[10px] truncate">
+                                                            <td className="px-2 py-0.5 text-[var(--color-text-muted)] font-bold text-xs truncate">
                                                                 <EditableCell
                                                                     rowIdx={i} colKey="subject" value={r.subject}
                                                                     importPreview={importPreview} subjectsList={subjectsList}
@@ -678,7 +678,7 @@ export default function TeacherImportModal(props) {
                                                                     handleImportCellEdit={handleImportCellEdit} STATUS_CONFIG={STATUS_CONFIG}
                                                                 />
                                                             </td>
-                                                            <td className="px-2 py-0.5 text-center text-[var(--color-text-muted)] font-bold text-[10px]">
+                                                            <td className="px-2 py-0.5 text-center text-[var(--color-text-muted)] font-bold text-xs">
                                                                 <EditableCell
                                                                     rowIdx={i} colKey="gender" value={r.gender}
                                                                     importPreview={importPreview} subjectsList={subjectsList}
@@ -686,7 +686,7 @@ export default function TeacherImportModal(props) {
                                                                     handleImportCellEdit={handleImportCellEdit} STATUS_CONFIG={STATUS_CONFIG}
                                                                 />
                                                             </td>
-                                                            <td className="px-2 py-0.5 text-[var(--color-text-muted)] font-bold text-[10px] truncate">
+                                                            <td className="px-2 py-0.5 text-[var(--color-text-muted)] font-bold text-xs truncate">
                                                                 <EditableCell
                                                                     rowIdx={i} colKey="phone" value={r.phone}
                                                                     importPreview={importPreview} subjectsList={subjectsList}
@@ -694,7 +694,7 @@ export default function TeacherImportModal(props) {
                                                                     handleImportCellEdit={handleImportCellEdit} STATUS_CONFIG={STATUS_CONFIG}
                                                                 />
                                                             </td>
-                                                            <td className="px-2 py-0.5 text-center text-[var(--color-text-muted)] font-bold text-[10px]">
+                                                            <td className="px-2 py-0.5 text-center text-[var(--color-text-muted)] font-bold text-xs">
                                                                 <EditableCell
                                                                     rowIdx={i} colKey="status" value={r.status}
                                                                     importPreview={importPreview} subjectsList={subjectsList}
@@ -704,17 +704,17 @@ export default function TeacherImportModal(props) {
                                                             </td>
                                                             <td className="px-2 py-1">
                                                                 <div className="flex items-center justify-center gap-2">
-                                                                    {isError ? <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-500/15 text-red-600 animate-pulse"><CircleAlert className="text-[10px]" /></span>
-                                                                        : isDupe ? <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-violet-500/15 text-violet-600"><Copy className="text-[10px]" /></span>
-                                                                            : isWarn ? <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500/15 text-amber-600"><TriangleAlert className="text-[10px]" /></span>
-                                                                                : <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500/15 text-green-600"><CircleCheck className="text-[10px]" /></span>}
+                                                                    {isError ? <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-500/15 text-red-600 animate-pulse"><CircleAlert className="w-4 h-4" /></span>
+                                                                        : isDupe ? <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-violet-500/15 text-violet-600"><Copy className="w-4 h-4" /></span>
+                                                                            : isWarn ? <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500/15 text-amber-600"><TriangleAlert className="w-4 h-4" /></span>
+                                                                                : <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500/15 text-green-600"><CircleCheck className="w-4 h-4" /></span>}
 
                                                                     <button
                                                                         onClick={() => handleRemoveImportRow(i)}
                                                                         className="w-5 h-5 rounded-full bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center group/del"
                                                                         title="Hapus Baris"
                                                                     >
-                                                                        <Trash2 className="text-[9px] group-hover/del:scale-110 transition-transform" />
+                                                                        <Trash2 className="w-4 h-4 group-hover/del:scale-110 transition-transform" />
                                                                     </button>
                                                                 </div>
                                                             </td>
@@ -724,12 +724,12 @@ export default function TeacherImportModal(props) {
                                         </tbody>
                                     </table>
                                 </div>
-                                <div className="px-3 py-2 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] border-t border-[var(--color-border)] flex items-center justify-between">
+                                <div className="px-3 py-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] border-t border-[var(--color-border)] flex items-center justify-between">
                                     <div className="flex items-center gap-4">
                                         <span>Menampilkan {importPreview.filter(r => !filterIssuesOnly || (r._hasError || r._isDupe || r._hasWarn)).length} dari {importPreview.length} total baris</span>
                                         <div className="w-px h-3 bg-[var(--color-border)]" />
                                         <span className="text-emerald-600 flex items-center gap-1.5">
-                                            <CircleCheck className="text-[8px]" />
+                                            <CircleCheck className="w-4 h-4" />
                                             {importReadyRows.length} baris siap diimport
                                         </span>
                                     </div>
@@ -744,11 +744,11 @@ export default function TeacherImportModal(props) {
                                         onClick={() => setImportValidationOpen(v => !v)}
                                         className="w-full px-3 py-2 bg-[var(--color-surface-alt)] border-b border-[var(--color-border)] flex items-center justify-between hover:bg-[var(--color-border)]/30 transition-colors cursor-pointer"
                                     >
-                                        <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-1.5">
-                                            <ChevronDown className={`text-[7px] transition-transform ${importValidationOpen ? '' : '-rotate-90'}`} />
+                                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] flex items-center gap-1.5">
+                                            <ChevronDown className={`w-4 h-4 transition-transform ${importValidationOpen ? '' : '-rotate-90'}`} />
                                             Catatan Validasi
                                         </span>
-                                        <span className="text-[8px] font-bold text-[var(--color-text-muted)] opacity-50">{importIssues.length} isu</span>
+                                        <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-50">{importIssues.length} isu</span>
                                     </button>
                                     {importValidationOpen && <div className="max-h-[140px] overflow-auto divide-y divide-[var(--color-border)]">
                                         {importIssues.map((issue, idx) => {
@@ -759,13 +759,13 @@ export default function TeacherImportModal(props) {
                                                     : { pill: 'bg-amber-500/15 text-amber-600', row: 'border-l-2 border-l-amber-400 bg-amber-500/3' }
                                             return (
                                                 <div key={idx} className={`flex items-start gap-3 px-3 py-2 ${levelStyle.row}`}>
-                                                    <span className={`mt-0.5 shrink-0 px-1.5 py-0.5 rounded text-[8px] font-black ${levelStyle.pill}`}>
+                                                    <span className={`mt-0.5 shrink-0 px-1.5 py-0.5 rounded text-xs font-bold ${levelStyle.pill}`}>
                                                         {issue.level === 'dupe' ? 'DUPLIKAT' : issue.level.toUpperCase()}
                                                     </span>
                                                     <div className="flex-1 min-w-0">
-                                                        <p className="text-[9px] font-black text-[var(--color-text-muted)] mb-0.5">Baris {issue.row}</p>
+                                                        <p className="text-xs font-bold text-[var(--color-text-muted)] mb-0.5">Baris {issue.row}</p>
                                                         {issue.messages.map((msg, mi) => (
-                                                            <p key={mi} className="text-[10px] font-bold text-[var(--color-text)] leading-snug">{msg}</p>
+                                                            <p key={mi} className="text-xs font-bold text-[var(--color-text)] leading-snug">{msg}</p>
                                                         ))}
                                                     </div>
                                                 </div>

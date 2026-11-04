@@ -13,11 +13,11 @@ export const PointsConfigPie = memo(function PointsConfigPie({ pieData, loading 
         <div className="bg-surface border border-border rounded-[1.5rem] p-5 flex flex-col relative overflow-hidden group hover:shadow-md transition-shadow duration-500">
             <div className="mb-5 flex justify-between items-start relative z-10">
                 <div>
-                    <p className="text-base font-black text-[var(--color-text)]">Konfigurasi Poin</p>
+                    <p className="text-base font-bold text-[var(--color-text)]">Konfigurasi Poin</p>
                     <p className="text-xs text-[var(--color-text-muted)] opacity-75 mt-0.5">Minggu ini</p>
                 </div>
                 <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0">
-                    <ClipboardList className="text-xs" />
+                    <ClipboardList className="w-4 h-4" />
                 </div>
             </div>
 
@@ -28,10 +28,10 @@ export const PointsConfigPie = memo(function PointsConfigPie({ pieData, loading 
             ) : pieData.length === 0 ? (
                 <div className="flex-1 flex flex-col items-center justify-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
                     <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 flex items-center justify-center text-xl shadow-lg">
-                        <ClipboardList />
+                        <ClipboardList className="w-6 h-6" />
                     </div>
                     <div className="text-center">
-                        <p className="text-sm font-black text-[var(--color-text)]">Belum Ada Data</p>
+                        <p className="text-sm font-bold text-[var(--color-text)]">Belum Ada Data</p>
                         <p className="text-xs text-[var(--color-text-muted)] mt-0.5">Tidak ada konfigurasi poin</p>
                     </div>
                 </div>

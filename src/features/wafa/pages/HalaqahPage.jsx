@@ -3,7 +3,7 @@ import {
     useMemo, memo, useDeferredValue, useTransition,
 } from 'react'
 import { createPortal } from 'react-dom'
-import { Bell, BookOpen, CalendarDays, ChartColumn, Check, ChevronDown, ChevronLeft, ChevronRight, CircleX, ClipboardCheck, Crosshair, DoorOpen, FileCheck, FileInput, HeartPulse, Layers, LayoutGrid, List, ListChecks, LoaderCircle, Plus, Presentation, RefreshCw, RotateCcw, RotateCw, Save, Search, Settings, StickyNote, TableProperties, TriangleAlert, Upload, User, UserCheck, Users, X } from 'lucide-react'
+import { Bell, BookOpen, CalendarDays, ChartColumn, Check, ChevronDown, ChevronLeft, ChevronRight, CircleX, ClipboardCheck, Crosshair, DoorOpen, FileCheck, FileInput, HeartPulse, Layers, LayoutGrid, List, ListChecks, LoaderCircle, Plus, Presentation, RefreshCw, RotateCcw, RotateCw, Save, Search, Settings, StickyNote, TableProperties, TriangleAlert, Upload, User, UserCheck, Users, X, Eye, EyeOff } from 'lucide-react'
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import Breadcrumb from '@shared/components/Breadcrumb'
 import { EmptyState } from '@shared/components/DataDisplay'
@@ -133,7 +133,7 @@ const DayCell = memo(({ status, weekend, invalid, isToday, isFocused, onMouseDow
                 </div>
             )}
             <div
-                className={`w-full h-full flex items-center justify-center text-[11px] font-black transition-all duration-75 hover:brightness-90 active:scale-90 ${meta ? meta.color : weekend ? 'text-[var(--color-text-muted)]/20' : 'text-transparent hover:text-[var(--color-text-muted)]/30'}`}
+                className={`w-full h-full flex items-center justify-center text-xs font-bold transition-all duration-75 hover:brightness-90 active:scale-90 ${meta ? meta.color : weekend ? 'text-[var(--color-text-muted)]/20' : 'text-transparent hover:text-[var(--color-text-muted)]/30'}`}
                 style={{ height: 28 }}
             >
                 {status || (weekend ? '·' : '')}
@@ -164,7 +164,7 @@ const Row = memo(({ item, idx, days, tahun, bulan, daysInMonth, todayDate, onCel
                 textAlign: 'center',
                 boxShadow: '2px 0 4px -2px rgba(0,0,0,0.06)',
             }}>
-                <div className="w-6 h-6 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[10px] font-black text-[var(--color-text-muted)] mx-auto">
+                <div className="w-6 h-6 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-xs font-bold text-[var(--color-text-muted)] mx-auto">
                     {idx + 1}
                 </div>
             </td>
@@ -187,18 +187,18 @@ const Row = memo(({ item, idx, days, tahun, bulan, daysInMonth, todayDate, onCel
             >
                 <div className="flex items-center justify-between gap-1">
                     <div className="min-w-0">
-                        <p className="text-[12px] font-bold text-[var(--color-text)] truncate group-hover:text-[var(--color-primary)] transition-colors">{item.name}</p>
+                        <p className="text-xs font-bold text-[var(--color-text)] truncate group-hover:text-[var(--color-primary)] transition-colors">{item.name}</p>
                         {alertAlpa
-                            ? <p className="text-[9px] font-black text-red-500 flex items-center gap-1 mt-0.5">
-                                <TriangleAlert className="text-[8px]" />Alpa {sum.A}×
+                            ? <p className="text-xs font-bold text-red-500 flex items-center gap-1 mt-0.5">
+                                <TriangleAlert className="w-4 h-4" />Alpa {sum.A}×
                             </p>
                             : alertHadir
-                                ? <p className="text-[9px] font-black text-amber-500 flex items-center gap-1 mt-0.5">
-                                    <Bell className="text-[8px]" />Hadir {pct}%
+                                ? <p className="text-xs font-bold text-amber-500 flex items-center gap-1 mt-0.5">
+                                    <Bell className="w-4 h-4" />Hadir {pct}%
                                 </p>
                                 : item.nisn
-                                    ? <p className="text-[9px] text-[var(--color-text-muted)] truncate">{item.nisn}</p>
-                                    : <p className="text-[9px] text-[var(--color-text-muted)] truncate">{item.detail}</p>
+                                    ? <p className="text-xs text-[var(--color-text-muted)] truncate">{item.nisn}</p>
+                                    : <p className="text-xs text-[var(--color-text-muted)] truncate">{item.detail}</p>
                         }
                     </div>
                     <div className="w-5 shrink-0">
@@ -207,7 +207,7 @@ const Row = memo(({ item, idx, days, tahun, bulan, daysInMonth, todayDate, onCel
                             className={`w-5 h-5 rounded flex items-center justify-center transition-all ${hasNote ? 'text-amber-500' : 'opacity-0 group-hover:opacity-40 text-[var(--color-text-muted)]'}`}
                             title={hasNote ? `Catatan: ${note}` : 'Tambah catatan'}
                         >
-                            <StickyNote className="text-[8px]" />
+                            <StickyNote className="w-4 h-4" />
                         </button>
                     </div>
                 </div>
@@ -241,7 +241,7 @@ const Row = memo(({ item, idx, days, tahun, bulan, daysInMonth, todayDate, onCel
                             boxShadow: i === 0 ? '-4px 0 8px -4px rgba(0,0,0,0.08)' : 'none'
                         }}
                     >
-                        <span className={`text-[10px] font-black ${STATUS_META[s].color} ${sum[s] === 0 ? 'opacity-20' : ''}`}>
+                        <span className={`text-xs font-bold ${STATUS_META[s].color} ${sum[s] === 0 ? 'opacity-20' : ''}`}>
                             {sum[s]}
                         </span>
                     </td>
@@ -260,7 +260,7 @@ const Row = memo(({ item, idx, days, tahun, bulan, daysInMonth, todayDate, onCel
                 }}
             >
                 <div className="flex flex-col items-center gap-0.5 py-1">
-                    <span className={`text-[10px] font-black tabular-nums ${pct >= 80 ? 'text-emerald-600' : pct >= 60 ? 'text-amber-600' : 'text-red-600'}`}>
+                    <span className={`text-xs font-bold tabular-nums ${pct >= 80 ? 'text-emerald-600' : pct >= 60 ? 'text-amber-600' : 'text-red-600'}`}>
                         {pct}%
                     </span>
                     <div className="w-5 h-0.5 rounded-full bg-[var(--color-border)] overflow-hidden">
@@ -406,23 +406,23 @@ function MassActionDropdown({ items, dataMap, setDataMap, tahun, bulan, daysInMo
     return (
         <>
             <button ref={btnRef} type="button" onClick={handleToggle}
-                className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all flex items-center gap-1.5 shrink-0">
-                <ListChecks className="text-[9px]" />
+                className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all flex items-center gap-1.5 shrink-0">
+                <ListChecks className="w-4 h-4" />
                 Aksi Massal
-                <ChevronDown className={`text-[8px] transition-transform ${open ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} />
             </button>
 
             {open && createPortal(
                 <div ref={menuRef} style={{
                     position: 'fixed', left: Math.min(menuPos.x, window.innerWidth - 216), top: menuPos.y, zIndex: 9999, width: 208,
                 }} className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden py-1">
-                    <p className="px-3 pt-1.5 pb-1 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                    <p className="px-3 pt-1.5 pb-1 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                         Isi semua hari kerja dengan:
                     </p>
                     {STATUS_LIST.map(s => (
                         <button key={s} onClick={() => applyAll(s)}
-                            className="w-full flex items-center gap-2.5 px-3 py-2 text-[11px] font-bold hover:bg-[var(--color-surface-alt)] transition-colors text-left">
-                            <span className={`w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-black border ${STATUS_META[s].cellBg} ${STATUS_META[s].color.replace('text-', 'border-').replace('600', '500/30')}`}>
+                            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold hover:bg-[var(--color-surface-alt)] transition-colors text-left">
+                            <span className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold border ${STATUS_META[s].cellBg} ${STATUS_META[s].color.replace('text-', 'border-').replace('600', '500/30')}`}>
                                 {s}
                             </span>
                             <span className={STATUS_META[s].color}>{STATUS_META[s].label}</span>
@@ -430,9 +430,9 @@ function MassActionDropdown({ items, dataMap, setDataMap, tahun, bulan, daysInMo
                     ))}
                     <div className="my-1 border-t border-[var(--color-border)]" />
                     <button onClick={handleReset}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 text-[11px] font-bold hover:bg-red-500/5 transition-colors text-left text-red-500">
-                        <span className="w-6 h-6 rounded-lg flex items-center justify-center text-[10px] bg-red-500/10 border border-red-500/20">
-                            <RefreshCw className="text-[9px]" />
+                        className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold hover:bg-red-500/5 transition-colors text-left text-red-500">
+                        <span className="w-6 h-6 rounded-lg flex items-center justify-center text-xs bg-red-500/10 border border-red-500/20">
+                            <RefreshCw className="w-4 h-4" />
                         </span>
                         Reset Semua
                     </button>
@@ -461,12 +461,12 @@ function NotePopup({ item, note, x, y, onSave, onClose }) {
             borderRadius: 14, boxShadow: '0 8px 32px rgba(0,0,0,0.14)', overflow: 'hidden',
         }}>
             <div style={{ padding: '8px 12px 6px', borderBottom: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', gap: 8 }}>
-                <StickyNote style={{ fontSize: 10, color: '#f59e0b' }} />
+                <StickyNote style={{ fontSize: 10, color: '#f59e0b' }} className="w-4 h-4" />
                 <p style={{ fontSize: 11, fontWeight: 900, color: 'var(--color-text)', margin: 0, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     Catatan — {item.name.split(' ')[0]}
                 </p>
                 <button onClick={() => { onSave(val); onClose() }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2 }}>
-                    <X style={{ fontSize: 10, color: 'var(--color-text-muted)' }} />
+                    <X style={{ fontSize: 10, color: 'var(--color-text-muted)' }} className="w-4 h-4" />
                 </button>
             </div>
             <div style={{ padding: 12 }}>
@@ -549,61 +549,61 @@ function ImportModal({ itemList, tahun, bulan, daysInMonth, onImport, onClose })
     return createPortal(
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
             onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-                <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl w-full max-w-md overflow-hidden flex flex-col max-h-[85vh]">
+            <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl w-full max-w-md overflow-hidden flex flex-col max-h-[85vh]">
                 <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
                     <div className="flex items-center gap-2.5">
                         <div className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                            <FileInput className="text-blue-500 text-sm" />
+                            <FileInput className="w-4 h-4 text-blue-500" />
                         </div>
                         <div>
-                            <p className="text-[13px] font-black text-[var(--color-text)]">Import Absensi</p>
-                            <p className="text-[10px] text-[var(--color-text-muted)]">Upload file Excel/CSV {BULAN_NAMA[bulan]} {tahun}</p>
+                            <p className="text-sm font-bold text-[var(--color-text)]">Import Absensi</p>
+                            <p className="text-xs text-[var(--color-text-muted)]">Upload file Excel/CSV {BULAN_NAMA[bulan]} {tahun}</p>
                         </div>
                     </div>
                     <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center">
-                        <X className="text-[var(--color-text-muted)]" />
+                        <X className="w-4 h-4 text-[var(--color-text-muted)]" />
                     </button>
                 </div>
                 <div className="p-5 overflow-y-auto flex-1 space-y-4">
                     <div className="p-3 rounded-xl bg-blue-500/5 border border-blue-500/20">
-                        <p className="text-[10px] font-black text-blue-600 mb-1">Format yang didukung:</p>
-                        <p className="text-[10px] text-[var(--color-text-muted)] leading-relaxed">
+                        <p className="text-xs font-bold text-blue-600 mb-1">Format yang didukung:</p>
+                        <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
                             Baris pertama = header. Harus ada kolom <strong>Nama</strong>. Kolom tanggal = angka (1, 2, 3, ...).
                             Nilai: <strong>H</strong> Hadir · <strong>S</strong> Sakit · <strong>I</strong> Izin · <strong>A</strong> Alpa · <strong>P</strong> Pulang Awal.
                         </p>
                     </div>
                     <label className="flex flex-col items-center justify-center gap-2 p-6 rounded-xl border-2 border-dashed border-[var(--color-border)] hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/3 transition-all cursor-pointer">
-                        <Upload className="text-2xl text-[var(--color-text-muted)]" />
-                        <p className="text-[12px] font-bold text-[var(--color-text-muted)]">
+                        <Upload className="w-6 h-6 text-[var(--color-text-muted)]" />
+                        <p className="text-xs font-bold text-[var(--color-text-muted)]">
                             {file ? file.name : 'Klik atau seret file di sini'}
                         </p>
-                        <p className="text-[10px] text-[var(--color-text-muted)]">.xlsx, .xls, .csv</p>
+                        <p className="text-xs text-[var(--color-text-muted)]">.xlsx, .xls, .csv</p>
                         <input type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={e => handleFile(e.target.files[0])} />
                     </label>
-                    {loading && <div className="flex items-center justify-center gap-2 py-4"><LoaderCircle className="animate-spin text-[var(--color-primary)]" /><span className="text-[11px] text-[var(--color-text-muted)]">Membaca file...</span></div>}
-                    {error && <div className="p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-[11px] font-bold text-red-600">{error}</div>}
+                    {loading && <div className="flex items-center justify-center gap-2 py-4"><LoaderCircle className="w-4 h-4 animate-spin text-[var(--color-primary)]" /><span className="text-xs text-[var(--color-text-muted)]">Membaca file...</span></div>}
+                    {error && <div className="p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-xs font-bold text-red-600">{error}</div>}
                     {preview && (
                         <div className="space-y-3">
                             <div className="flex items-center gap-2">
-                                <span className="text-[10px] font-black text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-md">{preview.matched.length} cocok</span>
-                                {preview.unmatched.length > 0 && <span className="text-[10px] font-black text-amber-600 bg-amber-500/10 px-2 py-0.5 rounded-md">{preview.unmatched.length} tidak ditemukan</span>}
+                                <span className="text-xs font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-md">{preview.matched.length} cocok</span>
+                                {preview.unmatched.length > 0 && <span className="text-xs font-bold text-amber-600 bg-amber-500/10 px-2 py-0.5 rounded-md">{preview.unmatched.length} tidak ditemukan</span>}
                             </div>
                             {preview.unmatched.length > 0 && (
                                 <div className="p-3 rounded-xl bg-amber-500/5 border border-amber-500/20">
-                                    <p className="text-[9px] font-black text-amber-600 mb-1 uppercase tracking-wider">Tidak ditemukan di daftar:</p>
-                                    {preview.unmatched.slice(0, 5).map((n, i) => <p key={i} className="text-[10px] text-[var(--color-text-muted)]">· {n}</p>)}
-                                    {preview.unmatched.length > 5 && <p className="text-[9px] text-[var(--color-text-muted)]">...dan {preview.unmatched.length - 5} lainnya</p>}
+                                    <p className="text-xs font-bold text-amber-600 mb-1 uppercase tracking-wider">Tidak ditemukan di daftar:</p>
+                                    {preview.unmatched.slice(0, 5).map((n, i) => <p key={i} className="text-xs text-[var(--color-text-muted)]">· {n}</p>)}
+                                    {preview.unmatched.length > 5 && <p className="text-xs text-[var(--color-text-muted)]">...dan {preview.unmatched.length - 5} lainnya</p>}
                                 </div>
                             )}
                         </div>
                     )}
                 </div>
                 <div className="px-5 py-3 border-t border-[var(--color-border)] flex gap-2 justify-end">
-                    <button onClick={onClose} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">Batal</button>
+                    <button onClick={onClose} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">Batal</button>
                     <button disabled={!preview || preview.matched.length === 0}
                         onClick={() => { onImport(preview.matched); onClose() }}
-                        className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black disabled:opacity-40 hover:opacity-90 transition-all flex items-center gap-2">
-                        <Check className="text-[9px]" />
+                        className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold disabled:opacity-40 hover:opacity-90 transition-all flex items-center gap-2">
+                        <Check className="w-4 h-4" />
                         Terapkan ({preview?.matched.length || 0})
                     </button>
                 </div>
@@ -622,42 +622,42 @@ function AlertThresholdModal({ threshold, onSave, onClose }) {
     return createPortal(
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
             onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-                <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl w-full max-w-xs overflow-hidden">
+            <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl w-full max-w-xs overflow-hidden">
                 <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
                     <div className="flex items-center gap-2.5">
                         <div className="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center">
-                            <Bell className="text-amber-500 text-sm" />
+                            <Bell className="w-4 h-4 text-amber-500" />
                         </div>
                         <div>
-                            <p className="text-[13px] font-black text-[var(--color-text)]">Ambang Batas Alert</p>
-                            <p className="text-[10px] text-[var(--color-text-muted)]">Tampilkan notifikasi otomatis</p>
+                            <p className="text-sm font-bold text-[var(--color-text)]">Ambang Batas Alert</p>
+                            <p className="text-xs text-[var(--color-text-muted)]">Tampilkan notifikasi otomatis</p>
                         </div>
                     </div>
                     <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center">
-                        <X className="text-[var(--color-text-muted)]" />
+                        <X className="w-4 h-4 text-[var(--color-text-muted)]" />
                     </button>
                 </div>
                 <div className="p-5 space-y-4">
                     <div>
-                        <label className="block text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] mb-2">
+                        <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-2">
                             Alpa ≥ <span className="text-red-600 text-[14px] ml-1">{alpa}</span> hari → merah
                         </label>
                         <input type="range" min={1} max={10} value={alpa} onChange={e => setAlpa(+e.target.value)} className="w-full accent-red-500 h-1.5 cursor-pointer" />
-                        <div className="flex justify-between text-[9px] text-[var(--color-text-muted)] mt-1"><span>1</span><span>5</span><span>10</span></div>
+                        <div className="flex justify-between text-xs text-[var(--color-text-muted)] mt-1"><span>1</span><span>5</span><span>10</span></div>
                     </div>
                     <div>
-                        <label className="block text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] mb-2">
+                        <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-2">
                             Kehadiran &lt; <span className="text-amber-600 text-[14px] ml-1">{hadirPct}%</span> → kuning
                         </label>
                         <input type="range" min={30} max={90} step={5} value={hadirPct} onChange={e => setHadirPct(+e.target.value)} className="w-full accent-amber-500 h-1.5 cursor-pointer" />
-                        <div className="flex justify-between text-[9px] text-[var(--color-text-muted)] mt-1"><span>30%</span><span>60%</span><span>90%</span></div>
+                        <div className="flex justify-between text-xs text-[var(--color-text-muted)] mt-1"><span>30%</span><span>60%</span><span>90%</span></div>
                     </div>
                 </div>
                 <div className="px-5 py-3 border-t border-[var(--color-border)] flex gap-2 justify-end">
-                    <button onClick={onClose} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">Batal</button>
+                    <button onClick={onClose} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">Batal</button>
                     <button onClick={() => { onSave({ alpa, hadirPct }); onClose() }}
-                        className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black hover:opacity-90 transition-all flex items-center gap-2">
-                        <Check className="text-[9px]" /> Simpan
+                        className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:opacity-90 transition-all flex items-center gap-2">
+                        <Check className="w-4 h-4" /> Simpan
                     </button>
                 </div>
             </div>
@@ -696,7 +696,7 @@ function ColFillPopup({ day, dow, x, y, onFill, onClear, onClose, itemCount }) {
                     <button key={s} onClick={() => { onFill(s); onClose() }}
                         className="w-full flex items-center gap-2.5 px-3 py-1.5 hover:bg-[var(--color-surface-alt)] transition-colors text-left"
                         style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                        <span className={`w-6 h-6 rounded-md flex items-center justify-center text-[11px] font-black border ${STATUS_META[s].cellBg} ${STATUS_META[s].color}`} style={{ flexShrink: 0 }}>{s}</span>
+                        <span className={`w-6 h-6 rounded-md flex items-center justify-center text-xs font-bold border ${STATUS_META[s].cellBg} ${STATUS_META[s].color}`} style={{ flexShrink: 0 }}>{s}</span>
                         <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-text)' }}>{STATUS_META[s].label}</span>
                     </button>
                 ))}
@@ -705,7 +705,7 @@ function ColFillPopup({ day, dow, x, y, onFill, onClear, onClose, itemCount }) {
                     className="w-full flex items-center gap-2.5 px-3 py-1.5 hover:bg-red-500/5 transition-colors text-left"
                     style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
                     <span className="w-6 h-6 rounded-md flex items-center justify-center bg-[var(--color-surface-alt)] border border-[var(--color-border)]" style={{ flexShrink: 0 }}>
-                        <RefreshCw style={{ fontSize: 9, color: 'var(--color-text-muted)' }} />
+                        <RefreshCw style={{ fontSize: 9, color: 'var(--color-text-muted)' }} className="w-4 h-4" />
                     </span>
                     <span style={{ fontSize: 11, fontWeight: 700, color: '#dc2626' }}>Kosongkan hari ini</span>
                 </button>
@@ -745,7 +745,7 @@ function RowFillPopup({ item, x, y, onFill, onClear, onClose, weekdays }) {
                     <button key={s} onClick={() => { onFill(s); onClose() }}
                         className="w-full flex items-center gap-2.5 px-3 py-1.5 hover:bg-[var(--color-surface-alt)] transition-colors text-left"
                         style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                        <span className={`w-6 h-6 rounded-md flex items-center justify-center text-[11px] font-black border ${STATUS_META[s].cellBg} ${STATUS_META[s].color}`} style={{ flexShrink: 0 }}>{s}</span>
+                        <span className={`w-6 h-6 rounded-md flex items-center justify-center text-xs font-bold border ${STATUS_META[s].cellBg} ${STATUS_META[s].color}`} style={{ flexShrink: 0 }}>{s}</span>
                         <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-text)' }}>{STATUS_META[s].label}</span>
                     </button>
                 ))}
@@ -754,7 +754,7 @@ function RowFillPopup({ item, x, y, onFill, onClear, onClose, weekdays }) {
                     className="w-full flex items-center gap-2.5 px-3 py-1.5 hover:bg-red-500/5 transition-colors text-left"
                     style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
                     <span className="w-6 h-6 rounded-md flex items-center justify-center bg-[var(--color-surface-alt)] border border-[var(--color-border)]" style={{ flexShrink: 0 }}>
-                        <RefreshCw style={{ fontSize: 9, color: 'var(--color-text-muted)' }} />
+                        <RefreshCw style={{ fontSize: 9, color: 'var(--color-text-muted)' }} className="w-4 h-4" />
                     </span>
                     <span style={{ fontSize: 11, fontWeight: 700, color: '#dc2626' }}>Reset baris ini</span>
                 </button>
@@ -771,19 +771,19 @@ function ConfirmModal({ message, confirmLabel = 'Lanjutkan', onConfirm, onCancel
     return (
         <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/40"
             onClick={e => { if (e.target === e.currentTarget) onCancel() }}>
-                <div className="w-full max-w-xs bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl overflow-hidden">
+            <div className="w-full max-w-xs bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl overflow-hidden">
                 <div className="flex items-start gap-3 px-5 pt-5 pb-4">
                     <div className="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center shrink-0 mt-0.5">
-                        <TriangleAlert className="text-amber-500 text-[13px]" />
+                        <TriangleAlert className="w-4 h-4 text-amber-500" />
                     </div>
                     <div>
-                        <p className="text-[13px] font-black text-[var(--color-text)]">Ada perubahan belum disimpan</p>
-                        <p className="text-[11px] text-[var(--color-text-muted)] mt-1">{message}</p>
+                        <p className="text-sm font-bold text-[var(--color-text)]">Ada perubahan belum disimpan</p>
+                        <p className="text-xs text-[var(--color-text-muted)] mt-1">{message}</p>
                     </div>
                 </div>
                 <div className="flex gap-2 px-5 pb-4">
-                    <button onClick={onCancel} className="flex-1 h-9 rounded-xl border border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
-                    <button onClick={onConfirm} className="flex-1 h-9 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-black transition-all">{confirmLabel}</button>
+                    <button onClick={onCancel} className="flex-1 h-9 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
+                    <button onClick={onConfirm} className="flex-1 h-9 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all">{confirmLabel}</button>
                 </div>
             </div>
         </div>
@@ -811,8 +811,8 @@ function MobileCardView({ items, dataMap, tahun, bulan, daysInMonth, todayDate, 
 
     if (items.length === 0) return (
         <div className="py-16 flex flex-col items-center gap-2 text-[var(--color-text-muted)]">
-            <Search className="text-2xl opacity-20" />
-            <p className="text-[12px] font-bold">Tidak ada data</p>
+            <Search className="w-6 h-6 opacity-20" />
+            <p className="text-xs font-bold">Tidak ada data</p>
         </div>
     )
 
@@ -830,27 +830,27 @@ function MobileCardView({ items, dataMap, tahun, bulan, daysInMonth, todayDate, 
                     <div key={item.id} className={`rounded-2xl border bg-[var(--color-surface)] overflow-hidden ${alertAlpa ? 'border-red-300/60' : alertHadir ? 'border-amber-300/60' : 'border-[var(--color-border)]'}`}>
                         <div className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/40">
                             <div className="flex items-center gap-2 min-w-0">
-                                <div className="w-6 h-6 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[9px] font-black text-[var(--color-text-muted)] shrink-0">{idx + 1}</div>
+                                <div className="w-6 h-6 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-xs font-bold text-[var(--color-text-muted)] shrink-0">{idx + 1}</div>
                                 <div className="min-w-0">
-                                    <p className="text-[13px] font-bold text-[var(--color-text)] truncate">{item.name}</p>
-                                    <p className="text-[9px] text-[var(--color-text-muted)] truncate">{item.detail}</p>
+                                    <p className="text-sm font-bold text-[var(--color-text)] truncate">{item.name}</p>
+                                    <p className="text-xs text-[var(--color-text-muted)] truncate">{item.detail}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-1 shrink-0">
                                 {alertAlpa && (
-                                    <span className="text-[9px] font-black text-red-500 flex items-center gap-0.5 bg-red-500/10 px-1.5 py-0.5 rounded-md">
-                                        <TriangleAlert className="text-[7px]" />Alpa {sum.A}×
+                                    <span className="text-xs font-bold text-red-500 flex items-center gap-0.5 bg-red-500/10 px-1.5 py-0.5 rounded-md">
+                                        <TriangleAlert className="w-4 h-4" />Alpa {sum.A}×
                                     </span>
                                 )}
                                 {alertHadir && !alertAlpa && (
-                                    <span className="text-[9px] font-black text-amber-500 flex items-center gap-0.5 bg-amber-500/10 px-1.5 py-0.5 rounded-md">
-                                        <Bell className="text-[7px]" />Hadir {pct}%
+                                    <span className="text-xs font-bold text-amber-500 flex items-center gap-0.5 bg-amber-500/10 px-1.5 py-0.5 rounded-md">
+                                        <Bell className="w-4 h-4" />Hadir {pct}%
                                     </span>
                                 )}
-                                <span className={`text-[10px] font-black ${pct >= 80 ? 'text-emerald-600' : pct >= 60 ? 'text-amber-600' : 'text-red-600'}`}>{pct}%</span>
+                                <span className={`text-xs font-bold ${pct >= 80 ? 'text-emerald-600' : pct >= 60 ? 'text-amber-600' : 'text-red-600'}`}>{pct}%</span>
                                 <button onClick={(e) => { const r = e.currentTarget.getBoundingClientRect(); onNoteClick?.({ item, x: r.left, y: r.bottom }) }}
                                     className={`w-6 h-6 rounded-md flex items-center justify-center ml-1 transition-all ${hasNote ? 'text-amber-500 bg-amber-500/10' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                    <StickyNote className="text-[9px]" />
+                                    <StickyNote className="w-4 h-4" />
                                 </button>
                             </div>
                         </div>
@@ -864,7 +864,7 @@ function MobileCardView({ items, dataMap, tahun, bulan, daysInMonth, todayDate, 
                                         <button key={d}
                                             onClick={() => onCellClick(item.id, d)}
                                             style={s ? { background: STATUS_COLORS[s]?.bg, border: `1.5px solid ${STATUS_COLORS[s]?.border}` } : { background: weekend ? 'var(--color-surface-alt)' : 'var(--color-surface)', border: '1px solid var(--color-border)' }}
-                                            className={`w-7 h-7 rounded-lg text-[10px] font-black transition-all active:scale-90 flex items-center justify-center ${isToday ? 'ring-1 ring-indigo-400' : ''}`}>
+                                            className={`w-7 h-7 rounded-lg text-xs font-bold transition-all active:scale-90 flex items-center justify-center ${isToday ? 'ring-1 ring-indigo-400' : ''}`}>
                                             <span style={{ color: s ? STATUS_COLORS[s]?.text : weekend ? 'var(--color-text-muted)' : 'var(--color-text-muted)', opacity: s ? 1 : 0.4 }}>
                                                 {s || d}
                                             </span>
@@ -900,8 +900,8 @@ function MobileListView({ items, dataMap, tahun, bulan, daysInMonth, todayDate, 
 
     if (items.length === 0) return (
         <div className="py-16 flex flex-col items-center gap-2 text-[var(--color-text-muted)]">
-            <Search className="text-2xl opacity-20" />
-            <p className="text-[12px] font-bold">Tidak ada data</p>
+            <Search className="w-6 h-6 opacity-20" />
+            <p className="text-xs font-bold">Tidak ada data</p>
         </div>
     )
 
@@ -917,36 +917,36 @@ function MobileListView({ items, dataMap, tahun, bulan, daysInMonth, todayDate, 
 
                 return (
                     <div key={item.id} className={`flex items-center gap-2.5 px-4 py-2.5 ${alertAlpa ? 'bg-red-500/[0.03]' : alertHadir ? 'bg-amber-500/[0.03]' : ''}`}>
-                        <div className="w-5 h-5 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[8px] font-black text-[var(--color-text-muted)] shrink-0">{idx + 1}</div>
+                        <div className="w-5 h-5 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-xs font-bold text-[var(--color-text-muted)] shrink-0">{idx + 1}</div>
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-1">
-                                <p className="text-[12px] font-bold text-[var(--color-text)] truncate">{item.name}</p>
-                                {hasNote && <StickyNote className="text-[8px] text-amber-500 shrink-0" />}
+                                <p className="text-xs font-bold text-[var(--color-text)] truncate">{item.name}</p>
+                                {hasNote && <StickyNote className="w-4 h-4 text-amber-500 shrink-0" />}
                             </div>
-                            <p className="text-[9px] text-[var(--color-text-muted)] truncate">{item.detail}</p>
+                            <p className="text-xs text-[var(--color-text-muted)] truncate">{item.detail}</p>
                         </div>
                         <div className="flex items-center gap-0.5 shrink-0">
                             {STATUS_LIST.map(s => {
                                 const total = sum[s] || 0
                                 return (
                                     <div key={s} className="flex flex-col items-center">
-                                        <span className={`text-[10px] font-black ${STATUS_META[s].color} ${total === 0 ? 'opacity-20' : ''}`}>{total}</span>
+                                        <span className={`text-xs font-bold ${STATUS_META[s].color} ${total === 0 ? 'opacity-20' : ''}`}>{total}</span>
                                         <span className="text-[7px] text-[var(--color-text-muted)]">{s}</span>
                                     </div>
                                 )
                             })}
                             <div className="flex flex-col items-center ml-1">
                                 {alertAlpa && (
-                                    <span className="text-[7px] font-black text-red-500 flex items-center gap-0.5">
-                                        <TriangleAlert className="text-[6px]" />Alpa {sum.A}×
+                                    <span className="text-[7px] font-bold text-red-500 flex items-center gap-0.5">
+                                        <TriangleAlert className="w-4 h-4" />Alpa {sum.A}×
                                     </span>
                                 )}
                                 {alertHadir && !alertAlpa && (
-                                    <span className="text-[7px] font-black text-amber-500 flex items-center gap-0.5">
-                                        <Bell className="text-[6px]" />Hadir {pct}%
+                                    <span className="text-[7px] font-bold text-amber-500 flex items-center gap-0.5">
+                                        <Bell className="w-4 h-4" />Hadir {pct}%
                                     </span>
                                 )}
-                                <span className={`text-[10px] font-black ${pct >= 80 ? 'text-emerald-600' : pct >= 60 ? 'text-amber-600' : 'text-red-600'}`}>{pct}%</span>
+                                <span className={`text-xs font-bold ${pct >= 80 ? 'text-emerald-600' : pct >= 60 ? 'text-amber-600' : 'text-red-600'}`}>{pct}%</span>
                                 <span className="text-[7px] text-[var(--color-text-muted)]">%</span>
                             </div>
                         </div>
@@ -1033,15 +1033,15 @@ function GroupManageModal({ groups, teacherList, studentList, onClose, onRefresh
                 {/* Header */}
                 <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
                     <div>
-                        <h2 className="text-sm font-black text-[var(--color-text)]">
+                        <h2 className="text-sm font-bold text-[var(--color-text)]">
                             {mode === 'list' ? 'Kelola Kelompok Bimbingan' : mode === 'create' ? 'Buat Kelompok Baru' : 'Edit Kelompok'}
                         </h2>
-                        <p className="text-[10px] text-[var(--color-text-muted)] font-medium mt-0.5">
+                        <p className="text-xs text-[var(--color-text-muted)] font-medium mt-0.5">
                             {mode === 'list' ? `${groups.length} kelompok terdaftar` : 'Atur guru, mudabbir & siswa'}
                         </p>
                     </div>
                     <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all">
-                        <X />
+                        <X className="w-4 h-4" />
                     </button>
                 </div>
 
@@ -1050,22 +1050,22 @@ function GroupManageModal({ groups, teacherList, studentList, onClose, onRefresh
                     {mode === 'list' ? (
                         <>
                             <button onClick={startCreate}
-                                className="w-full h-10 rounded-xl border-2 border-dashed border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 transition-all flex items-center justify-center gap-2 mb-4">
-                                <Plus className="text-[10px]" />
+                                className="w-full h-10 rounded-xl border-2 border-dashed border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 transition-all flex items-center justify-center gap-2 mb-4">
+                                <Plus className="w-4 h-4" />
                                 Buat Kelompok Baru
                             </button>
                             {groups.length === 0 ? (
-                                <p className="text-center text-[11px] text-[var(--color-text-muted)] py-8">Belum ada kelompok</p>
+                                <p className="text-center text-xs text-[var(--color-text-muted)] py-8">Belum ada kelompok</p>
                             ) : (
                                 <div className="space-y-2">
                                     {groups.map(g => (
                                         <div key={g.id} className="flex items-center gap-3 p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/30 hover:shadow-sm transition-all">
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-[12px] font-black text-[var(--color-text)] truncate">{g.name}</p>
-                                                <p className="text-[9px] font-bold text-[var(--color-text-muted)] mt-0.5">{g.guru_name || '—'} · {g.mudabbirCount || 0} mudabbir · {g.studentCount || 0} siswa</p>
+                                                <p className="text-xs font-bold text-[var(--color-text)] truncate">{g.name}</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] mt-0.5">{g.guru_name || '—'} · {g.mudabbirCount || 0} mudabbir · {g.studentCount || 0} siswa</p>
                                             </div>
-                                            <button onClick={() => startEdit(g)} className="h-7 px-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[9px] font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">Edit</button>
-                                            <button onClick={() => handleDelete(g)} className="h-7 px-2.5 rounded-lg border border-red-500/20 bg-red-500/5 text-[9px] font-bold text-red-500 hover:bg-red-500/10 transition-all">Hapus</button>
+                                            <button onClick={() => startEdit(g)} className="h-7 px-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">Edit</button>
+                                            <button onClick={() => handleDelete(g)} className="h-7 px-2.5 rounded-lg border border-red-500/20 bg-red-500/5 text-xs font-bold text-red-500 hover:bg-red-500/10 transition-all">Hapus</button>
                                         </div>
                                     ))}
                                 </div>
@@ -1075,60 +1075,60 @@ function GroupManageModal({ groups, teacherList, studentList, onClose, onRefresh
                         /* Create/Edit form */
                         <div className="space-y-4">
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1 block">Nama Kelompok *</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1 block">Nama Kelompok *</label>
                                 <input type="text" value={groupName} onChange={e => setGroupName(e.target.value)} placeholder="Contoh: Kelompok Afrizal"
-                                    className="w-full h-9 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]" />
+                                    className="w-full h-9 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]" />
                             </div>
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1 block">Guru Pengampu *</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1 block">Guru Pengampu *</label>
                                 <select value={guruId} onChange={e => setGuruId(e.target.value)}
-                                    className="w-full h-9 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] appearance-none">
+                                    className="w-full h-9 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] appearance-none">
                                     <option value="">Pilih Guru</option>
                                     {guruList.map(g => <option key={g.id} value={g.id}>{g.name} — {g.detail || 'Guru'}</option>)}
                                 </select>
                             </div>
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1 block">Mudabbir (Siswa Hafidz)</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1 block">Mudabbir (Siswa Hafidz)</label>
                                 <input type="text" value={searchMudabbir} onChange={e => setSearchMudabbir(e.target.value)} placeholder="Cari mudabbir..."
-                                    className="w-full h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-bold mb-2 focus:outline-none focus:border-[var(--color-primary)]" />
+                                    className="w-full h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold mb-2 focus:outline-none focus:border-[var(--color-primary)]" />
                                 <div className="max-h-32 overflow-y-auto rounded-xl border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
                                     {mudabbirIds.length > 0 && mudabbirIds.map(id => {
                                         const s = studentList.find(x => x.id === id)
                                         return s ? (
                                             <div key={id} className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/5">
-                                                <span className="text-[10px] font-bold text-[var(--color-text)] flex-1">{s.name}</span>
-                                                <button onClick={() => setMudabbirIds(prev => prev.filter(x => x !== id))} className="text-red-500 text-[9px] font-bold">Hapus</button>
+                                                <span className="text-xs font-bold text-[var(--color-text)] flex-1">{s.name}</span>
+                                                <button onClick={() => setMudabbirIds(prev => prev.filter(x => x !== id))} className="text-red-500 text-xs font-bold">Hapus</button>
                                             </div>
                                         ) : null
                                     })}
                                     {filteredMudabbir.slice(0, 10).map(s => (
                                         <button key={s.id} onClick={() => setMudabbirIds(prev => [...prev, s.id])}
                                             className="w-full flex items-center gap-2 px-3 py-1.5 hover:bg-[var(--color-surface-alt)] text-left transition-colors">
-                                            <span className="text-[10px] font-bold text-[var(--color-text)] flex-1">{s.name}</span>
-                                            <span className="text-[9px] text-[var(--color-text-muted)]">{s.detail}</span>
+                                            <span className="text-xs font-bold text-[var(--color-text)] flex-1">{s.name}</span>
+                                            <span className="text-xs text-[var(--color-text-muted)]">{s.detail}</span>
                                         </button>
                                     ))}
                                 </div>
                             </div>
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1 block">Siswa</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1 block">Siswa</label>
                                 <input type="text" value={searchStudent} onChange={e => setSearchStudent(e.target.value)} placeholder="Cari siswa..."
-                                    className="w-full h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-bold mb-2 focus:outline-none focus:border-[var(--color-primary)]" />
+                                    className="w-full h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold mb-2 focus:outline-none focus:border-[var(--color-primary)]" />
                                 <div className="max-h-40 overflow-y-auto rounded-xl border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
                                     {studentIds.length > 0 && studentIds.map(id => {
                                         const s = studentList.find(x => x.id === id)
                                         return s ? (
                                             <div key={id} className="flex items-center gap-2 px-3 py-1.5 bg-indigo-500/5">
-                                                <span className="text-[10px] font-bold text-[var(--color-text)] flex-1">{s.name}</span>
-                                                <button onClick={() => setStudentIds(prev => prev.filter(x => x !== id))} className="text-red-500 text-[9px] font-bold">Hapus</button>
+                                                <span className="text-xs font-bold text-[var(--color-text)] flex-1">{s.name}</span>
+                                                <button onClick={() => setStudentIds(prev => prev.filter(x => x !== id))} className="text-red-500 text-xs font-bold">Hapus</button>
                                             </div>
                                         ) : null
                                     })}
                                     {filteredStudents.slice(0, 10).map(s => (
                                         <button key={s.id} onClick={() => setStudentIds(prev => [...prev, s.id])}
                                             className="w-full flex items-center gap-2 px-3 py-1.5 hover:bg-[var(--color-surface-alt)] text-left transition-colors">
-                                            <span className="text-[10px] font-bold text-[var(--color-text)] flex-1">{s.name}</span>
-                                            <span className="text-[9px] text-[var(--color-text-muted)]">{s.detail}</span>
+                                            <span className="text-xs font-bold text-[var(--color-text)] flex-1">{s.name}</span>
+                                            <span className="text-xs text-[var(--color-text-muted)]">{s.detail}</span>
                                         </button>
                                     ))}
                                 </div>
@@ -1140,14 +1140,14 @@ function GroupManageModal({ groups, teacherList, studentList, onClose, onRefresh
                 {/* Footer */}
                 <div className="flex items-center justify-end gap-2 px-5 py-3 border-t border-[var(--color-border)]">
                     {mode !== 'list' && (
-                        <button onClick={() => setMode('list')} className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">
+                        <button onClick={() => setMode('list')} className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">
                             Kembali
                         </button>
                     )}
                     {mode !== 'list' && (
                         <button onClick={handleSave} disabled={saving}
-                            className="h-8 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shadow-lg disabled:opacity-60">
-                            {saving ? <LoaderCircle className="animate-spin" /> : <Save />}
+                            className="h-8 px-4 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide flex items-center gap-2 shadow-lg disabled:opacity-60">
+                            {saving ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                             Simpan
                         </button>
                     )}
@@ -1899,21 +1899,21 @@ export default function HalaqahPage() {
     // ── Render ──
     return (
         <DashboardLayout>
-            <div className="p-4 md:p-6 max-w-[1800px] mx-auto">
+            <div>
 
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                     <div>
                         <Breadcrumb items={['Dashboard', 'Akademik', 'Presensi Halaqah']} />
-                        <h1 className="text-2xl font-black font-heading tracking-tight text-[var(--color-text)]">Presensi Halaqah</h1>
-                        <p className="text-[var(--color-text-muted)] text-[11px] mt-0.5 font-medium opacity-70">
+                        <h1 className="text-2xl font-bold font-heading tracking-tight text-[var(--color-text)]">Presensi Halaqah</h1>
+                        <p className="text-[var(--color-text-muted)] text-xs mt-0.5 font-medium opacity-70">
                             <span className="sm:hidden">Input & rekap absensi guru, mentor & siswa per bulan.</span>
                             <span className="hidden sm:inline">Klik sel untuk ganti status · Tahan & geser untuk isi banyak · Klik nama/tanggal untuk isi cepat</span>
                         </p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
                         {!isOnline && (
-                            <div className="flex items-center gap-1.5 text-[10px] font-black px-2 py-1 rounded-full border text-red-500 border-red-500/20 bg-red-500/5">
+                            <div className="flex items-center gap-1.5 text-xs font-bold px-2 py-1 rounded-full border text-red-500 border-red-500/20 bg-red-500/5">
                                 <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
                                 <span className="hidden sm:inline">Offline</span>
                             </div>
@@ -1927,13 +1927,13 @@ export default function HalaqahPage() {
                         const count = tab.key === 'teacher' ? teacherList.length : tab.key === 'mentor' ? mentorList.length : (filterClassId ? studentList.filter(s => s.classId === filterClassId).length : studentList.length)
                         return (
                             <button key={tab.key} onClick={() => handleTabChange(tab.key)}
-                                className={`h-8 px-3 sm:px-4 rounded-xl text-[11px] font-black flex items-center gap-1.5 transition-all whitespace-nowrap ${activeTab === tab.key
+                                className={`h-8 px-3 sm:px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all whitespace-nowrap ${activeTab === tab.key
                                     ? 'bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm'
                                     : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                                <tab.icon className="text-[10px] shrink-0" />
+                                <tab.icon className="text-xs shrink-0" />
                                 <span className="hidden xs:inline">{tab.label}</span>
                                 <span className="xs:hidden">{tab.label.split(' ')[0]}</span>
-                                <span className="text-[9px] opacity-50">({count})</span>
+                                <span className="text-xs opacity-50">({count})</span>
                             </button>
                         )
                     })}
@@ -1943,12 +1943,12 @@ export default function HalaqahPage() {
                 <div className="flex items-center bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5 mb-3 w-full sm:w-fit overflow-x-auto">
                     {SESSIONS.map(sess => (
                         <button key={sess.key} onClick={() => handleSessionChange(sess.key)}
-                            className={`h-8 px-3 sm:px-4 rounded-xl text-[11px] font-black flex items-center gap-1.5 transition-all whitespace-nowrap flex-1 sm:flex-none justify-center ${activeSession === sess.key
+                            className={`h-8 px-3 sm:px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all whitespace-nowrap flex-1 sm:flex-none justify-center ${activeSession === sess.key
                                 ? 'bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm'
                                 : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                            <sess.icon className="text-[10px] shrink-0" />
+                            <sess.icon className="text-xs shrink-0" />
                             <span>{sess.label.split(' ')[0]}</span>
-                            <span className="text-[9px] opacity-40 font-medium hidden sm:inline">{sess.time}</span>
+                            <span className="text-xs opacity-40 font-medium hidden sm:inline">{sess.time}</span>
                         </button>
                     ))}
                 </div>
@@ -1957,17 +1957,17 @@ export default function HalaqahPage() {
                 {activeTab === 'student' && (
                     <div className="mb-5">
                         <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Kelompok Bimbingan</h3>
+                            <h3 className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Kelompok Bimbingan</h3>
                             <button onClick={() => setShowGroupModal(true)}
-                                className="h-7 px-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all flex items-center gap-1.5">
-                                <Plus className="text-[9px]" />
+                                className="h-7 px-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all flex items-center gap-1.5">
+                                <Plus className="w-4 h-4" />
                                 Kelola Kelompok
                             </button>
                         </div>
                         {groups.length === 0 ? (
                             <div className="rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface-alt)]/30 p-6 text-center">
-                                <Users className="text-2xl text-[var(--color-text-muted)] opacity-30 mb-2" />
-                                <p className="text-[11px] text-[var(--color-text-muted)] font-medium">Belum ada kelompok. Buat kelompok untuk mengelompokkan siswa per guru pengampu.</p>
+                                <Users className="w-6 h-6 text-[var(--color-text-muted)] opacity-30 mb-2" />
+                                <p className="text-xs text-[var(--color-text-muted)] font-medium">Belum ada kelompok. Buat kelompok untuk mengelompokkan siswa per guru pengampu.</p>
                             </div>
                         ) : (
                             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
@@ -1976,11 +1976,11 @@ export default function HalaqahPage() {
                                         className={`text-left rounded-xl border p-3 transition-all ${selectedGroupId === g.id
                                             ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5 shadow-md'
                                             : 'border-[var(--color-border)] bg-[var(--color-surface)] hover:shadow-md'}`}>
-                                        <p className="text-[12px] font-black text-[var(--color-text)] truncate">{g.name}</p>
-                                        <p className="text-[9px] font-bold text-[var(--color-text-muted)] mt-0.5 truncate">{g.guru_name || 'Guru'}</p>
+                                        <p className="text-xs font-bold text-[var(--color-text)] truncate">{g.name}</p>
+                                        <p className="text-xs font-bold text-[var(--color-text-muted)] mt-0.5 truncate">{g.guru_name || 'Guru'}</p>
                                         <div className="flex items-center gap-2 mt-2">
-                                            <span className="text-[9px] font-bold text-emerald-600 bg-emerald-500/10 px-1.5 py-0.5 rounded">{g.mudabbirCount} mudabbir</span>
-                                            <span className="text-[9px] font-bold text-indigo-600 bg-indigo-500/10 px-1.5 py-0.5 rounded">{g.studentCount} siswa</span>
+                                            <span className="text-xs font-bold text-emerald-600 bg-emerald-500/10 px-1.5 py-0.5 rounded">{g.mudabbirCount} mudabbir</span>
+                                            <span className="text-xs font-bold text-indigo-600 bg-indigo-500/10 px-1.5 py-0.5 rounded">{g.studentCount} siswa</span>
                                         </div>
                                     </button>
                                 ))}
@@ -1996,15 +1996,15 @@ export default function HalaqahPage() {
                         <div className="flex items-center gap-1 shrink-0">
                             <button onClick={prevBulan}
                                 className="h-8 w-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all active:scale-95">
-                                <ChevronLeft className="text-[10px]" />
+                                <ChevronLeft className="w-4 h-4" />
                             </button>
                             <div className="flex items-center gap-1 px-1">
-                                <CalendarDays className="text-[var(--color-primary)] text-[11px]" />
-                                <span className="text-[12px] font-black text-[var(--color-text)]">{BULAN_NAMA[bulan]} {tahun}</span>
+                                <CalendarDays className="w-4 h-4 text-[var(--color-primary)]" />
+                                <span className="text-xs font-bold text-[var(--color-text)]">{BULAN_NAMA[bulan]} {tahun}</span>
                             </div>
                             <button onClick={nextBulan}
                                 className="h-8 w-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all active:scale-95">
-                                <ChevronRight className="text-[10px]" />
+                                <ChevronRight className="w-4 h-4" />
                             </button>
                         </div>
 
@@ -2012,11 +2012,11 @@ export default function HalaqahPage() {
                         {activeTab === 'student' && (
                             <div className="relative shrink-0">
                                 <select value={filterClassId} onChange={e => { setFilterClassId(e.target.value); setPage(1) }}
-                                    className="h-8 pl-2.5 pr-7 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-colors appearance-none cursor-pointer">
+                                    className="h-8 pl-2.5 pr-7 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-colors appearance-none cursor-pointer">
                                     <option value="">Semua Kelas</option>
                                     {classList.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                                 </select>
-                                <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[8px] text-[var(--color-text-muted)] pointer-events-none" />
+                                <ChevronDown className="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" />
                             </div>
                         )}
 
@@ -2024,30 +2024,30 @@ export default function HalaqahPage() {
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-[var(--color-text-muted)]" />
                             <input ref={searchInputRef} type="text" value={searchRaw} onChange={e => setSearchRaw(e.target.value)}
                                 placeholder={`Cari ${currentTab?.label?.toLowerCase() || ''}...`}
-                                className="w-full h-8 pl-8 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-semibold text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)] transition-all" />
+                                className="w-full h-8 pl-8 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-semibold text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)] transition-all" />
                         </div>
 
                         <button onClick={() => setShowAlertConfig(true)}
                             className="h-8 w-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] flex items-center justify-center shrink-0 hover:bg-[var(--color-border)] hover:text-[var(--color-text)] active:scale-95 transition-all"
                             title="Pengaturan Alert">
-                            <Settings className="text-[10px]" />
+                            <Settings className="w-4 h-4" />
                         </button>
                     </div>
 
                     {/* Row 2: Action buttons */}
                     <div className="flex items-center gap-1.5 flex-wrap">
                         <button onClick={handleScrollToToday}
-                            className="h-7 px-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all flex items-center gap-1 shrink-0">
-                            <Crosshair className="text-[8px]" />
+                            className="h-7 px-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all flex items-center gap-1 shrink-0">
+                            <Crosshair className="w-4 h-4" />
                             <span className="hidden sm:inline">Hari Ini</span>
                             <span className="sm:hidden">Hari</span>
                         </button>
 
                         <button onClick={() => setHideWeekend(v => !v)}
-                            className={`h-7 px-2.5 rounded-lg border text-[10px] font-black transition-all flex items-center gap-1 shrink-0 ${hideWeekend
+                            className={`h-7 px-2.5 rounded-lg border text-xs font-bold transition-all flex items-center gap-1 shrink-0 ${hideWeekend
                                 ? 'border-[var(--color-primary)]/30 bg-[var(--color-primary)]/8 text-[var(--color-primary)]'
                                 : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                            {hideWeekend ? <EyeOff className="text-[8px]" /> : <Eye className="text-[8px]" />}
+                            {hideWeekend ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                             <span className="hidden sm:inline">{hideWeekend ? 'Tampilkan' : 'Sembunyikan'} Weekend</span>
                             <span className="sm:hidden">WE</span>
                         </button>
@@ -2061,7 +2061,7 @@ export default function HalaqahPage() {
                             {[{ key: 'table', icon: TableProperties }, { key: 'card', icon: LayoutGrid }, { key: 'list', icon: List }].map(v => (
                                 <button key={v.key} onClick={() => { setMobileView(v.key); localStorage.setItem('wafa_halaqah_mobile_view', v.key) }}
                                     className={`w-7 h-7 rounded-md flex items-center justify-center transition-all ${mobileView === v.key ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                                    <v.icon className="text-[10px]" />
+                                    <v.icon className="text-xs" />
                                 </button>
                             ))}
                         </div>
@@ -2070,18 +2070,18 @@ export default function HalaqahPage() {
                             <button onClick={applyUndo} disabled={!canUndo}
                                 className="h-7 w-7 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                                 title="Undo">
-                                <RotateCcw className="text-[8px]" />
+                                <RotateCcw className="w-4 h-4" />
                             </button>
                             <button onClick={applyRedo} disabled={!canRedo}
                                 className="h-7 w-7 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                                 title="Redo">
-                                <RotateCw className="text-[8px]" />
+                                <RotateCw className="w-4 h-4" />
                             </button>
                         </div>
 
                         <button onClick={() => setShowImport(true)}
-                            className="h-7 px-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all flex items-center gap-1 shrink-0">
-                            <FileInput className="text-[8px]" />
+                            className="h-7 px-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all flex items-center gap-1 shrink-0">
+                            <FileInput className="w-4 h-4" />
                             <span className="hidden sm:inline">Import</span>
                         </button>
                     </div>
@@ -2102,8 +2102,8 @@ export default function HalaqahPage() {
                             <div className={`absolute inset-0 ${card.color} opacity-[0.03] group-hover:opacity-[0.06] transition-opacity`} />
                             <div className="relative">
                                 <card.icon className={`w-3.5 h-3.5 ${card.color} bg-clip-text`} style={{ color: 'transparent', WebkitBackgroundClip: 'text' }} />
-                                <p className="text-[11px] font-bold text-[var(--color-text-muted)] mt-1">{card.label}</p>
-                                <p className="text-lg font-black text-[var(--color-text)] leading-none mt-0.5">{card.value}</p>
+                                <p className="text-xs font-bold text-[var(--color-text-muted)] mt-1">{card.label}</p>
+                                <p className="text-lg font-bold text-[var(--color-text)] leading-none mt-0.5">{card.value}</p>
                             </div>
                         </div>
                     ))}
@@ -2113,8 +2113,8 @@ export default function HalaqahPage() {
                 {loading ? (
                     <div className="flex items-center justify-center py-20">
                         <div className="flex flex-col items-center gap-3">
-                            <LoaderCircle className="animate-spin text-2xl text-[var(--color-primary)]" />
-                            <p className="text-[12px] text-[var(--color-text-muted)] font-medium">Memuat data presensi...</p>
+                            <LoaderCircle className="w-6 h-6 animate-spin text-[var(--color-primary)]" />
+                            <p className="text-xs text-[var(--color-text-muted)] font-medium">Memuat data presensi...</p>
                         </div>
                     </div>
                 ) : filteredItems.length === 0 ? (
@@ -2147,7 +2147,7 @@ export default function HalaqahPage() {
                                         boxShadow: '2px 0 4px -2px rgba(0,0,0,0.06)',
                                         verticalAlign: 'middle',
                                     }}>
-                                        <span className="text-[9px] font-black text-[var(--color-text-muted)]">#</span>
+                                        <span className="text-xs font-bold text-[var(--color-text-muted)]">#</span>
                                     </th>
                                     <th rowSpan={2} style={{
                                         position: 'sticky', left: W_NO, zIndex: 6,
@@ -2159,7 +2159,7 @@ export default function HalaqahPage() {
                                         boxShadow: '4px 0 10px -4px rgba(0,0,0,0.12)',
                                         verticalAlign: 'middle',
                                     }}>
-                                        <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Nama</span>
+                                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Nama</span>
                                     </th>
                                     {dayMeta.filter(dm => !(hideWeekend && dm.weekend) && !dm.invalid).map(({ d, weekend, dow }) => (
                                         <th key={d}
@@ -2181,7 +2181,7 @@ export default function HalaqahPage() {
                                             }}
                                             title={`Klik untuk isi semua — tgl ${d}`}
                                             className="group hover:bg-indigo-50/50">
-                                            <span className="text-[11px] font-black transition-transform group-active:scale-90 inline-block"
+                                            <span className="text-xs font-bold transition-transform group-active:scale-90 inline-block"
                                                 style={{ color: d === todayDate ? '#6366f1' : weekend ? '#ef4444' : 'var(--color-text-muted)' }}>
                                                 {d}
                                             </span>
@@ -2200,7 +2200,7 @@ export default function HalaqahPage() {
                                                 background: 'var(--color-surface-alt)', verticalAlign: 'middle',
                                                 boxShadow: i === 0 ? '-4px 0 8px -4px rgba(0,0,0,0.08)' : 'none'
                                             }}>
-                                                <span className={`text-[9px] font-black ${STATUS_META[s].color}`}>{s}</span>
+                                                <span className={`text-xs font-bold ${STATUS_META[s].color}`}>{s}</span>
                                             </th>
                                         )
                                     })}
@@ -2213,7 +2213,7 @@ export default function HalaqahPage() {
                                         background: 'var(--color-surface-alt)', verticalAlign: 'middle',
                                         boxShadow: '-2px 0 4px -2px rgba(0,0,0,0.06)'
                                     }}>
-                                        <span className="text-[9px] font-black text-[var(--color-text-muted)]">%</span>
+                                        <span className="text-xs font-bold text-[var(--color-text-muted)]">%</span>
                                     </th>
                                 </tr>
 
@@ -2226,7 +2226,7 @@ export default function HalaqahPage() {
                                             borderLeft: d === todayDate ? '1px solid #6366f130' : '1px solid var(--color-border)',
                                             backgroundColor: d === todayDate ? '#6366f108' : weekend ? '#fee2e240' : 'var(--color-surface-alt)',
                                         }}>
-                                            <span className="text-[8px] font-bold uppercase tracking-tighter"
+                                            <span className="text-xs font-bold uppercase tracking-tighter"
                                                 style={{ color: weekend ? '#f87171' : 'var(--color-text-muted)', opacity: d === todayDate ? 1 : 0.6 }}>
                                                 {DOW_SHORT[dow]}
                                             </span>
@@ -2246,7 +2246,7 @@ export default function HalaqahPage() {
                                                         description={`Tidak ada yang cocok dengan "${searchRaw}"`} variant="plain" color="slate"
                                                         action={
                                                             <button onClick={() => setSearchRaw('')}
-                                                                className="h-8 px-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">
+                                                                className="h-8 px-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">
                                                                 Hapus pencarian
                                                             </button>
                                                         } />
@@ -2278,7 +2278,7 @@ export default function HalaqahPage() {
                                     <tr className="bg-[var(--color-surface-alt)]">
                                         <td style={{ position: 'sticky', left: 0, zIndex: 4, width: W_NO, minWidth: W_NO, backgroundColor: 'var(--color-surface-alt)', borderTop: '2px solid var(--color-border)', borderRight: '1px solid var(--color-border)', boxShadow: '2px 0 4px -2px rgba(0,0,0,0.06)' }} />
                                         <td style={{ position: 'sticky', left: W_NO, zIndex: 4, width: W_NAMA, minWidth: W_NAMA, backgroundColor: 'var(--color-surface-alt)', borderTop: '2px solid var(--color-border)', borderRight: '2px solid var(--color-border)', padding: '6px 12px', boxShadow: '4px 0 8px -4px rgba(0,0,0,0.08)' }}>
-                                            <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Total / Hari</span>
+                                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Total / Hari</span>
                                         </td>
                                         {dayMeta.filter(dm => !(hideWeekend && dm.weekend) && !dm.invalid).map(({ d, weekend }) => {
                                             const { h, x } = colSummary[d] || { h: 0, x: 0 }
@@ -2307,7 +2307,7 @@ export default function HalaqahPage() {
                                                     background: 'var(--color-surface-alt)',
                                                     boxShadow: i === 0 ? '-4px 0 8px -4px rgba(0,0,0,0.08)' : 'none'
                                                 }}>
-                                                    <span className={`text-[10px] font-black ${STATUS_META[s].color} ${total === 0 ? 'opacity-20' : ''}`}>{total}</span>
+                                                    <span className={`text-xs font-bold ${STATUS_META[s].color} ${total === 0 ? 'opacity-20' : ''}`}>{total}</span>
                                                 </td>
                                             )
                                         })}
@@ -2345,17 +2345,17 @@ export default function HalaqahPage() {
                 {/* Footer bar */}
                 {currentList.length > 0 && (
                     <div className="px-5 py-3 border-t border-[var(--color-border)] flex flex-wrap items-center justify-between gap-3 bg-[var(--color-surface-alt)]/20">
-                        <p className="text-[11px] text-[var(--color-text-muted)] font-medium">
+                        <p className="text-xs text-[var(--color-text-muted)] font-medium">
                             {filteredItems.length !== currentList.length
                                 ? `${filteredItems.length} dari ${currentList.length} ${currentTab?.label?.toLowerCase() || ''}`
                                 : `${currentList.length} ${currentTab?.label?.toLowerCase() || ''}`
                             } &middot; {BULAN_NAMA[bulan]} {tahun} &middot; {daysInMonth} hari
                         </p>
                         <button onClick={handleSave} disabled={saving || !isDirty}
-                            className={`h-9 px-5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${isDirty
+                            className={`h-9 px-5 rounded-xl text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-2 ${isDirty
                                 ? 'bg-[var(--color-primary)] hover:opacity-90 text-white shadow-lg'
                                 : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] cursor-not-allowed opacity-60'}`}>
-                            {saving ? <LoaderCircle className="animate-spin" /> : <Save />}
+                            {saving ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                             {isDirty ? 'Simpan Perubahan' : 'Tersimpan'}
                         </button>
                     </div>
@@ -2366,20 +2366,20 @@ export default function HalaqahPage() {
                     ? 'opacity-100 translate-y-0 pointer-events-auto'
                     : 'opacity-0 translate-y-4 pointer-events-none'}`}
                     style={{ left: dir === 'rtl' ? 'calc(50vw - (var(--sidebar-width, 0px) / 2))' : 'calc(50vw + (var(--sidebar-width, 0px) / 2))' }}>
-                        <div className="flex items-center gap-2 sm:gap-3 px-4 py-2.5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl">
-                        <TriangleAlert className="text-amber-400 shrink-0" />
-                        <span className="text-[11px] text-[var(--color-text-muted)] font-medium flex-1 sm:flex-none">
+                    <div className="flex items-center gap-2 sm:gap-3 px-4 py-2.5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl">
+                        <TriangleAlert className="w-4 h-4 text-amber-400 shrink-0" />
+                        <span className="text-xs text-[var(--color-text-muted)] font-medium flex-1 sm:flex-none">
                             <span className="hidden sm:inline">Ada perubahan belum disimpan</span>
                             <span className="sm:hidden">Belum disimpan</span>
                         </span>
                         <button onClick={handleReset}
-                            className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black hover:text-[var(--color-text)] transition-all flex items-center gap-1.5 shrink-0">
-                            <RotateCcw className="text-[9px]" />
+                            className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold hover:text-[var(--color-text)] transition-all flex items-center gap-1.5 shrink-0">
+                            <RotateCcw className="w-4 h-4" />
                             <span className="hidden sm:inline">Reset</span>
                         </button>
                         <button onClick={handleSave} disabled={saving}
-                            className="h-8 px-4 rounded-xl bg-[var(--color-primary)] hover:opacity-90 text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shadow-lg disabled:opacity-60 shrink-0">
-                            {saving ? <LoaderCircle className="animate-spin" /> : <Save />}
+                            className="h-8 px-4 rounded-xl bg-[var(--color-primary)] hover:opacity-90 text-white text-xs font-bold uppercase tracking-wide flex items-center gap-2 shadow-lg disabled:opacity-60 shrink-0">
+                            {saving ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                             Simpan
                         </button>
                     </div>

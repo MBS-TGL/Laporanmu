@@ -39,7 +39,7 @@ function FollowupTimeline({ items, onAdd, onDelete }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-black text-[var(--color-text)] flex items-center gap-2">
+        <h3 className="text-sm font-bold text-[var(--color-text)] flex items-center gap-2">
           <History className="w-4 h-4" /> Verifikasi Pembina
         </h3>
         <button
@@ -65,7 +65,7 @@ function FollowupTimeline({ items, onAdd, onDelete }) {
                 <span className="absolute -left-[25px] top-0 w-4 h-4 rounded-full bg-[var(--color-surface)] border-2 border-[var(--color-primary)]" />
                 <div className="p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-black text-[var(--color-text)] flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-[var(--color-text)] flex items-center gap-1.5">
                       <Icon className="w-3.5 h-3.5" />
                       {METHOD_LABEL[f.method] || f.method}
                       <span className="font-medium text-[var(--color-text-muted)]">
@@ -120,12 +120,12 @@ function FollowupTimeline({ items, onAdd, onDelete }) {
       >
         <form id="followup-form" onSubmit={submit} className="space-y-4">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Metode</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Metode</p>
             <RichSelect value={method} onChange={setMethod} options={FOLLOWUP_METHODS} compact />
           </div>
           <div>
             <label
-              className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5 block"
+              className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5 block"
               htmlFor="fol-notes"
             >
               Hasil verifikasi

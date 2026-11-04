@@ -34,7 +34,7 @@ function Section({ title, items, onNavigate }) {
     return (
         <>
             <div className="px-4 pt-3 pb-1">
-                <p className="text-xs font-bold uppercase tracking-widest text-text-muted">{title}</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-text-muted">{title}</p>
             </div>
             <div className="px-2 pb-1">
                 {items.map((it) => (

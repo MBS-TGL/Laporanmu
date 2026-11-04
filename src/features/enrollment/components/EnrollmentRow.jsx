@@ -13,7 +13,7 @@ const StatusBadge = memo(({ enrollment }) => {
 
     if (isWaitingList && status === 'diterima') {
         return (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-500" title="Kandidat masuk daftar cadangan karena kuota penuh">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-500" title="Kandidat masuk daftar cadangan karena kuota penuh">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                 Waiting List
             </span>
@@ -23,12 +23,12 @@ const StatusBadge = memo(({ enrollment }) => {
     const cfg = getStatusConfig(status)
     return (
         <div className="flex flex-col items-start lg:items-end gap-1">
-            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider border ${cfg.color}`}>
+            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider border ${cfg.color}`}>
                 <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot}`} />
                 {cfg.label}
             </span>
             {acceptanceConfirmed && (status === 'diterima' || status === 'daftar_ulang') && (
-                <span className="text-[8px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest leading-none bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded w-max">
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide leading-none bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded w-max">
                     Bersedia ✓
                 </span>
             )}
@@ -86,7 +86,7 @@ export const EnrollmentRow = memo(({
             {/* Name + Reg Number */}
             <td className="py-3 px-3">
                 <div className="flex items-center gap-3 min-w-0">
-                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-black shrink-0 ${gender === 'L'
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold shrink-0 ${gender === 'L'
                         ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
                         : 'bg-rose-500/10 text-rose-500'}`}>
                         {enrollment.photo_url
@@ -94,16 +94,16 @@ export const EnrollmentRow = memo(({
                             : name?.charAt(0) || '?'}
                     </div>
                     <div className="min-w-0">
-                        <button onClick={() => onView(enrollment)} className="text-[13px] font-bold text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors truncate block max-w-[200px] text-left">
+                        <button onClick={() => onView(enrollment)} className="text-sm font-bold text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors truncate block max-w-[200px] text-left">
                             {name}
                         </button>
                         <div className="flex items-center gap-2 mt-0.5">
-                            <span className="text-[9px] font-bold text-[var(--color-text-muted)] opacity-60 tracking-wider">{registration_number}</span>
-                            {gender === 'L' ? <MarsIcon className={`text-[8px] ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} /> : <VenusIcon className={`text-[8px] ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} />}
+                            <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-60 tracking-wider">{registration_number}</span>
+                            {gender === 'L' ? <MarsIcon className={`w-4 h-4 ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} /> : <VenusIcon className={`w-4 h-4 ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} />}
                             {missingCount === 0 ? (
-                                <span className="ml-1 text-[8px] font-bold bg-emerald-500/10 text-emerald-600 px-1.5 py-0.5 rounded border border-emerald-500/20">Berkas Lengkap</span>
+                                <span className="ml-1 text-xs font-bold bg-emerald-500/10 text-emerald-600 px-1.5 py-0.5 rounded border border-emerald-500/20">Berkas Lengkap</span>
                             ) : (
-                                <span className="ml-1 text-[8px] font-bold bg-rose-500/10 text-rose-500 px-1.5 py-0.5 rounded border border-rose-500/20">Kurang {missingCount} Berkas</span>
+                                <span className="ml-1 text-xs font-bold bg-rose-500/10 text-rose-500 px-1.5 py-0.5 rounded border border-rose-500/20">Kurang {missingCount} Berkas</span>
                             )}
                             <PaymentDots enrollment={enrollment} />
                         </div>
@@ -113,12 +113,12 @@ export const EnrollmentRow = memo(({
 
             {/* Asal Sekolah */}
             <td className="py-3 px-3 hidden lg:table-cell">
-                <span className="text-[12px] font-medium text-[var(--color-text)] truncate block max-w-[160px]">{school_origin || '-'}</span>
+                <span className="text-xs font-medium text-[var(--color-text)] truncate block max-w-[160px]">{school_origin || '-'}</span>
             </td>
 
             {/* Program */}
             <td className="py-3 px-3 hidden xl:table-cell">
-                <span className="text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] px-2 py-1 rounded-lg border border-[var(--color-border)]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] px-2 py-1 rounded-lg border border-[var(--color-border)]">
                     {getProgramLabel(program)}
                 </span>
             </td>
@@ -126,10 +126,10 @@ export const EnrollmentRow = memo(({
             {/* Kemampuan Quran */}
             <td className="py-3 px-3 hidden xl:table-cell">
                 {quranCfg ? (
-                    <span className={`text-[10px] font-black px-2 py-1 rounded-lg ${quranCfg.color}`}>
+                    <span className={`text-xs font-bold px-2 py-1 rounded-lg ${quranCfg.color}`}>
                         {quranCfg.name}
                     </span>
-                ) : <span className="text-[var(--color-text-muted)] text-[11px]">-</span>}
+                ) : <span className="text-[var(--color-text-muted)] text-xs">-</span>}
             </td>
 
             {/* Status */}
@@ -139,52 +139,52 @@ export const EnrollmentRow = memo(({
 
             {/* Tanggal Daftar */}
             <td className="py-3 px-3 hidden md:table-cell">
-                <span className="text-[11px] font-medium text-[var(--color-text-muted)]">{formatEnrollmentDate(created_at)}</span>
+                <span className="text-xs font-medium text-[var(--color-text-muted)]">{formatEnrollmentDate(created_at)}</span>
             </td>
 
             {/* Aksi */}
             <td className="py-3 px-3">
                 <div className="flex items-center gap-1">
                     <button onClick={() => onView(enrollment)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 transition-all text-sm" title="Lihat Detail">
-                        <Eye />
+                        <Eye className="w-4 h-4" />
                     </button>
                     {canEdit && (
                         <>
                             <button onClick={() => onEdit(enrollment)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-blue-500 hover:bg-blue-500/10 transition-all text-sm" title="Edit">
-                                <Pen />
+                                <Pen className="w-4 h-4" />
                             </button>
                             {/* Quick status actions */}
                             {/* Backward progress actions */}
                             {status === 'verifikasi' && (
                                 <button onClick={() => onStatusChange(enrollment, 'mendaftar')} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-all text-sm" title="Kembalikan ke Mendaftar">
-                                    <ArrowLeft />
+                                    <ArrowLeft className="w-4 h-4" />
                                 </button>
                             )}
                             {status === 'tes' && (
                                 <button onClick={() => onStatusChange(enrollment, 'verifikasi')} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-all text-sm" title="Kembalikan ke Verifikasi">
-                                    <ArrowLeft />
+                                    <ArrowLeft className="w-4 h-4" />
                                 </button>
                             )}
                             {(status === 'diterima' || status === 'ditolak') && (
                                 <button onClick={() => onStatusChange(enrollment, 'tes')} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-all text-sm" title="Kembalikan ke Tahap Tes">
-                                    <ArrowLeft />
+                                    <ArrowLeft className="w-4 h-4" />
                                 </button>
                             )}
 
                             {/* Forward progress actions */}
                             {status === 'mendaftar' && (
                                 <button onClick={() => onStatusChange(enrollment, 'verifikasi')} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-amber-500 hover:bg-amber-500/10 transition-all text-sm" title="Lanjut Verifikasi">
-                                    <ArrowRight />
+                                    <ArrowRight className="w-4 h-4" />
                                 </button>
                             )}
                             {status === 'verifikasi' && (
                                 <button onClick={() => onStatusChange(enrollment, 'tes')} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-purple-500 hover:bg-purple-500/10 transition-all text-sm" title="Lanjut Tes">
-                                    <ArrowRight />
+                                    <ArrowRight className="w-4 h-4" />
                                 </button>
                             )}
                             {status === 'tes' && (
                                 <button onClick={() => onStatusChange(enrollment, 'diterima')} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-emerald-500 hover:bg-emerald-500/10 transition-all text-sm" title="Terima">
-                                    <CircleCheck />
+                                    <CircleCheck className="w-4 h-4" />
                                 </button>
                             )}
                         </>
@@ -226,7 +226,7 @@ export const EnrollmentMobileCard = memo(({
                 />
 
                 {/* Avatar */}
-                <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-sm font-black shrink-0 ${gender === 'L'
+                <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-sm font-bold shrink-0 ${gender === 'L'
                     ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
                     : 'bg-rose-500/10 text-rose-500'}`}>
                     {name?.charAt(0) || '?'}
@@ -238,12 +238,12 @@ export const EnrollmentMobileCard = memo(({
                         {name}
                     </button>
                     <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-[9px] font-bold text-[var(--color-text-muted)] opacity-50 tracking-wider">{registration_number}</span>
-                        {gender === 'L' ? <MarsIcon className={`text-[8px] ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} /> : <VenusIcon className={`text-[8px] ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} />}
+                        <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-50 tracking-wider">{registration_number}</span>
+                        {gender === 'L' ? <MarsIcon className={`w-4 h-4 ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} /> : <VenusIcon className={`w-4 h-4 ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} />}
                         {missingCount === 0 ? (
-                            <span className="ml-1 text-[8px] font-bold bg-emerald-500/10 text-emerald-600 px-1.5 py-0.5 rounded border border-emerald-500/20">Berkas Lengkap</span>
+                            <span className="ml-1 text-xs font-bold bg-emerald-500/10 text-emerald-600 px-1.5 py-0.5 rounded border border-emerald-500/20">Berkas Lengkap</span>
                         ) : (
-                            <span className="ml-1 text-[8px] font-bold bg-rose-500/10 text-rose-500 px-1.5 py-0.5 rounded border border-rose-500/20">Kurang {missingCount} Berkas</span>
+                            <span className="ml-1 text-xs font-bold bg-rose-500/10 text-rose-500 px-1.5 py-0.5 rounded border border-rose-500/20">Kurang {missingCount} Berkas</span>
                         )}
                         <PaymentDots enrollment={enrollment} />
                     </div>
@@ -255,20 +255,20 @@ export const EnrollmentMobileCard = memo(({
 
             {/* Details Grid */}
             <div className="px-4 pb-3 grid grid-cols-2 gap-2">
-                <div className="flex items-center gap-2 text-[10px]">
-                    <School className="text-[var(--color-text-muted)] opacity-40 text-[9px]" />
+                <div className="flex items-center gap-2 text-xs">
+                    <School className="w-4 h-4 text-[var(--color-text-muted)] opacity-40" />
                     <span className="text-[var(--color-text-muted)] font-medium truncate">{school_origin || '-'}</span>
                 </div>
-                <div className="flex items-center gap-2 text-[10px]">
-                    <BookOpenText className="text-[var(--color-text-muted)] opacity-40 text-[9px]" />
+                <div className="flex items-center gap-2 text-xs">
+                    <BookOpenText className="w-4 h-4 text-[var(--color-text-muted)] opacity-40" />
                     <span className="text-[var(--color-text-muted)] font-medium">
                         {quranCfg?.name || '-'}{hafalan_quran > 0 ? ` · ${hafalan_quran} Juz` : ''}
                     </span>
                 </div>
-                <div className="text-[10px] text-[var(--color-text-muted)] font-medium">
+                <div className="text-xs text-[var(--color-text-muted)] font-medium">
                     <span className="opacity-50">Program:</span> <span className="font-bold text-[var(--color-text)]">{getProgramLabel(program)}</span>
                 </div>
-                <div className="text-[10px] text-[var(--color-text-muted)] font-medium">
+                <div className="text-xs text-[var(--color-text-muted)] font-medium">
                     <span className="opacity-50">Daftar:</span> {formatEnrollmentDate(created_at)}
                 </div>
             </div>
@@ -276,12 +276,12 @@ export const EnrollmentMobileCard = memo(({
             {/* Actions Footer */}
             {canEdit && (
                 <div className="flex items-center gap-1 px-3 py-2.5 border-t border-[var(--color-border)]/50 bg-[var(--color-surface-alt)]/20">
-                    <button onClick={() => onView(enrollment)} className="flex-1 h-8 rounded-lg text-[10px] font-bold text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 flex items-center justify-center gap-1.5 transition-all">
-                        <Eye className="text-[9px]" /> Detail
+                    <button onClick={() => onView(enrollment)} className="flex-1 h-8 rounded-lg text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 flex items-center justify-center gap-1.5 transition-all">
+                        <Eye className="w-4 h-4" /> Detail
                     </button>
                     <div className="w-px h-4 bg-[var(--color-border)]" />
-                    <button onClick={() => onEdit(enrollment)} className="flex-1 h-8 rounded-lg text-[10px] font-bold text-[var(--color-text-muted)] hover:text-amber-500 hover:bg-amber-500/5 flex items-center justify-center gap-1.5 transition-all">
-                        <Pen className="text-[9px]" /> Edit
+                    <button onClick={() => onEdit(enrollment)} className="flex-1 h-8 rounded-lg text-xs font-bold text-[var(--color-text-muted)] hover:text-amber-500 hover:bg-amber-500/5 flex items-center justify-center gap-1.5 transition-all">
+                        <Pen className="w-4 h-4" /> Edit
                     </button>
                     {/* Backward action on Mobile */}
                     {status !== 'mendaftar' && (
@@ -292,10 +292,10 @@ export const EnrollmentMobileCard = memo(({
                                     const prev = status === 'verifikasi' ? 'mendaftar' : status === 'tes' ? 'verifikasi' : 'tes'
                                     onStatusChange(enrollment, prev)
                                 }}
-                                className="flex-1 h-8 rounded-lg text-[10px] font-bold text-rose-600 hover:bg-rose-500/5 flex items-center justify-center gap-1 transition-all"
+                                className="flex-1 h-8 rounded-lg text-xs font-bold text-rose-600 hover:bg-rose-500/5 flex items-center justify-center gap-1 transition-all"
                                 title="Kembalikan Status"
                             >
-                                <ArrowLeft className="text-[8px]" /> Kembali
+                                <ArrowLeft className="w-4 h-4" /> Kembali
                             </button>
                         </>
                     )}
@@ -308,9 +308,9 @@ export const EnrollmentMobileCard = memo(({
                                     const next = status === 'mendaftar' ? 'verifikasi' : status === 'verifikasi' ? 'tes' : 'diterima'
                                     onStatusChange(enrollment, next)
                                 }}
-                                className="flex-1 h-8 rounded-lg text-[10px] font-bold text-emerald-600 hover:bg-emerald-500/10 flex items-center justify-center gap-1.5 transition-all"
+                                className="flex-1 h-8 rounded-lg text-xs font-bold text-emerald-600 hover:bg-emerald-500/10 flex items-center justify-center gap-1.5 transition-all"
                             >
-                                <ChevronRight className="text-[8px]" />
+                                <ChevronRight className="w-4 h-4" />
                                 {status === 'mendaftar' ? 'Verifikasi' : status === 'verifikasi' ? 'Tes' : 'Terima'}
                             </button>
                         </>

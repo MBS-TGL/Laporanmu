@@ -90,7 +90,7 @@ export default function PublicEnrollmentPage() {
             
                 <div className="w-full max-w-[420px] relative z-10 bg-surface border border-border rounded-[2rem] p-8 shadow-sm text-center">
                 <div className="w-20 h-20 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
-                    <Info />
+                    <Info className="w-6 h-6" />
                 </div>
                 <h2 className="text-2xl font-bold font-heading text-[var(--color-text)] mb-2">Pendaftaran Ditutup</h2>
                 <p className="text-[var(--color-text-muted)] mb-6">Mohon maaf, saat ini tidak ada gelombang pendaftaran yang aktif.</p>
@@ -113,17 +113,17 @@ export default function PublicEnrollmentPage() {
                 <div className="absolute top-0 left-0 w-full h-1.5 bg-[var(--color-primary)] opacity-50" />
                 
                 <div className="w-24 h-24 bg-[var(--color-primary)] text-white rounded-full flex items-center justify-center mx-auto mb-6 text-4xl shadow-xl ring-8 ring-[var(--color-primary)]/10">
-                    <CircleCheck />
+                    <CircleCheck className="w-6 h-6" />
                 </div>
                 <h2 className="text-3xl font-bold font-heading text-[var(--color-text)] mb-2 tracking-tight">Alhamdulillah!</h2>
-                <p className="text-[var(--color-text-muted)] mb-8 leading-relaxed">Pendaftaran atas nama <strong className="text-[var(--color-text)] font-black">{successData?.name}</strong> berhasil dikirim.</p>
+                <p className="text-[var(--color-text-muted)] mb-8 leading-relaxed">Pendaftaran atas nama <strong className="text-[var(--color-text)] font-bold">{successData?.name}</strong> berhasil dikirim.</p>
                 
                 <div className="bg-[var(--color-surface-alt)]/50 border border-[var(--color-border)] rounded-3xl p-6 mb-8 relative">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] mb-3">Nomor Pendaftaran Anda</p>
-                    <p className="text-3xl font-black text-[var(--color-primary)] tracking-wider">{successData?.regNum}</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-3">Nomor Pendaftaran Anda</p>
+                    <p className="text-3xl font-bold text-[var(--color-primary)] tracking-wider">{successData?.regNum}</p>
                 </div>
                 
-                <p className="text-[13px] font-medium text-[var(--color-text-muted)] mb-8 leading-relaxed px-2">Silakan simpan (screenshot) halaman ini untuk mengecek status secara berkala. Kami akan segera menghubungi Anda via WhatsApp.</p>
+                <p className="text-sm font-medium text-[var(--color-text-muted)] mb-8 leading-relaxed px-2">Silakan simpan (screenshot) halaman ini untuk mengecek status secara berkala. Kami akan segera menghubungi Anda via WhatsApp.</p>
                     <Link to="/" className="btn btn-primary w-full py-4 text-sm font-bold shadow-lg">
                     Selesai
                 </Link>
@@ -153,7 +153,7 @@ export default function PublicEnrollmentPage() {
                         className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 transition-all"
                         aria-label="Toggle theme"
                     >
-                        {isDark ? <Sun className="text-sm" /> : <Moon className="text-sm" />}
+                        {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                     </button>
                 </div>
 
@@ -163,7 +163,7 @@ export default function PublicEnrollmentPage() {
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 flex-wrap">
                         <p className="text-sm text-[var(--color-text-muted)]">Gelombang Aktif: <span className="font-bold text-[var(--color-primary)]">{activeWave?.name}</span></p>
                         <Link to="/psb/status" className="text-xs font-bold text-[var(--color-primary)] hover:underline flex items-center gap-1">
-                            Cek Status Kelulusan <ArrowRight className="text-[9px]" />
+                            Cek Status Kelulusan <ArrowRight className="w-4 h-4" />
                         </Link>
                     </div>
                 </div>
@@ -206,12 +206,12 @@ export default function PublicEnrollmentPage() {
                                     <label className={`flex-1 flex flex-col items-center justify-center h-[52px] rounded-xl border cursor-pointer transition-all ${form.program === 'reguler' ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10' : 'border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-primary)]/50'}`}>
                                         <input type="radio" name="program" value="reguler" checked={form.program === 'reguler'} onChange={handleChange} className="hidden" />
                                         <span className={`font-bold text-sm leading-none ${form.program === 'reguler' ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}>Reguler</span>
-                                        <span className={`text-[9px] font-medium mt-1 leading-none ${form.program === 'reguler' ? 'text-[var(--color-primary)]/70' : 'text-[var(--color-text-muted)]/70'}`}>Fullday</span>
+                                        <span className={`text-xs font-medium mt-1 leading-none ${form.program === 'reguler' ? 'text-[var(--color-primary)]/70' : 'text-[var(--color-text-muted)]/70'}`}>Fullday</span>
                                     </label>
                                     <label className={`flex-1 flex flex-col items-center justify-center h-[52px] rounded-xl border cursor-pointer transition-all ${form.program === 'boarding' ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10' : 'border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-primary)]/50'}`}>
                                         <input type="radio" name="program" value="boarding" checked={form.program === 'boarding'} onChange={handleChange} className="hidden" />
                                         <span className={`font-bold text-sm leading-none ${form.program === 'boarding' ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}>Boarding</span>
-                                        <span className={`text-[9px] font-medium mt-1 leading-none ${form.program === 'boarding' ? 'text-[var(--color-primary)]/70' : 'text-[var(--color-text-muted)]/70'}`}>Pondok</span>
+                                        <span className={`text-xs font-medium mt-1 leading-none ${form.program === 'boarding' ? 'text-[var(--color-primary)]/70' : 'text-[var(--color-text-muted)]/70'}`}>Pondok</span>
                                     </label>
                                 </div>
                             </div>
@@ -246,7 +246,7 @@ export default function PublicEnrollmentPage() {
                                 <textarea name="address" value={form.address} onChange={handleChange} placeholder="Jalan, RT/RW, Desa, Kecamatan..." className="w-full h-28 bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10 rounded-xl p-4 text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-50 transition-all outline-none font-bold resize-none" />
                             </div>
                             <div className="p-3.5 rounded-xl bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex gap-3 text-[var(--color-primary)] text-sm font-medium">
-                                <Info className="mt-0.5 shrink-0" />
+                                <Info className="w-4 h-4 mt-0.5 shrink-0" />
                                 <p className="text-xs leading-relaxed text-[var(--color-text)]">Pastikan data sudah benar. Pihak pesantren akan menghubungi Anda via WhatsApp setelah data masuk.</p>
                             </div>
                         </div>
@@ -256,12 +256,12 @@ export default function PublicEnrollmentPage() {
                     <div className="flex items-center gap-3 mt-4 pt-4 border-t border-[var(--color-border)]/50">
                         {step > 0 && (
                             <button onClick={() => setStep(s => s - 1)} className="btn bg-[var(--color-surface-alt)] text-[var(--color-text)] border border-[var(--color-border)] hover:bg-[var(--color-border)] py-3 px-5 transition-all text-sm font-bold shadow-none">
-                                <ArrowLeft />
+                                <ArrowLeft className="w-4 h-4" />
                             </button>
                         )}
                         {step < 2 ? (
                             <button disabled={!canNext()} onClick={() => setStep(s => s + 1)} className="btn btn-primary flex-1 w-full py-3 transition-all text-sm font-bold shadow-lg">
-                                Lanjut <ArrowRight className="ml-2" />
+                                Lanjut <ArrowRight className="w-4 h-4 ml-2" />
                             </button>
                         ) : (
                             <button disabled={submitting || !canNext()} onClick={handleSubmit} className="btn btn-primary flex-1 w-full py-3 transition-all text-sm font-bold shadow-lg">
@@ -273,12 +273,12 @@ export default function PublicEnrollmentPage() {
 
                 {/* Footer Links */}
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-2 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
-                    <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                    <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                         <Link to="/check" className="hover:text-[var(--color-primary)] transition-colors">Wali Murid</Link>
                         <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
                         <Link to="/login" className="hover:text-[var(--color-primary)] transition-colors">Guru/Staff Login</Link>
                     </div>
-                    <Link to="/" className="text-[11px] font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-2">
+                    <Link to="/" className="text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-2">
                         <span>← Beranda</span>
                     </Link>
                 </div>

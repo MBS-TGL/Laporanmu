@@ -148,7 +148,7 @@ export default function LeavePermitPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-4 sm:p-6 space-y-5">
+      <div className="space-y-5">
 
         <PageHeader
           badge="Kesantrian"

@@ -247,22 +247,22 @@ export default function StoragePage() {
 
     return (
         <DashboardLayout title="Storage Manager">
-            <div className="p-4 md:p-6 space-y-6">
+            <div className="space-y-6">
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <Breadcrumb badge="Admin" items={['Storage Analysis']} className="mb-1" />
                         <div className="flex items-center gap-2.5 mb-1">
-                            <h1 className="text-2xl font-black font-heading tracking-tight text-[var(--color-text)]">Storage Manager</h1>
-                            <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 uppercase tracking-widest">Admin Only</span>
+                            <h1 className="text-2xl font-bold font-heading tracking-tight text-[var(--color-text)]">Storage Manager</h1>
+                            <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 uppercase tracking-wide">Admin Only</span>
                         </div>
-                        <p className="text-[var(--color-text-muted)] text-[11px] font-medium opacity-70">
+                        <p className="text-[var(--color-text-muted)] text-xs font-medium opacity-70">
                             Kelola file unggahan, bucket storage, dan bersihkan file sampah.
                         </p>
                     </div>
                     <button onClick={fetchBuckets} disabled={loading}
-                        className="h-10 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[12px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition flex items-center gap-2 shadow-sm">
-                        <RefreshCw className={loading ? 'animate-spin' : ''} />
+                        className="h-10 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition flex items-center gap-2 shadow-sm">
+                        <RefreshCw className={loading ? 'animate-spin' : ''} className="w-4 h-4" />
                         Refresh
                     </button>
                 </div>
@@ -273,17 +273,17 @@ export default function StoragePage() {
                         <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] p-5">
                             <div className="flex items-center gap-3 mb-4">
                                 <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0">
-                                    <FolderOpen />
+                                    <FolderOpen className="w-4 h-4" />
                                 </div>
                                 <div>
-                                    <h2 className="text-sm font-black text-[var(--color-text)]">Storage Buckets</h2>
-                                    <p className="text-[11px] text-[var(--color-text-muted)]">Daftar bucket yang ada di Supabase</p>
+                                    <h2 className="text-sm font-bold text-[var(--color-text)]">Storage Buckets</h2>
+                                    <p className="text-xs text-[var(--color-text-muted)]">Daftar bucket yang ada di Supabase</p>
                                 </div>
                             </div>
 
                             {loading ? (
                                 <div className="py-10 flex flex-col items-center justify-center text-[var(--color-text-muted)] gap-3">
-                                    <LoaderCircle className="animate-spin text-2xl" />
+                                    <LoaderCircle className="w-6 h-6 animate-spin" />
                                     <span className="text-xs font-bold">Memuat buckets...</span>
                                 </div>
                             ) : buckets.length === 0 ? (
@@ -296,14 +296,14 @@ export default function StoragePage() {
                                         <div key={b.id} className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 hover:bg-[var(--color-surface-alt)] transition-colors group cursor-pointer">
                                             <div className="flex items-start justify-between mb-3">
                                                 <div className="flex items-center gap-2 text-[var(--color-primary)]">
-                                                    <Archive />
-                                                    <span className="text-sm font-black tracking-tight">{b.name}</span>
+                                                    <Archive className="w-4 h-4" />
+                                                    <span className="text-sm font-bold tracking-tight">{b.name}</span>
                                                 </div>
-                                                <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)]">
+                                                <span className="text-xs font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)]">
                                                     {b.public ? 'Public' : 'Private'}
                                                 </span>
                                             </div>
-                                            <p className="text-[10px] text-[var(--color-text-muted)] mt-1">
+                                            <p className="text-xs text-[var(--color-text-muted)] mt-1">
                                                 Dibuat: {new Date(b.created_at).toLocaleDateString('id-ID')}
                                             </p>
                                         </div>
@@ -315,8 +315,8 @@ export default function StoragePage() {
                         {/* Recent Large Files (Mock) */}
                         <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] p-5">
                             <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-sm font-black text-[var(--color-text)]">File Berukuran Besar Baru-baru Ini</h2>
-                                {loadingFiles && <LoaderCircle className="animate-spin text-[var(--color-text-muted)] text-sm" />}
+                                <h2 className="text-sm font-bold text-[var(--color-text)]">File Berukuran Besar Baru-baru Ini</h2>
+                                {loadingFiles && <LoaderCircle className="w-4 h-4 animate-spin text-[var(--color-text-muted)]" />}
                             </div>
 
                             {!loadingFiles && largeFiles.length === 0 ? (
@@ -331,17 +331,17 @@ export default function StoragePage() {
                                             <div key={`${f.bucketName}-${f.id}-${i}`} className="flex items-center justify-between p-3 hover:bg-[var(--color-surface-alt)] transition-colors">
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-8 h-8 rounded-lg bg-[var(--color-surface)] flex items-center justify-center shrink-0 border border-[var(--color-border)]">
-                                                        <Icon className={color} />
+                                                        <Icon className={color} className="w-4 h-4" />
                                                     </div>
                                                     <div>
-                                                        <div className="font-bold text-[12px] truncate max-w-[140px] sm:max-w-[220px]" title={f.name}>{f.name}</div>
-                                                        <div className="text-[9px] text-[var(--color-text-muted)] uppercase tracking-widest">{f.bucketName}</div>
+                                                        <div className="font-bold text-xs truncate max-w-[140px] sm:max-w-[220px]" title={f.name}>{f.name}</div>
+                                                        <div className="text-xs text-[var(--color-text-muted)] uppercase tracking-wide">{f.bucketName}</div>
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-4">
-                                                    <span className="text-[11px] font-mono font-bold text-[var(--color-text-muted)]">{formatBytes(f.sizeBytes)}</span>
+                                                    <span className="text-xs font-mono font-bold text-[var(--color-text-muted)]">{formatBytes(f.sizeBytes)}</span>
                                                     <button onClick={() => handleDeleteFile(f.bucketName, f.name)} className="w-8 h-8 rounded-lg text-[var(--color-text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-colors flex items-center justify-center" title="Hapus Permanen">
-                                                        <Trash2 className="text-xs" />
+                                                        <Trash2 className="w-4 h-4" />
                                                     </button>
                                                 </div>
                                             </div>
@@ -360,39 +360,39 @@ export default function StoragePage() {
 
                             <div className="p-6 relative z-10">
                                 <div className="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-500 flex items-center justify-center mb-4 border border-amber-500/30 shadow-inner">
-                                    <Brush className="text-xl" />
+                                    <Brush className="w-5 h-5" />
                                 </div>
-                                <h2 className="text-lg font-black text-[var(--color-text)] mb-2">Pembersih Storage</h2>
-                                <p className="text-[12px] text-[var(--color-text-muted)] mb-6 leading-relaxed">
+                                <h2 className="text-lg font-bold text-[var(--color-text)] mb-2">Pembersih Storage</h2>
+                                <p className="text-xs text-[var(--color-text-muted)] mb-6 leading-relaxed">
                                     Pindai storage untuk menemukan file (seperti pas foto atau dokumen) yang sudah tidak terhubung ke data murid atau sistem mana pun di database.
                                 </p>
 
                                 {!scanResults ? (
                                     <button
                                         onClick={handleScan} disabled={scanning}
-                                        className="w-full h-12 rounded-xl bg-amber-500 text-white font-black hover:bg-amber-600 transition-all flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100"
+                                        className="w-full h-12 rounded-xl bg-amber-500 text-white font-bold hover:bg-amber-600 transition-all flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100"
                                     >
-                                        { scanning ? <LoaderCircle className={scanning ? 'animate-spin' : ''} /> : <Search className={scanning ? 'animate-spin' : ''} /> }
+                                        { scanning ? <LoaderCircle className={scanning ? 'animate-spin' : ''} className="w-4 h-4" /> : <Search className={scanning ? 'animate-spin' : ''} className="w-4 h-4" /> }
                                         {scanning ? 'Menyortir Database & Storage...' : 'Mulai Scan Storage'}
                                     </button>
                                 ) : (
                                     <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                         <div className="p-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
                                             <div className="flex items-center justify-between mb-2">
-                                                <span className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Hasil Scan</span>
-                                                <span className="text-[10px] font-bold text-emerald-500 flex items-center gap-1"><CircleCheck /> Selesai</span>
+                                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Hasil Scan</span>
+                                                <span className="text-xs font-bold text-emerald-500 flex items-center gap-1"><CircleCheck className="w-4 h-4" /> Selesai</span>
                                             </div>
                                             <div className="grid grid-cols-2 gap-2 mt-4">
                                                 <div>
-                                                    <p className="text-[10px] text-[var(--color-text-muted)]">File Sampah</p>
-                                                    <p className="text-xl font-black text-rose-500">{scanResults.orphanCount}</p>
+                                                    <p className="text-xs text-[var(--color-text-muted)]">File Sampah</p>
+                                                    <p className="text-xl font-bold text-rose-500">{scanResults.orphanCount}</p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-[10px] text-[var(--color-text-muted)]">Ukuran Total</p>
-                                                    <p className="text-xl font-black text-rose-500">{scanResults.orphanSize}</p>
+                                                    <p className="text-xs text-[var(--color-text-muted)]">Ukuran Total</p>
+                                                    <p className="text-xl font-bold text-rose-500">{scanResults.orphanSize}</p>
                                                 </div>
                                             </div>
-                                            <div className="mt-3 text-[10px] text-[var(--color-text-muted)] border-t border-[var(--color-border)] pt-2">
+                                            <div className="mt-3 text-xs text-[var(--color-text-muted)] border-t border-[var(--color-border)] pt-2">
                                                 Total dipindai: {scanResults.totalScanned.toLocaleString()} file
                                             </div>
                                         </div>
@@ -401,9 +401,9 @@ export default function StoragePage() {
                                             <button
                                                 onClick={handleDeleteOrphans}
                                                 disabled={scanResults.filesToDelete.length === 0 || scanning}
-                                                className="flex-1 h-10 rounded-xl bg-rose-500 text-white font-black hover:bg-rose-600 transition-all flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] disabled:opacity-50"
+                                                className="flex-1 h-10 rounded-xl bg-rose-500 text-white font-bold hover:bg-rose-600 transition-all flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] disabled:opacity-50"
                                             >
-                                                <Trash2 className="text-xs" />
+                                                <Trash2 className="w-4 h-4" />
                                                 Hapus Permanen
                                             </button>
                                             <button
@@ -411,7 +411,7 @@ export default function StoragePage() {
                                                 className="w-10 h-10 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors flex items-center justify-center"
                                                 title="Batal"
                                             >
-                                                <Brush />
+                                                <Brush className="w-4 h-4" />
                                             </button>
                                         </div>
                                     </div>
@@ -421,10 +421,10 @@ export default function StoragePage() {
 
                         {/* Tips */}
                         <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 flex gap-3">
-                            <TriangleAlert className="text-blue-500 mt-1 shrink-0" />
+                            <TriangleAlert className="w-4 h-4 text-blue-500 mt-1 shrink-0" />
                             <div>
-                                <p className="text-[12px] font-black text-blue-600 mb-1">Tips Hemat Storage</p>
-                                <p className="text-[11px] text-blue-600/80 leading-relaxed">
+                                <p className="text-xs font-bold text-blue-600 mb-1">Tips Hemat Storage</p>
+                                <p className="text-xs text-blue-600/80 leading-relaxed">
                                     Pastikan setiap kali data siswa dihapus (misal siswa lulus atau pindah), trigger database juga ikut menghapus file pas foto yang terkait di Supabase Storage.
                                 </p>
                             </div>

@@ -57,7 +57,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
             <>
                 {parts.map((part, i) =>
                     part.toLowerCase() === search.toLowerCase() ? (
-                        <span key={i} className="bg-yellow-100 text-amber-950 px-0.5 rounded font-black">{part}</span>
+                        <span key={i} className="bg-yellow-100 text-amber-950 px-0.5 rounded font-bold">{part}</span>
                     ) : (
                         part
                     )
@@ -248,7 +248,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                         ) : (
                             <ArrowUp className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                         )}
-                        <span className={isNegative ? 'text-rose-600 dark:text-rose-400 font-black' : 'text-emerald-600 dark:text-emerald-400 font-black'}>
+                        <span className={isNegative ? 'text-rose-600 dark:text-rose-400 font-bold' : 'text-emerald-600 dark:text-emerald-400 font-bold'}>
                             {ptsText}
                         </span>
                         <span className="text-[var(--color-text)] font-semibold truncate">{tDb(vt.name)}</span>
@@ -334,7 +334,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                             style={{ width: `${progress}%` }}
                         />
                     </div>
-                    <span className="text-[10px] font-black text-[var(--color-primary)]">{tNum(progress)}% {tp('complete')}</span>
+                    <span className="text-xs font-bold text-[var(--color-primary)]">{tNum(progress)}% {tp('complete')}</span>
                 </div>
             }
             icon={selectedItem ? Edit2 : Plus}
@@ -349,7 +349,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                            className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
                         >
                             {tp('cancel')}
                         </button>
@@ -357,7 +357,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                         <button
                             type="button"
                             onClick={prevStep}
-                            className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0 flex items-center justify-center gap-2"
+                            className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0 flex items-center justify-center gap-2"
                         >
                             <BackIcon className="w-3.5 h-3.5" />
                             <span>{t('behavior.back')}</span>
@@ -371,7 +371,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                             type="button"
                             onClick={() => nextStep()}
                             disabled={!formData.student_id}
-                            className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+                            className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
                         >
                             <span>{tp('next')}</span>
                             <NextIcon className="w-3.5 h-3.5 text-white" />
@@ -383,7 +383,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                             type="button"
                             onClick={() => nextStep()}
                             disabled={!formData.violation_type_id}
-                            className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+                            className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
                         >
                             <span>{tp('next')}</span>
                             <NextIcon className="w-3.5 h-3.5 text-white" />
@@ -395,7 +395,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                             type="button"
                             onClick={handleSubmit}
                             disabled={submitting || !formData.violation_type_id}
-                            className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+                            className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
                         >
                             {submitting ? (
                                 <>
@@ -419,18 +419,18 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                     <div className="flex items-center justify-between p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 animate-in slide-in-from-top-2">
                         <div className="flex items-center gap-2">
                             <RotateCcw className="text-amber-500 w-3.5 h-3.5" />
-                            <span className="text-[10px] font-bold text-amber-700">{tp('hasDraft')}</span>
+                            <span className="text-xs font-bold text-amber-700">{tp('hasDraft')}</span>
                         </div>
                         <div className="flex gap-2">
                             <button
                                 onClick={clearDraft}
-                                className="text-[9px] font-black uppercase text-amber-600/50 hover:text-amber-600 transition-colors"
+                                className="text-xs font-bold uppercase text-amber-600/50 hover:text-amber-600 transition-colors"
                             >
                                 {tp('deleteDraft')}
                             </button>
                             <button
                                 onClick={loadDraft}
-                                className="px-2.5 py-1 rounded-lg bg-amber-500 text-white text-[9px] font-black uppercase tracking-wider shadow-sm hover:bg-amber-600 transition-all active:scale-95"
+                                className="px-2.5 py-1 rounded-lg bg-amber-500 text-white text-xs font-bold uppercase tracking-wider shadow-sm hover:bg-amber-600 transition-all active:scale-95"
                             >
                                 {tp('continueDraft')}
                             </button>
@@ -442,7 +442,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                     <div className="space-y-2 animate-in fade-in">
                         <div className="grid grid-cols-[120px_1fr] gap-2">
                             <div>
-                                <label className="text-[10px] font-black uppercase text-[var(--color-text-muted)] tracking-widest block mb-1">
+                                <label className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide block mb-1">
                                     {tp('classLabel')}
                                 </label>
                                 <RichSelect
@@ -456,7 +456,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                                 />
                             </div>
                             <div>
-                                <label className="text-[10px] font-black uppercase text-[var(--color-text-muted)] tracking-widest block mb-1">
+                                <label className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide block mb-1">
                                     {tp('searchName')}
                                 </label>
                                 <div className="relative">
@@ -475,7 +475,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
 
                         {recentStudents.length > 0 && (
                             <div className="animate-in fade-in slide-in-from-top-1 duration-200">
-                                <div className="flex items-center gap-1 text-[10px] font-black uppercase text-[var(--color-text-muted)] tracking-widest opacity-80">
+                                <div className="flex items-center gap-1 text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide opacity-80">
                                     <Clock className="w-2.5 h-2.5 text-[var(--color-primary)]" />
                                     <span>{tp('recentlyReported')}</span>
                                 </div>
@@ -485,9 +485,9 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                                             key={s.id}
                                             type="button"
                                             onClick={() => nextStep(s.id)}
-                                            className="h-6 px-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 active:scale-95 text-[10px] font-bold text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all flex items-center gap-1 shadow-sm"
+                                            className="h-6 px-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 active:scale-95 text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all flex items-center gap-1 shadow-sm"
                                         >
-                                            <div className="w-3.5 h-3.5 rounded bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center font-black text-[9px] leading-none">
+                                            <div className="w-3.5 h-3.5 rounded bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center font-bold text-xs leading-none">
                                                 {s.name[0].toUpperCase()}
                                             </div>
                                             <span>{s.name.split(' ').slice(0, 2).join(' ')}</span>
@@ -502,7 +502,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                                 {filteredStudentsForModal.length === 0 ? (
                                     <div className="py-8 text-center opacity-40">
                                         <Search className="w-4 h-4 mx-auto mb-1.5" />
-                                        <p className="text-[10px] font-black uppercase tracking-widest">
+                                        <p className="text-xs font-bold uppercase tracking-wide">
                                             {students.length === 0 ? tp('loadingData') : tp('notFound')}
                                         </p>
                                     </div>
@@ -519,7 +519,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                                             >
                                                 <div className="flex items-center gap-2.5">
                                                     <div
-                                                        className={`w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${formData.student_id === s.id
+                                                        className={`w-6 h-6 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 ${formData.student_id === s.id
                                                             ? 'bg-white/20 text-white'
                                                             : 'bg-[var(--color-surface-alt)] text-[var(--color-primary)]'
                                                             }`}
@@ -532,14 +532,14 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                                                         </p>
                                                         <div className="flex items-center gap-1.5 mt-0.5 leading-none">
                                                             {s.class_name && (
-                                                                <span className={`text-[10px] font-extrabold uppercase tracking-wider ${formData.student_id === s.id
+                                                                <span className={`text-xs font-bold uppercase tracking-wider ${formData.student_id === s.id
                                                                     ? 'text-white/80'
                                                                     : 'text-[var(--color-text-muted)] opacity-60'
                                                                     }`}>
                                                                     {s.class_name}
                                                                 </span>
                                                             )}
-                                                            <span className={`text-[10px] font-black ${formData.student_id === s.id
+                                                            <span className={`text-xs font-bold ${formData.student_id === s.id
                                                                 ? 'text-white/90'
                                                                 : (s.total_points ?? 0) >= 100
                                                                     ? 'text-emerald-500'
@@ -559,7 +559,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                                             </button>
                                         ))}
                                         {filteredStudentsForModal.length > displayedStudents.length && (
-                                            <div className="py-1.5 text-center text-[10px] font-bold text-[var(--color-text-muted)] opacity-50 bg-[var(--color-surface)] rounded-xl border border-dashed border-[var(--color-border)]/60 my-1 mx-0.5">
+                                            <div className="py-1.5 text-center text-xs font-bold text-[var(--color-text-muted)] opacity-50 bg-[var(--color-surface)] rounded-xl border border-dashed border-[var(--color-border)]/60 my-1 mx-0.5">
                                                 {tp('showingCount').replace('{total}', tNum(filteredStudentsForModal.length))}
                                             </div>
                                         )}
@@ -577,17 +577,17 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                             const s = students.find(st => st.id === formData.student_id)
                             return (
                                 <div className="p-1.5 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-2xl flex items-center gap-2">
-                                    <div className="w-6.5 h-6.5 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center font-black text-xs flex-shrink-0 animate-in fade-in">
+                                    <div className="w-6.5 h-6.5 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center font-bold text-xs flex-shrink-0 animate-in fade-in">
                                         {(s?.name || '?')[0].toUpperCase()}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-[9px] font-black uppercase text-[var(--color-text-muted)] tracking-widest leading-none">
+                                        <p className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide leading-none">
                                             {tp('recipient')}
                                         </p>
                                         <p className="text-sm font-bold text-[var(--color-text)] truncate leading-tight mt-1 animate-in fade-in">
                                             {s?.name}
                                             {s?.class_name && (
-                                                <span className="text-[10px] font-bold text-[var(--color-text-muted)] ml-1.5 opacity-80">
+                                                <span className="text-xs font-bold text-[var(--color-text-muted)] ml-1.5 opacity-80">
                                                     - {s.class_name}
                                                 </span>
                                             )}
@@ -611,7 +611,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                         <div className="space-y-1.5">
                             <div className="grid grid-cols-[230px_1fr] gap-2">
                                 <div>
-                                    <label className="text-[10px] font-black uppercase text-[var(--color-text-muted)] tracking-widest block mb-1">
+                                    <label className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide block mb-1">
                                         {tp('category')}
                                     </label>
                                     <div className="flex gap-1 bg-[var(--color-surface-alt)] p-0.5 rounded-xl border border-[var(--color-border)] h-8">
@@ -624,7 +624,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                                                 key={tab.id}
                                                 type="button"
                                                 onClick={() => setVtTab(tab.id)}
-                                                className={`flex-1 h-full text-[11px] font-bold rounded-lg transition-all
+                                                className={`flex-1 h-full text-xs font-bold rounded-lg transition-all
                                                     ${vtTab === tab.id
                                                         ? 'bg-[var(--color-primary)] text-white shadow-sm'
                                                         : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
@@ -635,7 +635,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-black uppercase text-[var(--color-text-muted)] tracking-widest block mb-1">
+                                    <label className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide block mb-1">
                                         {tp('colRule')}
                                     </label>
                                     <div className="relative">
@@ -657,7 +657,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                                     {filteredViolationTypes.length === 0 ? (
                                         <div className="py-8 text-center opacity-40">
                                             <Search className="w-4 h-4 mx-auto mb-1.5" />
-                                            <p className="text-[10px] font-black uppercase tracking-widest">
+                                            <p className="text-xs font-bold uppercase tracking-wide">
                                                 {tp('notFound')}
                                             </p>
                                         </div>
@@ -666,7 +666,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                                             {/* Violations Group */}
                                             {groupedVT.violations.length > 0 && (
                                                 <div className="space-y-1">
-                                                    <p className="text-[9px] font-black text-rose-500 uppercase tracking-wider px-1">
+                                                    <p className="text-xs font-bold text-rose-500 uppercase tracking-wider px-1">
                                                         {tp('violation')}
                                                     </p>
                                                     {groupedVT.violations.map(vt => {
@@ -689,7 +689,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                                                                     <div className={`w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 ${formData.violation_type_id === vt.id ? 'bg-white/20 text-white' : 'bg-rose-500/10 text-rose-500'}`}>
                                                                         <ArrowDown className="w-2.5 h-2.5" />
                                                                     </div>
-                                                                    <span className={`text-[10px] font-black px-1.5 py-0.5 rounded flex-shrink-0 ${formData.violation_type_id === vt.id ? 'bg-white/20 text-white' : 'bg-rose-500/10 text-rose-500'}`}>
+                                                                    <span className={`text-xs font-bold px-1.5 py-0.5 rounded flex-shrink-0 ${formData.violation_type_id === vt.id ? 'bg-white/20 text-white' : 'bg-rose-500/10 text-rose-500'}`}>
                                                                         {ptsVal}
                                                                     </span>
                                                                     <span className="text-xs font-bold truncate">
@@ -706,7 +706,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                                             {/* Achievements Group */}
                                             {groupedVT.achievements.length > 0 && (
                                                 <div className="space-y-1 mt-1.5">
-                                                    <p className="text-[9px] font-black text-emerald-500 uppercase tracking-wider px-1">
+                                                    <p className="text-xs font-bold text-emerald-500 uppercase tracking-wider px-1">
                                                         {tp('achievement')}
                                                     </p>
                                                     {groupedVT.achievements.map(vt => {
@@ -729,7 +729,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                                                                     <div className={`w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 ${formData.violation_type_id === vt.id ? 'bg-white/20 text-white' : 'bg-emerald-500/10 text-emerald-500'}`}>
                                                                         <ArrowUp className="w-2.5 h-2.5" />
                                                                     </div>
-                                                                    <span className={`text-[10px] font-black px-1.5 py-0.5 rounded flex-shrink-0 ${formData.violation_type_id === vt.id ? 'bg-white/20 text-white' : 'bg-emerald-500/10 text-emerald-500'}`}>
+                                                                    <span className={`text-xs font-bold px-1.5 py-0.5 rounded flex-shrink-0 ${formData.violation_type_id === vt.id ? 'bg-white/20 text-white' : 'bg-emerald-500/10 text-emerald-500'}`}>
                                                                         {ptsVal}
                                                                     </span>
                                                                     <span className="text-xs font-bold truncate">
@@ -757,17 +757,17 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                             const s = students.find(st => st.id === formData.student_id)
                             return (
                                 <div className="p-1.5 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-2xl flex items-center gap-2">
-                                    <div className="w-6.5 h-6.5 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center font-black text-xs flex-shrink-0 animate-in fade-in">
+                                    <div className="w-6.5 h-6.5 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center font-bold text-xs flex-shrink-0 animate-in fade-in">
                                         {(s?.name || '?')[0].toUpperCase()}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-[9px] font-black uppercase text-[var(--color-text-muted)] tracking-widest leading-none">
+                                        <p className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide leading-none">
                                             {tp('recipient')}
                                         </p>
                                         <p className="text-sm font-bold text-[var(--color-text)] truncate leading-tight mt-1 animate-in fade-in">
                                             {s?.name}
                                             {s?.class_name && (
-                                                <span className="text-[10px] font-bold text-[var(--color-text-muted)] ml-1.5 opacity-80">
+                                                <span className="text-xs font-bold text-[var(--color-text-muted)] ml-1.5 opacity-80">
                                                     - {s.class_name}
                                                 </span>
                                             )}
@@ -798,11 +798,11 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                                         {isNegative ? <ArrowDown className="w-3 h-3" /> : <ArrowUp className="w-3 h-3" />}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-[9px] font-black uppercase text-[var(--color-text-muted)] tracking-widest leading-none">
+                                        <p className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide leading-none">
                                             {tp('behaviorType')}
                                         </p>
                                         <div className="flex items-center gap-1.5 flex-wrap mt-0.5 leading-none">
-                                            <span className={`text-[10px] font-black px-1.5 py-0.5 rounded ${isNegative ? 'bg-rose-500/10 text-rose-500' : 'bg-emerald-500/10 text-emerald-500'}`}>
+                                            <span className={`text-xs font-bold px-1.5 py-0.5 rounded ${isNegative ? 'bg-rose-500/10 text-rose-500' : 'bg-emerald-500/10 text-emerald-500'}`}>
                                                 {ptsText}
                                             </span>
                                             <span className="text-sm font-bold text-[var(--color-text)] truncate animate-in fade-in">
@@ -826,7 +826,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
 
                         {/* Waktu Kejadian Section */}
                         <div className="space-y-1.5 border-t border-[var(--color-border)]/50 pt-3 animate-in fade-in duration-200">
-                            <label className="text-[10px] font-black uppercase text-[var(--color-text-muted)] tracking-widest block mb-0.5">
+                            <label className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide block mb-0.5">
                                 {tp('dateTime')}
                             </label>
                             <div className="grid grid-cols-[1fr_110px] gap-2">
@@ -854,7 +854,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
 
                         {/* Catatan Section */}
                         <div className="space-y-1.5 border-t border-[var(--color-border)]/50 pt-3">
-                            <label className="text-[10px] font-black uppercase text-[var(--color-text-muted)] tracking-widest block">
+                            <label className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide block">
                                 {tp('notes')} <span className="normal-case font-medium opacity-50">({tp('optional')})</span>
                             </label>
                             <textarea

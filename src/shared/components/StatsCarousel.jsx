@@ -39,7 +39,7 @@ export default function StatsCarousel({ children, count, cols = 4, className = '
         'sm:grid-cols-2 lg:grid-cols-4'
 
     return (
-        <div className={`relative mb-6 -mx-3 sm:mx-0 ${className}`}>
+        <div className={`relative mb-4 -mx-3 sm:mx-0 ${className}`}>
             <div
                 ref={scrollRef}
                 onScroll={handleScroll}

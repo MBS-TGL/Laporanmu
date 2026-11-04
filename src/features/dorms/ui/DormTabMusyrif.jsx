@@ -19,12 +19,12 @@ export default function DormTabMusyrif({
                 <div className="bg-surface border border-border rounded-[1.5rem] p-5">
                     <div className="flex items-center justify-between mb-4">
                         <div>
-                            <p className="text-[13px] font-black text-[var(--color-text)]">{t('dorms.musyrif.title')}</p>
-                            <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">{t('dorms.musyrif.subtitle')}</p>
+                            <p className="text-sm font-bold text-[var(--color-text)]">{t('dorms.musyrif.title')}</p>
+                            <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{t('dorms.musyrif.subtitle')}</p>
                         </div>
                         <button
                             onClick={resetAllTasks}
-                            className="h-8.5 px-3 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-1.5"
+                            className="h-8.5 px-3 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] flex items-center gap-1.5"
                         >
                             <RefreshCw className="w-3 h-3" />
                             {t('dorms.musyrif.resetChecklist')}
@@ -38,7 +38,7 @@ export default function DormTabMusyrif({
                         const percent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
                         return (
                             <div className="mb-4 p-3 rounded-2xl bg-[var(--color-surface-alt)]/40 border border-[var(--color-border)]">
-                                <div className="flex items-center justify-between text-[9.5px] font-black uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
+                                <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">
                                     <span>Progress Tugas Harian</span>
                                     <span className="text-[var(--color-primary)]">{completedCount} / {totalCount} Selesai ({percent}%)</span>
                                 </div>
@@ -64,13 +64,13 @@ export default function DormTabMusyrif({
                                         {task.completed && <Check className="w-3.5 h-3.5 stroke-[3px]" />}
                                     </div>
                                     <div>
-                                        <p className={`text-[11.5px] font-bold transition-all ${task.completed ? 'text-[var(--color-text-muted)] line-through' : 'text-[var(--color-text)]'}`}>{task.title}</p>
-                                        <p className="text-[9.5px] text-[var(--color-text-muted)] mt-0.5">{task.desc}</p>
+                                        <p className={`text-xs font-bold transition-all ${task.completed ? 'text-[var(--color-text-muted)] line-through' : 'text-[var(--color-text)]'}`}>{task.title}</p>
+                                        <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{task.desc}</p>
                                     </div>
                                 </div>
 
                                 {task.completed && task.completedAt && (
-                                    <span className="text-[8px] font-black uppercase tracking-widest text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded shrink-0">
+                                    <span className="text-xs font-bold uppercase tracking-wide text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded shrink-0">
                                         {t('dorms.musyrif.completedAt').replace('{completedAt}', task.completedAt)}
                                     </span>
                                 )}
@@ -85,12 +85,12 @@ export default function DormTabMusyrif({
                 <div className="bg-surface border border-border rounded-[1.5rem] p-5">
                     <div className="flex items-center justify-between mb-4">
                         <div>
-                            <p className="text-[12.5px] font-black text-[var(--color-text)]">{t('dorms.musyrif.piketTitle')}</p>
-                            <p className="text-[9.5px] text-[var(--color-text-muted)] mt-0.5">{t('dorms.musyrif.piketSubtitle')}</p>
+                            <p className="text-[12.5px] font-bold text-[var(--color-text)]">{t('dorms.musyrif.piketTitle')}</p>
+                            <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{t('dorms.musyrif.piketSubtitle')}</p>
                         </div>
                         <button
                             onClick={() => setIsLogModalOpen(true)}
-                            className="h-8 px-3 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-[9px] font-black uppercase tracking-widest shadow-lg transition flex items-center gap-1.5"
+                            className="h-8 px-3 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition flex items-center gap-1.5"
                         >
                             <Plus className="w-3 h-3" />
                             {t('dorms.musyrif.fillJournal')}
@@ -99,7 +99,7 @@ export default function DormTabMusyrif({
 
                     <div className="space-y-3.5 max-h-[350px] overflow-y-auto pr-1 scrollbar-thin">
                         {shiftLogs.length === 0 ? (
-                            <p className="text-[11px] text-[var(--color-text-muted)] text-center py-8">{t('dorms.musyrif.noLogs')}</p>
+                            <p className="text-xs text-[var(--color-text-muted)] text-center py-8">{t('dorms.musyrif.noLogs')}</p>
                         ) : (
                             shiftLogs.map(log => {
                                 const hasIssues = log.issues && log.issues !== 'Nihil' && log.issues !== 'nihil'
@@ -113,21 +113,21 @@ export default function DormTabMusyrif({
                                         }`}
                                     >
                                         <div className="flex items-center justify-between">
-                                            <span className="text-[11px] font-black text-[var(--color-text)] flex items-center gap-1">
+                                            <span className="text-xs font-bold text-[var(--color-text)] flex items-center gap-1">
                                                 {hasIssues && <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse shrink-0" />}
                                                 {log.musyrifName}
                                             </span>
-                                            <span className={`text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${
+                                            <span className={`text-xs font-bold uppercase tracking-wide px-1.5 py-0.5 rounded ${
                                                 hasIssues
                                                     ? 'text-rose-600 bg-rose-500/10'
                                                     : 'text-[var(--color-text-muted)] opacity-60 bg-[var(--color-surface)]'
                                             }`}>{log.shift}</span>
                                         </div>
-                                        <div className="text-[10px] space-y-1 text-[var(--color-text-muted)] leading-relaxed">
+                                        <div className="text-xs space-y-1 text-[var(--color-text-muted)] leading-relaxed">
                                             <p><strong>{t('dorms.musyrif.notes')}:</strong> {log.notes}</p>
                                             <p><strong>{t('dorms.musyrif.findings')}:</strong> <span className={hasIssues ? 'text-rose-500 font-bold' : ''}>{log.issues === 'Nihil' ? t('dorms.musyrif.findingsNihil') : log.issues}</span></p>
                                         </div>
-                                        <div className="text-[8px] text-[var(--color-text-muted)] opacity-50 text-right">{log.date}</div>
+                                        <div className="text-xs text-[var(--color-text-muted)] opacity-50 text-right">{log.date}</div>
                                     </div>
                                 )
                             })

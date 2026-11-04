@@ -65,10 +65,10 @@ export default function Pagination({
             <div className="flex md:hidden flex-col gap-3.5">
                 <div className="flex items-center justify-between px-1">
                     <div className="flex flex-col">
-                        <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-0.5">{s.totalData}</span>
-                        <span className="text-sm font-bold text-[var(--color-text)] tracking-tight">{totalRows} <span className="text-xs font-medium text-[var(--color-text-muted)] ml-0.5">{label}</span></span>
+                        <span className="text-xs font-bold uppercase tracking-wide leading-none text-[var(--color-text-muted)] mb-0.5">{s.totalData}</span>
+                        <span className="text-sm font-bold text-[var(--color-text)] tracking-tight tabular-nums">{totalRows} <span className="text-xs font-medium text-[var(--color-text-muted)] ml-0.5">{label}</span></span>
                     </div>
-                    <div className="w-24">
+                    <div className="w-28">
                         <RichSelect
                             value={pageSize}
                             onChange={handlePageSizeChange}
@@ -86,22 +86,22 @@ export default function Pagination({
                             onClick={() => setPage(1)}
                             className="w-9 h-9 flex items-center justify-center rounded-[0.8rem] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 disabled:hover:bg-transparent disabled:active:scale-100 active:scale-90"
                         >
-                            <ChevronsLeft className="text-xs" />
+                            <ChevronsLeft className="w-4 h-4" />
                         </button>
                         <button
                             disabled={page <= 1}
                             onClick={() => setPage(p => Math.max(1, p - 1))}
                             className="w-9 h-9 flex items-center justify-center rounded-[0.8rem] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 disabled:hover:bg-transparent disabled:active:scale-100 active:scale-90"
                         >
-                            <ChevronLeft className="text-xs" />
+                            <ChevronLeft className="w-4 h-4" />
                         </button>
                     </div>
 
                     <div className="flex flex-col items-center justify-center px-2">
-                        <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-0.5">{s.page}</span>
+                        <span className="text-xs font-bold uppercase tracking-wide leading-none text-[var(--color-text-muted)] mb-0.5">{s.page}</span>
                         <div className="flex items-baseline gap-1">
-                            <span className="text-base font-bold text-[var(--color-primary)] leading-none">{page}</span>
-                            <span className="text-xs font-medium text-[var(--color-text-muted)] leading-none">/ {totalPages}</span>
+                            <span className="text-base font-bold text-[var(--color-primary)] leading-none tabular-nums">{page}</span>
+                            <span className="text-xs font-medium text-[var(--color-text-muted)] leading-none tabular-nums">/ {totalPages}</span>
                         </div>
                     </div>
 
@@ -111,14 +111,14 @@ export default function Pagination({
                             onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                             className="w-9 h-9 flex items-center justify-center rounded-[0.8rem] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 disabled:hover:bg-transparent disabled:active:scale-100 active:scale-90"
                         >
-                            <ChevronRight className="text-xs" />
+                            <ChevronRight className="w-4 h-4" />
                         </button>
                         <button
                             disabled={page >= totalPages}
                             onClick={() => setPage(totalPages)}
                             className="w-9 h-9 flex items-center justify-center rounded-[0.8rem] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 disabled:hover:bg-transparent disabled:active:scale-100 active:scale-90"
                         >
-                            <ChevronsRight className="text-xs" />
+                            <ChevronsRight className="w-4 h-4" />
                         </button>
                     </div>
                 </div>
@@ -128,15 +128,15 @@ export default function Pagination({
             <div className="hidden md:flex md:flex-row items-center justify-between gap-4">
                 <div className="flex flex-col sm:flex-row items-center gap-4">
                     <div className="flex flex-col items-center sm:items-start text-left">
-                        <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] leading-none mb-1">{s.statusPrefix} {label}</p>
+                        <p className="text-xs font-bold uppercase tracking-wide leading-none text-[var(--color-text-muted)] mb-1">{s.statusPrefix} {label}</p>
                         <p className="text-xs font-medium text-[var(--color-text)] whitespace-nowrap">
-                            {s.showing} <span className="font-bold text-[var(--color-primary)]">{fromRow}—{toRow}</span> {s.of} <span className="font-bold text-[var(--color-primary)]">{totalRows}</span> {label}
+                            {s.showing} <span className="font-bold tabular-nums text-[var(--color-primary)]">{fromRow}—{toRow}</span> {s.of} <span className="font-bold tabular-nums text-[var(--color-primary)]">{totalRows}</span> {label}
                         </p>
                     </div>
                     <div className="h-8 w-px bg-[var(--color-border)] hidden sm:block mx-1 opacity-50" />
                     <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">{s.rows}</span>
-                        <div className="w-[72px]">
+                        <span className="text-xs font-bold uppercase tracking-wide leading-none text-[var(--color-text-muted)]">{s.rows}</span>
+                        <div className="w-20">
                             <RichSelect
                                 value={pageSize}
                                 onChange={handlePageSizeChange}
@@ -153,12 +153,12 @@ export default function Pagination({
                         <button disabled={page <= 1} onClick={() => setPage(1)}
                             className="h-9 w-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 active:scale-90"
                         >
-                            <ChevronsLeft className="text-xs" />
+                            <ChevronsLeft className="w-4 h-4" />
                         </button>
                         <button disabled={page <= 1} onClick={() => setPage(p => Math.max(1, p - 1))}
                             className="h-9 w-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 active:scale-90"
                         >
-                            <ChevronLeft className="text-xs" />
+                            <ChevronLeft className="w-4 h-4" />
                         </button>
                     </div>
 
@@ -168,7 +168,7 @@ export default function Pagination({
                                 <span key={`sep-${idx}`} className="w-6 flex items-center justify-center text-[var(--color-text-muted)] font-bold opacity-40 text-xs">...</span>
                             ) : (
                                 <button key={`pg-${it}`} onClick={() => setPage(it)}
-                                    className={`h-9 min-w-[36px] px-2.5 rounded-xl font-semibold text-xs transition-all active:scale-95
+                                    className={`h-9 min-w-[36px] px-2.5 rounded-xl font-semibold text-xs leading-none tabular-nums transition-colors active:scale-95
                                     ${it === page
                                         ? 'bg-[var(--color-primary)] text-white shadow-md'
                                             : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
@@ -183,12 +183,12 @@ export default function Pagination({
                         <button disabled={page >= totalPages} onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                             className="h-9 w-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 active:scale-90"
                         >
-                            <ChevronRight className="text-xs" />
+                            <ChevronRight className="w-4 h-4" />
                         </button>
                         <button disabled={page >= totalPages} onClick={() => setPage(totalPages)}
                             className="h-9 w-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 active:scale-90"
                         >
-                            <ChevronsRight className="text-xs" />
+                            <ChevronsRight className="w-4 h-4" />
                         </button>
                     </div>
 
@@ -203,9 +203,9 @@ export default function Pagination({
                                 }
                             }}
                             placeholder={s.jump}
-                            className="w-16 h-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-center text-xs font-semibold focus:border-[var(--color-primary)] transition-all outline-none"
+                            className="w-16 h-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-center text-xs font-semibold leading-none tabular-nums focus:border-[var(--color-primary)] transition-colors outline-none"
                         />
-                        <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] font-medium py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                        <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs font-medium py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
                             {s.jumpTip}
                         </div>
                     </div>

@@ -189,7 +189,7 @@ const RAPORT_SECTIONS = [
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function FL({ children }) {
     return (
-        <label className="block text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-1.5 ml-0.5">
+        <label className="block text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mb-1.5 ml-0.5">
             {children}
         </label>
     )
@@ -223,8 +223,8 @@ function SectionHeader({ section }) {
                 <section.icon className={`text-sm ${section.color}`} />
             </div>
             <div className="flex-1 min-w-0">
-                <p className="font-black text-[13px] text-[var(--color-text)] leading-tight">{section.label}</p>
-                <p className="text-[11px] text-[var(--color-text-muted)] mt-0.5">{section.desc}</p>
+                <p className="font-bold text-sm text-[var(--color-text)] leading-tight">{section.label}</p>
+                <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{section.desc}</p>
             </div>
         </div>
     )
@@ -278,8 +278,8 @@ function RaportPreview({ form }) {
                 {/* Teks tengah */}
                 <div className="flex-1 text-center leading-tight min-w-0 pt-0.5">
                     {form.school_subtitle_ar && <div className="text-[7.5px] text-gray-500 mb-1" dir="rtl" style={{ fontFamily: 'Arial, sans-serif' }}>{form.school_subtitle_ar}</div>}
-                    <div className="text-[15px] font-black" style={{ color: c1 }} dir="rtl" style={{ fontFamily: 'Arial, sans-serif' }}>{form.school_name_ar || '—'}</div>
-                    <div className="text-[11.5px] font-bold text-gray-800 mt-0.5" style={{ fontFamily: 'Times New Roman, serif' }}>{form.school_name_id || '—'}</div>
+                    <div className="text-[15px] font-bold" style={{ color: c1 }} dir="rtl" style={{ fontFamily: 'Arial, sans-serif' }}>{form.school_name_ar || '—'}</div>
+                    <div className="text-xs font-bold text-gray-800 mt-0.5" style={{ fontFamily: 'Times New Roman, serif' }}>{form.school_name_id || '—'}</div>
                     <div className="text-[8.5px] text-gray-500 mt-1 leading-snug" style={{ fontFamily: 'Times New Roman, serif' }}>
                         <div>{form.school_address_line1 || 'Jl. Pemandian no. 88 RT 002 RW 003 Patemon, Tanggul, Jember 68155'}</div>
                         {form.school_address_line2 && <div>{form.school_address_line2}</div>}
@@ -302,25 +302,25 @@ function RaportPreview({ form }) {
             <div className="flex justify-between px-8 py-6">
                 {/* Wali Santri */}
                 <div className="flex-1 text-center">
-                    <div className="text-[11px] font-bold text-gray-800" style={{ fontFamily: 'Times New Roman, serif' }}>Wali Santri</div>
+                    <div className="text-xs font-bold text-gray-800" style={{ fontFamily: 'Times New Roman, serif' }}>Wali Santri</div>
                 </div>
 
                 {/* Kepala Sekolah */}
                 <div className="flex-1 text-center">
-                    <div className="text-[9px] text-gray-500 italic" style={{ fontFamily: 'Times New Roman, serif' }}>{form.headmaster_prefix_id || 'Mengetahui,'}</div>
-                    <div className="text-[11px] font-bold text-gray-800" style={{ fontFamily: 'Times New Roman, serif' }}>{form.headmaster_label_id || 'Kepala Sekolah'}</div>
-                    {form.headmaster_label_ar && <div className="text-[9px] text-gray-400 mt-0.5" dir="rtl" style={{ fontFamily: 'Arial, sans-serif' }}>{form.headmaster_label_ar}</div>}
+                    <div className="text-xs text-gray-500 italic" style={{ fontFamily: 'Times New Roman, serif' }}>{form.headmaster_prefix_id || 'Mengetahui,'}</div>
+                    <div className="text-xs font-bold text-gray-800" style={{ fontFamily: 'Times New Roman, serif' }}>{form.headmaster_label_id || 'Kepala Sekolah'}</div>
+                    {form.headmaster_label_ar && <div className="text-xs text-gray-400 mt-0.5" dir="rtl" style={{ fontFamily: 'Arial, sans-serif' }}>{form.headmaster_label_ar}</div>}
                 </div>
 
                 {/* Pengasuh */}
                 <div className="flex-1 text-center">
-                    <div className="text-[11px] font-bold text-gray-800" style={{ fontFamily: 'Times New Roman, serif' }}>{pengasuhLines[0]}</div>
+                    <div className="text-xs font-bold text-gray-800" style={{ fontFamily: 'Times New Roman, serif' }}>{pengasuhLines[0]}</div>
                     {pengasuhLines.length > 1 && (
-                        <div className="text-[9px] text-gray-500 leading-tight whitespace-pre-line" style={{ fontFamily: 'Times New Roman, serif' }}>
+                        <div className="text-xs text-gray-500 leading-tight whitespace-pre-line" style={{ fontFamily: 'Times New Roman, serif' }}>
                             {pengasuhLines.slice(1).join('\n')}
                         </div>
                     )}
-                    {form.headmaster_title_ar && <div className="text-[9px] text-gray-400 mt-0.5" dir="rtl" style={{ fontFamily: 'Arial, sans-serif' }}>{form.headmaster_title_ar.split('\n')[0]}</div>}
+                    {form.headmaster_title_ar && <div className="text-xs text-gray-400 mt-0.5" dir="rtl" style={{ fontFamily: 'Arial, sans-serif' }}>{form.headmaster_title_ar.split('\n')[0]}</div>}
                 </div>
             </div>
 
@@ -329,19 +329,19 @@ function RaportPreview({ form }) {
                 {/* Wali Santri */}
                 <div className="flex-1 text-center">
                     <div className="border-t border-gray-400 mx-6 mb-2" />
-                    <div className="text-[9px] text-gray-400 tracking-[0.15em]">••••••••••••••</div>
+                    <div className="text-xs text-gray-400 tracking-wide">••••••••••••••</div>
                 </div>
 
                 {/* Kepala Sekolah */}
                 <div className="flex-1 text-center">
                     <div className="border-t border-gray-400 mx-6 mb-2" />
-                    <div className="text-[10px] font-bold text-gray-700" style={{ fontFamily: 'Times New Roman, serif' }}>{form.headmaster_name_id || '—'}</div>
+                    <div className="text-xs font-bold text-gray-700" style={{ fontFamily: 'Times New Roman, serif' }}>{form.headmaster_name_id || '—'}</div>
                 </div>
 
                 {/* Pengasuh */}
                 <div className="flex-1 text-center">
                     <div className="border-t border-gray-400 mx-6 mb-2" />
-                    <div className="text-[10px] font-bold text-gray-700" style={{ fontFamily: 'Times New Roman, serif' }}>{form.pengasuh_name_id || '—'}</div>
+                    <div className="text-xs font-bold text-gray-700" style={{ fontFamily: 'Times New Roman, serif' }}>{form.pengasuh_name_id || '—'}</div>
                 </div>
             </div>
         </div>
@@ -402,16 +402,16 @@ const FlagRow = memo(({ flag, cat, onToggle, isSaving, query }) => {
             {/* Label + desc */}
             <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                    <span className={`text-[13px] font-bold leading-tight transition-colors ${flag.enabled ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)]'}`}>
+                    <span className={`text-sm font-bold leading-tight transition-colors ${flag.enabled ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)]'}`}>
                         <Highlight text={flag.label} query={query} />
                     </span>
                     {!flag.enabled && (
-                        <span className="text-[9px] font-black tracking-widest uppercase px-1.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-[var(--color-text-muted)]">off</span>
+                        <span className="text-xs font-bold tracking-wide uppercase px-1.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-[var(--color-text-muted)]">off</span>
                     )}
                 </div>
                 {flag.description && (
                     <p 
-                        className="text-[11px] text-[var(--color-text-muted)] mt-0.5 leading-snug opacity-70 group-hover:opacity-100 transition-opacity line-clamp-1"
+                        className="text-xs text-[var(--color-text-muted)] mt-0.5 leading-snug opacity-70 group-hover:opacity-100 transition-opacity line-clamp-1"
                         title={flag.description}
                     >
                         <Highlight text={flag.description} query={query} />
@@ -421,7 +421,7 @@ const FlagRow = memo(({ flag, cat, onToggle, isSaving, query }) => {
 
             {/* Toggle area */}
             <div className="flex items-center gap-2 flex-shrink-0">
-                {isSaving && <LoaderCircle className="animate-spin text-[10px] text-[var(--color-text-muted)]" />}
+                {isSaving && <LoaderCircle className="w-4 h-4 animate-spin text-[var(--color-text-muted)]" />}
                 <Toggle
                     checked={flag.enabled}
                     onChange={() => onToggle(flag)}
@@ -462,10 +462,10 @@ function CategoryNavCard({ cat, flags, isActive, onClick }) {
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                        <p className={`text-[13px] font-black truncate ${isActive ? 'text-slate-900 dark:text-white' : 'text-slate-500'}`}>
+                        <p className={`text-sm font-bold truncate ${isActive ? 'text-slate-900 dark:text-white' : 'text-slate-500'}`}>
                             {cat.label}
                         </p>
-                        <span className={`text-[9px] font-black tabular-nums ${isActive ? cat.color : 'text-slate-400'}`}>
+                        <span className={`text-xs font-bold tabular-nums ${isActive ? cat.color : 'text-slate-400'}`}>
                             {activeCount}/{totalCount}
                         </span>
                     </div>
@@ -492,32 +492,32 @@ function GlobalStatusCard({ total, enabled }) {
             <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
                     <div>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-0.5">System Health</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-slate-400 mb-0.5">System Health</p>
                         <div className="flex items-baseline gap-1.5">
-                            <p className="text-[22px] font-black text-slate-800 dark:text-white leading-none">
+                            <p className="text-[22px] font-bold text-slate-800 dark:text-white leading-none">
                                 {Math.round(progress)}%
                             </p>
-                            <span className="text-[10px] font-black text-emerald-500 uppercase tracking-tighter">Optimized</span>
+                            <span className="text-xs font-bold text-emerald-500 uppercase tracking-tighter">Optimized</span>
                         </div>
                     </div>
                     <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-                        <Check className="text-emerald-500 text-sm" />
+                        <Check className="w-4 h-4 text-emerald-500" />
                     </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 mb-4">
                     <div className="p-2.5 rounded-xl bg-emerald-500/[0.03] border border-emerald-500/10 text-center">
-                        <p className="text-[8px] font-black text-emerald-600/70 uppercase tracking-widest mb-1">Active</p>
-                        <p className="text-base font-black text-emerald-600">{enabled}</p>
+                        <p className="text-xs font-bold text-emerald-600/70 uppercase tracking-wide mb-1">Active</p>
+                        <p className="text-base font-bold text-emerald-600">{enabled}</p>
                     </div>
                     <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-center">
-                        <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Idle</p>
-                        <p className="text-base font-black text-slate-500">{total - enabled}</p>
+                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Idle</p>
+                        <p className="text-base font-bold text-slate-500">{total - enabled}</p>
                     </div>
                 </div>
 
                 <div className="space-y-1.5">
-                    <div className="flex justify-between items-center text-[9px] font-black uppercase tracking-widest text-slate-400 px-0.5">
+                    <div className="flex justify-between items-center text-xs font-bold uppercase tracking-wide text-slate-400 px-0.5">
                         <span>Efficiency</span>
                         <span>{enabled}/{total}</span>
                     </div>
@@ -594,36 +594,36 @@ function ActivityFeed({ refreshKey, flags }) {
                     <div className="flex items-center gap-1 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-1 shadow-sm">
                         <button
                             onClick={() => setActiveView('detail')}
-                            className={`h-7 px-3 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeView === 'detail' ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                            className={`h-7 px-3 rounded-lg text-xs font-bold uppercase tracking-wide transition-all ${activeView === 'detail' ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                         >
                             Detail Log
                         </button>
                         <button
                             onClick={() => setActiveView('summary')}
-                            className={`h-7 px-3 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeView === 'summary' ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                            className={`h-7 px-3 rounded-lg text-xs font-bold uppercase tracking-wide transition-all ${activeView === 'summary' ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                         >
                             Ringkasan
                         </button>
                     </div>
 
                     <div className="relative flex-1 w-full sm:w-auto">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-400" />
+                        <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                         <input
                             type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
                             placeholder="Cari aktivitas atau fitur..."
-                            className="w-full h-9 pl-9 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-medium focus:outline-none focus:border-[var(--color-primary)] transition-all shadow-sm"
+                            className="w-full h-9 pl-9 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-medium focus:outline-none focus:border-[var(--color-primary)] transition-all shadow-sm"
                         />
                     </div>
 
                     <div className="flex items-center gap-2">
-                        <div className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-[10px] font-black text-slate-500 uppercase tracking-widest border border-[var(--color-border)]">
+                        <div className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-500 uppercase tracking-wide border border-[var(--color-border)]">
                             {totalLogs} entri
                         </div>
                         <button
                             onClick={fetchLogs}
                             className="w-9 h-9 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-slate-400 hover:text-[var(--color-primary)] transition-all flex items-center justify-center shadow-sm"
                         >
-                            <RotateCw className={loading ? 'animate-spin' : ''} />
+                            <RotateCw className={loading ? 'animate-spin' : ''} className="w-4 h-4" />
                         </button>
                     </div>
                 </div>
@@ -633,11 +633,11 @@ function ActivityFeed({ refreshKey, flags }) {
                         <table className="w-full text-left border-collapse min-w-[700px]">
                             <thead>
                                 <tr className="border-b border-[var(--color-border)] bg-slate-50/30 dark:bg-slate-800/40">
-                                    <th className="pl-5 pr-3 py-3 text-[9px] font-black uppercase tracking-widest text-slate-400 w-10">#</th>
-                                    <th className="px-4 py-3 text-[9px] font-black uppercase tracking-widest text-slate-400 w-14 text-center">Status</th>
-                                    <th className="px-4 py-3 text-[9px] font-black uppercase tracking-widest text-slate-400">Fitur</th>
-                                    <th className="px-4 py-3 text-[9px] font-black uppercase tracking-widest text-slate-400">Perubahan</th>
-                                    <th className="pr-5 pl-4 py-3 text-[9px] font-black uppercase tracking-widest text-slate-400 text-right">Waktu</th>
+                                    <th className="pl-5 pr-3 py-3 text-xs font-bold uppercase tracking-wide text-slate-400 w-10">#</th>
+                                    <th className="px-4 py-3 text-xs font-bold uppercase tracking-wide text-slate-400 w-14 text-center">Status</th>
+                                    <th className="px-4 py-3 text-xs font-bold uppercase tracking-wide text-slate-400">Fitur</th>
+                                    <th className="px-4 py-3 text-xs font-bold uppercase tracking-wide text-slate-400">Perubahan</th>
+                                    <th className="pr-5 pl-4 py-3 text-xs font-bold uppercase tracking-wide text-slate-400 text-right">Waktu</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-[var(--color-border)]/50">
@@ -649,34 +649,34 @@ function ActivityFeed({ refreshKey, flags }) {
                                     ))
                                 ) : filteredLogs.length === 0 ? (
                                     <tr>
-                                        <td colSpan={5} className="px-5 py-12 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest opacity-50">Tidak ada data</td>
+                                        <td colSpan={5} className="px-5 py-12 text-center text-xs font-bold text-slate-400 uppercase tracking-wide opacity-50">Tidak ada data</td>
                                     </tr>
                                 ) : (
                                     filteredLogs.map((log, idx) => (
                                         <tr key={log.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group">
-                                            <td className="pl-5 pr-3 py-3 text-[10px] font-bold text-slate-400">
+                                            <td className="pl-5 pr-3 py-3 text-xs font-bold text-slate-400">
                                                 {(page - 1) * pageSize + idx + 1}
                                             </td>
                                             <td className="px-4 py-3 text-center">
                                                 <div className={`w-6 h-6 mx-auto rounded-lg flex items-center justify-center ${log.new_data?.enabled ? 'bg-emerald-500/10 text-emerald-500' : 'bg-slate-500/10 text-slate-500'}`}>
-                                                    { log.new_data?.enabled ? <Check className="text-[10px]" /> : <X className="text-[10px]" /> }
+                                                    { log.new_data?.enabled ? <Check className="w-4 h-4" /> : <X className="w-4 h-4" /> }
                                                 </div>
                                             </td>
                                             <td className="px-4 py-3">
-                                                <p className="text-[11px] font-bold text-slate-700 dark:text-slate-200 group-hover:text-[var(--color-primary)] transition-colors">
+                                                <p className="text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:text-[var(--color-primary)] transition-colors">
                                                     {log.new_data?.label || log.new_data?.key}
                                                 </p>
-                                                <p className="text-[8px] text-slate-400 font-mono opacity-60">
+                                                <p className="text-xs text-slate-400 font-mono opacity-60">
                                                     {log.new_data?.key}
                                                 </p>
                                             </td>
                                             <td className="px-4 py-3">
-                                                <span className={`text-[8px] font-black px-2 py-0.5 rounded-lg border ${log.new_data?.enabled ? 'bg-emerald-500/5 text-emerald-600 border-emerald-500/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700'}`}>
+                                                <span className={`text-xs font-bold px-2 py-0.5 rounded-lg border ${log.new_data?.enabled ? 'bg-emerald-500/5 text-emerald-600 border-emerald-500/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700'}`}>
                                                     {log.new_data?.enabled ? 'ENABLED' : 'DISABLED'}
                                                 </span>
                                             </td>
                                             <td className="pr-5 pl-4 py-3 text-right">
-                                                <p className="text-[10px] font-bold text-slate-500 tabular-nums">
+                                                <p className="text-xs font-bold text-slate-500 tabular-nums">
                                                     {fmtRelative(log.created_at)}
                                                 </p>
                                             </td>
@@ -695,21 +695,21 @@ function ActivityFeed({ refreshKey, flags }) {
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                                 <div className="bg-surface p-4 rounded-2xl border border-[var(--color-border)] shadow-sm flex items-center gap-4">
                                     <div className="w-11 h-11 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-lg shrink-0">
-                                        <RefreshCw />
+                                        <RefreshCw className="w-4 h-4" />
                                     </div>
                                     <div className="min-w-0">
-                                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Total Aktivitas</p>
-                                        <p className="text-xl font-black text-slate-700 dark:text-slate-100">{totalLogs}</p>
+                                        <p className="text-xs font-bold uppercase tracking-wide text-slate-400">Total Aktivitas</p>
+                                        <p className="text-xl font-bold text-slate-700 dark:text-slate-100">{totalLogs}</p>
                                     </div>
                                 </div>
 
                                     <div className="bg-surface p-4 rounded-2xl border border-[var(--color-border)] shadow-sm flex items-center gap-4">
                                     <div className="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-lg shrink-0">
-                                        <Zap />
+                                        <Zap className="w-4 h-4" />
                                     </div>
                                     <div className="min-w-0">
-                                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Fitur Teraktif</p>
-                                        <p className="text-[12px] font-black text-slate-700 dark:text-slate-100 truncate">
+                                        <p className="text-xs font-bold uppercase tracking-wide text-slate-400">Fitur Teraktif</p>
+                                        <p className="text-xs font-bold text-slate-700 dark:text-slate-100 truncate">
                                             {stats[0]?.[0] || 'N/A'}
                                         </p>
                                     </div>
@@ -717,11 +717,11 @@ function ActivityFeed({ refreshKey, flags }) {
 
                                     <div className="bg-surface p-4 rounded-2xl border border-[var(--color-border)] shadow-sm flex items-center gap-4">
                                     <div className="w-11 h-11 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-lg shrink-0">
-                                        <History />
+                                        <History className="w-4 h-4" />
                                     </div>
                                     <div className="min-w-0">
-                                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Update Terakhir</p>
-                                        <p className="text-[12px] font-black text-slate-700 dark:text-slate-100 truncate">
+                                        <p className="text-xs font-bold uppercase tracking-wide text-slate-400">Update Terakhir</p>
+                                        <p className="text-xs font-bold text-slate-700 dark:text-slate-100 truncate">
                                             {logs[0] ? fmtRelative(logs[0].created_at) : '-'}
                                         </p>
                                     </div>
@@ -729,11 +729,11 @@ function ActivityFeed({ refreshKey, flags }) {
 
                                     <div className="bg-surface p-4 rounded-2xl border border-[var(--color-border)] shadow-sm flex items-center gap-4">
                                     <div className="w-11 h-11 rounded-xl bg-sky-500/10 text-sky-500 flex items-center justify-center text-lg shrink-0">
-                                        <CircleCheck />
+                                        <CircleCheck className="w-4 h-4" />
                                     </div>
                                     <div className="min-w-0">
-                                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Status Sync</p>
-                                        <p className="text-[12px] font-black text-emerald-500">Connected</p>
+                                        <p className="text-xs font-bold uppercase tracking-wide text-slate-400">Status Sync</p>
+                                        <p className="text-xs font-bold text-emerald-500">Connected</p>
                                     </div>
                                 </div>
                             </div>
@@ -744,8 +744,8 @@ function ActivityFeed({ refreshKey, flags }) {
                                 {/* Left: Progress Bars for Top Features */}
                                 <div className="xl:col-span-2 bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden flex flex-col">
                                     <div className="px-5 py-4 border-b border-[var(--color-border)] bg-slate-50/50 dark:bg-slate-800/50 flex items-center justify-between">
-                                        <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Top 5 Intensitas Perubahan</h4>
-                                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Berdasarkan Log</span>
+                                        <h4 className="text-xs font-bold uppercase tracking-wide text-slate-500">Top 5 Intensitas Perubahan</h4>
+                                        <span className="text-xs text-slate-400 font-bold uppercase tracking-wide">Berdasarkan Log</span>
                                     </div>
                                     <div className="p-6 space-y-6 flex-1">
                                         {stats.map(([label, count], idx) => {
@@ -753,7 +753,7 @@ function ActivityFeed({ refreshKey, flags }) {
                                             const percent = (count / max) * 100
                                             return (
                                                 <div key={label} className="space-y-2.5">
-                                                    <div className="flex justify-between items-center text-[11px] font-black">
+                                                    <div className="flex justify-between items-center text-xs font-bold">
                                                         <span className="text-slate-700 dark:text-slate-200 uppercase tracking-tight">{label}</span>
                                                         <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 border border-[var(--color-border)]">{count} perubahan</span>
                                                     </div>
@@ -768,8 +768,8 @@ function ActivityFeed({ refreshKey, flags }) {
                                         })}
                                         {stats.length === 0 && (
                                             <div className="h-full flex flex-col items-center justify-center opacity-30 py-12">
-                                                <ChartPie className="text-4xl mb-3" />
-                                                <p className="text-[10px] font-black uppercase tracking-widest">Belum ada data tersedia</p>
+                                                <ChartPie className="w-6 h-6 mb-3" />
+                                                <p className="text-xs font-bold uppercase tracking-wide">Belum ada data tersedia</p>
                                             </div>
                                         )}
                                     </div>
@@ -779,10 +779,10 @@ function ActivityFeed({ refreshKey, flags }) {
                                     <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-5 flex flex-col items-center text-center relative overflow-hidden h-full">
                                         
                                         <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-800 shadow-lg border border-[var(--color-border)] flex items-center justify-center mb-5 relative z-10">
-                                            <ChartPie className="text-2xl text-indigo-500" />
+                                            <ChartPie className="w-6 h-6 text-indigo-500" />
                                         </div>
-                                        <h4 className="text-xs font-black text-slate-700 dark:text-slate-200 relative z-10 uppercase tracking-widest">Analitik Sistem</h4>
-                                        <p className="text-[11px] text-slate-400 mt-3 leading-relaxed relative z-10 px-4">
+                                        <h4 className="text-xs font-bold text-slate-700 dark:text-slate-200 relative z-10 uppercase tracking-wide">Analitik Sistem</h4>
+                                        <p className="text-xs text-slate-400 mt-3 leading-relaxed relative z-10 px-4">
                                             Modul internal saat ini berjalan dengan optimal. Semua perubahan flag dicatat secara real-time ke audit log.
                                         </p>
                                         
@@ -790,22 +790,22 @@ function ActivityFeed({ refreshKey, flags }) {
                                             <div className="flex items-center justify-between p-3 rounded-xl bg-slate-100/50 dark:bg-slate-800/50 border border-[var(--color-border)]">
                                                 <div className="flex items-center gap-2">
                                                     <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                                                    <span className="text-[10px] font-black text-slate-500 uppercase">Database</span>
+                                                    <span className="text-xs font-bold text-slate-500 uppercase">Database</span>
                                                 </div>
-                                                <span className="text-[10px] font-black text-emerald-500 uppercase">Stable</span>
+                                                <span className="text-xs font-bold text-emerald-500 uppercase">Stable</span>
                                             </div>
                                             <div className="flex items-center justify-between p-3 rounded-xl bg-slate-100/50 dark:bg-slate-800/50 border border-[var(--color-border)]">
                                                 <div className="flex items-center gap-2">
                                                     <div className="w-2 h-2 rounded-full bg-indigo-500" />
-                                                    <span className="text-[10px] font-black text-slate-500 uppercase">Sync Engine</span>
+                                                    <span className="text-xs font-bold text-slate-500 uppercase">Sync Engine</span>
                                                 </div>
-                                                <span className="text-[10px] font-black text-indigo-500 uppercase">Active</span>
+                                                <span className="text-xs font-bold text-indigo-500 uppercase">Active</span>
                                             </div>
                                         </div>
 
                                         <button 
                                             onClick={() => setActiveView('detail')}
-                                            className="mt-6 w-full py-3 rounded-xl bg-slate-800 text-white text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 transition-all shadow-md relative z-10"
+                                            className="mt-6 w-full py-3 rounded-xl bg-slate-800 text-white text-xs font-bold uppercase tracking-wide hover:bg-slate-900 transition-all shadow-md relative z-10"
                                         >
                                             Kembali ke Detail Log
                                         </button>
@@ -816,28 +816,28 @@ function ActivityFeed({ refreshKey, flags }) {
                             {/* Bottom Row - Recent Activity Timeline (Fills horizontal space) */}
                             <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                                 <div className="px-5 py-3 border-b border-[var(--color-border)] bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-2">
-                                    <History className="text-[10px] text-slate-400" />
-                                    <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Timeline Aktivitas Terakhir</h4>
+                                    <History className="w-4 h-4 text-slate-400" />
+                                    <h4 className="text-xs font-bold uppercase tracking-wide text-slate-500">Timeline Aktivitas Terakhir</h4>
                                 </div>
                                 <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                                     {logs.slice(0, 3).map((log, i) => (
                                         <div key={log.id} className="flex items-start gap-3 p-3 rounded-xl bg-slate-50/50 dark:bg-slate-800/30 border border-[var(--color-border)] relative overflow-hidden group">
                                             <div className={`absolute left-0 top-0 bottom-0 w-1 ${log.new_data?.enabled ? 'bg-emerald-500' : 'bg-slate-400'}`} />
                                             <div className={`w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-xs ${log.new_data?.enabled ? 'bg-emerald-500/10 text-emerald-500' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}`}>
-                                                { log.new_data?.enabled ? <Check /> : <X /> }
+                                                { log.new_data?.enabled ? <Check className="w-4 h-4" /> : <X className="w-4 h-4" /> }
                                             </div>
                                             <div className="min-w-0">
-                                                <p className="text-[11px] font-black text-slate-700 dark:text-slate-200 truncate group-hover:text-indigo-500 transition-colors">
+                                                <p className="text-xs font-bold text-slate-700 dark:text-slate-200 truncate group-hover:text-indigo-500 transition-colors">
                                                     {log.new_data?.label || log.new_data?.key}
                                                 </p>
-                                                <p className="text-[9px] text-slate-400 font-bold mt-0.5">
+                                                <p className="text-xs text-slate-400 font-bold mt-0.5">
                                                     {fmtRelative(log.created_at)}
                                                 </p>
                                             </div>
                                         </div>
                                     ))}
                                     {logs.length === 0 && (
-                                        <div className="col-span-3 py-4 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest opacity-40">
+                                        <div className="col-span-3 py-4 text-center text-xs font-bold text-slate-400 uppercase tracking-wide opacity-40">
                                             Tidak ada riwayat aktivitas terbaru
                                         </div>
                                     )}
@@ -1139,26 +1139,26 @@ export default function AdminSettingsPage() {
 
     return (
         <DashboardLayout title="Developer Settings">
-            <div className="p-4 md:p-6 space-y-5 max-w-[1800px] mx-auto">
+            <div className="space-y-5">
 
                 {/* ── Header ──────────────────────────────────────────── */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
                     <div>
                         <Breadcrumb badge="Admin" items={['Internal Flags']} className="mb-1" />
                         <div className="flex items-center gap-2.5 mb-1">
-                            <h1 className="text-2xl font-black font-heading tracking-tight text-[var(--color-text)]">
+                            <h1 className="text-2xl font-bold font-heading tracking-tight text-[var(--color-text)]">
                                 Developer Settings
                             </h1>
                             {maintenanceOn && (
-                                <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-rose-500/15 text-rose-500 border border-rose-500/30 animate-pulse">
-                                    <TriangleAlert className="text-[9px]" /> Maintenance
+                                <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide px-2.5 py-1 rounded-full bg-rose-500/15 text-rose-500 border border-rose-500/30 animate-pulse">
+                                    <TriangleAlert className="w-4 h-4" /> Maintenance
                                 </span>
                             )}
-                            <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 uppercase tracking-widest">
+                            <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 uppercase tracking-wide">
                                 Admin Only
                             </span>
                         </div>
-                        <p className="text-[var(--color-text-muted)] text-[11px] font-medium opacity-70">
+                        <p className="text-[var(--color-text-muted)] text-xs font-medium opacity-70">
                             Feature flags & konfigurasi sistem. Perubahan langsung berlaku real-time.
                         </p>
                     </div>
@@ -1166,17 +1166,17 @@ export default function AdminSettingsPage() {
                         <button
                             onClick={handleSyncFlags}
                             disabled={syncingFlags}
-                            className="h-9 px-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition-all flex items-center gap-2"
+                            className="h-9 px-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 text-xs font-bold uppercase tracking-wide hover:bg-emerald-500 hover:text-white transition-all flex items-center gap-2"
                             title="Sinkronisasi flag yang ada di kode ke database"
                         >
-                            {syncingFlags ? <LoaderCircle className="animate-spin" /> : <RefreshCw />}
+                            {syncingFlags ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
                             <span className="hidden sm:inline">Sync Flags</span>
                         </button>
                         <button
                             onClick={() => fetchFlags(true)} disabled={refreshing} type="button"
                             className="flex-shrink-0 w-9 h-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition flex items-center justify-center"
                         >
-                            <RotateCw className={`text-sm ${refreshing ? 'animate-spin' : ''}`} />
+                            <RotateCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
                         </button>
                     </div>
                 </div>
@@ -1187,7 +1187,7 @@ export default function AdminSettingsPage() {
                         {TABS.map(t => (
                             <button
                                 key={t.id} onClick={() => setActiveTab(t.id)} type="button"
-                                className={`relative h-10 px-1 sm:px-5 rounded-xl text-[10px] sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all duration-200
+                                className={`relative h-10 px-1 sm:px-5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all duration-200
                                     ${activeTab === t.id
                                         ? `bg-[var(--color-surface)] shadow-sm 
                                            ${t.id === 'danger' ? 'text-rose-500' : 'text-[var(--color-primary)]'}`
@@ -1195,7 +1195,7 @@ export default function AdminSettingsPage() {
                                            ${t.id === 'danger' ? 'hover:text-rose-500 hover:bg-rose-500/5' : 'hover:bg-[var(--color-surface)]/40'}`
                                     }`}
                             >
-                                <t.icon className="text-[11px] sm:text-[12px] opacity-80" />
+                                <t.icon className="text-xs sm:text-xs opacity-80" />
                                 <span className="truncate">
                                     {t.id === 'flags' ? (
                                         <>
@@ -1221,11 +1221,11 @@ export default function AdminSettingsPage() {
                         {maintenanceOn && (
                             <div className="flex items-center gap-3 p-4 rounded-2xl border border-rose-500/30 bg-rose-500/10 mb-6">
                                 <div className="w-9 h-9 rounded-xl bg-rose-500/20 flex items-center justify-center flex-shrink-0">
-                                    <TriangleAlert className="text-rose-500" />
+                                    <TriangleAlert className="w-4 h-4 text-rose-500" />
                                 </div>
                                 <div>
-                                    <p className="font-black text-sm text-rose-500">Maintenance Mode Aktif</p>
-                                    <p className="text-[11px] text-rose-400/80 mt-0.5">
+                                    <p className="font-bold text-sm text-rose-500">Maintenance Mode Aktif</p>
+                                    <p className="text-xs text-rose-400/80 mt-0.5">
                                         Seluruh user (kecuali developer) tidak dapat mengakses aplikasi.
                                     </p>
                                 </div>
@@ -1254,7 +1254,7 @@ export default function AdminSettingsPage() {
                                     <GlobalStatusCard total={totalFlags} enabled={totalEnabled} />
 
                                     <div className="space-y-1">
-                                        <p className="px-3 text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Categories</p>
+                                        <p className="px-3 text-xs font-bold text-slate-400 uppercase tracking-wide mb-3">Categories</p>
                                         {CATEGORIES.map(cat => (
                                             <CategoryNavCard
                                                 key={cat.id}
@@ -1270,8 +1270,8 @@ export default function AdminSettingsPage() {
                                     </div>
 
                                     <div className="flex items-start gap-2 px-1 pt-2">
-                                        <Zap className="text-[9px] text-amber-400 flex-shrink-0 mt-0.5" />
-                                        <p className="text-[10px] text-[var(--color-text-muted)] leading-snug">
+                                        <Zap className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                                        <p className="text-xs text-[var(--color-text-muted)] leading-snug">
                                             Perubahan tersimpan real-time ke Supabase.
                                         </p>
                                     </div>
@@ -1287,11 +1287,11 @@ export default function AdminSettingsPage() {
                                                     <activeCat.icon className={`${activeCat.color}`} />
                                                 </div>
                                                 <div className="flex-1">
-                                                    <h2 className="text-[14px] font-black text-[var(--color-text)] leading-none">{activeCat.label}</h2>
-                                                    <p className="text-[11px] text-[var(--color-text-muted)] mt-1.5 opacity-80">{activeCat.desc}</p>
+                                                    <h2 className="text-[14px] font-bold text-[var(--color-text)] leading-none">{activeCat.label}</h2>
+                                                    <p className="text-xs text-[var(--color-text-muted)] mt-1.5 opacity-80">{activeCat.desc}</p>
                                                 </div>
                                                 <div className="text-right">
-                                                    <div className="px-2.5 py-1 rounded-full bg-white/40 dark:bg-black/20 border border-white/20 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                                                    <div className="px-2.5 py-1 rounded-full bg-white/40 dark:bg-black/20 border border-white/20 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                                         {activeFlagRows.filter(f => f.enabled).length}/{activeFlagRows.length} aktif
                                                     </div>
                                                 </div>
@@ -1301,7 +1301,7 @@ export default function AdminSettingsPage() {
                                         <div className="p-3 space-y-3">
                                             {/* Search inside flags */}
                                             <div className="relative mb-5">
-                                                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[11px] text-[var(--color-text-muted)] pointer-events-none opacity-60" />
+                                                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none opacity-60" />
                                                 <input
                                                     ref={searchInputRef}
                                                     type="text" value={flagSearch} onChange={e => setFlagSearch(e.target.value)}
@@ -1312,16 +1312,16 @@ export default function AdminSettingsPage() {
                                                         activeCategory === 'access' ? 'Cari perizinan role...' :
                                                         'Cari konfigurasi sistem...'
                                                     }
-                                                    className="w-full h-10 pl-10 pr-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 text-[12px] font-medium focus:outline-none focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/5 transition-all"
+                                                    className="w-full h-10 pl-10 pr-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 text-xs font-medium focus:outline-none focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/5 transition-all"
                                                 />
                                                 {!flagSearch && (
-                                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 px-1.5 py-0.5 rounded border border-[var(--color-border)] bg-[var(--color-surface)] text-[9px] font-black text-[var(--color-text-muted)] opacity-40 pointer-events-none uppercase tracking-tighter hidden sm:block">
+                                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 px-1.5 py-0.5 rounded border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text-muted)] opacity-40 pointer-events-none uppercase tracking-tighter hidden sm:block">
                                                         Ctrl + K
                                                     </div>
                                                 )}
                                                 {flagSearch && (
                                                     <button onClick={() => setFlagSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-lg hover:bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-rose-500 transition-all">
-                                                        <X className="text-[10px]" />
+                                                        <X className="w-4 h-4" />
                                                     </button>
                                                 )}
                                             </div>
@@ -1342,16 +1342,16 @@ export default function AdminSettingsPage() {
                                                         {/* Label + desc */}
                                                         <div className="flex-1 min-w-0">
                                                             <div className="flex items-center gap-2 flex-wrap">
-                                                                <span className={`text-[13px] font-bold leading-tight transition-colors ${isDemoMode ? 'text-[var(--color-text)] font-black' : 'text-[var(--color-text-muted)]'}`}>
+                                                                <span className={`text-sm font-bold leading-tight transition-colors ${isDemoMode ? 'text-[var(--color-text)] font-bold' : 'text-[var(--color-text-muted)]'}`}>
                                                                     Demo Mode
                                                                 </span>
                                                                 {isDemoMode ? (
-                                                                    <span className="text-[9px] font-black tracking-widest uppercase px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-600 border border-amber-500/20">demo</span>
+                                                                    <span className="text-xs font-bold tracking-wide uppercase px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-600 border border-amber-500/20">demo</span>
                                                                 ) : (
-                                                                    <span className="text-[9px] font-black tracking-widest uppercase px-1.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-[var(--color-text-muted)]">db real</span>
+                                                                    <span className="text-xs font-bold tracking-wide uppercase px-1.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-[var(--color-text-muted)]">db real</span>
                                                                 )}
                                                             </div>
-                                                            <p className="text-[11px] text-[var(--color-text-muted)] mt-0.5 leading-snug opacity-70 group-hover:opacity-100 transition-opacity line-clamp-1">
+                                                            <p className="text-xs text-[var(--color-text-muted)] mt-0.5 leading-snug opacity-70 group-hover:opacity-100 transition-opacity line-clamp-1">
                                                                 {!hasDbCredentials ? 'Dipaksa aktif karena kredensial Supabase kosong' : 'Gunakan mock database lokal untuk simulasi/testing'}
                                                             </p>
                                                         </div>
@@ -1380,13 +1380,13 @@ export default function AdminSettingsPage() {
                                                     (activeCategory === 'system' && !flagSearch.trim()) ? null : (
                                                         <div className="col-span-full py-12 flex flex-col items-center justify-center opacity-30 gap-3 bg-[var(--color-surface-alt)]/30 rounded-3xl border border-dashed border-[var(--color-border)]">
                                                             <div className="w-16 h-16 rounded-2xl bg-[var(--color-surface-alt)] flex items-center justify-center mb-1">
-                                                                <ToggleRight className="text-xl text-[var(--color-text-muted)] opacity-20" />
+                                                                <ToggleRight className="w-5 h-5 text-[var(--color-text-muted)] opacity-20" />
                                                             </div>
                                                             <div className="text-center">
-                                                                <p className="text-[13px] font-black text-[var(--color-text)]">
+                                                                <p className="text-sm font-bold text-[var(--color-text)]">
                                                                     {flagSearch ? 'Tidak ada flag yang cocok' : 'Belum ada flag di kategori ini'}
                                                                 </p>
-                                                                <p className="text-[11px] text-[var(--color-text-muted)] mt-1 max-w-[240px] mx-auto leading-relaxed">
+                                                                <p className="text-xs text-[var(--color-text-muted)] mt-1 max-w-[240px] mx-auto leading-relaxed">
                                                                     {flagSearch ? 'Coba ubah kata kunci pencarian Anda.' : 'Klik tombol di bawah untuk mendaftarkan fitur standar ke kategori ini.'}
                                                                 </p>
                                                             </div>
@@ -1426,11 +1426,11 @@ export default function AdminSettingsPage() {
                         <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden shadow-sm">
                             <div className="px-5 py-4 border-b border-[var(--color-border)] bg-gradient-to-r from-indigo-500/8 to-transparent flex items-center gap-3">
                                 <div className="w-9 h-9 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-500 shrink-0">
-                                    <Upload />
+                                    <Upload className="w-4 h-4" />
                                 </div>
                                 <div>
-                                    <p className="font-black text-[13px] text-[var(--color-text)] leading-tight">Unggah Tanda Tangan</p>
-                                    <p className="text-[11px] text-[var(--color-text-muted)] mt-0.5">Tambah TTD digital guru & pengasuh</p>
+                                    <p className="font-bold text-sm text-[var(--color-text)] leading-tight">Unggah Tanda Tangan</p>
+                                    <p className="text-xs text-[var(--color-text-muted)] mt-0.5">Tambah TTD digital guru & pengasuh</p>
                                 </div>
                             </div>
                             
@@ -1473,7 +1473,7 @@ export default function AdminSettingsPage() {
                                         className="input-field text-xs py-2 w-full h-auto cursor-pointer"
                                         required
                                     />
-                                    <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug">
+                                    <p className="text-xs text-[var(--color-text-muted)] mt-1.5 leading-snug">
                                         Disarankan menggunakan file **PNG transparan** agar hasil cetak rapi.
                                     </p>
                                 </div>
@@ -1481,16 +1481,16 @@ export default function AdminSettingsPage() {
                                 <button
                                     type="submit"
                                     disabled={uploadingSig || loadingSignatures}
-                                    className="w-full h-11 rounded-xl bg-[var(--color-primary)] hover:opacity-90 text-white text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg disabled:opacity-60 transition-all"
+                                    className="w-full h-11 rounded-xl bg-[var(--color-primary)] hover:opacity-90 text-white text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 shadow-lg disabled:opacity-60 transition-all"
                                 >
                                     {uploadingSig ? (
                                         <>
-                                            <LoaderCircle className="animate-spin" />
+                                            <LoaderCircle className="w-4 h-4 animate-spin" />
                                             <span>Mengunggah...</span>
                                         </>
                                     ) : (
                                         <>
-                                            <Upload />
+                                            <Upload className="w-4 h-4" />
                                             <span>Simpan Tanda Tangan</span>
                                         </>
                                     )}
@@ -1503,26 +1503,26 @@ export default function AdminSettingsPage() {
                             <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden shadow-sm">
                                 <div className="px-5 py-4 border-b border-[var(--color-border)] bg-slate-50/30 dark:bg-slate-800/20 flex items-center justify-between">
                                     <div>
-                                        <p className="font-black text-[13px] text-[var(--color-text)]">Daftar Tanda Tangan Digital</p>
-                                        <p className="text-[11px] text-[var(--color-text-muted)] mt-0.5">Tanda tangan yang aktif digunakan di sistem raport</p>
+                                        <p className="font-bold text-sm text-[var(--color-text)]">Daftar Tanda Tangan Digital</p>
+                                        <p className="text-xs text-[var(--color-text-muted)] mt-0.5">Tanda tangan yang aktif digunakan di sistem raport</p>
                                     </div>
-                                    <div className="px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[9px] font-black uppercase tracking-widest text-indigo-600">
+                                    <div className="px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-xs font-bold uppercase tracking-wide text-indigo-600">
                                         {signaturesList.length} Total
                                     </div>
                                 </div>
 
                                 {loadingSignatures && signaturesList.length === 0 ? (
                                     <div className="p-12 text-center">
-                                        <LoaderCircle className="animate-spin text-2xl text-[var(--color-text-muted)]" />
-                                        <p className="text-[11px] text-[var(--color-text-muted)] mt-2 font-bold uppercase tracking-widest">Memuat data...</p>
+                                        <LoaderCircle className="w-6 h-6 animate-spin text-[var(--color-text-muted)]" />
+                                        <p className="text-xs text-[var(--color-text-muted)] mt-2 font-bold uppercase tracking-wide">Memuat data...</p>
                                     </div>
                                 ) : signaturesList.length === 0 ? (
                                     <div className="p-12 flex flex-col items-center justify-center text-center opacity-40">
                                         <div className="w-16 h-16 rounded-2xl bg-[var(--color-surface-alt)] flex items-center justify-center mb-3">
-                                            <Upload className="text-xl text-[var(--color-text-muted)]" />
+                                            <Upload className="w-5 h-5 text-[var(--color-text-muted)]" />
                                         </div>
-                                        <p className="text-[13px] font-black text-[var(--color-text)]">Belum ada tanda tangan digital</p>
-                                        <p className="text-[11px] text-[var(--color-text-muted)] mt-1 max-w-[280px]">
+                                        <p className="text-sm font-bold text-[var(--color-text)]">Belum ada tanda tangan digital</p>
+                                        <p className="text-xs text-[var(--color-text-muted)] mt-1 max-w-[280px]">
                                             Silakan unggah tanda tangan digital guru/pengasuh melalui panel di sebelah kiri.
                                         </p>
                                     </div>
@@ -1533,18 +1533,18 @@ export default function AdminSettingsPage() {
                                                 {/* Header card info */}
                                                 <div>
                                                     <div className="flex items-center justify-between gap-2 mb-1">
-                                                        <span className={`text-[9px] font-black tracking-widest uppercase px-2 py-0.5 rounded-full ${
+                                                        <span className={`text-xs font-bold tracking-wide uppercase px-2 py-0.5 rounded-full ${
                                                             sig.role === 'pengasuh' 
                                                                 ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20' 
                                                                 : 'bg-indigo-500/10 text-indigo-600 border border-indigo-500/20'
                                                         }`}>
                                                             {sig.role === 'pengasuh' ? 'Pengasuh' : 'Wali Kelas'}
                                                         </span>
-                                                        <span className="text-[8px] font-black text-[var(--color-text-muted)] tracking-wider">
+                                                        <span className="text-xs font-bold text-[var(--color-text-muted)] tracking-wider">
                                                             {sig.is_active ? '● Aktif' : 'Non-aktif'}
                                                         </span>
                                                     </div>
-                                                    <h4 className="text-[13px] font-black text-[var(--color-text)] truncate" title={sig.teachers?.name}>
+                                                    <h4 className="text-sm font-bold text-[var(--color-text)] truncate" title={sig.teachers?.name}>
                                                         {sig.teachers?.name || '—'}
                                                     </h4>
                                                 </div>
@@ -1568,7 +1568,7 @@ export default function AdminSettingsPage() {
 
                                                 {/* Footer actions */}
                                                 <div className="flex justify-between items-center pt-2 border-t border-[var(--color-border)]/50">
-                                                    <span className="text-[8px] text-[var(--color-text-muted)] truncate max-w-[150px] font-mono opacity-60">
+                                                    <span className="text-xs text-[var(--color-text-muted)] truncate max-w-[150px] font-mono opacity-60">
                                                         {sig.signature_url.split('/').pop()}
                                                     </span>
                                                     <button
@@ -1577,7 +1577,7 @@ export default function AdminSettingsPage() {
                                                         className="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center"
                                                         title="Hapus Tanda Tangan"
                                                     >
-                                                        <Trash2 className="text-xs" />
+                                                        <Trash2 className="w-4 h-4" />
                                                     </button>
                                                 </div>
                                             </div>
@@ -1662,7 +1662,7 @@ export default function AdminSettingsPage() {
                                                 className="input-field text-sm h-11 w-full"
                                                 placeholder="https://example.com/logo.png"
                                             />
-                                            <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug">
+                                            <p className="text-xs text-[var(--color-text-muted)] mt-1.5 leading-snug">
                                                 Logo utama sekolah. Jika logo kanan kosong, logo ini digunakan di kedua sisi.
                                             </p>
                                         </div>
@@ -1686,7 +1686,7 @@ export default function AdminSettingsPage() {
                                                 className="input-field text-sm h-11 w-full"
                                                 placeholder="https://example.com/logo-kanan.png"
                                             />
-                                            <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug">
+                                            <p className="text-xs text-[var(--color-text-muted)] mt-1.5 leading-snug">
                                                 Logo di sisi kanan raport (misal: logo unit SMP/SMA atau logo organisasi)
                                             </p>
                                         </div>
@@ -1725,7 +1725,7 @@ export default function AdminSettingsPage() {
                                         className="input-field text-sm h-11"
                                         placeholder="Mengetahui,"
                                     />
-                                    <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug">
+                                    <p className="text-xs text-[var(--color-text-muted)] mt-1.5 leading-snug">
                                         Teks kecil di atas label jabatan (contoh: "Mengetahui,")
                                     </p>
                                 </div>
@@ -1746,7 +1746,7 @@ export default function AdminSettingsPage() {
                                         className="input-field text-sm h-11"
                                         placeholder="Pengasuh&#10;Muhammadiyah Boarding School Tanggul"
                                     />
-                                    <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug">
+                                    <p className="text-xs text-[var(--color-text-muted)] mt-1.5 leading-snug">
                                         Gunakan \n untuk enter baru (contoh: "Pengasuh\nMBS Tanggul")
                                     </p>
                                 </div>
@@ -1758,7 +1758,7 @@ export default function AdminSettingsPage() {
                                         className="input-field font-bold text-sm h-11"
                                         placeholder="Ir. H. M. Ali Maksum"
                                     />
-                                    <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug">
+                                    <p className="text-xs text-[var(--color-text-muted)] mt-1.5 leading-snug">
                                         Akan ditransliterasi otomatis ke Arab jika kolom Arab kosong
                                     </p>
                                 </div>
@@ -1770,7 +1770,7 @@ export default function AdminSettingsPage() {
                                         dir="rtl" className="input-field text-sm h-11 text-right"
                                         placeholder="المشرف&#10;معهد محمدية تانجول"
                                     />
-                                    <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug text-right">
+                                    <p className="text-xs text-[var(--color-text-muted)] mt-1.5 leading-snug text-right">
                                         Gunakan \n untuk enter baru
                                     </p>
                                 </div>
@@ -1782,14 +1782,14 @@ export default function AdminSettingsPage() {
                                         dir="rtl" className="input-field font-bold text-sm h-11 text-right"
                                         placeholder="خویرول انوار"
                                     />
-                                    <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug text-right">
+                                    <p className="text-xs text-[var(--color-text-muted)] mt-1.5 leading-snug text-right">
                                         Kosongkan jika ingin otomatis dari nama Indonesia
                                     </p>
                                 </div>
                             </div>
                             <div className="px-5 pb-5">
                                 <div className="border-t border-[var(--color-border)] pt-4">
-                                    <p className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-3">Pengasuh / Ketua Yayasan</p>
+                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mb-3">Pengasuh / Ketua Yayasan</p>
                                     <div className="grid sm:grid-cols-2 gap-4">
                                         <div>
                                             <FL>Nama Pengasuh (Indonesia)</FL>
@@ -1808,7 +1808,7 @@ export default function AdminSettingsPage() {
                                                 dir="rtl" className="input-field font-bold text-sm h-11 text-right"
                                                 placeholder="المهندس محمد علي معصوم"
                                             />
-                                            <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug text-right">
+                                            <p className="text-xs text-[var(--color-text-muted)] mt-1.5 leading-snug text-right">
                                                 Kosongkan jika ingin otomatis dari nama Indonesia
                                             </p>
                                         </div>
@@ -1821,7 +1821,7 @@ export default function AdminSettingsPage() {
                         <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                             <SectionHeader section={RAPORT_SECTIONS[2]} />
                             <div className="p-5 space-y-4">
-                                <p className="text-[11px] text-[var(--color-text-muted)] -mt-2 mb-3">Label section yang tampil di dalam raport. Gunakan format ID / Arab.</p>
+                                <p className="text-xs text-[var(--color-text-muted)] -mt-2 mb-3">Label section yang tampil di dalam raport. Gunakan format ID / Arab.</p>
                                 <div className="grid sm:grid-cols-2 gap-4">
                                     <div>
                                         <FL>Section "Perkembangan Fisik" (ID)</FL>
@@ -1849,7 +1849,7 @@ export default function AdminSettingsPage() {
                                     </div>
                                 </div>
                                 <div className="pt-3 border-t border-[var(--color-border)]">
-                                    <p className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-3">Label Tambahan</p>
+                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mb-3">Label Tambahan</p>
                                     <div className="grid sm:grid-cols-2 gap-4">
                                         <div>
                                             <FL>"Catatan Wali Kelas" (ID)</FL>
@@ -1939,7 +1939,7 @@ export default function AdminSettingsPage() {
                                     </div>
                                 </div>
                                 <div className="pt-3 border-t border-[var(--color-border)]">
-                                    <p className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-3">Label Semester & Periode</p>
+                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mb-3">Label Semester & Periode</p>
                                     <div className="grid sm:grid-cols-2 gap-4">
                                         <div>
                                             <FL>Semester "Ganjil" (ID)</FL>
@@ -1984,7 +1984,7 @@ export default function AdminSettingsPage() {
                                     </div>
                                 </div>
                                 <div className="pt-3 border-t border-[var(--color-border)]">
-                                    <p className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-3">Label Info Siswa & Nomor Raport</p>
+                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mb-3">Label Info Siswa & Nomor Raport</p>
                                     <div className="grid sm:grid-cols-2 gap-4">
                                         <div>
                                             <FL>"Nama Santri" (ID)</FL>
@@ -2015,7 +2015,7 @@ export default function AdminSettingsPage() {
                         <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                             <SectionHeader section={RAPORT_SECTIONS[4]} />
                             <div className="p-5 space-y-4">
-                                <p className="text-[11px] text-[var(--color-text-muted)] -mt-2 mb-3">Label predikat nilai yang tampil di raport.</p>
+                                <p className="text-xs text-[var(--color-text-muted)] -mt-2 mb-3">Label predikat nilai yang tampil di raport.</p>
                                 <div className="grid sm:grid-cols-3 gap-4">
                                     <div>
                                         <FL>Predikat 9 (ID)</FL>
@@ -2053,7 +2053,7 @@ export default function AdminSettingsPage() {
                                     <div>
                                         <FL>Domain Aplikasi</FL>
                                         <input type="text" value={form.app_domain || ''} onChange={e => set('app_domain', e.target.value)} className="input-field text-sm h-11" placeholder="laporanmu.my.id" />
-                                        <p className="text-[10px] text-[var(--color-text-muted)] mt-1.5 leading-snug">Domain untuk URL verifikasi raport</p>
+                                        <p className="text-xs text-[var(--color-text-muted)] mt-1.5 leading-snug">Domain untuk URL verifikasi raport</p>
                                     </div>
                                     <div>
                                         <FL>Prefix Nomor Raport</FL>
@@ -2117,8 +2117,8 @@ export default function AdminSettingsPage() {
                                 {/* Preview */}
                                 <div>
                                     <div className="flex items-center gap-2 mb-3">
-                                        <Eye className="text-[10px] text-[var(--color-text-muted)]" />
-                                        <span className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest">
+                                        <Eye className="w-4 h-4 text-[var(--color-text-muted)]" />
+                                        <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide">
                                             Preview Header Raport
                                         </span>
                                     </div>
@@ -2128,8 +2128,8 @@ export default function AdminSettingsPage() {
                                 {/* WhatsApp footer */}
                                 <div className="pt-4 border-t border-[var(--color-border)]">
                                     <div className="flex items-center gap-2 mb-3">
-                                        <WhatsAppIcon className="text-[10px] text-emerald-500" />
-                                        <span className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest">
+                                        <WhatsAppIcon className="w-4 h-4 text-emerald-500" />
+                                        <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide">
                                             Footer WhatsApp
                                         </span>
                                     </div>
@@ -2139,7 +2139,7 @@ export default function AdminSettingsPage() {
                                         className="input-field text-sm h-11"
                                         placeholder="Nama Sekolah · Sistem Laporanmu"
                                     />
-                                    <p className="text-[10px] text-[var(--color-text-muted)] mt-2 ml-0.5">
+                                    <p className="text-xs text-[var(--color-text-muted)] mt-2 ml-0.5">
                                         Tampil sebagai: <em className="text-[var(--color-text)]">_{form.wa_footer || '...'}_</em>
                                     </p>
                                 </div>
@@ -2158,11 +2158,11 @@ export default function AdminSettingsPage() {
                         {/* Warning banner */}
                         <div className="flex items-start gap-3 p-4 rounded-2xl border border-red-500/30 bg-red-500/8">
                             <div className="w-9 h-9 rounded-xl bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                                <TriangleAlert className="text-red-500" />
+                                <TriangleAlert className="w-4 h-4 text-red-500" />
                             </div>
                             <div>
-                                <p className="font-black text-sm text-red-600">Zona Berbahaya</p>
-                                <p className="text-[11px] text-red-500/80 mt-0.5">
+                                <p className="font-bold text-sm text-red-600">Zona Berbahaya</p>
+                                <p className="text-xs text-red-500/80 mt-0.5">
                                     Tindakan di halaman ini bersifat permanen dan tidak dapat dibatalkan. Lanjutkan dengan hati-hati.
                                 </p>
                             </div>
@@ -2172,30 +2172,30 @@ export default function AdminSettingsPage() {
                         <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                             <div className="flex items-center gap-3 px-5 py-4 border-b border-[var(--color-border)] bg-gradient-to-r from-rose-500/8 to-transparent">
                                 <div className="w-9 h-9 rounded-xl bg-rose-500/10 flex items-center justify-center shrink-0">
-                                    <Settings className="text-rose-500 text-sm" />
+                                    <Settings className="w-4 h-4 text-rose-500" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="font-black text-[13px] text-[var(--color-text)]">Maintenance Mode</p>
-                                    <p className="text-[11px] text-[var(--color-text-muted)] mt-0.5">Nonaktifkan akses semua user kecuali developer</p>
+                                    <p className="font-bold text-sm text-[var(--color-text)]">Maintenance Mode</p>
+                                    <p className="text-xs text-[var(--color-text-muted)] mt-0.5">Nonaktifkan akses semua user kecuali developer</p>
                                 </div>
                                 {(() => {
                                     const mFlag = flags.find(f => f.key === 'system.maintenance')
-                                    if (!mFlag) return <span className="text-[10px] text-[var(--color-text-muted)]">Flag tidak ditemukan</span>
+                                    if (!mFlag) return <span className="text-xs text-[var(--color-text-muted)]">Flag tidak ditemukan</span>
                                     return (
                                         <div className="flex items-center gap-3 shrink-0">
                                             {mFlag.enabled && (
-                                                <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-500 border border-rose-500/30 animate-pulse uppercase tracking-widest">
+                                                <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-500 border border-rose-500/30 animate-pulse uppercase tracking-wide">
                                                     AKTIF
                                                 </span>
                                             )}
                                             <button
                                                 onClick={() => handleToggle(mFlag)}
                                                 disabled={savingKey === mFlag.key}
-                                                className={`h-9 px-4 rounded-xl text-[11px] font-black flex items-center gap-2 transition-all ${mFlag.enabled
+                                                className={`h-9 px-4 rounded-xl text-xs font-bold flex items-center gap-2 transition-all ${mFlag.enabled
                                                     ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/30 hover:bg-emerald-500 hover:text-white'
                                                     : 'bg-rose-500/10 text-rose-600 border border-rose-500/30 hover:bg-rose-500 hover:text-white'}`}>
                                                 {savingKey === mFlag.key
-                                                    ? <LoaderCircle className="animate-spin" />
+                                                    ? <LoaderCircle className="w-4 h-4 animate-spin" />
                                                     : null}
                                                 {mFlag.enabled ? 'Matikan Maintenance' : 'Aktifkan Maintenance'}
                                             </button>
@@ -2204,8 +2204,8 @@ export default function AdminSettingsPage() {
                                 })()}
                             </div>
                             <div className="px-5 py-4">
-                                <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed">
-                                    Saat maintenance mode aktif, seluruh user yang login akan mendapat halaman maintenance. Hanya akun dengan role <code className="bg-[var(--color-surface-alt)] px-1 rounded text-[10px]">developer</code> yang tetap bisa mengakses sistem.
+                                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
+                                    Saat maintenance mode aktif, seluruh user yang login akan mendapat halaman maintenance. Hanya akun dengan role <code className="bg-[var(--color-surface-alt)] px-1 rounded text-xs">developer</code> yang tetap bisa mengakses sistem.
                                 </p>
                             </div>
                         </div>
@@ -2214,11 +2214,11 @@ export default function AdminSettingsPage() {
                         <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                             <div className="flex items-center gap-3 px-5 py-4 border-b border-[var(--color-border)] bg-gradient-to-r from-slate-500/8 to-transparent">
                                 <div className="w-9 h-9 rounded-xl bg-slate-500/10 flex items-center justify-center shrink-0">
-                                    <Code className="text-slate-500 text-sm" />
+                                    <Code className="w-4 h-4 text-slate-500" />
                                 </div>
                                 <div>
-                                    <p className="font-black text-[13px] text-[var(--color-text)]">Info Sistem</p>
-                                    <p className="text-[11px] text-[var(--color-text-muted)]">Status dan informasi konfigurasi</p>
+                                    <p className="font-bold text-sm text-[var(--color-text)]">Info Sistem</p>
+                                    <p className="text-xs text-[var(--color-text-muted)]">Status dan informasi konfigurasi</p>
                                 </div>
                             </div>
                             <div className="p-5 grid sm:grid-cols-2 gap-3">
@@ -2229,8 +2229,8 @@ export default function AdminSettingsPage() {
                                     { label: 'App Version', val: import.meta.env.VITE_APP_VERSION || '1.0.0' },
                                 ].map((item, i) => (
                                     <div key={i} className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">{item.label}</p>
-                                        <p className="text-[11px] font-bold text-[var(--color-text)] font-mono">{item.val}</p>
+                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">{item.label}</p>
+                                        <p className="text-xs font-bold text-[var(--color-text)] font-mono">{item.val}</p>
                                     </div>
                                 ))}
                             </div>
@@ -2240,15 +2240,15 @@ export default function AdminSettingsPage() {
                         <div className="bg-surface rounded-2xl border border-red-500/20 overflow-hidden">
                             <div className="flex items-center gap-3 px-5 py-4 border-b border-red-500/20 bg-gradient-to-r from-red-500/8 to-transparent">
                                 <div className="w-9 h-9 rounded-xl bg-red-500/10 flex items-center justify-center shrink-0">
-                                    <Trash2 className="text-red-500 text-sm" />
+                                    <Trash2 className="w-4 h-4 text-red-500" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="font-black text-[13px] text-red-600">Reset Konfigurasi Raport</p>
-                                    <p className="text-[11px] text-red-500/70 mt-0.5">Kembalikan semua konfigurasi raport ke nilai default</p>
+                                    <p className="font-bold text-sm text-red-600">Reset Konfigurasi Raport</p>
+                                    <p className="text-xs text-red-500/70 mt-0.5">Kembalikan semua konfigurasi raport ke nilai default</p>
                                 </div>
                             </div>
                             <div className="px-5 py-4 flex items-center justify-between gap-4">
-                                <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed">
+                                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
                                     Ini akan menghapus nama sekolah, logo, warna, dan semua konfigurasi raport. Tidak mempengaruhi data siswa atau laporan.
                                 </p>
                                 <button
@@ -2258,8 +2258,8 @@ export default function AdminSettingsPage() {
                                             addToast('Konfigurasi direset ke default', 'success')
                                         }
                                     }}
-                                    className="shrink-0 h-9 px-4 rounded-xl border border-red-500/30 bg-red-500/10 text-red-600 text-[11px] font-black hover:bg-red-500 hover:text-white transition-all flex items-center gap-2">
-                                    <Trash2 className="text-[10px]" />
+                                    className="shrink-0 h-9 px-4 rounded-xl border border-red-500/30 bg-red-500/10 text-red-600 text-xs font-bold hover:bg-red-500 hover:text-white transition-all flex items-center gap-2">
+                                    <Trash2 className="w-4 h-4" />
                                     Reset
                                 </button>
                             </div>
@@ -2279,25 +2279,25 @@ export default function AdminSettingsPage() {
                 }`}
             >
                 <div className="flex items-center gap-2 sm:gap-3 px-4 py-2.5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl">
-                    <TriangleAlert className="text-amber-400 shrink-0" />
-                    <span className="text-[11px] text-[var(--color-text-muted)] font-medium flex-1 sm:flex-none">
+                    <TriangleAlert className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span className="text-xs text-[var(--color-text-muted)] font-medium flex-1 sm:flex-none">
                         <span className="hidden sm:inline">Ada perubahan belum disimpan</span>
                         <span className="sm:hidden">Belum disimpan</span>
                     </span>
                     <button
                         onClick={handleReset}
-                        className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black hover:text-[var(--color-text)] transition-all flex items-center gap-1.5 shrink-0"
+                        className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold hover:text-[var(--color-text)] transition-all flex items-center gap-1.5 shrink-0"
                     >
-                        <RotateCcw className="text-[9px]" />
+                        <RotateCcw className="w-4 h-4" />
                         <span className="hidden sm:inline">Reset</span>
                     </button>
                     <button
                         onClick={handleSaveRaport} disabled={saving}
-                        className="h-8 px-4 rounded-xl bg-[var(--color-primary)] hover:opacity-90 text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shadow-lg disabled:opacity-60 shrink-0"
+                        className="h-8 px-4 rounded-xl bg-[var(--color-primary)] hover:opacity-90 text-white text-xs font-bold uppercase tracking-wide flex items-center gap-2 shadow-lg disabled:opacity-60 shrink-0"
                     >
                         {saving
-                            ? <LoaderCircle className="animate-spin" />
-                            : <Save />
+                            ? <LoaderCircle className="w-4 h-4 animate-spin" />
+                            : <Save className="w-4 h-4" />
                         }
                         Simpan
                     </button>

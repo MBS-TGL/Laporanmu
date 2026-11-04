@@ -60,21 +60,21 @@ const TagChipsPreview = memo(() => {
         <div className="space-y-4">
             <div className="flex flex-wrap gap-2">
                 {tags.map(tag => (
-                    <span key={tag} className="px-2.5 py-1 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black flex items-center gap-1.5 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all cursor-pointer">
+                    <span key={tag} className="px-2.5 py-1 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold flex items-center gap-1.5 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all cursor-pointer">
                         {tag}
                         <button onClick={() => remove(tag)} className="hover:opacity-100 opacity-50 transition-opacity">
-                            <X className="text-[8px]" />
+                            <X className="w-4 h-4" />
                         </button>
                     </span>
                 ))}
             </div>
             <div className="flex flex-wrap gap-2 items-center">
-                <span className="px-2.5 py-1 rounded-lg bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary)] text-[10px] font-black">{tags.length} selected</span>
-                <button onClick={add} className="px-2.5 py-1 rounded-lg border-2 border-dashed border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black flex items-center gap-1 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all">
-                    <Plus className="text-[8px]" /> Add tag
+                <span className="px-2.5 py-1 rounded-lg bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary)] text-xs font-bold">{tags.length} selected</span>
+                <button onClick={add} className="px-2.5 py-1 rounded-lg border-2 border-dashed border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold flex items-center gap-1 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all">
+                    <Plus className="w-4 h-4" /> Add tag
                 </button>
                 {tags.length > 0 && (
-                    <button onClick={() => setTags([])} className="text-[9px] font-black text-rose-400 hover:text-rose-600 transition-colors">clear all</button>
+                    <button onClick={() => setTags([])} className="text-xs font-bold text-rose-400 hover:text-rose-600 transition-colors">clear all</button>
                 )}
             </div>
         </div>
@@ -95,8 +95,8 @@ const ToggleVariantsPreview = memo(() => {
             {items.map(({ key, label, color }) => (
                 <div key={key} className="flex items-center justify-between">
                     <div>
-                        <span className="text-[11px] font-black text-[var(--color-text)]">{label}</span>
-                        <p className="text-[9px] text-[var(--color-text-muted)] opacity-50">{states[key] ? 'Aktif' : 'Nonaktif'}</p>
+                        <span className="text-xs font-bold text-[var(--color-text)]">{label}</span>
+                        <p className="text-xs text-[var(--color-text-muted)] opacity-50">{states[key] ? 'Aktif' : 'Nonaktif'}</p>
                     </div>
                     <button
                         onClick={() => toggle(key)}
@@ -132,9 +132,9 @@ const CheckboxStatesPreview = memo(() => {
                         : 'bg-transparent border-[var(--color-border)] group-hover:border-[var(--color-primary)]'
                         }`}>
                         {indeterminate && <div className="w-2 h-0.5 bg-white rounded-full" />}
-                        {checked && !indeterminate && <Check className="text-white text-[7px]" />}
+                        {checked && !indeterminate && <Check className="w-4 h-4 text-white" />}
                     </div>
-                    <span className="text-[11px] font-medium text-[var(--color-text)]">{label}</span>
+                    <span className="text-xs font-medium text-[var(--color-text)]">{label}</span>
                 </label>
             ))}
         </div>
@@ -150,7 +150,7 @@ const RadioGroupPreview = memo(() => {
     ]
     return (
         <div className="space-y-4">
-            <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50">Plan Selection</p>
+            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50">Plan Selection</p>
             <div className="space-y-2.5">
                 {plans.map(({ value, label, desc }) => (
                     <label key={value} onClick={() => setSelected(value)} className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-colors select-none ${selected === value ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5' : 'border-[var(--color-border)] hover:border-[var(--color-primary)]/40'}`}>
@@ -158,10 +158,10 @@ const RadioGroupPreview = memo(() => {
                             {selected === value && <div className="w-2 h-2 rounded-full bg-[var(--color-primary)]" />}
                         </div>
                         <div className="flex-1">
-                            <span className={`text-[11px] font-black ${selected === value ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}`}>{label}</span>
-                            <p className="text-[10px] text-[var(--color-text-muted)] opacity-60">{desc}</p>
+                            <span className={`text-xs font-bold ${selected === value ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}`}>{label}</span>
+                            <p className="text-xs text-[var(--color-text-muted)] opacity-60">{desc}</p>
                         </div>
-                        {selected === value && <CircleCheck className="text-[var(--color-primary)] text-sm" />}
+                        {selected === value && <CircleCheck className="w-4 h-4 text-[var(--color-primary)]" />}
                     </label>
                 ))}
             </div>
@@ -178,25 +178,25 @@ const InputStatesPreview = memo(() => {
     return (
         <div className="space-y-3">
             <div className="space-y-1">
-                <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Default</label>
+                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Default</label>
                 <input value={vals.default} onChange={e => set('default', e.target.value)} placeholder="Masukkan teks..." className="w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-sm font-medium text-[var(--color-text)] outline-none transition-all focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10" />
             </div>
             <div className="space-y-1">
-                <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Focus</label>
+                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Focus</label>
                 <input value={vals.focus} onChange={e => set('focus', e.target.value)} className="w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/10 text-sm font-medium text-[var(--color-text)] outline-none" />
             </div>
             <div className="space-y-1">
-                <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Error</label>
+                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Error</label>
                 <input value={vals.error} onChange={e => set('error', e.target.value)} className={`w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border text-sm font-medium text-[var(--color-text)] outline-none transition-all ${errorMsg ? 'border-rose-400 ring-2 ring-rose-400/10' : 'border-[var(--color-border)]'}`} />
-                {errorMsg && <p className="text-[9px] font-black text-rose-500 flex items-center gap-1"><TriangleAlert className="text-[8px]" />{errorMsg}</p>}
+                {errorMsg && <p className="text-xs font-bold text-rose-500 flex items-center gap-1"><TriangleAlert className="w-4 h-4" />{errorMsg}</p>}
             </div>
             <div className="space-y-1">
-                <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Success</label>
+                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Success</label>
                 <input value={vals.success} onChange={e => set('success', e.target.value)} className={`w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border text-sm font-medium text-[var(--color-text)] outline-none transition-all ${successMsg ? 'border-emerald-400 ring-2 ring-emerald-400/10' : 'border-[var(--color-border)]'}`} />
-                {successMsg && <p className="text-[9px] font-black text-emerald-600 flex items-center gap-1"><Check className="text-[8px]" />{successMsg}</p>}
+                {successMsg && <p className="text-xs font-bold text-emerald-600 flex items-center gap-1"><Check className="w-4 h-4" />{successMsg}</p>}
             </div>
             <div className="space-y-1">
-                <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Disabled</label>
+                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Disabled</label>
                 <input disabled placeholder="Tidak dapat diubah" className="w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-sm font-medium text-[var(--color-text-muted)] outline-none opacity-40 cursor-not-allowed" />
             </div>
         </div>
@@ -212,26 +212,26 @@ const InputAddonsPreview = memo(() => {
     return (
         <div className="space-y-4">
             <div className="space-y-1">
-                <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Search</label>
+                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Search</label>
                 <div className="relative">
-                    <Search className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-xs transition-colors ${search ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
+                    <Search className={`w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors ${search ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
                     <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Cari siswa..." className="w-full h-10 pl-10 pr-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10 text-sm font-medium text-[var(--color-text)] outline-none transition-all" />
-                    {search && <button onClick={() => setSearch('')} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"><X className="text-xs" /></button>}
+                    {search && <button onClick={() => setSearch('')} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"><X className="w-4 h-4" /></button>}
                 </div>
             </div>
             <div className="space-y-1">
-                <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">With Prefix</label>
+                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">With Prefix</label>
                 <div className="flex">
-                    <span className="h-10 px-3.5 flex items-center rounded-l-xl bg-[var(--color-surface-alt)] border border-r-0 border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)] shrink-0">https://</span>
+                    <span className="h-10 px-3.5 flex items-center rounded-l-xl bg-[var(--color-surface-alt)] border border-r-0 border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] shrink-0">https://</span>
                     <input value={domain} onChange={e => setDomain(e.target.value)} className="flex-1 h-10 px-3 rounded-r-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-sm font-medium text-[var(--color-text)] outline-none transition-all" />
                 </div>
             </div>
             <div className="space-y-1">
-                <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">With Suffix Button</label>
+                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">With Suffix Button</label>
                 <div className="flex gap-0">
                     <input readOnly value={apiKey} className="flex-1 h-10 px-3.5 rounded-l-xl bg-[var(--color-surface)] border border-r-0 border-[var(--color-border)] text-sm font-mono text-[var(--color-text-muted)] outline-none" />
-                    <button onClick={copyKey} className={`h-10 px-4 rounded-r-xl border text-[10px] font-black transition-colors flex items-center gap-1.5 ${copied ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]'}`}>
-                        { copied ? <Check className="text-[9px]" /> : <Copy className="text-[9px]" /> } {copied ? 'Copied!' : 'Copy'}
+                    <button onClick={copyKey} className={`h-10 px-4 rounded-r-xl border text-xs font-bold transition-colors flex items-center gap-1.5 ${copied ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]'}`}>
+                        { copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" /> } {copied ? 'Copied!' : 'Copy'}
                     </button>
                 </div>
             </div>
@@ -254,10 +254,10 @@ const AccordionPreview = memo(() => {
             {items.map((item, i) => (
                 <div key={i} className={`rounded-xl border overflow-hidden transition-all ${open === i ? 'border-[var(--color-primary)]' : 'border-[var(--color-border)]'}`}>
                     <button onClick={() => setOpen(open === i ? -1 : i)} className="w-full flex items-center justify-between px-4 py-3 text-left">
-                        <span className={`text-[11px] font-black ${open === i ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}`}>{item.q}</span>
-                        <ChevronDown className={`text-[9px] transition-transform shrink-0 ml-3 ${open === i ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
+                        <span className={`text-xs font-bold ${open === i ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}`}>{item.q}</span>
+                        <ChevronDown className={`w-4 h-4 transition-transform shrink-0 ml-3 ${open === i ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
                     </button>
-                    {open === i && <div className="px-4 pb-3 text-[11px] text-[var(--color-text-muted)] leading-relaxed border-t border-[var(--color-primary)]/20 pt-2">{item.a}</div>}
+                    {open === i && <div className="px-4 pb-3 text-xs text-[var(--color-text-muted)] leading-relaxed border-t border-[var(--color-primary)]/20 pt-2">{item.a}</div>}
                 </div>
             ))}
         </div>
@@ -287,43 +287,43 @@ const DataTablePreview = memo(() => {
         <div className="space-y-3">
             {selected.size > 0 && (
                 <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/20">
-                    <span className="text-[10px] font-black text-[var(--color-primary)]">{selected.size} data dipilih</span>
+                    <span className="text-xs font-bold text-[var(--color-primary)]">{selected.size} data dipilih</span>
                     <div className="flex gap-2">
-                        <button className="text-[9px] font-black text-[var(--color-primary)] hover:underline">Export</button>
-                        <button className="text-[9px] font-black text-rose-500 hover:underline">Hapus</button>
+                        <button className="text-xs font-bold text-[var(--color-primary)] hover:underline">Export</button>
+                        <button className="text-xs font-bold text-rose-500 hover:underline">Hapus</button>
                     </div>
                 </div>
             )}
             <div className="overflow-x-auto rounded-xl border border-[var(--color-border)]">
-                <table className="w-full text-[10px]">
+                <table className="w-full text-xs">
                     <thead>
                         <tr className="bg-[var(--color-surface-alt)] border-b border-[var(--color-border)]">
-                            <th className="w-10 p-3"><div onClick={toggleAll} className={`w-4 h-4 rounded border cursor-pointer flex items-center justify-center ${selected.size === data.length ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)]'}`}>{selected.size === data.length && <Check className="text-white text-[7px]" />}</div></th>
+                            <th className="w-10 p-3"><div onClick={toggleAll} className={`w-4 h-4 rounded border cursor-pointer flex items-center justify-center ${selected.size === data.length ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)]'}`}>{selected.size === data.length && <Check className="w-4 h-4 text-white" />}</div></th>
                             {[['name', 'Nama'], ['kelas', 'Kelas'], ['status', 'Status'], ['nilai', 'Nilai']].map(([f, label]) => (
-                                <th key={f} onClick={() => sortBy(f)} className="p-3 text-left font-black text-[var(--color-text-muted)] uppercase tracking-widest cursor-pointer hover:text-[var(--color-primary)] transition-colors">
+                                <th key={f} onClick={() => sortBy(f)} className="p-3 text-left font-bold text-[var(--color-text-muted)] uppercase tracking-wide cursor-pointer hover:text-[var(--color-primary)] transition-colors">
                                     {label} {sortField === f ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}
                                 </th>
                             ))}
-                            <th className="p-3 text-left font-black text-[var(--color-text-muted)] uppercase tracking-widest">Aksi</th>
+                            <th className="p-3 text-left font-bold text-[var(--color-text-muted)] uppercase tracking-wide">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         {sorted.map((row) => (
                             <tr key={row.id} className={`border-b border-[var(--color-border)] last:border-0 transition-colors ${selected.has(row.id) ? 'bg-[var(--color-primary)]/5' : 'hover:bg-[var(--color-surface-alt)]'}`}>
-                                <td className="p-3"><div onClick={() => toggleRow(row.id)} className={`w-4 h-4 rounded border cursor-pointer flex items-center justify-center ${selected.has(row.id) ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)] hover:border-[var(--color-primary)]'}`}>{selected.has(row.id) && <Check className="text-white text-[7px]" />}</div></td>
-                                <td className="p-3 font-black text-[var(--color-text)]">{row.name}</td>
+                                <td className="p-3"><div onClick={() => toggleRow(row.id)} className={`w-4 h-4 rounded border cursor-pointer flex items-center justify-center ${selected.has(row.id) ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)] hover:border-[var(--color-primary)]'}`}>{selected.has(row.id) && <Check className="w-4 h-4 text-white" />}</div></td>
+                                <td className="p-3 font-bold text-[var(--color-text)]">{row.name}</td>
                                 <td className="p-3 font-mono text-[var(--color-text-muted)]">{row.kelas}</td>
-                                <td className="p-3"><span className={`px-2 py-0.5 rounded-full border text-[9px] font-black ${statusColor(row.status)}`}>{row.status}</span></td>
-                                <td className="p-3 font-black text-[var(--color-text)]">{row.nilai}</td>
-                                <td className="p-3"><div className="flex gap-2"><button className="text-[9px] font-black text-[var(--color-primary)] hover:underline">Edit</button><button className="text-[9px] font-black text-rose-500 hover:underline">Hapus</button></div></td>
+                                <td className="p-3"><span className={`px-2 py-0.5 rounded-full border text-xs font-bold ${statusColor(row.status)}`}>{row.status}</span></td>
+                                <td className="p-3 font-bold text-[var(--color-text)]">{row.nilai}</td>
+                                <td className="p-3"><div className="flex gap-2"><button className="text-xs font-bold text-[var(--color-primary)] hover:underline">Edit</button><button className="text-xs font-bold text-rose-500 hover:underline">Hapus</button></div></td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-            <div className="flex items-center justify-between text-[9px] text-[var(--color-text-muted)]">
+            <div className="flex items-center justify-between text-xs text-[var(--color-text-muted)]">
                 <span>Menampilkan {data.length} dari 320 data</span>
-                <div className="flex gap-1">{[1, 2, 3, '…', 32].map((p, i) => <button key={i} className={`w-6 h-6 rounded text-[9px] font-black transition-colors ${p === 1 ? 'bg-[var(--color-primary)] text-white' : 'hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>{p}</button>)}</div>
+                <div className="flex gap-1">{[1, 2, 3, '…', 32].map((p, i) => <button key={i} className={`w-6 h-6 rounded text-xs font-bold transition-colors ${p === 1 ? 'bg-[var(--color-primary)] text-white' : 'hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>{p}</button>)}</div>
             </div>
         </div>
     )
@@ -338,21 +338,21 @@ const FilterBarPreview = memo(() => {
         <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
                 <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[9px] text-[var(--color-text-muted)]" />
-                    <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Cari siswa…" className="h-8 pl-8 pr-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[10px] outline-none transition-all" />
+                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
+                    <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Cari siswa…" className="h-8 pl-8 pr-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-xs outline-none transition-all" />
                 </div>
                 {filters.map(f => (
-                    <div key={f.id} className={`flex items-center gap-1.5 h-8 px-3 rounded-lg border text-[10px] font-black ${colorMap[f.id]}`}>
+                    <div key={f.id} className={`flex items-center gap-1.5 h-8 px-3 rounded-lg border text-xs font-bold ${colorMap[f.id]}`}>
                         {f.label}: {f.value}
-                        <button onClick={() => remove(f.id)} className="opacity-60 hover:opacity-100 transition-opacity ml-1"><X className="text-[8px]" /></button>
+                        <button onClick={() => remove(f.id)} className="opacity-60 hover:opacity-100 transition-opacity ml-1"><X className="w-4 h-4" /></button>
                     </div>
                 ))}
-                <button className="h-8 px-3 rounded-lg border border-dashed border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all flex items-center gap-1.5">
-                    <Plus className="text-[8px]" /> Filter
+                <button className="h-8 px-3 rounded-lg border border-dashed border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all flex items-center gap-1.5">
+                    <Plus className="w-4 h-4" /> Filter
                 </button>
-                {filters.length > 0 && <button onClick={() => setFilters([])} className="text-[9px] font-black text-rose-400 hover:text-rose-600 ml-auto transition-colors">Reset semua</button>}
+                {filters.length > 0 && <button onClick={() => setFilters([])} className="text-xs font-bold text-rose-400 hover:text-rose-600 ml-auto transition-colors">Reset semua</button>}
             </div>
-            <p className="text-[9px] text-[var(--color-text-muted)]">Menampilkan <span className="font-black text-[var(--color-text)]">{filters.length === 0 ? 320 : 48}</span> dari 320 siswa</p>
+            <p className="text-xs text-[var(--color-text-muted)]">Menampilkan <span className="font-bold text-[var(--color-text)]">{filters.length === 0 ? 320 : 48}</span> dari 320 siswa</p>
         </div>
     )
 })
@@ -364,21 +364,21 @@ const TabsPreview = memo(() => {
     return (
         <div className="space-y-5">
             <div>
-                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Underline Tabs</p>
+                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Underline Tabs</p>
                 <div className="flex border-b border-[var(--color-border)] gap-1">
                     {tabs.map(({ k, label, count }) => (
-                        <button key={k} onClick={() => setActiveUnder(k)} className={`px-3 py-2 text-[10px] font-black transition-colors flex items-center gap-1.5 border-b-2 -mb-px ${activeUnder === k ? 'border-[var(--color-primary)] text-[var(--color-primary)]' : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                        <button key={k} onClick={() => setActiveUnder(k)} className={`px-3 py-2 text-xs font-bold transition-colors flex items-center gap-1.5 border-b-2 -mb-px ${activeUnder === k ? 'border-[var(--color-primary)] text-[var(--color-primary)]' : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                             {label}
-                            <span className={`px-1.5 py-0.5 rounded-full text-[8px] font-black ${activeUnder === k ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>{count}</span>
+                            <span className={`px-1.5 py-0.5 rounded-full text-xs font-bold ${activeUnder === k ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>{count}</span>
                         </button>
                     ))}
                 </div>
             </div>
             <div>
-                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Segmented Control</p>
+                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Segmented Control</p>
                 <div className="inline-flex p-1 bg-[var(--color-surface-alt)] rounded-xl gap-1">
                     {['list', 'grid', 'chart'].map(v => (
-                        <button key={v} onClick={() => setActiveSeg(v)} className={`px-4 py-1.5 rounded-lg text-[10px] font-black capitalize transition-colors ${activeSeg === v ? 'bg-[var(--color-surface)] shadow-sm text-[var(--color-text)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>{v}</button>
+                        <button key={v} onClick={() => setActiveSeg(v)} className={`px-4 py-1.5 rounded-lg text-xs font-bold capitalize transition-colors ${activeSeg === v ? 'bg-[var(--color-surface)] shadow-sm text-[var(--color-text)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>{v}</button>
                     ))}
                 </div>
             </div>
@@ -391,20 +391,20 @@ const DropdownPreview = memo(() => {
     return (
         <div className="flex gap-6 items-start">
             <div className="relative">
-                <button onClick={() => setOpen(p => !p)} className={`flex items-center gap-2 px-4 h-9 rounded-xl border text-[11px] font-black transition-colors ${open ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]' : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-primary)]'}`}>
-                    Aksi <ChevronDown className={`text-[8px] transition-transform ${open ? 'rotate-180' : ''}`} />
+                <button onClick={() => setOpen(p => !p)} className={`flex items-center gap-2 px-4 h-9 rounded-xl border text-xs font-bold transition-colors ${open ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]' : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-primary)]'}`}>
+                    Aksi <ChevronDown className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} />
                 </button>
                 {open && (
                     <div className="absolute top-full left-0 mt-1.5 w-44 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-xl overflow-hidden z-10">
                         <div className="p-1">
                             {[{ icon: FileText, label: 'Lihat Detail', color: 'text-[var(--color-text)]' }, { icon: Copy, label: 'Duplikat', color: 'text-[var(--color-text)]' }, { icon: Download, label: 'Export PDF', color: 'text-[var(--color-text)]' }].map(({ icon: Icon, label, color }) => (
-                                <button key={label} className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[11px] font-black ${color} hover:bg-[var(--color-surface-alt)] transition-colors text-left`}>
-                                    {Icon && <Icon className="text-[10px] opacity-60 w-3" />} {label}
+                                <button key={label} className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-bold ${color} hover:bg-[var(--color-surface-alt)] transition-colors text-left`}>
+                                    {Icon && <Icon className="text-xs opacity-60 w-3" />} {label}
                                 </button>
                             ))}
                             <div className="h-px bg-[var(--color-border)] my-1" />
-                            <button className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[11px] font-black text-rose-500 hover:bg-rose-500/5 transition-colors text-left">
-                                <Trash2 className="text-[10px] w-3" /> Hapus
+                            <button className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-bold text-rose-500 hover:bg-rose-500/5 transition-colors text-left">
+                                <Trash2 className="text-xs w-3" /> Hapus
                             </button>
                         </div>
                     </div>
@@ -426,24 +426,24 @@ const CommandPalettePreview = memo(() => {
     return (
         <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-sm overflow-hidden">
             <div className="flex items-center gap-3 px-4 py-3 border-b border-[var(--color-border)]">
-                <Search className="text-[var(--color-text-muted)] text-sm" />
-                <input value={q} onChange={e => setQ(e.target.value)} placeholder="Cari halaman atau ketik perintah…" className="flex-1 text-[11px] font-medium bg-transparent outline-none text-[var(--color-text)] placeholder-[var(--color-text-muted)]" />
-                <kbd className="px-1.5 py-0.5 rounded border border-[var(--color-border)] text-[8px] font-mono text-[var(--color-text-muted)]">Esc</kbd>
+                <Search className="w-4 h-4 text-[var(--color-text-muted)]" />
+                <input value={q} onChange={e => setQ(e.target.value)} placeholder="Cari halaman atau ketik perintah…" className="flex-1 text-xs font-medium bg-transparent outline-none text-[var(--color-text)] placeholder-[var(--color-text-muted)]" />
+                <kbd className="px-1.5 py-0.5 rounded border border-[var(--color-border)] text-xs font-mono text-[var(--color-text-muted)]">Esc</kbd>
             </div>
             <div className="max-h-48 overflow-y-auto">
                 {filtered.length === 0 ? (
-                    <div className="py-8 text-center text-[10px] text-[var(--color-text-muted)]">Tidak ada hasil untuk "{q}"</div>
+                    <div className="py-8 text-center text-xs text-[var(--color-text-muted)]">Tidak ada hasil untuk "{q}"</div>
                 ) : (
                     <>
-                        <p className="px-4 pt-2 pb-1 text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Halaman</p>
+                        <p className="px-4 pt-2 pb-1 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">Halaman</p>
                         {filtered.map((p, i) => (
                             <div key={p.label} className={`flex items-center gap-3 px-4 py-2.5 cursor-pointer transition-colors ${i === 0 ? 'bg-[var(--color-primary)]/8' : 'hover:bg-[var(--color-surface-alt)]'}`}>
                                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${i === 0 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
                                     <p.icon className="text-xs" />
                                 </div>
-                                <span className={`flex-1 text-[11px] font-black ${i === 0 ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}`}>{p.label}</span>
-                                <kbd className="px-1.5 py-0.5 rounded border border-[var(--color-border)] text-[8px] font-mono text-[var(--color-text-muted)]">{p.shortcut}</kbd>
-                                {i === 0 && <span className="text-[9px] text-[var(--color-primary)] font-black">Enter →</span>}
+                                <span className={`flex-1 text-xs font-bold ${i === 0 ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}`}>{p.label}</span>
+                                <kbd className="px-1.5 py-0.5 rounded border border-[var(--color-border)] text-xs font-mono text-[var(--color-text-muted)]">{p.shortcut}</kbd>
+                                {i === 0 && <span className="text-xs text-[var(--color-primary)] font-bold">Enter →</span>}
                             </div>
                         ))}
                     </>
@@ -465,8 +465,8 @@ const OnboardingPreview = memo(() => {
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
-                <div><p className="text-[12px] font-black text-[var(--color-text)]">Setup Akun Sekolah</p><p className="text-[9px] text-[var(--color-text-muted)]">{done} dari {steps.length} selesai</p></div>
-                <span className="text-[16px] font-black text-[var(--color-primary)]">{pct}%</span>
+                <div><p className="text-xs font-bold text-[var(--color-text)]">Setup Akun Sekolah</p><p className="text-xs text-[var(--color-text-muted)]">{done} dari {steps.length} selesai</p></div>
+                <span className="text-[16px] font-bold text-[var(--color-primary)]">{pct}%</span>
             </div>
             <div className="h-2 rounded-full bg-[var(--color-surface-alt)] overflow-hidden">
                 <div className="h-full bg-[var(--color-primary)] rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
@@ -475,14 +475,14 @@ const OnboardingPreview = memo(() => {
                 {steps.map(s => (
                     <div key={s.id} className={`flex items-center gap-3 p-2.5 rounded-xl transition-colors ${!s.done ? 'cursor-pointer hover:bg-[var(--color-surface-alt)]' : ''}`} onClick={() => !s.done && complete(s.id)}>
                         <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all ${s.done ? 'bg-[var(--color-primary)]' : 'border-2 border-[var(--color-primary)]'}`}>
-                            {s.done && <Check className="text-white text-[7px]" />}
+                            {s.done && <Check className="w-4 h-4 text-white" />}
                         </div>
-                        <span className={`text-[11px] font-black transition-all ${s.done ? 'line-through text-[var(--color-text-muted)] opacity-50' : 'text-[var(--color-primary)]'}`}>{s.label}</span>
-                        {!s.done && <span className="ml-auto text-[9px] text-[var(--color-text-muted)] opacity-50">Klik →</span>}
+                        <span className={`text-xs font-bold transition-all ${s.done ? 'line-through text-[var(--color-text-muted)] opacity-50' : 'text-[var(--color-primary)]'}`}>{s.label}</span>
+                        {!s.done && <span className="ml-auto text-xs text-[var(--color-text-muted)] opacity-50">Klik →</span>}
                     </div>
                 ))}
             </div>
-            {pct === 100 && <div className="text-center text-[11px] font-black text-emerald-600 bg-emerald-500/10 rounded-xl p-3">🎉 Semua langkah selesai!</div>}
+            {pct === 100 && <div className="text-center text-xs font-bold text-emerald-600 bg-emerald-500/10 rounded-xl p-3">🎉 Semua langkah selesai!</div>}
         </div>
     )
 })
@@ -496,24 +496,24 @@ const WizardPreview = memo(() => {
                 {steps.map((s, i) => (
                     <div key={i} className="flex items-center flex-1 last:flex-none">
                         <div className="flex flex-col items-center gap-1">
-                            <div onClick={() => setStep(i)} className={`w-8 h-8 rounded-full text-[9px] font-black flex items-center justify-center cursor-pointer transition-all ${i < step ? 'bg-[var(--color-primary)] text-white' : i === step ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-2 border-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}>
-                                {i < step ? <Check className="text-[8px]" /> : i + 1}
+                            <div onClick={() => setStep(i)} className={`w-8 h-8 rounded-full text-xs font-bold flex items-center justify-center cursor-pointer transition-all ${i < step ? 'bg-[var(--color-primary)] text-white' : i === step ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-2 border-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}>
+                                {i < step ? <Check className="w-4 h-4" /> : i + 1}
                             </div>
-                            <span className="text-[7px] font-black uppercase tracking-wide text-[var(--color-text-muted)] whitespace-nowrap">{s}</span>
+                            <span className="text-[7px] font-bold uppercase tracking-wide text-[var(--color-text-muted)] whitespace-nowrap">{s}</span>
                         </div>
                         {i < 3 && <div className={`h-0.5 flex-1 mx-2 mb-4 transition-all ${i < step ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}`} />}
                     </div>
                 ))}
             </div>
             <div className="p-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60 mb-2">Langkah {step + 1} · {steps[step]}</p>
+                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60 mb-2">Langkah {step + 1} · {steps[step]}</p>
                 <div className="space-y-2">
-                    <div className="h-9 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] px-3 flex items-center text-[10px] text-[var(--color-text-muted)]">Isi data {steps[step]}…</div>
+                    <div className="h-9 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] px-3 flex items-center text-xs text-[var(--color-text-muted)]">Isi data {steps[step]}…</div>
                 </div>
             </div>
             <div className="flex justify-between">
-                <button onClick={() => setStep(p => Math.max(0, p - 1))} disabled={step === 0} className="px-4 h-9 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:border-[var(--color-primary)] transition-all disabled:opacity-30">← Kembali</button>
-                <button onClick={() => setStep(p => Math.min(3, p + 1))} disabled={step === 3} className="px-4 h-9 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black transition-all hover:opacity-90 disabled:opacity-40">Lanjut →</button>
+                <button onClick={() => setStep(p => Math.max(0, p - 1))} disabled={step === 0} className="px-4 h-9 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:border-[var(--color-primary)] transition-all disabled:opacity-30">← Kembali</button>
+                <button onClick={() => setStep(p => Math.min(3, p + 1))} disabled={step === 3} className="px-4 h-9 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold transition-all hover:opacity-90 disabled:opacity-40">Lanjut →</button>
             </div>
         </div>
     )
@@ -526,21 +526,21 @@ const ConfirmDialogPreview = memo(() => {
     if (done) return (
         <div className="text-center py-6 space-y-2">
             <div className="text-3xl">✅</div>
-            <p className="text-[12px] font-black text-emerald-600">Berhasil dihapus!</p>
-            <button onClick={() => { setDone(false); setInput('') }} className="text-[9px] font-black text-[var(--color-text-muted)] underline">Reset demo</button>
+            <p className="text-xs font-bold text-emerald-600">Berhasil dihapus!</p>
+            <button onClick={() => { setDone(false); setInput('') }} className="text-xs font-bold text-[var(--color-text-muted)] underline">Reset demo</button>
         </div>
     )
     return (
         <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl p-5 shadow-xl space-y-4">
-            <div className="w-10 h-10 rounded-2xl bg-rose-500/10 flex items-center justify-center"><Trash2 className="text-rose-500 text-sm" /></div>
-            <div><h4 className="text-[13px] font-black text-[var(--color-text)]">Hapus Data Siswa?</h4><p className="text-[10px] text-[var(--color-text-muted)] leading-relaxed mt-1">Aksi ini permanen. Semua nilai dan absensi akan ikut terhapus.</p></div>
+            <div className="w-10 h-10 rounded-2xl bg-rose-500/10 flex items-center justify-center"><Trash2 className="w-4 h-4 text-rose-500" /></div>
+            <div><h4 className="text-sm font-bold text-[var(--color-text)]">Hapus Data Siswa?</h4><p className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-1">Aksi ini permanen. Semua nilai dan absensi akan ikut terhapus.</p></div>
             <div className="p-3 rounded-xl bg-rose-500/5 border border-rose-500/20">
-                <p className="text-[9px] font-black text-rose-500 mb-1.5">Ketik <strong>HAPUS</strong> untuk konfirmasi</p>
-                <input value={input} onChange={e => setInput(e.target.value)} placeholder="HAPUS" className={`w-full h-8 px-3 rounded-lg border text-[11px] font-black outline-none transition-all ${confirmed ? 'border-rose-400 ring-2 ring-rose-400/20 text-rose-600' : 'border-[var(--color-border)] text-[var(--color-text)]'} bg-[var(--color-surface)]`} />
+                <p className="text-xs font-bold text-rose-500 mb-1.5">Ketik <strong>HAPUS</strong> untuk konfirmasi</p>
+                <input value={input} onChange={e => setInput(e.target.value)} placeholder="HAPUS" className={`w-full h-8 px-3 rounded-lg border text-xs font-bold outline-none transition-all ${confirmed ? 'border-rose-400 ring-2 ring-rose-400/20 text-rose-600' : 'border-[var(--color-border)] text-[var(--color-text)]'} bg-[var(--color-surface)]`} />
             </div>
             <div className="flex gap-2">
-                <button onClick={() => setInput('')} className="flex-1 h-9 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
-                <button disabled={!confirmed} onClick={() => setDone(true)} className={`flex-1 h-9 rounded-xl text-[10px] font-black transition-colors ${confirmed ? 'bg-rose-500 text-white hover:bg-rose-600' : 'bg-rose-500/20 text-rose-300 cursor-not-allowed'}`}>Hapus Permanen</button>
+                <button onClick={() => setInput('')} className="flex-1 h-9 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
+                <button disabled={!confirmed} onClick={() => setDone(true)} className={`flex-1 h-9 rounded-xl text-xs font-bold transition-colors ${confirmed ? 'bg-rose-500 text-white hover:bg-rose-600' : 'bg-rose-500/20 text-rose-300 cursor-not-allowed'}`}>Hapus Permanen</button>
             </div>
         </div>
     )
@@ -560,18 +560,18 @@ const RatingPreview = memo(() => {
     return (
         <div className="space-y-5">
             <div>
-                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-2">Penilaian Guru</p>
+                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-2">Penilaian Guru</p>
                 <div className="flex items-center gap-2">
                     {[1, 2, 3, 4, 5].map(v => (
                         <button key={v} onMouseEnter={() => setHover(v)} onMouseLeave={() => setHover(null)} onClick={() => setStars(v)} className="text-2xl transition-transform hover:scale-110 active:scale-95">
                             <span className={(hover ?? stars) >= v ? 'text-amber-400' : 'text-[var(--color-border)]'}>★</span>
                         </button>
                     ))}
-                    <span className="text-[11px] font-black text-[var(--color-text-muted)] ml-1">{stars}.0 / 5</span>
+                    <span className="text-xs font-bold text-[var(--color-text-muted)] ml-1">{stars}.0 / 5</span>
                 </div>
             </div>
             <div>
-                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Mood Check-in</p>
+                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Mood Check-in</p>
                 <div className="flex gap-3 items-center">
                     {moods.map((m, i) => (
                         <button
@@ -586,7 +586,7 @@ const RatingPreview = memo(() => {
                         </button>
                     ))}
                 </div>
-                <p className={`text-[10px] font-black mt-2 transition-all ${moods[mood].color}`}>{moods[mood].label}</p>
+                <p className={`text-xs font-bold mt-2 transition-all ${moods[mood].color}`}>{moods[mood].label}</p>
             </div>
         </div>
     )
@@ -607,24 +607,24 @@ const InlineEditPreview = memo(() => {
         <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl p-4 space-y-2">
             {fields.map(f => (
                 <div key={f.key} className="flex items-center gap-3 py-2 border-b border-[var(--color-border)] last:border-0">
-                    <span className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest w-12 shrink-0">{f.label}</span>
+                    <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide w-12 shrink-0">{f.label}</span>
                     {f.editing ? (
                         <>
-                            <input autoFocus value={f.value} onChange={e => update(f.key, e.target.value)} className="flex-1 h-8 px-2.5 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/10 text-[11px] font-black text-[var(--color-text)] outline-none" />
-                            <button onClick={() => save(f.key)} className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all"><Check className="text-[9px]" /></button>
-                            <button onClick={cancel} className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-rose-500 transition-all"><X className="text-[9px]" /></button>
+                            <input autoFocus value={f.value} onChange={e => update(f.key, e.target.value)} className="flex-1 h-8 px-2.5 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/10 text-xs font-bold text-[var(--color-text)] outline-none" />
+                            <button onClick={() => save(f.key)} className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all"><Check className="w-4 h-4" /></button>
+                            <button onClick={cancel} className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-rose-500 transition-all"><X className="w-4 h-4" /></button>
                         </>
                     ) : (
                         <>
-                            <span className="flex-1 text-[11px] font-black text-[var(--color-text)]">{f.value}</span>
+                            <span className="flex-1 text-xs font-bold text-[var(--color-text)]">{f.value}</span>
                             <button onClick={() => startEdit(f.key)} className="opacity-0 group-hover:opacity-100 w-7 h-7 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all">
-                                <Settings className="text-[9px]" />
+                                <Settings className="w-4 h-4" />
                             </button>
                         </>
                     )}
                 </div>
             ))}
-            {saved && <p className="text-[9px] font-black text-emerald-600 flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />Autosaved</p>}
+            {saved && <p className="text-xs font-bold text-emerald-600 flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />Autosaved</p>}
         </div>
     )
 })
@@ -640,23 +640,23 @@ const SelectTextareaPreview = memo(() => {
         <div className="space-y-5">
             <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                    <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Single Select</label>
+                    <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Single Select</label>
                     <div className="relative">
-                        <select value={sel} onChange={e => setSel(e.target.value)} className="w-full h-10 pl-3.5 pr-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[11px] font-black text-[var(--color-text)] outline-none appearance-none cursor-pointer transition-all">
+                        <select value={sel} onChange={e => setSel(e.target.value)} className="w-full h-10 pl-3.5 pr-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-xs font-bold text-[var(--color-text)] outline-none appearance-none cursor-pointer transition-all">
                             <optgroup label="Kelas 6"><option value="kelas-6a">Kelas 6A</option><option value="kelas-6b">Kelas 6B</option></optgroup>
                             <optgroup label="Kelas 5"><option value="kelas-5a">Kelas 5A</option><option value="kelas-5b">Kelas 5B</option></optgroup>
                         </select>
-                        <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[9px] text-[var(--color-text-muted)] pointer-events-none" />
+                        <ChevronDown className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" />
                     </div>
-                    <p className="text-[9px] text-[var(--color-text-muted)] opacity-60">Dipilih: <span className="text-[var(--color-primary)] font-black">{sel}</span></p>
+                    <p className="text-xs text-[var(--color-text-muted)] opacity-60">Dipilih: <span className="text-[var(--color-primary)] font-bold">{sel}</span></p>
                 </div>
                 <div className="space-y-1.5">
-                    <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Custom Multi-Select</label>
+                    <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Custom Multi-Select</label>
                     <div className="rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface)]">
                         {['admin', 'guru', 'siswa', 'ortu', 'tu'].map(v => (
                             <div key={v} onClick={() => toggleMulti(v)} className={`flex items-center gap-2 px-3 py-2 cursor-pointer transition-colors ${multi.has(v) ? 'bg-[var(--color-primary)]/5' : ' hover:bg-[var(--color-surface-alt)]'} border-b border-[var(--color-border)] last:border-0`}>
-                                <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border transition-all ${multi.has(v) ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)]'}`}>{multi.has(v) && <Check className="text-white text-[7px]" />}</div>
-                                <span className={`text-[10px] font-black capitalize ${multi.has(v) ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}`}>{v}</span>
+                                <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border transition-all ${multi.has(v) ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)]'}`}>{multi.has(v) && <Check className="w-4 h-4 text-white" />}</div>
+                                <span className={`text-xs font-bold capitalize ${multi.has(v) ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}`}>{v}</span>
                             </div>
                         ))}
                     </div>
@@ -664,10 +664,10 @@ const SelectTextareaPreview = memo(() => {
             </div>
             <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                    <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Textarea — auto-resize</label>
-                    <span className={`text-[9px] font-black ${ta.length > 180 ? 'text-rose-500' : ta.length > 120 ? 'text-amber-500' : 'text-[var(--color-text-muted)] opacity-50'}`}>{ta.length}/200</span>
+                    <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Textarea — auto-resize</label>
+                    <span className={`text-xs font-bold ${ta.length > 180 ? 'text-rose-500' : ta.length > 120 ? 'text-amber-500' : 'text-[var(--color-text-muted)] opacity-50'}`}>{ta.length}/200</span>
                 </div>
-                <textarea value={ta} onChange={e => setTa(e.target.value.slice(0, 200))} rows={3} className="w-full px-3.5 py-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10 text-[11px] font-medium text-[var(--color-text)] outline-none resize-none transition-all leading-relaxed" />
+                <textarea value={ta} onChange={e => setTa(e.target.value.slice(0, 200))} rows={3} className="w-full px-3.5 py-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10 text-xs font-medium text-[var(--color-text)] outline-none resize-none transition-all leading-relaxed" />
                 <div className="h-1.5 rounded-full bg-[var(--color-surface-alt)] overflow-hidden"><div className={`h-full rounded-full transition-all ${ta.length > 180 ? 'bg-rose-500' : ta.length > 120 ? 'bg-amber-500' : 'bg-[var(--color-primary)]'}`} style={{ width: `${(ta.length / 200) * 100}%` }} /></div>
             </div>
         </div>
@@ -681,11 +681,11 @@ const RangeSliderPreview = memo(() => {
     return (
         <div className="space-y-6">
             <div>
-                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-4">Single Range</p>
+                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-4">Single Range</p>
                 <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-black text-[var(--color-text)]">Nilai Minimum Lulus</span>
-                        <span className="text-[14px] font-black text-[var(--color-primary)]">{val}</span>
+                        <span className="text-xs font-bold text-[var(--color-text)]">Nilai Minimum Lulus</span>
+                        <span className="text-[14px] font-bold text-[var(--color-primary)]">{val}</span>
                     </div>
                     <div className="relative h-4 flex items-center">
                         <div className="absolute w-full h-2 rounded-full bg-[var(--color-surface-alt)]" />
@@ -693,15 +693,15 @@ const RangeSliderPreview = memo(() => {
                         <input type="range" min="0" max="100" value={val} onChange={e => setVal(+e.target.value)} className="absolute w-full opacity-0 cursor-pointer h-4" />
                         <div className="absolute h-4 w-4 rounded-full bg-white border-2 border-[var(--color-primary)] shadow-md pointer-events-none transition-all" style={{ left: `calc(${val}% - 8px)` }} />
                     </div>
-                    <div className="flex justify-between text-[8px] font-mono text-[var(--color-text-muted)] opacity-50">
+                    <div className="flex justify-between text-xs font-mono text-[var(--color-text-muted)] opacity-50">
                         {[0, 20, 40, 60, 80, 100].map(v => <span key={v}>{v}</span>)}
                     </div>
                 </div>
             </div>
             <div>
-                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-4">Range Double (Min–Max)</p>
+                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-4">Range Double (Min–Max)</p>
                 <div className="space-y-2">
-                    <div className="flex justify-between text-[10px] font-black text-[var(--color-text)]">
+                    <div className="flex justify-between text-xs font-bold text-[var(--color-text)]">
                         <span>Min: <span className="text-[var(--color-primary)]">{min}</span></span>
                         <span>Max: <span className="text-[var(--color-primary)]">{max}</span></span>
                     </div>
@@ -713,7 +713,7 @@ const RangeSliderPreview = memo(() => {
                         <div className="absolute h-4 w-4 rounded-full bg-white border-2 border-[var(--color-primary)] shadow-md pointer-events-none" style={{ left: `calc(${min}% - 8px)` }} />
                         <div className="absolute h-4 w-4 rounded-full bg-white border-2 border-[var(--color-primary)] shadow-md pointer-events-none" style={{ left: `calc(${max}% - 8px)` }} />
                     </div>
-                    <div className="flex justify-between text-[8px] font-mono text-[var(--color-text-muted)] opacity-50">{[0, 25, 50, 75, 100].map(v => <span key={v}>{v}</span>)}</div>
+                    <div className="flex justify-between text-xs font-mono text-[var(--color-text-muted)] opacity-50">{[0, 25, 50, 75, 100].map(v => <span key={v}>{v}</span>)}</div>
                 </div>
             </div>
         </div>
@@ -740,21 +740,21 @@ const OTPInputPreview = memo(() => {
     }
     return (
         <div className="space-y-4">
-            <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50">Verifikasi 2FA — ketik 123456</p>
+            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50">Verifikasi 2FA — ketik 123456</p>
             <div className="flex gap-2 justify-center">
                 {otp.map((v, i) => (
                     <input key={i} id={`otp-${i}`} maxLength={1} value={v} onChange={e => handleChange(i, e.target.value)} onKeyDown={e => handleKey(i, e)} onPaste={handlePaste}
-                        className={`w-11 h-13 text-center text-[20px] font-black rounded-xl border-2 outline-none transition-all bg-[var(--color-surface)] ${v ? 'border-[var(--color-primary)] text-[var(--color-primary)]' : done ? 'border-emerald-400' : 'border-[var(--color-border)]'} focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10`}
+                        className={`w-11 h-13 text-center text-[20px] font-bold rounded-xl border-2 outline-none transition-all bg-[var(--color-surface)] ${v ? 'border-[var(--color-primary)] text-[var(--color-primary)]' : done ? 'border-emerald-400' : 'border-[var(--color-border)]'} focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10`}
                         style={{ height: 52 }} />
                 ))}
             </div>
             {done ? (
                 <div className="flex items-center justify-center gap-2 text-emerald-600">
-                    <CircleCheck className="text-sm" />
-                    <span className="text-[10px] font-black">Verifikasi berhasil!</span>
+                    <CircleCheck className="w-4 h-4" />
+                    <span className="text-xs font-bold">Verifikasi berhasil!</span>
                 </div>
             ) : (
-                <p className="text-[9px] text-center text-[var(--color-text-muted)] opacity-60">Kode dikirim ke +62 8xx xxxx <span className="text-[var(--color-primary)] cursor-pointer hover:underline">Kirim ulang</span></p>
+                <p className="text-xs text-center text-[var(--color-text-muted)] opacity-60">Kode dikirim ke +62 8xx xxxx <span className="text-[var(--color-primary)] cursor-pointer hover:underline">Kirim ulang</span></p>
             )}
         </div>
     )
@@ -766,17 +766,17 @@ const TagInputPreview = memo(() => {
     const addTag = () => { const t = input.trim(); if (t && !tags.includes(t) && tags.length < 8) { setTags(p => [...p, t]); setInput('') } }
     return (
         <div className="space-y-3">
-            <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50">Tag Kompetensi Guru</p>
+            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50">Tag Kompetensi Guru</p>
             <div className="min-h-12 p-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex flex-wrap gap-1.5 focus-within:border-[var(--color-primary)] focus-within:ring-2 focus-within:ring-[var(--color-primary)]/10 transition-all">
                 {tags.map(t => (
-                    <span key={t} className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black border border-[var(--color-primary)]/20">
+                    <span key={t} className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold border border-[var(--color-primary)]/20">
                         {t}
-                        <button onClick={() => setTags(p => p.filter(x => x !== t))} className="hover:opacity-70 transition-opacity"><X className="text-[7px]" /></button>
+                        <button onClick={() => setTags(p => p.filter(x => x !== t))} className="hover:opacity-70 transition-opacity"><X className="w-4 h-4" /></button>
                     </span>
                 ))}
-                {tags.length < 8 && <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addTag() } if (e.key === 'Backspace' && !input) setTags(p => p.slice(0, -1)) }} placeholder={tags.length === 0 ? "Tambah tag…" : ""} className="flex-1 min-w-20 text-[10px] font-medium text-[var(--color-text)] bg-transparent outline-none" />}
+                {tags.length < 8 && <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addTag() } if (e.key === 'Backspace' && !input) setTags(p => p.slice(0, -1)) }} placeholder={tags.length === 0 ? "Tambah tag…" : ""} className="flex-1 min-w-20 text-xs font-medium text-[var(--color-text)] bg-transparent outline-none" />}
             </div>
-            <p className="text-[9px] text-[var(--color-text-muted)] opacity-50">Enter atau koma untuk tambah · Backspace untuk hapus · {8 - tags.length} slot tersisa</p>
+            <p className="text-xs text-[var(--color-text-muted)] opacity-50">Enter atau koma untuk tambah · Backspace untuk hapus · {8 - tags.length} slot tersisa</p>
         </div>
     )
 })
@@ -790,25 +790,25 @@ const ComboboxPreview = memo(() => {
     const toggle = n => setSelected(p => p.includes(n) ? p.filter(x => x !== n) : [...p, n])
     return (
         <div className="space-y-3">
-            <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50">Pilih Siswa Berprestasi</p>
+            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50">Pilih Siswa Berprestasi</p>
             <div className="relative">
                 <div className={`min-h-10 px-3 py-1.5 rounded-xl border bg-[var(--color-surface)] flex flex-wrap gap-1.5 items-center cursor-text transition-all ${open ? 'border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/10' : 'border-[var(--color-border)]'}`} onClick={() => setOpen(true)}>
-                    {selected.map(s => <span key={s} className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black">{s.split(' ')[0]}<button onClick={e => { e.stopPropagation(); toggle(s) }}><X className="text-[7px]" /></button></span>)}
-                    <input value={q} onChange={e => { setQ(e.target.value); setOpen(true) }} placeholder={selected.length === 0 ? "Cari siswa..." : ""} className="flex-1 min-w-16 text-[10px] font-medium text-[var(--color-text)] bg-transparent outline-none" />
+                    {selected.map(s => <span key={s} className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold">{s.split(' ')[0]}<button onClick={e => { e.stopPropagation(); toggle(s) }}><X className="w-4 h-4" /></button></span>)}
+                    <input value={q} onChange={e => { setQ(e.target.value); setOpen(true) }} placeholder={selected.length === 0 ? "Cari siswa..." : ""} className="flex-1 min-w-16 text-xs font-medium text-[var(--color-text)] bg-transparent outline-none" />
                 </div>
                 {open && filtered.length > 0 && (
                     <div className="absolute top-full left-0 right-0 mt-1 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-xl z-10 overflow-hidden max-h-40 overflow-y-auto">
                         {filtered.slice(0, 5).map(n => (
                             <div key={n} onClick={() => { toggle(n); setQ(''); setOpen(false) }} className="flex items-center gap-2 px-3 py-2 hover:bg-[var(--color-surface-alt)] cursor-pointer transition-colors">
-                                <div className="w-6 h-6 rounded-full bg-indigo-500/10 text-indigo-600 text-[7px] font-black flex items-center justify-center shrink-0">{n.split(' ').map(x => x[0]).join('')}</div>
-                                <span className="text-[10px] font-black text-[var(--color-text)]">{n}</span>
+                                <div className="w-6 h-6 rounded-full bg-indigo-500/10 text-indigo-600 text-[7px] font-bold flex items-center justify-center shrink-0">{n.split(' ').map(x => x[0]).join('')}</div>
+                                <span className="text-xs font-bold text-[var(--color-text)]">{n}</span>
                             </div>
                         ))}
                     </div>
                 )}
                 {open && <div className="fixed inset-0 z-0" onClick={() => setOpen(false)} />}
             </div>
-            {selected.length > 0 && <p className="text-[9px] text-[var(--color-text-muted)]">Terpilih: <span className="text-[var(--color-primary)] font-black">{selected.length} siswa</span></p>}
+            {selected.length > 0 && <p className="text-xs text-[var(--color-text-muted)]">Terpilih: <span className="text-[var(--color-primary)] font-bold">{selected.length} siswa</span></p>}
         </div>
     )
 })
@@ -823,17 +823,17 @@ const LoginFormPreview = memo(() => {
     const [success, setSuccess] = useState(false)
     const valid = email.includes('@') && pass.length >= 6
     const submit = () => { if (!valid) return; setLoading(true); setTimeout(() => { setLoading(false); setSuccess(true) }, 1500) }
-    if (success) return <div className="flex flex-col items-center gap-3 py-8"><CircleCheck className="text-emerald-500 text-4xl" /><p className="text-[12px] font-black text-[var(--color-text)]">Login berhasil!</p><button onClick={() => setSuccess(false)} className="text-[9px] font-black text-[var(--color-text-muted)] underline">Reset demo</button></div>
+    if (success) return <div className="flex flex-col items-center gap-3 py-8"><CircleCheck className="w-6 h-6 text-emerald-500" /><p className="text-xs font-bold text-[var(--color-text)]">Login berhasil!</p><button onClick={() => setSuccess(false)} className="text-xs font-bold text-[var(--color-text-muted)] underline">Reset demo</button></div>
     return (
         <div className="space-y-4">
-            <div><h3 className="text-[14px] font-black text-[var(--color-text)]">Masuk ke Akun</h3><p className="text-[9px] text-[var(--color-text-muted)]">Laporanmu · Ekosistem Sekolah</p></div>
+            <div><h3 className="text-[14px] font-bold text-[var(--color-text)]">Masuk ke Akun</h3><p className="text-xs text-[var(--color-text-muted)]">Laporanmu · Ekosistem Sekolah</p></div>
             <div className="space-y-3">
-                <div className="space-y-1"><label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Email</label><input value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="admin@sekolah.sch.id" className={`w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border text-[11px] font-medium text-[var(--color-text)] outline-none transition-all ${email && !email.includes('@') ? 'border-rose-400 ring-2 ring-rose-400/10' : 'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10'}`} />{email && !email.includes('@') && <p className="text-[9px] font-black text-rose-500 flex items-center gap-1"><TriangleAlert className="text-[8px]" />Format email tidak valid</p>}</div>
-                <div className="space-y-1"><label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Password</label><div className="relative"><input value={pass} onChange={e => setPass(e.target.value)} type={showPass ? 'text' : 'password'} placeholder="Min. 6 karakter" className="w-full h-10 pl-3.5 pr-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10 text-[11px] font-medium text-[var(--color-text)] outline-none transition-all" /><button onClick={() => setShowPass(p => !p)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">{ showPass ? <Eye className="text-xs" /> : <Lock className="text-xs" /> }</button></div></div>
+                <div className="space-y-1"><label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Email</label><input value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="admin@sekolah.sch.id" className={`w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border text-xs font-medium text-[var(--color-text)] outline-none transition-all ${email && !email.includes('@') ? 'border-rose-400 ring-2 ring-rose-400/10' : 'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10'}`} />{email && !email.includes('@') && <p className="text-xs font-bold text-rose-500 flex items-center gap-1"><TriangleAlert className="w-4 h-4" />Format email tidak valid</p>}</div>
+                <div className="space-y-1"><label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Password</label><div className="relative"><input value={pass} onChange={e => setPass(e.target.value)} type={showPass ? 'text' : 'password'} placeholder="Min. 6 karakter" className="w-full h-10 pl-3.5 pr-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10 text-xs font-medium text-[var(--color-text)] outline-none transition-all" /><button onClick={() => setShowPass(p => !p)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">{ showPass ? <Eye className="w-4 h-4" /> : <Lock className="w-4 h-4" /> }</button></div></div>
             </div>
-            <div className="flex items-center justify-between"><label className="flex items-center gap-2 cursor-pointer"><div className="w-3.5 h-3.5 rounded border-2 border-[var(--color-border)] bg-[var(--color-surface)]" /><span className="text-[9px] text-[var(--color-text-muted)]">Ingat saya</span></label><span className="text-[9px] font-black text-[var(--color-primary)] cursor-pointer hover:underline">Lupa password?</span></div>
-            <button onClick={submit} disabled={!valid || loading} className={`w-full h-10 rounded-xl text-[11px] font-black transition-all flex items-center justify-center gap-2 ${valid && !loading ? 'bg-[var(--color-primary)] text-white hover:opacity-90 active:scale-95' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] cursor-not-allowed'}`}>
-                {loading ? <><LoaderCircle className="animate-spin" />Memverifikasi…</> : 'Masuk →'}
+            <div className="flex items-center justify-between"><label className="flex items-center gap-2 cursor-pointer"><div className="w-3.5 h-3.5 rounded border-2 border-[var(--color-border)] bg-[var(--color-surface)]" /><span className="text-xs text-[var(--color-text-muted)]">Ingat saya</span></label><span className="text-xs font-bold text-[var(--color-primary)] cursor-pointer hover:underline">Lupa password?</span></div>
+            <button onClick={submit} disabled={!valid || loading} className={`w-full h-10 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${valid && !loading ? 'bg-[var(--color-primary)] text-white hover:opacity-90 active:scale-95' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] cursor-not-allowed'}`}>
+                {loading ? <><LoaderCircle className="w-4 h-4 animate-spin" />Memverifikasi…</> : 'Masuk →'}
             </button>
         </div>
     )
@@ -849,19 +849,19 @@ const SearchFilterFormPreview = memo(() => {
     return (
         <div className="space-y-3">
             <div className="flex flex-wrap gap-2">
-                <div className="relative flex-1 min-w-32"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[9px] text-[var(--color-text-muted)]" /><input value={q} onChange={e => setQ(e.target.value)} placeholder="Cari nama…" className="w-full h-9 pl-8 pr-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[10px] font-medium text-[var(--color-text)] outline-none transition-all" /></div>
-                <div className="relative"><select value={kelas} onChange={e => setKelas(e.target.value)} className="h-9 pl-3 pr-8 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text)] outline-none appearance-none cursor-pointer"><option value="semua">Semua Kelas</option>{['4C', '5A', '5B', '6A', '6B'].map(k => <option key={k}>{k}</option>)}</select><ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[8px] text-[var(--color-text-muted)] pointer-events-none" /></div>
-                <div className="relative"><select value={status} onChange={e => setStatus(e.target.value)} className="h-9 pl-3 pr-8 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text)] outline-none appearance-none cursor-pointer"><option value="semua">Semua Status</option>{['Aktif', 'Pending', 'Nonaktif'].map(s => <option key={s}>{s}</option>)}</select><ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[8px] text-[var(--color-text-muted)] pointer-events-none" /></div>
+                <div className="relative flex-1 min-w-32"><Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" /><input value={q} onChange={e => setQ(e.target.value)} placeholder="Cari nama…" className="w-full h-9 pl-8 pr-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-xs font-medium text-[var(--color-text)] outline-none transition-all" /></div>
+                <div className="relative"><select value={kelas} onChange={e => setKelas(e.target.value)} className="h-9 pl-3 pr-8 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text)] outline-none appearance-none cursor-pointer"><option value="semua">Semua Kelas</option>{['4C', '5A', '5B', '6A', '6B'].map(k => <option key={k}>{k}</option>)}</select><ChevronDown className="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" /></div>
+                <div className="relative"><select value={status} onChange={e => setStatus(e.target.value)} className="h-9 pl-3 pr-8 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text)] outline-none appearance-none cursor-pointer"><option value="semua">Semua Status</option>{['Aktif', 'Pending', 'Nonaktif'].map(s => <option key={s}>{s}</option>)}</select><ChevronDown className="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" /></div>
             </div>
-            <div className="flex items-center justify-between"><p className="text-[9px] text-[var(--color-text-muted)]"><span className="font-black text-[var(--color-text)]">{filtered.length}</span> hasil</p><div className="flex items-center gap-1"><span className="text-[8px] text-[var(--color-text-muted)] opacity-60">Urut:</span><button onClick={() => setSortBy(p => p === 'nama' ? 'nilai' : 'nama')} className="text-[8px] font-black text-[var(--color-primary)] hover:underline capitalize">{sortBy}</button></div></div>
+            <div className="flex items-center justify-between"><p className="text-xs text-[var(--color-text-muted)]"><span className="font-bold text-[var(--color-text)]">{filtered.length}</span> hasil</p><div className="flex items-center gap-1"><span className="text-xs text-[var(--color-text-muted)] opacity-60">Urut:</span><button onClick={() => setSortBy(p => p === 'nama' ? 'nilai' : 'nama')} className="text-xs font-bold text-[var(--color-primary)] hover:underline capitalize">{sortBy}</button></div></div>
             <div className="space-y-1">
-                {filtered.length === 0 ? <div className="py-4 text-center text-[10px] font-black text-[var(--color-text-muted)] opacity-50">Tidak ada hasil</div> : filtered.map(d => (
+                {filtered.length === 0 ? <div className="py-4 text-center text-xs font-bold text-[var(--color-text-muted)] opacity-50">Tidak ada hasil</div> : filtered.map(d => (
                     <div key={d.n} className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[var(--color-surface-alt)] transition-colors">
-                        <div className="w-7 h-7 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[8px] font-black flex items-center justify-center shrink-0">{d.n.split(' ').map(x => x[0]).join('')}</div>
-                        <span className="flex-1 text-[10px] font-black text-[var(--color-text)]">{d.n}</span>
-                        <span className="text-[9px] font-mono text-[var(--color-text-muted)]">{d.k}</span>
-                        <span className={`px-2 py-0.5 rounded-full text-[8px] font-black ${d.s === 'Aktif' ? 'bg-emerald-500/10 text-emerald-700' : d.s === 'Pending' ? 'bg-amber-500/10 text-amber-700' : 'bg-rose-500/10 text-rose-700'}`}>{d.s}</span>
-                        <span className="text-[10px] font-black text-[var(--color-text)]">{d.v}</span>
+                        <div className="w-7 h-7 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold flex items-center justify-center shrink-0">{d.n.split(' ').map(x => x[0]).join('')}</div>
+                        <span className="flex-1 text-xs font-bold text-[var(--color-text)]">{d.n}</span>
+                        <span className="text-xs font-mono text-[var(--color-text-muted)]">{d.k}</span>
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${d.s === 'Aktif' ? 'bg-emerald-500/10 text-emerald-700' : d.s === 'Pending' ? 'bg-amber-500/10 text-amber-700' : 'bg-rose-500/10 text-rose-700'}`}>{d.s}</span>
+                        <span className="text-xs font-bold text-[var(--color-text)]">{d.v}</span>
                     </div>
                 ))}
             </div>
@@ -879,16 +879,16 @@ const BarChartPreview = memo(() => {
             <div className="flex items-end gap-2 h-28">
                 {data.map(({ l, v }) => (
                     <div key={l} className="flex-1 flex flex-col items-center gap-1 group">
-                        <span className="text-[8px] font-black text-[var(--color-primary)] opacity-0 group-hover:opacity-100 transition-opacity">{v}</span>
+                        <span className="text-xs font-bold text-[var(--color-primary)] opacity-0 group-hover:opacity-100 transition-opacity">{v}</span>
                         <div className="w-full rounded-t-lg bg-[var(--color-primary)]/20 group-hover:bg-[var(--color-primary)] transition-all relative overflow-hidden" style={{ height: `${(v / max) * 80}px` }}>
                             <div className="absolute bottom-0 left-0 right-0 bg-[var(--color-primary)] rounded-t-lg transition-all" style={{ height: `${(v / max) * 80}px` }} />
                         </div>
-                        <span className="text-[8px] font-black text-[var(--color-text-muted)] opacity-60">{l}</span>
+                        <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-60">{l}</span>
                     </div>
                 ))}
             </div>
             <div className="h-px bg-[var(--color-border)]" />
-            <p className="text-[8px] font-black text-[var(--color-text-muted)] opacity-50 text-center">Rata-rata Nilai Ujian per Bulan</p>
+            <p className="text-xs font-bold text-[var(--color-text-muted)] opacity-50 text-center">Rata-rata Nilai Ujian per Bulan</p>
         </div>
     )
 })
@@ -910,9 +910,9 @@ const LineChartPreview = memo(() => {
                 {pts.map(([x, y], i) => <circle key={i} cx={x} cy={y} r="3" fill="white" stroke="var(--color-primary)" strokeWidth="1.5" />)}
             </svg>
             <div className="flex justify-between px-1">
-                {months.map((m, i) => <span key={i} className="text-[7px] font-black text-[var(--color-text-muted)] opacity-50">{m}</span>)}
+                {months.map((m, i) => <span key={i} className="text-[7px] font-bold text-[var(--color-text-muted)] opacity-50">{m}</span>)}
             </div>
-            <p className="text-[8px] font-black text-[var(--color-text-muted)] opacity-50 text-center">Tren Kehadiran Siswa 2024</p>
+            <p className="text-xs font-bold text-[var(--color-text-muted)] opacity-50 text-center">Tren Kehadiran Siswa 2024</p>
         </div>
     )
 })
@@ -935,8 +935,8 @@ const DonutChartPreview = memo(() => {
                 {segments.map((s, i) => (
                     <div key={s.l} className="flex items-center gap-2 cursor-pointer" onMouseEnter={() => setHov(i)} onMouseLeave={() => setHov(null)}>
                         <div className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ background: s.c }} />
-                        <span className="text-[10px] font-black text-[var(--color-text)] flex-1">{s.l}</span>
-                        <span className="text-[10px] font-black" style={{ color: s.c }}>{s.v}%</span>
+                        <span className="text-xs font-bold text-[var(--color-text)] flex-1">{s.l}</span>
+                        <span className="text-xs font-bold" style={{ color: s.c }}>{s.v}%</span>
                     </div>
                 ))}
             </div>
@@ -959,8 +959,8 @@ const SparklinePreview = memo(() => {
                 return (
                     <div key={label} className="p-3 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] hover:shadow-md transition-all">
                         <div className="flex items-start justify-between mb-2">
-                            <div><p className="text-[16px] font-black font-heading tracking-tight text-[var(--color-text)]">{val}</p><p className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">{label}</p></div>
-                            <span className={`text-[8px] font-black ${up ? 'text-emerald-500' : 'text-rose-500'}`}>{up ? '↑' : '↓'}{change}</span>
+                            <div><p className="text-[16px] font-bold font-heading tracking-tight text-[var(--color-text)]">{val}</p><p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">{label}</p></div>
+                            <span className={`text-xs font-bold ${up ? 'text-emerald-500' : 'text-rose-500'}`}>{up ? '↑' : '↓'}{change}</span>
                         </div>
                         <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', height: 28 }}>
                             <polyline points={pts} fill="none" stroke={up ? '#22c55e' : '#ef4444'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -982,7 +982,7 @@ const HeatmapPreview = memo(() => {
         <div className="space-y-2">
             <div className="flex gap-1">
                 <div className="w-8 shrink-0" />
-                {days.map(d => <div key={d} className="flex-1 text-center text-[8px] font-black text-[var(--color-text-muted)] opacity-60">{d}</div>)}
+                {days.map(d => <div key={d} className="flex-1 text-center text-xs font-bold text-[var(--color-text-muted)] opacity-60">{d}</div>)}
             </div>
             {hours.map((h, hi) => (
                 <div key={h} className="flex gap-1 items-center">
@@ -998,7 +998,7 @@ const HeatmapPreview = memo(() => {
                     })}
                 </div>
             ))}
-            {hov && <p className="text-[9px] font-black text-[var(--color-text-muted)] text-center">{hov.d} {hov.h}:00 — Kehadiran: <span className="text-[var(--color-primary)]">{hov.v}%</span></p>}
+            {hov && <p className="text-xs font-bold text-[var(--color-text-muted)] text-center">{hov.d} {hov.h}:00 — Kehadiran: <span className="text-[var(--color-primary)]">{hov.v}%</span></p>}
         </div>
     )
 })
@@ -1028,20 +1028,20 @@ const SidebarNavPreview = memo(() => {
         <div className="flex h-72 border border-[var(--color-border)] rounded-2xl overflow-hidden">
             <div className={`${collapsed ? 'w-14' : 'w-52'} bg-[var(--color-surface)] border-r border-[var(--color-border)] flex flex-col transition-all duration-300 shrink-0`}>
                 <div className="flex items-center justify-between px-3 py-3 border-b border-[var(--color-border)]">
-                    {!collapsed && <div className="flex items-center gap-2"><div className="w-6 h-6 rounded-lg bg-[var(--color-primary)] flex items-center justify-center"><Gauge className="text-white text-[9px]" /></div><span className="text-[11px] font-black text-[var(--color-text)]">Laporanmu</span></div>}
+                    {!collapsed && <div className="flex items-center gap-2"><div className="w-6 h-6 rounded-lg bg-[var(--color-primary)] flex items-center justify-center"><Gauge className="w-4 h-4 text-white" /></div><span className="text-xs font-bold text-[var(--color-text)]">Laporanmu</span></div>}
                     <button onClick={() => setCollapsed(p => !p)} className={`w-6 h-6 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] transition-all ${collapsed ? 'mx-auto' : ''}`}>
-                        <ChevronRight className={`text-[8px] transition-transform ${collapsed ? '' : 'rotate-180'}`} />
+                        <ChevronRight className={`w-4 h-4 transition-transform ${collapsed ? '' : 'rotate-180'}`} />
                     </button>
                 </div>
                 <div className="flex-1 overflow-y-auto p-2 space-y-4">
                     {groups.map(g => (
                         <div key={g.label}>
-                            {!collapsed && <p className="text-[7px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50 px-2 mb-1">{g.label}</p>}
+                            {!collapsed && <p className="text-[7px] font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50 px-2 mb-1">{g.label}</p>}
                             <div className="space-y-0.5">
                                 {g.items.map(item => (
                                     <button key={item.key} onClick={() => setActive(item.key)} className={`w-full flex items-center gap-2.5 px-2 py-2 rounded-xl transition-colors text-left ${active === item.key ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)]'}`}>
                                         <item.icon className={`text-xs shrink-0 ${active === item.key ? 'text-[var(--color-primary)]' : ''}`} />
-                                        {!collapsed && <><span className="text-[10px] font-black flex-1">{item.label}</span>{item.badge && <span className="px-1.5 py-0.5 rounded-full bg-rose-500 text-white text-[7px] font-black">{item.badge}</span>}</>}
+                                        {!collapsed && <><span className="text-xs font-bold flex-1">{item.label}</span>{item.badge && <span className="px-1.5 py-0.5 rounded-full bg-rose-500 text-white text-[7px] font-bold">{item.badge}</span>}</>}
                                         {collapsed && item.badge && <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-rose-500" />}
                                     </button>
                                 ))}
@@ -1051,15 +1051,15 @@ const SidebarNavPreview = memo(() => {
                 </div>
                 <div className={`p-2 border-t border-[var(--color-border)]`}>
                     <button className={`w-full flex items-center gap-2.5 px-2 py-2 rounded-xl text-rose-500 hover:bg-rose-500/10 transition-all ${collapsed ? 'justify-center' : ''}`}>
-                        <LogOut className="text-xs shrink-0" />
-                        {!collapsed && <span className="text-[10px] font-black">Keluar</span>}
+                        <LogOut className="w-4 h-4 shrink-0" />
+                        {!collapsed && <span className="text-xs font-bold">Keluar</span>}
                     </button>
                 </div>
             </div>
             <div className="flex-1 bg-[var(--color-surface-alt)] flex items-center justify-center">
                 <div className="text-center space-y-1">
-                    <Gauge className="text-[var(--color-text-muted)] text-2xl opacity-20" />
-                    <p className="text-[9px] font-black text-[var(--color-text-muted)] opacity-40 uppercase tracking-widest">{active}</p>
+                    <Gauge className="w-6 h-6 text-[var(--color-text-muted)] opacity-20" />
+                    <p className="text-xs font-bold text-[var(--color-text-muted)] opacity-40 uppercase tracking-wide">{active}</p>
                 </div>
             </div>
         </div>
@@ -1081,14 +1081,14 @@ const ChatPreview = memo(() => {
     return (
         <div className="flex flex-col border border-[var(--color-border)] rounded-2xl overflow-hidden h-72">
             <div className="flex items-center gap-3 px-4 py-3 border-b border-[var(--color-border)] bg-[var(--color-surface)]">
-                <div className="relative"><div className="w-8 h-8 rounded-full bg-indigo-500/10 text-indigo-600 text-[9px] font-black flex items-center justify-center">AS</div><div className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[var(--color-surface)]" /></div>
-                <div><p className="text-[11px] font-black text-[var(--color-text)]">Andi Setiawan</p><p className="text-[9px] text-emerald-600 font-black">Online</p></div>
+                <div className="relative"><div className="w-8 h-8 rounded-full bg-indigo-500/10 text-indigo-600 text-xs font-bold flex items-center justify-center">AS</div><div className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[var(--color-surface)]" /></div>
+                <div><p className="text-xs font-bold text-[var(--color-text)]">Andi Setiawan</p><p className="text-xs text-emerald-600 font-bold">Online</p></div>
             </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[var(--color-surface-alt)]">
                 {messages.map((m, i) => (
                     <div key={i} className={`flex gap-2 items-end ${m.from === 'me' ? 'flex-row-reverse' : ''}`}>
-                        {m.from === 'them' && <div className="w-6 h-6 rounded-full bg-indigo-500/10 text-indigo-600 text-[7px] font-black flex items-center justify-center shrink-0">AS</div>}
-                        <div className={`max-w-[70%] px-3 py-2 rounded-2xl text-[10px] font-medium leading-relaxed ${m.from === 'me' ? 'bg-[var(--color-primary)] text-white rounded-br-sm' : 'bg-[var(--color-surface)] text-[var(--color-text)] border border-[var(--color-border)] rounded-bl-sm'}`}>
+                        {m.from === 'them' && <div className="w-6 h-6 rounded-full bg-indigo-500/10 text-indigo-600 text-[7px] font-bold flex items-center justify-center shrink-0">AS</div>}
+                        <div className={`max-w-[70%] px-3 py-2 rounded-2xl text-xs font-medium leading-relaxed ${m.from === 'me' ? 'bg-[var(--color-primary)] text-white rounded-br-sm' : 'bg-[var(--color-surface)] text-[var(--color-text)] border border-[var(--color-border)] rounded-bl-sm'}`}>
                             {m.text}
                             <p className={`text-[7px] mt-0.5 ${m.from === 'me' ? 'text-white/60 text-right' : 'text-[var(--color-text-muted)] opacity-50'}`}>{m.time}{m.from === 'me' && ' ✓✓'}</p>
                         </div>
@@ -1096,9 +1096,9 @@ const ChatPreview = memo(() => {
                 ))}
             </div>
             <div className="flex items-center gap-2 px-3 py-2.5 border-t border-[var(--color-border)] bg-[var(--color-surface)]">
-                <button className="w-7 h-7 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"><Plus className="text-[9px]" /></button>
-                <input value={msg} onChange={e => setMsg(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="Ketik pesan…" className="flex-1 h-8 px-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-medium text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] transition-colors" />
-                <button onClick={send} className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${msg.trim() ? 'bg-[var(--color-primary)] text-white hover:opacity-90' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}><ArrowRight className="text-[10px]" /></button>
+                <button className="w-7 h-7 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"><Plus className="w-4 h-4" /></button>
+                <input value={msg} onChange={e => setMsg(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="Ketik pesan…" className="flex-1 h-8 px-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-medium text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] transition-colors" />
+                <button onClick={send} className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${msg.trim() ? 'bg-[var(--color-primary)] text-white hover:opacity-90' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}><ArrowRight className="w-4 h-4" /></button>
             </div>
         </div>
     )
@@ -1120,12 +1120,12 @@ const FABPreview = memo(() => {
             <div className="absolute bottom-4 right-4 flex flex-col items-end gap-2.5">
                 {open && actions.map((a, i) => (
                     <div key={i} className="flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2 duration-200" style={{ animationDelay: `${i * 50}ms` }}>
-                        <span className="px-2.5 py-1 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl text-[9px] font-black text-[var(--color-text)] shadow-sm">{a.label}</span>
+                        <span className="px-2.5 py-1 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl text-xs font-bold text-[var(--color-text)] shadow-sm">{a.label}</span>
                         <button className={`w-9 h-9 rounded-full border flex items-center justify-center shadow-md transition-all hover:scale-110 active:scale-95 ${a.color}`}><a.icon className="text-xs" /></button>
                     </div>
                 ))}
                 <button onClick={() => setOpen(p => !p)} className={`w-12 h-12 rounded-full shadow-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 ${open ? 'bg-slate-700 text-white rotate-45' : 'bg-[var(--color-primary)] text-white'}`}>
-                    <Plus className={`text-lg transition-transform duration-300 ${open ? 'rotate-45' : ''}`} />
+                    <Plus className={`w-5 h-5 transition-transform duration-300 ${open ? 'rotate-45' : ''}`} />
                 </button>
             </div>
         </div>
@@ -1143,7 +1143,7 @@ const MobileBottomNavPreview = memo(() => {
     return (
         <div className="w-52 mx-auto border border-[var(--color-border)] rounded-2xl overflow-hidden bg-[var(--color-surface)]">
             <div className="h-24 bg-[var(--color-surface-alt)] flex items-center justify-center">
-                <p className="text-[9px] font-black text-[var(--color-text-muted)] opacity-40 uppercase tracking-widest">{active}</p>
+                <p className="text-xs font-bold text-[var(--color-text-muted)] opacity-40 uppercase tracking-wide">{active}</p>
             </div>
             <div className="border-t border-[var(--color-border)] flex">
                 {tabs.map(tab => (
@@ -1151,8 +1151,8 @@ const MobileBottomNavPreview = memo(() => {
                         <div className={`w-8 h-6 rounded-lg flex items-center justify-center transition-all ${active === tab.key ? 'bg-[var(--color-primary)]/10' : ''}`}>
                             <tab.icon className={`text-xs transition-all ${active === tab.key ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}`} />
                         </div>
-                        <span className={`text-[7px] font-black transition-all ${active === tab.key ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}`}>{tab.label}</span>
-                        {tab.badge && <div className="absolute top-1 right-[18%] w-4 h-4 rounded-full bg-rose-500 text-white text-[7px] font-black flex items-center justify-center border-2 border-[var(--color-surface)]">{tab.badge}</div>}
+                        <span className={`text-[7px] font-bold transition-all ${active === tab.key ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}`}>{tab.label}</span>
+                        {tab.badge && <div className="absolute top-1 right-[18%] w-4 h-4 rounded-full bg-rose-500 text-white text-[7px] font-bold flex items-center justify-center border-2 border-[var(--color-surface)]">{tab.badge}</div>}
                     </button>
                 ))}
             </div>
@@ -1169,17 +1169,17 @@ const BreakpointPreview = memo(() => {
         <div className="space-y-4">
             <div className="flex flex-wrap gap-2">
                 {bps.map(b => (
-                    <button key={b.label} onClick={() => setWidth(b.min || 320)} className={`px-3 py-1.5 rounded-xl text-[9px] font-black border transition-colors ${current.label === b.label ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]'}`}>
+                    <button key={b.label} onClick={() => setWidth(b.min || 320)} className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors ${current.label === b.label ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]'}`}>
                         <span className="uppercase">{b.label}</span> <span className="opacity-60">≥{b.min}px</span>
                     </button>
                 ))}
             </div>
             <div className="p-4 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Layout: <span className="text-[var(--color-primary)]">{cols} kolom</span> pada breakpoint <span className="text-[var(--color-primary)]">{current.label}</span></p>
+                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Layout: <span className="text-[var(--color-primary)]">{cols} kolom</span> pada breakpoint <span className="text-[var(--color-primary)]">{current.label}</span></p>
                 <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${cols},1fr)` }}>
                     {Array.from({ length: cols * 2 }).map((_, i) => (
                         <div key={i} className="h-10 rounded-xl bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-center">
-                            <span className="text-[8px] font-black text-[var(--color-primary)] opacity-60">col</span>
+                            <span className="text-xs font-bold text-[var(--color-primary)] opacity-60">col</span>
                         </div>
                     ))}
                 </div>
@@ -1195,37 +1195,37 @@ const TopbarPreview = memo(() => {
         <div className="space-y-3">
             {/* Variant 1: Full */}
             <div>
-                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-2">Full Topbar</p>
+                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-2">Full Topbar</p>
                 <div className="flex items-center gap-3 px-4 py-2.5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl">
-                    <div className="w-7 h-7 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shrink-0"><Gauge className="text-white text-[9px]" /></div>
-                    <span className="text-[11px] font-black text-[var(--color-text)]">Laporanmu</span>
+                    <div className="w-7 h-7 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shrink-0"><Gauge className="w-4 h-4 text-white" /></div>
+                    <span className="text-xs font-bold text-[var(--color-text)]">Laporanmu</span>
                     <div className="flex-1 relative">
-                        <Search className={`absolute left-3 top-1/2 -translate-y-1/2 text-[9px] transition-colors ${search ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
-                        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Cari siswa, laporan…" className="w-full h-8 pl-8 pr-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[10px] font-medium text-[var(--color-text)] outline-none transition-all" />
-                        {search && <button onClick={() => setSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)]"><X className="text-[9px]" /></button>}
+                        <Search className={`w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${search ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
+                        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Cari siswa, laporan…" className="w-full h-8 pl-8 pr-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-xs font-medium text-[var(--color-text)] outline-none transition-all" />
+                        {search && <button onClick={() => setSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)]"><X className="w-4 h-4" /></button>}
                     </div>
                     <div className="flex items-center gap-2">
                         <div className="relative">
                             <button onClick={() => setNotifOpen(p => !p)} className="w-8 h-8 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
-                                <Bell className="text-xs" />
+                                <Bell className="w-4 h-4" />
                             </button>
-                            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[7px] font-black flex items-center justify-center border-2 border-[var(--color-surface)]">3</div>
+                            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[7px] font-bold flex items-center justify-center border-2 border-[var(--color-surface)]">3</div>
                         </div>
-                        <div className="w-8 h-8 rounded-full bg-indigo-500/10 text-indigo-600 text-[9px] font-black flex items-center justify-center cursor-pointer hover:ring-2 hover:ring-[var(--color-primary)]/20 transition-all">AS</div>
+                        <div className="w-8 h-8 rounded-full bg-indigo-500/10 text-indigo-600 text-xs font-bold flex items-center justify-center cursor-pointer hover:ring-2 hover:ring-[var(--color-primary)]/20 transition-all">AS</div>
                     </div>
                 </div>
             </div>
             {/* Variant 2: Branded */}
             <div>
-                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-2">Branded / Dark</p>
+                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-2">Branded / Dark</p>
                 <div className="flex items-center gap-4 px-4 py-2.5 bg-[var(--color-primary)] rounded-2xl">
-                    <span className="text-[11px] font-black text-white">Laporanmu</span>
+                    <span className="text-xs font-bold text-white">Laporanmu</span>
                     <div className="flex gap-4">
                         {['Dashboard', 'Data Siswa', 'Laporan'].map((item, i) => (
-                            <button key={item} className={`text-[10px] font-black transition-colors ${i === 0 ? 'text-white border-b border-white' : 'text-white/60 hover:text-white'}`}>{item}</button>
+                            <button key={item} className={`text-xs font-bold transition-colors ${i === 0 ? 'text-white border-b border-white' : 'text-white/60 hover:text-white'}`}>{item}</button>
                         ))}
                     </div>
-                    <div className="ml-auto w-7 h-7 rounded-full bg-white/20 text-white text-[9px] font-black flex items-center justify-center">AS</div>
+                    <div className="ml-auto w-7 h-7 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center">AS</div>
                 </div>
             </div>
         </div>
@@ -1284,13 +1284,13 @@ const SectionHeader = memo(({ icon: Icon, number, title }) => {
     return (
         <div id={id} className="flex items-center gap-4 mb-8 group">
             <div className="relative group/num">
-                <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center text-sm font-black relative z-10 border border-[var(--color-primary)]/20 group-hover:bg-[var(--color-primary)] group-hover:text-white transition-colors">{number}</div>
+                <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center text-sm font-bold relative z-10 border border-[var(--color-primary)]/20 group-hover:bg-[var(--color-primary)] group-hover:text-white transition-colors">{number}</div>
             </div>
             <div className="flex flex-col">
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-primary)] opacity-60 mb-0.5">Section</span>
+                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-primary)] opacity-60 mb-0.5">Section</span>
                 <div className="flex items-center gap-2">
-                    {Icon && <Icon className="text-[var(--color-text-muted)] text-[11px]" />}
-                    <h2 className="text-sm font-black text-[var(--color-text)] uppercase tracking-widest">{title}</h2>
+                    {Icon && <Icon className="w-4 h-4 text-[var(--color-text-muted)]" />}
+                    <h2 className="text-sm font-bold text-[var(--color-text)] uppercase tracking-wide">{title}</h2>
                 </div>
             </div>
             <div className="h-px bg-[var(--color-border)] flex-1 ml-4 opacity-50" />
@@ -1304,17 +1304,17 @@ const ColorBlock = memo(({ name, variable, description }) => {
     return (
         <div className="space-y-1.5 group">
             <div className="flex items-center justify-between px-1">
-                <span className="text-[10px] font-black tracking-widest text-[var(--color-text)] uppercase">{name}</span>
+                <span className="text-xs font-bold tracking-wide text-[var(--color-text)] uppercase">{name}</span>
                 <button onClick={() => onCopy(variable)} className="opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Copy className="text-[10px] text-[var(--color-primary)]" />
+                    <Copy className="w-4 h-4 text-[var(--color-primary)]" />
                 </button>
             </div>
             <div className="h-20 rounded-2xl border border-[var(--color-border)] overflow-hidden shadow-sm cursor-pointer hover:-translate-y-0.5 transition-transform active:scale-95" onClick={() => onCopy(variable)}>
                 <div className="h-full w-full" style={{ backgroundColor: `var(${variable})` }} />
             </div>
             <div className="px-1">
-                <p className="text-[9px] font-mono text-[var(--color-text-muted)] opacity-60 truncate uppercase tracking-tighter">{variable}</p>
-                <p className="text-[8px] font-medium text-[var(--color-text-muted)] opacity-40 italic">{description}</p>
+                <p className="text-xs font-mono text-[var(--color-text-muted)] opacity-60 truncate uppercase tracking-tighter">{variable}</p>
+                <p className="text-xs font-medium text-[var(--color-text-muted)] opacity-40 italic">{description}</p>
             </div>
         </div>
     )
@@ -1337,14 +1337,14 @@ const UIBlock = memo(({ title, children, code, fullWidth = false, dos = null, do
         <div className={`space-y-2.5 ${fullWidth ? 'md:col-span-2 lg:col-span-3' : ''}`}>
             {/* Header row */}
             <div className="flex items-center justify-between px-1 gap-2">
-                <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 truncate">{title}</span>
+                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 truncate">{title}</span>
                 <div className="flex items-center gap-1 shrink-0">
                     {/* Responsive size toggle — only in preview mode */}
                     {mode === 'preview' && (
                         <div className="flex items-center gap-0.5 p-0.5 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-md mr-1">
                             {Object.keys(PREVIEW_SIZES).map(s => (
                                 <button key={s} onClick={() => setSize(s)}
-                                    className={`w-5 h-5 rounded text-[7px] font-black transition-all ${size === s ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] opacity-40 hover:opacity-70'}`}>
+                                    className={`w-5 h-5 rounded text-[7px] font-bold transition-all ${size === s ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] opacity-40 hover:opacity-70'}`}>
                                     {s}
                                 </button>
                             ))}
@@ -1352,10 +1352,10 @@ const UIBlock = memo(({ title, children, code, fullWidth = false, dos = null, do
                     )}
                     {/* Mode tabs */}
                     <div className="flex items-center gap-0.5 p-0.5 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-lg">
-                        <button onClick={() => setMode('preview')} className={`px-2 py-1 rounded-md text-[8px] font-black transition-colors ${mode === 'preview' ? 'bg-[var(--color-surface)] shadow-sm text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50 hover:opacity-80'}`}>PREVIEW</button>
-                        <button onClick={() => setMode('code')} className={`px-2 py-1 rounded-md text-[8px] font-black transition-colors ${mode === 'code' ? 'bg-[var(--color-surface)] shadow-sm text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50 hover:opacity-80'}`}>CODE</button>
-                        {hasDoDont && <button onClick={() => setMode('dodont')} className={`px-2 py-1 rounded-md text-[8px] font-black transition-colors ${mode === 'dodont' ? 'bg-[var(--color-surface)] shadow-sm text-emerald-600' : 'text-[var(--color-text-muted)] opacity-50 hover:opacity-80'}`}>DO·DON'T</button>}
-                        {hasApi && <button onClick={() => setMode('api')} className={`px-2 py-1 rounded-md text-[8px] font-black transition-colors ${mode === 'api' ? 'bg-[var(--color-surface)] shadow-sm text-amber-500' : 'text-[var(--color-text-muted)] opacity-50 hover:opacity-80'}`}>API</button>}
+                        <button onClick={() => setMode('preview')} className={`px-2 py-1 rounded-md text-xs font-bold transition-colors ${mode === 'preview' ? 'bg-[var(--color-surface)] shadow-sm text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50 hover:opacity-80'}`}>PREVIEW</button>
+                        <button onClick={() => setMode('code')} className={`px-2 py-1 rounded-md text-xs font-bold transition-colors ${mode === 'code' ? 'bg-[var(--color-surface)] shadow-sm text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50 hover:opacity-80'}`}>CODE</button>
+                        {hasDoDont && <button onClick={() => setMode('dodont')} className={`px-2 py-1 rounded-md text-xs font-bold transition-colors ${mode === 'dodont' ? 'bg-[var(--color-surface)] shadow-sm text-emerald-600' : 'text-[var(--color-text-muted)] opacity-50 hover:opacity-80'}`}>DO·DON'T</button>}
+                        {hasApi && <button onClick={() => setMode('api')} className={`px-2 py-1 rounded-md text-xs font-bold transition-colors ${mode === 'api' ? 'bg-[var(--color-surface)] shadow-sm text-amber-500' : 'text-[var(--color-text-muted)] opacity-50 hover:opacity-80'}`}>API</button>}
                     </div>
                 </div>
             </div>
@@ -1368,14 +1368,14 @@ const UIBlock = memo(({ title, children, code, fullWidth = false, dos = null, do
                             {/* Size label */}
                             {size !== 'L' && (
                                 <div className="flex items-center justify-between mb-3 pb-2 border-b border-[var(--color-border)]">
-                                    <span className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-40">
+                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-40">
                                         {size === 'S' ? '📱 Mobile — 375px' : '💻 Tablet — 768px'}
                                     </span>
                                     <div className="h-1 rounded-full bg-[var(--color-border)] flex-1 mx-3">
                                         <div className="h-full rounded-full bg-[var(--color-primary)]/30 transition-all duration-200"
                                             style={{ width: size === 'S' ? '29%' : '60%' }} />
                                     </div>
-                                    <span className="text-[8px] font-mono text-[var(--color-text-muted)] opacity-40">{previewWidth}px</span>
+                                    <span className="text-xs font-mono text-[var(--color-text-muted)] opacity-40">{previewWidth}px</span>
                                 </div>
                             )}
                             {children}
@@ -1386,25 +1386,25 @@ const UIBlock = memo(({ title, children, code, fullWidth = false, dos = null, do
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2.5">
                                 <div className="flex items-center gap-2 mb-3">
-                                    <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center shrink-0"><Check className="text-white text-[8px]" /></div>
-                                    <span className="text-[9px] font-black text-emerald-600 uppercase tracking-widest">Do — Lakukan Ini</span>
+                                    <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center shrink-0"><Check className="w-4 h-4 text-white" /></div>
+                                    <span className="text-xs font-bold text-emerald-600 uppercase tracking-wide">Do — Lakukan Ini</span>
                                 </div>
                                 {dos.map((d, i) => (
                                     <div key={i} className="flex items-start gap-2.5 p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/15">
-                                        <Check className="text-emerald-500 text-[9px] mt-0.5 shrink-0" />
-                                        <span className="text-[10px] text-[var(--color-text)] leading-relaxed font-medium">{d}</span>
+                                        <Check className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" />
+                                        <span className="text-xs text-[var(--color-text)] leading-relaxed font-medium">{d}</span>
                                     </div>
                                 ))}
                             </div>
                             <div className="space-y-2.5">
                                 <div className="flex items-center gap-2 mb-3">
-                                    <div className="w-5 h-5 rounded-full bg-rose-500 flex items-center justify-center shrink-0"><X className="text-white text-[8px]" /></div>
-                                    <span className="text-[9px] font-black text-rose-600 uppercase tracking-widest">Don't — Hindari Ini</span>
+                                    <div className="w-5 h-5 rounded-full bg-rose-500 flex items-center justify-center shrink-0"><X className="w-4 h-4 text-white" /></div>
+                                    <span className="text-xs font-bold text-rose-600 uppercase tracking-wide">Don't — Hindari Ini</span>
                                 </div>
                                 {donts.map((d, i) => (
                                     <div key={i} className="flex items-start gap-2.5 p-3 rounded-xl bg-rose-500/5 border border-rose-500/15">
-                                        <X className="text-rose-500 text-[9px] mt-0.5 shrink-0" />
-                                        <span className="text-[10px] text-[var(--color-text)] leading-relaxed font-medium">{d}</span>
+                                        <X className="w-4 h-4 text-rose-500 mt-0.5 shrink-0" />
+                                        <span className="text-xs text-[var(--color-text)] leading-relaxed font-medium">{d}</span>
                                     </div>
                                 ))}
                             </div>
@@ -1416,17 +1416,17 @@ const UIBlock = memo(({ title, children, code, fullWidth = false, dos = null, do
                             <thead>
                                 <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/60">
                                     {['Prop', 'Type', 'Default', 'Description'].map(h => (
-                                        <th key={h} className="text-left px-4 py-2.5 text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 whitespace-nowrap">{h}</th>
+                                        <th key={h} className="text-left px-4 py-2.5 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 whitespace-nowrap">{h}</th>
                                     ))}
                                 </tr>
                             </thead>
                             <tbody>
                                 {apiProps.map(({ prop, type, defaultVal, desc }, i) => (
                                     <tr key={i} className="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
-                                        <td className="px-4 py-2.5 font-mono text-[10px] font-black text-[var(--color-primary)] whitespace-nowrap">{prop}</td>
-                                        <td className="px-4 py-2.5 font-mono text-[10px] text-amber-500 whitespace-nowrap">{type}</td>
-                                        <td className="px-4 py-2.5 font-mono text-[10px] text-[var(--color-text-muted)] opacity-60 whitespace-nowrap">{defaultVal}</td>
-                                        <td className="px-4 py-2.5 text-[10px] text-[var(--color-text-muted)] leading-relaxed">{desc}</td>
+                                        <td className="px-4 py-2.5 font-mono text-xs font-bold text-[var(--color-primary)] whitespace-nowrap">{prop}</td>
+                                        <td className="px-4 py-2.5 font-mono text-xs text-amber-500 whitespace-nowrap">{type}</td>
+                                        <td className="px-4 py-2.5 font-mono text-xs text-[var(--color-text-muted)] opacity-60 whitespace-nowrap">{defaultVal}</td>
+                                        <td className="px-4 py-2.5 text-xs text-[var(--color-text-muted)] leading-relaxed">{desc}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -1449,7 +1449,7 @@ const UIBlock = memo(({ title, children, code, fullWidth = false, dos = null, do
                         </div>
                         <div className="relative group" style={{ background: '#0d1117', maxHeight: 380, overflowY: 'auto', overflowX: 'auto' }}>
                             <button onClick={() => onCopy(code)} className="absolute top-3 right-3 z-10 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity active:scale-90" style={{ background: 'rgba(255,255,255,0.07)', border: '0.5px solid rgba(255,255,255,0.14)', color: '#8b949e', fontSize: 9, fontFamily: 'monospace', padding: '3px 10px', borderRadius: 6, cursor: 'pointer' }}>
-                                <Copy style={{ fontSize: 9 }} /> copy
+                                <Copy style={{ fontSize: 9 }} className="w-4 h-4" /> copy
                             </button>
                             <div style={{ padding: '18px 0', fontSize: 11, lineHeight: 1.85, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, monospace' }}>
                                 {lines.map((line, idx) => (
@@ -1588,14 +1588,14 @@ export default function PlaygroundPage() {
     return (
         <DashboardLayout title="UI Playground">
             <PlaygroundCtx.Provider value={ctxValue}>
-                <div className="p-4 md:p-6 space-y-4 bg-[var(--color-surface-alt)]/30">
+                <div className="space-y-4 bg-[var(--color-surface-alt)]/30">
 
                     <div className="space-y-3">
                         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between lg:gap-6">
                             <div className="min-w-0">
                                 <Breadcrumb badge="Admin" items={['Developer Tools', 'Design System']} />
-                                <h1 className="text-2xl font-black font-heading tracking-tight text-[var(--color-text)] mt-1.5">UI Playground</h1>
-                                <p className="text-[var(--color-text-muted)] text-[11px] font-medium opacity-70 mt-1 leading-relaxed">
+                                <h1 className="text-2xl font-bold font-heading tracking-tight text-[var(--color-text)] mt-1.5">UI Playground</h1>
+                                <p className="text-[var(--color-text-muted)] text-xs font-medium opacity-70 mt-1 leading-relaxed">
                                     Design system sandbox & panduan komponen Laporanmu Ecosystem. Semua komponen interaktif dengan preview dan kode siap pakai.
                                 </p>
                             </div>
@@ -1603,14 +1603,14 @@ export default function PlaygroundPage() {
                             {/* Desktop tab nav — shrink-0 so it never gets clipped */}
                             <div className="hidden lg:flex items-center gap-1 p-1 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-sm shrink-0">
                                 {[['atoms', 'Atoms'], ['library', 'Library'], ['layout', 'Layout'], ['forms', 'Forms'], ['dataviz', 'Viz'], ['tokens', 'Tokens']].map(([key, label]) => (
-                                    <button key={key} onClick={() => setActiveTab(key)} className={`px-2.5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-colors flex items-center gap-1 whitespace-nowrap ${activeTab === key ? 'bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/20' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
+                                    <button key={key} onClick={() => setActiveTab(key)} className={`px-2.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors flex items-center gap-1 whitespace-nowrap ${activeTab === key ? 'bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/20' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
                                         {label}
-                                        <span className={`text-[7px] px-1 rounded-sm font-black ${activeTab === key ? 'bg-white/20 text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>{tabCounts[key]}</span>
+                                        <span className={`text-[7px] px-1 rounded-sm font-bold ${activeTab === key ? 'bg-white/20 text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>{tabCounts[key]}</span>
                                     </button>
                                 ))}
                                 <div className="w-px h-4 bg-[var(--color-border)] mx-0.5" />
                                 <button onClick={() => setShowSearch(p => !p)} className={`w-7 h-7 flex items-center justify-center rounded-lg transition-colors ${showSearch ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-primary)]'}`}>
-                                    <Search className="text-[10px]" />
+                                    <Search className="w-4 h-4" />
                                 </button>
                             </div>
                         </div>
@@ -1618,17 +1618,17 @@ export default function PlaygroundPage() {
                         {/* Mobile tab nav — scrollable + fade + dot indicator */}
                         <div className="lg:hidden space-y-2">
                             <div className="relative">
-                                <div className="-mx-4 px-4 overflow-x-auto scrollbar-hide" id="tab-scroll-container">
+                                <div className="-mx-3 sm:-mx-4 px-3 sm:px-4 overflow-x-auto scrollbar-hide" id="tab-scroll-container">
                                     <div className="flex items-center gap-1 p-1 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-sm w-max">
                                         {[['atoms', 'Atoms'], ['library', 'Library'], ['layout', 'Layout'], ['forms', 'Forms'], ['dataviz', 'Viz'], ['tokens', 'Tokens']].map(([key, label]) => (
-                                            <button key={key} onClick={() => setActiveTab(key)} className={`px-2.5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-colors flex items-center gap-1 whitespace-nowrap ${activeTab === key ? 'bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/20' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
+                                            <button key={key} onClick={() => setActiveTab(key)} className={`px-2.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors flex items-center gap-1 whitespace-nowrap ${activeTab === key ? 'bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/20' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
                                                 {label}
-                                                <span className={`text-[7px] px-1 rounded-sm font-black ${activeTab === key ? 'bg-white/20 text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>{tabCounts[key]}</span>
+                                                <span className={`text-[7px] px-1 rounded-sm font-bold ${activeTab === key ? 'bg-white/20 text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>{tabCounts[key]}</span>
                                             </button>
                                         ))}
                                         <div className="w-px h-4 bg-[var(--color-border)] mx-0.5" />
                                         <button onClick={() => setShowSearch(p => !p)} className={`w-7 h-7 flex items-center justify-center rounded-lg transition-colors ${showSearch ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-primary)]'}`}>
-                                            <Search className="text-[10px]" />
+                                            <Search className="w-4 h-4" />
                                         </button>
                                     </div>
                                 </div>
@@ -1651,9 +1651,9 @@ export default function PlaygroundPage() {
                     {/* Search Bar */}
                     {showSearch && (
                         <div className="relative animate-in fade-in slide-in-from-top-2 duration-200">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-sm" />
-                            <input autoFocus value={searchQ} onChange={e => setSearchQ(e.target.value)} placeholder="Cari komponen… (button, input, chart, modal…)" className="w-full h-12 pl-12 pr-12 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/10 text-[12px] font-medium text-[var(--color-text)] outline-none" />
-                            <button onClick={() => { setSearchQ(''); setShowSearch(false) }} className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"><X /></button>
+                            <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
+                            <input autoFocus value={searchQ} onChange={e => setSearchQ(e.target.value)} placeholder="Cari komponen… (button, input, chart, modal…)" className="w-full h-12 pl-12 pr-12 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/10 text-xs font-medium text-[var(--color-text)] outline-none" />
+                            <button onClick={() => { setSearchQ(''); setShowSearch(false) }} className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"><X className="w-4 h-4" /></button>
                             {searchQ && (
                                 <div className="absolute top-full left-0 right-0 mt-2 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-xl z-50 overflow-hidden">
                                     {[
@@ -1665,12 +1665,12 @@ export default function PlaygroundPage() {
                                         { tab: 'tokens', items: ['Color Tokens', 'Spacing Tokens', 'Typography Scale', 'Shadow Scale'] },
                                     ].flatMap(({ tab, items }) => items.filter(i => i.toLowerCase().includes(searchQ.toLowerCase())).map(item => ({ tab, item }))).slice(0, 8).map(({ tab, item }, i) => (
                                         <button key={i} onClick={() => { setActiveTab(tab); setSearchQ(''); setShowSearch(false) }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-[var(--color-surface-alt)] transition-colors text-left border-b border-[var(--color-border)] last:border-0">
-                                            <span className="text-[7px] font-black uppercase px-1.5 py-0.5 rounded bg-[var(--color-primary)]/10 text-[var(--color-primary)] shrink-0 w-14 text-center">{tab}</span>
-                                            <span className="text-[11px] font-black text-[var(--color-text)]">{item}</span>
-                                            <ArrowRight className="ml-auto text-[var(--color-text-muted)] text-[9px] opacity-50" />
+                                            <span className="text-[7px] font-bold uppercase px-1.5 py-0.5 rounded bg-[var(--color-primary)]/10 text-[var(--color-primary)] shrink-0 w-14 text-center">{tab}</span>
+                                            <span className="text-xs font-bold text-[var(--color-text)]">{item}</span>
+                                            <ArrowRight className="w-4 h-4 ml-auto text-[var(--color-text-muted)] opacity-50" />
                                         </button>
                                     ))}
-                                    {searchQ && [].length === 0 && <div className="px-4 py-4 text-center text-[10px] font-black text-[var(--color-text-muted)] opacity-50">Ketik untuk mencari komponen…</div>}
+                                    {searchQ && [].length === 0 && <div className="px-4 py-4 text-center text-xs font-bold text-[var(--color-text-muted)] opacity-50">Ketik untuk mencari komponen…</div>}
                                 </div>
                             )}
                         </div>
@@ -1691,35 +1691,35 @@ export default function PlaygroundPage() {
                                         title="Heading Styles"
                                         children={
                                             <div className="space-y-4">
-                                                <h1 className="text-3xl font-black font-heading tracking-tighter text-[var(--color-text)]">Heading One - 3XL</h1>
-                                                <h2 className="text-2xl font-black font-heading tracking-tighter text-[var(--color-text)]">Heading Two - 2XL</h2>
-                                                <h3 className="text-xl font-black font-heading tracking-tight text-[var(--color-text)]">Heading Three - XL</h3>
-                                                <h4 className="text-lg font-black font-heading tracking-tight text-[var(--color-text)]">Heading Four - LG</h4>
-                                                <h5 className="text-base font-black font-heading tracking-tight text-[var(--color-text)]">Heading Five - MD</h5>
+                                                <h1 className="text-3xl font-bold font-heading tracking-tighter text-[var(--color-text)]">Heading One - 3XL</h1>
+                                                <h2 className="text-2xl font-bold font-heading tracking-tighter text-[var(--color-text)]">Heading Two - 2XL</h2>
+                                                <h3 className="text-xl font-bold font-heading tracking-tight text-[var(--color-text)]">Heading Three - XL</h3>
+                                                <h4 className="text-lg font-bold font-heading tracking-tight text-[var(--color-text)]">Heading Four - LG</h4>
+                                                <h5 className="text-base font-bold font-heading tracking-tight text-[var(--color-text)]">Heading Five - MD</h5>
                                             </div>
                                         }
-                                        code={`<div className="space-y-4">\n  <h1 className="text-3xl font-black font-heading tracking-tighter text-[var(--color-text)]">Heading One - 3XL</h1>\n  <h2 className="text-2xl font-black font-heading tracking-tighter text-[var(--color-text)]">Heading Two - 2XL</h2>\n  <h3 className="text-xl font-black font-heading tracking-tight text-[var(--color-text)]">Heading Three - XL</h3>\n  <h4 className="text-lg font-black font-heading tracking-tight text-[var(--color-text)]">Heading Four - LG</h4>\n  <h5 className="text-base font-black font-heading tracking-tight text-[var(--color-text)]">Heading Five - MD</h5>\n</div>`}
+                                        code={`<div className="space-y-4">\n  <h1 className="text-3xl font-bold font-heading tracking-tighter text-[var(--color-text)]">Heading One - 3XL</h1>\n  <h2 className="text-2xl font-bold font-heading tracking-tighter text-[var(--color-text)]">Heading Two - 2XL</h2>\n  <h3 className="text-xl font-bold font-heading tracking-tight text-[var(--color-text)]">Heading Three - XL</h3>\n  <h4 className="text-lg font-bold font-heading tracking-tight text-[var(--color-text)]">Heading Four - LG</h4>\n  <h5 className="text-base font-bold font-heading tracking-tight text-[var(--color-text)]">Heading Five - MD</h5>\n</div>`}
                                     />
                                     <UIBlock
                                         title="Paragraph & Decor"
                                         children={
                                             <div className="space-y-6">
                                                 <div>
-                                                    <p className="text-[11px] font-bold text-[var(--color-text-muted)] mb-1.5 uppercase tracking-widest opacity-60">Lead Paragraph</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] mb-1.5 uppercase tracking-wide opacity-60">Lead Paragraph</p>
                                                     <p className="text-base font-medium text-[var(--color-text-muted)] leading-relaxed">The quick brown fox jumps over the lazy dog in a high-fidelity environment.</p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-[11px] font-bold text-[var(--color-text-muted)] mb-1.5 uppercase tracking-widest opacity-60">Standard Text</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] mb-1.5 uppercase tracking-wide opacity-60">Standard Text</p>
                                                     <p className="text-sm text-[var(--color-text)] leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                                                 </div>
                                                 <div className="flex flex-wrap gap-4">
-                                                    <span className="text-[10px] font-black text-[var(--color-primary)] underline decoration-2 underline-offset-4">Interactive Link</span>
-                                                    <span className="text-[10px] font-mono bg-[var(--color-surface-alt)] px-2 py-0.5 rounded border border-[var(--color-border)] uppercase text-[var(--color-text-muted)]">inline:code</span>
-                                                    <span className="text-[10px] font-bold italic text-[var(--color-text-muted)] opacity-60">Muted & Italic</span>
+                                                    <span className="text-xs font-bold text-[var(--color-primary)] underline decoration-2 underline-offset-4">Interactive Link</span>
+                                                    <span className="text-xs font-mono bg-[var(--color-surface-alt)] px-2 py-0.5 rounded border border-[var(--color-border)] uppercase text-[var(--color-text-muted)]">inline:code</span>
+                                                    <span className="text-xs font-bold italic text-[var(--color-text-muted)] opacity-60">Muted & Italic</span>
                                                 </div>
                                             </div>
                                         }
-                                        code={`<div className="space-y-6">\n  <div>\n    <p className="text-[11px] font-bold text-[var(--color-text-muted)] mb-1.5 uppercase tracking-widest opacity-60">Lead Paragraph</p>\n    <p className="text-base font-medium text-[var(--color-text-muted)] leading-relaxed">The quick brown fox jumps over the lazy dog in a high-fidelity environment.</p>\n  </div>\n  <div>\n    <p className="text-[11px] font-bold text-[var(--color-text-muted)] mb-1.5 uppercase tracking-widest opacity-60">Standard Text</p>\n    <p className="text-sm text-[var(--color-text)] leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>\n  </div>\n  <div className="flex flex-wrap gap-4">\n    <span className="text-[10px] font-black text-[var(--color-primary)] underline decoration-2 underline-offset-4">Interactive Link</span>\n    <span className="text-[10px] font-mono bg-[var(--color-surface-alt)] px-2 py-0.5 rounded border border-[var(--color-border)] uppercase text-[var(--color-text-muted)]">inline:code</span>\n    <span className="text-[10px] font-bold italic text-[var(--color-text-muted)] opacity-60">Muted & Italic</span>\n  </div>\n</div>`}
+                                        code={`<div className="space-y-6">\n  <div>\n    <p className="text-xs font-bold text-[var(--color-text-muted)] mb-1.5 uppercase tracking-wide opacity-60">Lead Paragraph</p>\n    <p className="text-base font-medium text-[var(--color-text-muted)] leading-relaxed">The quick brown fox jumps over the lazy dog in a high-fidelity environment.</p>\n  </div>\n  <div>\n    <p className="text-xs font-bold text-[var(--color-text-muted)] mb-1.5 uppercase tracking-wide opacity-60">Standard Text</p>\n    <p className="text-sm text-[var(--color-text)] leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>\n  </div>\n  <div className="flex flex-wrap gap-4">\n    <span className="text-xs font-bold text-[var(--color-primary)] underline decoration-2 underline-offset-4">Interactive Link</span>\n    <span className="text-xs font-mono bg-[var(--color-surface-alt)] px-2 py-0.5 rounded border border-[var(--color-border)] uppercase text-[var(--color-text-muted)]">inline:code</span>\n    <span className="text-xs font-bold italic text-[var(--color-text-muted)] opacity-60">Muted & Italic</span>\n  </div>\n</div>`}
                                     />
                                 </div>
                             </section></LazySection>
@@ -1753,28 +1753,28 @@ export default function PlaygroundPage() {
                                         children={
                                             <div className="space-y-4">
                                                 <div className="flex flex-wrap gap-3 items-center">
-                                                    <span className="px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-700 text-[10px] font-black uppercase tracking-widest">Info</span>
-                                                    <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5">
+                                                    <span className="px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-700 text-xs font-bold uppercase tracking-wide">Info</span>
+                                                    <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 text-xs font-bold uppercase tracking-wide flex items-center gap-1.5">
                                                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />Active
                                                     </span>
-                                                    <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 text-[10px] font-black uppercase tracking-widest">Warning</span>
-                                                    <span className="px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-700 text-[10px] font-black uppercase tracking-widest">Error</span>
-                                                    <span className="px-3 py-1 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest">Archived</span>
+                                                    <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 text-xs font-bold uppercase tracking-wide">Warning</span>
+                                                    <span className="px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-700 text-xs font-bold uppercase tracking-wide">Error</span>
+                                                    <span className="px-3 py-1 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide">Archived</span>
                                                 </div>
                                                 <div className="flex flex-wrap gap-3 items-center">
-                                                    <span className="px-3 py-1.5 rounded-lg bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest">Primary</span>
-                                                    <span className="px-3 py-1.5 rounded-lg bg-slate-800 text-white text-[10px] font-black uppercase tracking-widest">Dark</span>
-                                                    <span className="w-6 h-6 rounded-full bg-rose-500 text-white text-[9px] font-black flex items-center justify-center">9</span>
-                                                    <span className="px-1.5 h-5 rounded-full bg-rose-500 text-white text-[9px] font-black flex items-center justify-center">99+</span>
+                                                    <span className="px-3 py-1.5 rounded-lg bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide">Primary</span>
+                                                    <span className="px-3 py-1.5 rounded-lg bg-slate-800 text-white text-xs font-bold uppercase tracking-wide">Dark</span>
+                                                    <span className="w-6 h-6 rounded-full bg-rose-500 text-white text-xs font-bold flex items-center justify-center">9</span>
+                                                    <span className="px-1.5 h-5 rounded-full bg-rose-500 text-white text-xs font-bold flex items-center justify-center">99+</span>
                                                 </div>
                                             </div>
                                         }
-                                        code={`<div className="flex flex-wrap gap-3 items-center">\n  <span className="px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-700 text-[10px] font-black uppercase tracking-widest">Info</span>\n  <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5">\n    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />Active\n  </span>\n  <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 text-[10px] font-black uppercase tracking-widest">Warning</span>\n  <span className="px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-700 text-[10px] font-black uppercase tracking-widest">Error</span>\n  <span className="px-3 py-1 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest">Archived</span>\n</div>`}
+                                        code={`<div className="flex flex-wrap gap-3 items-center">\n  <span className="px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-700 text-xs font-bold uppercase tracking-wide">Info</span>\n  <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 text-xs font-bold uppercase tracking-wide flex items-center gap-1.5">\n    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />Active\n  </span>\n  <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 text-xs font-bold uppercase tracking-wide">Warning</span>\n  <span className="px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-700 text-xs font-bold uppercase tracking-wide">Error</span>\n  <span className="px-3 py-1 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide">Archived</span>\n</div>`}
                                     />
                                     <UIBlock
                                         title="Tag Chips"
                                         children={<TagChipsPreview />}
-                                        code={`<div className="flex flex-wrap gap-2">\n  {tags.map(tag => (\n    <span key={tag} className="px-2.5 py-1 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black flex items-center gap-1.5 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all cursor-pointer">\n      {tag}\n      <X className="text-[8px] opacity-50" />\n    </span>\n  ))}\n  <button className="px-2.5 py-1 rounded-lg border-2 border-dashed border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black flex items-center gap-1 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all">\n    <Plus className="text-[8px]" /> Add tag\n  </button>\n</div>`}
+                                        code={`<div className="flex flex-wrap gap-2">\n  {tags.map(tag => (\n    <span key={tag} className="px-2.5 py-1 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold flex items-center gap-1.5 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all cursor-pointer">\n      {tag}\n      <X className="w-4 h-4 opacity-50" />\n    </span>\n  ))}\n  <button className="px-2.5 py-1 rounded-lg border-2 border-dashed border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold flex items-center gap-1 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all">\n    <Plus className="w-4 h-4" /> Add tag\n  </button>\n</div>`}
                                     />
                                 </div>
                             </section></LazySection>
@@ -1789,35 +1789,35 @@ export default function PlaygroundPage() {
                                             <div className="space-y-6">
                                                 <div className="flex items-end gap-4">
                                                     {[
-                                                        { size: 'w-8 h-8', text: 'text-[9px]', label: '32', bg: 'bg-indigo-500/10 text-indigo-600', init: 'AB' },
-                                                        { size: 'w-10 h-10', text: 'text-[11px]', label: '40', bg: 'bg-emerald-500/10 text-emerald-700', init: 'CD' },
+                                                        { size: 'w-8 h-8', text: 'text-xs', label: '32', bg: 'bg-indigo-500/10 text-indigo-600', init: 'AB' },
+                                                        { size: 'w-10 h-10', text: 'text-xs', label: '40', bg: 'bg-emerald-500/10 text-emerald-700', init: 'CD' },
                                                         { size: 'w-12 h-12', text: 'text-sm', label: '48', bg: 'bg-rose-500/10 text-rose-700', init: 'EF' },
                                                         { size: 'w-16 h-16', text: 'text-lg', label: '64', bg: 'bg-amber-500/10 text-amber-700', init: 'GH' },
                                                     ].map(({ size, text, label, bg, init }) => (
                                                         <div key={label} className="flex flex-col items-center gap-2">
-                                                            <div className={`${size} rounded-full ${bg} ${text} font-black flex items-center justify-center`}>{init}</div>
-                                                            <span className="text-[8px] font-mono text-[var(--color-text-muted)] opacity-50">{label}px</span>
+                                                            <div className={`${size} rounded-full ${bg} ${text} font-bold flex items-center justify-center`}>{init}</div>
+                                                            <span className="text-xs font-mono text-[var(--color-text-muted)] opacity-50">{label}px</span>
                                                         </div>
                                                     ))}
                                                 </div>
                                                 <div className="flex items-center gap-4">
                                                     <div className="relative">
-                                                        <div className="w-10 h-10 rounded-full bg-indigo-500/10 text-indigo-600 text-[11px] font-black flex items-center justify-center">IJ</div>
+                                                        <div className="w-10 h-10 rounded-full bg-indigo-500/10 text-indigo-600 text-xs font-bold flex items-center justify-center">IJ</div>
                                                         <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 border-2 border-[var(--color-surface)]" />
                                                     </div>
                                                     <div className="relative">
-                                                        <div className="w-10 h-10 rounded-full bg-rose-500/10 text-rose-700 text-[11px] font-black flex items-center justify-center">KL</div>
+                                                        <div className="w-10 h-10 rounded-full bg-rose-500/10 text-rose-700 text-xs font-bold flex items-center justify-center">KL</div>
                                                         <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-slate-400 border-2 border-[var(--color-surface)]" />
                                                     </div>
                                                     <div className="relative">
-                                                        <div className="w-10 h-10 rounded-full bg-amber-500/10 text-amber-700 text-[11px] font-black flex items-center justify-center">MN</div>
+                                                        <div className="w-10 h-10 rounded-full bg-amber-500/10 text-amber-700 text-xs font-bold flex items-center justify-center">MN</div>
                                                         <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-amber-400 border-2 border-[var(--color-surface)]" />
                                                     </div>
-                                                    <span className="text-[10px] font-black text-[var(--color-text-muted)] opacity-60 uppercase tracking-widest ml-1">Online · Away · Busy</span>
+                                                    <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-60 uppercase tracking-wide ml-1">Online · Away · Busy</span>
                                                 </div>
                                             </div>
                                         }
-                                        code={`{/* Avatar sizes */}\n<div className="w-10 h-10 rounded-full bg-indigo-500/10 text-indigo-600 text-[11px] font-black flex items-center justify-center">AB</div>\n\n{/* With online indicator */}\n<div className="relative">\n  <div className="w-10 h-10 rounded-full bg-indigo-500/10 text-indigo-600 text-[11px] font-black flex items-center justify-center">IJ</div>\n  <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 border-2 border-[var(--color-surface)]" />\n</div>`}
+                                        code={`{/* Avatar sizes */}\n<div className="w-10 h-10 rounded-full bg-indigo-500/10 text-indigo-600 text-xs font-bold flex items-center justify-center">AB</div>\n\n{/* With online indicator */}\n<div className="relative">\n  <div className="w-10 h-10 rounded-full bg-indigo-500/10 text-indigo-600 text-xs font-bold flex items-center justify-center">IJ</div>\n  <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 border-2 border-[var(--color-surface)]" />\n</div>`}
                                     />
                                     <UIBlock
                                         title="Avatar Group Stack"
@@ -1830,21 +1830,21 @@ export default function PlaygroundPage() {
                                                         { bg: 'bg-rose-500/10 text-rose-700', init: 'EF', z: 'z-[2]' },
                                                         { bg: 'bg-amber-500/10 text-amber-700', init: 'GH', z: 'z-[1]' },
                                                     ].map(({ bg, init, z }, i) => (
-                                                        <div key={i} className={`w-9 h-9 rounded-full ${bg} text-[10px] font-black flex items-center justify-center border-2 border-[var(--color-surface)] -mr-2 ${z} hover:z-[10] hover:-translate-y-1 transition-all cursor-pointer`}>{init}</div>
+                                                        <div key={i} className={`w-9 h-9 rounded-full ${bg} text-xs font-bold flex items-center justify-center border-2 border-[var(--color-surface)] -mr-2 ${z} hover:z-[10] hover:-translate-y-1 transition-all cursor-pointer`}>{init}</div>
                                                     ))}
-                                                    <div className="w-9 h-9 rounded-full bg-[var(--color-surface-alt)] border-2 border-[var(--color-border)] text-[var(--color-text-muted)] text-[9px] font-black flex items-center justify-center ml-2">+12</div>
+                                                    <div className="w-9 h-9 rounded-full bg-[var(--color-surface-alt)] border-2 border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold flex items-center justify-center ml-2">+12</div>
                                                 </div>
                                                 <div className="p-4 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center gap-4">
                                                     <div className="flex items-center -space-x-2">
                                                         {['bg-indigo-500/10 text-indigo-600', 'bg-emerald-500/10 text-emerald-700', 'bg-rose-500/10 text-rose-700'].map((bg, i) => (
-                                                            <div key={i} className={`w-7 h-7 rounded-full ${bg} text-[8px] font-black flex items-center justify-center border-2 border-[var(--color-surface)]`}>{String.fromCharCode(65 + i * 2)}{String.fromCharCode(66 + i * 2)}</div>
+                                                            <div key={i} className={`w-7 h-7 rounded-full ${bg} text-xs font-bold flex items-center justify-center border-2 border-[var(--color-surface)]`}>{String.fromCharCode(65 + i * 2)}{String.fromCharCode(66 + i * 2)}</div>
                                                         ))}
                                                     </div>
-                                                    <span className="text-[11px] font-black text-[var(--color-text)]">3 members collaborating</span>
+                                                    <span className="text-xs font-bold text-[var(--color-text)]">3 members collaborating</span>
                                                 </div>
                                             </div>
                                         }
-                                        code={`<div className="flex items-center">\n  {members.map(({ init, bg }, i) => (\n    <div key={i} className={\`w-9 h-9 rounded-full \${bg} text-[10px] font-black flex items-center justify-center border-2 border-[var(--color-surface)] -mr-2 hover:-translate-y-1 transition-all cursor-pointer\`}>\n      {init}\n    </div>\n  ))}\n  <div className="w-9 h-9 rounded-full bg-[var(--color-surface-alt)] border-2 border-[var(--color-border)] text-[var(--color-text-muted)] text-[9px] font-black flex items-center justify-center ml-2">\n    +12\n  </div>\n</div>`}
+                                        code={`<div className="flex items-center">\n  {members.map(({ init, bg }, i) => (\n    <div key={i} className={\`w-9 h-9 rounded-full \${bg} text-xs font-bold flex items-center justify-center border-2 border-[var(--color-surface)] -mr-2 hover:-translate-y-1 transition-all cursor-pointer\`}>\n      {init}\n    </div>\n  ))}\n  <div className="w-9 h-9 rounded-full bg-[var(--color-surface-alt)] border-2 border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold flex items-center justify-center ml-2">\n    +12\n  </div>\n</div>`}
                                     />
                                 </div>
                             </section></LazySection>
@@ -1877,8 +1877,8 @@ export default function PlaygroundPage() {
                                                             className="bg-[var(--color-primary)]/25 border-l-2 border-[var(--color-primary)]/60 h-1.5 shrink-0"
                                                             style={{ width: Math.min(n * 4, 64) }}
                                                         />
-                                                        <span className="text-[9px] font-mono text-[var(--color-text-muted)] whitespace-nowrap">
-                                                            <span className="text-[var(--color-primary)] font-black">p-{n}</span>
+                                                        <span className="text-xs font-mono text-[var(--color-text-muted)] whitespace-nowrap">
+                                                            <span className="text-[var(--color-primary)] font-bold">p-{n}</span>
                                                             <span className="opacity-40"> / gap-{n} / m-{n}</span>
                                                             <span className="ml-1.5 opacity-35">= {n * 4}px</span>
                                                         </span>
@@ -1887,7 +1887,7 @@ export default function PlaygroundPage() {
                                             </div>
                                         </div>
                                     }
-                                    code={`{/* Spacing scale — n × 4px per Tailwind convention */}\n{[1, 2, 3, 4, 6, 8, 10, 12].map(n => (\n  <div key={n} className="flex items-center gap-4">\n    <div\n      className="bg-[var(--color-primary)]/20 border-l-2 border-[var(--color-primary)]/50 h-2"\n      style={{ width: n * 4 }}\n    />\n    <span className="text-[9px] font-mono text-[var(--color-text-muted)]">\n      p-{n} / gap-{n} / m-{n} = {n * 4}px\n    </span>\n  </div>\n))}`}
+                                    code={`{/* Spacing scale — n × 4px per Tailwind convention */}\n{[1, 2, 3, 4, 6, 8, 10, 12].map(n => (\n  <div key={n} className="flex items-center gap-4">\n    <div\n      className="bg-[var(--color-primary)]/20 border-l-2 border-[var(--color-primary)]/50 h-2"\n      style={{ width: n * 4 }}\n    />\n    <span className="text-xs font-mono text-[var(--color-text-muted)]">\n      p-{n} / gap-{n} / m-{n} = {n * 4}px\n    </span>\n  </div>\n))}`}
                                 />
                             </section></LazySection>
 
@@ -1911,13 +1911,13 @@ export default function PlaygroundPage() {
                                             ].map(({ label, tw, px }) => (
                                                 <div key={label} className="flex flex-col items-center gap-2">
                                                     <div className={`w-14 h-14 bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/25 ${tw}`} />
-                                                    <span className="text-[9px] font-mono font-black text-[var(--color-primary)] opacity-70">{label}</span>
-                                                    <span className="text-[8px] font-mono text-[var(--color-text-muted)] opacity-40">{px}</span>
+                                                    <span className="text-xs font-mono font-bold text-[var(--color-primary)] opacity-70">{label}</span>
+                                                    <span className="text-xs font-mono text-[var(--color-text-muted)] opacity-40">{px}</span>
                                                 </div>
                                             ))}
                                         </div>
                                     }
-                                    code={`{[\n  { label: 'none', tw: 'rounded-none', px: '0px' },\n  { label: 'sm',   tw: 'rounded-sm',   px: '2px' },\n  { label: 'md',   tw: 'rounded-md',   px: '6px' },\n  { label: 'lg',   tw: 'rounded-lg',   px: '8px' },\n  { label: 'xl',   tw: 'rounded-xl',   px: '12px' },\n  { label: '2xl',  tw: 'rounded-2xl',  px: '16px' },\n  { label: '3xl',  tw: 'rounded-3xl',  px: '24px' },\n  { label: 'full', tw: 'rounded-full', px: '9999px' },\n].map(({ label, tw, px }) => (\n  <div key={label} className="flex flex-col items-center gap-2">\n    <div className={\`w-14 h-14 bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/25 \${tw}\`} />\n    <span className="text-[9px] font-mono font-black text-[var(--color-primary)] opacity-70">{label}</span>\n    <span className="text-[8px] font-mono text-[var(--color-text-muted)] opacity-40">{px}</span>\n  </div>\n))}`}
+                                    code={`{[\n  { label: 'none', tw: 'rounded-none', px: '0px' },\n  { label: 'sm',   tw: 'rounded-sm',   px: '2px' },\n  { label: 'md',   tw: 'rounded-md',   px: '6px' },\n  { label: 'lg',   tw: 'rounded-lg',   px: '8px' },\n  { label: 'xl',   tw: 'rounded-xl',   px: '12px' },\n  { label: '2xl',  tw: 'rounded-2xl',  px: '16px' },\n  { label: '3xl',  tw: 'rounded-3xl',  px: '24px' },\n  { label: 'full', tw: 'rounded-full', px: '9999px' },\n].map(({ label, tw, px }) => (\n  <div key={label} className="flex flex-col items-center gap-2">\n    <div className={\`w-14 h-14 bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/25 \${tw}\`} />\n    <span className="text-xs font-mono font-bold text-[var(--color-primary)] opacity-70">{label}</span>\n    <span className="text-xs font-mono text-[var(--color-text-muted)] opacity-40">{px}</span>\n  </div>\n))}`}
                                 />
                             </section></LazySection>
 
@@ -1931,19 +1931,19 @@ export default function PlaygroundPage() {
                                         <div className="grid md:grid-cols-2 gap-8">
                                             <div className="space-y-5">
                                                 <div>
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Solid</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Solid</p>
                                                     <div className="h-px bg-[var(--color-border)]" />
                                                 </div>
                                                 <div>
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Dashed</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Dashed</p>
                                                     <div className="border-t border-dashed border-[var(--color-border)]" />
                                                 </div>
                                                 <div>
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Dotted</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Dotted</p>
                                                     <div className="border-t border-dotted border-[var(--color-border)]" />
                                                 </div>
                                                 <div>
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Dot Chain</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Dot Chain</p>
                                                     <div className="flex items-center gap-1">
                                                         {[...Array(12)].map((_, i) => <span key={i} className="w-1 h-1 rounded-full bg-[var(--color-border)]" />)}
                                                     </div>
@@ -1951,41 +1951,41 @@ export default function PlaygroundPage() {
                                             </div>
                                             <div className="space-y-5">
                                                 <div>
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">With Label</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">With Label</p>
                                                     <div className="flex items-center gap-3">
                                                         <div className="h-px bg-[var(--color-border)] flex-1" />
-                                                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] opacity-50">OR</span>
+                                                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">OR</span>
                                                         <div className="h-px bg-[var(--color-border)] flex-1" />
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">With Icon</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">With Icon</p>
                                                     <div className="flex items-center gap-3">
                                                         <div className="h-px bg-[var(--color-border)] flex-1" />
                                                         <div className="w-6 h-6 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center">
-                                                            <Plus className="text-[8px] text-[var(--color-text-muted)]" />
+                                                            <Plus className="w-4 h-4 text-[var(--color-text-muted)]" />
                                                         </div>
                                                         <div className="h-px bg-[var(--color-border)] flex-1" />
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Primary Accent</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Primary Accent</p>
                                                     <div className="h-px bg-[var(--color-primary)]/30" />
                                                 </div>
                                                 <div>
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Vertical</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Vertical</p>
                                                     <div className="flex items-center gap-3 h-8">
-                                                        <span className="text-[10px] text-[var(--color-text-muted)]">Item A</span>
+                                                        <span className="text-xs text-[var(--color-text-muted)]">Item A</span>
                                                         <div className="w-px h-full bg-[var(--color-border)]" />
-                                                        <span className="text-[10px] text-[var(--color-text-muted)]">Item B</span>
+                                                        <span className="text-xs text-[var(--color-text-muted)]">Item B</span>
                                                         <div className="w-px h-full bg-[var(--color-border)]" />
-                                                        <span className="text-[10px] text-[var(--color-text-muted)]">Item C</span>
+                                                        <span className="text-xs text-[var(--color-text-muted)]">Item C</span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     }
-                                    code={`{/* Solid */}\n<div className="h-px bg-[var(--color-border)]" />\n\n{/* Dashed */}\n<div className="border-t border-dashed border-[var(--color-border)]" />\n\n{/* With label */}\n<div className="flex items-center gap-3">\n  <div className="h-px bg-[var(--color-border)] flex-1" />\n  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] opacity-50">OR</span>\n  <div className="h-px bg-[var(--color-border)] flex-1" />\n</div>\n\n{/* Vertical */}\n<div className="w-px h-full bg-[var(--color-border)]" />`}
+                                    code={`{/* Solid */}\n<div className="h-px bg-[var(--color-border)]" />\n\n{/* Dashed */}\n<div className="border-t border-dashed border-[var(--color-border)]" />\n\n{/* With label */}\n<div className="flex items-center gap-3">\n  <div className="h-px bg-[var(--color-border)] flex-1" />\n  <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">OR</span>\n  <div className="h-px bg-[var(--color-border)] flex-1" />\n</div>\n\n{/* Vertical */}\n<div className="w-px h-full bg-[var(--color-border)]" />`}
                                 />
                             </section></LazySection>
 
@@ -1998,7 +1998,7 @@ export default function PlaygroundPage() {
                                         children={
                                             <div className="space-y-6">
                                                 <div className="flex items-center gap-6">
-                                                    <LoaderCircle className="animate-spin text-[var(--color-primary)] text-xl" />
+                                                    <LoaderCircle className="w-5 h-5 animate-spin text-[var(--color-primary)]" />
                                                     <div className="w-6 h-6 rounded-full border-2 border-[var(--color-border)] border-t-[var(--color-primary)] animate-spin" />
                                                     <div className="w-6 h-6 rounded-full border-2 border-[var(--color-primary)]/20 border-t-[var(--color-primary)] border-r-[var(--color-primary)] animate-spin" />
                                                     <div className="flex gap-1">
@@ -2022,13 +2022,13 @@ export default function PlaygroundPage() {
                                                             <div className="flex-1 h-2 rounded-full bg-[var(--color-surface-alt)] overflow-hidden">
                                                                 <div className={`h-full ${color} rounded-full`} style={{ width: w }} />
                                                             </div>
-                                                            <span className="text-[10px] font-black text-[var(--color-text-muted)] w-8 text-right">{label}</span>
+                                                            <span className="text-xs font-bold text-[var(--color-text-muted)] w-8 text-right">{label}</span>
                                                         </div>
                                                     ))}
                                                 </div>
                                             </div>
                                         }
-                                        code={`{/* Bouncing dots */}\n<div className="flex gap-1">\n  {[1, 2, 3].map(i => (\n    <div key={i} className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-bounce"\n      style={{ animationDelay: \`\${i * 150}ms\` }}\n    />\n  ))}\n</div>\n\n{/* Progress bar */}\n<div className="flex items-center gap-3">\n  <div className="flex-1 h-2 rounded-full bg-[var(--color-surface-alt)] overflow-hidden">\n    <div className="h-full bg-[var(--color-primary)] rounded-full" style={{ width: '65%' }} />\n  </div>\n  <span className="text-[10px] font-black text-[var(--color-text-muted)] w-8 text-right">65%</span>\n</div>`}
+                                        code={`{/* Bouncing dots */}\n<div className="flex gap-1">\n  {[1, 2, 3].map(i => (\n    <div key={i} className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-bounce"\n      style={{ animationDelay: \`\${i * 150}ms\` }}\n    />\n  ))}\n</div>\n\n{/* Progress bar */}\n<div className="flex items-center gap-3">\n  <div className="flex-1 h-2 rounded-full bg-[var(--color-surface-alt)] overflow-hidden">\n    <div className="h-full bg-[var(--color-primary)] rounded-full" style={{ width: '65%' }} />\n  </div>\n  <span className="text-xs font-bold text-[var(--color-text-muted)] w-8 text-right">65%</span>\n</div>`}
                                     />
                                     <UIBlock
                                         title="Step Indicator"
@@ -2038,10 +2038,10 @@ export default function PlaygroundPage() {
                                                     {['Config', 'Review', 'Deploy', 'Done'].map((step, i) => (
                                                         <div key={i} className="flex items-center">
                                                             <div className="flex flex-col items-center gap-1">
-                                                                <div className={`w-8 h-8 rounded-full text-[9px] font-black flex items-center justify-center ${i < 2 ? 'bg-[var(--color-primary)] text-white' : i === 2 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-2 border-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}>
-                                                                    {i < 2 ? <Check className="text-[8px]" /> : i + 1}
+                                                                <div className={`w-8 h-8 rounded-full text-xs font-bold flex items-center justify-center ${i < 2 ? 'bg-[var(--color-primary)] text-white' : i === 2 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-2 border-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}>
+                                                                    {i < 2 ? <Check className="w-4 h-4" /> : i + 1}
                                                                 </div>
-                                                                <span className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-wide whitespace-nowrap">{step}</span>
+                                                                <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide whitespace-nowrap">{step}</span>
                                                             </div>
                                                             {i < 3 && <div className={`h-0.5 w-8 mb-4 mx-1 ${i < 2 ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}`} />}
                                                         </div>
@@ -2054,7 +2054,7 @@ export default function PlaygroundPage() {
                                                 </div>
                                             </div>
                                         }
-                                        code={`<div className="flex items-center">\n  {['Config', 'Review', 'Deploy', 'Done'].map((step, i) => (\n    <div key={i} className="flex items-center">\n      <div className="flex flex-col items-center gap-1">\n        <div className={\`w-8 h-8 rounded-full text-[9px] font-black flex items-center justify-center\n          \${i < 2 ? 'bg-[var(--color-primary)] text-white'\n            : i === 2 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-2 border-[var(--color-primary)]'\n            : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}\`}>\n          {i < 2 ? <Check className="text-[8px]" /> : i + 1}\n        </div>\n        <span className="text-[8px] font-black text-[var(--color-text-muted)] uppercase whitespace-nowrap">{step}</span>\n      </div>\n      {i < 3 && <div className={\`h-0.5 w-8 mb-4 mx-1 \${i < 2 ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}\`} />}\n    </div>\n  ))}\n</div>`}
+                                        code={`<div className="flex items-center">\n  {['Config', 'Review', 'Deploy', 'Done'].map((step, i) => (\n    <div key={i} className="flex items-center">\n      <div className="flex flex-col items-center gap-1">\n        <div className={\`w-8 h-8 rounded-full text-xs font-bold flex items-center justify-center\n          \${i < 2 ? 'bg-[var(--color-primary)] text-white'\n            : i === 2 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-2 border-[var(--color-primary)]'\n            : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}\`}>\n          {i < 2 ? <Check className="w-4 h-4" /> : i + 1}\n        </div>\n        <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase whitespace-nowrap">{step}</span>\n      </div>\n      {i < 3 && <div className={\`h-0.5 w-8 mb-4 mx-1 \${i < 2 ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}\`} />}\n    </div>\n  ))}\n</div>`}
                                     />
                                 </div>
                             </section></LazySection>
@@ -2068,29 +2068,29 @@ export default function PlaygroundPage() {
                                         children={
                                             <div className="flex flex-wrap gap-8 items-center pt-8">
                                                 <div className="relative group">
-                                                    <button className="px-4 h-9 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[11px] font-black text-[var(--color-text)] hover:border-[var(--color-primary)] transition-all">Hover me</button>
+                                                    <button className="px-4 h-9 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text)] hover:border-[var(--color-primary)] transition-all">Hover me</button>
                                                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2.5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                                        <div className="bg-slate-900 text-white text-[9px] font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap">Salin ke clipboard</div>
+                                                        <div className="bg-slate-900 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap">Salin ke clipboard</div>
                                                         <div className="w-2 h-2 bg-slate-900 rotate-45 mx-auto -mt-1" />
                                                     </div>
                                                 </div>
                                                 <div className="relative group">
-                                                    <button className="px-4 h-9 rounded-xl bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[11px] font-black text-[var(--color-primary)]">Primary tip</button>
+                                                    <button className="px-4 h-9 rounded-xl bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-xs font-bold text-[var(--color-primary)]">Primary tip</button>
                                                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2.5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                                        <div className="bg-[var(--color-primary)] text-white text-[9px] font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap">Simpan perubahan — Ctrl+S</div>
+                                                        <div className="bg-[var(--color-primary)] text-white text-xs font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap">Simpan perubahan — Ctrl+S</div>
                                                         <div className="w-2 h-2 bg-[var(--color-primary)] rotate-45 mx-auto -mt-1" />
                                                     </div>
                                                 </div>
                                                 <div className="relative group">
-                                                    <button className="px-4 h-9 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[11px] font-black text-rose-700">Danger tip</button>
+                                                    <button className="px-4 h-9 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs font-bold text-rose-700">Danger tip</button>
                                                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2.5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                                        <div className="bg-rose-600 text-white text-[9px] font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap">Aksi ini tidak bisa dibatalkan</div>
+                                                        <div className="bg-rose-600 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap">Aksi ini tidak bisa dibatalkan</div>
                                                         <div className="w-2 h-2 bg-rose-600 rotate-45 mx-auto -mt-1" />
                                                     </div>
                                                 </div>
                                             </div>
                                         }
-                                        code={`<div className="relative group">\n  <button className="px-4 h-9 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[11px] font-black text-[var(--color-text)] hover:border-[var(--color-primary)] transition-all">\n    Hover me\n  </button>\n  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2.5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">\n    <div className="bg-slate-900 text-white text-[9px] font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap">\n      Salin ke clipboard\n    </div>\n    <div className="w-2 h-2 bg-slate-900 rotate-45 mx-auto -mt-1" />\n  </div>\n</div>`}
+                                        code={`<div className="relative group">\n  <button className="px-4 h-9 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text)] hover:border-[var(--color-primary)] transition-all">\n    Hover me\n  </button>\n  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2.5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">\n    <div className="bg-slate-900 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap">\n      Salin ke clipboard\n    </div>\n    <div className="w-2 h-2 bg-slate-900 rotate-45 mx-auto -mt-1" />\n  </div>\n</div>`}
                                     />
                                     <UIBlock
                                         title="Keyboard Shortcuts"
@@ -2103,17 +2103,17 @@ export default function PlaygroundPage() {
                                                     { keys: ['Esc'], desc: 'Close / cancel' },
                                                 ].map(({ keys, desc }) => (
                                                     <div key={desc} className="flex items-center justify-between">
-                                                        <span className="text-[11px] font-medium text-[var(--color-text-muted)]">{desc}</span>
+                                                        <span className="text-xs font-medium text-[var(--color-text-muted)]">{desc}</span>
                                                         <div className="flex items-center gap-1">
                                                             {keys.map(k => (
-                                                                <kbd key={k} className="px-2 py-1 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] border-b-[3px] text-[10px] font-mono font-black text-[var(--color-text-muted)] shadow-sm">{k}</kbd>
+                                                                <kbd key={k} className="px-2 py-1 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] border-b-[3px] text-xs font-mono font-bold text-[var(--color-text-muted)] shadow-sm">{k}</kbd>
                                                             ))}
                                                         </div>
                                                     </div>
                                                 ))}
                                             </div>
                                         }
-                                        code={`{[\n  { keys: ['⌘', 'K'],    desc: 'Command palette' },\n  { keys: ['Ctrl', 'S'], desc: 'Save changes' },\n  { keys: ['⌘', 'Z'],    desc: 'Undo last action' },\n  { keys: ['Esc'],       desc: 'Close / cancel' },\n].map(({ keys, desc }) => (\n  <div key={desc} className="flex items-center justify-between">\n    <span className="text-[11px] font-medium text-[var(--color-text-muted)]">{desc}</span>\n    <div className="flex items-center gap-1">\n      {keys.map(k => (\n        <kbd key={k} className="px-2 py-1 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] border-b-[3px] text-[10px] font-mono font-black text-[var(--color-text-muted)] shadow-sm">\n          {k}\n        </kbd>\n      ))}\n    </div>\n  </div>\n))}`}
+                                        code={`{[\n  { keys: ['⌘', 'K'],    desc: 'Command palette' },\n  { keys: ['Ctrl', 'S'], desc: 'Save changes' },\n  { keys: ['⌘', 'Z'],    desc: 'Undo last action' },\n  { keys: ['Esc'],       desc: 'Close / cancel' },\n].map(({ keys, desc }) => (\n  <div key={desc} className="flex items-center justify-between">\n    <span className="text-xs font-medium text-[var(--color-text-muted)]">{desc}</span>\n    <div className="flex items-center gap-1">\n      {keys.map(k => (\n        <kbd key={k} className="px-2 py-1 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] border-b-[3px] text-xs font-mono font-bold text-[var(--color-text-muted)] shadow-sm">\n          {k}\n        </kbd>\n      ))}\n    </div>\n  </div>\n))}`}
                                     />
                                 </div>
                             </section></LazySection>
@@ -2128,11 +2128,11 @@ export default function PlaygroundPage() {
                                         <div className="space-y-3">
                                             {iconGroups.map(({ label, icons }) => (
                                                 <div key={label} className="flex items-center gap-3">
-                                                    <span className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-40 w-16 shrink-0">{label}</span>
+                                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-40 w-16 shrink-0">{label}</span>
                                                     <div className="flex gap-2">
                                                         {icons.map((Icon, i) => (
                                                             <div key={i} onClick={() => copyToClipboard(`${label}Icon`)} className="w-8 h-8 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/20 active:scale-90 transition-all cursor-pointer">
-                                                                {Icon && <Icon className="text-xs" />}
+                                                                {Icon && <Icon className="w-4 h-4" />}
                                                             </div>
                                                         ))}
                                                     </div>
@@ -2140,7 +2140,7 @@ export default function PlaygroundPage() {
                                             ))}
                                         </div>
                                     }
-                                    code={`const iconGroups = [\n  { label: 'Navigation', icons: [ChevronRight, ChevronDown, ArrowRight, Search, Funnel] },\n  { label: 'Actions',    icons: [Plus, Trash2, Copy, Download, Settings] },\n  { label: 'Status',     icons: [Check, X, TriangleAlert, Info, Bell] },\n  { label: 'Users',      icons: [User, Users, ShieldHalf, Key, Lock] },\n  { label: 'Content',    icons: [FileText, ChartLine, Calendar, Globe, Camera] },\n]\n\n{iconGroups.map(({ label, icons }) => (\n  <div key={label}>\n    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50 mb-3">{label}</p>\n    <div className="flex flex-wrap gap-3">\n      {icons.map((Icon, i) => (\n        <div key={i} className="w-10 h-10 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/20 active:scale-90 transition-all cursor-pointer">\n          <Icon className="text-sm" />\n        </div>\n      ))}\n    </div>\n  </div>\n))}`}
+                                    code={`const iconGroups = [\n  { label: 'Navigation', icons: [ChevronRight, ChevronDown, ArrowRight, Search, Funnel] },\n  { label: 'Actions',    icons: [Plus, Trash2, Copy, Download, Settings] },\n  { label: 'Status',     icons: [Check, X, TriangleAlert, Info, Bell] },\n  { label: 'Users',      icons: [User, Users, ShieldHalf, Key, Lock] },\n  { label: 'Content',    icons: [FileText, ChartLine, Calendar, Globe, Camera] },\n]\n\n{iconGroups.map(({ label, icons }) => (\n  <div key={label}>\n    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50 mb-3">{label}</p>\n    <div className="flex flex-wrap gap-3">\n      {icons.map((Icon, i) => (\n        <div key={i} className="w-10 h-10 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/20 active:scale-90 transition-all cursor-pointer">\n          <Icon className="text-sm" />\n        </div>\n      ))}\n    </div>\n  </div>\n))}`}
                                 />
                             </section></LazySection>
 
@@ -2151,39 +2151,39 @@ export default function PlaygroundPage() {
                                     <UIBlock
                                         title="Toggle Variants"
                                         children={<ToggleVariantsPreview />}
-                                        code={`<div className="flex items-center justify-between">\n  <span className="text-[11px] font-black text-[var(--color-text-muted)]">Dark Mode</span>\n  <button className={\`w-11 h-6 rounded-full relative transition-all \${isOn ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)]'}\`}\n    onClick={() => setIsOn(p => !p)}>\n    <span className={\`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform \${isOn ? 'translate-x-5' : 'translate-x-0'}\`} />\n  </button>\n</div>`}
+                                        code={`<div className="flex items-center justify-between">\n  <span className="text-xs font-bold text-[var(--color-text-muted)]">Dark Mode</span>\n  <button className={\`w-11 h-6 rounded-full relative transition-all \${isOn ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)]'}\`}\n    onClick={() => setIsOn(p => !p)}>\n    <span className={\`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform \${isOn ? 'translate-x-5' : 'translate-x-0'}\`} />\n  </button>\n</div>`}
                                     />
                                     <UIBlock
                                         title="Toggle Sizes & States"
                                         children={
                                             <div className="space-y-5">
                                                 <div>
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Sizes</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Sizes</p>
                                                     <div className="flex items-center gap-6">
                                                         <div className="flex flex-col items-center gap-1.5">
                                                             <button className="w-7 h-4 rounded-full relative bg-[var(--color-primary)]"><span className="absolute top-0.5 left-0.5 w-3 h-3 rounded-full bg-white shadow-sm translate-x-3 transition-transform" /></button>
-                                                            <span className="text-[8px] font-mono text-[var(--color-text-muted)] opacity-50">xs</span>
+                                                            <span className="text-xs font-mono text-[var(--color-text-muted)] opacity-50">xs</span>
                                                         </div>
                                                         <div className="flex flex-col items-center gap-1.5">
                                                             <button className="w-9 h-5 rounded-full relative bg-[var(--color-primary)]"><span className="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow-sm translate-x-4 transition-transform" /></button>
-                                                            <span className="text-[8px] font-mono text-[var(--color-text-muted)] opacity-50">sm</span>
+                                                            <span className="text-xs font-mono text-[var(--color-text-muted)] opacity-50">sm</span>
                                                         </div>
                                                         <div className="flex flex-col items-center gap-1.5">
                                                             <button className="w-11 h-6 rounded-full relative bg-[var(--color-primary)]"><span className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-sm translate-x-5 transition-transform" /></button>
-                                                            <span className="text-[8px] font-mono text-[var(--color-text-muted)] opacity-50">md</span>
+                                                            <span className="text-xs font-mono text-[var(--color-text-muted)] opacity-50">md</span>
                                                         </div>
                                                         <div className="flex flex-col items-center gap-1.5">
                                                             <button className="w-14 h-7 rounded-full relative bg-[var(--color-primary)]"><span className="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow-sm translate-x-7 transition-transform" /></button>
-                                                            <span className="text-[8px] font-mono text-[var(--color-text-muted)] opacity-50">lg</span>
+                                                            <span className="text-xs font-mono text-[var(--color-text-muted)] opacity-50">lg</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Disabled State</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Disabled State</p>
                                                     <div className="flex items-center gap-4">
                                                         <button className="w-11 h-6 rounded-full relative bg-[var(--color-primary)] opacity-30 cursor-not-allowed"><span className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-sm translate-x-5" /></button>
                                                         <button className="w-11 h-6 rounded-full relative bg-[var(--color-surface-alt)] border border-[var(--color-border)] opacity-30 cursor-not-allowed"><span className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-sm translate-x-0" /></button>
-                                                        <span className="text-[10px] font-black text-[var(--color-text-muted)] opacity-50 uppercase tracking-widest">Disabled</span>
+                                                        <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-wide">Disabled</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2200,12 +2200,12 @@ export default function PlaygroundPage() {
                                     <UIBlock
                                         title="Checkbox States"
                                         children={<CheckboxStatesPreview />}
-                                        code={`{/* Checked */}\n<label className="flex items-center gap-3 cursor-pointer group">\n  <div className="w-4 h-4 rounded flex items-center justify-center shrink-0 bg-[var(--color-primary)] border border-[var(--color-primary)] transition-all">\n    <Check className="text-white text-[7px]" />\n  </div>\n  <span className="text-[11px] font-medium text-[var(--color-text)]">Accept terms</span>\n</label>\n\n{/* Indeterminate */}\n<label className="flex items-center gap-3 cursor-pointer group">\n  <div className="w-4 h-4 rounded flex items-center justify-center shrink-0 bg-[var(--color-primary)] border border-[var(--color-primary)]">\n    <div className="w-2 h-0.5 bg-white rounded-full" />\n  </div>\n  <span className="text-[11px] font-medium text-[var(--color-text)]">Select all (3 of 7)</span>\n</label>`}
+                                        code={`{/* Checked */}\n<label className="flex items-center gap-3 cursor-pointer group">\n  <div className="w-4 h-4 rounded flex items-center justify-center shrink-0 bg-[var(--color-primary)] border border-[var(--color-primary)] transition-all">\n    <Check className="w-4 h-4 text-white" />\n  </div>\n  <span className="text-xs font-medium text-[var(--color-text)]">Accept terms</span>\n</label>\n\n{/* Indeterminate */}\n<label className="flex items-center gap-3 cursor-pointer group">\n  <div className="w-4 h-4 rounded flex items-center justify-center shrink-0 bg-[var(--color-primary)] border border-[var(--color-primary)]">\n    <div className="w-2 h-0.5 bg-white rounded-full" />\n  </div>\n  <span className="text-xs font-medium text-[var(--color-text)]">Select all (3 of 7)</span>\n</label>`}
                                     />
                                     <UIBlock
                                         title="Radio Group"
                                         children={<RadioGroupPreview />}
-                                        code={`{plans.map(({ value, label, desc, selected }) => (\n  <label key={value} className={\`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all\n    \${selected ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5' : 'border-[var(--color-border)] hover:border-[var(--color-primary)]/40'}\`}>\n    <div className={\`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0\n      \${selected ? 'border-[var(--color-primary)]' : 'border-[var(--color-border)]'}\`}>\n      {selected && <div className="w-2 h-2 rounded-full bg-[var(--color-primary)]" />}\n    </div>\n    <div className="flex-1">\n      <span className={\`text-[11px] font-black \${selected ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}\`}>{label}</span>\n      <p className="text-[10px] text-[var(--color-text-muted)] opacity-60">{desc}</p>\n    </div>\n  </label>\n))}`}
+                                        code={`{plans.map(({ value, label, desc, selected }) => (\n  <label key={value} className={\`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all\n    \${selected ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5' : 'border-[var(--color-border)] hover:border-[var(--color-primary)]/40'}\`}>\n    <div className={\`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0\n      \${selected ? 'border-[var(--color-primary)]' : 'border-[var(--color-border)]'}\`}>\n      {selected && <div className="w-2 h-2 rounded-full bg-[var(--color-primary)]" />}\n    </div>\n    <div className="flex-1">\n      <span className={\`text-xs font-bold \${selected ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}\`}>{label}</span>\n      <p className="text-xs text-[var(--color-text-muted)] opacity-60">{desc}</p>\n    </div>\n  </label>\n))}`}
                                     />
                                 </div>
                             </section></LazySection>
@@ -2217,12 +2217,12 @@ export default function PlaygroundPage() {
                                     <UIBlock
                                         title="Text Input Variants"
                                         children={<InputStatesPreview />}
-                                        code={`{/* Error state */}\n<div className="space-y-1">\n  <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Email</label>\n  <input\n    className="w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border border-rose-400 ring-2 ring-rose-400/10 text-sm font-medium text-[var(--color-text)] outline-none transition-all"\n    value={email}\n    onChange={e => setEmail(e.target.value)}\n  />\n  <p className="text-[9px] font-black text-rose-500 flex items-center gap-1">\n    <TriangleAlert className="text-[8px]" />\n    Format email tidak valid\n  </p>\n</div>`}
+                                        code={`{/* Error state */}\n<div className="space-y-1">\n  <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Email</label>\n  <input\n    className="w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border border-rose-400 ring-2 ring-rose-400/10 text-sm font-medium text-[var(--color-text)] outline-none transition-all"\n    value={email}\n    onChange={e => setEmail(e.target.value)}\n  />\n  <p className="text-xs font-bold text-rose-500 flex items-center gap-1">\n    <TriangleAlert className="w-4 h-4" />\n    Format email tidak valid\n  </p>\n</div>`}
                                     />
                                     <UIBlock
                                         title="Input with Addons"
                                         children={<InputAddonsPreview />}
-                                        code={`{/* Input with icon */}\n<div className="relative">\n  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-xs" />\n  <input placeholder="Cari siswa..." className="w-full h-10 pl-10 pr-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-sm font-medium text-[var(--color-text)] outline-none" />\n</div>\n\n{/* Input with prefix */}\n<div className="flex">\n  <span className="h-10 px-3.5 flex items-center rounded-l-xl bg-[var(--color-surface-alt)] border border-r-0 border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)]">https://</span>\n  <input className="flex-1 h-10 px-3 rounded-r-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-sm font-medium outline-none" />\n</div>`}
+                                        code={`{/* Input with icon */}\n<div className="relative">\n  <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />\n  <input placeholder="Cari siswa..." className="w-full h-10 pl-10 pr-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-sm font-medium text-[var(--color-text)] outline-none" />\n</div>\n\n{/* Input with prefix */}\n<div className="flex">\n  <span className="h-10 px-3.5 flex items-center rounded-l-xl bg-[var(--color-surface-alt)] border border-r-0 border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)]">https://</span>\n  <input className="flex-1 h-10 px-3 rounded-r-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-sm font-medium outline-none" />\n</div>`}
                                     />
                                 </div>
                             </section></LazySection>
@@ -2246,9 +2246,9 @@ export default function PlaygroundPage() {
                                                 ].map(({ label, shadow, border }) => (
                                                     <div key={label} className="flex flex-col items-center gap-3">
                                                         <div className={`w-16 h-16 rounded-2xl bg-[var(--color-surface)] ${shadow} ${border ? 'border border-[var(--color-border)]' : ''} flex items-center justify-center`}>
-                                                            <span className="text-[8px] font-mono text-[var(--color-text-muted)] opacity-50">{label}</span>
+                                                            <span className="text-xs font-mono text-[var(--color-text-muted)] opacity-50">{label}</span>
                                                         </div>
-                                                        <span className="text-[9px] font-mono font-black text-[var(--color-text-muted)] opacity-60">shadow-{label}</span>
+                                                        <span className="text-xs font-mono font-bold text-[var(--color-text-muted)] opacity-60">shadow-{label}</span>
                                                     </div>
                                                 ))}
                                             </div>
@@ -2259,9 +2259,9 @@ export default function PlaygroundPage() {
                                                     { label: 'Modal', cls: 'shadow-xl', desc: 'overlay dialogs' },
                                                 ].map(({ label, cls, desc }) => (
                                                     <div key={label} className="p-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] space-y-1">
-                                                        <p className="text-[10px] font-black text-[var(--color-text)] uppercase tracking-widest">{label}</p>
-                                                        <p className="text-[10px] font-mono text-[var(--color-primary)]">.{cls}</p>
-                                                        <p className="text-[9px] text-[var(--color-text-muted)] opacity-60">{desc}</p>
+                                                        <p className="text-xs font-bold text-[var(--color-text)] uppercase tracking-wide">{label}</p>
+                                                        <p className="text-xs font-mono text-[var(--color-primary)]">.{cls}</p>
+                                                        <p className="text-xs text-[var(--color-text-muted)] opacity-60">{desc}</p>
                                                     </div>
                                                 ))}
                                             </div>
@@ -2283,7 +2283,7 @@ export default function PlaygroundPage() {
                                                 {[100, 80, 60, 50, 40, 30, 20, 10, 5].map(val => (
                                                     <div key={val} className="flex flex-col items-center gap-2">
                                                         <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]" style={{ opacity: val / 100 }} />
-                                                        <span className="text-[8px] font-mono font-black text-[var(--color-primary)] opacity-70">{val}</span>
+                                                        <span className="text-xs font-mono font-bold text-[var(--color-primary)] opacity-70">{val}</span>
                                                     </div>
                                                 ))}
                                             </div>
@@ -2295,8 +2295,8 @@ export default function PlaygroundPage() {
                                                     { use: 'Overlay tint', cls: 'opacity-5', example: 'opacity-5' },
                                                 ].map(({ use, cls, example }) => (
                                                     <div key={use} className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                                                        <p className="text-[9px] font-black text-[var(--color-text)] mb-0.5">{use}</p>
-                                                        <p className="text-[9px] font-mono text-[var(--color-primary)]">.{example}</p>
+                                                        <p className="text-xs font-bold text-[var(--color-text)] mb-0.5">{use}</p>
+                                                        <p className="text-xs font-mono text-[var(--color-primary)]">.{example}</p>
                                                     </div>
                                                 ))}
                                             </div>
@@ -2316,7 +2316,7 @@ export default function PlaygroundPage() {
                                         <div className="space-y-6">
                                             <div className="grid md:grid-cols-2 gap-8">
                                                 <div className="space-y-3">
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50">Duration Scale</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50">Duration Scale</p>
                                                     {[
                                                         { name: 'instant', ms: 75, desc: 'button press, checkbox' },
                                                         { name: 'fast', ms: 150, desc: 'hover, tooltip appear' },
@@ -2325,17 +2325,17 @@ export default function PlaygroundPage() {
                                                         { name: 'cinematic', ms: 700, desc: 'intro animation, hero' },
                                                     ].map(({ name, ms, desc }) => (
                                                         <div key={name} className="flex items-center gap-3">
-                                                            <span className="text-[9px] font-mono text-[var(--color-primary)] font-black w-16 shrink-0">{ms}ms</span>
+                                                            <span className="text-xs font-mono text-[var(--color-primary)] font-bold w-16 shrink-0">{ms}ms</span>
                                                             <div className="flex-1 h-1.5 rounded-full bg-[var(--color-surface-alt)] overflow-hidden">
                                                                 <div className="h-full bg-[var(--color-primary)] rounded-full" style={{ width: `${(ms / 700) * 100}%` }} />
                                                             </div>
-                                                            <span className="text-[9px] text-[var(--color-text-muted)] opacity-50 font-black uppercase tracking-widest w-20 shrink-0">{name}</span>
-                                                            <span className="text-[9px] text-[var(--color-text-muted)] opacity-40 hidden md:block">{desc}</span>
+                                                            <span className="text-xs text-[var(--color-text-muted)] opacity-50 font-bold uppercase tracking-wide w-20 shrink-0">{name}</span>
+                                                            <span className="text-xs text-[var(--color-text-muted)] opacity-40 hidden md:block">{desc}</span>
                                                         </div>
                                                     ))}
                                                 </div>
                                                 <div className="space-y-3">
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50">Easing Curves</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50">Easing Curves</p>
                                                     {[
                                                         { name: 'ease-linear', cls: 'transition-all duration-300', tw: 'ease-linear' },
                                                         { name: 'ease-in', cls: 'transition-all duration-300 ease-in', tw: 'ease-in' },
@@ -2344,17 +2344,17 @@ export default function PlaygroundPage() {
                                                         { name: 'spring (bounce)', cls: 'transition-all duration-500 ease-[cubic-bezier(.34,1.56,.64,1)]', tw: 'custom' },
                                                     ].map(({ name, tw }) => (
                                                         <div key={name} className="flex items-center justify-between py-1 border-b border-[var(--color-border)] last:border-0">
-                                                            <span className="text-[10px] font-medium text-[var(--color-text-muted)]">{name}</span>
-                                                            <span className="text-[9px] font-mono text-[var(--color-primary)] bg-[var(--color-primary)]/5 px-2 py-0.5 rounded">{tw}</span>
+                                                            <span className="text-xs font-medium text-[var(--color-text-muted)]">{name}</span>
+                                                            <span className="text-xs font-mono text-[var(--color-primary)] bg-[var(--color-primary)]/5 px-2 py-0.5 rounded">{tw}</span>
                                                         </div>
                                                     ))}
                                                 </div>
                                             </div>
                                             <div className="p-4 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                                                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Tailwind Shorthand</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Tailwind Shorthand</p>
                                                 <div className="flex flex-wrap gap-2">
                                                     {['transition-colors', 'duration-75', 'duration-150', 'duration-300', 'duration-500', 'duration-700', 'ease-in', 'ease-out', 'ease-in-out'].map(cls => (
-                                                        <span key={cls} className="px-2.5 py-1 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[9px] font-mono text-[var(--color-primary)]">{cls}</span>
+                                                        <span key={cls} className="px-2.5 py-1 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-mono text-[var(--color-primary)]">{cls}</span>
                                                     ))}
                                                 </div>
                                             </div>
@@ -2400,18 +2400,18 @@ export default function PlaygroundPage() {
                                             ].map(({ icon: Icon, iconBg, title, desc, cta, type }) => (
                                                 <div key={type} className="flex flex-col items-center text-center p-6 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] gap-3">
                                                     <div className={`w-12 h-12 rounded-2xl ${iconBg} flex items-center justify-center`}>
-                                                        {Icon && <Icon className="text-lg" />}
+                                                        {Icon && <Icon className="w-5 h-5" />}
                                                     </div>
                                                     <div>
-                                                        <h4 className="text-[12px] font-black text-[var(--color-text)] mb-1">{title}</h4>
-                                                        <p className="text-[10px] text-[var(--color-text-muted)] leading-relaxed opacity-70">{desc}</p>
+                                                        <h4 className="text-xs font-bold text-[var(--color-text)] mb-1">{title}</h4>
+                                                        <p className="text-xs text-[var(--color-text-muted)] leading-relaxed opacity-70">{desc}</p>
                                                     </div>
-                                                    <button className={`mt-1 px-4 py-2 rounded-xl text-[10px] font-black ${cta.color} transition-all hover:opacity-90 active:scale-95`}>{cta.label}</button>
+                                                    <button className={`mt-1 px-4 py-2 rounded-xl text-xs font-bold ${cta.color} transition-all hover:opacity-90 active:scale-95`}>{cta.label}</button>
                                                 </div>
                                             ))}
                                         </div>
                                     }
-                                    code={`<div className="flex flex-col items-center text-center p-6 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] gap-3">\n  <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center">\n    <FileText className="text-lg" />\n  </div>\n  <div>\n    <h4 className="text-[12px] font-black text-[var(--color-text)] mb-1">Belum ada data</h4>\n    <p className="text-[10px] text-[var(--color-text-muted)] leading-relaxed opacity-70">Tambahkan entri pertama untuk memulai.</p>\n  </div>\n  <button className="mt-1 px-4 py-2 rounded-xl text-[10px] font-black bg-[var(--color-primary)] text-white hover:opacity-90 active:scale-95">\n    + Tambah Baru\n  </button>\n</div>`}
+                                    code={`<div className="flex flex-col items-center text-center p-6 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] gap-3">\n  <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center">\n    <FileText className="w-5 h-5" />\n  </div>\n  <div>\n    <h4 className="text-xs font-bold text-[var(--color-text)] mb-1">Belum ada data</h4>\n    <p className="text-xs text-[var(--color-text-muted)] leading-relaxed opacity-70">Tambahkan entri pertama untuk memulai.</p>\n  </div>\n  <button className="mt-1 px-4 py-2 rounded-xl text-xs font-bold bg-[var(--color-primary)] text-white hover:opacity-90 active:scale-95">\n    + Tambah Baru\n  </button>\n</div>`}
                                 />
                             </section></LazySection>
 
@@ -2425,7 +2425,7 @@ export default function PlaygroundPage() {
                                         <div className="space-y-6">
                                             <div className="grid md:grid-cols-2 gap-8">
                                                 <div>
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-4">Layer Stack</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-4">Layer Stack</p>
                                                     <div className="space-y-2">
                                                         {[
                                                             { level: 'z-0', name: 'Base Content', color: 'bg-slate-500/10 border-slate-500/20 text-slate-600', desc: 'default document flow' },
@@ -2438,28 +2438,28 @@ export default function PlaygroundPage() {
                                                         ].map(({ level, name, color, desc }) => (
                                                             <div key={level} className={`flex items-center justify-between px-3 py-2 rounded-lg border ${color}`}>
                                                                 <div className="flex items-center gap-3">
-                                                                    <span className="text-[9px] font-mono font-black w-16 shrink-0">{level}</span>
-                                                                    <span className="text-[10px] font-black">{name}</span>
+                                                                    <span className="text-xs font-mono font-bold w-16 shrink-0">{level}</span>
+                                                                    <span className="text-xs font-bold">{name}</span>
                                                                 </div>
-                                                                <span className="text-[9px] opacity-60">{desc}</span>
+                                                                <span className="text-xs opacity-60">{desc}</span>
                                                             </div>
                                                         ))}
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-4">Visual Stack</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-4">Visual Stack</p>
                                                     <div className="relative h-52 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] overflow-hidden">
                                                         <div className="absolute inset-4 rounded-xl bg-slate-500/10 border border-slate-500/20 flex items-start p-2 z-0">
-                                                            <span className="text-[8px] font-mono text-slate-500 opacity-60">z-0 base</span>
+                                                            <span className="text-xs font-mono text-slate-500 opacity-60">z-0 base</span>
                                                         </div>
                                                         <div className="absolute inset-8 rounded-xl bg-indigo-500/15 border border-indigo-500/25 flex items-start p-2 z-10">
-                                                            <span className="text-[8px] font-mono text-indigo-600 opacity-70">z-20 header</span>
+                                                            <span className="text-xs font-mono text-indigo-600 opacity-70">z-20 header</span>
                                                         </div>
                                                         <div className="absolute inset-12 rounded-xl bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/30 flex items-start p-2 z-20">
-                                                            <span className="text-[8px] font-mono text-[var(--color-primary)] opacity-80">z-50 modal</span>
+                                                            <span className="text-xs font-mono text-[var(--color-primary)] opacity-80">z-50 modal</span>
                                                         </div>
                                                         <div className="absolute bottom-4 right-4 px-3 py-1.5 rounded-lg bg-emerald-500 text-white z-30">
-                                                            <span className="text-[8px] font-black">z-[999] toast</span>
+                                                            <span className="text-xs font-bold">z-[999] toast</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2473,7 +2473,7 @@ export default function PlaygroundPage() {
                             {/* 19 · Select & Textarea */}
                             <LazySection><section className="space-y-10">
                                 <SectionHeader icon={FileText} number="19" title="Select & Textarea" />
-                                <UIBlock fullWidth title="Select & Textarea Variants" children={<SelectTextareaPreview />} code={`{/* Single select dengan grouped options */}\n<div className="relative">\n  <select className="w-full h-10 pl-3.5 pr-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[11px] font-black text-[var(--color-text)] outline-none appearance-none cursor-pointer">\n    <optgroup label="Kelas 6">\n      <option value="kelas-6a">Kelas 6A</option>\n    </optgroup>\n  </select>\n  <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[9px] pointer-events-none" />\n</div>\n\n{/* Textarea dengan char counter */}\n<textarea\n  value={text}\n  onChange={e => setText(e.target.value.slice(0, 200))}\n  rows={3}\n  className="w-full px-3.5 py-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[11px] outline-none resize-none"\n />`}
+                                <UIBlock fullWidth title="Select & Textarea Variants" children={<SelectTextareaPreview />} code={`{/* Single select dengan grouped options */}\n<div className="relative">\n  <select className="w-full h-10 pl-3.5 pr-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-xs font-bold text-[var(--color-text)] outline-none appearance-none cursor-pointer">\n    <optgroup label="Kelas 6">\n      <option value="kelas-6a">Kelas 6A</option>\n    </optgroup>\n  </select>\n  <ChevronDown className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />\n</div>\n\n{/* Textarea dengan char counter */}\n<textarea\n  value={text}\n  onChange={e => setText(e.target.value.slice(0, 200))}\n  rows={3}\n  className="w-full px-3.5 py-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-xs outline-none resize-none"\n />`}
                                     dos={['Selalu sertakan label yang jelas di atas select', 'Gunakan optgroup untuk mengelompokkan opsi yang banyak', 'Sertakan counter karakter di sudut kanan bawah textarea']}
                                     donts={['Jangan biarkan select tanpa placeholder atau opsi default', 'Hindari textarea tanpa batas maxLength yang bisa overflow database', "Jangan set resize: 'both' pada textarea yang bisa mengacak layout"]}
                                     apiProps={[
@@ -2530,18 +2530,18 @@ export default function PlaygroundPage() {
                                                 },
                                             ].map(({ group, tokens }) => (
                                                 <div key={group}>
-                                                    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50 mb-3">{group}</p>
+                                                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50 mb-3">{group}</p>
                                                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                                                         {tokens.map(({ name, var: v, desc }) => (
                                                             <div key={name} onClick={() => { navigator.clipboard.writeText(`var(${v})`); addToast(`Copied var(${v})`, 'success') }}
                                                                 className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] cursor-pointer hover:border-[var(--color-primary)] transition-all group">
                                                                 <div className="w-10 h-10 rounded-xl border border-[var(--color-border)] shrink-0 shadow-sm" style={{ background: `var(${v})` }} />
                                                                 <div className="min-w-0">
-                                                                    <p className="text-[10px] font-black text-[var(--color-text)] truncate">{name}</p>
-                                                                    <p className="text-[8px] font-mono text-[var(--color-text-muted)] opacity-50 truncate">{v}</p>
-                                                                    <p className="text-[8px] text-[var(--color-text-muted)] opacity-40 truncate">{desc}</p>
+                                                                    <p className="text-xs font-bold text-[var(--color-text)] truncate">{name}</p>
+                                                                    <p className="text-xs font-mono text-[var(--color-text-muted)] opacity-50 truncate">{v}</p>
+                                                                    <p className="text-xs text-[var(--color-text-muted)] opacity-40 truncate">{desc}</p>
                                                                 </div>
-                                                                <Copy className="text-[8px] text-[var(--color-text-muted)] opacity-0 group-hover:opacity-60 ml-auto shrink-0" />
+                                                                <Copy className="w-4 h-4 text-[var(--color-text-muted)] opacity-0 group-hover:opacity-60 ml-auto shrink-0" />
                                                             </div>
                                                         ))}
                                                     </div>
@@ -2561,43 +2561,43 @@ export default function PlaygroundPage() {
                                         <div className="space-y-6">
                                             {/* Default */}
                                             <div className="space-y-1.5">
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Default</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">Default</p>
                                                 <div className="flex items-center gap-1.5 flex-wrap">
                                                     {['Dashboard', 'Master Data', 'Data Siswa'].map((item, i, arr) => (
                                                         <span key={item} className="flex items-center gap-1.5">
-                                                            <span className={`text-[10px] font-black ${i === arr.length - 1 ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-50 hover:opacity-100 cursor-pointer hover:text-[var(--color-primary)] transition-colors'}`}>{item}</span>
-                                                            {i < arr.length - 1 && <ChevronRight className="text-[7px] text-[var(--color-text-muted)] opacity-30" />}
+                                                            <span className={`text-xs font-bold ${i === arr.length - 1 ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-50 hover:opacity-100 cursor-pointer hover:text-[var(--color-primary)] transition-colors'}`}>{item}</span>
+                                                            {i < arr.length - 1 && <ChevronRight className="w-4 h-4 text-[var(--color-text-muted)] opacity-30" />}
                                                         </span>
                                                     ))}
                                                 </div>
                                             </div>
                                             {/* With badge */}
                                             <div className="space-y-1.5">
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">With Role Badge</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">With Role Badge</p>
                                                 <div className="flex items-center gap-2 flex-wrap">
-                                                    <span className="px-2 py-0.5 rounded-md bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary)] text-[8px] font-black uppercase tracking-widest">Admin</span>
+                                                    <span className="px-2 py-0.5 rounded-md bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary)] text-xs font-bold uppercase tracking-wide">Admin</span>
                                                     {['Laporan', 'Raport Bulanan'].map((item, i, arr) => (
                                                         <span key={item} className="flex items-center gap-2">
-                                                            <ChevronRight className="text-[7px] text-[var(--color-text-muted)] opacity-30" />
-                                                            <span className={`text-[10px] font-black ${i === arr.length - 1 ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-50'}`}>{item}</span>
+                                                            <ChevronRight className="w-4 h-4 text-[var(--color-text-muted)] opacity-30" />
+                                                            <span className={`text-xs font-bold ${i === arr.length - 1 ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-50'}`}>{item}</span>
                                                         </span>
                                                     ))}
                                                 </div>
                                             </div>
                                             {/* Collapsed */}
                                             <div className="space-y-1.5">
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Collapsed (long path)</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">Collapsed (long path)</p>
                                                 <div className="flex items-center gap-1.5 flex-wrap">
-                                                    <span className="text-[10px] font-black text-[var(--color-text-muted)] opacity-50 hover:opacity-100 cursor-pointer hover:text-[var(--color-primary)] transition-colors">Dashboard</span>
-                                                    <ChevronRight className="text-[7px] text-[var(--color-text-muted)] opacity-30" />
-                                                    <span className="px-2 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black cursor-pointer hover:border-[var(--color-primary)] transition-all">···</span>
-                                                    <ChevronRight className="text-[7px] text-[var(--color-text-muted)] opacity-30" />
-                                                    <span className="text-[10px] font-black text-[var(--color-text)]">Detail Siswa</span>
+                                                    <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-50 hover:opacity-100 cursor-pointer hover:text-[var(--color-primary)] transition-colors">Dashboard</span>
+                                                    <ChevronRight className="w-4 h-4 text-[var(--color-text-muted)] opacity-30" />
+                                                    <span className="px-2 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold cursor-pointer hover:border-[var(--color-primary)] transition-all">···</span>
+                                                    <ChevronRight className="w-4 h-4 text-[var(--color-text-muted)] opacity-30" />
+                                                    <span className="text-xs font-bold text-[var(--color-text)]">Detail Siswa</span>
                                                 </div>
                                             </div>
                                         </div>
                                     }
-                                    code={`// Breadcrumb component\n<Breadcrumb badge="Admin" items={['Master Data', 'Data Siswa']} />\n\n// Manual:\n<div className="flex items-center gap-1.5">\n  {items.map((item, i) => (\n    <span key={item} className="flex items-center gap-1.5">\n      <span className={\`text-[10px] font-black\n        \${i === items.length - 1\n          ? 'text-[var(--color-text)]'\n          : 'text-[var(--color-text-muted)] opacity-50 cursor-pointer hover:text-[var(--color-primary)]'\n        }\`}>\n        {item}\n      </span>\n      {i < items.length - 1 &&\n        <ChevronRight className="text-[7px] opacity-30" />}\n    </span>\n  ))}\n</div>`}
+                                    code={`// Breadcrumb component\n<Breadcrumb badge="Admin" items={['Master Data', 'Data Siswa']} />\n\n// Manual:\n<div className="flex items-center gap-1.5">\n  {items.map((item, i) => (\n    <span key={item} className="flex items-center gap-1.5">\n      <span className={\`text-xs font-bold\n        \${i === items.length - 1\n          ? 'text-[var(--color-text)]'\n          : 'text-[var(--color-text-muted)] opacity-50 cursor-pointer hover:text-[var(--color-primary)]'\n        }\`}>\n        {item}\n      </span>\n      {i < items.length - 1 &&\n        <ChevronRight className="w-4 h-4 opacity-30" />}\n    </span>\n  ))}\n</div>`}
                                     dos={['Tampilkan max 4 level — collapse tengah kalau lebih dari itu', 'Buat semua item kecuali terakhir bisa diklik', 'Gunakan role badge di kiri untuk konteks halaman']}
                                     donts={['Jangan ulangi halaman aktif di breadcrumb dan page title', 'Hindari breadcrumb di halaman top-level (Dashboard, Home)', 'Jangan gunakan slash (/) sebagai separator — pakai chevron >']}
                                 />
@@ -2611,23 +2611,23 @@ export default function PlaygroundPage() {
                                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                                             {/* Hover lift */}
                                             <div className="space-y-2">
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Hover Lift</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">Hover Lift</p>
                                                 <div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] hover:-translate-y-1 hover:shadow-lg hover:shadow-black/10 hover:border-[var(--color-primary)]/30 transition-all duration-200 cursor-pointer">
-                                                    <p className="text-[10px] font-black text-[var(--color-text)]">Hover kartu ini</p>
-                                                    <p className="text-[9px] text-[var(--color-text-muted)] opacity-60">Naik + shadow</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text)]">Hover kartu ini</p>
+                                                    <p className="text-xs text-[var(--color-text-muted)] opacity-60">Naik + shadow</p>
                                                 </div>
                                             </div>
                                             {/* Press scale */}
                                             <div className="space-y-2">
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Press Scale</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">Press Scale</p>
                                                 <button className="w-full p-4 rounded-2xl bg-[var(--color-primary)] text-white active:scale-95 hover:opacity-90 transition-all duration-150 cursor-pointer">
-                                                    <p className="text-[10px] font-black">Klik / Tap</p>
-                                                    <p className="text-[9px] opacity-70">Scale down saat ditekan</p>
+                                                    <p className="text-xs font-bold">Klik / Tap</p>
+                                                    <p className="text-xs opacity-70">Scale down saat ditekan</p>
                                                 </button>
                                             </div>
                                             {/* Skeleton pulse */}
                                             <div className="space-y-2">
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Skeleton Pulse</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">Skeleton Pulse</p>
                                                 <div className="space-y-2 p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)]">
                                                     <div className="h-3 rounded-full bg-[var(--color-surface-alt)] animate-pulse w-3/4" />
                                                     <div className="h-3 rounded-full bg-[var(--color-surface-alt)] animate-pulse w-full" />
@@ -2636,33 +2636,33 @@ export default function PlaygroundPage() {
                                             </div>
                                             {/* Spin loader */}
                                             <div className="space-y-2">
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Spin Loader</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">Spin Loader</p>
                                                 <div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center gap-3">
-                                                    <LoaderCircle className="text-[var(--color-primary)] animate-spin text-lg" />
-                                                    <span className="text-[10px] font-black text-[var(--color-text-muted)]">Memuat data…</span>
+                                                    <LoaderCircle className="w-5 h-5 text-[var(--color-primary)] animate-spin" />
+                                                    <span className="text-xs font-bold text-[var(--color-text-muted)]">Memuat data…</span>
                                                 </div>
                                             </div>
                                             {/* Fade in */}
                                             <div className="space-y-2">
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Animate In</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">Animate In</p>
                                                 <div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] animate-in fade-in slide-in-from-bottom-4 duration-500">
-                                                    <p className="text-[10px] font-black text-[var(--color-text)]">Slide + Fade</p>
-                                                    <p className="text-[9px] text-[var(--color-text-muted)] opacity-60">animate-in dari bawah</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text)]">Slide + Fade</p>
+                                                    <p className="text-xs text-[var(--color-text-muted)] opacity-60">animate-in dari bawah</p>
                                                 </div>
                                             </div>
                                             {/* Bounce dot */}
                                             <div className="space-y-2">
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Bounce Dots</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">Bounce Dots</p>
                                                 <div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center gap-1.5">
                                                     {[0, 150, 300].map(delay => (
                                                         <div key={delay} className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-bounce" style={{ animationDelay: `${delay}ms` }} />
                                                     ))}
-                                                    <span className="text-[9px] text-[var(--color-text-muted)] ml-2">Typing…</span>
+                                                    <span className="text-xs text-[var(--color-text-muted)] ml-2">Typing…</span>
                                                 </div>
                                             </div>
                                         </div>
                                     }
-                                    code={`// Hover lift card\n<div className="hover:-translate-y-1 hover:shadow-lg hover:border-[var(--color-primary)]/30 transition-all duration-200">\n\n// Press scale button\n<button className="active:scale-95 hover:opacity-90 transition-all duration-150">\n\n// Skeleton pulse\n<div className="h-4 rounded-full bg-[var(--color-surface-alt)] animate-pulse" />\n\n// Spin loader\n<LoaderCircle className="animate-spin" />\n\n// Animate in (tailwindcss-animate)\n<div className="animate-in fade-in slide-in-from-bottom-4 duration-500">\n\n// Bounce dots (typing indicator)\n{[0,150,300].map(d => (\n  <div key={d} className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-bounce"\n    style={{ animationDelay: \`\${d}ms\` }} />\n))}`}
+                                    code={`// Hover lift card\n<div className="hover:-translate-y-1 hover:shadow-lg hover:border-[var(--color-primary)]/30 transition-all duration-200">\n\n// Press scale button\n<button className="active:scale-95 hover:opacity-90 transition-all duration-150">\n\n// Skeleton pulse\n<div className="h-4 rounded-full bg-[var(--color-surface-alt)] animate-pulse" />\n\n// Spin loader\n<LoaderCircle className="w-4 h-4 animate-spin" />\n\n// Animate in (tailwindcss-animate)\n<div className="animate-in fade-in slide-in-from-bottom-4 duration-500">\n\n// Bounce dots (typing indicator)\n{[0,150,300].map(d => (\n  <div key={d} className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-bounce"\n    style={{ animationDelay: \`\${d}ms\` }} />\n))}`}
                                 />
                             </section></LazySection>
 
@@ -2673,25 +2673,25 @@ export default function PlaygroundPage() {
                                     children={
                                         <div className="grid md:grid-cols-3 gap-6">
                                             <div className="space-y-2">
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Default (hidden)</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">Default (hidden)</p>
                                                 <div className="h-32 overflow-y-auto rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] p-3 space-y-2" style={{ scrollbarWidth: 'none' }}>
                                                     {Array.from({ length: 8 }).map((_, i) => <div key={i} className="h-6 rounded bg-[var(--color-surface)] border border-[var(--color-border)]" />)}
                                                 </div>
-                                                <p className="text-[8px] text-[var(--color-text-muted)] opacity-50">scrollbar-hide · overflow-y-auto</p>
+                                                <p className="text-xs text-[var(--color-text-muted)] opacity-50">scrollbar-hide · overflow-y-auto</p>
                                             </div>
                                             <div className="space-y-2">
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Thin custom</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">Thin custom</p>
                                                 <div className="h-32 overflow-y-auto rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] p-3 space-y-2" style={{ scrollbarWidth: 'thin', scrollbarColor: 'var(--color-primary) transparent' }}>
                                                     {Array.from({ length: 8 }).map((_, i) => <div key={i} className="h-6 rounded bg-[var(--color-surface)] border border-[var(--color-border)]" />)}
                                                 </div>
-                                                <p className="text-[8px] text-[var(--color-text-muted)] opacity-50">scrollbar-width: thin + primary color</p>
+                                                <p className="text-xs text-[var(--color-text-muted)] opacity-50">scrollbar-width: thin + primary color</p>
                                             </div>
                                             <div className="space-y-2">
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Auto (OS default)</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50">Auto (OS default)</p>
                                                 <div className="h-32 overflow-y-auto rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] p-3 space-y-2">
                                                     {Array.from({ length: 8 }).map((_, i) => <div key={i} className="h-6 rounded bg-[var(--color-surface)] border border-[var(--color-border)]" />)}
                                                 </div>
-                                                <p className="text-[8px] text-[var(--color-text-muted)] opacity-50">Default browser scrollbar</p>
+                                                <p className="text-xs text-[var(--color-text-muted)] opacity-50">Default browser scrollbar</p>
                                             </div>
                                         </div>
                                     }
@@ -2707,41 +2707,41 @@ export default function PlaygroundPage() {
                                         <div className="space-y-8">
                                             {/* Focus rings */}
                                             <div>
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50 mb-4">Focus Ring Variants (Tab untuk lihat)</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50 mb-4">Focus Ring Variants (Tab untuk lihat)</p>
                                                 <div className="flex flex-wrap gap-4">
-                                                    <button className="px-4 py-2 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface-alt)] transition-all">
+                                                    <button className="px-4 py-2 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface-alt)] transition-all">
                                                         Primary Ring
                                                     </button>
-                                                    <button className="px-4 py-2 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface-alt)] transition-all">
+                                                    <button className="px-4 py-2 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface-alt)] transition-all">
                                                         Primary Button
                                                     </button>
-                                                    <button className="px-4 py-2 rounded-xl bg-rose-500 text-white text-[10px] font-black focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 focus:ring-offset-[var(--color-surface-alt)] transition-all">
+                                                    <button className="px-4 py-2 rounded-xl bg-rose-500 text-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 focus:ring-offset-[var(--color-surface-alt)] transition-all">
                                                         Danger Button
                                                     </button>
-                                                    <input className="px-3 py-2 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] text-[var(--color-text)] outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all" placeholder="Input focus ring" />
+                                                    <input className="px-3 py-2 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs text-[var(--color-text)] outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all" placeholder="Input focus ring" />
                                                 </div>
                                             </div>
                                             {/* ARIA patterns */}
                                             <div>
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50 mb-4">ARIA & Semantic Patterns</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50 mb-4">ARIA & Semantic Patterns</p>
                                                 <div className="grid md:grid-cols-2 gap-4">
                                                     {[
-                                                        { label: 'aria-label', example: '<button aria-label="Tutup dialog"><X /></button>', desc: 'Wajib untuk tombol icon-only tanpa teks' },
+                                                        { label: 'aria-label', example: '<button aria-label="Tutup dialog"><X className="w-4 h-4" /></button>', desc: 'Wajib untuk tombol icon-only tanpa teks' },
                                                         { label: 'aria-live', example: '<div aria-live="polite">{statusMessage}</div>', desc: 'Announce perubahan dinamis ke screen reader' },
                                                         { label: 'aria-disabled', example: '<button aria-disabled={!valid} onClick={...}>', desc: 'Tetap focusable tapi announce sebagai disabled' },
                                                         { label: 'role="alert"', example: '<div role="alert" className="...">{errorMsg}</div>', desc: 'Error message langsung dibaca screen reader' },
                                                     ].map(({ label, example, desc }) => (
                                                         <div key={label} className="p-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] space-y-2">
-                                                            <span className="inline-block px-2 py-0.5 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-700 text-[8px] font-black font-mono">{label}</span>
-                                                            <p className="text-[9px] font-mono text-[var(--color-text-muted)] opacity-70 bg-[var(--color-surface)] rounded-lg px-2 py-1.5 leading-relaxed">{example}</p>
-                                                            <p className="text-[9px] text-[var(--color-text-muted)] opacity-60">{desc}</p>
+                                                            <span className="inline-block px-2 py-0.5 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-700 text-xs font-bold font-mono">{label}</span>
+                                                            <p className="text-xs font-mono text-[var(--color-text-muted)] opacity-70 bg-[var(--color-surface)] rounded-lg px-2 py-1.5 leading-relaxed">{example}</p>
+                                                            <p className="text-xs text-[var(--color-text-muted)] opacity-60">{desc}</p>
                                                         </div>
                                                     ))}
                                                 </div>
                                             </div>
                                             {/* Color contrast */}
                                             <div>
-                                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50 mb-4">Color Contrast (WCAG AA)</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50 mb-4">Color Contrast (WCAG AA)</p>
                                                 <div className="flex flex-wrap gap-3">
                                                     {[
                                                         { bg: 'bg-[var(--color-primary)]', text: 'text-white', label: 'Primary on White', pass: true },
@@ -2750,15 +2750,15 @@ export default function PlaygroundPage() {
                                                         { bg: 'bg-[var(--color-surface-alt)]', text: 'text-[var(--color-text-muted)]', label: 'Muted on Alt', pass: true },
                                                     ].map(({ bg, text, label, pass }) => (
                                                         <div key={label} className={`px-4 py-3 rounded-xl ${bg} flex items-center gap-2`}>
-                                                            <span className={`text-[9px] font-black ${text}`}>{label}</span>
-                                                            <span className={`text-[7px] font-black px-1.5 py-0.5 rounded-md ${pass ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'}`}>{pass ? 'AA ✓' : 'FAIL ✗'}</span>
+                                                            <span className={`text-xs font-bold ${text}`}>{label}</span>
+                                                            <span className={`text-[7px] font-bold px-1.5 py-0.5 rounded-md ${pass ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'}`}>{pass ? 'AA ✓' : 'FAIL ✗'}</span>
                                                         </div>
                                                     ))}
                                                 </div>
                                             </div>
                                         </div>
                                     }
-                                    code={`// Focus ring — selalu gunakan focus-visible, bukan focus\n// focus-visible hanya aktif saat keyboard navigation\n<button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2">\n\n// Skip navigation link (untuk keyboard users)\n<a href="#main-content"\n  className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-[var(--color-primary)] focus:text-white focus:rounded-xl">\n  Langsung ke konten\n</a>\n\n// Accessible icon button\n<button aria-label="Hapus item" className="...">\n  <Trash2 />\n</button>\n\n// Live region untuk dynamic content\n<div aria-live="polite" aria-atomic="true" className="sr-only">\n  {announcement}\n</div>`}
+                                    code={`// Focus ring — selalu gunakan focus-visible, bukan focus\n// focus-visible hanya aktif saat keyboard navigation\n<button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2">\n\n// Skip navigation link (untuk keyboard users)\n<a href="#main-content"\n  className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-[var(--color-primary)] focus:text-white focus:rounded-xl">\n  Langsung ke konten\n</a>\n\n// Accessible icon button\n<button aria-label="Hapus item" className="...">\n  <Trash2 className="w-4 h-4" />\n</button>\n\n// Live region untuk dynamic content\n<div aria-live="polite" aria-atomic="true" className="sr-only">\n  {announcement}\n</div>`}
                                     dos={['Selalu test navigasi keyboard — Tab, Enter, Escape, Arrow keys', 'Gunakan focus-visible bukan focus untuk ring — hanya muncul saat keyboard', 'Pastikan semua icon-only button punya aria-label']}
                                     donts={['Jangan hilangkan focus outline dengan outline-none tanpa gantinya', 'Hindari warna teks yang kontrasnya di bawah 4.5:1 (WCAG AA)', 'Jangan andalkan warna saja untuk menyampaikan informasi']}
                                 />
@@ -2860,38 +2860,38 @@ export default function PlaygroundPage() {
                                             { prop: 'loading', type: 'boolean', defaultVal: 'false', desc: 'Tampilkan skeleton rows saat data sedang dimuat' },
                                         ]}
                                     />
-                                    <UIBlock fullWidth title="02 · Filter Bar" children={<FilterBarPreview />} code={`const [filters, setFilters] = useState([\n  { id: 'kelas', label: 'Kelas', value: '6A' },\n  { id: 'status', label: 'Status', value: 'Aktif' },\n])\n\nconst removeFilter = id =>\n  setFilters(prev => prev.filter(f => f.id !== id))\n\n<div className="flex flex-wrap items-center gap-2">\n  {filters.map(f => (\n    <div key={f.id} className="flex items-center gap-1.5 h-8 px-3 rounded-lg border text-[10px] font-black bg-sky-500/10 border-sky-500/20 text-sky-700">\n      {f.label}: {f.value}\n      <button onClick={() => removeFilter(f.id)}>\n        <X className="text-[8px]" />\n      </button>\n    </div>\n  ))}\n</div>`} />
+                                    <UIBlock fullWidth title="02 · Filter Bar" children={<FilterBarPreview />} code={`const [filters, setFilters] = useState([\n  { id: 'kelas', label: 'Kelas', value: '6A' },\n  { id: 'status', label: 'Status', value: 'Aktif' },\n])\n\nconst removeFilter = id =>\n  setFilters(prev => prev.filter(f => f.id !== id))\n\n<div className="flex flex-wrap items-center gap-2">\n  {filters.map(f => (\n    <div key={f.id} className="flex items-center gap-1.5 h-8 px-3 rounded-lg border text-xs font-bold bg-sky-500/10 border-sky-500/20 text-sky-700">\n      {f.label}: {f.value}\n      <button onClick={() => removeFilter(f.id)}>\n        <X className="w-4 h-4" />\n      </button>\n    </div>\n  ))}\n</div>`} />
                                     <div className="grid lg:grid-cols-2 gap-8">
                                         <UIBlock title="03 · Export Panel" children={
                                             <div className="space-y-4">
-                                                <p className="text-[10px] font-black text-[var(--color-text)]">Export Data Siswa</p>
+                                                <p className="text-xs font-bold text-[var(--color-text)]">Export Data Siswa</p>
                                                 <div>
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-2">Format</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-2">Format</p>
                                                     <div className="flex gap-2">
                                                         {[{ f: 'PDF', icon: FileText, active: true }, { f: 'Excel', icon: Table, active: false }, { f: 'CSV', icon: FileText, active: false }].map(({ f, icon: Icon, active }) => (
-                                                            <div key={f} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border cursor-pointer text-[10px] font-black transition-colors ${active ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)] text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]'}`}>{Icon && <Icon className="text-[9px]" />}{f}</div>
+                                                            <div key={f} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border cursor-pointer text-xs font-bold transition-colors ${active ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)] text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]'}`}>{Icon && <Icon className="w-4 h-4" />}{f}</div>
                                                         ))}
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-2">Kolom</p>
-                                                    <div className="flex flex-wrap gap-2">{['Nama', 'NIS', 'Kelas', 'Nilai'].map((c, i) => <span key={c} className={`px-2 py-0.5 rounded-lg text-[9px] font-black ${i < 3 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}>{c}{i < 3 ? ' ✓' : ''}</span>)}</div>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-2">Kolom</p>
+                                                    <div className="flex flex-wrap gap-2">{['Nama', 'NIS', 'Kelas', 'Nilai'].map((c, i) => <span key={c} className={`px-2 py-0.5 rounded-lg text-xs font-bold ${i < 3 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}>{c}{i < 3 ? ' ✓' : ''}</span>)}</div>
                                                 </div>
-                                                <button className="w-full h-9 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black flex items-center justify-center gap-2 hover:opacity-90 transition-all">
-                                                    <Download className="text-[9px]" /> Download PDF
+                                                <button className="w-full h-9 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all">
+                                                    <Download className="w-4 h-4" /> Download PDF
                                                 </button>
                                             </div>
-                                        } code={`const [format, setFormat] = useState('PDF')\nconst [cols, setCols] = useState(['Nama','NIS','Kelas'])\n\n<button onClick={handleExport}\n  className="w-full h-9 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black flex items-center justify-center gap-2">\n  <Download className="text-[9px]" />\n  Download {format}\n</button>`} />
+                                        } code={`const [format, setFormat] = useState('PDF')\nconst [cols, setCols] = useState(['Nama','NIS','Kelas'])\n\n<button onClick={handleExport}\n  className="w-full h-9 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold flex items-center justify-center gap-2">\n  <Download className="w-4 h-4" />\n  Download {format}\n</button>`} />
                                         <UIBlock title="04 · Pagination" children={
                                             <div className="space-y-4">
                                                 <div className="flex items-center justify-center gap-1">
-                                                    <button className="w-8 h-8 rounded-lg border border-[var(--color-border)] text-[10px] text-[var(--color-text-muted)] hover:border-[var(--color-primary)] transition-all">‹</button>
-                                                    {[1, 2, 3, '…', 12].map((p, i) => <button key={i} className={`w-8 h-8 rounded-lg text-[10px] font-black transition-colors ${p === 2 ? 'bg-[var(--color-primary)] text-white' : 'border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]'}`}>{p}</button>)}
-                                                    <button className="w-8 h-8 rounded-lg border border-[var(--color-border)] text-[10px] text-[var(--color-text-muted)] hover:border-[var(--color-primary)] transition-all">›</button>
+                                                    <button className="w-8 h-8 rounded-lg border border-[var(--color-border)] text-xs text-[var(--color-text-muted)] hover:border-[var(--color-primary)] transition-all">‹</button>
+                                                    {[1, 2, 3, '…', 12].map((p, i) => <button key={i} className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors ${p === 2 ? 'bg-[var(--color-primary)] text-white' : 'border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]'}`}>{p}</button>)}
+                                                    <button className="w-8 h-8 rounded-lg border border-[var(--color-border)] text-xs text-[var(--color-text-muted)] hover:border-[var(--color-primary)] transition-all">›</button>
                                                 </div>
-                                                <button className="w-full py-2 rounded-xl border border-dashed border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all">Muat lebih banyak (248 item)</button>
+                                                <button className="w-full py-2 rounded-xl border border-dashed border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all">Muat lebih banyak (248 item)</button>
                                             </div>
-                                        } code={`// Numbered pagination\n<div className="flex items-center gap-1">\n  <button className="w-8 h-8 rounded-lg border border-[var(--color-border)]">‹</button>\n  {pages.map(p => (\n    <button key={p} onClick={() => setPage(p)}\n      className={\`w-8 h-8 rounded-lg font-black \${currentPage===p ? 'bg-[var(--color-primary)] text-white' : 'border border-[var(--color-border)]'}\`}>\n      {p}\n    </button>\n  ))}\n  <button className="w-8 h-8 rounded-lg border border-[var(--color-border)]">›</button>\n</div>`} />
+                                        } code={`// Numbered pagination\n<div className="flex items-center gap-1">\n  <button className="w-8 h-8 rounded-lg border border-[var(--color-border)]">‹</button>\n  {pages.map(p => (\n    <button key={p} onClick={() => setPage(p)}\n      className={\`w-8 h-8 rounded-lg font-bold \${currentPage===p ? 'bg-[var(--color-primary)] text-white' : 'border border-[var(--color-border)]'}\`}>\n      {p}\n    </button>\n  ))}\n  <button className="w-8 h-8 rounded-lg border border-[var(--color-border)]">›</button>\n</div>`} />
                                     </div>
                                 </div>
                             </section></LazySection>
@@ -2902,7 +2902,7 @@ export default function PlaygroundPage() {
                                 <div className="space-y-8">
                                     <UIBlock fullWidth title="05 · Command Palette" children={<CommandPalettePreview />} code={`const [q, setQ] = useState('')\nconst [open, setOpen] = useState(false)\n\n// Open with ⌘K\nuseEffect(() => {\n  const handler = e => {\n    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {\n      e.preventDefault()\n      setOpen(p => !p)\n    }\n  }\n  window.addEventListener('keydown', handler)\n  return () => window.removeEventListener('keydown', handler)\n}, [])`} />
                                     <div className="grid lg:grid-cols-2 gap-8">
-                                        <UIBlock title="06 · Tabs & Segmented" children={<TabsPreview />} code={`const [active, setActive] = useState('semua')\n\n<div className="flex border-b border-[var(--color-border)] gap-1">\n  {tabs.map(({ k, label, count }) => (\n    <button key={k} onClick={() => setActive(k)}\n      className={\`px-3 py-2 text-[10px] font-black border-b-2 -mb-px\n        \${active===k ? 'border-[var(--color-primary)] text-[var(--color-primary)]'\n          : 'border-transparent text-[var(--color-text-muted)]'}\`}>\n      {label}\n      <span className="ml-1.5 px-1.5 py-0.5 rounded-full text-[8px] bg-[var(--color-surface-alt)]">{count}</span>\n    </button>\n  ))}\n</div>`}
+                                        <UIBlock title="06 · Tabs & Segmented" children={<TabsPreview />} code={`const [active, setActive] = useState('semua')\n\n<div className="flex border-b border-[var(--color-border)] gap-1">\n  {tabs.map(({ k, label, count }) => (\n    <button key={k} onClick={() => setActive(k)}\n      className={\`px-3 py-2 text-xs font-bold border-b-2 -mb-px\n        \${active===k ? 'border-[var(--color-primary)] text-[var(--color-primary)]'\n          : 'border-transparent text-[var(--color-text-muted)]'}\`}>\n      {label}\n      <span className="ml-1.5 px-1.5 py-0.5 rounded-full text-xs bg-[var(--color-surface-alt)]">{count}</span>\n    </button>\n  ))}\n</div>`}
                                             dos={['Gunakan tab untuk konten yang setara dan sejajar levelnya', 'Tandai tab aktif dengan warna primary dan underline yang jelas', 'Sertakan badge count jika tab berisi daftar item']}
                                             donts={['Jangan nest tab di dalam tab — gunakan accordion sebagai gantinya', 'Hindari lebih dari 6 tab horizontal, gunakan dropdown jika lebih', 'Jangan ubah urutan tab saat tab aktif berubah']}
                                             apiProps={[
@@ -2912,7 +2912,7 @@ export default function PlaygroundPage() {
                                                 { prop: 'variant', type: "'underline'|'pill'|'segment'", defaultVal: "'underline'", desc: 'Gaya visual tab' },
                                             ]}
                                         />
-                                        <UIBlock title="07 · Dropdown Menu" children={<DropdownPreview />} code={`const [open, setOpen] = useState(false)\n\n<div className="relative">\n  <button onClick={() => setOpen(p => !p)}\n    className="flex items-center gap-2 px-4 h-9 rounded-xl border">\n    Aksi <ChevronDown \n className={\`text-[8px] transition-transform \${open ? 'rotate-180' : ''}\`} />\n  </button>\n  {open && (\n    <div className="absolute top-full mt-1.5 w-44 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-xl">\n      {/* menu items */}\n    </div>\n  )}\n</div>`}
+                                        <UIBlock title="07 · Dropdown Menu" children={<DropdownPreview />} code={`const [open, setOpen] = useState(false)\n\n<div className="relative">\n  <button onClick={() => setOpen(p => !p)}\n    className="flex items-center gap-2 px-4 h-9 rounded-xl border">\n    Aksi <ChevronDown \n className={\`text-xs transition-transform \${open ? 'rotate-180' : ''}\`} className="w-4 h-4" />\n  </button>\n  {open && (\n    <div className="absolute top-full mt-1.5 w-44 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-xl">\n      {/* menu items */}\n    </div>\n  )}\n</div>`}
                                             dos={['Tutup dropdown saat klik di luar area (overlay transparent)', 'Berikan visual hover yang jelas pada setiap item', 'Gunakan divider untuk memisahkan grup aksi yang berbeda', 'Tandai destructive action (hapus) dengan warna merah']}
                                             donts={['Jangan lupa handle keyboard Esc untuk menutup dropdown', 'Hindari lebih dari 10 item tanpa grouping atau search', 'Jangan posisikan dropdown hingga keluar viewport']}
                                             apiProps={[
@@ -2939,14 +2939,14 @@ export default function PlaygroundPage() {
                                                 { label: 'Skor Sistem', value: '98.2%', trend: 'Stabil', up: true, icon: ShieldHalf, color: 'sky' },
                                             ].map(({ label, value, trend, up, icon: Icon, color }) => (
                                                 <div key={label} className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] hover:shadow-lg transition-all cursor-pointer group">
-                                                    <div className={`w-8 h-8 rounded-xl bg-${color}-500/10 text-${color}-600 flex items-center justify-center mb-2`}>{Icon && <Icon className="text-xs" />}</div>
-                                                    <div className="text-xl font-black font-heading tracking-tight text-[var(--color-text)]">{value}</div>
-                                                    <div className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mt-0.5">{label}</div>
-                                                    <div className={`text-[9px] font-black mt-1 ${up ? 'text-emerald-500' : 'text-rose-500'}`}>{up ? '↑' : '↓'} {trend}</div>
+                                                    <div className={`w-8 h-8 rounded-xl bg-${color}-500/10 text-${color}-600 flex items-center justify-center mb-2`}>{Icon && <Icon className="w-4 h-4" />}</div>
+                                                    <div className="text-xl font-bold font-heading tracking-tight text-[var(--color-text)]">{value}</div>
+                                                    <div className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mt-0.5">{label}</div>
+                                                    <div className={`text-xs font-bold mt-1 ${up ? 'text-emerald-500' : 'text-rose-500'}`}>{up ? '↑' : '↓'} {trend}</div>
                                                 </div>
                                             ))}
                                         </div>
-                                    } code={`<div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] hover:shadow-lg transition-all">\n  <div className="w-8 h-8 rounded-xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center mb-2">\n    <User className="text-xs" />\n  </div>\n  <div className="text-xl font-black font-heading tracking-tight text-[var(--color-text)]">2,840</div>\n  <div className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mt-0.5">Total Siswa</div>\n  <div className="text-[9px] font-black text-emerald-500 mt-1">↑ +12.5%</div>\n</div>`}
+                                    } code={`<div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] hover:shadow-lg transition-all">\n  <div className="w-8 h-8 rounded-xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center mb-2">\n    <User className="w-4 h-4" />\n  </div>\n  <div className="text-xl font-bold font-heading tracking-tight text-[var(--color-text)]">2,840</div>\n  <div className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mt-0.5">Total Siswa</div>\n  <div className="text-xs font-bold text-emerald-500 mt-1">↑ +12.5%</div>\n</div>`}
                                         dos={['Tampilkan perubahan % dengan warna hijau (naik) dan merah (turun)', 'Gunakan angka besar + label kecil untuk hierarki visual', 'Sertakan ikon kecil sebagai visual anchor per metric']}
                                         donts={['Jangan tampilkan lebih dari 4 stat card dalam satu baris', 'Hindari angka tanpa satuan atau konteks waktu', 'Jangan gunakan warna yang sama untuk semua card']}
                                         apiProps={[
@@ -2960,32 +2960,32 @@ export default function PlaygroundPage() {
                                     <UIBlock title="09 · User Profile Card" children={
                                         <div className="space-y-4">
                                             <div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center gap-4">
-                                                <div className="w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-600 text-sm font-black flex items-center justify-center shrink-0">BU</div>
+                                                <div className="w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-600 text-sm font-bold flex items-center justify-center shrink-0">BU</div>
                                                 <div className="flex-1 min-w-0">
-                                                    <p className="text-[12px] font-black text-[var(--color-text)]">Budi Utama, S.Pd</p>
-                                                    <p className="text-[9px] text-[var(--color-text-muted)]">Guru Matematika · Kelas 5 & 6</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text)]">Budi Utama, S.Pd</p>
+                                                    <p className="text-xs text-[var(--color-text-muted)]">Guru Matematika · Kelas 5 & 6</p>
                                                     <div className="flex gap-1.5 mt-1.5">
-                                                        <span className="px-2 py-0.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-700 text-[8px] font-black">Wali Kelas 6A</span>
-                                                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 text-[8px] font-black">Aktif</span>
+                                                        <span className="px-2 py-0.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-700 text-xs font-bold">Wali Kelas 6A</span>
+                                                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 text-xs font-bold">Aktif</span>
                                                     </div>
                                                 </div>
                                                 <div className="flex flex-col gap-1.5">
-                                                    <button className="w-8 h-8 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-600 flex items-center justify-center hover:bg-sky-500 hover:text-white transition-all"><Mail className="text-xs" /></button>
-                                                    <button className="w-8 h-8 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] flex items-center justify-center hover:text-[var(--color-primary)] transition-all"><EllipsisVertical className="text-xs" /></button>
+                                                    <button className="w-8 h-8 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-600 flex items-center justify-center hover:bg-sky-500 hover:text-white transition-all"><Mail className="w-4 h-4" /></button>
+                                                    <button className="w-8 h-8 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] flex items-center justify-center hover:text-[var(--color-primary)] transition-all"><EllipsisVertical className="w-4 h-4" /></button>
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-3 gap-2">
                                                 {[{ label: 'Total Siswa', v: '42' }, { label: 'Rata Nilai', v: '87.4' }, { label: 'Kehadiran', v: '98%' }].map(({ label, v }) => (
                                                     <div key={label} className="text-center p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                                                        <div className="text-[14px] font-black text-[var(--color-text)]">{v}</div>
-                                                        <div className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">{label}</div>
+                                                        <div className="text-[14px] font-bold text-[var(--color-text)]">{v}</div>
+                                                        <div className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">{label}</div>
                                                     </div>
                                                 ))}
                                             </div>
                                         </div>
-                                    } code={`<div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center gap-4">\n  <div className="w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-600 text-sm font-black flex items-center justify-center shrink-0">BU</div>\n  <div className="flex-1 min-w-0">\n    <p className="text-[12px] font-black text-[var(--color-text)]">Budi Utama, S.Pd</p>\n    <p className="text-[9px] text-[var(--color-text-muted)]">Guru Matematika</p>\n    <div className="flex gap-1.5 mt-1.5">\n      <span className="px-2 py-0.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-700 text-[8px] font-black">Wali Kelas 6A</span>\n    </div>\n  </div>\n</div>`} />
+                                    } code={`<div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center gap-4">\n  <div className="w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-600 text-sm font-bold flex items-center justify-center shrink-0">BU</div>\n  <div className="flex-1 min-w-0">\n    <p className="text-xs font-bold text-[var(--color-text)]">Budi Utama, S.Pd</p>\n    <p className="text-xs text-[var(--color-text-muted)]">Guru Matematika</p>\n    <div className="flex gap-1.5 mt-1.5">\n      <span className="px-2 py-0.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-700 text-xs font-bold">Wali Kelas 6A</span>\n    </div>\n  </div>\n</div>`} />
                                     <UIBlock title="10 · Onboarding Checklist" children={<OnboardingPreview />} code={`const [steps, setSteps] = useState([\n  { id: 0, label: 'Buat akun admin',   done: true  },\n  { id: 1, label: 'Upload logo',       done: true  },\n  { id: 2, label: 'Atur tahun ajaran', done: false },\n  { id: 3, label: 'Import siswa',      done: false },\n])\n\nconst complete = id =>\n  setSteps(prev => prev.map(s => s.id===id ? {...s, done:true} : s))\n\nconst pct = Math.round((steps.filter(s=>s.done).length / steps.length) * 100)`} />
-                                    <UIBlock title="11 · Multi-step Wizard" children={<WizardPreview />} code={`const [step, setStep] = useState(0)\nconst steps = ['Profil', 'Sekolah', 'Akademik', 'Review']\n\n<div className="flex justify-between">\n  <button onClick={() => setStep(p => Math.max(0, p-1))}\n    disabled={step === 0}\n    className="px-4 h-9 rounded-xl border border-[var(--color-border)] text-[10px] font-black disabled:opacity-30">\n    ← Kembali\n  </button>\n  <button onClick={() => setStep(p => Math.min(steps.length-1, p+1))}\n    disabled={step === steps.length - 1}\n    className="px-4 h-9 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black disabled:opacity-40">\n    Lanjut →\n  </button>\n</div>`} />
+                                    <UIBlock title="11 · Multi-step Wizard" children={<WizardPreview />} code={`const [step, setStep] = useState(0)\nconst steps = ['Profil', 'Sekolah', 'Akademik', 'Review']\n\n<div className="flex justify-between">\n  <button onClick={() => setStep(p => Math.max(0, p-1))}\n    disabled={step === 0}\n    className="px-4 h-9 rounded-xl border border-[var(--color-border)] text-xs font-bold disabled:opacity-30">\n    ← Kembali\n  </button>\n  <button onClick={() => setStep(p => Math.min(steps.length-1, p+1))}\n    disabled={step === steps.length - 1}\n    className="px-4 h-9 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold disabled:opacity-40">\n    Lanjut →\n  </button>\n</div>`} />
                                 </div>
                             </section></LazySection>
 
@@ -3001,12 +3001,12 @@ export default function PlaygroundPage() {
                                                 { type: 'warning', icon: TriangleAlert, bg: 'bg-amber-500/5 border-amber-500/20 border-l-4 border-l-amber-500', title: 'Sesi akan habis', desc: 'Auto logout dalam 5 menit', titleColor: 'text-amber-700', descColor: 'text-amber-600/70' },
                                             ].map(({ type, icon: Icon, bg, title, desc, titleColor, descColor }) => (
                                                 <div key={type} className={`flex items-center gap-3 p-3 rounded-xl border ${bg}`}>
-                                                    {Icon && <Icon className={`${titleColor} text-sm shrink-0`} />}
+                                                    {Icon && <Icon className={`w-4 h-4 ${titleColor} shrink-0`} />}
                                                     <div className="flex-1">
-                                                        <p className={`text-[10px] font-black ${titleColor}`}>{title}</p>
-                                                        <p className={`text-[9px] ${descColor}`}>{desc}</p>
+                                                        <p className={`text-xs font-bold ${titleColor}`}>{title}</p>
+                                                        <p className={`text-xs ${descColor}`}>{desc}</p>
                                                     </div>
-                                                    <X className="text-[var(--color-text-muted)] text-[9px] opacity-50 cursor-pointer hover:opacity-100 shrink-0" />
+                                                    <X className="w-4 h-4 text-[var(--color-text-muted)] opacity-50 cursor-pointer hover:opacity-100 shrink-0" />
                                                 </div>
                                             ))}
                                         </div>
@@ -3020,12 +3020,12 @@ export default function PlaygroundPage() {
                                             { prop: 'onDismiss', type: 'function', defaultVal: 'undefined', desc: 'Callback saat toast ditutup (auto maupun manual)' },
                                         ]}
                                     />
-                                    <UIBlock title="13 · Confirm Dialog" children={<ConfirmDialogPreview />} code={`const [input, setInput] = useState('')\nconst confirmed = input === 'HAPUS'\n\n<input\n  value={input}\n  onChange={e => setInput(e.target.value)}\n  placeholder="HAPUS"\n  className={\`w-full h-8 px-3 rounded-lg border text-[11px] font-black outline-none\n    \${confirmed ? 'border-rose-400 ring-2 ring-rose-400/20 text-rose-600'\n      : 'border-[var(--color-border)]'}\`}\n/>\n<button\n  disabled={!confirmed}\n  onClick={handleDelete}\n  className={\`flex-1 h-9 rounded-xl text-[10px] font-black\n    \${confirmed ? 'bg-rose-500 text-white' : 'bg-rose-500/20 text-rose-300 cursor-not-allowed'}\`}>\n  Hapus Permanen\n</button>`} />
+                                    <UIBlock title="13 · Confirm Dialog" children={<ConfirmDialogPreview />} code={`const [input, setInput] = useState('')\nconst confirmed = input === 'HAPUS'\n\n<input\n  value={input}\n  onChange={e => setInput(e.target.value)}\n  placeholder="HAPUS"\n  className={\`w-full h-8 px-3 rounded-lg border text-xs font-bold outline-none\n    \${confirmed ? 'border-rose-400 ring-2 ring-rose-400/20 text-rose-600'\n      : 'border-[var(--color-border)]'}\`}\n/>\n<button\n  disabled={!confirmed}\n  onClick={handleDelete}\n  className={\`flex-1 h-9 rounded-xl text-xs font-bold\n    \${confirmed ? 'bg-rose-500 text-white' : 'bg-rose-500/20 text-rose-300 cursor-not-allowed'}\`}>\n  Hapus Permanen\n</button>`} />
                                     <UIBlock title="14 · Notification Feed" children={
                                         <div className="space-y-2">
                                             <div className="flex items-center justify-between mb-3">
-                                                <span className="text-[11px] font-black text-[var(--color-text)]">Notifikasi</span>
-                                                <span className="px-2 py-0.5 rounded-full bg-[var(--color-primary)] text-white text-[8px] font-black">3 baru</span>
+                                                <span className="text-xs font-bold text-[var(--color-text)]">Notifikasi</span>
+                                                <span className="px-2 py-0.5 rounded-full bg-[var(--color-primary)] text-white text-xs font-bold">3 baru</span>
                                             </div>
                                             {[
                                                 { dot: 'bg-sky-500', title: 'Laporan baru diterima', desc: 'Andi mengirim laporan kelas 6A', time: '2m', unread: true },
@@ -3036,38 +3036,38 @@ export default function PlaygroundPage() {
                                                 <div key={i} className={`flex items-start gap-3 p-3 rounded-xl transition-colors cursor-pointer ${n.unread ? 'bg-[var(--color-primary)]/5 hover:bg-[var(--color-primary)]/8' : 'hover:bg-[var(--color-surface-alt)]'}`}>
                                                     <div className={`w-2 h-2 rounded-full ${n.dot} mt-1.5 shrink-0`} />
                                                     <div className="flex-1 min-w-0">
-                                                        <p className={`text-[10px] font-black ${n.unread ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)]'}`}>{n.title}</p>
-                                                        <p className="text-[9px] text-[var(--color-text-muted)] opacity-60">{n.desc}</p>
+                                                        <p className={`text-xs font-bold ${n.unread ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)]'}`}>{n.title}</p>
+                                                        <p className="text-xs text-[var(--color-text-muted)] opacity-60">{n.desc}</p>
                                                     </div>
-                                                    <span className="text-[8px] text-[var(--color-text-muted)] opacity-50 shrink-0">{n.time}</span>
+                                                    <span className="text-xs text-[var(--color-text-muted)] opacity-50 shrink-0">{n.time}</span>
                                                 </div>
                                             ))}
                                         </div>
-                                    } code={`{notifications.map(n => (\n  <div key={n.id} className={\`flex items-start gap-3 p-3 rounded-xl cursor-pointer\n    \${n.unread ? 'bg-[var(--color-primary)]/5' : 'hover:bg-[var(--color-surface-alt)]'}\`}>\n    <div className={\`w-2 h-2 rounded-full mt-1.5 shrink-0 \${n.unread ? 'bg-sky-500' : 'bg-[var(--color-border)]'}\`} />\n    <div className="flex-1 min-w-0">\n      <p className="text-[10px] font-black text-[var(--color-text)]">{n.title}</p>\n      <p className="text-[9px] text-[var(--color-text-muted)] opacity-60">{n.desc}</p>\n    </div>\n  </div>\n))}`} />
+                                    } code={`{notifications.map(n => (\n  <div key={n.id} className={\`flex items-start gap-3 p-3 rounded-xl cursor-pointer\n    \${n.unread ? 'bg-[var(--color-primary)]/5' : 'hover:bg-[var(--color-surface-alt)]'}\`}>\n    <div className={\`w-2 h-2 rounded-full mt-1.5 shrink-0 \${n.unread ? 'bg-sky-500' : 'bg-[var(--color-border)]'}\`} />\n    <div className="flex-1 min-w-0">\n      <p className="text-xs font-bold text-[var(--color-text)]">{n.title}</p>\n      <p className="text-xs text-[var(--color-text-muted)] opacity-60">{n.desc}</p>\n    </div>\n  </div>\n))}`} />
                                     <UIBlock title="15 · Drawer / Side Panel" children={
                                         <div className="relative overflow-hidden rounded-2xl border border-[var(--color-border)] h-48 flex">
                                             <div className="flex-1 bg-[var(--color-surface-alt)] flex items-center justify-center">
                                                 <div className="text-center space-y-1 opacity-40">
-                                                    <div className="text-[10px] font-black text-[var(--color-text-muted)]">Main content</div>
-                                                    <div className="text-[9px] text-[var(--color-text-muted)]">dimmed overlay</div>
+                                                    <div className="text-xs font-bold text-[var(--color-text-muted)]">Main content</div>
+                                                    <div className="text-xs text-[var(--color-text-muted)]">dimmed overlay</div>
                                                 </div>
                                             </div>
                                             <div className="w-48 bg-[var(--color-surface)] border-l border-[var(--color-border)] p-4 shadow-xl">
                                                 <div className="flex justify-between items-center mb-3">
-                                                    <span className="text-[10px] font-black text-[var(--color-text)]">Detail Siswa</span>
-                                                    <X className="text-[var(--color-text-muted)] text-xs cursor-pointer" />
+                                                    <span className="text-xs font-bold text-[var(--color-text)]">Detail Siswa</span>
+                                                    <X className="w-4 h-4 text-[var(--color-text-muted)] cursor-pointer" />
                                                 </div>
-                                                <div className="w-10 h-10 rounded-full bg-indigo-500/10 text-indigo-600 text-sm font-black flex items-center justify-center mb-2">AS</div>
-                                                <p className="text-[11px] font-black text-[var(--color-text)]">Andi Setiawan</p>
-                                                <p className="text-[9px] text-[var(--color-text-muted)]">Kelas 6A · NIS 2401</p>
+                                                <div className="w-10 h-10 rounded-full bg-indigo-500/10 text-indigo-600 text-sm font-bold flex items-center justify-center mb-2">AS</div>
+                                                <p className="text-xs font-bold text-[var(--color-text)]">Andi Setiawan</p>
+                                                <p className="text-xs text-[var(--color-text-muted)]">Kelas 6A · NIS 2401</p>
                                                 <div className="mt-2 space-y-1">
                                                     {[{ l: 'Nilai', v: '92.4' }, { l: 'Hadir', v: '98%' }, { l: 'Tugas', v: '45/48' }].map(({ l, v }) => (
-                                                        <div key={l} className="flex justify-between text-[9px]"><span className="text-[var(--color-text-muted)]">{l}</span><span className="font-black text-[var(--color-text)]">{v}</span></div>
+                                                        <div key={l} className="flex justify-between text-xs"><span className="text-[var(--color-text-muted)]">{l}</span><span className="font-bold text-[var(--color-text)]">{v}</span></div>
                                                     ))}
                                                 </div>
                                             </div>
                                         </div>
-                                    } code={`const [isOpen, setIsOpen] = useState(false)\n\n{isOpen && (\n  <>\n    <div className="fixed inset-0 z-40 bg-black/20" onClick={() => setIsOpen(false)} />\n    <div className="fixed right-0 top-0 h-full w-80 z-50 bg-[var(--color-surface)] border-l border-[var(--color-border)] shadow-xl overflow-y-auto animate-in slide-in-from-right">\n      <div className="p-4 border-b border-[var(--color-border)] flex justify-between items-center">\n        <h3 className="text-[12px] font-black text-[var(--color-text)]">Detail Siswa</h3>\n        <button onClick={() => setIsOpen(false)}>\n          <X />\n        </button>\n      </div>\n      {/* content */}\n    </div>\n  </>\n)}`} />
+                                    } code={`const [isOpen, setIsOpen] = useState(false)\n\n{isOpen && (\n  <>\n    <div className="fixed inset-0 z-40 bg-black/20" onClick={() => setIsOpen(false)} />\n    <div className="fixed right-0 top-0 h-full w-80 z-50 bg-[var(--color-surface)] border-l border-[var(--color-border)] shadow-xl overflow-y-auto animate-in slide-in-from-right">\n      <div className="p-4 border-b border-[var(--color-border)] flex justify-between items-center">\n        <h3 className="text-xs font-bold text-[var(--color-text)]">Detail Siswa</h3>\n        <button onClick={() => setIsOpen(false)}>\n          <X className="w-4 h-4" />\n        </button>\n      </div>\n      {/* content */}\n    </div>\n  </>\n)}`} />
                                 </div>
                             </section></LazySection>
 
@@ -3075,7 +3075,7 @@ export default function PlaygroundPage() {
                             <LazySection><section className="space-y-10">
                                 <SectionHeader icon={Layers} number="E" title="Content Components" />
                                 <div className="grid lg:grid-cols-2 gap-8">
-                                    <UIBlock title="16 · Accordion" children={<AccordionPreview />} code={`const [open, setOpen] = useState(0)\n\n{items.map((item, i) => (\n  <div key={i} className={\`rounded-xl border overflow-hidden transition-all\n    \${open===i ? 'border-[var(--color-primary)]' : 'border-[var(--color-border)]'}\`}>\n    <button onClick={() => setOpen(open===i ? -1 : i)}\n      className="w-full flex items-center justify-between px-4 py-3">\n      <span className={\`text-[11px] font-black \${open===i ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}\`}>\n        {item.q}\n      </span>\n      <ChevronDown \n className={\`text-[9px] transition-transform \${open===i ? 'rotate-180' : ''}\`} />\n    </button>\n    {open===i && <div className="px-4 pb-3 text-[11px] text-[var(--color-text-muted)]">{item.a}</div>}\n  </div>\n))}`}
+                                    <UIBlock title="16 · Accordion" children={<AccordionPreview />} code={`const [open, setOpen] = useState(0)\n\n{items.map((item, i) => (\n  <div key={i} className={\`rounded-xl border overflow-hidden transition-all\n    \${open===i ? 'border-[var(--color-primary)]' : 'border-[var(--color-border)]'}\`}>\n    <button onClick={() => setOpen(open===i ? -1 : i)}\n      className="w-full flex items-center justify-between px-4 py-3">\n      <span className={\`text-xs font-bold \${open===i ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}\`}>\n        {item.q}\n      </span>\n      <ChevronDown \n className={\`text-xs transition-transform \${open===i ? 'rotate-180' : ''}\`} className="w-4 h-4" />\n    </button>\n    {open===i && <div className="px-4 pb-3 text-xs text-[var(--color-text-muted)]">{item.a}</div>}\n  </div>\n))}`}
                                         dos={['Animasikan rotate chevron 180° saat accordion terbuka', 'Highlight border dengan warna primary pada accordion yang aktif', 'Gunakan accordion untuk FAQ atau konten yang jarang dibuka semua sekaligus']}
                                         donts={['Hindari nested accordion lebih dari 2 level — membingungkan pengguna', 'Jangan sembunyikan informasi kritis di dalam accordion', 'Jangan buka semua accordion secara default tanpa alasan']}
                                         apiProps={[
@@ -3095,52 +3095,52 @@ export default function PlaygroundPage() {
                                             ].map(({ color, label, time, user, icon: Icon }, i, arr) => (
                                                 <div key={i} className="flex gap-3 items-start">
                                                     <div className="flex flex-col items-center w-7 shrink-0">
-                                                        <div className={`w-7 h-7 rounded-full ${color} flex items-center justify-center shrink-0`}>{Icon && <Icon className="text-white text-[9px]" />}</div>
+                                                        <div className={`w-7 h-7 rounded-full ${color} flex items-center justify-center shrink-0`}>{Icon && <Icon className="w-4 h-4 text-white" />}</div>
                                                         {i < arr.length - 1 && <div className="w-px flex-1 bg-[var(--color-border)] min-h-4 mt-1" />}
                                                     </div>
                                                     <div className={`pb-4 ${i === arr.length - 1 ? '' : 'min-h-10'}`}>
-                                                        <p className="text-[10px] font-black text-[var(--color-text)]">{label}</p>
-                                                        <p className="text-[9px] text-[var(--color-text-muted)] opacity-60">{user} · {time}</p>
+                                                        <p className="text-xs font-bold text-[var(--color-text)]">{label}</p>
+                                                        <p className="text-xs text-[var(--color-text-muted)] opacity-60">{user} · {time}</p>
                                                     </div>
                                                 </div>
                                             ))}
                                         </div>
-                                    } code={`{events.map(({ color, label, time, user, icon: Icon }, i) => (\n  <div key={i} className="flex gap-3 items-start">\n    <div className="flex flex-col items-center w-7 shrink-0">\n      <div className={\`w-7 h-7 rounded-full \${color} flex items-center justify-center\`}>\n        <Icon className="text-white text-[9px]" />\n      </div>\n      {i < events.length - 1 && (\n        <div className="w-px flex-1 bg-[var(--color-border)] min-h-4 mt-1" />\n      )}\n    </div>\n    <div className="pb-4">\n      <p className="text-[10px] font-black text-[var(--color-text)]">{label}</p>\n      <p className="text-[9px] text-[var(--color-text-muted)] opacity-60">{user} · {time}</p>\n    </div>\n  </div>\n))}`} />
+                                    } code={`{events.map(({ color, label, time, user, icon: Icon }, i) => (\n  <div key={i} className="flex gap-3 items-start">\n    <div className="flex flex-col items-center w-7 shrink-0">\n      <div className={\`w-7 h-7 rounded-full \${color} flex items-center justify-center\`}>\n        <Icon className="text-white text-xs" />\n      </div>\n      {i < events.length - 1 && (\n        <div className="w-px flex-1 bg-[var(--color-border)] min-h-4 mt-1" />\n      )}\n    </div>\n    <div className="pb-4">\n      <p className="text-xs font-bold text-[var(--color-text)]">{label}</p>\n      <p className="text-xs text-[var(--color-text-muted)] opacity-60">{user} · {time}</p>\n    </div>\n  </div>\n))}`} />
                                     <UIBlock title="18 · File Upload" children={
                                         <div className="space-y-3">
                                             <div className="border-2 border-dashed border-[var(--color-border)] rounded-2xl p-6 text-center hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 transition-all cursor-pointer group">
-                                                <div className="w-10 h-10 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform"><Upload className="text-sm" /></div>
-                                                <p className="text-[11px] font-black text-[var(--color-text)]">Drop file di sini atau klik</p>
-                                                <p className="text-[9px] text-[var(--color-text-muted)] opacity-60">PDF, DOC, XLS · max 10MB</p>
+                                                <div className="w-10 h-10 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform"><Upload className="w-4 h-4" /></div>
+                                                <p className="text-xs font-bold text-[var(--color-text)]">Drop file di sini atau klik</p>
+                                                <p className="text-xs text-[var(--color-text-muted)] opacity-60">PDF, DOC, XLS · max 10MB</p>
                                             </div>
                                             {[{ name: 'laporan_semester1.pdf', size: '2.4 MB', pct: 72, done: false }, { name: 'data_siswa.xlsx', size: '1.1 MB', pct: 100, done: true }].map(f => (
                                                 <div key={f.name} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
-                                                    <div className="w-8 h-8 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0"><FileText className="text-xs" /></div>
+                                                    <div className="w-8 h-8 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0"><FileText className="w-4 h-4" /></div>
                                                     <div className="flex-1 min-w-0">
-                                                        <p className="text-[10px] font-black text-[var(--color-text)] truncate">{f.name}</p>
-                                                        {f.done ? <p className="text-[9px] text-emerald-600 font-black flex items-center gap-1"><Check className="text-[7px]" /> {f.size} · Selesai</p> : <div className="mt-1 h-1.5 rounded-full bg-[var(--color-surface-alt)] overflow-hidden"><div className="h-full bg-[var(--color-primary)] rounded-full transition-all" style={{ width: `${f.pct}%` }} /></div>}
+                                                        <p className="text-xs font-bold text-[var(--color-text)] truncate">{f.name}</p>
+                                                        {f.done ? <p className="text-xs text-emerald-600 font-bold flex items-center gap-1"><Check className="w-4 h-4" /> {f.size} · Selesai</p> : <div className="mt-1 h-1.5 rounded-full bg-[var(--color-surface-alt)] overflow-hidden"><div className="h-full bg-[var(--color-primary)] rounded-full transition-all" style={{ width: `${f.pct}%` }} /></div>}
                                                     </div>
-                                                    {!f.done && <span className="text-[9px] font-black text-[var(--color-primary)]">{f.pct}%</span>}
-                                                    <button className="text-[var(--color-text-muted)] hover:text-rose-500 transition-colors"><X className="text-xs" /></button>
+                                                    {!f.done && <span className="text-xs font-bold text-[var(--color-primary)]">{f.pct}%</span>}
+                                                    <button className="text-[var(--color-text-muted)] hover:text-rose-500 transition-colors"><X className="w-4 h-4" /></button>
                                                 </div>
                                             ))}
                                         </div>
-                                    } code={`<div\n  onDragOver={e => e.preventDefault()}\n  onDrop={handleDrop}\n  onClick={() => fileInput.current?.click()}\n  className="border-2 border-dashed border-[var(--color-border)] rounded-2xl p-6 text-center hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 transition-all cursor-pointer">\n  <p className="text-[11px] font-black text-[var(--color-text)]">Drop file di sini atau klik</p>\n  <p className="text-[9px] text-[var(--color-text-muted)]">PDF, DOC, XLS · max 10MB</p>\n</div>`} />
+                                    } code={`<div\n  onDragOver={e => e.preventDefault()}\n  onDrop={handleDrop}\n  onClick={() => fileInput.current?.click()}\n  className="border-2 border-dashed border-[var(--color-border)] rounded-2xl p-6 text-center hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 transition-all cursor-pointer">\n  <p className="text-xs font-bold text-[var(--color-text)]">Drop file di sini atau klik</p>\n  <p className="text-xs text-[var(--color-text-muted)]">PDF, DOC, XLS · max 10MB</p>\n</div>`} />
                                     <UIBlock title="19 · Rich Text Toolbar" children={
                                         <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl overflow-hidden">
                                             <div className="flex flex-wrap items-center gap-1 p-2 border-b border-[var(--color-border)]">
-                                                {[['B', 'font-black'], ['I', 'italic'], ['U', 'underline']].map(([t, cls]) => <button key={t} className={`w-7 h-7 rounded-lg border border-[var(--color-border)] text-[10px] ${cls} text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all`}>{t}</button>)}
+                                                {[['B', 'font-bold'], ['I', 'italic'], ['U', 'underline']].map(([t, cls]) => <button key={t} className={`w-7 h-7 rounded-lg border border-[var(--color-border)] text-xs ${cls} text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all`}>{t}</button>)}
                                                 <div className="w-px h-5 bg-[var(--color-border)] mx-0.5" />
-                                                {[['H1', ''], ['H2', '']].map(t => <button key={t} className="w-8 h-7 rounded-lg border border-[var(--color-border)] text-[9px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-all">{t}</button>)}
+                                                {[['H1', ''], ['H2', '']].map(t => <button key={t} className="w-8 h-7 rounded-lg border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-all">{t}</button>)}
                                                 <div className="w-px h-5 bg-[var(--color-border)] mx-0.5" />
-                                                {[Link, Camera, FileText].map((Icon, i) => <button key={i} className="w-7 h-7 rounded-lg border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-all"><Icon className="text-[9px]" /></button>)}
+                                                {[Link, Camera, FileText].map((Icon, i) => <button key={i} className="w-7 h-7 rounded-lg border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-all"><Icon className="w-4 h-4" /></button>)}
                                             </div>
-                                            <div contentEditable suppressContentEditableWarning className="p-4 min-h-20 text-[11px] text-[var(--color-text)] leading-relaxed outline-none focus:ring-0" data-placeholder="Mulai mengetik...">
+                                            <div contentEditable suppressContentEditableWarning className="p-4 min-h-20 text-xs text-[var(--color-text)] leading-relaxed outline-none focus:ring-0" data-placeholder="Mulai mengetik...">
                                                 <strong>Catatan Wali Kelas 6A</strong><br />
                                                 <span className="text-[var(--color-text-muted)]">Rata-rata kehadiran bulan ini mencapai 94.2%…</span>
                                             </div>
                                         </div>
-                                    } code={`<div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl overflow-hidden">\n  <div className="flex items-center gap-1 p-2 border-b border-[var(--color-border)]">\n    <button onClick={() => document.execCommand('bold')} className="w-7 h-7 rounded-lg font-black text-[10px] hover:bg-[var(--color-primary)]/10">B</button>\n    <button onClick={() => document.execCommand('italic')} className="w-7 h-7 rounded-lg italic text-[10px] hover:bg-[var(--color-primary)]/10">I</button>\n  </div>\n  <div\n    contentEditable\n    className="p-4 min-h-24 text-[11px] outline-none"\n    onInput={e => setContent(e.currentTarget.innerHTML)}\n  />\n</div>`} />
+                                    } code={`<div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl overflow-hidden">\n  <div className="flex items-center gap-1 p-2 border-b border-[var(--color-border)]">\n    <button onClick={() => document.execCommand('bold')} className="w-7 h-7 rounded-lg font-bold text-xs hover:bg-[var(--color-primary)]/10">B</button>\n    <button onClick={() => document.execCommand('italic')} className="w-7 h-7 rounded-lg italic text-xs hover:bg-[var(--color-primary)]/10">I</button>\n  </div>\n  <div\n    contentEditable\n    className="p-4 min-h-24 text-xs outline-none"\n    onInput={e => setContent(e.currentTarget.innerHTML)}\n  />\n</div>`} />
                                 </div>
                             </section></LazySection>
 
@@ -3152,22 +3152,22 @@ export default function PlaygroundPage() {
                                         <div className="space-y-3">
                                             <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl overflow-hidden">
                                                 <div className="flex justify-between items-center px-4 py-3 bg-[var(--color-surface-alt)] border-b border-[var(--color-border)]">
-                                                    <button className="w-6 h-6 flex items-center justify-center rounded-lg hover:bg-[var(--color-border)] transition-all text-[var(--color-text-muted)] text-[10px]">‹</button>
-                                                    <span className="text-[10px] font-black text-[var(--color-text)]">Januari 2025</span>
-                                                    <button className="w-6 h-6 flex items-center justify-center rounded-lg hover:bg-[var(--color-border)] transition-all text-[var(--color-text-muted)] text-[10px]">›</button>
+                                                    <button className="w-6 h-6 flex items-center justify-center rounded-lg hover:bg-[var(--color-border)] transition-all text-[var(--color-text-muted)] text-xs">‹</button>
+                                                    <span className="text-xs font-bold text-[var(--color-text)]">Januari 2025</span>
+                                                    <button className="w-6 h-6 flex items-center justify-center rounded-lg hover:bg-[var(--color-border)] transition-all text-[var(--color-text-muted)] text-xs">›</button>
                                                 </div>
                                                 <div className="p-3">
                                                     <div className="grid grid-cols-7 gap-1 mb-1">
-                                                        {['S', 'S', 'R', 'K', 'J', 'S', 'M'].map((d, i) => <div key={i} className="text-center text-[8px] font-black text-[var(--color-text-muted)] opacity-50 py-1">{d}</div>)}
+                                                        {['S', 'S', 'R', 'K', 'J', 'S', 'M'].map((d, i) => <div key={i} className="text-center text-xs font-bold text-[var(--color-text-muted)] opacity-50 py-1">{d}</div>)}
                                                     </div>
                                                     <div className="grid grid-cols-7 gap-1">
                                                         {[null, null, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31].map((d, i) => (
-                                                            <button key={i} className={`h-7 rounded-lg text-[9px] font-black transition-colors ${!d ? '' : 'cursor-pointer'} ${d === 13 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : d === 16 ? 'bg-[var(--color-primary)] text-white' : d && d >= 13 && d <= 16 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : d ? 'hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]' : ''}`}>{d || ''}</button>
+                                                            <button key={i} className={`h-7 rounded-lg text-xs font-bold transition-colors ${!d ? '' : 'cursor-pointer'} ${d === 13 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : d === 16 ? 'bg-[var(--color-primary)] text-white' : d && d >= 13 && d <= 16 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : d ? 'hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]' : ''}`}>{d || ''}</button>
                                                         ))}
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="flex gap-2">{['Hari ini', 'Minggu ini', 'Bulan ini'].map(p => <button key={p} className="px-3 py-1 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[9px] font-black text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all">{p}</button>)}</div>
+                                            <div className="flex gap-2">{['Hari ini', 'Minggu ini', 'Bulan ini'].map(p => <button key={p} className="px-3 py-1 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all">{p}</button>)}</div>
                                         </div>
                                     } code={`const [date, setDate] = useState(new Date())\nconst [range, setRange] = useState({ start: null, end: null })\n\n// Preset shortcuts\nconst presets = [\n  { label: 'Hari ini', fn: () => setDate(new Date()) },\n  { label: 'Minggu ini', fn: () => setRange(thisWeek()) },\n  { label: 'Bulan ini', fn: () => setRange(thisMonth()) },\n]`} />
                                     <UIBlock title="21 · Kanban Board" children={
@@ -3178,26 +3178,26 @@ export default function PlaygroundPage() {
                                                 { col: 'Done', count: 7, color: 'text-emerald-700', bg: 'bg-emerald-500/5 border-emerald-500/20', cards: ['Data Guru', 'Roster Kelas'] },
                                             ].map(({ col, count, color, bg, cards }) => (
                                                 <div key={col} className={`rounded-xl p-3 border ${bg}`}>
-                                                    <div className={`flex items-center justify-between mb-3 text-[8px] font-black uppercase tracking-widest ${color}`}>
+                                                    <div className={`flex items-center justify-between mb-3 text-xs font-bold uppercase tracking-wide ${color}`}>
                                                         <span>{col}</span>
                                                         <span className="px-1.5 py-0.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)]">{count}</span>
                                                     </div>
                                                     <div className="space-y-1.5">
-                                                        {cards.map(c => <div key={c} className={`p-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[9px] font-black ${color} cursor-pointer hover:shadow-md transition-all`}>{c}</div>)}
-                                                        <button className="w-full p-1.5 rounded-lg border border-dashed border-[var(--color-border)] text-[8px] text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all">+ Tambah</button>
+                                                        {cards.map(c => <div key={c} className={`p-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold ${color} cursor-pointer hover:shadow-md transition-all`}>{c}</div>)}
+                                                        <button className="w-full p-1.5 rounded-lg border border-dashed border-[var(--color-border)] text-xs text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all">+ Tambah</button>
                                                     </div>
                                                 </div>
                                             ))}
                                         </div>
                                     } code={`const [columns, setColumns] = useState({\n  todo:    { title:'Todo',    cards: ['Absensi Jan','Nilai UTS'] },\n  ongoing: { title:'On Going', cards: ['Laporan Sem1'] },\n  done:    { title:'Done',    cards: ['Data Guru','Roster'] },\n})\n\nconst moveCard = (card, from, to) => {\n  setColumns(prev => ({\n    ...prev,\n    [from]: { ...prev[from], cards: prev[from].cards.filter(c => c!==card) },\n    [to]:   { ...prev[to],   cards: [...prev[to].cards, card] },\n  }))\n}`} />
-                                    <UIBlock title="22 · Rating & Score" children={<RatingPreview />} code={`const [stars, setStars] = useState(4)\nconst [hover, setHover] = useState(null)\n\n<div className="flex items-center gap-2">\n  {[1,2,3,4,5].map(v => (\n    <button key={v}\n      onMouseEnter={() => setHover(v)}\n      onMouseLeave={() => setHover(null)}\n      onClick={() => setStars(v)}\n      className="text-2xl transition-transform hover:scale-110">\n      <span className={(hover ?? stars) >= v ? 'text-amber-400' : 'text-[var(--color-border)]'}>★</span>\n    </button>\n  ))}\n  <span className="text-[11px] font-black text-[var(--color-text-muted)]">{stars}.0 / 5</span>\n</div>`} />
+                                    <UIBlock title="22 · Rating & Score" children={<RatingPreview />} code={`const [stars, setStars] = useState(4)\nconst [hover, setHover] = useState(null)\n\n<div className="flex items-center gap-2">\n  {[1,2,3,4,5].map(v => (\n    <button key={v}\n      onMouseEnter={() => setHover(v)}\n      onMouseLeave={() => setHover(null)}\n      onClick={() => setStars(v)}\n      className="text-2xl transition-transform hover:scale-110">\n      <span className={(hover ?? stars) >= v ? 'text-amber-400' : 'text-[var(--color-border)]'}>★</span>\n    </button>\n  ))}\n  <span className="text-xs font-bold text-[var(--color-text-muted)]">{stars}.0 / 5</span>\n</div>`} />
                                     <UIBlock title="23 · Permission Matrix" children={
                                         <div className="overflow-x-auto">
-                                            <table className="w-full text-[10px]">
+                                            <table className="w-full text-xs">
                                                 <thead>
                                                     <tr className="border-b border-[var(--color-border)]">
-                                                        <th className="text-left p-2 font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Fitur</th>
-                                                        {['Admin', 'Guru', 'TU', 'Ortu'].map(r => <th key={r} className="p-2 font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60 text-center">{r}</th>)}
+                                                        <th className="text-left p-2 font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Fitur</th>
+                                                        {['Admin', 'Guru', 'TU', 'Ortu'].map(r => <th key={r} className="p-2 font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60 text-center">{r}</th>)}
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -3208,10 +3208,10 @@ export default function PlaygroundPage() {
                                                         { f: 'Pengaturan', perms: [true, false, false, false] },
                                                     ].map(({ f, perms }) => (
                                                         <tr key={f} className="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
-                                                            <td className="p-2 font-black text-[var(--color-text)]">{f}</td>
+                                                            <td className="p-2 font-bold text-[var(--color-text)]">{f}</td>
                                                             {perms.map((p, i) => (
                                                                 <td key={i} className="p-2 text-center">
-                                                                    {p ? <Check className="text-emerald-500 text-sm" /> : <X className="text-[var(--color-border)] text-sm" />}
+                                                                    {p ? <Check className="w-4 h-4 text-emerald-500" /> : <X className="w-4 h-4 text-[var(--color-border)]" />}
                                                                 </td>
                                                             ))}
                                                         </tr>
@@ -3229,7 +3229,7 @@ export default function PlaygroundPage() {
                             <LazySection><section className="space-y-10">
                                 <SectionHeader icon={Search} number="G" title="Input Extras" />
                                 <div className="grid lg:grid-cols-2 gap-8">
-                                    <UIBlock title="OTP / PIN Input" children={<OTPInputPreview />} code={`const [otp, setOtp] = useState(['','','','','',''])\n\nconst handleChange = (i, v) => {\n  const d = v.replace(/\\D/g,'').slice(-1)\n  const next = [...otp]; next[i] = d; setOtp(next)\n  // auto-advance\n  if (d && i < 5) document.getElementById(\`otp-\${i+1}\`).focus()\n}\n\n<div className="flex gap-2">\n  {otp.map((v, i) => (\n    <input key={i} id={\`otp-\${i}\`}\n      maxLength={1} value={v}\n      onChange={e => handleChange(i, e.target.value)}\n      className="w-11 h-13 text-center text-[20px] font-black rounded-xl border-2 outline-none"\n    />\n  ))}\n</div>`} />
+                                    <UIBlock title="OTP / PIN Input" children={<OTPInputPreview />} code={`const [otp, setOtp] = useState(['','','','','',''])\n\nconst handleChange = (i, v) => {\n  const d = v.replace(/\\D/g,'').slice(-1)\n  const next = [...otp]; next[i] = d; setOtp(next)\n  // auto-advance\n  if (d && i < 5) document.getElementById(\`otp-\${i+1}\`).focus()\n}\n\n<div className="flex gap-2">\n  {otp.map((v, i) => (\n    <input key={i} id={\`otp-\${i}\`}\n      maxLength={1} value={v}\n      onChange={e => handleChange(i, e.target.value)}\n      className="w-11 h-13 text-center text-[20px] font-bold rounded-xl border-2 outline-none"\n    />\n  ))}\n</div>`} />
                                     <UIBlock title="Tag Input (Tokenizer)" children={<TagInputPreview />} code={`const [tags, setTags] = useState(['React','TypeScript'])\nconst [input, setInput] = useState('')\n\nconst addTag = () => {\n  const t = input.trim()\n  if (t && !tags.includes(t) && tags.length < 8) {\n    setTags(p => [...p, t])\n    setInput('')\n  }\n}\n\n<input\n  value={input}\n  onChange={e => setInput(e.target.value)}\n  onKeyDown={e => {\n    if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addTag() }\n    if (e.key === 'Backspace' && !input) setTags(p => p.slice(0,-1))\n  }}\n  placeholder="Tambah tag…"\n/>`} />
                                     <UIBlock fullWidth title="Multi-select Combobox" children={<ComboboxPreview />} code={`const [q, setQ] = useState('')\nconst [selected, setSelected] = useState([])\nconst [open, setOpen] = useState(false)\n\nconst toggle = name =>\n  setSelected(p => p.includes(name) ? p.filter(x=>x!==name) : [...p, name])\n\nconst filtered = options\n  .filter(n => n.toLowerCase().includes(q.toLowerCase()) && !selected.includes(n))`} />
                                 </div>
@@ -3244,7 +3244,7 @@ export default function PlaygroundPage() {
                             <LazySection><section className="space-y-10">
                                 <SectionHeader icon={FileText} number="A" title="Authentication Forms" />
                                 <div className="grid lg:grid-cols-2 gap-8">
-                                    <UIBlock title="01 · Login Form" children={<LoginFormPreview />} code={`const [email, setEmail] = useState('')\nconst [pass, setPass] = useState('')\nconst [showPass, setShowPass] = useState(false)\nconst valid = email.includes('@') && pass.length >= 6\n\n<button onClick={submit} disabled={!valid}\n  className={\`w-full h-10 rounded-xl text-[11px] font-black transition-all\n    \${valid ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-surface-alt)] cursor-not-allowed'}\`}>\n  Masuk →\n</button>`}
+                                    <UIBlock title="01 · Login Form" children={<LoginFormPreview />} code={`const [email, setEmail] = useState('')\nconst [pass, setPass] = useState('')\nconst [showPass, setShowPass] = useState(false)\nconst valid = email.includes('@') && pass.length >= 6\n\n<button onClick={submit} disabled={!valid}\n  className={\`w-full h-10 rounded-xl text-xs font-bold transition-all\n    \${valid ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-surface-alt)] cursor-not-allowed'}\`}>\n  Masuk →\n</button>`}
                                         dos={['Tombol submit harus disabled jika email/password belum valid', 'Sertakan toggle show/hide password pada field password', 'Validasi real-time boleh, tapi tampilkan error setelah user blur dari field']}
                                         donts={['Jangan simpan password dalam bentuk apapun di localStorage', 'Hindari reset seluruh form jika hanya 1 field yang error', 'Jangan blokir fitur paste di field password — menyulitkan password manager']}
                                         apiProps={[
@@ -3256,16 +3256,16 @@ export default function PlaygroundPage() {
                                     />
                                     <UIBlock title="02 · Register Form" children={
                                         <div className="space-y-3">
-                                            <div><h3 className="text-[14px] font-black text-[var(--color-text)]">Daftar Akun Baru</h3><p className="text-[9px] text-[var(--color-text-muted)]">Buat akun sekolah Anda</p></div>
+                                            <div><h3 className="text-[14px] font-bold text-[var(--color-text)]">Daftar Akun Baru</h3><p className="text-xs text-[var(--color-text-muted)]">Buat akun sekolah Anda</p></div>
                                             <div className="grid grid-cols-2 gap-2">
-                                                {['Nama Depan', 'Nama Belakang'].map(f => <div key={f} className="space-y-1"><label className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">{f}</label><input placeholder={f} className="w-full h-9 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] font-medium text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] transition-all" /></div>)}
+                                                {['Nama Depan', 'Nama Belakang'].map(f => <div key={f} className="space-y-1"><label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">{f}</label><input placeholder={f} className="w-full h-9 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-medium text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] transition-all" /></div>)}
                                             </div>
-                                            {['Email Sekolah', 'Password', 'Konfirmasi Password'].map(f => <div key={f} className="space-y-1"><label className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">{f}</label><input type={f.includes('Pass') ? 'password' : 'email'} placeholder={f === 'Email Sekolah' ? 'admin@sekolah.sch.id' : 'Min. 8 karakter'} className="w-full h-9 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] font-medium text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] transition-all" /></div>)}
-                                            <label className="flex items-start gap-2 cursor-pointer"><div className="w-4 h-4 rounded border-2 border-[var(--color-border)] mt-0.5 shrink-0 bg-[var(--color-surface)]" /><span className="text-[9px] text-[var(--color-text-muted)] leading-relaxed">Saya menyetujui <span className="text-[var(--color-primary)] font-black">Syarat & Ketentuan</span> dan <span className="text-[var(--color-primary)] font-black">Kebijakan Privasi</span></span></label>
-                                            <button className="w-full h-9 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black hover:opacity-90 active:scale-95 transition-all">Buat Akun →</button>
-                                            <p className="text-[9px] text-center text-[var(--color-text-muted)]">Sudah punya akun? <span className="text-[var(--color-primary)] font-black cursor-pointer">Masuk</span></p>
+                                            {['Email Sekolah', 'Password', 'Konfirmasi Password'].map(f => <div key={f} className="space-y-1"><label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">{f}</label><input type={f.includes('Pass') ? 'password' : 'email'} placeholder={f === 'Email Sekolah' ? 'admin@sekolah.sch.id' : 'Min. 8 karakter'} className="w-full h-9 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-medium text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] transition-all" /></div>)}
+                                            <label className="flex items-start gap-2 cursor-pointer"><div className="w-4 h-4 rounded border-2 border-[var(--color-border)] mt-0.5 shrink-0 bg-[var(--color-surface)]" /><span className="text-xs text-[var(--color-text-muted)] leading-relaxed">Saya menyetujui <span className="text-[var(--color-primary)] font-bold">Syarat & Ketentuan</span> dan <span className="text-[var(--color-primary)] font-bold">Kebijakan Privasi</span></span></label>
+                                            <button className="w-full h-9 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:opacity-90 active:scale-95 transition-all">Buat Akun →</button>
+                                            <p className="text-xs text-center text-[var(--color-text-muted)]">Sudah punya akun? <span className="text-[var(--color-primary)] font-bold cursor-pointer">Masuk</span></p>
                                         </div>
-                                    } code={`{/* Register form pattern */}\n<div className="space-y-3">\n  <div className="grid grid-cols-2 gap-2">\n    <input name="firstName" placeholder="Nama Depan" className="h-9 px-3 rounded-xl border border-[var(--color-border)] focus:border-[var(--color-primary)]" />\n    <input name="lastName" placeholder="Nama Belakang" className="h-9 px-3 rounded-xl border border-[var(--color-border)] focus:border-[var(--color-primary)]" />\n  </div>\n  <input name="email" type="email" placeholder="Email Sekolah" className="w-full h-9 px-3 rounded-xl border" />\n  <input name="password" type="password" placeholder="Password" className="w-full h-9 px-3 rounded-xl border" />\n  {/* Terms checkbox */}\n  <button type="submit" className="w-full h-9 rounded-xl bg-[var(--color-primary)] text-white font-black">\n    Buat Akun →\n  </button>\n</div>`} />
+                                    } code={`{/* Register form pattern */}\n<div className="space-y-3">\n  <div className="grid grid-cols-2 gap-2">\n    <input name="firstName" placeholder="Nama Depan" className="h-9 px-3 rounded-xl border border-[var(--color-border)] focus:border-[var(--color-primary)]" />\n    <input name="lastName" placeholder="Nama Belakang" className="h-9 px-3 rounded-xl border border-[var(--color-border)] focus:border-[var(--color-primary)]" />\n  </div>\n  <input name="email" type="email" placeholder="Email Sekolah" className="w-full h-9 px-3 rounded-xl border" />\n  <input name="password" type="password" placeholder="Password" className="w-full h-9 px-3 rounded-xl border" />\n  {/* Terms checkbox */}\n  <button type="submit" className="w-full h-9 rounded-xl bg-[var(--color-primary)] text-white font-bold">\n    Buat Akun →\n  </button>\n</div>`} />
                                 </div>
                             </section></LazySection>
                             <LazySection><section className="space-y-10">
@@ -3274,26 +3274,26 @@ export default function PlaygroundPage() {
                                     <UIBlock fullWidth title="03 · Search & Filter Form" children={<SearchFilterFormPreview />} code={`const [q, setQ] = useState('')\nconst [kelas, setKelas] = useState('semua')\nconst [status, setStatus] = useState('semua')\n\nconst filtered = data\n  .filter(d =>\n    (q === '' || d.nama.toLowerCase().includes(q.toLowerCase())) &&\n    (kelas === 'semua' || d.kelas === kelas) &&\n    (status === 'semua' || d.status === status)\n  )`} />
                                     <UIBlock title="04 · Forgot Password" children={
                                         <div className="space-y-4">
-                                            <div className="text-center space-y-2"><div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center mx-auto"><Mail className="text-lg" /></div><h3 className="text-[13px] font-black text-[var(--color-text)]">Lupa Password?</h3><p className="text-[9px] text-[var(--color-text-muted)] leading-relaxed">Masukkan email terdaftar, kami akan kirim link reset password.</p></div>
-                                            <div className="space-y-1"><label className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Email</label><input placeholder="admin@sekolah.sch.id" className="w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[11px] font-medium text-[var(--color-text)] outline-none transition-all" /></div>
-                                            <button className="w-full h-10 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black hover:opacity-90 transition-all">Kirim Link Reset →</button>
-                                            <p className="text-[9px] text-center text-[var(--color-text-muted)]"><span className="text-[var(--color-primary)] font-black cursor-pointer">← Kembali ke Login</span></p>
+                                            <div className="text-center space-y-2"><div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center mx-auto"><Mail className="w-5 h-5" /></div><h3 className="text-sm font-bold text-[var(--color-text)]">Lupa Password?</h3><p className="text-xs text-[var(--color-text-muted)] leading-relaxed">Masukkan email terdaftar, kami akan kirim link reset password.</p></div>
+                                            <div className="space-y-1"><label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Email</label><input placeholder="admin@sekolah.sch.id" className="w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-xs font-medium text-[var(--color-text)] outline-none transition-all" /></div>
+                                            <button className="w-full h-10 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:opacity-90 transition-all">Kirim Link Reset →</button>
+                                            <p className="text-xs text-center text-[var(--color-text-muted)]"><span className="text-[var(--color-primary)] font-bold cursor-pointer">← Kembali ke Login</span></p>
                                         </div>
-                                    } code={`<div className="text-center space-y-2">\n  <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center mx-auto">\n    <Mail className="text-lg" />\n  </div>\n  <h3 className="text-[13px] font-black text-[var(--color-text)]">Lupa Password?</h3>\n  <p className="text-[9px] text-[var(--color-text-muted)] leading-relaxed">Masukkan email terdaftar…</p>\n</div>\n<input placeholder="admin@sekolah.sch.id"\n  className="w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none" />\n<button className="w-full h-10 rounded-xl bg-[var(--color-primary)] text-white font-black">Kirim Link Reset →</button>`} />
+                                    } code={`<div className="text-center space-y-2">\n  <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center mx-auto">\n    <Mail className="w-5 h-5" />\n  </div>\n  <h3 className="text-sm font-bold text-[var(--color-text)]">Lupa Password?</h3>\n  <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">Masukkan email terdaftar…</p>\n</div>\n<input placeholder="admin@sekolah.sch.id"\n  className="w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none" />\n<button className="w-full h-10 rounded-xl bg-[var(--color-primary)] text-white font-bold">Kirim Link Reset →</button>`} />
                                     <UIBlock title="05 · OTP Verification" children={<OTPInputPreview />} code={`const [otp, setOtp] = useState(['','','','','',''])\nconst valid = otp.every(c => c)\n\nconst handleChange = (i, v) => {\n  const d = v.replace(/\\D/g, '').slice(-1)\n  const next = [...otp]; next[i] = d; setOtp(next)\n  if (d && i < 5) document.getElementById(\`otp-\${i+1}\`).focus()\n}`} />
                                     <UIBlock title="06 · Dynamic Multi-field" children={
                                         <div className="space-y-3">
-                                            <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50">Kontak Darurat Siswa</p>
+                                            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50">Kontak Darurat Siswa</p>
                                             {[{ n: 'Ayah', t: 'Bapak Andi', p: '08123456789' }, { n: 'Ibu', t: 'Ibu Sari', p: '08987654321' }].map((c, i) => (
                                                 <div key={i} className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] space-y-2">
-                                                    <div className="flex items-center justify-between"><span className="text-[9px] font-black text-[var(--color-text-muted)] uppercase">{c.n}</span><button className="text-[8px] font-black text-rose-400 hover:text-rose-600 transition-colors">Hapus</button></div>
+                                                    <div className="flex items-center justify-between"><span className="text-xs font-bold text-[var(--color-text-muted)] uppercase">{c.n}</span><button className="text-xs font-bold text-rose-400 hover:text-rose-600 transition-colors">Hapus</button></div>
                                                     <div className="grid grid-cols-2 gap-2">
-                                                        <input defaultValue={c.t} className="h-8 px-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] font-medium text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] transition-all" />
-                                                        <input defaultValue={c.p} className="h-8 px-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] font-mono text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] transition-all" />
+                                                        <input defaultValue={c.t} className="h-8 px-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-medium text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] transition-all" />
+                                                        <input defaultValue={c.p} className="h-8 px-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-mono text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] transition-all" />
                                                     </div>
                                                 </div>
                                             ))}
-                                            <button className="w-full py-2 rounded-xl border-2 border-dashed border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all flex items-center justify-center gap-1.5"><Plus className="text-[9px]" />Tambah Kontak</button>
+                                            <button className="w-full py-2 rounded-xl border-2 border-dashed border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all flex items-center justify-center gap-1.5"><Plus className="w-4 h-4" />Tambah Kontak</button>
                                         </div>
                                     } code={`const [contacts, setContacts] = useState([{ nama:'', telepon:'' }])\n\nconst addContact = () =>\n  setContacts(p => [...p, { nama:'', telepon:'' }])\n\nconst removeContact = i =>\n  setContacts(p => p.filter((_, idx) => idx !== i))\n\nconst update = (i, field, val) =>\n  setContacts(p => p.map((c, idx) => idx===i ? {...c, [field]:val} : c))`} />
                                     <UIBlock title="07 · Tag Input" children={<TagInputPreview />} code={`const [tags, setTags] = useState(['React'])\nconst [input, setInput] = useState('')\n\nconst addTag = () => {\n  const t = input.trim()\n  if (t && !tags.includes(t) && tags.length < 8) {\n    setTags(p => [...p, t])\n    setInput('')\n  }\n}`} />
@@ -3309,7 +3309,7 @@ export default function PlaygroundPage() {
                             <LazySection><section className="space-y-10">
                                 <SectionHeader icon={ChartLine} number="A" title="Trend & Comparison" />
                                 <div className="grid lg:grid-cols-2 gap-8">
-                                    <UIBlock title="01 · Bar Chart" children={<BarChartPreview />} code={`const data = [\n  { l:'Jan', v:82 }, { l:'Feb', v:91 },\n  { l:'Mar', v:75 }, { l:'Apr', v:88 },\n]\nconst max = Math.max(...data.map(d => d.v))\n\n{data.map(({ l, v }) => (\n  <div key={l} className="flex-1 flex flex-col items-center gap-1 group">\n    <div\n      className="w-full rounded-t-lg bg-[var(--color-primary)]/20 group-hover:bg-[var(--color-primary)] transition-all"\n      style={{ height: \`\${(v/max)*80}px\` }}\n    />\n    <span className="text-[8px] font-black text-[var(--color-text-muted)] opacity-60">{l}</span>\n  </div>\n))}`}
+                                    <UIBlock title="01 · Bar Chart" children={<BarChartPreview />} code={`const data = [\n  { l:'Jan', v:82 }, { l:'Feb', v:91 },\n  { l:'Mar', v:75 }, { l:'Apr', v:88 },\n]\nconst max = Math.max(...data.map(d => d.v))\n\n{data.map(({ l, v }) => (\n  <div key={l} className="flex-1 flex flex-col items-center gap-1 group">\n    <div\n      className="w-full rounded-t-lg bg-[var(--color-primary)]/20 group-hover:bg-[var(--color-primary)] transition-all"\n      style={{ height: \`\${(v/max)*80}px\` }}\n    />\n    <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-60">{l}</span>\n  </div>\n))}`}
                                         dos={['Tampilkan nilai di atas bar saat hover untuk readability', 'Gunakan warna primary konsisten, aksen berbeda untuk highlight', 'Sertakan label sumbu Y dan satuan yang jelas']}
                                         donts={['Jangan mulai sumbu Y dari angka selain 0 tanpa keterangan — misleading', 'Hindari terlalu banyak bar (>12) dalam satu chart tanpa scroll', 'Jangan gunakan 3D bar chart — sulit dibaca dan tidak akurat']}
                                         apiProps={[
@@ -3330,15 +3330,15 @@ export default function PlaygroundPage() {
                                     <UIBlock title="05 · Heatmap" children={<HeatmapPreview />} code={`const days = ['Sen','Sel','Rab','Kam','Jum']\nconst hours = ['07','08','09','10','11','12','13','14']\n\nconst getColor = v =>\n  v === 0 ? 'var(--color-border)' :\n  v <= 25 ? '#c7d2fe' :\n  v <= 50 ? '#818cf8' :\n  v <= 75 ? '#6366f1' : '#4338ca'\n\n{hours.map(h => (\n  <div key={h} className="flex gap-1 items-center">\n    <span className="w-8 text-[7px] font-mono opacity-50">{h}:00</span>\n    {days.map((_, di) => (\n      <div key={di}\n        className="flex-1 aspect-square rounded cursor-pointer hover:ring-2 hover:ring-[var(--color-primary)]"\n        style={{ background: getColor(getValue(di, hours.indexOf(h))) }}\n      />\n    ))}\n  </div>\n))}`} />
                                     <UIBlock title="06 · Progress Bars" children={
                                         <div className="space-y-4">
-                                            <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50">Performa Kelas per Mapel</p>
+                                            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50">Performa Kelas per Mapel</p>
                                             {[{ l: 'Matematika', v: 88, c: 'bg-[var(--color-primary)]' }, { l: 'B. Indonesia', v: 92, c: 'bg-emerald-500' }, { l: 'IPA', v: 76, c: 'bg-amber-500' }, { l: 'IPS', v: 83, c: 'bg-sky-500' }, { l: 'Seni Budaya', v: 95, c: 'bg-rose-500' }].map(({ l, v, c }) => (
                                                 <div key={l} className="space-y-1">
-                                                    <div className="flex items-center justify-between"><span className="text-[10px] font-black text-[var(--color-text)]">{l}</span><span className="text-[10px] font-black text-[var(--color-text-muted)]">{v}</span></div>
+                                                    <div className="flex items-center justify-between"><span className="text-xs font-bold text-[var(--color-text)]">{l}</span><span className="text-xs font-bold text-[var(--color-text-muted)]">{v}</span></div>
                                                     <div className="h-2 rounded-full bg-[var(--color-surface-alt)] overflow-hidden"><div className={`h-full ${c} rounded-full transition-all`} style={{ width: `${v}%` }} /></div>
                                                 </div>
                                             ))}
                                         </div>
-                                    } code={`{subjects.map(({ label, value, color }) => (\n  <div key={label} className="space-y-1">\n    <div className="flex items-center justify-between">\n      <span className="text-[10px] font-black text-[var(--color-text)]">{label}</span>\n      <span className="text-[10px] font-black text-[var(--color-text-muted)]">{value}</span>\n    </div>\n    <div className="h-2 rounded-full bg-[var(--color-surface-alt)] overflow-hidden">\n      <div className={\`h-full \${color} rounded-full transition-all\`}\n        style={{ width: \`\${value}%\` }} />\n    </div>\n  </div>\n))}`} />
+                                    } code={`{subjects.map(({ label, value, color }) => (\n  <div key={label} className="space-y-1">\n    <div className="flex items-center justify-between">\n      <span className="text-xs font-bold text-[var(--color-text)]">{label}</span>\n      <span className="text-xs font-bold text-[var(--color-text-muted)]">{value}</span>\n    </div>\n    <div className="h-2 rounded-full bg-[var(--color-surface-alt)] overflow-hidden">\n      <div className={\`h-full \${color} rounded-full transition-all\`}\n        style={{ width: \`\${value}%\` }} />\n    </div>\n  </div>\n))}`} />
                                 </div>
                             </section></LazySection>
                         </div>
@@ -3359,12 +3359,12 @@ export default function PlaygroundPage() {
                                                 { group: 'Text', tokens: [{ n: 'text', v: '--color-text' }, { n: 'text-muted', v: '--color-text-muted' }] },
                                             ].map(({ group, tokens }) => (
                                                 <div key={group} className="space-y-2">
-                                                    <p className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50">{group}</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50">{group}</p>
                                                     {tokens.map(({ n, v }) => (
                                                         <div key={n} className="flex items-center gap-2 p-2 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] cursor-pointer hover:border-[var(--color-primary)] transition-all group" onClick={() => navigator.clipboard.writeText(`var(${v})`)}>
                                                             <div className="w-8 h-8 rounded-lg border border-[var(--color-border)] shrink-0" style={{ background: `var(${v})` }} />
-                                                            <div className="min-w-0"><p className="text-[9px] font-black text-[var(--color-text)] truncate">{n}</p><p className="text-[7px] font-mono text-[var(--color-text-muted)] opacity-50 truncate">{v}</p></div>
-                                                            <Copy className="text-[8px] text-[var(--color-text-muted)] opacity-0 group-hover:opacity-100 shrink-0 transition-opacity" />
+                                                            <div className="min-w-0"><p className="text-xs font-bold text-[var(--color-text)] truncate">{n}</p><p className="text-[7px] font-mono text-[var(--color-text-muted)] opacity-50 truncate">{v}</p></div>
+                                                            <Copy className="w-4 h-4 text-[var(--color-text-muted)] opacity-0 group-hover:opacity-100 shrink-0 transition-opacity" />
                                                         </div>
                                                     ))}
                                                 </div>
@@ -3378,12 +3378,12 @@ export default function PlaygroundPage() {
                                 <UIBlock fullWidth title="Tailwind Spacing Scale" children={
                                     <div className="space-y-6">
                                         <div>
-                                            <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Gap / Padding / Margin Reference</p>
+                                            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Gap / Padding / Margin Reference</p>
                                             <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
                                                 {[1, 2, 3, 4, 5, 6, 8, 10, 12, 14, 16, 20, 24, 28, 32, 40].map(n => (
                                                     <div key={n} className="text-center space-y-1 cursor-pointer group" onClick={() => navigator.clipboard.writeText(`p-${n}`)}>
                                                         <div className="mx-auto rounded bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/20 group-hover:bg-[var(--color-primary)]/30 transition-all" style={{ width: Math.min(n * 3, 48), height: Math.min(n * 3, 48), maxWidth: '100%' }} />
-                                                        <p className="text-[7px] font-black text-[var(--color-primary)]">p-{n}</p>
+                                                        <p className="text-[7px] font-bold text-[var(--color-primary)]">p-{n}</p>
                                                         <p className="text-[6px] font-mono text-[var(--color-text-muted)] opacity-50">{n * 4}px</p>
                                                     </div>
                                                 ))}
@@ -3391,23 +3391,23 @@ export default function PlaygroundPage() {
                                         </div>
                                         <div className="grid md:grid-cols-2 gap-6 pt-4 border-t border-[var(--color-border)]">
                                             <div>
-                                                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Border Radius</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Border Radius</p>
                                                 <div className="flex flex-wrap gap-3 items-end">
                                                     {[{ l: 'sm', r: 2 }, { l: 'md', r: 6 }, { l: 'lg', r: 8 }, { l: 'xl', r: 12 }, { l: '2xl', r: 16 }, { l: '3xl', r: 24 }, { l: 'full', r: 999 }].map(({ l, r }) => (
                                                         <div key={l} className="flex flex-col items-center gap-1 cursor-pointer" onClick={() => navigator.clipboard.writeText(`rounded-${l}`)}>
                                                             <div className="w-10 h-10 bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 hover:bg-[var(--color-primary)]/20 transition-all" style={{ borderRadius: Math.min(r, 20) }} />
-                                                            <span className="text-[7px] font-black text-[var(--color-primary)]">{l}</span>
+                                                            <span className="text-[7px] font-bold text-[var(--color-primary)]">{l}</span>
                                                         </div>
                                                     ))}
                                                 </div>
                                             </div>
                                             <div>
-                                                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-3">Typography Scale</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-3">Typography Scale</p>
                                                 <div className="space-y-1">
                                                     {[{ cls: 'text-xs', size: '12px' }, { cls: 'text-sm', size: '14px' }, { cls: 'text-base', size: '16px' }, { cls: 'text-lg', size: '18px' }, { cls: 'text-xl', size: '20px' }, { cls: 'text-2xl', size: '24px' }, { cls: 'text-3xl', size: '30px' }].map(({ cls, size }) => (
                                                         <div key={cls} className="flex items-center gap-3 cursor-pointer hover:bg-[var(--color-surface-alt)] px-2 rounded-lg transition-colors" onClick={() => navigator.clipboard.writeText(cls)}>
                                                             <span className="font-mono text-[7px] text-[var(--color-primary)] w-20 shrink-0">{cls}</span>
-                                                            <span className="font-black text-[var(--color-text)] leading-tight" style={{ fontSize: Math.min(+size.replace('px', ''), 18) + 'px' }}>Teks Contoh</span>
+                                                            <span className="font-bold text-[var(--color-text)] leading-tight" style={{ fontSize: Math.min(+size.replace('px', ''), 18) + 'px' }}>Teks Contoh</span>
                                                             <span className="text-[7px] font-mono text-[var(--color-text-muted)] opacity-50 ml-auto">{size}</span>
                                                         </div>
                                                     ))}
@@ -3415,7 +3415,7 @@ export default function PlaygroundPage() {
                                             </div>
                                         </div>
                                     </div>
-                                } code={`{/* Semua token tersedia di className Tailwind */}\n\n{/* Spacing: p-1=4px, p-2=8px, p-4=16px, p-8=32px */}\n<div className="p-4 gap-6 m-2">\n\n{/* Typography: */}\n<h1 className="text-3xl font-black tracking-tight">\n<p className="text-sm font-medium leading-relaxed">\n<span className="text-[9px] uppercase tracking-widest">\n\n{/* Border radius: */}\n<div className="rounded-xl"> {/* 12px */}\n<div className="rounded-2xl"> {/* 16px */}\n<div className="rounded-full"> {/* 9999px */}`} />
+                                } code={`{/* Semua token tersedia di className Tailwind */}\n\n{/* Spacing: p-1=4px, p-2=8px, p-4=16px, p-8=32px */}\n<div className="p-4 gap-6 m-2">\n\n{/* Typography: */}\n<h1 className="text-3xl font-bold tracking-tight">\n<p className="text-sm font-medium leading-relaxed">\n<span className="text-xs uppercase tracking-wide">\n\n{/* Border radius: */}\n<div className="rounded-xl"> {/* 12px */}\n<div className="rounded-2xl"> {/* 16px */}\n<div className="rounded-full"> {/* 9999px */}`} />
                             </section></LazySection>
                             <LazySection><section className="space-y-10">
                                 <SectionHeader icon={Layers} number="C" title="Shadow & Motion Tokens" />
@@ -3425,7 +3425,7 @@ export default function PlaygroundPage() {
                                             {[{ l: 'none', s: 'shadow-none', b: true }, { l: 'sm', s: 'shadow-sm' }, { l: 'md', s: 'shadow-md' }, { l: 'lg', s: 'shadow-lg' }, { l: 'xl', s: 'shadow-xl' }].map(({ l, s, b }) => (
                                                 <div key={l} className="flex flex-col items-center gap-2 cursor-pointer" onClick={() => navigator.clipboard.writeText(s)}>
                                                     <div className={`w-14 h-14 rounded-2xl bg-[var(--color-surface)] ${s} ${b ? 'border border-[var(--color-border)]' : ''} flex items-center justify-center hover:scale-105 transition-all`}><span className="text-[7px] font-mono text-[var(--color-text-muted)] opacity-50">{l}</span></div>
-                                                    <span className="text-[8px] font-mono font-black text-[var(--color-text-muted)] opacity-60">{l}</span>
+                                                    <span className="text-xs font-mono font-bold text-[var(--color-text-muted)] opacity-60">{l}</span>
                                                 </div>
                                             ))}
                                         </div>
@@ -3434,13 +3434,13 @@ export default function PlaygroundPage() {
                                         <div className="space-y-3">
                                             {[{ name: 'instant', ms: 75, cls: 'duration-75', use: 'toggle, checkbox' }, { name: 'fast', ms: 150, cls: 'duration-150', use: 'hover, tooltip' }, { name: 'normal', ms: 300, cls: 'duration-300', use: 'slide, expand' }, { name: 'slow', ms: 500, cls: 'duration-500', use: 'page enter' }, { name: 'cinematic', ms: 700, cls: 'duration-700', use: 'intro, hero' }].map(({ name, ms, cls, use }) => (
                                                 <div key={name} className="flex items-center gap-3 cursor-pointer hover:bg-[var(--color-surface-alt)] px-2 py-1.5 rounded-xl transition-colors" onClick={() => navigator.clipboard.writeText(cls)}>
-                                                    <span className="text-[9px] font-mono font-black text-[var(--color-primary)] w-20 shrink-0">{ms}ms</span>
+                                                    <span className="text-xs font-mono font-bold text-[var(--color-primary)] w-20 shrink-0">{ms}ms</span>
                                                     <div className="flex-1 h-1.5 rounded-full bg-[var(--color-surface-alt)]"><div className="h-full bg-[var(--color-primary)] rounded-full" style={{ width: `${(ms / 700) * 100}%` }} /></div>
-                                                    <span className="text-[8px] font-black text-[var(--color-text-muted)] w-16 shrink-0 opacity-60">{name}</span>
+                                                    <span className="text-xs font-bold text-[var(--color-text-muted)] w-16 shrink-0 opacity-60">{name}</span>
                                                     <span className="text-[7px] text-[var(--color-text-muted)] opacity-40 hidden md:block">{use}</span>
                                                 </div>
                                             ))}
-                                            <p className="text-[8px] text-[var(--color-text-muted)] opacity-40 pt-1">Klik untuk copy class · Default: transition-all duration-150 ease-out</p>
+                                            <p className="text-xs text-[var(--color-text-muted)] opacity-40 pt-1">Klik untuk copy class · Default: transition-all duration-150 ease-out</p>
                                         </div>
                                     } code={`{/* Recommended combos */}\n\n{/* Button hover */}\n<button className="transition-all duration-75 ease-in-out hover:scale-[1.02]">\n\n{/* Dropdown open */}\n<div className="transition-all duration-150 ease-out">\n\n{/* Modal entry */}\n<div className="animate-in fade-in slide-in-from-bottom-4 duration-300">\n\n{/* Spring-like bounce */}\n<div className="transition-all duration-500 ease-[cubic-bezier(.34,1.56,.64,1)]">`} />
                                 </div>
@@ -3456,7 +3456,7 @@ export default function PlaygroundPage() {
                             <LazySection><section className="space-y-10">
                                 <SectionHeader icon={GripHorizontal} number="A" title="Navigation" />
                                 <div className="space-y-8">
-                                    <UIBlock fullWidth title="01 · Sidebar Navigation" children={<SidebarNavPreview />} code={`const [active, setActive] = useState('dashboard')\nconst [collapsed, setCollapsed] = useState(false)\n\n<div className={\`\${collapsed ? 'w-14' : 'w-52'} transition-all duration-300\`}>\n  {groups.map(g => (\n    <div key={g.label}>\n      {!collapsed && <p className="text-[7px] font-black uppercase tracking-widest opacity-50 px-2 mb-1">{g.label}</p>}\n      {g.items.map(item => (\n        <button key={item.key} onClick={() => setActive(item.key)}\n          className={\`w-full flex items-center gap-2.5 px-2 py-2 rounded-xl\n            \${active===item.key ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'\n            : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}\`}>\n          <item.icon className="text-xs" />\n          {!collapsed && <span className="text-[10px] font-black">{item.label}</span>}\n        </button>\n      ))}\n    </div>\n  ))}\n</div>`}
+                                    <UIBlock fullWidth title="01 · Sidebar Navigation" children={<SidebarNavPreview />} code={`const [active, setActive] = useState('dashboard')\nconst [collapsed, setCollapsed] = useState(false)\n\n<div className={\`\${collapsed ? 'w-14' : 'w-52'} transition-all duration-300\`}>\n  {groups.map(g => (\n    <div key={g.label}>\n      {!collapsed && <p className="text-[7px] font-bold uppercase tracking-wide opacity-50 px-2 mb-1">{g.label}</p>}\n      {g.items.map(item => (\n        <button key={item.key} onClick={() => setActive(item.key)}\n          className={\`w-full flex items-center gap-2.5 px-2 py-2 rounded-xl\n            \${active===item.key ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'\n            : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}\`}>\n          <item.icon className="text-xs" />\n          {!collapsed && <span className="text-xs font-bold">{item.label}</span>}\n        </button>\n      ))}\n    </div>\n  ))}\n</div>`}
                                         dos={['Highlight item aktif dengan bg primary/10 dan teks primary yang jelas', 'Grouping item dengan label kategori untuk navigasi yang banyak', 'Dukung collapsed mode — hanya ikon — untuk layar kecil']}
                                         donts={['Jangan ubah urutan navigasi antar halaman — membingungkan user', 'Hindari nesting navigasi lebih dari 2 level di sidebar', 'Jangan sembunyikan sidebar tanpa tombol toggle yang mudah ditemukan']}
                                         apiProps={[
@@ -3467,10 +3467,10 @@ export default function PlaygroundPage() {
                                             { prop: 'onCollapse', type: 'function', defaultVal: 'undefined', desc: 'Toggle collapsed state dari luar komponen' },
                                         ]}
                                     />
-                                    <UIBlock fullWidth title="02 · Topbar & Navbar Variants" children={<TopbarPreview />} code={`const [search, setSearch] = useState('')\n\n{/* Full topbar */}\n<div className="flex items-center gap-3 px-4 py-2.5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl">\n  <div className="flex-1 relative">\n    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[9px]" />\n    <input value={search} onChange={e => setSearch(e.target.value)}\n      className="w-full h-8 pl-8 pr-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[10px] outline-none" />\n  </div>\n  <div className="relative">\n    <button className="w-8 h-8 rounded-xl flex items-center justify-center"><Bell /></button>\n    <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[7px] font-black flex items-center justify-center border-2 border-[var(--color-surface)]">3</div>\n  </div>\n</div>`} />
+                                    <UIBlock fullWidth title="02 · Topbar & Navbar Variants" children={<TopbarPreview />} code={`const [search, setSearch] = useState('')\n\n{/* Full topbar */}\n<div className="flex items-center gap-3 px-4 py-2.5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl">\n  <div className="flex-1 relative">\n    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2" />\n    <input value={search} onChange={e => setSearch(e.target.value)}\n      className="w-full h-8 pl-8 pr-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-xs outline-none" />\n  </div>\n  <div className="relative">\n    <button className="w-8 h-8 rounded-xl flex items-center justify-center"><Bell className="w-4 h-4" /></button>\n    <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[7px] font-bold flex items-center justify-center border-2 border-[var(--color-surface)]">3</div>\n  </div>\n</div>`} />
                                     <div className="grid lg:grid-cols-2 gap-8">
-                                        <UIBlock title="03 · Mobile Bottom Nav" children={<MobileBottomNavPreview />} code={`const [active, setActive] = useState('home')\nconst tabs = [\n  { key:'home',    icon:Gauge,    label:'Home',  badge:null },\n  { key:'siswa',   icon:Users,         label:'Siswa', badge:3 },\n  { key:'laporan', icon:ClipboardList, label:'Lap.',  badge:null },\n  { key:'setting', icon:Settings,          label:'Set.',  badge:null },\n]\n\n<div className="border-t border-[var(--color-border)] flex">\n  {tabs.map(tab => (\n    <button key={tab.key} onClick={() => setActive(tab.key)}\n      className="flex-1 flex flex-col items-center py-2 gap-0.5 relative">\n      <tab.icon \n className={\`text-xs \${active===tab.key ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}\`} />\n      <span className={\`text-[7px] font-black \${active===tab.key ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}\`}>{tab.label}</span>\n      {tab.badge && <div className="absolute top-1 right-1/4 w-4 h-4 rounded-full bg-rose-500 text-white text-[7px] font-black flex items-center justify-center">{tab.badge}</div>}\n    </button>\n  ))}\n</div>`} />
-                                        <UIBlock title="04 · Floating Action Button" children={<FABPreview />} code={`const [open, setOpen] = useState(false)\nconst actions = [\n  { icon:Upload, label:'Import' },\n  { icon:Download,           label:'Export' },\n  { icon:FileText,          label:'Laporan' },\n]\n\n<div className="absolute bottom-4 right-4 flex flex-col items-end gap-2.5">\n  {open && actions.map((a, i) => (\n    <div key={i} className="flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2">\n      <span className="px-2.5 py-1 bg-[var(--color-surface)] rounded-xl text-[9px] font-black shadow-sm">{a.label}</span>\n      <button className="w-9 h-9 rounded-full border flex items-center justify-center">\n        <a.icon className="text-xs" />\n      </button>\n    </div>\n  ))}\n  <button onClick={() => setOpen(p => !p)}\n    className={\`w-12 h-12 rounded-full shadow-xl flex items-center justify-center\n      \${open ? 'bg-slate-700 text-white' : 'bg-[var(--color-primary)] text-white'}\`}>\n    <Plus className={\`text-lg transition-transform \${open ? 'rotate-45' : ''}\`} />\n  </button>\n</div>`} />
+                                        <UIBlock title="03 · Mobile Bottom Nav" children={<MobileBottomNavPreview />} code={`const [active, setActive] = useState('home')\nconst tabs = [\n  { key:'home',    icon:Gauge,    label:'Home',  badge:null },\n  { key:'siswa',   icon:Users,         label:'Siswa', badge:3 },\n  { key:'laporan', icon:ClipboardList, label:'Lap.',  badge:null },\n  { key:'setting', icon:Settings,          label:'Set.',  badge:null },\n]\n\n<div className="border-t border-[var(--color-border)] flex">\n  {tabs.map(tab => (\n    <button key={tab.key} onClick={() => setActive(tab.key)}\n      className="flex-1 flex flex-col items-center py-2 gap-0.5 relative">\n      <tab.icon \n className={\`text-xs \${active===tab.key ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}\`} />\n      <span className={\`text-[7px] font-bold \${active===tab.key ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}\`}>{tab.label}</span>\n      {tab.badge && <div className="absolute top-1 right-1/4 w-4 h-4 rounded-full bg-rose-500 text-white text-[7px] font-bold flex items-center justify-center">{tab.badge}</div>}\n    </button>\n  ))}\n</div>`} />
+                                        <UIBlock title="04 · Floating Action Button" children={<FABPreview />} code={`const [open, setOpen] = useState(false)\nconst actions = [\n  { icon:Upload, label:'Import' },\n  { icon:Download,           label:'Export' },\n  { icon:FileText,          label:'Laporan' },\n]\n\n<div className="absolute bottom-4 right-4 flex flex-col items-end gap-2.5">\n  {open && actions.map((a, i) => (\n    <div key={i} className="flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2">\n      <span className="px-2.5 py-1 bg-[var(--color-surface)] rounded-xl text-xs font-bold shadow-sm">{a.label}</span>\n      <button className="w-9 h-9 rounded-full border flex items-center justify-center">\n        <a.icon className="text-xs" />\n      </button>\n    </div>\n  ))}\n  <button onClick={() => setOpen(p => !p)}\n    className={\`w-12 h-12 rounded-full shadow-xl flex items-center justify-center\n      \${open ? 'bg-slate-700 text-white' : 'bg-[var(--color-primary)] text-white'}\`}>\n    <Plus className={\`text-lg transition-transform \${open ? 'rotate-45' : ''}\`} className="w-5 h-5" />\n  </button>\n</div>`} />
                                     </div>
                                 </div>
                             </section></LazySection>
@@ -3482,18 +3482,18 @@ export default function PlaygroundPage() {
                                     <UIBlock fullWidth title="05 · Dashboard Shell" children={
                                         <div className="border border-[var(--color-border)] rounded-2xl overflow-hidden">
                                             <div className="flex items-center gap-3 px-4 py-2.5 bg-[var(--color-surface)] border-b border-[var(--color-border)]">
-                                                <div className="w-6 h-6 rounded-lg bg-[var(--color-primary)] flex items-center justify-center shrink-0"><Gauge className="text-white text-[9px]" /></div>
-                                                <span className="text-[11px] font-black text-[var(--color-text)]">Laporanmu</span>
+                                                <div className="w-6 h-6 rounded-lg bg-[var(--color-primary)] flex items-center justify-center shrink-0"><Gauge className="w-4 h-4 text-white" /></div>
+                                                <span className="text-xs font-bold text-[var(--color-text)]">Laporanmu</span>
                                                 <div className="flex-1" />
-                                                <Bell className="text-[var(--color-text-muted)] text-sm" />
-                                                <div className="w-7 h-7 rounded-full bg-indigo-500/10 text-indigo-600 text-[9px] font-black flex items-center justify-center">AS</div>
+                                                <Bell className="w-4 h-4 text-[var(--color-text-muted)]" />
+                                                <div className="w-7 h-7 rounded-full bg-indigo-500/10 text-indigo-600 text-xs font-bold flex items-center justify-center">AS</div>
                                             </div>
                                             <div className="flex" style={{ height: 180 }}>
                                                 <div className="w-44 bg-[var(--color-surface)] border-r border-[var(--color-border)] p-3 space-y-1 shrink-0">
                                                     {[{ icon: Gauge, label: 'Dashboard', active: true }, { icon: Users, label: 'Data Siswa' }, { icon: ClipboardList, label: 'Laporan' }, { icon: Calendar, label: 'Jadwal' }, { icon: Settings, label: 'Pengaturan' }].map(item => (
                                                         <div key={item.label} className={`flex items-center gap-2 px-2 py-1.5 rounded-lg ${item.active ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}>
-                                                            <item.icon className="text-[9px] shrink-0" />
-                                                            <span className="text-[9px] font-black">{item.label}</span>
+                                                            <item.icon className="text-xs shrink-0" />
+                                                            <span className="text-xs font-bold">{item.label}</span>
                                                         </div>
                                                     ))}
                                                 </div>
@@ -3501,15 +3501,15 @@ export default function PlaygroundPage() {
                                                     <div className="grid grid-cols-3 gap-3">
                                                         {[{ l: 'Total Siswa', v: '2,840', c: 'indigo' }, { l: 'Kehadiran', v: '94.2%', c: 'emerald' }, { l: 'Laporan', v: '18', c: 'amber' }].map(({ l, v, c }) => (
                                                             <div key={l} className="p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
-                                                                <p className="text-[14px] font-black font-heading text-[var(--color-text)]">{v}</p>
-                                                                <p className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">{l}</p>
+                                                                <p className="text-[14px] font-bold font-heading text-[var(--color-text)]">{v}</p>
+                                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">{l}</p>
                                                             </div>
                                                         ))}
                                                     </div>
                                                     <div className="flex-1 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] p-3">
-                                                        <p className="text-[9px] font-black text-[var(--color-text-muted)] opacity-50 uppercase tracking-widest mb-2">Aktivitas Terbaru</p>
+                                                        <p className="text-xs font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-wide mb-2">Aktivitas Terbaru</p>
                                                         <div className="space-y-1.5">
-                                                            {['Data siswa diperbarui', 'Laporan Q3 dikirim', 'Jadwal baru ditambahkan'].map(t => <div key={t} className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shrink-0" /><span className="text-[9px] text-[var(--color-text-muted)]">{t}</span></div>)}
+                                                            {['Data siswa diperbarui', 'Laporan Q3 dikirim', 'Jadwal baru ditambahkan'].map(t => <div key={t} className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shrink-0" /><span className="text-xs text-[var(--color-text-muted)]">{t}</span></div>)}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -3520,65 +3520,65 @@ export default function PlaygroundPage() {
                                         <UIBlock title="06 · Auth Page Layout" children={
                                             <div className="flex border border-[var(--color-border)] rounded-2xl overflow-hidden h-64">
                                                 <div className="w-40 bg-[var(--color-primary)] p-6 flex flex-col items-center justify-center gap-3 shrink-0">
-                                                    <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center"><Gauge className="text-white text-lg" /></div>
-                                                    <div className="text-center"><p className="text-[12px] font-black text-white">Laporanmu</p><p className="text-[9px] text-white/60">Ekosistem Sekolah Indonesia</p></div>
+                                                    <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center"><Gauge className="w-5 h-5 text-white" /></div>
+                                                    <div className="text-center"><p className="text-xs font-bold text-white">Laporanmu</p><p className="text-xs text-white/60">Ekosistem Sekolah Indonesia</p></div>
                                                     <div className="space-y-1 w-full">
-                                                        {['✓ Multi-role akses', '✓ Data terenkripsi', '✓ Real-time sync'].map(f => <p key={f} className="text-[8px] text-white/70 font-medium">{f}</p>)}
+                                                        {['✓ Multi-role akses', '✓ Data terenkripsi', '✓ Real-time sync'].map(f => <p key={f} className="text-xs text-white/70 font-medium">{f}</p>)}
                                                     </div>
                                                 </div>
                                                 <div className="flex-1 p-5 flex flex-col justify-center space-y-3 bg-[var(--color-surface)]">
-                                                    <div><p className="text-[14px] font-black text-[var(--color-text)]">Masuk ke Akun</p><p className="text-[9px] text-[var(--color-text-muted)]">Selamat datang kembali!</p></div>
-                                                    {['Email', 'Password'].map(f => <div key={f} className="space-y-1"><label className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">{f}</label><div className="h-9 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-3 flex items-center"><span className="text-[9px] text-[var(--color-text-muted)]">{f === 'Email' ? 'admin@sekolah.sch.id' : '••••••••'}</span></div></div>)}
-                                                    <button className="w-full h-9 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black hover:opacity-90 transition-all">Masuk →</button>
-                                                    <p className="text-[9px] text-center text-[var(--color-text-muted)]">Lupa password? <span className="text-[var(--color-primary)] font-black cursor-pointer">Reset di sini</span></p>
+                                                    <div><p className="text-[14px] font-bold text-[var(--color-text)]">Masuk ke Akun</p><p className="text-xs text-[var(--color-text-muted)]">Selamat datang kembali!</p></div>
+                                                    {['Email', 'Password'].map(f => <div key={f} className="space-y-1"><label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">{f}</label><div className="h-9 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-3 flex items-center"><span className="text-xs text-[var(--color-text-muted)]">{f === 'Email' ? 'admin@sekolah.sch.id' : '••••••••'}</span></div></div>)}
+                                                    <button className="w-full h-9 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:opacity-90 transition-all">Masuk →</button>
+                                                    <p className="text-xs text-center text-[var(--color-text-muted)]">Lupa password? <span className="text-[var(--color-primary)] font-bold cursor-pointer">Reset di sini</span></p>
                                                 </div>
                                             </div>
-                                        } code={`// Auth: branded sidebar + form\n<div className="flex min-h-screen">\n  <div className="w-1/2 bg-[var(--color-primary)] flex flex-col items-center justify-center p-12">\n    {/* Branding */}\n  </div>\n  <div className="flex-1 flex items-center justify-center p-8">\n    <form className="w-full max-w-sm space-y-4">\n      {/* Inputs */}\n      <button type="submit" className="w-full h-11 rounded-2xl bg-[var(--color-primary)] text-white font-black">Masuk</button>\n    </form>\n  </div>\n</div>`} />
+                                        } code={`// Auth: branded sidebar + form\n<div className="flex min-h-screen">\n  <div className="w-1/2 bg-[var(--color-primary)] flex flex-col items-center justify-center p-12">\n    {/* Branding */}\n  </div>\n  <div className="flex-1 flex items-center justify-center p-8">\n    <form className="w-full max-w-sm space-y-4">\n      {/* Inputs */}\n      <button type="submit" className="w-full h-11 rounded-2xl bg-[var(--color-primary)] text-white font-bold">Masuk</button>\n    </form>\n  </div>\n</div>`} />
                                         <UIBlock title="07 · Settings Page" children={
                                             <div className="flex border border-[var(--color-border)] rounded-2xl overflow-hidden h-64">
                                                 <div className="w-36 bg-[var(--color-surface)] border-r border-[var(--color-border)] p-3 shrink-0">
                                                     {[{ g: 'Akun', items: ['Profil', 'Password', 'Notifikasi'] }, { g: 'Sistem', items: ['Tampilan', 'Integrasi', 'Keamanan'] }].map(({ g, items }) => (
                                                         <div key={g} className="mb-4">
-                                                            <p className="text-[7px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-40 px-2 mb-1.5">{g}</p>
-                                                            {items.map((item, i) => <div key={item} className={`px-3 py-1.5 rounded-lg text-[9px] font-black mb-0.5 cursor-pointer ${i === 0 && g === 'Akun' ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>{item}</div>)}
+                                                            <p className="text-[7px] font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-40 px-2 mb-1.5">{g}</p>
+                                                            {items.map((item, i) => <div key={item} className={`px-3 py-1.5 rounded-lg text-xs font-bold mb-0.5 cursor-pointer ${i === 0 && g === 'Akun' ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>{item}</div>)}
                                                         </div>
                                                     ))}
                                                 </div>
                                                 <div className="flex-1 p-4 bg-[var(--color-surface-alt)] space-y-4">
-                                                    <p className="text-[11px] font-black text-[var(--color-text)]">Informasi Profil</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text)]">Informasi Profil</p>
                                                     <div className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
-                                                        <div className="w-10 h-10 rounded-full bg-indigo-500/10 text-indigo-600 text-sm font-black flex items-center justify-center shrink-0">AS</div>
-                                                        <div className="flex-1 min-w-0"><p className="text-[10px] font-black text-[var(--color-text)]">Admin Sekolah</p><p className="text-[8px] text-[var(--color-text-muted)]">admin@sekolah.sch.id</p></div>
-                                                        <button className="text-[9px] font-black text-[var(--color-primary)]">Edit</button>
+                                                        <div className="w-10 h-10 rounded-full bg-indigo-500/10 text-indigo-600 text-sm font-bold flex items-center justify-center shrink-0">AS</div>
+                                                        <div className="flex-1 min-w-0"><p className="text-xs font-bold text-[var(--color-text)]">Admin Sekolah</p><p className="text-xs text-[var(--color-text-muted)]">admin@sekolah.sch.id</p></div>
+                                                        <button className="text-xs font-bold text-[var(--color-primary)]">Edit</button>
                                                     </div>
                                                     <div className="grid grid-cols-2 gap-2">
-                                                        {['Nama Lengkap', 'Jabatan', 'Nomor HP', 'Kode Sekolah'].map(f => <div key={f} className="space-y-1"><label className="text-[7px] font-black text-[var(--color-text-muted)] uppercase opacity-50">{f}</label><div className="h-8 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)]" /></div>)}
+                                                        {['Nama Lengkap', 'Jabatan', 'Nomor HP', 'Kode Sekolah'].map(f => <div key={f} className="space-y-1"><label className="text-[7px] font-bold text-[var(--color-text-muted)] uppercase opacity-50">{f}</label><div className="h-8 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)]" /></div>)}
                                                     </div>
-                                                    <div className="flex justify-end"><button className="px-4 h-8 rounded-xl bg-[var(--color-primary)] text-white text-[9px] font-black">Simpan Perubahan</button></div>
+                                                    <div className="flex justify-end"><button className="px-4 h-8 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold">Simpan Perubahan</button></div>
                                                 </div>
                                             </div>
-                                        } code={`// Settings: sidebar categories + form\n<div className="flex">\n  <nav className="w-48 shrink-0">\n    {categories.map(cat => (\n      <div key={cat.group}>\n        <p className="text-[7px] font-black uppercase tracking-widest opacity-40 px-2 mb-1">{cat.group}</p>\n        {cat.items.map(item => (\n          <button key={item} onClick={() => setActive(item)}\n            className={\`w-full px-3 py-1.5 rounded-lg text-[9px] font-black\n              \${active===item ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}\`}>\n            {item}\n          </button>\n        ))}\n      </div>\n    ))}\n  </nav>\n  <main className="flex-1 p-4">{/* form content */}</main>\n</div>`} />
+                                        } code={`// Settings: sidebar categories + form\n<div className="flex">\n  <nav className="w-48 shrink-0">\n    {categories.map(cat => (\n      <div key={cat.group}>\n        <p className="text-[7px] font-bold uppercase tracking-wide opacity-40 px-2 mb-1">{cat.group}</p>\n        {cat.items.map(item => (\n          <button key={item} onClick={() => setActive(item)}\n            className={\`w-full px-3 py-1.5 rounded-lg text-xs font-bold\n              \${active===item ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}\`}>\n            {item}\n          </button>\n        ))}\n      </div>\n    ))}\n  </nav>\n  <main className="flex-1 p-4">{/* form content */}</main>\n</div>`} />
                                         <UIBlock title="08 · Split Panel (Master-Detail)" children={
                                             <div className="flex border border-[var(--color-border)] rounded-2xl overflow-hidden h-64">
                                                 <div className="w-44 bg-[var(--color-surface)] border-r border-[var(--color-border)] overflow-y-auto shrink-0">
-                                                    <div className="p-2 border-b border-[var(--color-border)]"><div className="h-7 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-2 flex items-center gap-1.5"><Search className="text-[8px] text-[var(--color-text-muted)]" /><span className="text-[9px] text-[var(--color-text-muted)]">Cari siswa…</span></div></div>
+                                                    <div className="p-2 border-b border-[var(--color-border)]"><div className="h-7 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-2 flex items-center gap-1.5"><Search className="w-4 h-4 text-[var(--color-text-muted)]" /><span className="text-xs text-[var(--color-text-muted)]">Cari siswa…</span></div></div>
                                                     {[{ init: 'AS', name: 'Andi Setiawan', kelas: '6A', active: true }, { init: 'BP', name: 'Budi Pratama', kelas: '5B' }, { init: 'CD', name: 'Citra Dewi', kelas: '6A' }, { init: 'DK', name: 'Dian Kusuma', kelas: '4C' }, { init: 'ER', name: 'Eka Rahmawati', kelas: '5A' }].map(s => (
                                                         <div key={s.init} className={`flex items-center gap-2 px-3 py-2.5 cursor-pointer border-l-2 transition-colors ${s.active ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5' : 'border-transparent hover:bg-[var(--color-surface-alt)]'}`}>
-                                                            <div className={`w-7 h-7 rounded-full text-[8px] font-black flex items-center justify-center shrink-0 ${s.active ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>{s.init}</div>
-                                                            <div className="min-w-0"><p className={`text-[9px] font-black truncate ${s.active ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}`}>{s.name}</p><p className="text-[7px] text-[var(--color-text-muted)] opacity-60">{s.kelas}</p></div>
+                                                            <div className={`w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center shrink-0 ${s.active ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>{s.init}</div>
+                                                            <div className="min-w-0"><p className={`text-xs font-bold truncate ${s.active ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}`}>{s.name}</p><p className="text-[7px] text-[var(--color-text-muted)] opacity-60">{s.kelas}</p></div>
                                                         </div>
                                                     ))}
                                                 </div>
                                                 <div className="flex-1 p-4 bg-[var(--color-surface-alt)] space-y-3">
-                                                    <div className="flex items-center gap-3"><div className="w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-600 text-sm font-black flex items-center justify-center shrink-0">AS</div><div><p className="text-[12px] font-black text-[var(--color-text)]">Andi Setiawan</p><p className="text-[9px] text-[var(--color-text-muted)]">Kelas 6A · NIS 240101</p></div></div>
+                                                    <div className="flex items-center gap-3"><div className="w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-600 text-sm font-bold flex items-center justify-center shrink-0">AS</div><div><p className="text-xs font-bold text-[var(--color-text)]">Andi Setiawan</p><p className="text-xs text-[var(--color-text-muted)]">Kelas 6A · NIS 240101</p></div></div>
                                                     <div className="grid grid-cols-3 gap-2">
-                                                        {[{ l: 'Nilai', v: '92.4' }, { l: 'Hadir', v: '98%' }, { l: 'Tugas', v: '45/48' }].map(({ l, v }) => <div key={l} className="p-2.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-center"><p className="text-[13px] font-black text-[var(--color-text)]">{v}</p><p className="text-[7px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">{l}</p></div>)}
+                                                        {[{ l: 'Nilai', v: '92.4' }, { l: 'Hadir', v: '98%' }, { l: 'Tugas', v: '45/48' }].map(({ l, v }) => <div key={l} className="p-2.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-center"><p className="text-sm font-bold text-[var(--color-text)]">{v}</p><p className="text-[7px] font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">{l}</p></div>)}
                                                     </div>
-                                                    <div className="flex gap-2"><button className="flex-1 h-8 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black border border-[var(--color-primary)]/20">Edit Data</button><button className="h-8 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[9px] font-black"><EllipsisVertical className="text-xs" /></button></div>
+                                                    <div className="flex gap-2"><button className="flex-1 h-8 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold border border-[var(--color-primary)]/20">Edit Data</button><button className="h-8 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold"><EllipsisVertical className="w-4 h-4" /></button></div>
                                                 </div>
                                             </div>
                                         } code={`// Master-detail split\n<div className="flex h-full">\n  {/* Master list */}\n  <aside className="w-44 border-r border-[var(--color-border)] overflow-y-auto">\n    {items.map(item => (\n      <div key={item.id} onClick={() => setSelected(item.id)}\n        className={\`flex items-center gap-2 px-3 py-2.5 cursor-pointer border-l-2\n          \${selected===item.id ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5'\n          : 'border-transparent hover:bg-[var(--color-surface-alt)]'}\`}>\n        {/* item content */}\n      </div>\n    ))}\n  </aside>\n  {/* Detail panel */}\n  <main className="flex-1 p-4">{/* selected item detail */}</main>\n</div>`} />
-                                        <UIBlock title="09 · Chat & Messaging" children={<ChatPreview />} code={`const [messages, setMessages] = useState(initialMessages)\nconst [msg, setMsg] = useState('')\n\nconst send = () => {\n  if (!msg.trim()) return\n  setMessages(prev => [...prev, { from:'me', text:msg, time:'Baru saja' }])\n  setMsg('')\n}\n\n{messages.map((m, i) => (\n  <div key={i} className={\`flex gap-2 items-end \${m.from==='me' ? 'flex-row-reverse' : ''}\`}>\n    <div className={\`max-w-[70%] px-3 py-2 rounded-2xl text-[10px]\n      \${m.from==='me' ? 'bg-[var(--color-primary)] text-white rounded-br-sm'\n      : 'bg-[var(--color-surface)] border border-[var(--color-border)] rounded-bl-sm'}\`}>\n      {m.text}\n    </div>\n  </div>\n))}`} />
+                                        <UIBlock title="09 · Chat & Messaging" children={<ChatPreview />} code={`const [messages, setMessages] = useState(initialMessages)\nconst [msg, setMsg] = useState('')\n\nconst send = () => {\n  if (!msg.trim()) return\n  setMessages(prev => [...prev, { from:'me', text:msg, time:'Baru saja' }])\n  setMsg('')\n}\n\n{messages.map((m, i) => (\n  <div key={i} className={\`flex gap-2 items-end \${m.from==='me' ? 'flex-row-reverse' : ''}\`}>\n    <div className={\`max-w-[70%] px-3 py-2 rounded-2xl text-xs\n      \${m.from==='me' ? 'bg-[var(--color-primary)] text-white rounded-br-sm'\n      : 'bg-[var(--color-surface)] border border-[var(--color-border)] rounded-bl-sm'}\`}>\n      {m.text}\n    </div>\n  </div>\n))}`} />
                                     </div>
                                 </div>
                             </section></LazySection>
@@ -3593,7 +3593,7 @@ export default function PlaygroundPage() {
                                             <div className="space-y-3">
                                                 {[{ label: '1 col', cols: 1 }, { label: '2 col', cols: 2 }, { label: '3 col', cols: 3 }, { label: '4 col', cols: 4 }, { label: '2:1 sidebar', cols: '2fr 1fr' }].map(({ label, cols }) => (
                                                     <div key={label} className="flex items-center gap-3">
-                                                        <span className="text-[9px] font-mono text-[var(--color-text-muted)] w-20 shrink-0">{label}</span>
+                                                        <span className="text-xs font-mono text-[var(--color-text-muted)] w-20 shrink-0">{label}</span>
                                                         <div className="flex-1 grid gap-1" style={{ gridTemplateColumns: typeof cols === 'number' ? `repeat(${cols},1fr)` : cols }}>
                                                             {Array.from({ length: typeof cols === 'number' ? cols : 2 }).map((_, i) => (
                                                                 <div key={i} className="h-5 rounded bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/20 flex items-center justify-center"><span className="text-[7px] font-mono text-[var(--color-primary)] opacity-50">1/{typeof cols === 'number' ? cols : i === 0 ? '2' : '1'}</span></div>
@@ -3605,32 +3605,32 @@ export default function PlaygroundPage() {
                                         } code={`{/* Responsive grid */}\n<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">\n\n{/* Sidebar + content (2:1) */}\n<div className="grid grid-cols-[2fr_1fr] gap-6">\n\n{/* Equal 3-col */}\n<div className="grid grid-cols-3 gap-4">\n\n{/* Auto-fit responsive */}\n<div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">`} />
                                         <UIBlock title="12 · Card Grid Variants" children={
                                             <div className="space-y-3">
-                                                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50">Auto-fill dengan featured card</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50">Auto-fill dengan featured card</p>
                                                 <div className="grid grid-cols-3 gap-2">
                                                     {[{ c: 'bg-indigo-500/10', t: 'Matematika', v: '92' }, { c: 'bg-emerald-500/10', t: 'B. Indonesia', v: '88' }, { c: 'bg-amber-500/10', t: 'IPA', v: '85' }].map(({ c, t, v }) => (
-                                                        <div key={t} className={`p-3 rounded-xl ${c} border border-[var(--color-border)]`}><p className="text-[9px] font-black text-[var(--color-text)]">{v}</p><p className="text-[7px] font-black text-[var(--color-text-muted)] opacity-70">{t}</p></div>
+                                                        <div key={t} className={`p-3 rounded-xl ${c} border border-[var(--color-border)]`}><p className="text-xs font-bold text-[var(--color-text)]">{v}</p><p className="text-[7px] font-bold text-[var(--color-text-muted)] opacity-70">{t}</p></div>
                                                     ))}
                                                     <div className="col-span-2 p-3 rounded-xl bg-[var(--color-primary)] flex items-center gap-3">
-                                                        <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center"><ChartLine className="text-white text-xs" /></div>
-                                                        <div><p className="text-[11px] font-black text-white">Rata-rata: 88.3</p><p className="text-[8px] text-white/60">↑ 3.2% dari semester lalu</p></div>
+                                                        <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center"><ChartLine className="w-4 h-4 text-white" /></div>
+                                                        <div><p className="text-xs font-bold text-white">Rata-rata: 88.3</p><p className="text-xs text-white/60">↑ 3.2% dari semester lalu</p></div>
                                                     </div>
                                                     <div className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-[var(--color-primary)] transition-all">
-                                                        <Plus className="text-[var(--color-text-muted)] text-sm" />
-                                                        <span className="text-[7px] font-black text-[var(--color-text-muted)]">Tambah</span>
+                                                        <Plus className="w-4 h-4 text-[var(--color-text-muted)]" />
+                                                        <span className="text-[7px] font-bold text-[var(--color-text-muted)]">Tambah</span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        } code={`<div className="grid grid-cols-3 gap-3">\n  {cards.map(card => (\n    <div key={card.id} className="p-3 rounded-xl border">{/* card */}</div>\n  ))}\n  {/* Featured/spanning card */}\n  <div className="col-span-2 p-3 rounded-xl bg-[var(--color-primary)]">\n    {/* highlighted content */}\n  </div>\n  {/* Add card */}\n  <button className="p-3 rounded-xl border border-dashed hover:border-[var(--color-primary)]">\n    <Plus />\n  </button>\n</div>`} />
+                                        } code={`<div className="grid grid-cols-3 gap-3">\n  {cards.map(card => (\n    <div key={card.id} className="p-3 rounded-xl border">{/* card */}</div>\n  ))}\n  {/* Featured/spanning card */}\n  <div className="col-span-2 p-3 rounded-xl bg-[var(--color-primary)]">\n    {/* highlighted content */}\n  </div>\n  {/* Add card */}\n  <button className="p-3 rounded-xl border border-dashed hover:border-[var(--color-primary)]">\n    <Plus className="w-4 h-4" />\n  </button>\n</div>`} />
                                         <UIBlock title="13 · Calendar & Schedule" children={
                                             <div className="space-y-3">
                                                 <div className="flex items-center justify-between">
-                                                    <button className="w-7 h-7 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] transition-colors"><ChevronRight className="text-[9px] rotate-180" /></button>
-                                                    <span className="text-[11px] font-black text-[var(--color-text)]">Januari 2025</span>
-                                                    <button className="w-7 h-7 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] transition-colors"><ChevronRight className="text-[9px]" /></button>
+                                                    <button className="w-7 h-7 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] transition-colors"><ChevronRight className="w-4 h-4 rotate-180" /></button>
+                                                    <span className="text-xs font-bold text-[var(--color-text)]">Januari 2025</span>
+                                                    <button className="w-7 h-7 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] transition-colors"><ChevronRight className="w-4 h-4" /></button>
                                                 </div>
                                                 <div className="border border-[var(--color-border)] rounded-2xl overflow-hidden">
                                                     <div className="grid grid-cols-6 border-b border-[var(--color-border)]">
-                                                        {['07:00', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'].map((d, i) => <div key={d} className={`p-2 text-center text-[8px] font-black ${i === 3 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}`}>{d}</div>)}
+                                                        {['07:00', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'].map((d, i) => <div key={d} className={`p-2 text-center text-xs font-bold ${i === 3 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}`}>{d}</div>)}
                                                     </div>
                                                     {[
                                                         { time: '07:00', slots: [{ s: 1, label: 'Matematika', c: 'bg-indigo-500/10 border-indigo-500/30 text-indigo-700' }, { s: null }, { s: 3, label: 'B.Indo', c: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-700', active: true }, { s: null }, { s: null }] },
@@ -3640,14 +3640,14 @@ export default function PlaygroundPage() {
                                                             <div className="p-2 text-center text-[7px] font-mono text-[var(--color-text-muted)] opacity-40 flex items-center justify-center">{row.time}</div>
                                                             {row.slots.map((slot, i) => (
                                                                 <div key={i} className={`p-1.5 ${slot.active ? 'bg-[var(--color-primary)]/5' : ''}`}>
-                                                                    {slot.s && <div className={`rounded-lg px-1.5 py-1 text-[7px] font-black border truncate ${slot.c}`}>{slot.label}</div>}
+                                                                    {slot.s && <div className={`rounded-lg px-1.5 py-1 text-[7px] font-bold border truncate ${slot.c}`}>{slot.label}</div>}
                                                                 </div>
                                                             ))}
                                                         </div>
                                                     ))}
                                                 </div>
                                             </div>
-                                        } code={`{/* Weekly schedule grid */}\n<div className="grid grid-cols-6"> {/* time + 5 days */}\n  {/* Header row */}\n  {['','Senin','Selasa','Rabu','Kamis','Jumat'].map(d => (\n    <div key={d} className="p-2 text-center text-[8px] font-black">{d}</div>\n  ))}\n  {/* Time slots */}\n  {hours.map(hour => (\n    <>\n      <div key={hour} className="text-[7px] font-mono opacity-40">{hour}</div>\n      {days.map(day => (\n        <div key={day}>{getClass(hour, day) && (\n          <div className="rounded-lg p-1 text-[7px] font-black border">{getClass(hour,day).name}</div>\n        )}</div>\n      ))}\n    </>\n  ))}\n</div>`} />
+                                        } code={`{/* Weekly schedule grid */}\n<div className="grid grid-cols-6"> {/* time + 5 days */}\n  {/* Header row */}\n  {['','Senin','Selasa','Rabu','Kamis','Jumat'].map(d => (\n    <div key={d} className="p-2 text-center text-xs font-bold">{d}</div>\n  ))}\n  {/* Time slots */}\n  {hours.map(hour => (\n    <>\n      <div key={hour} className="text-[7px] font-mono opacity-40">{hour}</div>\n      {days.map(day => (\n        <div key={day}>{getClass(hour, day) && (\n          <div className="rounded-lg p-1 text-[7px] font-bold border">{getClass(hour,day).name}</div>\n        )}</div>\n      ))}\n    </>\n  ))}\n</div>`} />
                                         <UIBlock title="14 · Gallery & Media Grid" children={
                                             <div className="space-y-2">
                                                 <div className="grid grid-cols-4 gap-1.5">
@@ -3659,17 +3659,17 @@ export default function PlaygroundPage() {
                                                         { cls: '', bg: 'bg-sky-200', icon: Globe },
                                                     ].map(({ cls, bg, icon: Icon }, i) => (
                                                         <div key={i} className={`${cls} ${bg} rounded-xl aspect-square flex items-center justify-center cursor-pointer hover:opacity-90 transition-all relative group overflow-hidden`}>
-                                                            {Icon && <Icon className="text-white text-xl opacity-60" />}
-                                                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center"><Search className="text-white opacity-0 group-hover:opacity-100 transition-all" /></div>
+                                                            {Icon && <Icon className="w-5 h-5 text-white opacity-60" />}
+                                                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center"><Search className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-all" /></div>
                                                         </div>
                                                     ))}
                                                     <div className="bg-[var(--color-surface-alt)] border-2 border-dashed border-[var(--color-border)] rounded-xl aspect-square flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-[var(--color-primary)] transition-all">
-                                                        <Plus className="text-[var(--color-text-muted)] text-sm" />
-                                                        <span className="text-[7px] font-black text-[var(--color-text-muted)]">+12</span>
+                                                        <Plus className="w-4 h-4 text-[var(--color-text-muted)]" />
+                                                        <span className="text-[7px] font-bold text-[var(--color-text-muted)]">+12</span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        } code={`{/* Gallery grid with masonry-ish featured */}\n<div className="grid grid-cols-4 gap-1.5">\n  <div className="col-span-2 row-span-2 bg-indigo-200 rounded-xl aspect-square relative group">\n    <img src={photo.url} className="w-full h-full object-cover rounded-xl" />\n    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all rounded-xl" />\n  </div>\n  {otherPhotos.map(photo => (\n    <div key={photo.id} className="rounded-xl aspect-square overflow-hidden">\n      <img src={photo.url} className="w-full h-full object-cover" />\n    </div>\n  ))}\n  <div className="rounded-xl aspect-square border-2 border-dashed flex items-center justify-center cursor-pointer">\n    <span className="text-[9px] font-black text-[var(--color-text-muted)]">+{remaining}</span>\n  </div>\n</div>`} />
+                                        } code={`{/* Gallery grid with masonry-ish featured */}\n<div className="grid grid-cols-4 gap-1.5">\n  <div className="col-span-2 row-span-2 bg-indigo-200 rounded-xl aspect-square relative group">\n    <img src={photo.url} className="w-full h-full object-cover rounded-xl" />\n    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all rounded-xl" />\n  </div>\n  {otherPhotos.map(photo => (\n    <div key={photo.id} className="rounded-xl aspect-square overflow-hidden">\n      <img src={photo.url} className="w-full h-full object-cover" />\n    </div>\n  ))}\n  <div className="rounded-xl aspect-square border-2 border-dashed flex items-center justify-center cursor-pointer">\n    <span className="text-xs font-bold text-[var(--color-text-muted)]">+{remaining}</span>\n  </div>\n</div>`} />
                                     </div>
                                 </div>
                             </section></LazySection>
@@ -3680,14 +3680,14 @@ export default function PlaygroundPage() {
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock title="15 · Modal Variants" children={
                                         <div className="space-y-4">
-                                            <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50">Size Variants</p>
+                                            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50">Size Variants</p>
                                             <div className="space-y-2">
                                                 {[{ size: 'sm', w: 'w-48' }, { size: 'md', w: 'w-64' }, { size: 'lg', w: 'w-80' }, { size: 'fullscreen', w: 'w-full' }].map(({ size, w }) => (
                                                     <div key={size} className="flex items-center gap-3">
-                                                        <span className="text-[9px] font-mono text-[var(--color-text-muted)] w-20 shrink-0">size={size}</span>
+                                                        <span className="text-xs font-mono text-[var(--color-text-muted)] w-20 shrink-0">size={size}</span>
                                                         <div className={`${w} bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-2 flex items-center justify-between shadow-sm`}>
                                                             <div className="flex gap-1"><div className="h-1.5 rounded bg-[var(--color-border)] w-12" /><div className="h-1.5 rounded bg-[var(--color-border)] w-8" /></div>
-                                                            <X className="text-[var(--color-text-muted)] text-[9px]" />
+                                                            <X className="w-4 h-4 text-[var(--color-text-muted)]" />
                                                         </div>
                                                     </div>
                                                 ))}
@@ -3696,72 +3696,72 @@ export default function PlaygroundPage() {
                                     } code={`// Modal sizes via prop\n<Modal isOpen={open} onClose={() => setOpen(false)} size="lg">\n  {/* content */}\n</Modal>\n\n// Sizes: 'sm' | 'md' | 'lg' | 'xl' | 'fullscreen'\n// sm: max-w-sm  (384px)\n// md: max-w-md  (448px)  ← default\n// lg: max-w-lg  (512px)\n// xl: max-w-xl  (576px)\n// fullscreen: fixed inset-0`} />
                                     <UIBlock title="16 · Overlay & Backdrop Stack" children={
                                         <div className="relative border border-[var(--color-border)] rounded-2xl overflow-hidden h-52">
-                                            <div className="absolute inset-0 bg-[var(--color-surface-alt)] p-3 flex items-start"><span className="text-[8px] font-black text-[var(--color-text-muted)] opacity-30">z-0 · Main content</span></div>
+                                            <div className="absolute inset-0 bg-[var(--color-surface-alt)] p-3 flex items-start"><span className="text-xs font-bold text-[var(--color-text-muted)] opacity-30">z-0 · Main content</span></div>
                                             <div className="absolute inset-0 bg-black/20" />
                                             <div className="absolute inset-4 bg-[var(--color-surface)] rounded-xl shadow-sm border border-[var(--color-border)] flex flex-col">
-                                                <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)]"><span className="text-[10px] font-black text-[var(--color-text)]">Modal z-50</span><X className="text-[var(--color-text-muted)] text-xs cursor-pointer" /></div>
+                                                <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)]"><span className="text-xs font-bold text-[var(--color-text)]">Modal z-50</span><X className="w-4 h-4 text-[var(--color-text-muted)] cursor-pointer" /></div>
                                                 <div className="flex-1 p-4 relative">
                                                     <div className="h-2 rounded bg-[var(--color-border)] w-3/4 mb-2" />
                                                     <div className="h-2 rounded bg-[var(--color-border)] w-1/2" />
                                                     <div className="absolute inset-0 bg-black/20 rounded-b-xl" />
                                                     <div className="absolute inset-3 bg-[var(--color-surface)] rounded-xl shadow-xl border border-[var(--color-border)] p-3">
-                                                        <p className="text-[8px] font-black text-[var(--color-text)] mb-1">Confirm Dialog z-[60]</p>
-                                                        <div className="flex gap-1.5 justify-end mt-2"><div className="px-3 py-1 rounded-lg border border-[var(--color-border)] text-[7px] font-black text-[var(--color-text-muted)]">Batal</div><div className="px-3 py-1 rounded-lg bg-rose-500 text-[7px] font-black text-white">Hapus</div></div>
+                                                        <p className="text-xs font-bold text-[var(--color-text)] mb-1">Confirm Dialog z-[60]</p>
+                                                        <div className="flex gap-1.5 justify-end mt-2"><div className="px-3 py-1 rounded-lg border border-[var(--color-border)] text-[7px] font-bold text-[var(--color-text-muted)]">Batal</div><div className="px-3 py-1 rounded-lg bg-rose-500 text-[7px] font-bold text-white">Hapus</div></div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="absolute bottom-3 right-3 px-2 py-1 bg-emerald-500 rounded-lg shadow-lg"><span className="text-[7px] font-black text-white">Toast z-[999]</span></div>
+                                            <div className="absolute bottom-3 right-3 px-2 py-1 bg-emerald-500 rounded-lg shadow-lg"><span className="text-[7px] font-bold text-white">Toast z-[999]</span></div>
                                         </div>
                                     } code={`// Z-index convention\nconst Z = {\n  base:     'z-0',     // normal content\n  dropdown: 'z-10',    // menus, tooltips\n  sticky:   'z-20',    // sticky header\n  drawer:   'z-30',    // side panels\n  backdrop: 'z-40',    // overlay scrim\n  modal:    'z-50',    // dialogs\n  toast:    'z-[999]', // always on top\n}`} />
                                     <UIBlock title="17 · Tooltip Positioning" children={
                                         <div className="grid grid-cols-3 gap-4 place-items-center py-4">
                                             <div />
                                             <div className="flex flex-col items-center gap-1">
-                                                <div className="bg-slate-900 text-white text-[8px] font-bold px-2 py-1 rounded-lg">Top center</div>
+                                                <div className="bg-slate-900 text-white text-xs font-bold px-2 py-1 rounded-lg">Top center</div>
                                                 <div className="w-2 h-2 bg-slate-900 rotate-45 -mt-1.5" />
-                                                <button className="px-3 py-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[9px] font-black text-[var(--color-text)]">Hover</button>
+                                                <button className="px-3 py-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)]">Hover</button>
                                             </div>
                                             <div />
                                             <div className="flex items-center gap-1">
-                                                <div className="bg-slate-900 text-white text-[8px] font-bold px-2 py-1 rounded-lg">Left</div>
+                                                <div className="bg-slate-900 text-white text-xs font-bold px-2 py-1 rounded-lg">Left</div>
                                                 <div className="w-2 h-2 bg-slate-900 rotate-45 -ml-1.5" />
-                                                <button className="px-3 py-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[9px] font-black text-[var(--color-text)]">Hover</button>
+                                                <button className="px-3 py-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)]">Hover</button>
                                             </div>
                                             <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-lg">
-                                                <p className="text-[8px] font-black text-[var(--color-text)] mb-0.5">Rich Popover</p>
+                                                <p className="text-xs font-bold text-[var(--color-text)] mb-0.5">Rich Popover</p>
                                                 <p className="text-[7px] text-[var(--color-text-muted)]">Konten detail lebih kaya</p>
                                             </div>
                                             <div className="flex items-center gap-1">
-                                                <button className="px-3 py-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[9px] font-black text-[var(--color-text)]">Hover</button>
+                                                <button className="px-3 py-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)]">Hover</button>
                                                 <div className="w-2 h-2 bg-slate-900 rotate-45 -mr-1.5" />
-                                                <div className="bg-slate-900 text-white text-[8px] font-bold px-2 py-1 rounded-lg">Right</div>
+                                                <div className="bg-slate-900 text-white text-xs font-bold px-2 py-1 rounded-lg">Right</div>
                                             </div>
                                             <div />
                                             <div className="flex flex-col items-center gap-1">
-                                                <button className="px-3 py-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[9px] font-black text-[var(--color-text)]">Hover</button>
+                                                <button className="px-3 py-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)]">Hover</button>
                                                 <div className="w-2 h-2 bg-slate-900 rotate-45 -mt-1.5" />
-                                                <div className="bg-slate-900 text-white text-[8px] font-bold px-2 py-1 rounded-lg">Bottom</div>
+                                                <div className="bg-slate-900 text-white text-xs font-bold px-2 py-1 rounded-lg">Bottom</div>
                                             </div>
                                             <div />
                                         </div>
-                                    } code={`// 8-direction tooltip\n<div className="relative group">\n  <button>Hover me</button>\n  {/* Top */}\n  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">\n    <div className="bg-slate-900 text-white text-[8px] px-2 py-1 rounded-lg whitespace-nowrap">Tooltip text</div>\n    <div className="w-2 h-2 bg-slate-900 rotate-45 mx-auto -mt-1" />\n  </div>\n  {/* Right: right-full top-1/2 -translate-y-1/2 */}\n  {/* Bottom: top-full left-1/2 */}\n  {/* Left: left-full top-1/2 */}\n</div>`} />
+                                    } code={`// 8-direction tooltip\n<div className="relative group">\n  <button>Hover me</button>\n  {/* Top */}\n  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">\n    <div className="bg-slate-900 text-white text-xs px-2 py-1 rounded-lg whitespace-nowrap">Tooltip text</div>\n    <div className="w-2 h-2 bg-slate-900 rotate-45 mx-auto -mt-1" />\n  </div>\n  {/* Right: right-full top-1/2 -translate-y-1/2 */}\n  {/* Bottom: top-full left-1/2 */}\n  {/* Left: left-full top-1/2 */}\n</div>`} />
                                     <UIBlock title="18 · Scroll Area & Sticky" children={
                                         <div className="border border-[var(--color-border)] rounded-2xl overflow-hidden h-52 flex flex-col">
                                             <div className="sticky top-0 bg-[var(--color-surface)] border-b border-[var(--color-border)] px-4 py-2.5 flex items-center justify-between z-10 shadow-sm">
-                                                <span className="text-[10px] font-black text-[var(--color-text)]">Daftar Siswa</span>
-                                                <span className="text-[8px] font-black text-[var(--color-text-muted)] opacity-50">sticky ↑</span>
+                                                <span className="text-xs font-bold text-[var(--color-text)]">Daftar Siswa</span>
+                                                <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-50">sticky ↑</span>
                                             </div>
                                             <div className="flex-1 overflow-y-auto">
                                                 {[{ i: 'AS', n: 'Andi Setiawan', k: '6A', c: 'bg-indigo-500/10 text-indigo-600' }, { i: 'BP', n: 'Budi Pratama', k: '5B', c: 'bg-emerald-500/10 text-emerald-700' }, { i: 'CD', n: 'Citra Dewi', k: '6A', c: 'bg-rose-500/10 text-rose-700' }, { i: 'DK', n: 'Dian Kusuma', k: '4C', c: 'bg-amber-500/10 text-amber-700' }, { i: 'ER', n: 'Eka Rahmawati', k: '5A', c: 'bg-sky-500/10 text-sky-700' }].map(s => (
                                                     <div key={s.i} className="flex items-center gap-3 px-4 py-2.5 border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors cursor-pointer">
-                                                        <div className={`w-7 h-7 rounded-full ${s.c} text-[8px] font-black flex items-center justify-center shrink-0`}>{s.i}</div>
-                                                        <div className="flex-1"><p className="text-[10px] font-black text-[var(--color-text)]">{s.n}</p><p className="text-[8px] text-[var(--color-text-muted)] opacity-60">{s.k}</p></div>
-                                                        <ChevronRight className="text-[var(--color-text-muted)] text-[9px] opacity-40" />
+                                                        <div className={`w-7 h-7 rounded-full ${s.c} text-xs font-bold flex items-center justify-center shrink-0`}>{s.i}</div>
+                                                        <div className="flex-1"><p className="text-xs font-bold text-[var(--color-text)]">{s.n}</p><p className="text-xs text-[var(--color-text-muted)] opacity-60">{s.k}</p></div>
+                                                        <ChevronRight className="w-4 h-4 text-[var(--color-text-muted)] opacity-40" />
                                                     </div>
                                                 ))}
                                             </div>
                                         </div>
-                                    } code={`{/* Sticky header inside scrollable container */}\n<div className="h-96 overflow-y-auto">\n  <div className="sticky top-0 z-10 bg-[var(--color-surface)] border-b border-[var(--color-border)] px-4 py-2.5 shadow-sm">\n    <h3 className="text-[10px] font-black text-[var(--color-text)]">Daftar Siswa</h3>\n  </div>\n  <div>\n    {items.map(item => (\n      <div key={item.id} className="flex items-center gap-3 px-4 py-2.5 border-b border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]">\n        {/* item */}\n      </div>\n    ))}\n  </div>\n</div>`} />
+                                    } code={`{/* Sticky header inside scrollable container */}\n<div className="h-96 overflow-y-auto">\n  <div className="sticky top-0 z-10 bg-[var(--color-surface)] border-b border-[var(--color-border)] px-4 py-2.5 shadow-sm">\n    <h3 className="text-xs font-bold text-[var(--color-text)]">Daftar Siswa</h3>\n  </div>\n  <div>\n    {items.map(item => (\n      <div key={item.id} className="flex items-center gap-3 px-4 py-2.5 border-b border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]">\n        {/* item */}\n      </div>\n    ))}\n  </div>\n</div>`} />
                                 </div>
                             </section></LazySection>
 
@@ -3776,61 +3776,61 @@ export default function PlaygroundPage() {
                                                 { style: 'with-badge', badge: 'Semester 1' },
                                             ].map(({ style, badge }) => (
                                                 <div key={style} className="p-4 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] space-y-2">
-                                                    {badge && <div><span className="px-2.5 py-1 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary)] text-[9px] font-black">{badge}</span></div>}
+                                                    {badge && <div><span className="px-2.5 py-1 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary)] text-xs font-bold">{badge}</span></div>}
                                                     <div className="flex items-end justify-between gap-4">
                                                         <div>
-                                                            <div className="text-[9px] text-[var(--color-text-muted)] mb-1">Dashboard / <span className="text-[var(--color-primary)]">Data Siswa</span></div>
-                                                            <h2 className="text-[16px] font-black font-heading tracking-tight text-[var(--color-text)]">Data Siswa</h2>
-                                                            <p className="text-[9px] text-[var(--color-text-muted)] mt-0.5">320 siswa aktif · TA 2024/2025</p>
+                                                            <div className="text-xs text-[var(--color-text-muted)] mb-1">Dashboard / <span className="text-[var(--color-primary)]">Data Siswa</span></div>
+                                                            <h2 className="text-[16px] font-bold font-heading tracking-tight text-[var(--color-text)]">Data Siswa</h2>
+                                                            <p className="text-xs text-[var(--color-text-muted)] mt-0.5">320 siswa aktif · TA 2024/2025</p>
                                                         </div>
                                                         <div className="flex gap-2 shrink-0">
-                                                            <button className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[9px] font-black text-[var(--color-text-muted)] flex items-center gap-1.5"><Download className="text-[8px]" />Export</button>
-                                                            <button className="h-8 px-3 rounded-xl bg-[var(--color-primary)] text-white text-[9px] font-black flex items-center gap-1.5"><Plus className="text-[8px]" />Tambah</button>
+                                                            <button className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text-muted)] flex items-center gap-1.5"><Download className="w-4 h-4" />Export</button>
+                                                            <button className="h-8 px-3 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold flex items-center gap-1.5"><Plus className="w-4 h-4" />Tambah</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             ))}
                                         </div>
-                                    } code={`<div className="flex items-end justify-between gap-4 mb-6">\n  <div>\n    <Breadcrumb items={['Dashboard', 'Data Siswa']} />\n    <h1 className="text-[24px] font-black font-heading tracking-tight text-[var(--color-text)] mt-1">Data Siswa</h1>\n    <p className="text-[11px] text-[var(--color-text-muted)] mt-0.5">320 siswa aktif · TA 2024/2025</p>\n  </div>\n  <div className="flex gap-2 shrink-0">\n    <button className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black">Export</button>\n    <button className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black">+ Tambah</button>\n  </div>\n</div>`} />
+                                    } code={`<div className="flex items-end justify-between gap-4 mb-6">\n  <div>\n    <Breadcrumb items={['Dashboard', 'Data Siswa']} />\n    <h1 className="text-[24px] font-bold font-heading tracking-tight text-[var(--color-text)] mt-1">Data Siswa</h1>\n    <p className="text-xs text-[var(--color-text-muted)] mt-0.5">320 siswa aktif · TA 2024/2025</p>\n  </div>\n  <div className="flex gap-2 shrink-0">\n    <button className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold">Export</button>\n    <button className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold">+ Tambah</button>\n  </div>\n</div>`} />
                                     <UIBlock title="20 · Stepper Layout" children={
                                         <div className="space-y-4">
                                             <div className="flex items-center">
                                                 {['Data Diri', 'Sekolah', 'Akademik', 'Review'].map((step, i) => (
                                                     <div key={step} className="flex items-center flex-1 last:flex-none">
                                                         <div className="flex flex-col items-center gap-1">
-                                                            <div className={`w-8 h-8 rounded-full text-[9px] font-black flex items-center justify-center transition-all ${i < 2 ? 'bg-[var(--color-primary)] text-white' : i === 2 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-2 border-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}>
-                                                                {i < 2 ? <Check className="text-[8px]" /> : i + 1}
+                                                            <div className={`w-8 h-8 rounded-full text-xs font-bold flex items-center justify-center transition-all ${i < 2 ? 'bg-[var(--color-primary)] text-white' : i === 2 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-2 border-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}>
+                                                                {i < 2 ? <Check className="w-4 h-4" /> : i + 1}
                                                             </div>
-                                                            <span className={`text-[7px] font-black uppercase tracking-wide whitespace-nowrap ${i === 2 ? 'text-[var(--color-primary)]' : i < 2 ? 'text-[var(--color-text-muted)] line-through' : 'text-[var(--color-text-muted)] opacity-50'}`}>{step}</span>
+                                                            <span className={`text-[7px] font-bold uppercase tracking-wide whitespace-nowrap ${i === 2 ? 'text-[var(--color-primary)]' : i < 2 ? 'text-[var(--color-text-muted)] line-through' : 'text-[var(--color-text-muted)] opacity-50'}`}>{step}</span>
                                                         </div>
                                                         {i < 3 && <div className={`h-0.5 flex-1 mx-2 mb-4 ${i < 2 ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}`} />}
                                                     </div>
                                                 ))}
                                             </div>
                                             <div className="p-4 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] space-y-3">
-                                                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50">Langkah 3 · Akademik</p>
-                                                <div className="grid grid-cols-2 gap-2">{['Kelas', 'Tahun Masuk', 'Wali Kelas', 'Jurusan'].map(f => <div key={f} className="h-9 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] px-3 flex items-center"><span className="text-[9px] text-[var(--color-text-muted)] opacity-50">{f}…</span></div>)}</div>
-                                                <div className="flex justify-between pt-1"><button className="px-4 h-9 rounded-xl border border-[var(--color-border)] text-[9px] font-black text-[var(--color-text-muted)]">← Kembali</button><button className="px-4 h-9 rounded-xl bg-[var(--color-primary)] text-white text-[9px] font-black">Lanjut →</button></div>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50">Langkah 3 · Akademik</p>
+                                                <div className="grid grid-cols-2 gap-2">{['Kelas', 'Tahun Masuk', 'Wali Kelas', 'Jurusan'].map(f => <div key={f} className="h-9 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] px-3 flex items-center"><span className="text-xs text-[var(--color-text-muted)] opacity-50">{f}…</span></div>)}</div>
+                                                <div className="flex justify-between pt-1"><button className="px-4 h-9 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)]">← Kembali</button><button className="px-4 h-9 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold">Lanjut →</button></div>
                                             </div>
                                         </div>
-                                    } code={`const [step, setStep] = useState(0)\nconst steps = ['Data Diri', 'Sekolah', 'Akademik', 'Review']\n\n{steps.map((label, i) => (\n  <div key={label} className="flex items-center flex-1 last:flex-none">\n    <div className="flex flex-col items-center gap-1">\n      <div className={\`w-8 h-8 rounded-full text-[9px] font-black flex items-center justify-center\n        \${i < step ? 'bg-[var(--color-primary)] text-white'\n        : i === step ? 'border-2 border-[var(--color-primary)] text-[var(--color-primary)]'\n        : 'border border-[var(--color-border)] text-[var(--color-text-muted)]'}\`}>\n        {i < step ? <Check /> : i + 1}\n      </div>\n      <span className="text-[7px] font-black uppercase">{label}</span>\n    </div>\n    {i < steps.length - 1 && (\n      <div className={\`h-0.5 flex-1 mx-2 mb-4 \${i < step ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}\`} />\n    )}\n  </div>\n))}`} />
+                                    } code={`const [step, setStep] = useState(0)\nconst steps = ['Data Diri', 'Sekolah', 'Akademik', 'Review']\n\n{steps.map((label, i) => (\n  <div key={label} className="flex items-center flex-1 last:flex-none">\n    <div className="flex flex-col items-center gap-1">\n      <div className={\`w-8 h-8 rounded-full text-xs font-bold flex items-center justify-center\n        \${i < step ? 'bg-[var(--color-primary)] text-white'\n        : i === step ? 'border-2 border-[var(--color-primary)] text-[var(--color-primary)]'\n        : 'border border-[var(--color-border)] text-[var(--color-text-muted)]'}\`}>\n        {i < step ? <Check className="w-4 h-4" /> : i + 1}\n      </div>\n      <span className="text-[7px] font-bold uppercase">{label}</span>\n    </div>\n    {i < steps.length - 1 && (\n      <div className={\`h-0.5 flex-1 mx-2 mb-4 \${i < step ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}\`} />\n    )}\n  </div>\n))}`} />
                                     <UIBlock title="21 · Responsive Table" children={
                                         <div className="space-y-4">
                                             <div>
-                                                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-2">Desktop — horizontal scroll</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-2">Desktop — horizontal scroll</p>
                                                 <div className="overflow-x-auto rounded-xl border border-[var(--color-border)]">
-                                                    <table className="w-full text-[10px] min-w-[400px]">
+                                                    <table className="w-full text-xs min-w-[400px]">
                                                         <thead><tr className="bg-[var(--color-surface-alt)] border-b border-[var(--color-border)]">
-                                                            {['Nama', 'Kelas', 'Nilai Rata', 'Status', 'Aksi'].map(h => <th key={h} className="p-2.5 text-left font-black text-[var(--color-text-muted)] uppercase tracking-widest text-[8px] opacity-60">{h}</th>)}
+                                                            {['Nama', 'Kelas', 'Nilai Rata', 'Status', 'Aksi'].map(h => <th key={h} className="p-2.5 text-left font-bold text-[var(--color-text-muted)] uppercase tracking-wide text-xs opacity-60">{h}</th>)}
                                                         </tr></thead>
                                                         <tbody>
                                                             {[{ n: 'Andi Setiawan', k: '6A', v: '92.4', s: 'Aktif' }, { n: 'Budi Pratama', k: '5B', v: '78.1', s: 'Pending' }].map(r => (
                                                                 <tr key={r.n} className="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors">
-                                                                    <td className="p-2.5 font-black text-[var(--color-text)]">{r.n}</td>
+                                                                    <td className="p-2.5 font-bold text-[var(--color-text)]">{r.n}</td>
                                                                     <td className="p-2.5 font-mono text-[var(--color-text-muted)]">{r.k}</td>
-                                                                    <td className="p-2.5 font-black text-[var(--color-text)]">{r.v}</td>
-                                                                    <td className="p-2.5"><span className={`px-2 py-0.5 rounded-full text-[8px] font-black ${r.s === 'Aktif' ? 'bg-emerald-500/10 text-emerald-700 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-700 border border-amber-500/20'}`}>{r.s}</span></td>
-                                                                    <td className="p-2.5"><button className="text-[9px] font-black text-[var(--color-primary)]">Edit</button></td>
+                                                                    <td className="p-2.5 font-bold text-[var(--color-text)]">{r.v}</td>
+                                                                    <td className="p-2.5"><span className={`px-2 py-0.5 rounded-full text-xs font-bold ${r.s === 'Aktif' ? 'bg-emerald-500/10 text-emerald-700 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-700 border border-amber-500/20'}`}>{r.s}</span></td>
+                                                                    <td className="p-2.5"><button className="text-xs font-bold text-[var(--color-primary)]">Edit</button></td>
                                                                 </tr>
                                                             ))}
                                                         </tbody>
@@ -3838,20 +3838,20 @@ export default function PlaygroundPage() {
                                                 </div>
                                             </div>
                                             <div>
-                                                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-2">Mobile — card per row</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 mb-2">Mobile — card per row</p>
                                                 <div className="space-y-2">
                                                     {[{ i: 'AS', n: 'Andi Setiawan', k: '6A', v: '92.4', s: 'Aktif', c: 'bg-indigo-500/10 text-indigo-600' }, { i: 'BP', n: 'Budi Pratama', k: '5B', v: '78.1', s: 'Pending', c: 'bg-emerald-500/10 text-emerald-700' }].map(r => (
                                                         <div key={r.i} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] hover:shadow-md transition-all cursor-pointer">
-                                                            <div className={`w-8 h-8 rounded-full ${r.c} text-[9px] font-black flex items-center justify-center shrink-0`}>{r.i}</div>
-                                                            <div className="flex-1 min-w-0"><p className="text-[10px] font-black text-[var(--color-text)]">{r.n}</p><p className="text-[8px] text-[var(--color-text-muted)] opacity-60">{r.k} · Nilai {r.v}</p></div>
-                                                            <span className={`px-2 py-0.5 rounded-full text-[8px] font-black shrink-0 ${r.s === 'Aktif' ? 'bg-emerald-500/10 text-emerald-700' : 'bg-amber-500/10 text-amber-700'}`}>{r.s}</span>
-                                                            <ChevronRight className="text-[var(--color-text-muted)] text-[9px] opacity-40 shrink-0" />
+                                                            <div className={`w-8 h-8 rounded-full ${r.c} text-xs font-bold flex items-center justify-center shrink-0`}>{r.i}</div>
+                                                            <div className="flex-1 min-w-0"><p className="text-xs font-bold text-[var(--color-text)]">{r.n}</p><p className="text-xs text-[var(--color-text-muted)] opacity-60">{r.k} · Nilai {r.v}</p></div>
+                                                            <span className={`px-2 py-0.5 rounded-full text-xs font-bold shrink-0 ${r.s === 'Aktif' ? 'bg-emerald-500/10 text-emerald-700' : 'bg-amber-500/10 text-amber-700'}`}>{r.s}</span>
+                                                            <ChevronRight className="w-4 h-4 text-[var(--color-text-muted)] opacity-40 shrink-0" />
                                                         </div>
                                                     ))}
                                                 </div>
                                             </div>
                                         </div>
-                                    } code={`{/* Desktop: overflow-x-auto table */}\n<div className="overflow-x-auto rounded-xl border border-[var(--color-border)]">\n  <table className="w-full text-[10px] min-w-[400px]">\n    {/* ... */}\n  </table>\n</div>\n\n{/* Mobile: card fallback (show at sm:hidden) */}\n<div className="space-y-2 sm:hidden">\n  {items.map(item => (\n    <div key={item.id} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">\n      {/* compact card */}\n    </div>\n  ))}\n</div>\n\n{/* Show table on md+ */}\n<div className="hidden md:block">\n  <table>{/* ... */}</table>\n</div>`} />
+                                    } code={`{/* Desktop: overflow-x-auto table */}\n<div className="overflow-x-auto rounded-xl border border-[var(--color-border)]">\n  <table className="w-full text-xs min-w-[400px]">\n    {/* ... */}\n  </table>\n</div>\n\n{/* Mobile: card fallback (show at sm:hidden) */}\n<div className="space-y-2 sm:hidden">\n  {items.map(item => (\n    <div key={item.id} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">\n      {/* compact card */}\n    </div>\n  ))}\n</div>\n\n{/* Show table on md+ */}\n<div className="hidden md:block">\n  <table>{/* ... */}</table>\n</div>`} />
                                     <UIBlock title="22 · Page Loading Skeleton" children={
                                         <div className="space-y-4">
                                             <div className="flex items-center justify-between">
@@ -3886,36 +3886,36 @@ export default function PlaygroundPage() {
                                                 { icon: Search, bg: 'bg-amber-500/10 text-amber-600', title: 'Tidak ditemukan', desc: 'Tidak ada siswa yang cocok dengan "kelas 99". Coba kata lain.', cta: 'Reset Filter', ctaColor: 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)]' },
                                             ].map(({ icon: Icon, bg, title, desc, cta, ctaColor }) => (
                                                 <div key={title} className="flex flex-col items-center text-center p-6 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] gap-3">
-                                                    <div className={`w-12 h-12 rounded-2xl ${bg} flex items-center justify-center`}>{Icon && <Icon className="text-lg" />}</div>
-                                                    <div><h4 className="text-[12px] font-black text-[var(--color-text)] mb-1">{title}</h4><p className="text-[9px] text-[var(--color-text-muted)] leading-relaxed opacity-70">{desc}</p></div>
-                                                    <button className={`px-4 py-2 rounded-xl text-[9px] font-black ${ctaColor} hover:opacity-90 active:scale-95 transition-all`}>{cta}</button>
+                                                    <div className={`w-12 h-12 rounded-2xl ${bg} flex items-center justify-center`}>{Icon && <Icon className="w-5 h-5" />}</div>
+                                                    <div><h4 className="text-xs font-bold text-[var(--color-text)] mb-1">{title}</h4><p className="text-xs text-[var(--color-text-muted)] leading-relaxed opacity-70">{desc}</p></div>
+                                                    <button className={`px-4 py-2 rounded-xl text-xs font-bold ${ctaColor} hover:opacity-90 active:scale-95 transition-all`}>{cta}</button>
                                                 </div>
                                             ))}
                                         </div>
-                                    } code={`<div className="flex flex-col items-center text-center p-12 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] gap-4">\n  <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center">\n    <ClipboardList className="text-2xl" />\n  </div>\n  <div>\n    <h3 className="text-[16px] font-black text-[var(--color-text)] mb-2">Belum ada laporan</h3>\n    <p className="text-[11px] text-[var(--color-text-muted)] max-w-xs leading-relaxed">Buat laporan pertama untuk mulai melacak perkembangan siswa.</p>\n  </div>\n  <button className="px-6 h-10 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black">+ Buat Laporan</button>\n</div>`} />
+                                    } code={`<div className="flex flex-col items-center text-center p-12 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] gap-4">\n  <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center">\n    <ClipboardList className="w-6 h-6" />\n  </div>\n  <div>\n    <h3 className="text-[16px] font-bold text-[var(--color-text)] mb-2">Belum ada laporan</h3>\n    <p className="text-xs text-[var(--color-text-muted)] max-w-xs leading-relaxed">Buat laporan pertama untuk mulai melacak perkembangan siswa.</p>\n  </div>\n  <button className="px-6 h-10 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold">+ Buat Laporan</button>\n</div>`} />
                                     <UIBlock title="24 · Error Pages" children={
                                         <div className="grid grid-cols-3 gap-3">
                                             {[{ code: '404', msg: 'Halaman tidak ditemukan', color: 'text-[var(--color-primary)]' }, { code: '403', msg: 'Akses ditolak', color: 'text-amber-500' }, { code: '500', msg: 'Server error', color: 'text-rose-500' }].map(({ code, msg, color }) => (
                                                 <div key={code} className="p-4 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex flex-col items-center text-center gap-2">
-                                                    <div className={`text-2xl font-black font-heading ${color}`}>{code}</div>
-                                                    <p className="text-[8px] font-black text-[var(--color-text)]">{msg}</p>
-                                                    <button className={`text-[8px] font-black ${color} hover:underline`}>← Kembali</button>
+                                                    <div className={`text-2xl font-bold font-heading ${color}`}>{code}</div>
+                                                    <p className="text-xs font-bold text-[var(--color-text)]">{msg}</p>
+                                                    <button className={`text-xs font-bold ${color} hover:underline`}>← Kembali</button>
                                                 </div>
                                             ))}
                                         </div>
-                                    } code={`// 404 Page\nexport default function NotFoundPage() {\n  const navigate = useNavigate()\n  return (\n    <div className="min-h-screen flex items-center justify-center">\n      <div className="text-center space-y-4">\n        <h1 className="text-[80px] font-black font-heading text-[var(--color-primary)] leading-none">404</h1>\n        <p className="text-[16px] font-black text-[var(--color-text)]">Halaman tidak ditemukan</p>\n        <p className="text-[11px] text-[var(--color-text-muted)]">URL yang kamu akses tidak ada atau sudah dipindahkan.</p>\n        <div className="flex gap-3 justify-center">\n          <button onClick={() => navigate(-1)} className="px-5 h-10 rounded-xl border border-[var(--color-border)] text-[10px] font-black">← Kembali</button>\n          <button onClick={() => navigate('/')} className="px-5 h-10 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black">Dashboard</button>\n        </div>\n      </div>\n    </div>\n  )\n}`} />
+                                    } code={`// 404 Page\nexport default function NotFoundPage() {\n  const navigate = useNavigate()\n  return (\n    <div className="min-h-screen flex items-center justify-center">\n      <div className="text-center space-y-4">\n        <h1 className="text-[80px] font-bold font-heading text-[var(--color-primary)] leading-none">404</h1>\n        <p className="text-[16px] font-bold text-[var(--color-text)]">Halaman tidak ditemukan</p>\n        <p className="text-xs text-[var(--color-text-muted)]">URL yang kamu akses tidak ada atau sudah dipindahkan.</p>\n        <div className="flex gap-3 justify-center">\n          <button onClick={() => navigate(-1)} className="px-5 h-10 rounded-xl border border-[var(--color-border)] text-xs font-bold">← Kembali</button>\n          <button onClick={() => navigate('/')} className="px-5 h-10 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold">Dashboard</button>\n        </div>\n      </div>\n    </div>\n  )\n}`} />
                                     <UIBlock title="25 · Print / PDF Layout" children={
                                         <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4">
                                             <div className="flex items-start justify-between border-b border-gray-200 pb-3">
-                                                <div className="space-y-0.5"><p className="text-[10px] font-black text-gray-800">SD NEGERI 01 BANYUWANGI</p><p className="text-[8px] text-gray-500">Jl. Veteran No.1 · (0333) 123456 · sdn01bwi@disdik.go.id</p><p className="text-[8px] text-gray-400">Akreditasi A · NPSN: 20540001</p></div>
-                                                <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shrink-0"><Gauge className="text-white text-sm" /></div>
+                                                <div className="space-y-0.5"><p className="text-xs font-bold text-gray-800">SD NEGERI 01 BANYUWANGI</p><p className="text-xs text-gray-500">Jl. Veteran No.1 · (0333) 123456 · sdn01bwi@disdik.go.id</p><p className="text-xs text-gray-400">Akreditasi A · NPSN: 20540001</p></div>
+                                                <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shrink-0"><Gauge className="w-4 h-4 text-white" /></div>
                                             </div>
-                                            <p className="text-[9px] font-black text-gray-700 text-center uppercase tracking-widest">LAPORAN NILAI SEMESTER 1 · TA 2024/2025</p>
-                                            <table className="w-full text-[8px] border-collapse">
-                                                <thead><tr className="bg-gray-100"><th className="border border-gray-200 p-1.5 text-left text-gray-600">Mata Pelajaran</th><th className="border border-gray-200 p-1.5 text-gray-600">UTS</th><th className="border border-gray-200 p-1.5 text-gray-600">UAS</th><th className="border border-gray-200 p-1.5 text-gray-600 font-black">Akhir</th></tr></thead>
+                                            <p className="text-xs font-bold text-gray-700 text-center uppercase tracking-wide">LAPORAN NILAI SEMESTER 1 · TA 2024/2025</p>
+                                            <table className="w-full text-xs border-collapse">
+                                                <thead><tr className="bg-gray-100"><th className="border border-gray-200 p-1.5 text-left text-gray-600">Mata Pelajaran</th><th className="border border-gray-200 p-1.5 text-gray-600">UTS</th><th className="border border-gray-200 p-1.5 text-gray-600">UAS</th><th className="border border-gray-200 p-1.5 text-gray-600 font-bold">Akhir</th></tr></thead>
                                                 <tbody>
                                                     {[['Matematika', '85', '90', '88'], ['B. Indonesia', '88', '92', '90'], ['IPA', '82', '87', '85']].map(([m, ...v]) => (
-                                                        <tr key={m}>{[m, ...v].map((c, i) => <td key={i} className={`border border-gray-200 p-1.5 ${i === 3 ? 'font-black text-gray-800' : 'text-gray-600'}`}>{c}</td>)}</tr>
+                                                        <tr key={m}>{[m, ...v].map((c, i) => <td key={i} className={`border border-gray-200 p-1.5 ${i === 3 ? 'font-bold text-gray-800' : 'text-gray-600'}`}>{c}</td>)}</tr>
                                                     ))}
                                                 </tbody>
                                             </table>
@@ -3923,7 +3923,7 @@ export default function PlaygroundPage() {
                                                 {['Wali Kelas', 'Kepala Sekolah'].map(r => <div key={r} className="text-center"><div className="h-10 border-b border-gray-300 mb-1" /><p className="text-[7px] text-gray-500">{r}</p></div>)}
                                             </div>
                                         </div>
-                                    } code={`// Print-optimized — tambahkan ke CSS global:\n// @media print {\n//   .no-print { display: none; }\n//   .print-only { display: block; }\n// }\n\n<div className="bg-white p-8 print:shadow-none">\n  {/* Header sekolah */}\n  <div className="flex justify-between border-b pb-4 mb-6">\n    <div>\n      <h1 className="text-sm font-black">SD NEGERI 01 BANYUWANGI</h1>\n      <p className="text-xs text-gray-500">Jl. Veteran No.1</p>\n    </div>\n    <img src={logo} className="w-12 h-12" />\n  </div>\n  {/* Tabel nilai */}\n  {/* Tanda tangan */}\n</div>`} />
+                                    } code={`// Print-optimized — tambahkan ke CSS global:\n// @media print {\n//   .no-print { display: none; }\n//   .print-only { display: block; }\n// }\n\n<div className="bg-white p-8 print:shadow-none">\n  {/* Header sekolah */}\n  <div className="flex justify-between border-b pb-4 mb-6">\n    <div>\n      <h1 className="text-sm font-bold">SD NEGERI 01 BANYUWANGI</h1>\n      <p className="text-xs text-gray-500">Jl. Veteran No.1</p>\n    </div>\n    <img src={logo} className="w-12 h-12" />\n  </div>\n  {/* Tabel nilai */}\n  {/* Tanda tangan */}\n</div>`} />
                                 </div>
                             </section></LazySection>
 
@@ -3938,11 +3938,11 @@ export default function PlaygroundPage() {
                                     ].map(({ color, icon: Icon, title, lines }) => (
                                         <div key={title} className="p-5 rounded-2xl bg-slate-900 border border-white/5 space-y-3">
                                             <div className={`flex items-center gap-2 ${color}`}>
-                                                {Icon && <Icon className="text-xs" />}
-                                                <span className="text-[10px] font-black uppercase tracking-widest">{title}</span>
+                                                {Icon && <Icon className="w-4 h-4" />}
+                                                <span className="text-xs font-bold uppercase tracking-wide">{title}</span>
                                             </div>
                                             <div className="space-y-1">
-                                                {lines.map(l => <p key={l} className="text-[10px] font-mono text-sky-300">{l}</p>)}
+                                                {lines.map(l => <p key={l} className="text-xs font-mono text-sky-300">{l}</p>)}
                                             </div>
                                         </div>
                                     ))}
@@ -3975,13 +3975,13 @@ export default function PlaygroundPage() {
                                 disabled={activeIdx === 0}
                                 className="w-7 h-7 rounded-xl flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-primary)] disabled:opacity-25 disabled:cursor-not-allowed transition-all"
                             >
-                                <ChevronDown className="text-[8px] rotate-180" />
+                                <ChevronDown className="w-4 h-4 rotate-180" />
                             </button>
 
                             {/* Label + counter */}
                             <div className="px-2 flex items-center gap-2 min-w-0">
-                                <span className="text-[10px] font-black text-[var(--color-text)] truncate max-w-[120px]">{activeLabel}</span>
-                                <span className="text-[8px] font-black text-[var(--color-text-muted)] opacity-50 shrink-0">{activeIdx + 1}/{sections.length}</span>
+                                <span className="text-xs font-bold text-[var(--color-text)] truncate max-w-[120px]">{activeLabel}</span>
+                                <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-50 shrink-0">{activeIdx + 1}/{sections.length}</span>
                             </div>
 
                             {/* Next */}
@@ -3990,7 +3990,7 @@ export default function PlaygroundPage() {
                                 disabled={activeIdx === sections.length - 1}
                                 className="w-7 h-7 rounded-xl flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-primary)] disabled:opacity-25 disabled:cursor-not-allowed transition-all"
                             >
-                                <ChevronDown className="text-[8px]" />
+                                <ChevronDown className="w-4 h-4" />
                             </button>
                         </div>
                     )
@@ -4001,26 +4001,26 @@ export default function PlaygroundPage() {
                     <div className="space-y-6">
                         <div className="p-4 bg-amber-500/5 rounded-2xl border border-amber-500/10 flex gap-4">
                             <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-600 shrink-0">
-                                <TriangleAlert />
+                                <TriangleAlert className="w-4 h-4" />
                             </div>
                             <div className="space-y-1">
-                                <h5 className="text-xs font-black text-amber-700 uppercase tracking-widest">Unsaved Changes Detected</h5>
+                                <h5 className="text-xs font-bold text-amber-700 uppercase tracking-wide">Unsaved Changes Detected</h5>
                                 <p className="text-xs text-amber-600/80 font-medium leading-relaxed">You are about to modify the global theme preference. This will affect all connected users across the primary cluster.</p>
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest pl-1">Target Cluster</label>
-                                <div className="h-10 px-4 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl flex items-center text-[11px] font-bold text-[var(--color-text-muted)]">MAIN_PRODUCTION_01</div>
+                                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide pl-1">Target Cluster</label>
+                                <div className="h-10 px-4 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl flex items-center text-xs font-bold text-[var(--color-text-muted)]">MAIN_PRODUCTION_01</div>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest pl-1">Risk Level</label>
-                                <div className="h-10 px-4 bg-rose-500/10 border border-rose-500/20 rounded-xl flex items-center text-[10px] font-black text-rose-600 uppercase tracking-widest">CRITICAL_HIGH</div>
+                                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide pl-1">Risk Level</label>
+                                <div className="h-10 px-4 bg-rose-500/10 border border-rose-500/20 rounded-xl flex items-center text-xs font-bold text-rose-600 uppercase tracking-wide">CRITICAL_HIGH</div>
                             </div>
                         </div>
                         <div className="pt-4 flex justify-end gap-3 border-t border-[var(--color-border)]">
-                            <button onClick={() => setIsDemoModalOpen(false)} className="px-6 h-11 rounded-xl text-[11px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">ABORT MISSION</button>
-                            <button onClick={() => { setIsDemoModalOpen(false); addToast('Changes deployed successfully!', 'success') }} className="px-6 h-11 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black shadow-lg shadow-[var(--color-primary)]/20 hover:scale-105 transition-all">DEPLOY CHANGES</button>
+                            <button onClick={() => setIsDemoModalOpen(false)} className="px-6 h-11 rounded-xl text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">ABORT MISSION</button>
+                            <button onClick={() => { setIsDemoModalOpen(false); addToast('Changes deployed successfully!', 'success') }} className="px-6 h-11 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold shadow-lg shadow-[var(--color-primary)]/20 hover:scale-105 transition-all">DEPLOY CHANGES</button>
                         </div>
                     </div>
                 </Modal>

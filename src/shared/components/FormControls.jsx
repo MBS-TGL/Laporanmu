@@ -45,7 +45,7 @@ const Select = forwardRef(function Select({ className = '', error, ...props }, r
 const FieldLabel = ({ className = '', children, htmlFor, ...props }) => (
   <label
     htmlFor={htmlFor}
-    className={`text-xs font-semibold uppercase tracking-wide text-text-muted mb-1.5 flex items-center gap-1.5 ${className}`}
+    className={`text-xs font-semibold uppercase tracking-wide leading-4 text-text-muted mb-1.5 flex items-center gap-1.5 ${className}`}
     {...props}
   >
     {children}

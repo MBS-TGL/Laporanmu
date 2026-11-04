@@ -27,14 +27,14 @@ export default function DormsAuditModal({
                     <button
                         type="button"
                         onClick={onClose}
-                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition"
+                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition"
                     >
                         {t('dorms.audit.cancel')}
                     </button>
                     <button
                         type="submit"
                         form="audit-form"
-                        className="h-10 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition flex items-center justify-center gap-2"
+                        className="h-10 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition flex items-center justify-center gap-2"
                     >
                         <Check className="w-3.5 h-3.5" />
                         {t('dorms.audit.save')}
@@ -44,7 +44,7 @@ export default function DormsAuditModal({
         >
             <form id="audit-form" onSubmit={onSave} className="space-y-4.5">
                 <div>
-                    <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.audit.selectRoom')}</label>
+                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] block mb-1.5">{t('dorms.audit.selectRoom')}</label>
                     <div className="w-full">
                         <RichSelect
                             value={newAudit.room}
@@ -58,7 +58,7 @@ export default function DormsAuditModal({
 
                 <div className="grid grid-cols-3 gap-3">
                     <div>
-                        <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.audit.labelKerapian')}</label>
+                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] block mb-1.5">{t('dorms.audit.labelKerapian')}</label>
                         <input
                             type="number"
                             required
@@ -69,11 +69,11 @@ export default function DormsAuditModal({
                                 ...prev,
                                 aspects: { ...prev.aspects, kerapian: Number(e.target.value) }
                              }))}
-                            className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition"
+                            className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold focus:outline-none focus:border-[var(--color-primary)] transition"
                         />
                     </div>
                     <div>
-                        <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.audit.labelKebersihan')}</label>
+                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] block mb-1.5">{t('dorms.audit.labelKebersihan')}</label>
                         <input
                             type="number"
                             required
@@ -84,11 +84,11 @@ export default function DormsAuditModal({
                                 ...prev,
                                 aspects: { ...prev.aspects, kebersihan: Number(e.target.value) }
                              }))}
-                            className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition"
+                            className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold focus:outline-none focus:border-[var(--color-primary)] transition"
                         />
                     </div>
                     <div>
-                        <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.audit.labelKeharuman')}</label>
+                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] block mb-1.5">{t('dorms.audit.labelKeharuman')}</label>
                         <input
                             type="number"
                             required
@@ -99,19 +99,19 @@ export default function DormsAuditModal({
                                 ...prev,
                                 aspects: { ...prev.aspects, keharuman: Number(e.target.value) }
                              }))}
-                            className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition"
+                            className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold focus:outline-none focus:border-[var(--color-primary)] transition"
                         />
                     </div>
                 </div>
 
                 <div>
-                    <label className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)] block mb-1.5">{t('dorms.audit.labelNotes')}</label>
+                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] block mb-1.5">{t('dorms.audit.labelNotes')}</label>
                     <textarea
                         value={newAudit.notes}
                         onChange={(e) => setNewAudit(prev => ({ ...prev, notes: e.target.value }))}
                         placeholder={t('dorms.audit.placeholderNotes')}
                         rows="3"
-                        className="w-full p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition resize-none"
+                        className="w-full p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold focus:outline-none focus:border-[var(--color-primary)] transition resize-none"
                     />
                 </div>
             </form>

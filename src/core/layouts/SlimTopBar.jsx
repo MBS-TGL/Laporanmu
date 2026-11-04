@@ -94,7 +94,7 @@ function SearchResultItem({ item, isHighlighted, onClick }) {
                 <p className="text-xs text-text-muted leading-tight mt-0.5 truncate">{item.desc}</p>
             </div>
             {item._groupLabel && (
-                <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider shrink-0 px-1.5 py-0.5 rounded-md bg-surface-alt">
+                <span className="text-xs font-bold text-text-muted uppercase tracking-wider shrink-0 px-1.5 py-0.5 rounded-md bg-surface-alt">
                     {item._groupLabel}
                 </span>
             )}
@@ -259,7 +259,7 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                         ? (sidebarCollapsed ? 'lg:pr-[56px]' : 'lg:pr-[250px]')
                         : (sidebarCollapsed ? 'lg:pl-[56px]' : 'lg:pl-[250px]')}`}
             >
-                <div className="flex items-center justify-between w-full h-full px-3 sm:px-4 lg:px-5 gap-2 sm:gap-4">
+                <div className="flex items-center justify-between w-full h-full px-3 sm:px-4 lg:px-4 gap-2 sm:gap-4">
 
                     {/* Left + Search Group to align search left next to the navigation controls */}
                     <div className={`flex items-center gap-2 sm:gap-3 min-w-0 transition-all duration-200 ${searchFocused ? 'flex-1' : 'flex-1 sm:flex-1'}`}>
@@ -417,7 +417,7 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                                             type="button"
                                         >
                                             <div className="flex items-center gap-2.5">
-                                                <span className={`w-6 h-4.5 flex items-center justify-center rounded text-[10px] font-bold leading-none select-none shrink-0 transition-colors
+                                                <span className={`w-6 h-4.5 flex items-center justify-center rounded text-xs font-bold leading-none select-none shrink-0 transition-colors
                                                     ${language === item.code
                                                         ? 'bg-primary text-white'
                                                         : 'bg-surface-alt border border-border text-text-muted'}`}>
@@ -549,7 +549,7 @@ function NotifBadge({ count }) {
     const { tNum } = useLanguage()
     if (!count || count <= 0) return null
     return (
-        <span className="absolute -top-0.5 -end-0.5 w-4 h-4 bg-danger rounded-full text-[10px] font-bold text-white flex items-center justify-center border border-surface">
+        <span className="absolute -top-0.5 -end-0.5 w-4 h-4 bg-danger rounded-full text-xs font-bold text-white flex items-center justify-center border border-surface">
             {count > 9 ? tNum("9+") : tNum(count)}
         </span>
     )
@@ -580,7 +580,7 @@ function NotifItem({ item, onDismiss, onNavigate }) {
                     {item.action && (
                         <button
                             onClick={() => onNavigate(item.action.route)}
-                            className={`text-xs font-semibold uppercase tracking-widest flex items-center gap-1 hover:underline ${s.text}`}
+                            className={`text-xs font-semibold uppercase tracking-wide flex items-center gap-1 hover:underline ${s.text}`}
                         >
                             {item.action.label} <ArrowRight className="w-3 h-3" strokeWidth={2} />
                         </button>
@@ -588,7 +588,7 @@ function NotifItem({ item, onDismiss, onNavigate }) {
                     {!item.action && item.action_url && (
                         <button
                             onClick={() => onNavigate(item.action_url)}
-                            className={`text-xs font-semibold uppercase tracking-widest flex items-center gap-1 hover:underline ${s.text}`}
+                            className={`text-xs font-semibold uppercase tracking-wide flex items-center gap-1 hover:underline ${s.text}`}
                         >
                             {t('ui.detail')} <ArrowRight className="w-3 h-3" strokeWidth={2} />
                         </button>

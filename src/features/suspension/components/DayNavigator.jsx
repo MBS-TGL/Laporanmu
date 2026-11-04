@@ -25,10 +25,10 @@ function DayNavigator({ days, date, onChange, filledSet }) {
           <ChevronLeft className="w-5 h-5" />
         </button>
         <div className="flex-1 text-center px-1">
-          <p className="text-base font-black text-[var(--color-text)] leading-tight">
+          <p className="text-base font-bold text-[var(--color-text)] leading-tight">
             {formatTanggalPanjang(date)}
           </p>
-          <p className="text-[11px] text-[var(--color-text-muted)] font-medium">
+          <p className="text-xs text-[var(--color-text-muted)] font-medium">
             Hari {idx + 1} dari {days.length}
           </p>
         </div>
@@ -62,10 +62,10 @@ function DayNavigator({ days, date, onChange, filledSet }) {
                     : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)]'
               }`}
             >
-              <span className={`block text-[9px] font-black uppercase ${active ? 'text-white/80' : 'text-[var(--color-text-muted)]'}`}>
+              <span className={`block text-xs font-bold uppercase ${active ? 'text-white/80' : 'text-[var(--color-text-muted)]'}`}>
                 {DOW_SHORT[dayOfWeek(d)]}
               </span>
-              <span className="block text-sm font-black tabular-nums">{d.slice(8, 10)}</span>
+              <span className="block text-sm font-bold tabular-nums">{d.slice(8, 10)}</span>
               {filled && !active && <span className="block w-1.5 h-1.5 rounded-full bg-emerald-500 mx-auto mt-0.5" />}
             </button>
           )

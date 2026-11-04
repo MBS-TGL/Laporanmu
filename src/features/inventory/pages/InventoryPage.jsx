@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, memo, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import {
-    Armchair, Box, Boxes, Brush, Calendar, Check, ClipboardList, Download, GripVertical,
+    Armchair, Box, Boxes, Brush, Calendar, CatIcon, Check, ClipboardList, Download, GripVertical,
     HeartPulse, Info, Keyboard, Landmark, Layers, LoaderCircle, PackageOpen, Pen, Plug,
     Plus, Save, Search, SquareCheck, SquarePen, Table, Tag, Trash2, TriangleAlert,
     Utensils, X
@@ -34,10 +34,10 @@ const DebouncedSearchInput = memo(({ value, onSearch, placeholder }) => {
     return (
         <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors">
-                <Search className="text-xs" />
+                <Search className="w-4 h-4" />
             </div>
             <input ref={null} type="text" value={local} onChange={e => setLocal(e.target.value)} placeholder={placeholder}
-                className="w-full h-9 pl-10 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-bold focus:outline-none focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10 transition-all placeholder:font-normal placeholder:opacity-40" />
+                className="w-full h-9 pl-10 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold focus:outline-none focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10 transition-all placeholder:font-normal placeholder:opacity-40" />
         </div>
     )
 })
@@ -56,9 +56,9 @@ function ConditionBadge({ item, size = 'sm' }) {
         poor: 'bg-red-500/10 text-red-600 border-red-500/20'
     }
     const labels = { excellent: 'Sangat Baik', good: 'Baik', fair: 'Kurang', poor: 'Buruk' }
-    if (pct === null) return <span className="text-[9px] text-[var(--color-text-muted)]">—</span>
+    if (pct === null) return <span className="text-xs text-[var(--color-text-muted)]">—</span>
     return (
-        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border text-[9px] font-black ${colors[level]} ${size === 'lg' ? 'text-[10px] px-2.5 py-1' : ''}`}>
+        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border text-xs font-bold ${colors[level]} ${size === 'lg' ? 'text-xs px-2.5 py-1' : ''}`}>
             <span className={`w-1.5 h-1.5 rounded-full ${level === 'excellent' ? 'bg-emerald-500' : level === 'good' ? 'bg-green-500' : level === 'fair' ? 'bg-amber-500' : 'bg-red-500'}`} />
             {pct}% — {labels[level]}
         </span>
@@ -81,11 +81,11 @@ function CategoryChip({ cat, active, count, onClick }) {
     }
     return (
         <button onClick={onClick}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-black transition-all shrink-0 border ${active ? `${colorMap[cat.color]} border-transparent shadow-sm` : `${colorMap[cat.color]} border-transparent`}`}>
-            <Icon className="text-[9px]" />
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 border ${active ? `${colorMap[cat.color]} border-transparent shadow-sm` : `${colorMap[cat.color]} border-transparent`}`}>
+            <Icon className="w-4 h-4" />
             <span>{cat.label}</span>
             {count !== undefined && (
-                <span className={`ml-0.5 px-1.5 py-0.5 rounded-md text-[8px] font-black ${active ? 'bg-white/20' : 'bg-black/5'}`}>{count}</span>
+                <span className={`ml-0.5 px-1.5 py-0.5 rounded-md text-xs font-bold ${active ? 'bg-white/20' : 'bg-black/5'}`}>{count}</span>
             )}
         </button>
     )
@@ -101,21 +101,21 @@ function BulkActionBar({ count, onDelete, onExport, onClear, canEdit }) {
             <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-[var(--color-text)] text-white shadow-xl border border-white/10">
                 <div className="flex items-center gap-2">
                     <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center">
-                        <SquareCheck className="text-xs" />
+                        <SquareCheck className="w-4 h-4" />
                     </div>
-                    <span className="text-[11px] font-black">{count} dipilih</span>
+                    <span className="text-xs font-bold">{count} dipilih</span>
                 </div>
                 <div className="w-px h-5 bg-white/20" />
-                <button onClick={onExport} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] font-bold transition-all">
-                    <Download className="text-[9px]" /> Export
+                <button onClick={onExport} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold transition-all">
+                    <Download className="w-4 h-4" /> Export
                 </button>
                 {canEdit && (
-                    <button onClick={onDelete} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/80 hover:bg-red-500 text-[10px] font-bold transition-all">
-                        <Trash2 className="text-[9px]" /> Hapus
+                    <button onClick={onDelete} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/80 hover:bg-red-500 text-xs font-bold transition-all">
+                        <Trash2 className="w-4 h-4" /> Hapus
                     </button>
                 )}
-                <button onClick={onClear} className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-white/10 text-[10px] font-bold transition-all">
-                    <X className="text-[9px]" />
+                <button onClick={onClear} className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-white/10 text-xs font-bold transition-all">
+                    <X className="w-4 h-4" />
                 </button>
             </div>
         </div>
@@ -152,11 +152,11 @@ function ItemFormModal({ isOpen, onClose, onSave, editingItem, submitting, formD
             size="md" mobileVariant="bottom-sheet"
             footer={
                 <div className="flex items-center w-full gap-3">
-                    <button onClick={onClose} className="h-10 px-5 rounded-xl border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
+                    <button onClick={onClose} className="h-10 px-5 rounded-xl border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
                     <div className="flex-1" />
                     <button onClick={handleSubmit} disabled={submitting || !form.item_name?.trim()}
-                        className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center gap-2 disabled:opacity-50">
-                        {submitting ? <LoaderCircle className="animate-spin text-xs" /> : <Save className="text-xs" />}
+                        className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center gap-2 disabled:opacity-50">
+                        {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                         {editingItem ? 'Perbarui' : 'Simpan'}
                     </button>
                 </div>
@@ -164,36 +164,36 @@ function ItemFormModal({ isOpen, onClose, onSave, editingItem, submitting, formD
             <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Name */}
                 <div>
-                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Nama Item *</label>
+                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Nama Item *</label>
                     <input type="text" value={form.item_name || ''} onChange={e => set('item_name', e.target.value)}
                         placeholder="Contoh: Meja Belajar Lipat, Kipas Angin Dinding..."
-                        className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition" required />
+                        className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold focus:outline-none focus:border-[var(--color-primary)] transition" required />
                     {form.item_name && (
                         <div className="flex items-center gap-1.5 mt-1.5">
-                            <Tag className="text-[8px] text-[var(--color-text-muted)]" />
-                            <span className="text-[9px] text-[var(--color-text-muted)]">Kategori: <span className="font-black">{CATEGORIES.find(c => c.id === categorizeItem(form.item_name))?.label || 'Lainnya'}</span></span>
+                            <Tag className="w-4 h-4 text-[var(--color-text-muted)]" />
+                            <span className="text-xs text-[var(--color-text-muted)]">Kategori: <span className="font-bold">{CATEGORIES.find(c => c.id === categorizeItem(form.item_name))?.label || 'Lainnya'}</span></span>
                         </div>
                     )}
                 </div>
 
                 {/* Quantity Grid */}
                 <div>
-                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Kuantitas & Kondisi</label>
+                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-2">Kuantitas & Kondisi</label>
                     <div className="grid grid-cols-3 gap-3">
                         <div className="relative">
                             <input type="number" min="0" value={form.total_quantity || ''} onChange={e => set('total_quantity', e.target.value)}
-                                className="w-full h-12 px-3 pt-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[14px] font-black text-center focus:outline-none focus:border-[var(--color-primary)] transition peer" placeholder=" " />
-                            <label className="absolute left-3 top-1.5 text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] peer-placeholder-shown:opacity-0 peer-focus:opacity-100 transition-opacity">Total</label>
+                                className="w-full h-12 px-3 pt-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[14px] font-bold text-center focus:outline-none focus:border-[var(--color-primary)] transition peer" placeholder=" " />
+                            <label className="absolute left-3 top-1.5 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] peer-placeholder-shown:opacity-0 peer-focus:opacity-100 transition-opacity">Total</label>
                         </div>
                         <div className="relative">
                             <input type="number" min="0" value={form.good_condition_count || ''} onChange={e => set('good_condition_count', e.target.value)}
-                                className="w-full h-12 px-3 pt-5 rounded-xl border border-emerald-500/30 bg-emerald-500/5 text-[14px] font-black text-center focus:outline-none focus:border-emerald-500 transition peer" placeholder=" " />
-                            <label className="absolute left-3 top-1.5 text-[8px] font-black uppercase tracking-widest text-emerald-500 peer-placeholder-shown:opacity-0 peer-focus:opacity-100 transition-opacity">Baik</label>
+                                className="w-full h-12 px-3 pt-5 rounded-xl border border-emerald-500/30 bg-emerald-500/5 text-[14px] font-bold text-center focus:outline-none focus:border-emerald-500 transition peer" placeholder=" " />
+                            <label className="absolute left-3 top-1.5 text-xs font-bold uppercase tracking-wide text-emerald-500 peer-placeholder-shown:opacity-0 peer-focus:opacity-100 transition-opacity">Baik</label>
                         </div>
                         <div className="relative">
                             <input type="number" min="0" value={form.damaged_condition_count || ''} onChange={e => set('damaged_condition_count', e.target.value)}
-                                className="w-full h-12 px-3 pt-5 rounded-xl border border-red-500/30 bg-red-500/5 text-[14px] font-black text-center focus:outline-none focus:border-red-500 transition peer" placeholder=" " />
-                            <label className="absolute left-3 top-1.5 text-[8px] font-black uppercase tracking-widest text-red-500 peer-placeholder-shown:opacity-0 peer-focus:opacity-100 transition-opacity">Rusak</label>
+                                className="w-full h-12 px-3 pt-5 rounded-xl border border-red-500/30 bg-red-500/5 text-[14px] font-bold text-center focus:outline-none focus:border-red-500 transition peer" placeholder=" " />
+                            <label className="absolute left-3 top-1.5 text-xs font-bold uppercase tracking-wide text-red-500 peer-placeholder-shown:opacity-0 peer-focus:opacity-100 transition-opacity">Rusak</label>
                         </div>
                     </div>
                     {/* Health Bar */}
@@ -201,19 +201,19 @@ function ItemFormModal({ isOpen, onClose, onSave, editingItem, submitting, formD
                         <div className="mt-3 p-3 rounded-xl bg-[var(--color-surface-alt)]/50 border border-[var(--color-border)]/50">
                             <div className="flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-1.5">
-                                    <HeartPulse className="text-[9px] text-[var(--color-text-muted)]" />
-                                    <span className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-wider">Kondisi</span>
+                                    <HeartPulse className="w-4 h-4 text-[var(--color-text-muted)]" />
+                                    <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Kondisi</span>
                                 </div>
-                                <span className="text-[11px] font-black">{pct}%</span>
+                                <span className="text-xs font-bold">{pct}%</span>
                             </div>
                             <div className="h-2 rounded-full bg-[var(--color-border)] overflow-hidden flex">
                                 <div className="h-full bg-emerald-500 transition-all" style={{ width: `${total > 0 ? (good / total) * 100 : 0}%` }} />
                                 <div className="h-full bg-red-500 transition-all" style={{ width: `${total > 0 ? (damaged / total) * 100 : 0}%` }} />
                             </div>
                             <div className="flex items-center justify-between mt-1.5">
-                                <span className="text-[8px] font-bold text-emerald-600">Baik: {good}</span>
-                                {unaccounted !== 0 && <span className="text-[8px] font-bold text-amber-600">Terkonfirmasi: {good + damaged}/{total}</span>}
-                                <span className="text-[8px] font-bold text-red-600">Rusak: {damaged}</span>
+                                <span className="text-xs font-bold text-emerald-600">Baik: {good}</span>
+                                {unaccounted !== 0 && <span className="text-xs font-bold text-amber-600">Terkonfirmasi: {good + damaged}/{total}</span>}
+                                <span className="text-xs font-bold text-red-600">Rusak: {damaged}</span>
                             </div>
                         </div>
                     )}
@@ -221,10 +221,10 @@ function ItemFormModal({ isOpen, onClose, onSave, editingItem, submitting, formD
 
                 {/* Notes */}
                 <div>
-                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Catatan</label>
+                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Catatan</label>
                     <textarea value={form.notes || ''} onChange={e => set('notes', e.target.value)} rows={3}
                         placeholder="Kondisi, lokasi spesifik, atau catatan lainnya..."
-                        className="w-full px-3 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition resize-none" />
+                        className="w-full px-3 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold focus:outline-none focus:border-[var(--color-primary)] transition resize-none" />
                 </div>
             </form>
         </Modal>
@@ -256,15 +256,15 @@ function DetailDrawer({ item, isOpen, onClose, onEdit, canEdit }) {
                 <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
                     <div className="flex items-center gap-3 min-w-0">
                         <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 flex items-center justify-center shrink-0">
-                            <CatIcon className="text-[var(--color-primary)]" />
+                            <CatIcon className="w-4 h-4 text-[var(--color-primary)]" />
                         </div>
                         <div className="min-w-0">
-                            <h2 className="text-[13px] font-black text-[var(--color-text)] truncate">{item.item_name}</h2>
-                            <p className="text-[9px] text-[var(--color-text-muted)] font-bold">{cat?.label || 'Lainnya'}</p>
+                            <h2 className="text-sm font-bold text-[var(--color-text)] truncate">{item.item_name}</h2>
+                            <p className="text-xs text-[var(--color-text-muted)] font-bold">{cat?.label || 'Lainnya'}</p>
                         </div>
                     </div>
                     <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center transition-all">
-                        <X className="text-sm text-[var(--color-text-muted)]" />
+                        <X className="w-4 h-4 text-[var(--color-text-muted)]" />
                     </button>
                 </div>
 
@@ -273,7 +273,7 @@ function DetailDrawer({ item, isOpen, onClose, onEdit, canEdit }) {
                     {/* Condition Card */}
                     <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/30">
                         <div className="flex items-center justify-between mb-3">
-                            <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Kondisi Saat Ini</span>
+                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Kondisi Saat Ini</span>
                             {pct !== null && <ConditionBadge item={item} size="lg" />}
                         </div>
                         {pct !== null ? (
@@ -284,42 +284,42 @@ function DetailDrawer({ item, isOpen, onClose, onEdit, canEdit }) {
                                 </div>
                                 <div className="grid grid-cols-3 gap-3">
                                     <div className="text-center p-2 rounded-xl bg-white/50">
-                                        <p className="text-[18px] font-black text-[var(--color-text)]">{item.total_quantity || 0}</p>
-                                        <p className="text-[8px] font-black text-[var(--color-text-muted)] uppercase">Total</p>
+                                        <p className="text-[18px] font-bold text-[var(--color-text)]">{item.total_quantity || 0}</p>
+                                        <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase">Total</p>
                                     </div>
                                     <div className="text-center p-2 rounded-xl bg-emerald-500/5">
-                                        <p className="text-[18px] font-black text-emerald-600">{item.good_condition_count || 0}</p>
-                                        <p className="text-[8px] font-black text-emerald-500 uppercase">Baik</p>
+                                        <p className="text-[18px] font-bold text-emerald-600">{item.good_condition_count || 0}</p>
+                                        <p className="text-xs font-bold text-emerald-500 uppercase">Baik</p>
                                     </div>
                                     <div className="text-center p-2 rounded-xl bg-red-500/5">
-                                        <p className="text-[18px] font-black text-red-600">{item.damaged_condition_count || 0}</p>
-                                        <p className="text-[8px] font-black text-red-500 uppercase">Rusak</p>
+                                        <p className="text-[18px] font-bold text-red-600">{item.damaged_condition_count || 0}</p>
+                                        <p className="text-xs font-bold text-red-500 uppercase">Rusak</p>
                                     </div>
                                 </div>
                             </>
                         ) : (
-                            <p className="text-[10px] text-[var(--color-text-muted)] text-center py-2">Belum ada data kuantitas</p>
+                            <p className="text-xs text-[var(--color-text-muted)] text-center py-2">Belum ada data kuantitas</p>
                         )}
                     </div>
 
                     {/* Info List */}
                     <div className="space-y-2">
                         <div className="flex items-center justify-between py-2 border-b border-[var(--color-border)]/50">
-                            <span className="text-[10px] font-bold text-[var(--color-text-muted)] flex items-center gap-2"><Calendar className="text-[9px]" /> Terakhir Dicek</span>
-                            <span className="text-[10px] font-black text-[var(--color-text)]">{formatDate(item.last_checked_at)}</span>
+                            <span className="text-xs font-bold text-[var(--color-text-muted)] flex items-center gap-2"><Calendar className="w-4 h-4" /> Terakhir Dicek</span>
+                            <span className="text-xs font-bold text-[var(--color-text)]">{formatDate(item.last_checked_at)}</span>
                         </div>
                         <div className="flex items-center justify-between py-2 border-b border-[var(--color-border)]/50">
-                            <span className="text-[10px] font-bold text-[var(--color-text-muted)] flex items-center gap-2"><ClipboardList className="text-[9px]" /> Waktu Relatif</span>
-                            <span className="text-[10px] font-black text-[var(--color-text)]">{formatRelativeDate(item.last_checked_at)}</span>
+                            <span className="text-xs font-bold text-[var(--color-text-muted)] flex items-center gap-2"><ClipboardList className="w-4 h-4" /> Waktu Relatif</span>
+                            <span className="text-xs font-bold text-[var(--color-text)]">{formatRelativeDate(item.last_checked_at)}</span>
                         </div>
                         <div className="flex items-center justify-between py-2 border-b border-[var(--color-border)]/50">
-                            <span className="text-[10px] font-bold text-[var(--color-text-muted)] flex items-center gap-2"><Tag className="text-[9px]" /> Kategori</span>
-                            <span className="text-[10px] font-black text-[var(--color-text)]">{cat?.label || 'Lainnya'}</span>
+                            <span className="text-xs font-bold text-[var(--color-text-muted)] flex items-center gap-2"><Tag className="w-4 h-4" /> Kategori</span>
+                            <span className="text-xs font-bold text-[var(--color-text)]">{cat?.label || 'Lainnya'}</span>
                         </div>
                         {item.dorm_id && (
                             <div className="flex items-center justify-between py-2 border-b border-[var(--color-border)]/50">
-                                <span className="text-[10px] font-bold text-[var(--color-text-muted)] flex items-center gap-2"><PackageOpen className="text-[9px]" /> Lokasi</span>
-                                <span className="text-[10px] font-black text-[var(--color-text)]">{item.dorm_id}</span>
+                                <span className="text-xs font-bold text-[var(--color-text-muted)] flex items-center gap-2"><PackageOpen className="w-4 h-4" /> Lokasi</span>
+                                <span className="text-xs font-bold text-[var(--color-text)]">{item.dorm_id}</span>
                             </div>
                         )}
                     </div>
@@ -328,16 +328,16 @@ function DetailDrawer({ item, isOpen, onClose, onEdit, canEdit }) {
                     {item.notes && (
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]">
                             <div className="flex items-center gap-2 mb-2">
-                                <Info className="text-[9px] text-[var(--color-text-muted)]" />
-                                <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Catatan</span>
+                                <Info className="w-4 h-4 text-[var(--color-text-muted)]" />
+                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Catatan</span>
                             </div>
-                            <p className="text-[11px] text-[var(--color-text)] leading-relaxed whitespace-pre-wrap">{item.notes}</p>
+                            <p className="text-xs text-[var(--color-text)] leading-relaxed whitespace-pre-wrap">{item.notes}</p>
                         </div>
                     )}
 
                     {/* Created */}
                     <div className="text-center py-2">
-                        <span className="text-[9px] text-[var(--color-text-muted)]">Dibuat: {formatDate(item.created_at)}</span>
+                        <span className="text-xs text-[var(--color-text-muted)]">Dibuat: {formatDate(item.created_at)}</span>
                     </div>
                 </div>
 
@@ -345,8 +345,8 @@ function DetailDrawer({ item, isOpen, onClose, onEdit, canEdit }) {
                 {canEdit && (
                     <div className="px-5 py-4 border-t border-[var(--color-border)]">
                         <button onClick={() => { onEdit(item); onClose() }}
-                            className="w-full h-10 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[var(--color-primary)]/90 transition-all">
-                            <SquarePen className="text-[10px]" /> Edit Item
+                            className="w-full h-10 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 hover:bg-[var(--color-primary)]/90 transition-all">
+                            <SquarePen className="w-4 h-4" /> Edit Item
                         </button>
                     </div>
                 )}
@@ -363,18 +363,18 @@ function ExportModal({ isOpen, onClose, onExport, totalFiltered, totalSelected }
         <Modal isOpen={isOpen} onClose={onClose} title="Export Data Inventaris"
             icon={Download} iconBg="bg-indigo-500/10" iconColor="text-indigo-500" size="sm" mobileVariant="bottom-sheet">
             <div className="space-y-3">
-                <p className="text-[11px] text-[var(--color-text-muted)]">
+                <p className="text-xs text-[var(--color-text-muted)]">
                     {totalSelected > 0 ? `Mengekspor ${totalSelected} item terpilih` : `Mengekspor ${totalFiltered} item yang ditampilkan`}
                 </p>
                 <div className="space-y-2">
                     <button onClick={() => { onExport('csv'); onClose() }}
                         className="w-full flex items-center gap-3 p-3 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition-all text-left group">
                         <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Download className="text-emerald-500 text-sm" />
+                            <Download className="w-4 h-4 text-emerald-500" />
                         </div>
                         <div>
-                            <p className="text-[11px] font-black text-[var(--color-text)]">Export CSV</p>
-                            <p className="text-[9px] text-[var(--color-text-muted)]">Format spreadsheet universal</p>
+                            <p className="text-xs font-bold text-[var(--color-text)]">Export CSV</p>
+                            <p className="text-xs text-[var(--color-text-muted)]">Format spreadsheet universal</p>
                         </div>
                     </button>
                 </div>
@@ -421,7 +421,7 @@ export default function InventoryPage() {
 
     return (
         <DashboardLayout title="Inventaris & Aset">
-            <div className="p-4 md:p-6 space-y-4 max-w-[1800px] mx-auto min-h-screen relative">
+            <div className="space-y-4 min-h-[calc(100dvh-6rem)] relative">
                 {/* Header */}
                 <PageHeader
                     badge="Master Data"
@@ -431,8 +431,8 @@ export default function InventoryPage() {
                     actions={
                         <div className="flex items-center gap-2">
                             {/* Keyboard shortcut hint */}
-                            <div className="hidden lg:flex items-center gap-1.5 px-2.5 h-9 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[9px] font-bold text-[var(--color-text-muted)]">
-                                <Keyboard className="text-[8px]" />
+                            <div className="hidden lg:flex items-center gap-1.5 px-2.5 h-9 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)]">
+                                <Keyboard className="w-4 h-4" />
                                 <span>N = tambah baru</span>
                             </div>
 
@@ -440,25 +440,25 @@ export default function InventoryPage() {
                             <button onClick={() => setIsExportOpen(true)}
                                 className="h-9 w-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
                                 title="Export">
-                                <Download className="text-xs" />
+                                <Download className="w-4 h-4" />
                             </button>
 
                             {/* View Toggle */}
                             <div className="flex items-center bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl p-0.5 h-9">
                                 <button onClick={() => switchView('table')}
-                                    className={`h-full px-2.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all flex items-center gap-1 ${viewMode === 'table' ? 'bg-white text-[var(--color-text)] shadow-sm' : 'text-[var(--color-text-muted)]'}`}>
-                                    <Table className="text-[8px]" /> <span className="hidden sm:inline">Tabel</span>
+                                    className={`h-full px-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1 ${viewMode === 'table' ? 'bg-white text-[var(--color-text)] shadow-sm' : 'text-[var(--color-text-muted)]'}`}>
+                                    <Table className="w-4 h-4" /> <span className="hidden sm:inline">Tabel</span>
                                 </button>
                                 <button onClick={() => switchView('card')}
-                                    className={`h-full px-2.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all flex items-center gap-1 ${viewMode === 'card' ? 'bg-white text-[var(--color-text)] shadow-sm' : 'text-[var(--color-text-muted)]'}`}>
-                                    <GripVertical className="text-[8px]" /> <span className="hidden sm:inline">Kartu</span>
+                                    className={`h-full px-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1 ${viewMode === 'card' ? 'bg-white text-[var(--color-text)] shadow-sm' : 'text-[var(--color-text-muted)]'}`}>
+                                    <GripVertical className="w-4 h-4" /> <span className="hidden sm:inline">Kartu</span>
                                 </button>
                             </div>
 
                             {/* Add Button */}
                             <button onClick={openAddModal} disabled={!canEdit}
-                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10">
-                                <Plus className="text-[10px]" />
+                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10">
+                                <Plus className="w-4 h-4" />
                                 <span className="hidden sm:inline">Tambah Item</span>
                             </button>
                         </div>
@@ -498,7 +498,7 @@ export default function InventoryPage() {
                             { key: 'poor', label: 'Buruk', color: 'red' }
                         ].map(f => (
                             <button key={f.key} onClick={() => setFilterCondition(f.key)}
-                                className={`h-8 px-2.5 rounded-lg text-[9px] font-black uppercase tracking-wider border transition-all shrink-0 ${filterCondition === f.key
+                                className={`h-8 px-2.5 rounded-lg text-xs font-bold uppercase tracking-wider border transition-all shrink-0 ${filterCondition === f.key
                                     ? f.key === 'all' ? 'bg-[var(--color-text)] text-white border-transparent' : `bg-${f.color}-500 text-white border-transparent`
                                     : 'bg-[var(--color-surface)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]'
                                     }`}>
@@ -527,14 +527,14 @@ export default function InventoryPage() {
                 {items.length > 0 && (
                     <div className="flex items-center justify-between">
                         <button onClick={toggleSelectAll}
-                            className="flex items-center gap-2 text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
+                            className="flex items-center gap-2 text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
                             <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${allSelected ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : someSelected ? 'bg-[var(--color-primary)]/20 border-[var(--color-primary)]' : 'border-[var(--color-border)] bg-white'}`}>
-                                {allSelected && <Check className="text-[7px] text-white" />}
+                                {allSelected && <Check className="w-4 h-4 text-white" />}
                                 {someSelected && !allSelected && <div className="w-2 h-0.5 bg-[var(--color-primary)] rounded" />}
                             </div>
                             Pilih Semua ({items.length})
                         </button>
-                        <span className="text-[9px] font-bold text-[var(--color-text-muted)]">
+                        <span className="text-xs font-bold text-[var(--color-text-muted)]">
                             {selectedIds.size > 0 ? `${selectedIds.size} dipilih` : `${items.length} item`}
                         </span>
                     </div>
@@ -543,13 +543,13 @@ export default function InventoryPage() {
                 {/* Content */}
                 {loading ? (
                     <div className="flex items-center justify-center gap-2 py-16">
-                        <LoaderCircle className="animate-spin text-sm text-[var(--color-primary)]" />
-                        <span className="text-[11px] font-bold text-[var(--color-text-muted)]">Memuat data inventaris...</span>
+                        <LoaderCircle className="w-4 h-4 animate-spin text-[var(--color-primary)]" />
+                        <span className="text-xs font-bold text-[var(--color-text-muted)]">Memuat data inventaris...</span>
                     </div>
                 ) : items.length === 0 ? (
                     <EmptyState icon={Boxes} title="Belum ada item inventaris"
                         subtitle="Mulai tambahkan item untuk mencatat sarana dan prasarana."
-                        action={canEdit ? <button onClick={openAddModal} className="mt-3 h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:scale-[1.02] active:scale-95"><Plus className="text-[10px]" /> Tambah Item Pertama</button> : null} />
+                        action={canEdit ? <button onClick={openAddModal} className="mt-3 h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide flex items-center gap-2 hover:scale-[1.02] active:scale-95"><Plus className="w-4 h-4" /> Tambah Item Pertama</button> : null} />
                 ) : viewMode === 'card' || isMobile ? (
                     /* ── Card View ── */
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
@@ -565,35 +565,35 @@ export default function InventoryPage() {
                                         <div className="flex items-center gap-2.5">
                                             <button onClick={e => { e.stopPropagation(); toggleSelect(item.id) }}
                                                 className={`w-5 h-5 rounded border flex items-center justify-center transition-all shrink-0 ${isSelected ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)] bg-white group-hover:border-[var(--color-primary)]/40'}`}>
-                                                {isSelected && <Check className="text-[7px] text-white" />}
+                                                {isSelected && <Check className="w-4 h-4 text-white" />}
                                             </button>
                                             <div className={`w-9 h-9 rounded-xl flex items-center justify-center bg-${cat?.color || 'slate'}-50 text-${cat?.color || 'slate'}-500`}>
-                                                <Icon className="text-sm" />
+                                                <Icon className="w-4 h-4" />
                                             </div>
                                         </div>
                                         {canEdit && (
                                             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                                 <button onClick={e => { e.stopPropagation(); openEditModal(item) }}
                                                     className="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center hover:bg-indigo-500/20 transition-all">
-                                                    <SquarePen className="text-[9px]" />
+                                                    <SquarePen className="w-4 h-4" />
                                                 </button>
                                                 <button onClick={e => { e.stopPropagation(); handleDeleteClick(item) }}
                                                     className="w-7 h-7 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center hover:bg-red-500/20 transition-all">
-                                                    <Trash2 className="text-[9px]" />
+                                                    <Trash2 className="w-4 h-4" />
                                                 </button>
                                             </div>
                                         )}
                                     </div>
-                                    <h3 className="text-[12px] font-black text-[var(--color-text)] mb-1 truncate">{item.item_name}</h3>
-                                    <p className="text-[9px] text-[var(--color-text-muted)] mb-3">{cat?.label || 'Lainnya'}</p>
+                                    <h3 className="text-xs font-bold text-[var(--color-text)] mb-1 truncate">{item.item_name}</h3>
+                                    <p className="text-xs text-[var(--color-text-muted)] mb-3">{cat?.label || 'Lainnya'}</p>
                                     <div className="flex items-center gap-2">
                                         <ConditionBadge item={item} />
                                     </div>
-                                    {item.notes && <p className="text-[9px] text-[var(--color-text-muted)] mt-2 truncate">{item.notes}</p>}
+                                    {item.notes && <p className="text-xs text-[var(--color-text-muted)] mt-2 truncate">{item.notes}</p>}
                                     <div className="flex items-center justify-between mt-3 pt-3 border-t border-[var(--color-border)]/50">
-                                        <span className="text-[9px] text-[var(--color-text-muted)]">{formatRelativeDate(item.last_checked_at)}</span>
+                                        <span className="text-xs text-[var(--color-text-muted)]">{formatRelativeDate(item.last_checked_at)}</span>
                                         <div className="flex items-center gap-2">
-                                            <span className="text-[9px] font-black text-[var(--color-text)]">{item.total_quantity || 0} unit</span>
+                                            <span className="text-xs font-bold text-[var(--color-text)]">{item.total_quantity || 0} unit</span>
                                         </div>
                                     </div>
                                 </div>
@@ -609,18 +609,18 @@ export default function InventoryPage() {
                                     <th className="text-center px-3 py-3 w-10">
                                         <button onClick={toggleSelectAll} className="flex items-center justify-center">
                                             <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${allSelected ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : someSelected ? 'bg-[var(--color-primary)]/20 border-[var(--color-primary)]' : 'border-[var(--color-border)] bg-white'}`}>
-                                                {allSelected && <Check className="text-[7px] text-white" />}
+                                                {allSelected && <Check className="w-4 h-4 text-white" />}
                                                 {someSelected && !allSelected && <div className="w-2 h-0.5 bg-[var(--color-primary)] rounded" />}
                                             </div>
                                         </button>
                                     </th>
-                                    <th className="text-left px-4 py-3 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Item</th>
-                                    <th className="text-center px-3 py-3 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Total</th>
-                                    <th className="text-center px-3 py-3 text-[9px] font-black uppercase tracking-widest text-emerald-600">Baik</th>
-                                    <th className="text-center px-3 py-3 text-[9px] font-black uppercase tracking-widest text-red-600">Rusak</th>
-                                    <th className="text-center px-4 py-3 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Kondisi</th>
-                                    <th className="text-left px-4 py-3 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Catatan</th>
-                                    <th className="text-center px-3 py-3 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Aksi</th>
+                                    <th className="text-left px-4 py-3 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Item</th>
+                                    <th className="text-center px-3 py-3 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Total</th>
+                                    <th className="text-center px-3 py-3 text-xs font-bold uppercase tracking-wide text-emerald-600">Baik</th>
+                                    <th className="text-center px-3 py-3 text-xs font-bold uppercase tracking-wide text-red-600">Rusak</th>
+                                    <th className="text-center px-4 py-3 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Kondisi</th>
+                                    <th className="text-left px-4 py-3 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Catatan</th>
+                                    <th className="text-center px-3 py-3 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -635,31 +635,31 @@ export default function InventoryPage() {
                                             <td className="text-center px-3 py-3">
                                                 <button onClick={e => { e.stopPropagation(); toggleSelect(item.id) }}>
                                                     <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all mx-auto ${isSelected ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)] bg-white'}`}>
-                                                        {isSelected && <Check className="text-[7px] text-white" />}
+                                                        {isSelected && <Check className="w-4 h-4 text-white" />}
                                                     </div>
                                                 </button>
                                             </td>
                                             <td className="px-4 py-3">
                                                 <div className="flex items-center gap-3">
                                                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-${cat?.color || 'slate'}-50 text-${cat?.color || 'slate'}-500 shrink-0`}>
-                                                        <Icon className="text-xs" />
+                                                        <Icon className="w-4 h-4" />
                                                     </div>
                                                     <div className="min-w-0">
-                                                        <p className="text-[11px] font-black text-[var(--color-text)] truncate">{item.item_name}</p>
-                                                        <p className="text-[8px] text-[var(--color-text-muted)] font-bold">{cat?.label || 'Lainnya'}</p>
+                                                        <p className="text-xs font-bold text-[var(--color-text)] truncate">{item.item_name}</p>
+                                                        <p className="text-xs text-[var(--color-text-muted)] font-bold">{cat?.label || 'Lainnya'}</p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td className="text-center px-3 py-3">
-                                                <span className="text-[11px] font-black text-[var(--color-text)]">{item.total_quantity || 0}</span>
+                                                <span className="text-xs font-bold text-[var(--color-text)]">{item.total_quantity || 0}</span>
                                             </td>
                                             <td className="text-center px-3 py-3">
-                                                <span className="inline-flex items-center justify-center min-w-[28px] h-6 px-2 rounded-lg bg-emerald-500/10 text-emerald-600 text-[10px] font-black">
+                                                <span className="inline-flex items-center justify-center min-w-[28px] h-6 px-2 rounded-lg bg-emerald-500/10 text-emerald-600 text-xs font-bold">
                                                     {item.good_condition_count || 0}
                                                 </span>
                                             </td>
                                             <td className="text-center px-3 py-3">
-                                                <span className={`inline-flex items-center justify-center min-w-[28px] h-6 px-2 rounded-lg text-[10px] font-black ${(item.damaged_condition_count || 0) > 0 ? 'bg-red-500/10 text-red-600' : 'bg-gray-100 text-gray-400'}`}>
+                                                <span className={`inline-flex items-center justify-center min-w-[28px] h-6 px-2 rounded-lg text-xs font-bold ${(item.damaged_condition_count || 0) > 0 ? 'bg-red-500/10 text-red-600' : 'bg-gray-100 text-gray-400'}`}>
                                                     {item.damaged_condition_count || 0}
                                                 </span>
                                             </td>
@@ -667,7 +667,7 @@ export default function InventoryPage() {
                                                 <ConditionBadge item={item} />
                                             </td>
                                             <td className="px-4 py-3">
-                                                <span className="text-[10px] text-[var(--color-text-muted)] truncate block max-w-[180px]">{item.notes || '—'}</span>
+                                                <span className="text-xs text-[var(--color-text-muted)] truncate block max-w-[180px]">{item.notes || '—'}</span>
                                             </td>
                                             <td className="text-center px-3 py-3">
                                                 <div className="flex items-center justify-center gap-1">
@@ -675,11 +675,11 @@ export default function InventoryPage() {
                                                         <>
                                                             <button onClick={e => { e.stopPropagation(); openEditModal(item) }}
                                                                 className="w-7 h-7 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 flex items-center justify-center hover:bg-indigo-500/20 transition-all" title="Edit">
-                                                                <SquarePen className="text-[9px]" />
+                                                                <SquarePen className="w-4 h-4" />
                                                             </button>
                                                             <button onClick={e => { e.stopPropagation(); handleDeleteClick(item) }}
                                                                 className="w-7 h-7 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 flex items-center justify-center hover:bg-red-500/20 transition-all" title="Hapus">
-                                                                <Trash2 className="text-[9px]" />
+                                                                <Trash2 className="w-4 h-4" />
                                                             </button>
                                                         </>
                                                     )}
@@ -708,16 +708,16 @@ export default function InventoryPage() {
                 footer={
                     <div className="flex items-center w-full gap-3">
                         <button onClick={() => { setIsDeleteOpen(false); setDeleteTarget(null) }}
-                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
+                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
                         <div className="flex-1" />
                         <button onClick={confirmDelete} disabled={submitting}
-                            className="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center gap-2 disabled:opacity-50">
-                            {submitting ? <LoaderCircle className="animate-spin text-xs" /> : <Trash2 className="text-xs" />}
+                            className="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center gap-2 disabled:opacity-50">
+                            {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
                             Hapus
                         </button>
                     </div>
                 }>
-                <p className="text-[11px] text-[var(--color-text)]">Yakin ingin menghapus <span className="font-black">"{deleteTarget?.item_name}"</span>? Tindakan ini tidak dapat dibatalkan.</p>
+                <p className="text-xs text-[var(--color-text)]">Yakin ingin menghapus <span className="font-bold">"{deleteTarget?.item_name}"</span>? Tindakan ini tidak dapat dibatalkan.</p>
             </Modal>
         </DashboardLayout>
     )

@@ -947,7 +947,7 @@ export default function HealthPage() {
 
     return (
         <DashboardLayout title={tp('title')}>
-            <div className="p-4 sm:p-6 space-y-5">
+            <div className="space-y-5">
                 {/* ─── PAGE HEADER WITH INTEGRATED BREADCRUMB ─── */}
                 <PageHeader
                     badge="Kesantrian"
@@ -1000,7 +1000,7 @@ export default function HealthPage() {
                                                     </div>
                                                     <div className="text-left">
                                                         <p className="text-xs font-bold leading-tight">Cetak Jurnal Medis</p>
-                                                        <p className="text-[10px] text-[var(--color-text-muted)] font-medium uppercase tracking-wider mt-0.5">pdf / kertas</p>
+                                                        <p className="text-xs text-[var(--color-text-muted)] font-medium uppercase tracking-wider mt-0.5">pdf / kertas</p>
                                                     </div>
                                                 </button>
                                                 <div className="h-px bg-[var(--color-border)] my-1" />
@@ -1013,7 +1013,7 @@ export default function HealthPage() {
                                                     </div>
                                                     <div className="text-left">
                                                         <p className="text-xs font-bold leading-tight">Unduh Data Rekam Medis</p>
-                                                        <p className="text-[10px] text-[var(--color-text-muted)] font-medium uppercase tracking-wider mt-0.5">xlsx / csv</p>
+                                                        <p className="text-xs text-[var(--color-text-muted)] font-medium uppercase tracking-wider mt-0.5">xlsx / csv</p>
                                                     </div>
                                                 </button>
                                             </div>
@@ -1087,7 +1087,7 @@ export default function HealthPage() {
                 />
 
                 {/* ─── HIGH-DENSITY STATISTICS CAROUSEL ─── */}
-                <StatsCarousel count={4} className="mb-5">
+                <StatsCarousel count={4}>
                     <StatCard
                         onClick={() => { setActiveTab('medical'); setSelectedStatusFilter('All'); }}
                         isActive={activeTab === 'medical' && selectedStatusFilter === 'All'}
@@ -1124,21 +1124,21 @@ export default function HealthPage() {
                 <div className="flex gap-1 sm:gap-1.5 p-1 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] w-full sm:w-fit overflow-x-auto scrollbar-hide shrink-0">
                     <button
                         onClick={() => { setActiveTab('medical'); setSearchQuery(''); }}
-                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'medical' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'medical' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                     >
                         <FileText className="w-3.5 h-3.5 shrink-0" />
                         <span>{tp('tabMedical')}</span>
                     </button>
                     <button
                         onClick={() => { setActiveTab('resting'); setSearchQuery(''); }}
-                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'resting' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'resting' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                     >
                         <Bed className="w-3.5 h-3.5 shrink-0" />
                         <span>{tp('tabResting')} ({tNum(restingStudents.length)})</span>
                     </button>
                     <button
                         onClick={() => { setActiveTab('inventory'); setSearchQuery(''); }}
-                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'inventory' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'inventory' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                     >
                         <Pill className="w-3.5 h-3.5 shrink-0" />
                         <span>{tp('tabInventory')}</span>
@@ -1254,7 +1254,7 @@ export default function HealthPage() {
                                                 </td>
                                                 <td className="px-4 py-3 text-xs text-[var(--color-text-muted)] font-medium tabular-nums">
                                                     <div>{log.date}</div>
-                                                    <div className="text-[10px] text-[var(--color-text-muted)] font-normal">{log.time}</div>
+                                                    <div className="text-xs text-[var(--color-text-muted)] font-normal">{log.time}</div>
                                                 </td>
                                                 <td className="px-4 py-3 text-xs text-[var(--color-text)] font-medium max-w-[200px] truncate" title={!isPrivacyMode ? log.complaint : undefined}>
                                                     <span className={isPrivacyMode ? 'blur-sm select-none' : ''}>{isPrivacyMode ? maskInfo(log.complaint, 4) : log.complaint}</span>
@@ -1507,12 +1507,12 @@ export default function HealthPage() {
                                                     </td>
                                                     <td className="px-4 py-3">
                                                         <div className="flex items-center gap-1.5">
-                                                            <span className={`text-sm font-bold tabular-nums ${isLow ? 'text-rose-600 font-extrabold' : 'text-[var(--color-text)]'}`}>
+                                                            <span className={`text-sm font-bold tabular-nums ${isLow ? 'text-rose-600 font-bold' : 'text-[var(--color-text)]'}`}>
                                                                 {tNum(med.stock)}
                                                             </span>
                                                             <span className="text-xs text-[var(--color-text-muted)] font-medium">{med.unit}</span>
                                                             {isLow && (
-                                                                <span className="inline-flex items-center text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-rose-500/10 text-rose-600 border border-rose-500/20 ml-2">
+                                                                <span className="inline-flex items-center text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-rose-500/10 text-rose-600 border border-rose-500/20 ml-2">
                                                                     LOW STOCK
                                                                 </span>
                                                             )}
@@ -1906,7 +1906,7 @@ export default function HealthPage() {
                         </div>
                     }
                 >
-                    <p className="text-xs sm:text-[13px] text-[var(--color-text-muted)] font-medium leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[var(--color-text-muted)] font-medium leading-relaxed">
                         Apakah kamu yakin ingin menghapus rekam medis santri <strong className="text-rose-500 font-bold">{logToDelete?.student_name}</strong> tanggal <strong>{logToDelete?.date}</strong>?
                     </p>
                 </Modal>
@@ -1940,7 +1940,7 @@ export default function HealthPage() {
                         </div>
                     }
                 >
-                    <p className="text-xs sm:text-[13px] text-[var(--color-text-muted)] font-medium leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[var(--color-text-muted)] font-medium leading-relaxed">
                         Apakah santri <strong className="text-emerald-600 font-bold">{logToSembuh?.student_name}</strong> sudah pulih sepenuhnya dan diizinkan kembali ke kelas / aktivitas KBM pesantren?
                     </p>
                 </Modal>

@@ -76,7 +76,7 @@ const GateFilterBar = memo(function GateFilterBar({
               <button key={f.k} onClick={() => setFilterStatus(f.k)}
                 className={`h-8 px-3 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all whitespace-nowrap shrink-0 ${filterStatus === f.k ? activeColor : 'border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                 <IconComp className="w-3.5 h-3.5 shrink-0" />{f.l}
-                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded min-w-[16px] text-center ${filterStatus === f.k ? 'bg-white/25 text-white' : 'bg-[var(--color-border)] text-[var(--color-text-muted)]'}`}>{tNum(count)}</span>
+                <span className={`text-xs font-bold px-1.5 py-0.5 rounded min-w-[16px] text-center ${filterStatus === f.k ? 'bg-white/25 text-white' : 'bg-[var(--color-border)] text-[var(--color-text-muted)]'}`}>{tNum(count)}</span>
               </button>
             )
           })}
@@ -166,7 +166,7 @@ const GateFilterBar = memo(function GateFilterBar({
               <button key={f.k} onClick={() => setFilterStatus(f.k)}
                 className={`h-7.5 px-3 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all whitespace-nowrap ${filterStatus === f.k ? activeColor : 'border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)]'}`}>
                 <IconComp className="w-3 h-3 shrink-0" />{f.l}
-                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${filterStatus === f.k ? 'bg-white/25 text-white' : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)]'}`}>{tNum(count)}</span>
+                <span className={`text-xs font-bold px-1.5 py-0.5 rounded ${filterStatus === f.k ? 'bg-white/25 text-white' : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)]'}`}>{tNum(count)}</span>
               </button>
             )
           })}

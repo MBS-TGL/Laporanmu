@@ -9,8 +9,8 @@ function LogBlockForm({ block, items, entries, onChange }) {
   return (
     <section aria-label={`${block.label} (${block.time})`} className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden">
       <header className="px-4 py-3 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/50">
-        <h3 className="text-sm font-black text-[var(--color-text)]">{block.label}</h3>
-        <p className="text-[11px] text-[var(--color-text-muted)] font-medium">{block.time} WIB</p>
+        <h3 className="text-sm font-bold text-[var(--color-text)]">{block.label}</h3>
+        <p className="text-xs text-[var(--color-text-muted)] font-medium">{block.time} WIB</p>
       </header>
       <div className="divide-y divide-[var(--color-border)]">
         {items.map((item) => (
@@ -143,7 +143,7 @@ function ItemRow({ item, value, onChange }) {
     return (
       <div className="px-4 py-3">
         <p className="text-sm text-[var(--color-text)]">{label}</p>
-        <p className="text-[11px] text-[var(--color-text-muted)] mt-1">
+        <p className="text-xs text-[var(--color-text-muted)] mt-1">
           Kerjakan tugas di bawah (blok Tugas KBM), lalu centang bila selesai.
         </p>
         <button

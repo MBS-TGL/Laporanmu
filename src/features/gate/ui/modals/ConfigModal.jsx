@@ -36,9 +36,9 @@ export default function ConfigModal({ onSave, onCancel, testNotification }) {
       mobileVariant="bottom-sheet"
       footer={
         <div className="flex items-center w-full gap-3">
-          <button onClick={onCancel} className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black uppercase tracking-wider hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all shrink-0">{tp('modalConfigCancel').toUpperCase()}</button>
+          <button onClick={onCancel} className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold uppercase tracking-wider hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all shrink-0">{tp('modalConfigCancel').toUpperCase()}</button>
           <div className="flex-1" />
-          <button onClick={handleSave} className="h-10 px-6 rounded-xl bg-indigo-500 text-white text-[10px] font-black uppercase tracking-wider shadow-lg hover:bg-indigo-600 transition-all flex items-center justify-center gap-2 shrink-0">
+          <button onClick={handleSave} className="h-10 px-6 rounded-xl bg-indigo-500 text-white text-xs font-bold uppercase tracking-wider shadow-lg hover:bg-indigo-600 transition-all flex items-center justify-center gap-2 shrink-0">
             <Check className="w-3.5 h-3.5" />
             <span>{tp('modalConfigSave').toUpperCase()}</span>
           </button>
@@ -47,17 +47,17 @@ export default function ConfigModal({ onSave, onCancel, testNotification }) {
     >
       <div className="space-y-4 pt-2">
         <div>
-          <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-2 block">Webhook URL</label>
+          <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 mb-2 block">Webhook URL</label>
           <div className="flex gap-2">
             <input
               type="text"
               value={url}
               onChange={e => setUrl(e.target.value)}
               placeholder="https://api.telegram.org/bot<token>/sendMessage?chat_id=<id>"
-              className="flex-1 h-10 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-mono text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all shadow-inner"
+              className="flex-1 h-10 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-mono text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all shadow-inner"
             />
             <button onClick={handleTest} disabled={testing || !url}
-              className="h-10 px-4 rounded-xl border border-indigo-500/30 bg-indigo-500/5 text-[10px] font-black text-indigo-500 hover:bg-indigo-500 hover:text-white transition-all disabled:opacity-40 flex items-center justify-center gap-2 shrink-0 shadow-sm"
+              className="h-10 px-4 rounded-xl border border-indigo-500/30 bg-indigo-500/5 text-xs font-bold text-indigo-500 hover:bg-indigo-500 hover:text-white transition-all disabled:opacity-40 flex items-center justify-center gap-2 shrink-0 shadow-sm"
               title="Test Kirim Notifikasi">
               {testing ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -68,11 +68,11 @@ export default function ConfigModal({ onSave, onCancel, testNotification }) {
             </button>
           </div>
           {import.meta.env.VITE_GATE_WEBHOOK_URL && !localStorage.getItem('GATE_WEBHOOK_URL') && (
-            <p className="mt-2 text-[10px] text-emerald-500 font-bold flex items-center gap-1.5">
+            <p className="mt-2 text-xs text-emerald-500 font-bold flex items-center gap-1.5">
               <Check className="w-3.5 h-3.5 shrink-0" /> Webhook default aktif (.env)
             </p>
           )}
-          <p className="mt-2 text-[9px] text-[var(--color-text-muted)] opacity-60">{tp('modalConfigHelp')}</p>
+          <p className="mt-2 text-xs text-[var(--color-text-muted)] opacity-60">{tp('modalConfigHelp')}</p>
         </div>
       </div>
     </Modal>

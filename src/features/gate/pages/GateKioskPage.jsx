@@ -327,10 +327,10 @@ export default function GateKioskPage() {
           className="h-11 px-3 sm:px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all flex items-center gap-2 active:scale-95 shadow-sm shrink-0"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest hidden xs:inline">
+          <span className="text-xs sm:text-xs font-bold uppercase tracking-wide hidden xs:inline">
             {language === 'en' ? 'Exit Kiosk' : language === 'ar' ? 'الخروج' : 'Kembali ke Admin'}
           </span>
-          <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest xs:hidden">
+          <span className="text-xs sm:text-xs font-bold uppercase tracking-wide xs:hidden">
             {language === 'en' ? 'Exit' : language === 'ar' ? 'خروج' : 'Kembali'}
           </span>
         </button>
@@ -339,11 +339,11 @@ export default function GateKioskPage() {
         <div className="hidden md:flex flex-col items-center">
           <div className="flex items-center gap-2.5">
             <Clock className="w-4 h-4 text-[var(--color-primary)] animate-pulse" />
-            <span className="text-[20px] sm:text-[24px] font-black text-[var(--color-text)] tracking-wider font-mono tabular-nums leading-none">
+            <span className="text-[20px] sm:text-[24px] font-bold text-[var(--color-text)] tracking-wider font-mono tabular-nums leading-none">
               {time.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}
             </span>
           </div>
-          <span className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mt-1">
+          <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mt-1">
             {time.toLocaleDateString(language === 'ar' ? 'ar-EG' : 'id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
           </span>
         </div>
@@ -378,11 +378,11 @@ export default function GateKioskPage() {
       <div className="md:hidden w-full max-w-sm flex flex-col items-center justify-center mt-4 mb-2 z-10 bg-surface py-3 px-5 rounded-2xl border border-[var(--color-border)]/60 shadow-sm relative overflow-hidden shrink-0">
         <div className="flex items-center gap-2">
           <Clock className="w-3.5 h-3.5 text-[var(--color-primary)] animate-pulse" />
-          <span className="text-[18px] font-black text-[var(--color-text)] font-mono tracking-wider leading-none">
+          <span className="text-[18px] font-bold text-[var(--color-text)] font-mono tracking-wider leading-none">
             {time.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}
           </span>
         </div>
-        <span className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mt-1">
+        <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mt-1">
           {time.toLocaleDateString(language === 'ar' ? 'ar-EG' : 'id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
         </span>
       </div>
@@ -409,10 +409,10 @@ export default function GateKioskPage() {
               </div>
             </div>
 
-            <h2 className="text-[20px] sm:text-[24px] font-black text-[var(--color-text)] tracking-tight leading-tight mb-2 font-heading">
+            <h2 className="text-[20px] sm:text-[24px] font-bold text-[var(--color-text)] tracking-tight leading-tight mb-2 font-heading">
               {language === 'en' ? 'TAP YOUR RFID CARD' : language === 'ar' ? 'ضع بطاقة RFID الخاصة بك' : 'TEMPELKAN KARTU RFID ANDA'}
             </h2>
-            <p className="text-[11px] sm:text-[12px] text-[var(--color-text-muted)] tracking-wider uppercase font-bold max-w-sm mb-10 leading-relaxed opacity-70">
+            <p className="text-xs sm:text-xs text-[var(--color-text-muted)] tracking-wider uppercase font-bold max-w-sm mb-10 leading-relaxed opacity-70">
               {language === 'en' 
                 ? 'System is ready to scan RFID card or tap key fob' 
                 : language === 'ar' 
@@ -424,7 +424,7 @@ export default function GateKioskPage() {
             <div className="w-full space-y-3.5">
               <div className="flex items-center gap-2 w-full justify-center">
                 <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
-                <span className="text-[9.5px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                   {language === 'en' ? 'Select Purpose (Tap before Scan)' : language === 'ar' ? 'اختر الغرض قبل المسح' : 'Pilih Keperluan (Sentuh sebelum Scan)'}
                 </span>
               </div>
@@ -445,7 +445,7 @@ export default function GateKioskPage() {
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-[var(--color-surface)] shadow-sm`}>
                         <Icon className="w-4 h-4" />
                       </div>
-                      <span className="text-[11px] font-black leading-tight truncate">{labelStr}</span>
+                      <span className="text-xs font-bold leading-tight truncate">{labelStr}</span>
                     </button>
                   )
                 })}
@@ -458,10 +458,10 @@ export default function GateKioskPage() {
         {kioskState === 'loading' && (
           <div className="bg-surface rounded-[2rem] border border-[var(--color-border)] p-12 text-center flex flex-col items-center justify-center shadow-sm">
             <RefreshCw className="animate-spin w-12 h-12 text-[var(--color-primary)] mb-6" />
-            <h3 className="text-[18px] font-black text-[var(--color-text)] tracking-tight">
+            <h3 className="text-[18px] font-bold text-[var(--color-text)] tracking-tight">
               {language === 'en' ? 'PROCESSING CARD...' : language === 'ar' ? 'جاري معالجة البطاقة...' : 'SEDANG MEMPROSES KARTU...'}
             </h3>
-            <p className="text-[11px] text-[var(--color-text-muted)] mt-1.5 uppercase font-bold tracking-widest opacity-60">
+            <p className="text-xs text-[var(--color-text-muted)] mt-1.5 uppercase font-bold tracking-wide opacity-60">
               {language === 'en' ? 'Verifying identity with database' : 'Memvalidasi data ke database Supabase'}
             </p>
           </div>
@@ -478,22 +478,22 @@ export default function GateKioskPage() {
               <CheckCircle2 className="w-10 h-10" />
             </div>
 
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest mb-4 bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide mb-4 bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
               {statusDetails.action === 'OUT' ? <LogOut className="w-3 h-3" /> : <LogIn className="w-3 h-3" />}
               {statusDetails.action === 'OUT' 
                 ? (language === 'en' ? 'CHECK-OUT SUCCESS' : language === 'ar' ? 'تم تسجيل الخروج بنجاح' : 'BERHASIL KELUAR') 
                 : (language === 'en' ? 'CHECK-IN SUCCESS' : language === 'ar' ? 'تم تسجيل الدخول بنجاح' : 'BERHASIL KEMBALI')}
             </div>
 
-            <h3 className="text-[22px] sm:text-[26px] font-black text-[var(--color-text)] tracking-tight leading-tight mb-2 font-heading">
+            <h3 className="text-[22px] sm:text-[26px] font-bold text-[var(--color-text)] tracking-tight leading-tight mb-2 font-heading">
               {statusDetails.name}
             </h3>
             
-            <p className="text-[10px] font-black px-2.5 py-0.5 rounded bg-[var(--color-surface-alt)] border border-[var(--color-border)] uppercase tracking-widest text-[var(--color-text-muted)] leading-none inline-block mb-4">
+            <p className="text-xs font-bold px-2.5 py-0.5 rounded bg-[var(--color-surface-alt)] border border-[var(--color-border)] uppercase tracking-wide text-[var(--color-text-muted)] leading-none inline-block mb-4">
               {statusDetails.type === 'santri' ? (language === 'ar' ? 'طالب' : 'Santri') : (language === 'ar' ? 'موظف' : 'Pegawai / Guru')}
             </p>
 
-            <p className="text-[12px] sm:text-[13px] font-black text-[var(--color-text-muted)] opacity-90 max-w-sm mb-10 leading-relaxed">
+            <p className="text-xs sm:text-sm font-bold text-[var(--color-text-muted)] opacity-90 max-w-sm mb-10 leading-relaxed">
               {statusDetails.subtitle}
             </p>
 
@@ -504,7 +504,7 @@ export default function GateKioskPage() {
                 style={{ width: `${(countdown / 4) * 100}%` }}
               />
             </div>
-            <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-wider opacity-60">
+            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider opacity-60">
               {language === 'en' ? `Resets in ${countdown}s` : language === 'ar' ? `إعادة تعيين خلال ${tNum(countdown)} ثوانٍ` : `Kembali ke siaga dalam ${countdown} detik`}
             </p>
           </div>
@@ -521,12 +521,12 @@ export default function GateKioskPage() {
               <ShieldAlert className="w-10 h-10" />
             </div>
 
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest mb-4 bg-red-500/10 text-red-500 border border-red-500/20">
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide mb-4 bg-red-500/10 text-red-500 border border-red-500/20">
               <XCircle className="w-3 h-3" />
               {language === 'en' ? 'ERROR DETECTED' : language === 'ar' ? 'خطأ في النظام' : 'TRANSAKSI GAGAL'}
             </div>
 
-            <h3 className="text-[16px] sm:text-[18px] font-black text-[var(--color-text)] tracking-tight leading-relaxed max-w-md mb-8">
+            <h3 className="text-[16px] sm:text-[18px] font-bold text-[var(--color-text)] tracking-tight leading-relaxed max-w-md mb-8">
               {statusMessage}
             </h3>
 
@@ -537,7 +537,7 @@ export default function GateKioskPage() {
                 style={{ width: `${(countdown / 4) * 100}%` }}
               />
             </div>
-            <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-wider opacity-60">
+            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider opacity-60">
               {language === 'en' ? `Resets in ${countdown}s` : language === 'ar' ? `إعادة تعيين خلال ${tNum(countdown)} ثوانٍ` : `Kembali ke siaga dalam ${countdown} detik`}
             </p>
           </div>
@@ -552,11 +552,11 @@ export default function GateKioskPage() {
           <div className="flex items-center justify-between sm:justify-start gap-3 bg-[var(--color-surface)] border border-[var(--color-border)]/60 px-4 py-2 rounded-2xl shadow-sm w-full sm:w-auto">
             <div className="flex items-center gap-2">
               <div className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
-              <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
+              <span className="text-xs sm:text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                 {language === 'en' ? 'Active Outside' : language === 'ar' ? 'خارج المدرسة' : 'Di Luar Sekolah'}
               </span>
             </div>
-            <span className="text-[13px] font-black text-[var(--color-text)] bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-2.5 py-0.5 rounded-xl font-mono tabular-nums leading-none">
+            <span className="text-sm font-bold text-[var(--color-text)] bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-2.5 py-0.5 rounded-xl font-mono tabular-nums leading-none">
               {tNum(activeOutCount)}
             </span>
           </div>
@@ -565,11 +565,11 @@ export default function GateKioskPage() {
           <div className="flex items-center justify-between sm:justify-start gap-3 bg-[var(--color-surface)] border border-[var(--color-border)]/60 px-4 py-2 rounded-2xl shadow-sm w-full sm:w-auto">
             <div className="flex items-center gap-2">
               <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-              <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
+              <span className="text-xs sm:text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                 {language === 'en' ? 'Returned Today' : language === 'ar' ? 'عاد اليوم' : 'Kembali Hari Ini'}
               </span>
             </div>
-            <span className="text-[13px] font-black text-[var(--color-text)] bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-2.5 py-0.5 rounded-xl font-mono tabular-nums leading-none">
+            <span className="text-sm font-bold text-[var(--color-text)] bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-2.5 py-0.5 rounded-xl font-mono tabular-nums leading-none">
               {tNum(returnedCount)}
             </span>
           </div>
@@ -578,7 +578,7 @@ export default function GateKioskPage() {
         {/* Server Status Indicator */}
         <div className="flex items-center gap-2 bg-[var(--color-surface)]/40 px-3 py-1.5 rounded-full border border-[var(--color-border)]/40 mt-1 md:mt-0 shadow-sm shrink-0" dir="ltr">
           <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]" />
-          <span className="text-[8.5px] sm:text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-70">
+          <span className="text-[8.5px] sm:text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-70">
             LaporanMu Gate Kiosk • {language === 'en' ? 'ONLINE' : language === 'ar' ? 'متصل' : 'TERHUBUNG'}
           </span>
         </div>
@@ -605,21 +605,21 @@ export default function GateKioskPage() {
             placeholder={language === 'en' ? 'E.G. 0098765432' : language === 'ar' ? 'مثال: ٠٠٩٨٧٦٥٤٣٢' : 'CONTOH: 0098765432'}
             value={manualId}
             onChange={e => setManualId(e.target.value)}
-            className="w-full h-11 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-mono font-bold text-center focus:outline-none focus:border-[var(--color-primary)] transition-all uppercase tracking-wider"
+            className="w-full h-11 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-mono font-bold text-center focus:outline-none focus:border-[var(--color-primary)] transition-all uppercase tracking-wider"
           />
 
           <div className="flex items-center gap-3 pt-2">
             <button
               type="button"
               onClick={() => setShowManualModal(false)}
-              className="h-10 flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[11px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all active:scale-95"
+              className="h-10 flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all active:scale-95"
             >
               {language === 'en' ? 'Cancel' : language === 'ar' ? 'إلغاء' : 'Batal'}
             </button>
             <button
               type="submit"
               disabled={!manualId || manualId.trim() === ''}
-              className="h-10 flex-1 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black uppercase tracking-widest hover:opacity-95 transition-all active:scale-95 disabled:opacity-50"
+              className="h-10 flex-1 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:opacity-95 transition-all active:scale-95 disabled:opacity-50"
             >
               {language === 'en' ? 'Submit' : language === 'ar' ? 'إرسال' : 'Proses'}
             </button>

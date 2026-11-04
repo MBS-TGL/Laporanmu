@@ -66,11 +66,11 @@ function TaskUploadCard({ tasks, submissions, onSubmit, submittingId, online }) 
   return (
     <section aria-label="Tugas KBM" className="rounded-2xl border border-[var(--color-primary)]/30 bg-[var(--color-surface)] overflow-hidden">
       <header className="px-4 py-3 border-b border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5">
-        <h3 className="text-sm font-black text-[var(--color-text)] flex items-center gap-2">
+        <h3 className="text-sm font-bold text-[var(--color-text)] flex items-center gap-2">
           <BookOpenCheck className="w-4 h-4 text-[var(--color-primary)]" />
           Tugas KBM Hari Ini ({tasks.length})
         </h3>
-        <p className="text-[11px] text-[var(--color-text-muted)]">Kerjakan, foto hasilnya, lalu kirim lewat sini.</p>
+        <p className="text-xs text-[var(--color-text-muted)]">Kerjakan, foto hasilnya, lalu kirim lewat sini.</p>
       </header>
       <div className="divide-y divide-[var(--color-border)]">
         {tasks.map((t) => {
@@ -86,12 +86,12 @@ function TaskUploadCard({ tasks, submissions, onSubmit, submittingId, online }) 
                 className="w-full flex items-center justify-between gap-2 text-left min-h-[44px]"
               >
                 <span className="min-w-0">
-                  <span className="block text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)]">{t.subject}</span>
+                  <span className="block text-xs font-bold uppercase tracking-wide text-[var(--color-primary)]">{t.subject}</span>
                   <span className="block text-sm font-bold text-[var(--color-text)] truncate">{t.title}</span>
                 </span>
                 <span className="flex items-center gap-1.5 shrink-0">
                   {sub?.status === 'dinilai' && (
-                    <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600">
+                    <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600">
                       {sub.score != null ? `Nilai ${sub.score}` : 'Dinilai'}
                     </span>
                   )}
@@ -105,7 +105,7 @@ function TaskUploadCard({ tasks, submissions, onSubmit, submittingId, online }) 
               {open && (
                 <div className="mt-2 space-y-3 pb-1">
                   {t.description && <p className="text-xs text-[var(--color-text-muted)] whitespace-pre-wrap">{t.description}</p>}
-                  <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-[var(--color-text-muted)]">
+                  <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-[var(--color-text-muted)]">
                     {t.due_date && <span>Tenggat: {formatTanggalPendek(t.due_date)}</span>}
                     {t.target_tahfidz?.surah && <span>Tahfidz: {t.target_tahfidz.surah}{t.target_tahfidz.ayat ? ` : ${t.target_tahfidz.ayat}` : ''}</span>}
                     {t.target_wafa?.jilid && <span>Wafa: jilid {t.target_wafa.jilid}{t.target_wafa.halaman ? ` hal. ${t.target_wafa.halaman}` : ''}</span>}
@@ -170,13 +170,13 @@ function TaskUploadCard({ tasks, submissions, onSubmit, submittingId, online }) 
                   />
 
                   {!online && (
-                    <p className="text-[11px] text-amber-600">Sedang offline — foto hanya bisa dikirim saat online. Isian checklist tetap tersimpan otomatis.</p>
+                    <p className="text-xs text-amber-600">Sedang offline — foto hanya bisa dikirim saat online. Isian checklist tetap tersimpan otomatis.</p>
                   )}
                   {msg[t.id] && msg[t.id] !== 'ok' && (
-                    <p className="text-[11px] text-[var(--color-danger)]">{msg[t.id]}</p>
+                    <p className="text-xs text-[var(--color-danger)]">{msg[t.id]}</p>
                   )}
                   {msg[t.id] === 'ok' && (
-                    <p className="text-[11px] text-emerald-600 font-bold">Terkirim. Guru akan memeriksa dan memberi nilai.</p>
+                    <p className="text-xs text-emerald-600 font-bold">Terkirim. Guru akan memeriksa dan memberi nilai.</p>
                   )}
                   {sub?.teacher_comment && (
                     <p className="text-xs p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-[var(--color-text)]">

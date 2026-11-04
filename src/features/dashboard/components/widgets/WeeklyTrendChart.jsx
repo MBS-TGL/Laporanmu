@@ -14,7 +14,7 @@ export const WeeklyTrendChart = memo(function WeeklyTrendChart({ chartData, load
         <div className="bg-surface border border-border rounded-[1.5rem] p-5 sm:p-6 flex flex-col h-full relative z-10 hover:shadow-md transition-shadow duration-500 min-h-[400px]">
             <div className="flex items-center justify-between mb-5">
                 <div>
-                    <p className="text-base font-black text-[var(--color-text)]">Tren Mingguan</p>
+                    <p className="text-base font-bold text-[var(--color-text)]">Tren Mingguan</p>
                     <p className="text-xs text-[var(--color-text-muted)] opacity-75 mt-0.5">7 hari terakhir</p>
                 </div>
                 {!loading && (

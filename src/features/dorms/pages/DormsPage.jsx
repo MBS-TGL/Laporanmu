@@ -76,7 +76,7 @@ export default function DormsPage() {
 
     return (
         <DashboardLayout>
-            <div className="p-4 sm:p-6 space-y-5">
+            <div className="space-y-5">
                 {/* --- HEADER --- */}
                 <PageHeader
                     badge={t('dorms.badge')}
@@ -131,7 +131,7 @@ export default function DormsPage() {
                                                 </div>
                                                 <div className="text-left">
                                                     <p className="text-xs font-bold leading-tight">{t('dorms.exportDormData')}</p>
-                                                    <p className="text-[10px] text-[var(--color-text-muted)] font-medium uppercase tracking-wider mt-0.5">xlsx / csv / pdf</p>
+                                                    <p className="text-xs text-[var(--color-text-muted)] font-medium uppercase tracking-wider mt-0.5">xlsx / csv / pdf</p>
                                                 </div>
                                             </button>
                                             <div className="h-px bg-[var(--color-border)] my-1" />
@@ -144,7 +144,7 @@ export default function DormsPage() {
                                                 </div>
                                                 <div className="text-left">
                                                     <p className="text-xs font-bold leading-tight">{t('dorms.importPlotting')}</p>
-                                                    <p className="text-[10px] text-[var(--color-text-muted)] font-medium uppercase tracking-wider mt-0.5">xlsx / csv</p>
+                                                    <p className="text-xs text-[var(--color-text-muted)] font-medium uppercase tracking-wider mt-0.5">xlsx / csv</p>
                                                 </div>
                                             </button>
                                         </div>
@@ -180,7 +180,7 @@ export default function DormsPage() {
                 />
 
                 {/* --- STATS CAROUSEL / STAT CARDS --- */}
-                <StatsCarousel count={4} className="mb-5">
+                <StatsCarousel count={4}>
                     <StatCard
                         onClick={() => { setActiveTab('plotting'); data.setSelectedRoomTab('All'); }}
                         isActive={activeTab === 'plotting' && data.selectedRoomTab === 'All'}
@@ -226,14 +226,14 @@ export default function DormsPage() {
                 <div className="flex gap-1 sm:gap-1.5 p-1 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] w-full sm:w-fit overflow-x-auto scrollbar-hide shrink-0">
                     <button
                         onClick={() => setActiveTab('plotting')}
-                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'plotting' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'plotting' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                     >
                         <Bed className="w-3.5 h-3.5 shrink-0" />
                         <span>{t('dorms.tabPlotting')}</span>
                     </button>
                     <button
                         onClick={() => setActiveTab('kelola_kamar')}
-                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'kelola_kamar' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                        className={`flex-1 sm:flex-none h-9 px-6 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'kelola_kamar' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                     >
                         <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
                         <span>{t('dorms.tabManage')}</span>

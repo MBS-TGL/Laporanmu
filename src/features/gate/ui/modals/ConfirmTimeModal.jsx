@@ -33,9 +33,9 @@ export default function ConfirmTimeModal({ log, onConfirm, onCancel }) {
       mobileVariant="bottom-sheet"
       footer={
         <div className="flex items-center w-full gap-3">
-          <button onClick={onCancel} className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black uppercase tracking-wider hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all shrink-0">{tp('modalConfirmCancel').toUpperCase()}</button>
+          <button onClick={onCancel} className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold uppercase tracking-wider hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all shrink-0">{tp('modalConfirmCancel').toUpperCase()}</button>
           <div className="flex-1" />
-          <button onClick={() => onConfirm(time)} className={`h-10 px-6 rounded-xl text-white text-[10px] font-black uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-2 shrink-0 ${colorCls}`}>
+          <button onClick={() => onConfirm(time)} className={`h-10 px-6 rounded-xl text-white text-xs font-bold uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-2 shrink-0 ${colorCls}`}>
             <Check className="w-3.5 h-3.5" />
             <span>{`${tp('modalConfirmSave')} ${label}`.toUpperCase()}</span>
           </button>
@@ -44,8 +44,8 @@ export default function ConfirmTimeModal({ log, onConfirm, onCancel }) {
     >
       <div className="space-y-4">
         <div className="p-3 bg-[var(--color-surface-alt)]/30 border border-[var(--color-border)] rounded-xl">
-          <p className="text-[12px] font-black text-[var(--color-primary)] mb-1">{log.visitor_name}</p>
-          <p className="text-[10px] text-[var(--color-text-muted)] font-medium leading-snug">{log.purpose}</p>
+          <p className="text-xs font-bold text-[var(--color-primary)] mb-1">{log.visitor_name}</p>
+          <p className="text-xs text-[var(--color-text-muted)] font-medium leading-snug">{log.purpose}</p>
         </div>
         <TimeInput value={time} onChange={setTime} label={`${tp('modalConfirmTimeLabel')} ${label}`} clearable={false} />
       </div>

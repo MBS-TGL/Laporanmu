@@ -307,7 +307,7 @@ export default function DashboardPage() {
 
     return (
         <DashboardLayout title="Dashboard">
-            <div ref={dashboardRef} className="p-4 md:p-6 max-w-[1800px] mx-auto">
+            <div ref={dashboardRef}>
 
                 {/* ── PAGE HEADER ── */}
                 <PageHeader
@@ -338,7 +338,7 @@ export default function DashboardPage() {
                                 className="h-9.5 sm:h-10 w-9 sm:w-auto sm:px-3.5 rounded-xl border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
                                 title="Download Laporan PDF"
                             >
-                                <FileText className="text-sm" />
+                                <FileText className="w-4 h-4" />
                                 <span className="text-xs font-bold uppercase tracking-wider hidden md:inline">
                                     Export Summary
                                 </span>
@@ -352,7 +352,7 @@ export default function DashboardPage() {
                                 className={`h-9.5 sm:h-10 w-9 sm:w-auto sm:px-3.5 rounded-xl border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] ${isRefreshing ? 'opacity-50 cursor-not-allowed scale-95' : ''}`}
                                 title="Refresh Data"
                             >
-                                <RotateCw className={`text-sm ${isRefreshing ? 'animate-spin' : ''}`} />
+                                <RotateCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
                                 <span className="text-xs font-bold uppercase tracking-wider hidden md:inline">
                                     Refresh
                                 </span>
@@ -362,7 +362,7 @@ export default function DashboardPage() {
                 />
 
                 {/* ── STATS CAROUSEL ── */}
-                <div className="min-h-[120px] mb-5">
+                <div className="min-h-[120px] mb-4">
                     <StatsCarousel count={STATS.length}>
                         {STATS.map((stat, idx) => (
                             <StatCard

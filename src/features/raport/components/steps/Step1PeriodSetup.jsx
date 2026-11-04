@@ -69,8 +69,8 @@ export default function Step1PeriodSetup({
                             <School className="text-indigo-500 w-5 h-5" />
                         </div>
                         <div>
-                            <h3 className="text-sm font-black text-[var(--color-text)]">Pilih Kelas</h3>
-                            <p className="text-[11px] text-[var(--color-text-muted)] font-medium">
+                            <h3 className="text-sm font-bold text-[var(--color-text)]">Pilih Kelas</h3>
+                            <p className="text-xs text-[var(--color-text-muted)] font-medium">
                                 Langkah 1: Pilih kelas aktif untuk mulai mengisi atau mencetak {rtObj.name.toLowerCase()}.
                             </p>
                         </div>
@@ -102,7 +102,7 @@ export default function Step1PeriodSetup({
                                     key={opt.id}
                                     type="button"
                                     onClick={() => setClassSelectionType(opt.id)}
-                                    className={`h-10 px-4 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-2 ${
+                                    className={`h-10 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
                                         classSelectionType === opt.id
                                             ? 'bg-indigo-600 text-white shadow-md'
                                             : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white dark:hover:bg-slate-800'
@@ -120,7 +120,7 @@ export default function Step1PeriodSetup({
 
                     {/* Grade Filters */}
                     <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-2xl">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mr-2">
+                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mr-2">
                             Tingkat Kelas:
                         </span>
                         {[
@@ -134,7 +134,7 @@ export default function Step1PeriodSetup({
                                 key={opt.id}
                                 type="button"
                                 onClick={() => setClassSelectionGrade(opt.id)}
-                                className={`h-8 px-3.5 rounded-lg text-[9px] font-black border transition-all ${
+                                className={`h-8 px-3.5 rounded-lg text-xs font-bold border transition-all ${
                                     classSelectionGrade === opt.id
                                         ? 'bg-indigo-500/10 border-indigo-500/40 text-indigo-600 shadow-sm'
                                         : 'border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface)] hover:border-indigo-500/25 hover:text-indigo-600'
@@ -181,7 +181,7 @@ export default function Step1PeriodSetup({
                                     >
                                         {/* Leading Circle with Initial / Checkmark */}
                                         <div
-                                            className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 font-black text-xs transition-all
+                                            className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 font-bold text-xs transition-all
                                             ${isEmpty
                                                 ? 'bg-slate-200 text-slate-400'
                                                 : isSelected
@@ -197,23 +197,23 @@ export default function Step1PeriodSetup({
                                         {/* Core Info */}
                                         <div className="min-w-0 flex-1">
                                             <div className="flex items-center justify-between gap-2 mb-1">
-                                                <span className={`text-[12px] font-black transition-colors truncate ${isSelected ? 'text-indigo-600' : 'text-[var(--color-text)]'}`}>
+                                                <span className={`text-xs font-bold transition-colors truncate ${isSelected ? 'text-indigo-600' : 'text-[var(--color-text)]'}`}>
                                                     {cls.name}
                                                 </span>
                                                 {isEmpty ? (
-                                                    <span className="text-[7px] font-black px-1.5 py-0.5 rounded-md bg-rose-500/10 text-rose-500 border border-rose-500/20 shrink-0">
+                                                    <span className="text-[7px] font-bold px-1.5 py-0.5 rounded-md bg-rose-500/10 text-rose-500 border border-rose-500/20 shrink-0">
                                                         Kosong
                                                     </span>
                                                 ) : (
-                                                    <span className={`text-[7px] font-black px-1.5 py-0.5 rounded-md border shrink-0 ${isBoarding ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20'}`}>
+                                                    <span className={`text-[7px] font-bold px-1.5 py-0.5 rounded-md border shrink-0 ${isBoarding ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20'}`}>
                                                         {isBoarding ? 'Boarding' : 'Reguler'}
                                                     </span>
                                                 )}
                                             </div>
                                             <div className="flex items-center gap-2 opacity-70">
-                                                <p className="text-[9.5px] font-bold text-[var(--color-text-muted)] truncate">{teacher}</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] truncate">{teacher}</p>
                                                 <div className="w-1 h-1 rounded-full bg-[var(--color-border)] shrink-0" />
-                                                <p className={`text-[9.5px] font-black shrink-0 ${isEmpty ? 'text-rose-500 font-bold' : 'text-indigo-500'}`}>
+                                                <p className={`text-xs font-bold shrink-0 ${isEmpty ? 'text-rose-500 font-bold' : 'text-indigo-500'}`}>
                                                     {studentCount} Siswa
                                                 </p>
                                             </div>
@@ -228,7 +228,7 @@ export default function Step1PeriodSetup({
                 <div className="flex gap-2 sm:gap-4 pt-4 border-t border-[var(--color-border)]">
                     <button
                         onClick={() => setStep(1)} // Go back to class selection
-                        className="h-12 px-4 rounded-2xl border border-[var(--color-border)] text-xs sm:text-sm font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-2 shrink-0"
+                        className="h-12 px-4 rounded-2xl border border-[var(--color-border)] text-xs sm:text-sm font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-2 shrink-0"
                     >
                         <ArrowLeft className="w-3.5 h-3.5 mr-1.5" /> <span className="hidden sm:inline">Kembali</span>
                     </button>
@@ -243,7 +243,7 @@ export default function Step1PeriodSetup({
                             setLang(rtObj.defaultLang)
                             if (cls?.metadata?.homeroom_teacher) setMusyrif(cls.metadata.homeroom_teacher)
                         }}
-                        className={`flex-1 h-12 rounded-2xl text-white text-xs sm:text-sm font-black shadow-lg transition-all flex items-center justify-center gap-2 overflow-hidden px-2
+                        className={`flex-1 h-12 rounded-2xl text-white text-xs sm:text-sm font-bold shadow-lg transition-all flex items-center justify-center gap-2 overflow-hidden px-2
                             ${!tempSelectedClassId
                                 ? 'bg-slate-300 dark:bg-slate-700 cursor-not-allowed shadow-none'
                                 : 'bg-emerald-500 hover:brightness-110 active:scale-95'
@@ -265,8 +265,8 @@ export default function Step1PeriodSetup({
                         <ClipboardList className="text-emerald-500 w-5 h-5" />
                     </div>
                     <div>
-                        <h3 className="text-sm font-black text-[var(--color-text)]">Setup {rtObj.name}</h3>
-                        <p className="text-[11px] text-[var(--color-text-muted)] font-medium">
+                        <h3 className="text-sm font-bold text-[var(--color-text)]">Setup {rtObj.name}</h3>
+                        <p className="text-xs text-[var(--color-text-muted)] font-medium">
                             Langkah 2: Tentukan periode dan bahasa pengantar untuk raport kelas ini.
                         </p>
                     </div>
@@ -276,19 +276,19 @@ export default function Step1PeriodSetup({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-2">
+                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] flex items-center gap-2">
                             <School className="w-3.5 h-3.5 opacity-60 mr-1" /> Kelas Terpilih
                         </label>
                         <div className="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 flex items-center justify-between gap-4">
                             <div className="flex items-center gap-3 min-w-0 flex-1">
-                                <div className="w-10 h-10 rounded-[1.2rem] bg-emerald-500 flex items-center justify-center text-white text-xs font-black shadow-lg shrink-0">
+                                <div className="w-10 h-10 rounded-[1.2rem] bg-emerald-500 flex items-center justify-center text-white text-xs font-bold shadow-lg shrink-0">
                                     {selectedClass?.name?.charAt(0) || 'K'}
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-[14px] font-black text-[var(--color-text)] truncate leading-tight">
+                                    <p className="text-[14px] font-bold text-[var(--color-text)] truncate leading-tight">
                                         {selectedClass?.name || 'Memuat nama kelas...'}
                                     </p>
-                                    <p className="text-[10px] text-emerald-600/70 font-bold uppercase tracking-wider">
+                                    <p className="text-xs text-emerald-600/70 font-bold uppercase tracking-wider">
                                         {classProgress[selectedClass?.id]?.total || 0} Siswa Terdaftar
                                     </p>
                                 </div>
@@ -298,7 +298,7 @@ export default function Step1PeriodSetup({
                                     setSelectedClassId('')
                                     setMusyrif('')
                                 }}
-                                className="h-9 px-4 rounded-xl border border-emerald-500/30 bg-white text-emerald-600 text-[11px] font-black hover:bg-emerald-500/10 transition-all shrink-0 shadow-sm active:scale-95"
+                                className="h-9 px-4 rounded-xl border border-emerald-500/30 bg-white text-emerald-600 text-xs font-bold hover:bg-emerald-500/10 transition-all shrink-0 shadow-sm active:scale-95"
                             >
                                 Ganti
                             </button>
@@ -308,7 +308,7 @@ export default function Step1PeriodSetup({
                     {rtObj.periodType === 'monthly' ? (
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Bulan</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Bulan</label>
                                 <RichSelect
                                     value={selectedMonth}
                                     onChange={val => setSelectedMonth(Number(val))}
@@ -317,7 +317,7 @@ export default function Step1PeriodSetup({
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Tahun</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Tahun</label>
                                 <RichSelect
                                     value={selectedYear}
                                     onChange={val => setSelectedYear(Number(val))}
@@ -329,7 +329,7 @@ export default function Step1PeriodSetup({
                     ) : (
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Semester</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Semester</label>
                                 <RichSelect
                                     value={selectedSemester}
                                     onChange={val => setSelectedSemester(Number(val))}
@@ -338,7 +338,7 @@ export default function Step1PeriodSetup({
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Tahun Ajaran</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Tahun Ajaran</label>
                                 <RichSelect
                                     value={academicYear}
                                     onChange={val => setAcademicYear(val)}
@@ -353,14 +353,14 @@ export default function Step1PeriodSetup({
                 <div className="space-y-4">
                     <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                 Musyrif / Wali Kelas
                             </label>
                             {homeroomTeacherName && musyrif !== homeroomTeacherName && (
                                 <button
                                     type="button"
                                     onClick={() => setMusyrif(homeroomTeacherName)}
-                                    className="text-[9px] font-black text-indigo-500 hover:underline"
+                                    className="text-xs font-bold text-indigo-500 hover:underline"
                                 >
                                     Reset ke Wali Kelas
                                 </button>
@@ -376,13 +376,13 @@ export default function Step1PeriodSetup({
 
                     <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                 Template Bahasa
                             </label>
                             <button
                                 type="button"
                                 onClick={() => setShowTemplatePreviewModal(true)}
-                                className="text-[9px] font-black text-indigo-500 hover:underline flex items-center gap-1"
+                                className="text-xs font-bold text-indigo-500 hover:underline flex items-center gap-1"
                             >
                                 <Eye className="w-3.5 h-3.5 mr-1.5" /> Lihat Perbedaan Template
                             </button>
@@ -402,7 +402,7 @@ export default function Step1PeriodSetup({
                                     }`}
                                 >
                                     <div className="flex items-center justify-between mb-1">
-                                        <span className={`text-base font-black ${lang === opt.v ? 'text-indigo-600' : 'text-[var(--color-text)]'}`}>
+                                        <span className={`text-base font-bold ${lang === opt.v ? 'text-indigo-600' : 'text-[var(--color-text)]'}`}>
                                             {opt.label}
                                         </span>
                                         {(() => {
@@ -416,7 +416,7 @@ export default function Step1PeriodSetup({
                                             )
                                         })()}
                                     </div>
-                                    <p className="text-[10px] text-[var(--color-text-muted)] font-medium leading-tight">{opt.sub}</p>
+                                    <p className="text-xs text-[var(--color-text-muted)] font-medium leading-tight">{opt.sub}</p>
                                 </button>
                             ))}
                         </div>
@@ -430,7 +430,7 @@ export default function Step1PeriodSetup({
                         setSelectedClassId('')
                         setMusyrif('')
                     }}
-                    className="h-12 px-4 rounded-2xl border border-[var(--color-border)] text-xs sm:text-sm font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-2 shrink-0"
+                    className="h-12 px-4 rounded-2xl border border-[var(--color-border)] text-xs sm:text-sm font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-2 shrink-0"
                 >
                     <ArrowLeft className="w-3.5 h-3.5 mr-1.5" /> <span className="hidden sm:inline">Kembali</span>
                 </button>
@@ -441,7 +441,7 @@ export default function Step1PeriodSetup({
                         if (ok) setStep(3)
                     }}
                     disabled={!selectedClassId || loading}
-                    className="flex-1 h-12 rounded-2xl bg-emerald-500 text-white text-xs sm:text-sm font-black shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 overflow-hidden px-2"
+                    className="flex-1 h-12 rounded-2xl bg-emerald-500 text-white text-xs sm:text-sm font-bold shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 overflow-hidden px-2"
                 >
                     {loading ? (
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />

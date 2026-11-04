@@ -82,9 +82,9 @@ const DebouncedSearchInput = memo(({ searchQuery, onSearch, inputRef, isLoading 
         <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--color-text-muted)] text-sm group-focus-within:text-[var(--color-primary)] transition-colors">
                 {isLoading ? (
-                    <LoaderCircle className="animate-spin text-xs text-[var(--color-primary)]" />
+                    <LoaderCircle className="w-4 h-4 animate-spin text-[var(--color-primary)]" />
                 ) : (
-                    <Search />
+                    <Search className="w-4 h-4" />
                 )}
             </div>
             <input
@@ -834,23 +834,23 @@ export default function ClassesPage() {
     return (
         <DashboardLayout title="Data Kelas" hideHeader={isAnyModalOpen} hideSidebar={isAnyModalOpen}>
             <style>{isAnyModalOpen ? ` .top-nav, .sidebar, .floating-dock { display: none !important; } main { padding-top: 0 !important; } ` : ''}</style>
-            <div className="p-4 md:p-6 space-y-4 max-w-[1800px] mx-auto">
+            <div className="space-y-4">
 
                 {/* Read-only Banner */}
                 {!canEdit && (
                     <div className="px-4 py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center gap-2">
-                        <EyeOff className="text-rose-500 shrink-0 text-xs" />
-                        <p className="text-[11px] font-bold text-rose-600">Mode Read-only — Edit data kelas dinonaktifkan oleh administrator.</p>
+                        <EyeOff className="w-4 h-4 text-rose-500 shrink-0" />
+                        <p className="text-xs font-bold text-rose-600">Mode Read-only — Edit data kelas dinonaktifkan oleh administrator.</p>
                     </div>
                 )}
 
                 {/* Bulk Action Bar */}
                 {selectedIds.length > 0 && (
                     <div className="mb-4 px-4 py-3 rounded-2xl bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-between gap-3 flex-wrap animate-in slide-in-from-top-2">
-                        <p className="text-sm font-black text-[var(--color-primary)] tracking-tight">{selectedIds.length} kelas dipilih</p>
+                        <p className="text-sm font-bold text-[var(--color-primary)] tracking-tight">{selectedIds.length} kelas dipilih</p>
                         <div className="flex items-center gap-2 flex-wrap">
-                            <button onClick={() => setIsBulkDeleteOpen(true)} className="h-8 px-4 rounded-xl bg-red-500/10 text-red-600 text-[10px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all flex items-center gap-2"><Trash2 /> Hapus</button>
-                            <button onClick={() => setSelectedIds([])} className="h-8 px-4 rounded-xl bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest hover:text-[var(--color-text)] transition-all flex items-center gap-2"><X /> Batal</button>
+                            <button onClick={() => setIsBulkDeleteOpen(true)} className="h-8 px-4 rounded-xl bg-red-500/10 text-red-600 text-xs font-bold uppercase tracking-wide hover:bg-red-500 hover:text-white transition-all flex items-center gap-2"><Trash2 className="w-4 h-4" /> Hapus</button>
+                            <button onClick={() => setSelectedIds([])} className="h-8 px-4 rounded-xl bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:text-[var(--color-text)] transition-all flex items-center gap-2"><X className="w-4 h-4" /> Batal</button>
                         </div>
                     </div>
                 )}
@@ -870,7 +870,7 @@ export default function ClassesPage() {
                             className={`h-9 w-9 rounded-lg border flex items-center justify-center text-sm transition-all active:scale-95 ${isHeaderMenuOpen ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
                             title="Aksi lainnya"
                         >
-                            <SlidersHorizontal />
+                            <SlidersHorizontal className="w-4 h-4" />
                         </button>
 
                         {/* Portaled Header Menu Dropdown */}
@@ -888,37 +888,37 @@ export default function ClassesPage() {
                                         left: Math.max(10, headerMenuRect.right - 224)
                                     }}
                                 >
-                                    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">Data</p>
+                                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-2">Data</p>
                                     <button onClick={() => { setIsHeaderMenuOpen(false); setImportStep(1); setImportPreview([]); setImportFileName(''); setIsImportModalOpen(true) }}
                                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                         <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <FileInput className="text-xs" />
+                                            <FileInput className="w-4 h-4" />
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-[11px] font-black leading-tight">Import CSV / Excel</p>
-                                            <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Unggah data kelas masal dari file Excel/CSV</p>
+                                            <p className="text-xs font-bold leading-tight">Import CSV / Excel</p>
+                                            <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Unggah data kelas masal dari file Excel/CSV</p>
                                         </div>
                                     </button>
                                     <button onClick={() => { setIsHeaderMenuOpen(false); setIsExportModalOpen(true) }}
                                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                         <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <FileOutput className="text-xs" />
+                                            <FileOutput className="w-4 h-4" />
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-[11px] font-black leading-tight">Export Data</p>
-                                            <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Cadangkan seluruh database ke format Excel</p>
+                                            <p className="text-xs font-bold leading-tight">Export Data</p>
+                                            <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Cadangkan seluruh database ke format Excel</p>
                                         </div>
                                     </button>
                                     <div className="h-px bg-[var(--color-border)] my-1 mx-2" />
-                                    <p className="px-3 py-2 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Manajemen</p>
+                                    <p className="px-3 py-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Manajemen</p>
                                     <button onClick={() => { setIsHeaderMenuOpen(false); fetchArchived(); setIsArchivedModalOpen(true) }}
                                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                         <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <Archive className="text-xs" />
+                                            <Archive className="w-4 h-4" />
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-[11px] font-black leading-tight">Arsip Kelas</p>
-                                            <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Lihat & pulihkan data kelas tidak aktif</p>
+                                            <p className="text-xs font-bold leading-tight">Arsip Kelas</p>
+                                            <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Lihat & pulihkan data kelas tidak aktif</p>
                                         </div>
                                     </button>
                                 </div>
@@ -937,7 +937,7 @@ export default function ClassesPage() {
                                 }`}
                             title="Keyboard Shortcuts (?)"
                         >
-                            <Keyboard className="text-sm" />
+                            <Keyboard className="w-4 h-4" />
                         </button>
 
                         {/* Portaled Keyboard Shortcuts Dropdown */}
@@ -952,8 +952,8 @@ export default function ClassesPage() {
                                     }}
                                 >
                                     <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
-                                        <p className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text)]">Keyboard Shortcuts</p>
-                                        <span className="text-[9px] text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
+                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Keyboard Shortcuts</p>
+                                        <span className="text-xs text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
                                     </div>
                                     <div className="p-3 space-y-0.5">
                                         {[
@@ -971,13 +971,13 @@ export default function ClassesPage() {
                                             { keys: ['X'], label: 'Reset semua filter' },
                                             { keys: ['?'], label: 'Tampilkan shortcut ini' },
                                         ].map((item, i) => item.section ? (
-                                            <p key={i} className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
+                                            <p key={i} className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
                                         ) : (
                                             <div key={i} className="flex items-center justify-between px-1 py-1 rounded-lg hover:bg-[var(--color-surface-alt)] transition-all">
-                                                <span className="text-[11px] font-semibold text-[var(--color-text)]">{item.label}</span>
+                                                <span className="text-xs font-semibold text-[var(--color-text)]">{item.label}</span>
                                                 <div className="flex items-center gap-1">
                                                     {item.keys.map((k, ki) => (
-                                                        <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[9px] font-black text-[var(--color-text-muted)] font-mono">{k}</span>
+                                                        <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] font-mono">{k}</span>
                                                     ))}
                                                 </div>
                                             </div>
@@ -1010,15 +1010,15 @@ export default function ClassesPage() {
                             className={`h-9 w-9 sm:w-auto sm:px-3 rounded-lg border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 ${isPrivacyMode ? 'bg-amber-500/10 border-amber-500/30 text-amber-600' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'} `}
                             title={isPrivacyMode ? "Matikan Mode Privasi" : "Aktifkan Mode Privasi"}
                         >
-                            {isPrivacyMode ? <EyeOff className="text-sm" /> : <Eye className="text-sm" />}
-                            <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline">
+                            {isPrivacyMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                            <span className="text-xs font-bold uppercase tracking-wide hidden md:inline">
                                 Privasi
                             </span>
                         </button>
 
                         {/* Add button */}
-                        <button onClick={handleAdd} disabled={!canEdit} className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10">
-                            <Plus className="text-[10px]" />
+                        <button onClick={handleAdd} disabled={!canEdit} className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10">
+                            <Plus className="w-4 h-4" />
                             <span>{canEdit ? 'Tambah Kelas' : 'Read-only'}</span>
                         </button>
                         </>
@@ -1064,11 +1064,11 @@ export default function ClassesPage() {
                                         : ins.iconBg
                                     }`}
                                 >
-                                    <ins.icon className={`text-[10px] ${ins.active ? 'text-white' : ins.iconColor}`} />
+                                    <ins.icon className={`text-xs ${ins.active ? 'text-white' : ins.iconColor}`} />
                                 </div>
                                 <div className="text-left whitespace-nowrap">
-                                    <p className={`text-[10px] font-black leading-none ${ins.color}`}>{ins.label}</p>
-                                    <p className="text-[9px] text-[var(--color-text-muted)] font-bold mt-0.5">{ins.desc}</p>
+                                    <p className={`text-xs font-bold leading-none ${ins.color}`}>{ins.label}</p>
+                                    <p className="text-xs text-[var(--color-text-muted)] font-bold mt-0.5">{ins.desc}</p>
                                 </div>
                             </button>
                         ))}
@@ -1103,12 +1103,12 @@ export default function ClassesPage() {
                                     <button
                                         key={s.id}
                                         onClick={() => { setFilterProgram(s.id); setPage(1) }}
-                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${filterProgram === s.id
+                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${filterProgram === s.id
                                             ? `${s.activeCls || 'bg-[var(--color-primary)] border-[var(--color-primary)]'} text-white`
                                             : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5 hover:text-[var(--color-primary)]'
                                             }`}
                                     >
-                                        <s.icon className={`text-[10px] ${filterProgram === s.id ? 'opacity-100' : 'opacity-30'}`} />
+                                        <s.icon className={`text-xs ${filterProgram === s.id ? 'opacity-100' : 'opacity-30'}`} />
                                         {s.label}
                                     </button>
                                 ))}
@@ -1126,12 +1126,12 @@ export default function ClassesPage() {
                                     <button
                                         key={g.id}
                                         onClick={g.onClick}
-                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${g.active
+                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${g.active
                                             ? `${g.activeCls} text-white`
                                             : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5 hover:text-[var(--color-primary)]'
                                             }`}
                                     >
-                                        <g.icon className={`text-[10px] ${g.active ? 'opacity-100' : 'opacity-30'}`} />
+                                        <g.icon className={`text-xs ${g.active ? 'opacity-100' : 'opacity-30'}`} />
                                         {g.label}
                                     </button>
                                 ))}
@@ -1144,12 +1144,12 @@ export default function ClassesPage() {
                             <div className="flex items-center gap-1.5 shrink-0">
                                 <button
                                     onClick={() => { setSortBy(sortBy === 'name' ? 'level' : sortBy === 'level' ? 'students' : 'name'); setPage(1) }}
-                                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${sortBy !== 'name'
+                                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${sortBy !== 'name'
                                         ? 'bg-amber-500 border-amber-500 text-white'
                                         : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-amber-500/30 hover:bg-amber-500/5 hover:text-amber-600'
                                         }`}
                                 >
-                                    <ArrowDownAZ className={`text-[10px] ${sortBy !== 'name' ? 'opacity-100' : 'opacity-30'}`} />
+                                    <ArrowDownAZ className={`w-4 h-4 ${sortBy !== 'name' ? 'opacity-100' : 'opacity-30'}`} />
                                     Urutkan: {sortBy === 'name' ? 'Nama A-Z' : sortBy === 'level' ? 'Tingkat' : 'Siswa Terbanyak'}
                                 </button>
                             </div>
@@ -1162,13 +1162,13 @@ export default function ClassesPage() {
                         <div className="flex items-center justify-end gap-2 shrink-0 lg:ml-auto">
                             <button
                                 onClick={toggleSelectAll}
-                                className={`h-9 px-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${selectedIds.length > 0 ? 'bg-indigo-500 border-indigo-500 text-white' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
+                                className={`h-9 px-3 rounded-xl border text-xs font-bold uppercase tracking-wide transition-all active:scale-95 flex items-center justify-center gap-2 ${selectedIds.length > 0 ? 'bg-indigo-500 border-indigo-500 text-white' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
                                 title="Pilih Semua / Batal"
                             >
-                                {selectedIds.length > 0 ? <CheckCheck /> : <SquareCheck />}
+                                {selectedIds.length > 0 ? <CheckCheck className="w-4 h-4" /> : <SquareCheck className="w-4 h-4" />}
                                 <span className="hidden xs:inline">{selectedIds.length > 0 ? 'Terpilih' : 'Pilih'}</span>
                                 {selectedIds.length > 0 && (
-                                    <span className="w-4 h-4 rounded-full bg-white/20 text-white text-[9px] font-black flex items-center justify-center">
+                                    <span className="w-4 h-4 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center">
                                         {selectedIds.length}
                                     </span>
                                 )}
@@ -1176,11 +1176,11 @@ export default function ClassesPage() {
 
                             <button
                                 onClick={() => setShowAdvFilter(!showAdvFilter)}
-                                className={`h-9 px-3 sm:px-4 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${showAdvFilter || activeFilterCount > 0 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
+                                className={`h-9 px-3 sm:px-4 rounded-xl border text-xs font-bold uppercase tracking-wide transition-all flex items-center justify-center gap-2 ${showAdvFilter || activeFilterCount > 0 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
                             >
-                                <SlidersHorizontal />
+                                <SlidersHorizontal className="w-4 h-4" />
                                 <span className="hidden xs:inline">Filter</span>
-                                {activeFilterCount > 0 && <span className="w-4 h-4 rounded-full bg-white/30 text-white text-[9px] font-black flex items-center justify-center">{activeFilterCount}</span>}
+                                {activeFilterCount > 0 && <span className="w-4 h-4 rounded-full bg-white/30 text-white text-xs font-bold flex items-center justify-center">{activeFilterCount}</span>}
                             </button>
                         </div>
                     </div>
@@ -1191,53 +1191,53 @@ export default function ClassesPage() {
                             <div className="flex flex-wrap gap-2">
                                 {searchQuery && (
                                     <button type="button" onClick={() => setSearchQuery('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-[10px] font-black text-[var(--color-text)]" title="Hapus pencarian">
-                                        <Search className="text-[10px] opacity-60" />
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-xs font-bold text-[var(--color-text)]" title="Hapus pencarian">
+                                        <Search className="w-4 h-4 opacity-60" />
                                         <span className="max-w-[180px] truncate">"{searchQuery}"</span>
                                         <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500 transition-colors">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterLevel && (
                                     <button type="button" onClick={() => setFilterLevel('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 text-[10px] font-black text-[var(--color-primary)]" title="Hapus filter tingkat">
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 text-xs font-bold text-[var(--color-primary)]" title="Hapus filter tingkat">
                                         <span className="opacity-70">Kelas</span> {filterLevel}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-[var(--color-primary)]/20 flex items-center justify-center text-[var(--color-primary)] opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterProgram && (
                                     <button type="button" onClick={() => setFilterProgram('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-[10px] font-black text-[var(--color-text)]" title="Hapus filter program">
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-xs font-bold text-[var(--color-text)]" title="Hapus filter program">
                                         {filterProgram}
                                         <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500 transition-colors">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterNoTeacher && (
                                     <button type="button" onClick={() => setFilterNoTeacher(false)}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-[10px] font-black text-amber-600" title="Hapus filter tanpa wali">
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-xs font-bold text-amber-600" title="Hapus filter tanpa wali">
                                         Tanpa Wali
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-amber-500/20 flex items-center justify-center text-amber-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterCrowded && (
                                     <button type="button" onClick={() => setFilterCrowded(false)}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-[10px] font-black text-blue-600" title="Hapus filter kelas padat">
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-xs font-bold text-blue-600" title="Hapus filter kelas padat">
                                         Kelas Padat
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-blue-500/20 flex items-center justify-center text-blue-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 <button type="button" onClick={resetAllFilters}
-                                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-red-500/20 bg-red-500/5 text-[10px] font-black text-red-600" title="Reset semua filter">
-                                    <RotateCcw className="text-[10px]" />
+                                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-red-500/20 bg-red-500/5 text-xs font-bold text-red-600" title="Reset semua filter">
+                                    <RotateCcw className="w-4 h-4" />
                                     Reset semua
                                 </button>
                             </div>
@@ -1250,16 +1250,16 @@ export default function ClassesPage() {
                             <div className="flex items-center justify-between mb-3">
                                 <div className="flex items-center gap-2.5">
                                     <div className="w-1 h-3.5 bg-indigo-500 rounded-full" />
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-600 flex items-center gap-2">
-                                        <SlidersHorizontal className="text-[9px] opacity-60" />
+                                    <span className="text-xs font-bold uppercase tracking-wide text-indigo-600 flex items-center gap-2">
+                                        <SlidersHorizontal className="w-4 h-4 opacity-60" />
                                         Filter Lanjutan
                                     </span>
                                 </div>
                                 <button
                                     onClick={resetAllFilters}
-                                    className="text-[9px] font-black uppercase tracking-widest text-red-500 hover:bg-red-50 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-100"
+                                    className="text-xs font-bold uppercase tracking-wide text-red-500 hover:bg-red-50 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-100"
                                 >
-                                    <RotateCcw className="text-[9px]" />
+                                    <RotateCcw className="w-4 h-4" />
                                     Reset Semua Filter
                                 </button>
                             </div>
@@ -1268,7 +1268,7 @@ export default function ClassesPage() {
                                 {/* Primary Grid: Selects */}
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                     <div>
-                                        <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Tingkat / Grade</label>
+                                        <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Tingkat / Grade</label>
                                         <RichSelect
                                             value={filterLevel}
                                             onChange={val => { setFilterLevel(val); setPage(1) }}
@@ -1281,7 +1281,7 @@ export default function ClassesPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Program</label>
+                                        <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Program</label>
                                         <RichSelect
                                             value={filterProgram}
                                             onChange={val => { setFilterProgram(val); setPage(1) }}
@@ -1294,7 +1294,7 @@ export default function ClassesPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Urutkan</label>
+                                        <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Urutkan</label>
                                         <RichSelect
                                             value={sortBy}
                                             onChange={val => { setSortBy(val); setPage(1) }}
@@ -1311,7 +1311,7 @@ export default function ClassesPage() {
 
                                 {/* Secondary Grid: Quick Filters */}
                                 <div>
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Menu Cepat & Aksi</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Menu Cepat & Aksi</label>
                                     <div className="flex gap-1.5 overflow-x-auto pb-1">
                                         {[
                                             { label: 'Semua', icon: School, active: !filterNoTeacher && !filterCrowded, onClick: () => { setFilterNoTeacher(false); setFilterCrowded(false); setSortBy('name') } },
@@ -1319,7 +1319,7 @@ export default function ClassesPage() {
                                             { label: 'Kelas Padat', icon: Users, active: filterCrowded, onClick: () => { setFilterCrowded(true); setFilterNoTeacher(false); setPage(1) } },
                                         ].map((s, i) => (
                                             <button key={i} onClick={s.onClick} className={`whitespace-nowrap h-9 px-3 rounded-xl border flex items-center gap-2 transition-all ${s.active ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-md' : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                                <s.icon className="text-[10px]" /><span className="text-[9px] font-black uppercase tracking-widest">{s.label}</span>
+                                                <s.icon className="text-xs" /><span className="text-xs font-bold uppercase tracking-wide">{s.label}</span>
                                             </button>
                                         ))}
                                     </div>
@@ -1338,7 +1338,7 @@ export default function ClassesPage() {
                             <div className="overflow-x-auto whitespace-nowrap hidden md:block">
                                 <table className="w-full text-left border-collapse text-sm">
                                     <thead className="bg-[var(--color-surface-alt)] sticky top-0 z-10 border-b border-[var(--color-border)]">
-                                        <tr className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                                        <tr className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                             <th className="px-6 py-4 w-12 text-center">
                                                 <input type="checkbox" checked={allSelected} ref={el => { if (el) el.indeterminate = someSelected }} onChange={toggleSelectAll} className="w-4 h-4 rounded border-[var(--color-border)] text-[var(--color-primary)] focus:ring-[var(--color-primary)] accent-[var(--color-primary)] cursor-pointer" />
                                             </th>
@@ -1373,10 +1373,10 @@ export default function ClassesPage() {
                                                     {isColMenuOpen && createPortal(
                                                         <div className={`absolute z-[9999] w-48 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 space-y-0.5 animate-in fade-in zoom-in-95 ${menuPos.showUp ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'}`}
                                                             style={{ top: menuPos.top, right: menuPos.right }}>
-                                                            <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">Atur Kolom</p>
+                                                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-2">Atur Kolom</p>
                                                             {[{ key: 'level', label: 'Tingkat' }, { key: 'program', label: 'Program Studi' }, { key: 'gender', label: 'Gender / Tipe' }, { key: 'teacher', label: 'Wali Kelas' }, { key: 'students', label: 'Jumlah Siswa' }, { key: 'year', label: 'Tahun Akademik' }].map(({ key, label }) => (
                                                                 <button key={key} onClick={() => toggleColumn(key)} className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] transition-all group text-left">
-                                                                    <span className="text-[11px] font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{label}</span>
+                                                                    <span className="text-xs font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{label}</span>
                                                                     <div className={`w-8 h-4.5 rounded-full transition-all flex items-center px-0.5 ${visibleCols[key] ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}`}>
                                                                         <div className={`w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-all ${visibleCols[key] ? 'translate-x-[14px]' : 'translate-x-0'}`} />
                                                                     </div>
@@ -1396,13 +1396,13 @@ export default function ClassesPage() {
                                                     <div className="w-full h-full flex flex-col items-center justify-center text-center mx-auto animate-in fade-in zoom-in-95 duration-700">
                                                         <div className="relative mb-6">
                                                             <div className="relative w-24 h-24 rounded-3xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-xl flex items-center justify-center">
-                                                                <Search className="text-4xl text-[var(--color-primary)]/30" />
+                                                                <Search className="w-6 h-6 text-[var(--color-primary)]/30" />
                                                                 <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-2xl bg-[var(--color-surface)] shadow-lg flex items-center justify-center border border-[var(--color-border)]">
-                                                                    <X className="text-red-500 text-sm" />
+                                                                    <X className="w-4 h-4 text-red-500" />
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <h3 className="text-base font-black text-[var(--color-text)] mb-2">Pencarian Tidak Ditemukan</h3>
+                                                        <h3 className="text-base font-bold text-[var(--color-text)] mb-2">Pencarian Tidak Ditemukan</h3>
                                                         <p className="text-xs font-bold text-[var(--color-text-muted)] max-w-sm leading-relaxed mb-6">
                                                             Tidak ditemukan kelas yang cocok dengan filter atau database masih kosong.
                                                         </p>
@@ -1410,7 +1410,7 @@ export default function ClassesPage() {
                                                             {searchQuery || filterLevel || filterProgram || filterNoTeacher || filterCrowded ? (
                                                                 <button
                                                                     onClick={resetAllFilters}
-                                                                    className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition"
+                                                                    className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition"
                                                                 >
                                                                     Reset Semua Filter
                                                                 </button>
@@ -1418,9 +1418,9 @@ export default function ClassesPage() {
                                                                 <button
                                                                     onClick={handleAdd}
                                                                     disabled={!canEdit}
-                                                                    className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 transition-all flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                                                                    className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide shadow-lg hover:brightness-110 transition-all flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
                                                                 >
-                                                                    <Plus />
+                                                                    <Plus className="w-4 h-4" />
                                                                     Tambah Kelas Pertama
                                                                 </button>
                                                             )}
@@ -1439,13 +1439,13 @@ export default function ClassesPage() {
                                     <div className="py-24 flex flex-col items-center justify-center text-center animate-in fade-in zoom-in-95 duration-700">
                                         <div className="relative mb-6">
                                             <div className="relative w-24 h-24 rounded-3xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-xl flex items-center justify-center">
-                                                <Search className="text-4xl text-[var(--color-primary)]/30" />
+                                                <Search className="w-6 h-6 text-[var(--color-primary)]/30" />
                                                 <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-2xl bg-[var(--color-surface)] shadow-lg flex items-center justify-center border border-[var(--color-border)]">
-                                                    <X className="text-red-500 text-sm" />
+                                                    <X className="w-4 h-4 text-red-500" />
                                                 </div>
                                             </div>
                                         </div>
-                                        <h3 className="text-lg font-black text-[var(--color-text)] mb-2">Pencarian Tidak Ditemukan</h3>
+                                        <h3 className="text-lg font-bold text-[var(--color-text)] mb-2">Pencarian Tidak Ditemukan</h3>
                                         <p className="text-xs font-bold text-[var(--color-text-muted)] max-w-[280px] leading-relaxed mb-6">
                                             Tidak ditemukan kelas yang cocok dengan filter atau database masih kosong.
                                         </p>
@@ -1453,7 +1453,7 @@ export default function ClassesPage() {
                                             {searchQuery || filterLevel || filterProgram || filterNoTeacher || filterCrowded ? (
                                                 <button
                                                     onClick={resetAllFilters}
-                                                    className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition"
+                                                    className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition"
                                                 >
                                                     Reset Semua Filter
                                                 </button>
@@ -1461,9 +1461,9 @@ export default function ClassesPage() {
                                                 <button
                                                     onClick={handleAdd}
                                                     disabled={!canEdit}
-                                                    className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 transition-all flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                                                    className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide shadow-lg hover:brightness-110 transition-all flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
                                                 >
-                                                    <Plus />
+                                                    <Plus className="w-4 h-4" />
                                                     Tambah Kelas Pertama
                                                 </button>
                                             )}
@@ -1494,13 +1494,13 @@ export default function ClassesPage() {
                 <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} title="Hapus Kelas" size="sm">
                     <div className="space-y-6">
                         <div className="p-4 bg-red-500/10 rounded-2xl flex items-center gap-4 text-red-500 border border-red-500/20 shadow-inner">
-                            <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center shrink-0 text-xl border border-red-500/30 animate-pulse"><Trash2 /></div>
-                            <div className="min-w-0"><h3 className="text-sm font-black uppercase tracking-wider">Konfirmasi Hapus</h3><p className="text-[10px] font-bold opacity-70 mt-1 uppercase tracking-widest">Penghapusan tidak dapat dibatalkan.</p></div>
+                            <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center shrink-0 text-xl border border-red-500/30 animate-pulse"><Trash2 className="w-6 h-6" /></div>
+                            <div className="min-w-0"><h3 className="text-sm font-bold uppercase tracking-wider">Konfirmasi Hapus</h3><p className="text-xs font-bold opacity-70 mt-1 uppercase tracking-wide">Penghapusan tidak dapat dibatalkan.</p></div>
                         </div>
-                        <p className="text-xs text-[var(--color-text)] leading-relaxed font-bold px-1">Yakin menghapus kelas <span className="text-red-500 font-black px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">{itemToDelete?.name}</span>? <span className="text-[10px] text-[var(--color-text-muted)] mt-2 block opacity-60">Siswa yang terdaftar akan kehilangan referensi kelas.</span></p>
+                        <p className="text-xs text-[var(--color-text)] leading-relaxed font-bold px-1">Yakin menghapus kelas <span className="text-red-500 font-bold px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">{itemToDelete?.name}</span>? <span className="text-xs text-[var(--color-text-muted)] mt-2 block opacity-60">Siswa yang terdaftar akan kehilangan referensi kelas.</span></p>
                         <div className="flex gap-3 pt-2">
-                            <button onClick={() => setIsDeleteModalOpen(false)} className="h-11 flex-1 rounded-xl bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] text-[var(--color-text)] font-black text-[10px] uppercase tracking-widest transition-all">BATAL</button>
-                                <button onClick={handleDeleteConfirm} disabled={submitting} className="h-11 flex-[1.5] rounded-xl bg-red-500 hover:bg-red-600 text-white font-black text-[10px] uppercase tracking-widest shadow-lg transition-all">{submitting ? <LoaderCircle className="animate-spin" /> : 'HAPUS PERMANEN'}</button>
+                            <button onClick={() => setIsDeleteModalOpen(false)} className="h-11 flex-1 rounded-xl bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] text-[var(--color-text)] font-bold text-xs uppercase tracking-wide transition-all">BATAL</button>
+                                <button onClick={handleDeleteConfirm} disabled={submitting} className="h-11 flex-[1.5] rounded-xl bg-red-500 hover:bg-red-600 text-white font-bold text-xs uppercase tracking-wide shadow-lg transition-all">{submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : 'HAPUS PERMANEN'}</button>
                         </div>
                     </div>
                 </Modal>
@@ -1509,13 +1509,13 @@ export default function ClassesPage() {
                 <Modal isOpen={isBulkDeleteOpen} onClose={() => setIsBulkDeleteOpen(false)} title="Hapus Massal Kelas" size="sm">
                     <div className="space-y-6">
                         <div className="p-4 bg-red-500/10 rounded-2xl flex items-center gap-4 text-red-500 border border-red-500/20 shadow-inner">
-                            <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center shrink-0 text-xl border border-red-500/30 animate-pulse"><Trash2 /></div>
-                            <div className="min-w-0"><h3 className="text-sm font-black uppercase tracking-wider">Konfirmasi Hapus Massal</h3><p className="text-[10px] font-bold opacity-70 mt-1 uppercase tracking-widest">{selectedIds.length} kelas akan dihapus permanen.</p></div>
+                            <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center shrink-0 text-xl border border-red-500/30 animate-pulse"><Trash2 className="w-6 h-6" /></div>
+                            <div className="min-w-0"><h3 className="text-sm font-bold uppercase tracking-wider">Konfirmasi Hapus Massal</h3><p className="text-xs font-bold opacity-70 mt-1 uppercase tracking-wide">{selectedIds.length} kelas akan dihapus permanen.</p></div>
                         </div>
-                        <p className="text-xs text-[var(--color-text)] leading-relaxed font-bold px-1">Yakin menghapus <span className="text-red-500 font-black px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">{selectedIds.length} kelas</span>? <span className="text-[10px] text-[var(--color-text-muted)] mt-2 block opacity-60">Penghapusan tidak dapat dibatalkan.</span></p>
+                        <p className="text-xs text-[var(--color-text)] leading-relaxed font-bold px-1">Yakin menghapus <span className="text-red-500 font-bold px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">{selectedIds.length} kelas</span>? <span className="text-xs text-[var(--color-text-muted)] mt-2 block opacity-60">Penghapusan tidak dapat dibatalkan.</span></p>
                         <div className="flex gap-3 pt-2">
-                            <button onClick={() => setIsBulkDeleteOpen(false)} className="h-11 flex-1 rounded-xl bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] text-[var(--color-text)] font-black text-[10px] uppercase tracking-widest transition-all">BATAL</button>
-                                <button onClick={handleBulkDelete} disabled={submitting} className="h-11 flex-[1.5] rounded-xl bg-red-500 hover:bg-red-600 text-white font-black text-[10px] uppercase tracking-widest shadow-lg transition-all">{submitting ? <LoaderCircle className="animate-spin" /> : 'HAPUS SEMUA'}</button>
+                            <button onClick={() => setIsBulkDeleteOpen(false)} className="h-11 flex-1 rounded-xl bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] text-[var(--color-text)] font-bold text-xs uppercase tracking-wide transition-all">BATAL</button>
+                                <button onClick={handleBulkDelete} disabled={submitting} className="h-11 flex-[1.5] rounded-xl bg-red-500 hover:bg-red-600 text-white font-bold text-xs uppercase tracking-wide shadow-lg transition-all">{submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : 'HAPUS SEMUA'}</button>
                         </div>
                     </div>
                 </Modal>

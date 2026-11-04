@@ -57,7 +57,7 @@ export default function BulkActionsBar({
               {selectedCount}
             </div>
             <div className="hidden sm:block">
-              <p className="text-xs font-bold uppercase tracking-wider opacity-70 leading-none">{title}</p>
+              <p className="text-xs font-bold uppercase tracking-wide opacity-70 leading-none">{title}</p>
               <p className="text-xs font-medium leading-none mt-1">{subtitle}</p>
             </div>
           </div>

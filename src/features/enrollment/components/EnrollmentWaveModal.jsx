@@ -196,13 +196,13 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
             mobileVariant="bottom-sheet"
             footer={
                 <div className="flex items-center justify-between w-full">
-                    <span className="text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] opacity-60">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] opacity-60">
                         {waves.length} Gelombang Terdaftar
                     </span>
                     <button
                         type="button"
                         onClick={onClose}
-                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
                     >
                         Tutup
                     </button>
@@ -225,7 +225,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                     className="rounded-2xl border border-[var(--color-primary)]/40 bg-[var(--color-primary)]/[0.01] p-4 space-y-4 animate-in fade-in zoom-in-95 duration-200"
                                 >
                                     <div className="flex items-center justify-between border-b border-[var(--color-border)]/50 pb-2">
-                                        <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)]">
+                                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-primary)]">
                                             Edit Gelombang: {wave.name}
                                         </span>
                                         <button
@@ -233,12 +233,12 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                             onClick={handleCloseForm}
                                             className="p-1 text-[var(--color-text-muted)] hover:text-rose-500 rounded-lg transition-colors"
                                         >
-                                            <X className="text-xs" />
+                                            <X className="w-4 h-4" />
                                         </button>
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div className="sm:col-span-2 relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Nama Gelombang</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Nama Gelombang</label>
                                             <input
                                                 type="text"
                                                 value={form.name}
@@ -249,9 +249,9 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                             />
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tanggal Buka</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tanggal Buka</label>
                                             <div className="relative h-11 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus-within:border-[var(--color-primary)] transition-all">
-                                                <div className={`absolute inset-0 flex items-center pl-3.5 pointer-events-none text-[13px] ${form.start_date ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-40'}`}>
+                                                <div className={`absolute inset-0 flex items-center pl-3.5 pointer-events-none text-sm ${form.start_date ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-40'}`}>
                                                     {form.start_date ? (() => {
                                                         const parts = form.start_date.split('-')
                                                         if (parts.length === 3) {
@@ -270,9 +270,9 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                             </div>
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tanggal Tutup</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tanggal Tutup</label>
                                             <div className="relative h-11 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus-within:border-[var(--color-primary)] transition-all">
-                                                <div className={`absolute inset-0 flex items-center pl-3.5 pointer-events-none text-[13px] ${form.end_date ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-40'}`}>
+                                                <div className={`absolute inset-0 flex items-center pl-3.5 pointer-events-none text-sm ${form.end_date ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-40'}`}>
                                                     {form.end_date ? (() => {
                                                         const parts = form.end_date.split('-')
                                                         if (parts.length === 3) {
@@ -291,7 +291,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                             </div>
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Kuota Penerimaan</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Kuota Penerimaan</label>
                                             <input
                                                 type="number"
                                                 value={form.quota}
@@ -302,7 +302,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                             />
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tahun Pelajaran</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tahun Pelajaran</label>
                                             <input
                                                 type="text"
                                                 value={form.academic_year}
@@ -313,13 +313,13 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
 
                                         {/* Biaya Section */}
                                         <div className="sm:col-span-2 p-3.5 border border-dashed border-[var(--color-border)] rounded-2xl bg-[var(--color-surface-alt)]/30 space-y-3">
-                                            <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-1.5">
-                                                <Banknote className="opacity-60 text-[10px]" />
+                                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] flex items-center gap-1.5">
+                                                <Banknote className="w-4 h-4 opacity-60" />
                                                 Biaya Gelombang (Opsional)
                                             </span>
                                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                                 <div className="relative group">
-                                                    <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Pendaftaran Awal</label>
+                                                    <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Pendaftaran Awal</label>
                                                     <div className="relative">
                                                         <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-[var(--color-text-muted)] opacity-50">Rp</span>
                                                         <input
@@ -333,7 +333,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                                     </div>
                                                 </div>
                                                 <div className="relative group">
-                                                    <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Daftar Ulang</label>
+                                                    <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Daftar Ulang</label>
                                                     <div className="relative">
                                                         <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-[var(--color-text-muted)] opacity-50">Rp</span>
                                                         <input
@@ -347,7 +347,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                                     </div>
                                                 </div>
                                                 <div className="relative group">
-                                                    <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Perlengkapan</label>
+                                                    <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Perlengkapan</label>
                                                     <div className="relative">
                                                         <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-[var(--color-text-muted)] opacity-50">Rp</span>
                                                         <input
@@ -367,7 +367,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                         <button
                                             type="button"
                                             onClick={handleCloseForm}
-                                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] text-[10px] font-black uppercase tracking-wider transition-all"
+                                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] text-xs font-bold uppercase tracking-wider transition-all"
                                         >
                                             Batal
                                         </button>
@@ -375,16 +375,16 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                             type="button"
                                             onClick={handleAdd}
                                             disabled={submitting}
-                                            className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg border border-white/10"
+                                            className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg border border-white/10"
                                         >
                                             {submitting ? (
                                                 <>
-                                                    <LoaderCircle className="animate-spin" />
+                                                    <LoaderCircle className="w-4 h-4 animate-spin" />
                                                     <span>Menyimpan...</span>
                                                 </>
                                             ) : (
                                                 <>
-                                                    <Save className="text-[10px]" />
+                                                    <Save className="w-4 h-4" />
                                                     <span>Simpan Perubahan</span>
                                                 </>
                                             )}
@@ -409,22 +409,22 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                                 ? 'bg-emerald-500/10 text-emerald-600'
                                                 : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] opacity-60'}`}
                                         >
-                                            <AudioWaveform className="text-sm" />
+                                            <AudioWaveform className="w-4 h-4" />
                                         </div>
                                         <div>
                                             <div className="flex items-center gap-2">
-                                                <p className="text-[13px] font-bold text-[var(--color-text)]">{wave.name}</p>
+                                                <p className="text-sm font-bold text-[var(--color-text)]">{wave.name}</p>
                                                 {isActive ? (
-                                                    <span className="px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-600 text-[8px] font-black uppercase tracking-widest border border-emerald-500/20">
+                                                    <span className="px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-600 text-xs font-bold uppercase tracking-wide border border-emerald-500/20">
                                                         Aktif
                                                     </span>
                                                 ) : (
-                                                    <span className="px-2 py-0.5 rounded-lg bg-[var(--color-border)] text-[var(--color-text-muted)] text-[8px] font-black uppercase tracking-widest border border-[var(--color-border)] opacity-60">
+                                                    <span className="px-2 py-0.5 rounded-lg bg-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide border border-[var(--color-border)] opacity-60">
                                                         Selesai
                                                     </span>
                                                 )}
                                             </div>
-                                            <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5 font-medium">
+                                            <p className="text-xs text-[var(--color-text-muted)] mt-0.5 font-medium">
                                                 Tahun Pelajaran {wave.academic_year} · Kuota: <span className="font-bold text-[var(--color-text)]">{wave.quota ? `${wave.quota} santri` : 'Tanpa Batas'}</span>
                                             </p>
                                         </div>
@@ -436,7 +436,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                             className="w-8 h-8 flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 rounded-xl transition-all"
                                             title="Edit Gelombang"
                                         >
-                                            <Pen className="text-xs" />
+                                            <Pen className="w-4 h-4" />
                                         </button>
                                         <button
                                             type="button"
@@ -444,7 +444,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                             className="w-8 h-8 flex items-center justify-center text-[var(--color-text-muted)] hover:text-rose-500 hover:bg-rose-500/10 rounded-xl transition-all"
                                             title="Hapus Gelombang"
                                         >
-                                            <Trash2 className="text-xs" />
+                                            <Trash2 className="w-4 h-4" />
                                         </button>
                                         <button
                                             type="button"
@@ -452,14 +452,14 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                             className={`p-2 rounded-xl transition-all relative ${wave.is_active ? 'text-emerald-500 hover:bg-emerald-500/10' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
                                             title={wave.is_active ? 'Nonaktifkan' : 'Aktifkan'}
                                         >
-                                            {wave.is_active ? <ToggleRight className="text-xl" /> : <ToggleLeft className="text-xl" />}
+                                            {wave.is_active ? <ToggleRight className="w-5 h-5" /> : <ToggleLeft className="w-5 h-5" />}
                                         </button>
                                     </div>
                                 </div>
                                 
                                 <div className="flex flex-col gap-2 mt-3.5 pt-3 border-t border-[var(--color-border)]/50">
-                                    <div className="flex items-center gap-1.5 text-[10px] text-[var(--color-text-muted)]">
-                                        <Calendar className="opacity-40" />
+                                    <div className="flex items-center gap-1.5 text-xs text-[var(--color-text-muted)]">
+                                        <Calendar className="w-4 h-4 opacity-40" />
                                         <span>
                                             {new Date(wave.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
                                             {" – "}
@@ -469,7 +469,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                     
                                     {/* Fees display if exists */}
                                     {wave.metadata && (Number(wave.metadata.registration_fee) > 0 || Number(wave.metadata.reregistration_fee) > 0 || Number(wave.metadata.equipment_fee) > 0) && (
-                                        <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-[10px] text-[var(--color-text-muted)] bg-[var(--color-surface)] dark:bg-[var(--color-surface-alt)]/40 p-2 rounded-xl border border-[var(--color-border)]/50">
+                                        <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-xs text-[var(--color-text-muted)] bg-[var(--color-surface)] dark:bg-[var(--color-surface-alt)]/40 p-2 rounded-xl border border-[var(--color-border)]/50">
                                             {Number(wave.metadata.registration_fee) > 0 && (
                                                 <div className="flex items-center gap-1">
                                                     <span className="opacity-60">Daftar:</span>
@@ -500,7 +500,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                 {isAdding && !editingWave ? (
                     <div className="border border-dashed border-[var(--color-primary)]/40 bg-[var(--color-primary)]/[0.01] rounded-2xl p-4 space-y-4 animate-in fade-in zoom-in-95 duration-200">
                         <div className="flex items-center justify-between border-b border-[var(--color-border)]/50 pb-2">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)]">
+                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-primary)]">
                                 Tambah Gelombang Baru
                             </span>
                             <button
@@ -508,12 +508,12 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                 onClick={handleCloseForm}
                                 className="p-1 text-[var(--color-text-muted)] hover:text-rose-500 rounded-lg transition-colors"
                             >
-                                <X className="text-xs" />
+                                <X className="w-4 h-4" />
                             </button>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="sm:col-span-2 relative group">
-                                <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Nama Gelombang</label>
+                                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Nama Gelombang</label>
                                 <input
                                     type="text"
                                     value={form.name}
@@ -524,9 +524,9 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                 />
                             </div>
                             <div className="relative group">
-                                <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tanggal Buka</label>
+                                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tanggal Buka</label>
                                 <div className="relative h-11 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus-within:border-[var(--color-primary)] transition-all">
-                                    <div className={`absolute inset-0 flex items-center pl-3.5 pointer-events-none text-[13px] ${form.start_date ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-40'}`}>
+                                    <div className={`absolute inset-0 flex items-center pl-3.5 pointer-events-none text-sm ${form.start_date ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-40'}`}>
                                         {form.start_date ? (() => {
                                             const parts = form.start_date.split('-')
                                             if (parts.length === 3) {
@@ -545,9 +545,9 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                 </div>
                             </div>
                             <div className="relative group">
-                                <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tanggal Tutup</label>
+                                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tanggal Tutup</label>
                                 <div className="relative h-11 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus-within:border-[var(--color-primary)] transition-all">
-                                    <div className={`absolute inset-0 flex items-center pl-3.5 pointer-events-none text-[13px] ${form.end_date ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-40'}`}>
+                                    <div className={`absolute inset-0 flex items-center pl-3.5 pointer-events-none text-sm ${form.end_date ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-40'}`}>
                                         {form.end_date ? (() => {
                                             const parts = form.end_date.split('-')
                                             if (parts.length === 3) {
@@ -566,7 +566,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                 </div>
                             </div>
                             <div className="relative group">
-                                <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Kuota Penerimaan</label>
+                                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Kuota Penerimaan</label>
                                 <input
                                     type="number"
                                     value={form.quota}
@@ -577,7 +577,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                 />
                             </div>
                             <div className="relative group">
-                                <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tahun Pelajaran</label>
+                                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tahun Pelajaran</label>
                                 <input
                                     type="text"
                                     value={form.academic_year}
@@ -588,13 +588,13 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
 
                             {/* Biaya Section */}
                             <div className="sm:col-span-2 p-3.5 border border-dashed border-[var(--color-border)] rounded-2xl bg-[var(--color-surface-alt)]/30 space-y-3">
-                                <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-1.5">
-                                    <Banknote className="opacity-60 text-[10px]" />
+                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] flex items-center gap-1.5">
+                                    <Banknote className="w-4 h-4 opacity-60" />
                                     Biaya Gelombang (Opsional)
                                 </span>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                     <div className="relative group">
-                                        <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Pendaftaran Awal</label>
+                                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Pendaftaran Awal</label>
                                         <div className="relative">
                                             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-[var(--color-text-muted)] opacity-50">Rp</span>
                                             <input
@@ -608,7 +608,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                         </div>
                                     </div>
                                     <div className="relative group">
-                                        <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Daftar Ulang</label>
+                                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Daftar Ulang</label>
                                         <div className="relative">
                                             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-[var(--color-text-muted)] opacity-50">Rp</span>
                                             <input
@@ -622,7 +622,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                         </div>
                                     </div>
                                     <div className="relative group">
-                                        <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Perlengkapan</label>
+                                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Perlengkapan</label>
                                         <div className="relative">
                                             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-[var(--color-text-muted)] opacity-50">Rp</span>
                                             <input
@@ -642,7 +642,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                             <button
                                 type="button"
                                 onClick={handleCloseForm}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] text-[10px] font-black uppercase tracking-wider transition-all"
+                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] text-xs font-bold uppercase tracking-wider transition-all"
                             >
                                 Batal
                             </button>
@@ -650,16 +650,16 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                 type="button"
                                 onClick={handleAdd}
                                 disabled={submitting}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg border border-white/10"
+                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg border border-white/10"
                             >
                                 {submitting ? (
                                     <>
-                                        <LoaderCircle className="animate-spin" />
+                                        <LoaderCircle className="w-4 h-4 animate-spin" />
                                         <span>Menyimpan...</span>
                                     </>
                                 ) : (
                                     <>
-                                        <Save className="text-[10px]" />
+                                        <Save className="w-4 h-4" />
                                         <span>Simpan Gelombang</span>
                                     </>
                                 )}
@@ -672,9 +672,9 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                         <button
                             type="button"
                             onClick={() => setIsAdding(true)}
-                            className="w-full py-4 rounded-2xl border-2 border-dashed border-[var(--color-border)] text-[11px] font-bold text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/40 hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/[0.02] transition-all flex items-center justify-center gap-2 group"
+                            className="w-full py-4 rounded-2xl border-2 border-dashed border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/40 hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/[0.02] transition-all flex items-center justify-center gap-2 group"
                         >
-                            <Plus className="text-xs group-hover:scale-110 transition-transform" />
+                            <Plus className="w-4 h-4 group-hover:scale-110 transition-transform" />
                             <span>Tambah Gelombang</span>
                         </button>
                     )
@@ -697,7 +697,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                         <button
                             type="button"
                             onClick={() => setWaveToDelete(null)}
-                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
                         >
                             Batal
                         </button>
@@ -706,12 +706,12 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                             type="button"
                             onClick={executeDelete}
                             disabled={submitting}
-                            className="h-10 px-6 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                            className="h-10 px-6 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
                         >
                             {submitting ? (
-                                <LoaderCircle className="animate-spin text-[11px]" />
+                                <LoaderCircle className="w-4 h-4 animate-spin" />
                             ) : (
-                                <Trash2 className="text-[11px] opacity-70" />
+                                <Trash2 className="w-4 h-4 opacity-70" />
                             )}
                             <span>Hapus</span>
                         </button>
@@ -719,8 +719,8 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                 }
             >
                 <div className="px-1">
-                    <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
-                        Gelombang <span className="text-rose-600 font-black px-1.5 py-0.5 bg-rose-500/10 rounded-md border border-rose-500/20">{waveToDelete?.name}</span> akan dihapus secara permanen. Pastikan tidak ada pendaftar yang masih aktif di gelombang ini.
+                    <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
+                        Gelombang <span className="text-rose-600 font-bold px-1.5 py-0.5 bg-rose-500/10 rounded-md border border-rose-500/20">{waveToDelete?.name}</span> akan dihapus secara permanen. Pastikan tidak ada pendaftar yang masih aktif di gelombang ini.
                     </p>
                 </div>
             </Modal>

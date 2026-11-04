@@ -75,7 +75,7 @@ function TokenModal({ isOpen, onClose, tokenInfo, tokenList, onNewToken, onRevok
               </p>
             </div>
             <div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Tautan</p>
+              <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Tautan</p>
               <p className="text-xs font-mono break-all p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text)]">
                 {link}
               </p>
@@ -100,12 +100,12 @@ function TokenModal({ isOpen, onClose, tokenInfo, tokenList, onNewToken, onRevok
                   Kirim WA
                 </a>
               ) : (
-                <span className="flex-1 text-[11px] text-[var(--color-text-muted)] self-center">
+                <span className="flex-1 text-xs text-[var(--color-text-muted)] self-center">
                   Nomor HP wali kosong — salin manual lalu kirim lewat aplikasi lain.
                 </span>
               )}
             </div>
-            <p className="text-[11px] text-[var(--color-text-muted)]">
+            <p className="text-xs text-[var(--color-text-muted)]">
               Berlaku sampai {formatTanggalPendek(tokenInfo?.expires_at)} (tanggal selesai + 1 hari).
             </p>
           </>
@@ -124,7 +124,7 @@ function TokenModal({ isOpen, onClose, tokenInfo, tokenList, onNewToken, onRevok
                         …{t.token_prefix}
                         <span className="font-sans font-medium text-[var(--color-text-muted)]"> · dipakai {t.use_count || 0}x</span>
                       </p>
-                      <p className="text-[11px] text-[var(--color-text-muted)]">
+                      <p className="text-xs text-[var(--color-text-muted)]">
                         Berlaku s/d {formatTanggalPendek(t.expires_at)}
                         {t.last_used_at ? ` · terakhir ${new Date(t.last_used_at).toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}` : ' · belum pernah dibuka'}
                       </p>
@@ -151,7 +151,7 @@ function TokenModal({ isOpen, onClose, tokenInfo, tokenList, onNewToken, onRevok
               {tokenBusy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
               Buat Tautan Baru
             </button>
-            <p className="text-[11px] text-[var(--color-text-muted)]">
+            <p className="text-xs text-[var(--color-text-muted)]">
               Raw token lama tidak tersimpan di database — hanya tautan baru yang bisa disalin penuh sekali saat dibuat.
             </p>
           </>

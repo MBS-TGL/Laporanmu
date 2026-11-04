@@ -73,10 +73,10 @@ const LogCard = memo(function LogCard({ log, onReturn, onCheckout, onEdit, isSel
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5 flex-wrap">
           <p className="text-sm font-bold text-[var(--color-text)] truncate">{log.visitor_name}</p>
-          <span className={`text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md ${meta.bg} ${meta.color}`}>{meta.label}</span>
-          {isActive && <span className={`text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md ${isInternal ? 'bg-red-500/10 text-red-500' : 'bg-emerald-500/10 text-emerald-500'}`}>{statusLabel}</span>}
-          {overTime && !etaPassed && <span className="text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-600 flex items-center gap-1"><Bell className="w-3 h-3" />{longOutLabel}</span>}
-          {etaPassed && <span className="text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md bg-red-600 text-white flex items-center gap-1"><Clock className="w-3 h-3" />{overdueLabel}</span>}
+          <span className={`text-xs sm:text-xs font-bold px-2 py-0.5 rounded-md ${meta.bg} ${meta.color}`}>{meta.label}</span>
+          {isActive && <span className={`text-xs sm:text-xs font-bold px-2 py-0.5 rounded-md ${isInternal ? 'bg-red-500/10 text-red-500' : 'bg-emerald-500/10 text-emerald-500'}`}>{statusLabel}</span>}
+          {overTime && !etaPassed && <span className="text-xs sm:text-xs font-bold px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-600 flex items-center gap-1"><Bell className="w-3 h-3" />{longOutLabel}</span>}
+          {etaPassed && <span className="text-xs sm:text-xs font-bold px-2 py-0.5 rounded-md bg-red-600 text-white flex items-center gap-1"><Clock className="w-3 h-3" />{overdueLabel}</span>}
         </div>
         <p className="text-xs text-[var(--color-text-muted)] mt-1 leading-normal font-medium">
           {translatePurpose(log.purpose, language)}
@@ -96,11 +96,11 @@ const LogCard = memo(function LogCard({ log, onReturn, onCheckout, onEdit, isSel
           )}
         </div>
         <div className="flex items-center gap-2 mt-2 flex-wrap">
-          {dur && <span className="text-[11px] text-[var(--color-text-muted)] font-semibold bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-2 py-0.5 rounded-md">{dur}</span>}
-          {log.vehicle_plate && <span className="text-[11px] text-[var(--color-text-muted)] font-semibold bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-2 py-0.5 rounded-md">{log.vehicle_plate}</span>}
+          {dur && <span className="text-xs text-[var(--color-text-muted)] font-semibold bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-2 py-0.5 rounded-md">{dur}</span>}
+          {log.vehicle_plate && <span className="text-xs text-[var(--color-text-muted)] font-semibold bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-2 py-0.5 rounded-md">{log.vehicle_plate}</span>}
         </div>
-        {log.destination && <p className="text-[11px] text-[var(--color-text-muted)] mt-1">→ {log.destination}</p>}
-        {log.visitor_nip && <p className="text-[11px] text-[var(--color-text-muted)] opacity-70 mt-0.5">{log.visitor_nip}</p>}
+        {log.destination && <p className="text-xs text-[var(--color-text-muted)] mt-1">→ {log.destination}</p>}
+        {log.visitor_nip && <p className="text-xs text-[var(--color-text-muted)] opacity-70 mt-0.5">{log.visitor_nip}</p>}
       </div>
       <div className="flex items-center gap-1.5 shrink-0">
         <button onClick={() => onEdit(log)}

@@ -46,7 +46,7 @@ function EnrollmentConvertModal({
                         type="button"
                         onClick={onClose}
                         disabled={converting}
-                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all disabled:opacity-50 shrink-0"
+                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all disabled:opacity-50 shrink-0"
                     >
                         Batal
                     </button>
@@ -54,16 +54,16 @@ function EnrollmentConvertModal({
                         type="button"
                         onClick={handleSubmit}
                         disabled={converting || !selectedClassId}
-                        className="h-10 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                        className="h-10 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
                     >
                         {converting ? (
                             <>
-                                <LoaderCircle className="animate-spin" />
+                                <LoaderCircle className="w-4 h-4 animate-spin" />
                                 <span>Mengonversi...</span>
                             </>
                         ) : (
                             <>
-                                <Check className="text-[10px]" />
+                                <Check className="w-4 h-4" />
                                 <span>Konversi Sekarang</span>
                             </>
                         )}
@@ -74,7 +74,7 @@ function EnrollmentConvertModal({
             <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Info Santri */}
                 <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/30 space-y-3">
-                    <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 block">
+                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 block">
                         Detail Pendaftar
                     </span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
@@ -101,8 +101,8 @@ function EnrollmentConvertModal({
 
                 {/* Pilih Kelas */}
                 <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest ml-0.5">
-                        Pilih Kelas Tujuan <span className="text-red-500 font-black">*</span>
+                    <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide ml-0.5">
+                        Pilih Kelas Tujuan <span className="text-red-500 font-bold">*</span>
                     </label>
                     <select
                         value={selectedClassId}
@@ -118,18 +118,18 @@ function EnrollmentConvertModal({
                         ))}
                     </select>
                     {touched && !selectedClassId && (
-                        <p className="text-[10px] text-rose-500 font-bold ml-1">Kelas tujuan wajib dipilih</p>
+                        <p className="text-xs text-rose-500 font-bold ml-1">Kelas tujuan wajib dipilih</p>
                     )}
                 </div>
 
                 {/* Info Tambahan */}
                 <div className="p-3.5 border border-dashed border-indigo-500/20 bg-indigo-500/[0.01] rounded-2xl flex items-start gap-3">
                     <div className="w-8 h-8 rounded-xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center shrink-0">
-                        <IdCard className="text-xs" />
+                        <IdCard className="w-4 h-4" />
                     </div>
                     <div className="space-y-1">
-                        <span className="text-[11px] font-bold text-[var(--color-text)] block">Penerbitan Kredensial Otomatis</span>
-                        <p className="text-[10px] text-[var(--color-text-muted)] leading-relaxed font-medium">
+                        <span className="text-xs font-bold text-[var(--color-text)] block">Penerbitan Kredensial Otomatis</span>
+                        <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-medium">
                             Sistem akan secara otomatis menyalin data biodata santri dan wali, men-generate Nomor Registrasi siswa (*REG-XXXX-XXXX*) sebagai kode masuk, serta membuat PIN 4-digit acak untuk akses wali santri.
                         </p>
                     </div>

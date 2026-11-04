@@ -22,7 +22,7 @@ export default function LiveClock() {
           {time.toLocaleTimeString(locales[language] || 'id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}
         </span>
       </div>
-      <div className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mt-0.5">
+      <div className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mt-0.5">
         {fmtDate(time, language)}
       </div>
     </div>

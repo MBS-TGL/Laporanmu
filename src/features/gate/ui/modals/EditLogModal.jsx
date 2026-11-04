@@ -80,9 +80,9 @@ export default function EditLogModal({ log, onSave, onDelete, onCancel, saving }
               {onDelete && (
                 confirmDel ? (
                   <>
-                    <button onClick={() => setConfirmDel(false)} className="h-10 px-3.5 sm:px-5 rounded-xl border border-[var(--color-border)] text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all shrink-0">{tp('modalEditCancel').toUpperCase()}</button>
+                    <button onClick={() => setConfirmDel(false)} className="h-10 px-3.5 sm:px-5 rounded-xl border border-[var(--color-border)] text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all shrink-0">{tp('modalEditCancel').toUpperCase()}</button>
                     <div className="flex-1" />
-                    <button onClick={onDelete} disabled={saving} className="h-10 px-4 sm:px-6 rounded-xl text-white text-[10px] font-black uppercase tracking-wider bg-red-600 hover:bg-red-700 shadow-lg transition-all flex items-center justify-center gap-1.5 sm:gap-2 shrink-0">
+                    <button onClick={onDelete} disabled={saving} className="h-10 px-4 sm:px-6 rounded-xl text-white text-xs font-bold uppercase tracking-wider bg-red-600 hover:bg-red-700 shadow-lg transition-all flex items-center justify-center gap-1.5 sm:gap-2 shrink-0">
                       {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
                       {delLabel}
                     </button>
@@ -93,8 +93,8 @@ export default function EditLogModal({ log, onSave, onDelete, onCancel, saving }
                       <Trash2 className="w-4 h-4" />
                     </button>
                     <div className="flex-1" />
-                    <button onClick={onCancel} disabled={saving} className="h-10 px-3.5 sm:px-5 rounded-xl border border-[var(--color-border)] text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all shrink-0">{tp('modalEditCancel').toUpperCase()}</button>
-                      <button onClick={handleSave} disabled={saving} className="h-10 px-4 sm:px-6 rounded-xl text-white text-[10px] font-black uppercase tracking-wider bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 shadow-lg transition-all flex items-center justify-center gap-1.5 sm:gap-2 shrink-0">
+                    <button onClick={onCancel} disabled={saving} className="h-10 px-3.5 sm:px-5 rounded-xl border border-[var(--color-border)] text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all shrink-0">{tp('modalEditCancel').toUpperCase()}</button>
+                      <button onClick={handleSave} disabled={saving} className="h-10 px-4 sm:px-6 rounded-xl text-white text-xs font-bold uppercase tracking-wider bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 shadow-lg transition-all flex items-center justify-center gap-1.5 sm:gap-2 shrink-0">
                       {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
                       {saveLabel}
                     </button>
@@ -104,8 +104,8 @@ export default function EditLogModal({ log, onSave, onDelete, onCancel, saving }
               {!onDelete && (
                 <>
                   <div className="flex-1" />
-                  <button onClick={onCancel} disabled={saving} className="h-10 px-3.5 sm:px-5 rounded-xl border border-[var(--color-border)] text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all shrink-0">{tp('modalEditCancel').toUpperCase()}</button>
-                    <button onClick={handleSave} disabled={saving} className="h-10 px-4 sm:px-6 rounded-xl text-white text-[10px] font-black uppercase tracking-wider bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 shadow-lg transition-all flex items-center justify-center gap-1.5 sm:gap-2 shrink-0">
+                  <button onClick={onCancel} disabled={saving} className="h-10 px-3.5 sm:px-5 rounded-xl border border-[var(--color-border)] text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all shrink-0">{tp('modalEditCancel').toUpperCase()}</button>
+                    <button onClick={handleSave} disabled={saving} className="h-10 px-4 sm:px-6 rounded-xl text-white text-xs font-bold uppercase tracking-wider bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 shadow-lg transition-all flex items-center justify-center gap-1.5 sm:gap-2 shrink-0">
                     {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
                     {saveLabel}
                   </button>
@@ -118,16 +118,16 @@ export default function EditLogModal({ log, onSave, onDelete, onCancel, saving }
     >
       <div className="space-y-3 pt-2">
         <div>
-          <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">{tp('formPurposeTamu')}</label>
+          <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 mb-1.5 block">{tp('formPurposeTamu')}</label>
           <input value={purpose} onChange={e => setPurpose(e.target.value)}
-            className="w-full h-9 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all" />
+            className="w-full h-9 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all" />
           <PresetPills presets={activePresets} value={purpose} onSelect={setPurpose} />
         </div>
         {!isInternal && (
           <div>
-            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">{destLabel}</label>
+            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 mb-1.5 block">{destLabel}</label>
             <input value={destination} onChange={e => setDestination(e.target.value)} placeholder="Opsional..."
-              className="w-full h-9 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all" />
+              className="w-full h-9 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all" />
           </div>
         )}
         <div className="grid grid-cols-2 gap-3">
@@ -136,9 +136,9 @@ export default function EditLogModal({ log, onSave, onDelete, onCancel, saving }
         </div>
         <TimeInput value={timeEst} onChange={setTimeEst} label={isInternal ? tp('formEta') : tp('formEtaTamu')} clearable={true} />
         <div>
-          <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">{tp('tableVehicle')}</label>
+          <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 mb-1.5 block">{tp('tableVehicle')}</label>
           <input value={vehicle} onChange={e => setVehicle(e.target.value)} placeholder="Opsional..."
-            className="w-full h-9 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all" />
+            className="w-full h-9 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all" />
         </div>
       </div>
     </Modal>

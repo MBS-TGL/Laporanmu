@@ -108,9 +108,9 @@ const DebouncedSearchInput = memo(({ searchQuery, onSearch, inputRef, isLoading 
         <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--color-text-muted)] text-sm group-focus-within:text-[var(--color-primary)] transition-colors">
                 {isLoading ? (
-                    <LoaderCircle className="animate-spin text-xs text-[var(--color-primary)]" />
+                    <LoaderCircle className="w-4 h-4 animate-spin text-[var(--color-primary)]" />
                 ) : (
-                    <Search />
+                    <Search className="w-4 h-4" />
                 )}
             </div>
             <input
@@ -484,7 +484,7 @@ export default function TeachersPage() {
             addToast(
                 newPinned ? (
                     <span className="flex items-center gap-1.5">
-                        <Pin className="text-amber-400 rotate-[-45deg] text-[10px]" />
+                        <Pin className="w-4 h-4 text-amber-400 rotate-[-45deg]" />
                         "{teacher.name}" disematkan ke atas
                     </span>
                 ) : (
@@ -1038,24 +1038,24 @@ export default function TeachersPage() {
     return (
         <DashboardLayout title="Data Guru">
             {/* TAMBAH INI: */}
-            <div className="p-4 md:p-6 space-y-4 max-w-[1800px] mx-auto">
+            <div className="space-y-4">
 
                 {/* Read-only Banner */}
                 {!canEdit && (
                     <div className="px-4 py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center gap-2">
-                        <EyeOff className="text-rose-500 shrink-0 text-xs" />
-                        <p className="text-[11px] font-bold text-rose-600">Mode Read-only — Edit data guru dinonaktifkan oleh administrator.</p>
+                        <EyeOff className="w-4 h-4 text-rose-500 shrink-0" />
+                        <p className="text-xs font-bold text-rose-600">Mode Read-only — Edit data guru dinonaktifkan oleh administrator.</p>
                     </div>
                 )}
 
                 {/* Bulk Action Bar */}
                 {selectedIds.length > 0 && (
                     <div className="mb-4 px-4 py-3 rounded-2xl bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-between gap-3 flex-wrap">
-                        <p className="text-sm font-black text-[var(--color-primary)]">{selectedIds.length} guru dipilih</p>
+                        <p className="text-sm font-bold text-[var(--color-primary)]">{selectedIds.length} guru dipilih</p>
                         <div className="flex items-center gap-2 flex-wrap">
-                            <button onClick={startBulkWA} className="h-8 px-3 rounded-xl bg-green-500/10 text-green-600 text-[10px] font-black uppercase tracking-wide hover:bg-green-500 hover:text-white transition-all flex items-center gap-1.5"><WhatsAppIcon />WA Massal</button>
-                            <button onClick={() => setIsBulkModalOpen(true)} className="h-8 px-3 rounded-xl bg-amber-500/10 text-amber-600 text-[10px] font-black uppercase tracking-wide hover:bg-amber-500 hover:text-white transition-all flex items-center gap-1.5"><Archive />Arsip</button>
-                            <button onClick={() => setSelectedIds([])} className="h-8 px-3 rounded-xl bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-wide transition-all flex items-center gap-1.5"><X />Batal</button>
+                            <button onClick={startBulkWA} className="h-8 px-3 rounded-xl bg-green-500/10 text-green-600 text-xs font-bold uppercase tracking-wide hover:bg-green-500 hover:text-white transition-all flex items-center gap-1.5"><WhatsAppIcon className="w-4 h-4" />WA Massal</button>
+                            <button onClick={() => setIsBulkModalOpen(true)} className="h-8 px-3 rounded-xl bg-amber-500/10 text-amber-600 text-xs font-bold uppercase tracking-wide hover:bg-amber-500 hover:text-white transition-all flex items-center gap-1.5"><Archive className="w-4 h-4" />Arsip</button>
+                            <button onClick={() => setSelectedIds([])} className="h-8 px-3 rounded-xl bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1.5"><X className="w-4 h-4" />Batal</button>
                         </div>
                     </div>
                 )}
@@ -1075,7 +1075,7 @@ export default function TeachersPage() {
                                 className={`h-9 w-9 rounded-lg border flex items-center justify-center text-sm transition-all active:scale-95 ${isHeaderMenuOpen ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
                                 title="Aksi lainnya"
                             >
-                                <SlidersHorizontal />
+                                <SlidersHorizontal className="w-4 h-4" />
                             </button>
 
                             {/* Portaled Header Menu Dropdown */}
@@ -1093,37 +1093,37 @@ export default function TeachersPage() {
                                             left: Math.max(10, headerMenuRect.right - 224)
                                         }}
                                     >
-                                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">Data</p>
+                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-2">Data</p>
                                         <button onClick={() => { setIsHeaderMenuOpen(false); setImportStep(1); setImportPreview([]); setImportFileName(''); setIsImportModalOpen(true) }}
                                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                             <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <FileInput className="text-xs" />
+                                                <FileInput className="w-4 h-4" />
                                             </div>
                                             <div className="text-left">
-                                                <p className="text-[11px] font-black leading-tight">Import CSV / Excel</p>
-                                                <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Unggah data guru masal dari file Excel/CSV</p>
+                                                <p className="text-xs font-bold leading-tight">Import CSV / Excel</p>
+                                                <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Unggah data guru masal dari file Excel/CSV</p>
                                             </div>
                                         </button>
                                         <button onClick={() => { setIsHeaderMenuOpen(false); setIsExportModalOpen(true) }}
                                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                             <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <FileOutput className="text-xs" />
+                                                <FileOutput className="w-4 h-4" />
                                             </div>
                                             <div className="text-left">
-                                                <p className="text-[11px] font-black leading-tight">Export Data</p>
-                                                <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Cadangkan seluruh database ke format Excel</p>
+                                                <p className="text-xs font-bold leading-tight">Export Data</p>
+                                                <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Cadangkan seluruh database ke format Excel</p>
                                             </div>
                                         </button>
                                         <div className="h-px bg-[var(--color-border)] my-1 mx-2" />
-                                        <p className="px-3 py-2 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Manajemen</p>
+                                        <p className="px-3 py-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Manajemen</p>
                                         <button onClick={() => { setIsHeaderMenuOpen(false); fetchArchived(); setIsArchivedOpen(true) }}
                                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                             <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <Archive className="text-xs" />
+                                                <Archive className="w-4 h-4" />
                                             </div>
                                             <div className="text-left">
-                                                <p className="text-[11px] font-black leading-tight">Arsip Guru</p>
-                                                <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Lihat & pulihkan data guru tidak aktif</p>
+                                                <p className="text-xs font-bold leading-tight">Arsip Guru</p>
+                                                <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Lihat & pulihkan data guru tidak aktif</p>
                                             </div>
                                         </button>
                                     </div>
@@ -1142,7 +1142,7 @@ export default function TeachersPage() {
                                     }`}
                                 title="Keyboard Shortcuts (?)"
                             >
-                                <Keyboard className="text-sm" />
+                                <Keyboard className="w-4 h-4" />
                             </button>
 
                             {/* Portaled Keyboard Shortcuts Dropdown */}
@@ -1157,8 +1157,8 @@ export default function TeachersPage() {
                                         }}
                                     >
                                         <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
-                                            <p className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text)]">Keyboard Shortcuts</p>
-                                            <span className="text-[9px] text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
+                                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Keyboard Shortcuts</p>
+                                            <span className="text-xs text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
                                         </div>
                                         <div className="p-3 space-y-0.5">
                                             {[
@@ -1176,13 +1176,13 @@ export default function TeachersPage() {
                                                 { keys: ['X'], label: 'Reset semua filter' },
                                                 { keys: ['?'], label: 'Tampilkan shortcut ini' },
                                             ].map((item, i) => item.section ? (
-                                                <p key={i} className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
+                                                <p key={i} className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
                                             ) : (
                                                 <div key={i} className="flex items-center justify-between px-1 py-1 rounded-lg hover:bg-[var(--color-surface-alt)] transition-all">
-                                                    <span className="text-[11px] font-semibold text-[var(--color-text)]">{item.label}</span>
+                                                    <span className="text-xs font-semibold text-[var(--color-text)]">{item.label}</span>
                                                     <div className="flex items-center gap-1">
                                                         {item.keys.map((k, ki) => (
-                                                            <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[9px] font-black text-[var(--color-text-muted)] font-mono">{k}</span>
+                                                            <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] font-mono">{k}</span>
                                                         ))}
                                                     </div>
                                                 </div>
@@ -1215,15 +1215,15 @@ export default function TeachersPage() {
                                 className={`h-9 w-9 sm:w-auto sm:px-3 rounded-lg border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 ${isPrivacyMode ? 'bg-amber-500/10 border-amber-500/30 text-amber-600' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'} `}
                                 title={isPrivacyMode ? "Matikan Mode Privasi" : "Aktifkan Mode Privasi"}
                             >
-                                {isPrivacyMode ? <EyeOff className="text-sm" /> : <Eye className="text-sm" />}
-                                <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline">
+                                {isPrivacyMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                <span className="text-xs font-bold uppercase tracking-wide hidden md:inline">
                                     Privasi
                                 </span>
                             </button>
 
                             {/* Add button */}
-                            <button onClick={handleAdd} disabled={!canEdit} className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10">
-                                <Plus className="text-[10px]" />
+                            <button onClick={handleAdd} disabled={!canEdit} className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10">
+                                <Plus className="w-4 h-4" />
                                 <span>{canEdit ? 'Tambah Guru' : 'Read-only'}</span>
                             </button>
                         </>
@@ -1270,11 +1270,11 @@ export default function TeachersPage() {
                                         : ins.iconBg
                                     }`}
                                 >
-                                    <ins.icon className={`text-[10px] ${ins.active ? 'text-white' : ins.iconColor}`} />
+                                    <ins.icon className={`text-xs ${ins.active ? 'text-white' : ins.iconColor}`} />
                                 </div>
                                 <div className="text-left whitespace-nowrap">
-                                    <p className={`text-[10px] font-black leading-none ${ins.color}`}>{ins.label}</p>
-                                    <p className="text-[9px] text-[var(--color-text-muted)] font-bold mt-0.5">{ins.desc}</p>
+                                    <p className={`text-xs font-bold leading-none ${ins.color}`}>{ins.label}</p>
+                                    <p className="text-xs text-[var(--color-text-muted)] font-bold mt-0.5">{ins.desc}</p>
                                 </div>
                             </button>
                         ))}
@@ -1309,12 +1309,12 @@ export default function TeachersPage() {
                                     <button
                                         key={s.id}
                                         onClick={() => { setFilterStatus(s.id); setPage(1) }}
-                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${filterStatus === s.id
+                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${filterStatus === s.id
                                             ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white'
                                             : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5 hover:text-[var(--color-primary)]'
                                             }`}
                                     >
-                                        <s.icon className={`text-[10px] ${filterStatus === s.id ? 'opacity-100' : 'opacity-30'}`} />
+                                        <s.icon className={`text-xs ${filterStatus === s.id ? 'opacity-100' : 'opacity-30'}`} />
                                         {s.label}
                                     </button>
                                 ))}
@@ -1332,12 +1332,12 @@ export default function TeachersPage() {
                                     <button
                                         key={g.id}
                                         onClick={() => { setFilterGender(filterGender === g.id ? '' : g.id); setPage(1) }}
-                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${filterGender === g.id
+                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${filterGender === g.id
                                             ? `${g.activeCls} text-white`
                                             : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5 hover:text-[var(--color-primary)]'
                                             }`}
                                     >
-                                        <g.icon className={`text-[10px] ${filterGender === g.id ? 'opacity-100' : 'opacity-30'}`} />
+                                        <g.icon className={`text-xs ${filterGender === g.id ? 'opacity-100' : 'opacity-30'}`} />
                                         {g.label}
                                     </button>
                                 ))}
@@ -1350,22 +1350,22 @@ export default function TeachersPage() {
                             <div className="flex items-center gap-1.5 shrink-0">
                                 <button
                                     onClick={() => { setSortBy(sortBy === 'name_asc' ? 'name_desc' : 'name_asc'); setPage(1) }}
-                                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${sortBy.includes('name')
+                                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${sortBy.includes('name')
                                         ? 'bg-amber-500 border-amber-500 text-white'
                                         : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-amber-500/30 hover:bg-amber-500/5 hover:text-amber-600'
                                         }`}
                                 >
-                                    <ArrowDownAZ className={`text-[10px] ${sortBy.includes('name') ? 'opacity-100' : 'opacity-30'}`} />
+                                    <ArrowDownAZ className={`w-4 h-4 ${sortBy.includes('name') ? 'opacity-100' : 'opacity-30'}`} />
                                     Nama {sortBy === 'name_asc' ? 'A-Z' : 'Z-A'}
                                 </button>
                                 <button
                                     onClick={() => { setSortBy(sortBy === 'subject_asc' ? 'name_asc' : 'subject_asc'); setPage(1) }}
-                                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${sortBy === 'subject_asc'
+                                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${sortBy === 'subject_asc'
                                         ? 'bg-emerald-500 border-emerald-500 text-white'
                                         : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-emerald-500/30 hover:bg-emerald-500/5 hover:text-emerald-600'
                                         }`}
                                 >
-                                    <ArrowUpNarrowWide className={`text-[10px] ${sortBy === 'subject_asc' ? 'opacity-100' : 'opacity-30'}`} />
+                                    <ArrowUpNarrowWide className={`w-4 h-4 ${sortBy === 'subject_asc' ? 'opacity-100' : 'opacity-30'}`} />
                                     Mapel A-Z
                                 </button>
                             </div>
@@ -1378,13 +1378,13 @@ export default function TeachersPage() {
                         <div className="flex items-center justify-end gap-2 shrink-0 lg:ml-auto">
                             <button
                                 onClick={toggleSelectAll}
-                                className={`h-9 px-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${selectedIds.length > 0 ? 'bg-indigo-500 border-indigo-500 text-white' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
+                                className={`h-9 px-3 rounded-xl border text-xs font-bold uppercase tracking-wide transition-all active:scale-95 flex items-center justify-center gap-2 ${selectedIds.length > 0 ? 'bg-indigo-500 border-indigo-500 text-white' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
                                 title="Pilih Semua / Batal"
                             >
-                                {selectedIds.length > 0 ? <CheckCheck /> : <SquareCheck />}
+                                {selectedIds.length > 0 ? <CheckCheck className="w-4 h-4" /> : <SquareCheck className="w-4 h-4" />}
                                 <span className="hidden xs:inline">{selectedIds.length > 0 ? 'Terpilih' : 'Pilih'}</span>
                                 {selectedIds.length > 0 && (
-                                    <span className="w-4 h-4 rounded-full bg-white/20 text-white text-[9px] font-black flex items-center justify-center">
+                                    <span className="w-4 h-4 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center">
                                         {selectedIds.length}
                                     </span>
                                 )}
@@ -1392,11 +1392,11 @@ export default function TeachersPage() {
 
                             <button
                                 onClick={() => setShowAdvFilter(!showAdvFilter)}
-                                className={`h-9 px-3 sm:px-4 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${showAdvFilter || activeFilterCount > 0 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
+                                className={`h-9 px-3 sm:px-4 rounded-xl border text-xs font-bold uppercase tracking-wide transition-all flex items-center justify-center gap-2 ${showAdvFilter || activeFilterCount > 0 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
                             >
-                                <SlidersHorizontal />
+                                <SlidersHorizontal className="w-4 h-4" />
                                 <span className="hidden xs:inline">Filter</span>
-                                {activeFilterCount > 0 && <span className="w-4 h-4 rounded-full bg-white/30 text-white text-[9px] font-black flex items-center justify-center">{activeFilterCount}</span>}
+                                {activeFilterCount > 0 && <span className="w-4 h-4 rounded-full bg-white/30 text-white text-xs font-bold flex items-center justify-center">{activeFilterCount}</span>}
                             </button>
                         </div>
                     </div>
@@ -1407,65 +1407,65 @@ export default function TeachersPage() {
                             <div className="flex flex-wrap gap-2">
                                 {searchQuery && (
                                     <button type="button" onClick={() => setSearchQuery('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-[10px] font-black text-[var(--color-text)]" title="Hapus pencarian">
-                                        <Search className="text-[10px] opacity-60" />
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-xs font-bold text-[var(--color-text)]" title="Hapus pencarian">
+                                        <Search className="w-4 h-4 opacity-60" />
                                         <span className="max-w-[180px] truncate">"{searchQuery}"</span>
                                         <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500 transition-colors">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterSubject && (
                                     <button type="button" onClick={() => setFilterSubject('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 text-[10px] font-black text-[var(--color-primary)]" title="Hapus filter mapel">
-                                        <Presentation className="text-[10px] opacity-70" />
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 text-xs font-bold text-[var(--color-primary)]" title="Hapus filter mapel">
+                                        <Presentation className="w-4 h-4 opacity-70" />
                                         {filterSubject}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-[var(--color-primary)]/20 flex items-center justify-center text-[var(--color-primary)] opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterGender && (
                                     <button type="button" onClick={() => setFilterGender('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-[10px] font-black text-[var(--color-text)]" title="Hapus filter gender">
-                                        {filterGender === 'L' ? <MarsIcon className="text-[10px] opacity-70" /> : <VenusIcon className="text-[10px] opacity-70" />}
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-xs font-bold text-[var(--color-text)]" title="Hapus filter gender">
+                                        {filterGender === 'L' ? <MarsIcon className="w-4 h-4 opacity-70" /> : <VenusIcon className="w-4 h-4 opacity-70" />}
                                         Gender: {filterGender === 'L' ? 'Putra' : 'Putri'}
                                         <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500 transition-colors">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterStatus && filterStatus !== 'active' && (
                                     <button type="button" onClick={() => setFilterStatus('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-[10px] font-black text-amber-600" title="Hapus filter status">
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-xs font-bold text-amber-600" title="Hapus filter status">
                                         Status: {(filterStatus?.charAt(0).toUpperCase() || '') + (filterStatus?.slice(1) || '')}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-amber-500/20 flex items-center justify-center text-amber-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterType && (
                                     <button type="button" onClick={() => setFilterType('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-indigo-500/20 bg-indigo-500/10 text-[10px] font-black text-indigo-600" title="Hapus filter jenis">
-                                        <Briefcase className="text-[10px] opacity-70" />
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-indigo-500/20 bg-indigo-500/10 text-xs font-bold text-indigo-600" title="Hapus filter jenis">
+                                        <Briefcase className="w-4 h-4 opacity-70" />
                                         Jenis: {filterType === 'guru' ? 'Guru' : filterType === 'pengabdian' ? 'Pengabdian' : 'Karyawan'}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-indigo-500/20 flex items-center justify-center text-indigo-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterMissing && (
                                     <button type="button" onClick={() => setFilterMissing('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-orange-500/20 bg-orange-500/10 text-[10px] font-black text-orange-600" title="Hapus filter data hilang">
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-orange-500/20 bg-orange-500/10 text-xs font-bold text-orange-600" title="Hapus filter data hilang">
                                         {filterMissing === 'wa' ? 'Tanpa WA' : filterMissing}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-orange-500/20 flex items-center justify-center text-orange-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 <button type="button" onClick={resetAllFilters}
-                                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-red-500/20 bg-red-500/5 text-[10px] font-black text-red-600" title="Reset semua filter">
-                                    <RotateCcw className="text-[10px]" />
+                                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-red-500/20 bg-red-500/5 text-xs font-bold text-red-600" title="Reset semua filter">
+                                    <RotateCcw className="w-4 h-4" />
                                     Reset semua
                                 </button>
                             </div>
@@ -1478,16 +1478,16 @@ export default function TeachersPage() {
                             <div className="flex items-center justify-between mb-3">
                                 <div className="flex items-center gap-2.5">
                                     <div className="w-1 h-3.5 bg-indigo-500 rounded-full" />
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-600 flex items-center gap-2">
-                                        <SlidersHorizontal className="text-[9px] opacity-60" />
+                                    <span className="text-xs font-bold uppercase tracking-wide text-indigo-600 flex items-center gap-2">
+                                        <SlidersHorizontal className="w-4 h-4 opacity-60" />
                                         Filter Lanjutan
                                     </span>
                                 </div>
                                 <button
                                     onClick={resetAllFilters}
-                                    className="text-[9px] font-black uppercase tracking-widest text-red-500 hover:bg-red-50 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-100"
+                                    className="text-xs font-bold uppercase tracking-wide text-red-500 hover:bg-red-50 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-100"
                                 >
-                                    <RotateCcw className="text-[9px]" />
+                                    <RotateCcw className="w-4 h-4" />
                                     Reset Semua Filter
                                 </button>
                             </div>
@@ -1496,7 +1496,7 @@ export default function TeachersPage() {
                                 {/* Primary Grid: Selects */}
                                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                                     <div>
-                                        <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Jenis</label>
+                                        <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Jenis</label>
                                         <RichSelect
                                             value={filterType}
                                             onChange={val => { setFilterType(val); setPage(1) }}
@@ -1511,7 +1511,7 @@ export default function TeachersPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Mata Pelajaran</label>
+                                        <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Mata Pelajaran</label>
                                         <RichSelect
                                             value={filterSubject}
                                             onChange={val => { setFilterSubject(val); setPage(1) }}
@@ -1525,7 +1525,7 @@ export default function TeachersPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Gender</label>
+                                        <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Gender</label>
                                         <RichSelect
                                             value={filterGender}
                                             onChange={val => { setFilterGender(val); setPage(1) }}
@@ -1539,7 +1539,7 @@ export default function TeachersPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Status</label>
+                                        <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Status</label>
                                         <RichSelect
                                             value={filterStatus}
                                             onChange={val => { setFilterStatus(val); setPage(1) }}
@@ -1554,7 +1554,7 @@ export default function TeachersPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Urutkan</label>
+                                        <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Urutkan</label>
                                         <RichSelect
                                             value={sortBy}
                                             onChange={val => { setSortBy(val); setPage(1) }}
@@ -1573,7 +1573,7 @@ export default function TeachersPage() {
 
                                 {/* Secondary Grid: Quick Filters */}
                                 <div>
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Menu Cepat & Aksi</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Menu Cepat & Aksi</label>
                                     <div className="flex gap-1.5 overflow-x-auto pb-1">
                                         {[
                                             { label: 'Semua', icon: Users, active: !filterMissing && filterStatus === 'active', onClick: () => { setFilterMissing(''); setFilterStatus('active'); setSortBy('name_asc') } },
@@ -1582,7 +1582,7 @@ export default function TeachersPage() {
                                             { label: 'Cuti', icon: Archive, active: filterStatus === 'cuti', onClick: () => { setFilterStatus('cuti'); setPage(1) } },
                                         ].map((s, i) => (
                                             <button key={i} onClick={s.onClick} className={`whitespace-nowrap h-9 px-3 rounded-xl border flex items-center gap-2 transition-all ${s.active ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-md' : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                                <s.icon className="text-[10px]" /><span className="text-[9px] font-black uppercase tracking-widest">{s.label}</span>
+                                                <s.icon className="text-xs" /><span className="text-xs font-bold uppercase tracking-wide">{s.label}</span>
                                             </button>
                                         ))}
                                     </div>
@@ -1597,7 +1597,7 @@ export default function TeachersPage() {
                     <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
                         <table className="w-full text-sm">
                             <thead className="bg-[var(--color-surface-alt)]">
-                                <tr className="text-left text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                                <tr className="text-left text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                     <th className="px-6 py-4 w-10"></th><th className="px-6 py-4">Guru</th><th className="px-6 py-4">Mapel</th><th className="px-6 py-4">Kontak</th><th className="px-6 py-4">Status</th><th className="px-6 py-4">Aksi</th>
                                 </tr>
                             </thead>
@@ -1619,7 +1619,7 @@ export default function TeachersPage() {
                         <div className="hidden md:block overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead className="bg-[var(--color-surface-alt)] sticky top-0 z-10">
-                                    <tr className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                                    <tr className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                         <th className="px-6 py-4 text-center w-12">
                                             <input type="checkbox" checked={allSelected} ref={el => { if (el) el.indeterminate = someSelected }} onChange={toggleSelectAll} className="w-4 h-4 rounded border-[var(--color-border)] text-[var(--color-primary)] focus:ring-[var(--color-primary)] accent-[var(--color-primary)] cursor-pointer" />
                                         </th>
@@ -1654,10 +1654,10 @@ export default function TeachersPage() {
                                                 {isColMenuOpen && createPortal(
                                                     <div className={`absolute z-[9999] w-48 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 space-y-0.5 animate-in fade-in zoom-in-95 ${menuPos.showUp ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'}`}
                                                         style={{ top: menuPos.top, right: menuPos.right }}>
-                                                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">Atur Kolom</p>
+                                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-2">Atur Kolom</p>
                                                         {[{ key: 'nbm', label: 'NBM' }, { key: 'subject', label: 'Mata Pelajaran' }, { key: 'gender', label: 'Jenis Kelamin' }, { key: 'contact', label: 'Kontak / HP' }, { key: 'status', label: 'Status Aktif' }, { key: 'join', label: 'Tgl Bergabung' }].map(({ key, label }) => (
                                                             <button key={key} onClick={() => setVisibleCols(p => ({ ...p, [key]: !p[key] }))} className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] transition-all group text-left">
-                                                                <span className="text-[11px] font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{label}</span>
+                                                                <span className="text-xs font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{label}</span>
                                                                 <div className={`w-8 h-4.5 rounded-full transition-all flex items-center px-0.5 ${visibleCols[key] ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}`}>
                                                                     <div className={`w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-all ${visibleCols[key] ? 'translate-x-[14px]' : 'translate-x-0'}`} />
                                                                 </div>
@@ -1677,17 +1677,17 @@ export default function TeachersPage() {
                                                 <div className="w-full h-full flex flex-col items-center justify-center text-center mx-auto animate-in fade-in zoom-in-95 duration-700">
                                                     <div className="relative mb-6">
                                                         <div className="relative w-24 h-24 rounded-3xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-xl flex items-center justify-center">
-                                                            <Search className="text-4xl text-[var(--color-primary)]/30" />
+                                                            <Search className="w-6 h-6 text-[var(--color-primary)]/30" />
                                                             <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-2xl bg-[var(--color-surface)] shadow-lg flex items-center justify-center border border-[var(--color-border)]">
-                                                                <X className="text-red-500 text-sm" />
+                                                                <X className="w-4 h-4 text-red-500" />
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <h3 className="text-base font-black text-[var(--color-text)] mb-2">Pencarian Tidak Ditemukan</h3>
+                                                    <h3 className="text-base font-bold text-[var(--color-text)] mb-2">Pencarian Tidak Ditemukan</h3>
                                                     <p className="text-xs font-bold text-[var(--color-text-muted)] max-w-sm leading-relaxed mb-6">
                                                         Tidak ada guru atau karyawan yang cocok dengan kriteria pencarian. Coba ubah kata kunci atau reset filter.
                                                     </p>
-                                                    <button onClick={resetAllFilters} className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition mb-4">
+                                                    <button onClick={resetAllFilters} className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition mb-4">
                                                         Reset Semua Filter
                                                     </button>
                                                 </div>
@@ -1723,17 +1723,17 @@ export default function TeachersPage() {
                                 <div className="py-24 flex flex-col items-center justify-center text-center animate-in fade-in zoom-in-95 duration-700">
                                     <div className="relative mb-6">
                                         <div className="relative w-24 h-24 rounded-3xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-xl flex items-center justify-center">
-                                            <Search className="text-4xl text-[var(--color-primary)]/30" />
+                                            <Search className="w-6 h-6 text-[var(--color-primary)]/30" />
                                             <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-2xl bg-[var(--color-surface)] shadow-lg flex items-center justify-center border border-[var(--color-border)]">
-                                                <X className="text-red-500 text-sm" />
+                                                <X className="w-4 h-4 text-red-500" />
                                             </div>
                                         </div>
                                     </div>
-                                    <h3 className="text-lg font-black text-[var(--color-text)] mb-2">Pencarian Tidak Ditemukan</h3>
+                                    <h3 className="text-lg font-bold text-[var(--color-text)] mb-2">Pencarian Tidak Ditemukan</h3>
                                     <p className="text-xs font-bold text-[var(--color-text-muted)] max-w-[280px] leading-relaxed mb-6">
                                         Tidak ada guru atau karyawan yang cocok dengan kriteria pencarian. Coba ubah kata kunci atau reset filter.
                                     </p>
-                                    <button onClick={resetAllFilters} className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition mb-4">
+                                    <button onClick={resetAllFilters} className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition mb-4">
                                         Reset Semua Filter
                                     </button>
                                 </div>
@@ -1872,7 +1872,7 @@ export default function TeachersPage() {
                                 <button
                                     type="button"
                                     onClick={() => setIsArchiveModalOpen(false)}
-                                    className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                                    className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
                                 >
                                     Batal
                                 </button>
@@ -1881,17 +1881,17 @@ export default function TeachersPage() {
                                     type="button"
                                     onClick={handleArchive}
                                     disabled={submitting}
-                                    className="h-10 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                                    className="h-10 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
                                 >
-                                    {submitting ? <LoaderCircle className="animate-spin text-[11px]" /> : <Archive className="text-[11px] opacity-70" />}
+                                    {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Archive className="w-4 h-4 opacity-70" />}
                                     Arsipkan
                                 </button>
                             </div>
                         }
                     >
                         <div className="px-1">
-                            <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
-                                Guru <span className="text-amber-600 font-black px-1.5 py-0.5 bg-amber-500/10 rounded-md border border-amber-500/20">{teacherToAction?.name}</span> akan diarsipkan. Riwayat mengajar & data tetap tersimpan dengan aman.
+                            <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
+                                Guru <span className="text-amber-600 font-bold px-1.5 py-0.5 bg-amber-500/10 rounded-md border border-amber-500/20">{teacherToAction?.name}</span> akan diarsipkan. Riwayat mengajar & data tetap tersimpan dengan aman.
                             </p>
                         </div>
                     </Modal>
@@ -1912,23 +1912,23 @@ export default function TeachersPage() {
                         <div className="space-y-6">
                             <div className="py-2">
                                 <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
-                                    Anda akan mengarsipkan <span className="text-amber-600 font-black px-1.5 py-0.5 bg-amber-500/10 rounded-md border border-amber-500/20">{selectedIds.length} guru</span>.
+                                    Anda akan mengarsipkan <span className="text-amber-600 font-bold px-1.5 py-0.5 bg-amber-500/10 rounded-md border border-amber-500/20">{selectedIds.length} guru</span>.
                                 </p>
-                                <p className="text-[10px] text-[var(--color-text-muted)] mt-1 font-medium italic">
+                                <p className="text-xs text-[var(--color-text-muted)] mt-1 font-medium italic">
                                     Data ini dapat dipulihkan kapan saja melalui folder Arsip.
                                 </p>
                             </div>
                             <div className="flex gap-3">
-                                <button onClick={() => setIsBulkModalOpen(false)} className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all">
+                                <button onClick={() => setIsBulkModalOpen(false)} className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all">
                                     BATAL
                                 </button>
                                 <button
                                     onClick={handleBulkArchive}
                                     disabled={submitting}
-                                    className="flex-[2] h-11 rounded-xl bg-amber-500 text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg"
+                                    className="flex-[2] h-11 rounded-xl bg-amber-500 text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg"
                                 >
-                                    {submitting ? <LoaderCircle className="animate-spin" /> : (
-                                        <><Archive className="text-xs" /> ARSIPKAN SEMUA</>
+                                    {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : (
+                                        <><Archive className="w-4 h-4" /> ARSIPKAN SEMUA</>
                                     )}
                                 </button>
                             </div>
@@ -1940,7 +1940,7 @@ export default function TeachersPage() {
                 <Modal isOpen={isBulkWAOpen} onClose={() => setIsBulkWAOpen(false)} title="WA Massal Guru" size="sm">
                     <div className="space-y-4">
                         <div className="space-y-2">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Template Pesan</p>
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Template Pesan</p>
                             {[{ id: 'info', label: 'Info Akun Sistem' }, { id: 'notif', label: 'Notifikasi Baru' }].map(t => (
                                 <button key={t.id} onClick={() => setWaTemplate(t.id)} className={`w-full p-3 rounded-xl border text-left text-xs font-bold transition-all ${waTemplate === t.id ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-lg' : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}>{t.label}</button>
                             ))}
@@ -1951,23 +1951,23 @@ export default function TeachersPage() {
                         <div className="max-h-56 overflow-y-auto space-y-2">
                             {bulkWATeachers.map((t, i) => (
                                 <div key={t.id} className={`flex items-center gap-3 p-2.5 rounded-xl border transition-all ${i === bulkWAIndex ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5' : bulkWAResults[t.id] === 'sent' ? 'border-emerald-500/20 bg-emerald-500/5' : 'border-[var(--color-border)]'}`}>
-                                    <div className="w-8 h-8 rounded-xl overflow-hidden bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-black shrink-0">
+                                    <div className="w-8 h-8 rounded-xl overflow-hidden bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-bold shrink-0">
                                         {t.avatar_url
                                             ? <img src={t.avatar_url} alt={t.name} className="w-full h-full object-cover" onError={e => { e.currentTarget.style.display = 'none' }} loading="lazy" decoding="async" />
                                             : t.name.charAt(0)
                                         }
                                     </div>
-                                    <div className="flex-1 min-w-0"><p className="text-xs font-bold truncate">{t.name}</p><p className="text-[10px] text-[var(--color-text-muted)]">{t.phone}</p></div>
-                                    {bulkWAResults[t.id] === 'sent' && <CircleCheck className="text-emerald-500 shrink-0" />}
-                                    {i === bulkWAIndex && <span className="text-[9px] font-black text-[var(--color-primary)] uppercase">Berikutnya</span>}
+                                    <div className="flex-1 min-w-0"><p className="text-xs font-bold truncate">{t.name}</p><p className="text-xs text-[var(--color-text-muted)]">{t.phone}</p></div>
+                                    {bulkWAResults[t.id] === 'sent' && <CircleCheck className="w-4 h-4 text-emerald-500 shrink-0" />}
+                                    {i === bulkWAIndex && <span className="text-xs font-bold text-[var(--color-primary)] uppercase">Berikutnya</span>}
                                 </div>
                             ))}
                         </div>
                         <div className="flex gap-3 pt-2">
-                            <button onClick={() => setIsBulkWAOpen(false)} className="flex-1 h-11 rounded-xl bg-[var(--color-surface-alt)] text-xs font-black uppercase tracking-widest">Selesai</button>
+                            <button onClick={() => setIsBulkWAOpen(false)} className="flex-1 h-11 rounded-xl bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide">Selesai</button>
                             {bulkWAIndex >= 0 && bulkWAIndex < bulkWATeachers.length && (
-                                <button onClick={sendNextWA} className="flex-1 h-11 rounded-xl bg-green-500 text-white text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 transition-all">
-                                    <WhatsAppIcon />Kirim ke {bulkWATeachers[bulkWAIndex]?.name.split(' ')[0]}
+                                <button onClick={sendNextWA} className="flex-1 h-11 rounded-xl bg-green-500 text-white text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 hover:brightness-110 transition-all">
+                                    <WhatsAppIcon className="w-4 h-4" />Kirim ke {bulkWATeachers[bulkWAIndex]?.name.split(' ')[0]}
                                 </button>
                             )}
                         </div>

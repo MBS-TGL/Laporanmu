@@ -66,7 +66,7 @@ export default function PublicSuspensionPage() {
       <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center p-6">
         <div className="max-w-sm w-full text-center bg-white rounded-3xl border border-slate-200 p-8 shadow-sm">
           <AlertTriangle className="w-10 h-10 mx-auto text-rose-500" />
-          <h1 className="text-lg font-black text-slate-900 mt-4">Tautan tidak berlaku</h1>
+          <h1 className="text-lg font-bold text-slate-900 mt-4">Tautan tidak berlaku</h1>
           <p className="text-sm text-slate-500 mt-2 leading-relaxed">
             {validateError || 'Tautan tidak valid.'}
             <br />
@@ -87,14 +87,14 @@ export default function PublicSuspensionPage() {
         <div className="max-w-xl mx-auto px-4 py-3 flex items-center gap-3">
           <img src={mbsLogo} alt="MBS Tanggul" className="w-10 h-10 object-contain shrink-0" loading="lazy" decoding="async" />
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Pembinaan di Rumah</p>
-            <h1 className="text-base font-black truncate">{info.student_name}</h1>
-            <p className="text-[11px] text-slate-500">
+            <p className="text-xs font-bold uppercase tracking-wide text-slate-400">Pembinaan di Rumah</p>
+            <h1 className="text-base font-bold truncate">{info.student_name}</h1>
+            <p className="text-xs text-slate-500">
               {info.class_name ? `${info.class_name} · ` : ''}{info.jenjang} · {formatTanggalPendek(info.start_date)} – {formatTanggalPendek(info.end_date)}
             </p>
           </div>
           {!online && (
-            <span className="shrink-0 flex items-center gap-1 text-[10px] font-black px-2 py-1 rounded-lg bg-amber-100 text-amber-700">
+            <span className="shrink-0 flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-lg bg-amber-100 text-amber-700">
               <WifiOff className="w-3.5 h-3.5" /> Offline
             </span>
           )}
@@ -171,17 +171,17 @@ export default function PublicSuspensionPage() {
       <div className="fixed bottom-0 inset-x-0 z-10 bg-white border-t border-slate-200" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
         <div className="max-w-xl mx-auto px-4 pt-2.5">
           <div className="flex items-center justify-between mb-2">
-            <span className={`text-[11px] font-bold flex items-center gap-1.5 ${saveHint?.cls || 'text-slate-400'}`}>
+            <span className={`text-xs font-bold flex items-center gap-1.5 ${saveHint?.cls || 'text-slate-400'}`}>
               {saveHint ? <saveHint.icon className="w-3.5 h-3.5" /> : <GraduationCap className="w-3.5 h-3.5" />}
               {saveHint?.text || 'Isian tersimpan otomatis'}
             </span>
-            {saveError && <span className="text-[11px] text-rose-500 font-medium">{saveError}</span>}
+            {saveError && <span className="text-xs text-rose-500 font-medium">{saveError}</span>}
           </div>
           <button
             type="button"
             onClick={() => saveNow()}
             disabled={saving || !date}
-            className="w-full h-[52px] rounded-2xl text-base font-black bg-indigo-600 text-white flex items-center justify-center gap-2 disabled:opacity-50 min-h-[52px] active:scale-[0.99]"
+            className="w-full h-[52px] rounded-2xl text-base font-bold bg-indigo-600 text-white flex items-center justify-center gap-2 disabled:opacity-50 min-h-[52px] active:scale-[0.99]"
           >
             {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
             {saving ? 'Menyimpan…' : 'Simpan Log Hari Ini'}

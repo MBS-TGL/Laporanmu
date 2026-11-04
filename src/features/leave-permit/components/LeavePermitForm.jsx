@@ -68,7 +68,7 @@ export default function LeavePermitForm({ onSubmit, loading, signatures = [], fo
             <div className="w-9 h-9 rounded-xl bg-surface flex items-center justify-center shrink-0 overflow-hidden border border-border">
               {student.photoUrl
                 ? <img src={student.photoUrl} alt="" className="w-full h-full object-cover" />
-                : <span className="text-sm font-black text-primary">{student.name?.charAt(0)}</span>
+                : <span className="text-sm font-bold text-primary">{student.name?.charAt(0)}</span>
               }
             </div>
             <div className="min-w-0 flex-1">

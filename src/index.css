@@ -223,6 +223,7 @@ html[dir="rtl"] .font-extrabold {
   background-color: var(--color-surface);
   color: var(--color-text);
   font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -240,9 +241,11 @@ html[dir="rtl"] .font-extrabold {
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.625rem;
+  padding: 0.3125rem 0.625rem;
   font-size: 0.75rem;
   font-weight: 500;
+  line-height: 1rem;
+  font-variant-numeric: tabular-nums;
   border-radius: 9999px;
 }
 
@@ -446,6 +449,7 @@ tr:last-child td {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
     line-height: 1.5;
+    font-variant-numeric: tabular-nums;
     color: var(--color-text);
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -469,9 +473,10 @@ tr:last-child td {
 
   .select-field {
     width: 100%;
-    padding: 0.5rem 2rem 0.5rem 1rem;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
     font-size: 0.875rem;
     line-height: 1.5;
+    font-variant-numeric: tabular-nums;
     color: var(--color-text);
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -746,9 +751,15 @@ input[type=number] {
     padding: 0 !important;
   }
 
-  .max-w-\[1800px\] {
+  /* Konten dashboard: buang gutter layout + offset sidebar saat print/PDF */
+  main[class][class] {
     max-width: 100% !important;
     padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .max-w-\[1800px\] {
+    max-width: 100% !important;
     margin: 0 !important;
   }
 

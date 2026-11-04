@@ -59,7 +59,7 @@ function GradeModal({ isOpen, onClose, onSubmit, task, submission, photos, photo
     >
       <div className="space-y-4">
         <div>
-          <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">
+          <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-2">
             Bukti pengerjaan {submission?.note ? `· “${submission.note}”` : ''}
           </p>
           {photosLoading ? (
@@ -99,7 +99,7 @@ function GradeModal({ isOpen, onClose, onSubmit, task, submission, photos, photo
           <form id="grade-form" onSubmit={submit} className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5 block" htmlFor="grade-score">
+                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5 block" htmlFor="grade-score">
                   Nilai (0–100, opsional)
                 </label>
                 <input
@@ -113,15 +113,15 @@ function GradeModal({ isOpen, onClose, onSubmit, task, submission, photos, photo
                   placeholder="85"
                   className="w-full h-10 px-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 tabular-nums"
                 />
-                {!scoreValid && <p className="text-[11px] text-[var(--color-danger)] mt-1">Nilai harus bilangan 0–100.</p>}
+                {!scoreValid && <p className="text-xs text-[var(--color-danger)] mt-1">Nilai harus bilangan 0–100.</p>}
               </div>
               <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Status</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Status</p>
                 <p className="h-10 flex items-center text-sm font-bold text-emerald-600">Dinilai</p>
               </div>
             </div>
             <div>
-              <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5 block" htmlFor="grade-comment">
+              <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5 block" htmlFor="grade-comment">
                 Komentar untuk wali / siswa
               </label>
               <textarea
@@ -137,7 +137,7 @@ function GradeModal({ isOpen, onClose, onSubmit, task, submission, photos, photo
         ) : (
           submission && (
             <div className="text-sm p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-              {submission.score != null && <p className="font-black text-[var(--color-text)]">Nilai: {submission.score}</p>}
+              {submission.score != null && <p className="font-bold text-[var(--color-text)]">Nilai: {submission.score}</p>}
               {submission.teacher_comment && <p className="text-[var(--color-text-muted)] mt-1">{submission.teacher_comment}</p>}
             </div>
           )

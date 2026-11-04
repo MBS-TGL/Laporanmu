@@ -125,14 +125,14 @@ export default function SuspensionsPage() {
           onClick={() => nav(`/suspensions/${r.id}`)}
           className="flex items-center gap-2.5 text-left group"
         >
-          <span className="w-9 h-9 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center text-sm font-black shrink-0">
+          <span className="w-9 h-9 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center text-sm font-bold shrink-0">
             {r.student?.name?.charAt(0) || '?'}
           </span>
           <span>
             <span className="block text-sm font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary)] group-hover:underline">
               {r.student?.name || '-'}
             </span>
-            <span className="block text-[11px] text-[var(--color-text-muted)]">
+            <span className="block text-xs text-[var(--color-text-muted)]">
               {r.student?.classes?.name || '-'} · {r.jenjang}
             </span>
           </span>
@@ -150,7 +150,7 @@ export default function SuspensionsPage() {
     {
       header: 'Status',
       render: (r) => (
-        <span className={`inline-flex items-center gap-1 text-[11px] font-black px-2 py-1 rounded-lg border ${STATUS_BADGE[r.status] || ''}`}>
+        <span className={`inline-flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-lg border ${STATUS_BADGE[r.status] || ''}`}>
           {r.status === 'aktif' ? <CheckCircle2 className="w-3.5 h-3.5" /> : r.status === 'selesai' ? <Eye className="w-3.5 h-3.5" /> : <Ban className="w-3.5 h-3.5" />}
           {r.status}
         </span>

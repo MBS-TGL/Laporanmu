@@ -216,9 +216,9 @@ export default function AiInsightsPage() {
                     <div className="absolute top-0 left-0 w-24 h-24 rounded-full border-[10px] border-slate-100 dark:border-white/5" />
                     <div className="absolute top-0 left-0 w-24 h-24 rounded-full border-[10px] border-transparent border-t-[var(--color-primary)] border-l-[var(--color-primary)] -rotate-45"
                         style={{ transform: `rotate(${(percentage * 1.8) - 45}deg)`, transition: 'transform 1s ease-out' }} />
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1 text-[10px] font-black">{val}s</div>
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1 text-xs font-bold">{val}s</div>
                 </div>
-                <span className={`text-[8px] font-black uppercase tracking-widest mt-1 ${color}`}>System Latency</span>
+                <span className={`text-xs font-bold uppercase tracking-wide mt-1 ${color}`}>System Latency</span>
             </div>
         );
     };
@@ -233,37 +233,37 @@ export default function AiInsightsPage() {
 
     return (
         <DashboardLayout title="Neural Engine Insights">
-            <div className="p-4 md:p-6 space-y-5 max-w-[1280px] mx-auto animate-in fade-in duration-500">
+            <div className="space-y-5 max-w-[1280px] mx-auto animate-in fade-in duration-500">
 
                 {/* ── Section 1: Header Section (NewsListPage Style) ── */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 animate-in slide-in-from-top-4 duration-500">
                     <div>
                         <Breadcrumb badge="Admin" items={['Neural Engine Center']} className="mb-1" />
                         <div className="flex items-center gap-2.5 mb-1">
-                            <h1 className="text-2xl font-black font-heading tracking-tight text-[var(--color-text)]">AI Insights Center</h1>
-                            <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 uppercase tracking-widest">Active Monitor</span>
+                            <h1 className="text-2xl font-bold font-heading tracking-tight text-[var(--color-text)]">AI Insights Center</h1>
+                            <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 uppercase tracking-wide">Active Monitor</span>
                         </div>
-                        <p className="text-[var(--color-text-muted)] text-[11px] mt-1 font-medium opacity-70">
+                        <p className="text-[var(--color-text-muted)] text-xs mt-1 font-medium opacity-70">
                             Audit aliran percakapan neural dan metrik performa mesin AI.
                         </p>
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                         <button
                             onClick={() => setIsLive(!isLive)}
-                            className={`h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all border ${isLive ? 'bg-rose-500/10 border-rose-500/30 text-rose-600' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                            className={`h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide flex items-center gap-2 transition-all border ${isLive ? 'bg-rose-500/10 border-rose-500/30 text-rose-600' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                         >
                             <span className={`w-1.5 h-1.5 rounded-full ${isLive ? 'bg-rose-500 animate-pulse' : 'bg-slate-400'}`} />
                             {isLive ? 'Live Streaming' : 'Live Stream'}
                         </button>
 
                         <button onClick={handleExport}
-                            className="h-9 px-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:text-[var(--color-primary)] transition-all active:scale-95">
-                            <Download /> Export
+                            className="h-9 px-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide flex items-center gap-2 hover:text-[var(--color-primary)] transition-all active:scale-95">
+                            <Download className="w-4 h-4" /> Export
                         </button>
 
                         <button onClick={fetchLogs}
-                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black flex items-center gap-2 hover:opacity-90 transition-all shadow-lg active:scale-95 ml-1">
-                            <RotateCw className={`text-[10px] ${loading ? 'animate-spin' : ''}`} /> Refresh
+                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold flex items-center gap-2 hover:opacity-90 transition-all shadow-lg active:scale-95 ml-1">
+                            <RotateCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} /> Refresh
                         </button>
                     </div>
                 </div>
@@ -274,10 +274,10 @@ export default function AiInsightsPage() {
                     <div className="lg:col-span-3 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[1.5rem] p-4 relative overflow-hidden group shadow-sm">
                         <div className="flex items-center justify-between mb-2">
                             <div>
-                                <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-0.5 opacity-60">Neural Traffic (12h)</h3>
+                                <h3 className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-0.5 opacity-60">Neural Traffic (12h)</h3>
                                 <div className="flex items-baseline gap-2">
-                                    <p className="text-lg font-black text-[var(--color-text)] tracking-tight">Active Loads</p>
-                                    <span className="text-[8px] font-bold text-emerald-500 animate-pulse">● LIVE SYNC</span>
+                                    <p className="text-lg font-bold text-[var(--color-text)] tracking-tight">Active Loads</p>
+                                    <span className="text-xs font-bold text-emerald-500 animate-pulse">● LIVE SYNC</span>
                                 </div>
                             </div>
                             <Speedometer val={stats.avg_latency} />
@@ -300,8 +300,8 @@ export default function AiInsightsPage() {
                     {/* AI Engine Breakdown */}
                     <div className="lg:col-span-2 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[1.5rem] p-4 flex flex-col items-center justify-center relative overflow-hidden group shadow-sm">
                         <div className="absolute top-4 left-4">
-                            <h3 className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-0.5 opacity-60">Engine Ops</h3>
-                            <p className="text-xs font-black text-[var(--color-text)]">Multimodal Distribution</p>
+                            <h3 className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-0.5 opacity-60">Engine Ops</h3>
+                            <p className="text-xs font-bold text-[var(--color-text)]">Multimodal Distribution</p>
                         </div>
                         <div className="h-[100px] w-[100px] mt-4">
                             <ResponsiveContainer width="100%" height="100%">
@@ -318,7 +318,7 @@ export default function AiInsightsPage() {
                             {engineData.map(e => (
                                 <div key={e.name} className="flex items-center gap-1 opacity-60 hover:opacity-100 transition-all">
                                     <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: e.color }} />
-                                    <span className="text-[8px] font-black text-[var(--color-text-muted)] uppercase">{e.name.split(' ')[0]}</span>
+                                    <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase">{e.name.split(' ')[0]}</span>
                                 </div>
                             ))}
                         </div>
@@ -329,9 +329,9 @@ export default function AiInsightsPage() {
                         <div className="relative z-10">
                             <div className="flex items-center gap-2 mb-3">
                                 <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center">
-                                    <WandSparkles className="text-[10px]" />
+                                    <WandSparkles className="w-4 h-4" />
                                 </div>
-                                <span className="text-[9px] font-black uppercase tracking-widest opacity-80">Topics</span>
+                                <span className="text-xs font-bold uppercase tracking-wide opacity-80">Topics</span>
                             </div>
                             <div className="flex flex-wrap gap-1.5 mb-3">
                                 {trendingTopics.slice(0, 5).map((tag, i) => {
@@ -340,7 +340,7 @@ export default function AiInsightsPage() {
                                         <button
                                             key={i}
                                             onClick={() => setSearchInput(tag.text)}
-                                            className={`px-1.5 py-0.5 rounded-md border border-white/10 text-[8px] font-black uppercase tracking-tight transition-all active:scale-95 ${isActive ? 'bg-white text-indigo-600' : 'bg-white/5 opacity-70 hover:bg-white/20 hover:opacity-100'}`}
+                                            className={`px-1.5 py-0.5 rounded-md border border-white/10 text-xs font-bold uppercase tracking-tight transition-all active:scale-95 ${isActive ? 'bg-white text-indigo-600' : 'bg-white/5 opacity-70 hover:bg-white/20 hover:opacity-100'}`}
                                         >
                                             {tag.text}
                                         </button>
@@ -349,8 +349,8 @@ export default function AiInsightsPage() {
                             </div>
                         </div>
                             <div className="relative z-10 p-2.5 rounded-xl bg-white/10 border border-white/10">
-                            <p className="text-[8px] font-black uppercase tracking-widest opacity-60 mb-0.5">Recommendation</p>
-                            <p className="text-[10px] font-bold leading-tight line-clamp-2">Update info {trendingTopics[0]?.text || 'jadwal'} di beranda.</p>
+                            <p className="text-xs font-bold uppercase tracking-wide opacity-60 mb-0.5">Recommendation</p>
+                            <p className="text-xs font-bold leading-tight line-clamp-2">Update info {trendingTopics[0]?.text || 'jadwal'} di beranda.</p>
                         </div>
                     </div>
                 </div>
@@ -368,8 +368,8 @@ export default function AiInsightsPage() {
                                         <s.icon />
                                     </div>
                                     <div className="flex flex-col min-w-0">
-                                        <span className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60 leading-tight mb-0.5">{s.label}</span>
-                                        <h4 className="text-xl font-black text-[var(--color-text)] tracking-tighter leading-none">{s.val}</h4>
+                                        <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60 leading-tight mb-0.5">{s.label}</span>
+                                        <h4 className="text-xl font-bold text-[var(--color-text)] tracking-tighter leading-none">{s.val}</h4>
                                     </div>
 
                                     {/* Neural Pulse Indicator (Top Right) */}
@@ -389,17 +389,17 @@ export default function AiInsightsPage() {
                     <div className="flex items-center gap-2 p-3">
                         {/* Search Cluster */}
                         <div className="relative flex-1 group min-w-0">
-                            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] opacity-50 group-focus-within:opacity-100" />
+                            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 group-focus-within:opacity-100" />
                             <input
                                 value={searchInput}
                                 onChange={e => setSearchInput(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && setSearchTerm(searchInput)}
                                 placeholder="Search neural logs (Type & Press Enter)..."
-                                className="w-full h-9 pl-10 pr-8 rounded-xl border border-[var(--color-border)] bg-transparent text-[11px] font-bold focus:outline-none focus:border-indigo-500 transition-all shadow-inner/[0.02]"
+                                className="w-full h-9 pl-10 pr-8 rounded-xl border border-[var(--color-border)] bg-transparent text-xs font-bold focus:outline-none focus:border-indigo-500 transition-all shadow-inner/[0.02]"
                             />
                             {searchInput && (
                                 <button onClick={() => { setSearchInput(''); setSearchTerm('') }} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-rose-500 transition-colors">
-                                    <X className="text-[10px]" />
+                                    <X className="w-4 h-4" />
                                 </button>
                             )}
                         </div>
@@ -407,12 +407,12 @@ export default function AiInsightsPage() {
                         {/* Filter Toggle */}
                         <button
                             onClick={() => setShowFilters(!showFilters)}
-                            className={`h-9 px-4 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center gap-2 ${showFilters || filterType !== 'all' || filterSecurity !== 'all' ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-indigo-500/30'}`}
+                            className={`h-9 px-4 rounded-xl border text-xs font-bold uppercase tracking-wide transition-all active:scale-95 flex items-center gap-2 ${showFilters || filterType !== 'all' || filterSecurity !== 'all' ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-indigo-500/30'}`}
                         >
-                            <SlidersHorizontal className="text-[10px]" />
+                            <SlidersHorizontal className="w-4 h-4" />
                             <span className="hidden sm:inline">Filter</span>
                             {(filterType !== 'all' || filterSecurity !== 'all') && (
-                                <span className="w-4 h-4 rounded-full bg-white/20 text-white text-[8px] font-black flex items-center justify-center">
+                                <span className="w-4 h-4 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center">
                                     {(filterType !== 'all' ? 1 : 0) + (filterSecurity !== 'all' ? 1 : 0)}
                                 </span>
                             )}
@@ -425,14 +425,14 @@ export default function AiInsightsPage() {
                                 className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${viewMode === 'grid' ? 'bg-[var(--color-surface)] text-indigo-600 shadow-sm border border-[var(--color-border)]' : 'text-[var(--color-text-muted)] opacity-50 hover:opacity-100'}`}
                                 title="Grid View"
                             >
-                                <GripHorizontal className="text-[10px]" />
+                                <GripHorizontal className="w-4 h-4" />
                             </button>
                             <button 
                                 onClick={() => setViewMode('list')}
                                 className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${viewMode === 'list' ? 'bg-[var(--color-surface)] text-indigo-600 shadow-sm border border-[var(--color-border)]' : 'text-[var(--color-text-muted)] hover:text-indigo-600'}`}
                                 title="List View"
                             >
-                                <TableProperties className="text-[10px]" />
+                                <TableProperties className="w-4 h-4" />
                             </button>
                         </div>
 
@@ -440,10 +440,10 @@ export default function AiInsightsPage() {
                         {(filterType !== 'all' || filterSecurity !== 'all' || searchTerm) && (
                             <button
                                 onClick={() => { setSearchInput(''); setSearchTerm(''); setFilterType('all'); setFilterSecurity('all'); setPage(0); }}
-                                className="h-9 w-9 rounded-xl border border-rose-500/20 bg-rose-500/5 text-rose-500 text-[10px] items-center justify-center hover:bg-rose-500 hover:text-white transition-all active:scale-95 hidden sm:flex"
+                                className="h-9 w-9 rounded-xl border border-rose-500/20 bg-rose-500/5 text-rose-500 text-xs items-center justify-center hover:bg-rose-500 hover:text-white transition-all active:scale-95 hidden sm:flex"
                                 title="Reset All Filters"
                             >
-                                <RotateCcw />
+                                <RotateCcw className="w-4 h-4" />
                             </button>
                         )}
                     </div>
@@ -454,7 +454,7 @@ export default function AiInsightsPage() {
                             <div className="pt-4 flex flex-wrap items-start gap-6">
                                 {/* Neural Type Pills */}
                                 <div className="flex flex-col gap-2">
-                                    <label className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] ml-1 opacity-60">Neural Interaction Type</label>
+                                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] ml-1 opacity-60">Neural Interaction Type</label>
                                     <div className="flex flex-wrap gap-1.5">
                                         {[
                                             {id: 'all', label: 'Any Interaction', icon: Zap},
@@ -464,9 +464,9 @@ export default function AiInsightsPage() {
                                             <button 
                                                 key={t.id}
                                                 onClick={() => { setFilterType(t.id); setPage(0); }}
-                                                className={`h-7 px-3 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-2 border ${filterType === t.id ? 'bg-indigo-600 border-indigo-600 text-white shadow-md' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-indigo-500/30'}`}
+                                                className={`h-7 px-3 rounded-lg text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-2 border ${filterType === t.id ? 'bg-indigo-600 border-indigo-600 text-white shadow-md' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-indigo-500/30'}`}
                                             >
-                                                <t.icon className="text-[8px] opacity-70" />
+                                                <t.icon className="text-xs opacity-70" />
                                                 {t.label}
                                             </button>
                                         ))}
@@ -475,7 +475,7 @@ export default function AiInsightsPage() {
 
                                 {/* Security Intel Pills */}
                                 <div className="flex flex-col gap-2 min-w-[200px]">
-                                    <label className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] ml-1 opacity-60">Security Intelligence</label>
+                                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] ml-1 opacity-60">Security Intelligence</label>
                                     <div className="flex flex-wrap gap-1.5">
                                         {[
                                             {id: 'all', label: 'All Records', icon: RadioTower},
@@ -485,9 +485,9 @@ export default function AiInsightsPage() {
                                             <button 
                                                 key={s.id}
                                                 onClick={() => { setFilterSecurity(s.id); setPage(0); }}
-                                                className={`h-7 px-3 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-2 border ${filterSecurity === s.id ? (s.id === 'flagged' ? 'bg-rose-500 border-rose-500 text-white shadow-md' : 'bg-emerald-500 border-emerald-500 text-white shadow-md') : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-indigo-500/30'}`}
+                                                className={`h-7 px-3 rounded-lg text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-2 border ${filterSecurity === s.id ? (s.id === 'flagged' ? 'bg-rose-500 border-rose-500 text-white shadow-md' : 'bg-emerald-500 border-emerald-500 text-white shadow-md') : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-indigo-500/30'}`}
                                             >
-                                                <s.icon className="text-[8px] opacity-70" />
+                                                <s.icon className="text-xs opacity-70" />
                                                 {s.label}
                                             </button>
                                         ))}
@@ -497,12 +497,12 @@ export default function AiInsightsPage() {
 
                             {/* Panel Summary Footer */}
                             <div className="mt-4 pt-3 border-t border-[var(--color-border)] border-dashed flex items-center justify-between">
-                                <span className="text-[9px] font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-widest">
+                                <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-wide">
                                     Telemetry Discovery: {stats.filtered} neural record(s) isolated
                                 </span>
                                 <button 
                                     onClick={() => setShowFilters(false)}
-                                    className="text-[9px] font-black uppercase tracking-widest text-indigo-600 hover:opacity-70"
+                                    className="text-xs font-bold uppercase tracking-wide text-indigo-600 hover:opacity-70"
                                 >
                                     Close Panel
                                 </button>
@@ -514,31 +514,31 @@ export default function AiInsightsPage() {
                     {(searchTerm || filterType !== 'all' || filterSecurity !== 'all') && (
                         <div className="px-3 pb-3 -mt-1 flex flex-wrap items-center gap-2 animate-in fade-in duration-300">
                             {searchTerm && (
-                                <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-indigo-500/10 bg-indigo-500/5 text-[9px] font-black text-indigo-600">
-                                    <Search className="opacity-60" />
+                                <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-indigo-500/10 bg-indigo-500/5 text-xs font-bold text-indigo-600">
+                                    <Search className="w-4 h-4 opacity-60" />
                                     <span>KEYWORD: "{searchTerm}"</span>
                                     <button onClick={() => { setSearchInput(''); setSearchTerm('') }} className="hover:text-rose-500">
-                                        <X />
+                                        <X className="w-4 h-4" />
                                     </button>
                                 </div>
                             )}
                             {filterType !== 'all' && (
-                                <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-indigo-500/10 bg-indigo-500/5 text-[9px] font-black text-indigo-600 uppercase tracking-widest">
+                                <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-indigo-500/10 bg-indigo-500/5 text-xs font-bold text-indigo-600 uppercase tracking-wide">
                                     <span>TYPE: {filterType}</span>
                                     <button onClick={() => setFilterType('all')} className="hover:text-rose-500">
-                                        <X />
+                                        <X className="w-4 h-4" />
                                     </button>
                                 </div>
                             )}
                             {filterSecurity !== 'all' && (
-                                <div className={`inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-[9px] font-black uppercase tracking-widest ${filterSecurity === 'flagged' ? 'border-rose-500/20 bg-rose-500/5 text-rose-600' : 'border-emerald-500/20 bg-emerald-500/5 text-emerald-600'}`}>
+                                <div className={`inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-xs font-bold uppercase tracking-wide ${filterSecurity === 'flagged' ? 'border-rose-500/20 bg-rose-500/5 text-rose-600' : 'border-emerald-500/20 bg-emerald-500/5 text-emerald-600'}`}>
                                     <span>FLAG: {filterSecurity}</span>
                                     <button onClick={() => setFilterSecurity('all')} className="hover:opacity-60">
-                                        <X />
+                                        <X className="w-4 h-4" />
                                     </button>
                                 </div>
                             )}
-                            <span className="ml-auto text-[8px] font-black text-[var(--color-text-muted)] opacity-40 uppercase tracking-widest">
+                            <span className="ml-auto text-xs font-bold text-[var(--color-text-muted)] opacity-40 uppercase tracking-wide">
                                 Filtered results: {stats.filtered}
                             </span>
                         </div>
@@ -552,11 +552,11 @@ export default function AiInsightsPage() {
                             <table className="w-full text-left border-collapse">
                                 <thead>
                                     <tr className="border-b border-[var(--color-border)]">
-                                        <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] text-left w-48">Identity</th>
-                                        <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] text-left w-36">Timestamp</th>
-                                        <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] text-left w-40">Resource</th>
-                                        <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] text-left">Preview</th>
-                                        <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] text-center w-20">Aksi</th>
+                                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] text-left w-48">Identity</th>
+                                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] text-left w-36">Timestamp</th>
+                                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] text-left w-40">Resource</th>
+                                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] text-left">Preview</th>
+                                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] text-center w-20">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-[var(--color-border)]">
@@ -579,11 +579,11 @@ export default function AiInsightsPage() {
                                                     <td className="px-6 py-4">
                                                         <div className="flex items-center gap-3">
                                                             <div className={`w-8 h-8 rounded-lg ${sec.flagged ? 'bg-rose-500/10 text-rose-600' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'} flex items-center justify-center border border-[var(--color-border)] group-hover:bg-white transition-colors`}>
-                                                                { log.type === 'chat' ? <MessageSquare className="text-[10px]" /> : <Terminal className="text-[10px]" /> }
+                                                                { log.type === 'chat' ? <MessageSquare className="w-4 h-4" /> : <Terminal className="w-4 h-4" /> }
                                                             </div>
                                                             <div className="flex flex-col">
-                                                                <span className="text-[10px] font-black uppercase text-[var(--color-text)] tracking-tight">{log.type === 'chat' ? 'Neural Chat' : 'System Editor'}</span>
-                                                                <span className={`text-[8px] font-black ${sec.color} uppercase tracking-widest flex items-center gap-1 opacity-70`}>
+                                                                <span className="text-xs font-bold uppercase text-[var(--color-text)] tracking-tight">{log.type === 'chat' ? 'Neural Chat' : 'System Editor'}</span>
+                                                                <span className={`text-xs font-bold ${sec.color} uppercase tracking-wide flex items-center gap-1 opacity-70`}>
                                                                     <sec.icon className="text-[7px]" /> {sec.label}
                                                                 </span>
                                                             </div>
@@ -593,26 +593,26 @@ export default function AiInsightsPage() {
                                                     {/* Timestamp */}
                                                     <td className="px-6 py-4">
                                                         <div className="flex flex-col">
-                                                            <span className="text-[10px] font-bold text-[var(--color-text)] uppercase">{new Date(log.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' })}</span>
-                                                            <span className="text-[9px] font-bold text-[var(--color-text-muted)] opacity-50">{new Date(log.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</span>
+                                                            <span className="text-xs font-bold text-[var(--color-text)] uppercase">{new Date(log.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' })}</span>
+                                                            <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-50">{new Date(log.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</span>
                                                         </div>
                                                     </td>
 
                                                     {/* Resource */}
                                                     <td className="px-6 py-4">
                                                         <div className="flex flex-col">
-                                                            <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-40 mb-0.5">Efficiency</span>
+                                                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-40 mb-0.5">Efficiency</span>
                                                             <div className="flex items-center gap-2">
-                                                                <span className="text-[10px] font-black text-[var(--color-text)]">{tokens} TKNS</span>
+                                                                <span className="text-xs font-bold text-[var(--color-text)]">{tokens} TKNS</span>
                                                                 <div className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
-                                                                <span className="text-[10px] font-black text-emerald-600">${cost}</span>
+                                                                <span className="text-xs font-bold text-emerald-600">${cost}</span>
                                                             </div>
                                                         </div>
                                                     </td>
 
                                                     {/* Preview */}
                                                     <td className="px-6 py-4">
-                                                        <p className={`text-[11px] font-medium line-clamp-1 ${sec.flagged ? 'text-rose-600' : 'text-[var(--color-text-muted)] group-hover:text-[var(--color-primary)]'} transition-colors`}>
+                                                        <p className={`text-xs font-medium line-clamp-1 ${sec.flagged ? 'text-rose-600' : 'text-[var(--color-text-muted)] group-hover:text-[var(--color-primary)]'} transition-colors`}>
                                                             <Highlight text={cleanText(log.user_query)} query={searchInput} />
                                                         </p>
                                                     </td>
@@ -621,7 +621,7 @@ export default function AiInsightsPage() {
                                                     <td className="px-6 py-4">
                                                         <div className="flex items-center justify-center">
                                                             <div className="h-8 w-8 rounded-lg bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] group-hover:text-[var(--color-primary)] group-hover:bg-white group-hover:border-[var(--color-primary)]/20 flex items-center justify-center transition-all border border-[var(--color-border)] shadow-sm">
-                                                                <Eye className="text-[10px]" />
+                                                                <Eye className="w-4 h-4" />
                                                             </div>
                                                         </div>
                                                     </td>
@@ -629,7 +629,7 @@ export default function AiInsightsPage() {
                                             )
                                         })
                                     ) : (
-                                        <tr><td colSpan="5" className="py-20 text-center text-[var(--color-text-muted)] text-[11px] font-bold uppercase tracking-widest opacity-50">Log tidak ditemukan.</td></tr>
+                                        <tr><td colSpan="5" className="py-20 text-center text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide opacity-50">Log tidak ditemukan.</td></tr>
                                     )}
                                 </tbody>
                             </table>
@@ -653,29 +653,29 @@ export default function AiInsightsPage() {
                                     >
                                         <div className="flex items-center justify-between mb-4">
                                             <div className="flex items-center gap-2">
-                                                <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-[10px] ${sec.flagged ? 'bg-rose-500/10 text-rose-600' : 'bg-emerald-500/10 text-emerald-600'}`}>
+                                                <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs ${sec.flagged ? 'bg-rose-500/10 text-rose-600' : 'bg-emerald-500/10 text-emerald-600'}`}>
                                                     <sec.icon />
                                                 </div>
                                                 <div>
-                                                    <p className={`text-[8px] font-black uppercase tracking-widest opacity-40 mb-0.5 ${sec.flagged ? 'text-rose-600 opacity-100' : ''}`}>{sec.label}</p>
-                                                    <p className="text-[10px] font-black text-[var(--color-text)] leading-none">{log.type === 'chat' ? 'Neural Chat' : 'Zen Editor'}</p>
+                                                    <p className={`text-xs font-bold uppercase tracking-wide opacity-40 mb-0.5 ${sec.flagged ? 'text-rose-600 opacity-100' : ''}`}>{sec.label}</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text)] leading-none">{log.type === 'chat' ? 'Neural Chat' : 'Zen Editor'}</p>
                                                 </div>
                                             </div>
                                             <div className="bg-[var(--color-surface-alt)] px-2 py-1 rounded-lg border border-[var(--color-border)] group-hover:bg-white transition-colors">
-                                                <span className="text-[9px] font-black text-[var(--color-text-muted)]">{new Date(log.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</span>
+                                                <span className="text-xs font-bold text-[var(--color-text-muted)]">{new Date(log.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</span>
                                             </div>
                                         </div>
 
                                         <div className="space-y-3 mb-2">
                                             <div className="bg-[var(--color-surface-alt)]/50 rounded-2xl p-3 border border-[var(--color-border)]">
-                                                <p className="text-[11px] font-medium text-[var(--color-text-muted)] line-clamp-2">
+                                                <p className="text-xs font-medium text-[var(--color-text-muted)] line-clamp-2">
                                                     "<Highlight text={cleanText(log.user_query)} query={searchInput} />"
                                                 </p>
                                             </div>
                                             {log.ai_response && (
                                                 <div className="flex items-start gap-2 pl-2 border-l-2 border-[var(--color-primary)]/20">
                                                     <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] mt-1 shrink-0 animate-pulse" />
-                                                    <p className="text-[11px] font-bold text-[var(--color-text)] line-clamp-2 opacity-80 leading-relaxed">
+                                                    <p className="text-xs font-bold text-[var(--color-text)] line-clamp-2 opacity-80 leading-relaxed">
                                                         <Highlight text={cleanText(log.ai_response)} query={searchInput} />
                                                     </p>
                                                 </div>
@@ -686,12 +686,12 @@ export default function AiInsightsPage() {
                                         {/* Efficiency Stats */}
                                         <div className="flex items-center justify-between mt-auto pt-3 border-t border-[var(--color-border)] border-dashed opacity-60">
                                             <div className="flex flex-col">
-                                                <span className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mb-0.5">Energy Usage</span>
-                                                <span className="text-[10px] font-black text-[var(--color-primary)]">{Math.round((log.user_query.length + (log.ai_response?.length || 0)) / 4)} TOKENS</span>
+                                                <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mb-0.5">Energy Usage</span>
+                                                <span className="text-xs font-bold text-[var(--color-primary)]">{Math.round((log.user_query.length + (log.ai_response?.length || 0)) / 4)} TOKENS</span>
                                             </div>
                                             <div className="text-right">
-                                                <span className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mb-0.5">Est. Cost</span>
-                                                <span className="text-[10px] font-black text-emerald-500">$ {(Math.round((log.user_query.length + (log.ai_response?.length || 0)) / 4) * TOKEN_RATE).toFixed(4)}</span>
+                                                <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mb-0.5">Est. Cost</span>
+                                                <span className="text-xs font-bold text-emerald-500">$ {(Math.round((log.user_query.length + (log.ai_response?.length || 0)) / 4) * TOKEN_RATE).toFixed(4)}</span>
                                             </div>
                                         </div>
 
@@ -699,7 +699,7 @@ export default function AiInsightsPage() {
                                 )
                             })
                         ) : (
-                            <div className="col-span-full py-20 text-center text-[var(--color-text-muted)] text-[11px] font-bold uppercase tracking-widest opacity-50 border-2 border-dashed border-[var(--color-border)] rounded-[3rem]">
+                            <div className="col-span-full py-20 text-center text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide opacity-50 border-2 border-dashed border-[var(--color-border)] rounded-[3rem]">
                                 Log tidak ditemukan.
                             </div>
                         )}
@@ -710,19 +710,19 @@ export default function AiInsightsPage() {
                 <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[1.5rem] mt-6 overflow-hidden shadow-sm mb-6">
                     <div className="px-6 py-4 bg-[var(--color-surface-alt)]/20 flex flex-col md:flex-row items-center justify-between gap-4">
                         <div className="flex items-center gap-1">
-                            <span className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Status: </span>
-                            <p className="text-[11px] font-bold text-[var(--color-text)] lowercase">
-                                <span className="text-[var(--color-primary)] font-black">{logs.length > 0 ? page * pageSize + 1 : 0}—{Math.min((page + 1) * pageSize, stats.filtered)}</span> dari {stats.filtered} entri <span className="opacity-30 mx-1 ml-2">Total: {stats.total}</span>
+                            <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Status: </span>
+                            <p className="text-xs font-bold text-[var(--color-text)] lowercase">
+                                <span className="text-[var(--color-primary)] font-bold">{logs.length > 0 ? page * pageSize + 1 : 0}—{Math.min((page + 1) * pageSize, stats.filtered)}</span> dari {stats.filtered} entri <span className="opacity-30 mx-1 ml-2">Total: {stats.total}</span>
                             </p>
                         </div>
 
                         <div className="flex items-center gap-2">
                             <div className="flex items-center bg-white dark:bg-black/10 rounded-xl border border-[var(--color-border)] p-0.5">
-                                <button disabled={page === 0} onClick={() => setPage(0)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><ChevronsLeft /></button>
-                                <button disabled={page === 0} onClick={() => setPage(p => p - 1)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><ChevronLeft /></button>
-                                <div className="px-3 text-[10px] font-black text-[var(--color-primary)]">{page + 1} / {totalPages}</div>
-                                <button disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><ChevronRight /></button>
-                                <button disabled={page >= totalPages - 1} onClick={() => setPage(totalPages - 1)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><ChevronsRight /></button>
+                                <button disabled={page === 0} onClick={() => setPage(0)} className="w-8 h-8 rounded-lg flex items-center justify-center text-xs hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><ChevronsLeft className="w-4 h-4" /></button>
+                                <button disabled={page === 0} onClick={() => setPage(p => p - 1)} className="w-8 h-8 rounded-lg flex items-center justify-center text-xs hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><ChevronLeft className="w-4 h-4" /></button>
+                                <div className="px-3 text-xs font-bold text-[var(--color-primary)]">{page + 1} / {totalPages}</div>
+                                <button disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)} className="w-8 h-8 rounded-lg flex items-center justify-center text-xs hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><ChevronRight className="w-4 h-4" /></button>
+                                <button disabled={page >= totalPages - 1} onClick={() => setPage(totalPages - 1)} className="w-8 h-8 rounded-lg flex items-center justify-center text-xs hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><ChevronsRight className="w-4 h-4" /></button>
                             </div>
                         </div>
                     </div>
@@ -733,17 +733,17 @@ export default function AiInsightsPage() {
                 <div className="bg-slate-900 border border-slate-800 rounded-[1.5rem] p-4 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
                     <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/20">
-                            <Cpu className="animate-pulse" />
+                            <Cpu className="w-4 h-4 animate-pulse" />
                         </div>
                         <div>
-                            <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-0.5 opacity-50">Active Stream</p>
-                            <p className="text-[11px] font-black text-slate-100 uppercase tracking-tight">Neural Core v3.3 • Distributed Node</p>
+                            <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-0.5 opacity-50">Active Stream</p>
+                            <p className="text-xs font-bold text-slate-100 uppercase tracking-tight">Neural Core v3.3 • Distributed Node</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-10">
                         <div className="text-right">
-                            <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-0.5">LATENCY (AVG)</p>
-                            <p className="text-sm font-black text-emerald-500 leading-none">{stats.avg_latency || '0.82'}s <span className="text-[9px] text-slate-600 ml-1">STABLE</span></p>
+                            <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-0.5">LATENCY (AVG)</p>
+                            <p className="text-sm font-bold text-emerald-500 leading-none">{stats.avg_latency || '0.82'}s <span className="text-xs text-slate-600 ml-1">STABLE</span></p>
                         </div>
                     </div>
                 </div>
@@ -758,37 +758,37 @@ export default function AiInsightsPage() {
                                 <div className="md:w-56 shrink-0 bg-slate-50 dark:bg-slate-900/40 border-b md:border-b-0 md:border-r border-[var(--color-border)] p-4 md:p-5 flex md:flex-col items-center md:items-start justify-between md:justify-start gap-4">
                                     <div className="flex items-center gap-3 md:block">
                                         <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-md md:text-lg shadow-md md:mb-5">
-                                            { selectedLog.type === 'chat' ? <MessageSquare /> : <Terminal /> }
+                                            { selectedLog.type === 'chat' ? <MessageSquare className="w-4 h-4" /> : <Terminal className="w-4 h-4" /> }
                                         </div>
                                         <div className="md:hidden">
-                                            <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Audit Mode</h3>
-                                            <p className="text-[10px] font-mono font-bold text-indigo-500">TRCE-{selectedLog.id.split('-')[0].toUpperCase()}</p>
+                                            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wide leading-none mb-1">Audit Mode</h3>
+                                            <p className="text-xs font-mono font-bold text-indigo-500">TRCE-{selectedLog.id.split('-')[0].toUpperCase()}</p>
                                         </div>
                                     </div>
 
                                     <div className="hidden md:block space-y-6 w-full">
                                         <div>
-                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 leading-none opacity-60">ID Trace</p>
-                                            <p className="text-[11px] font-mono font-bold text-indigo-500 bg-indigo-500/5 p-2 rounded-lg border border-indigo-500/10 truncate">TRCE-{selectedLog.id.split('-')[0].toUpperCase()}</p>
+                                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5 leading-none opacity-60">ID Trace</p>
+                                            <p className="text-xs font-mono font-bold text-indigo-500 bg-indigo-500/5 p-2 rounded-lg border border-indigo-500/10 truncate">TRCE-{selectedLog.id.split('-')[0].toUpperCase()}</p>
                                         </div>
 
                                         <div>
-                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 opacity-60">Usage Metrics</p>
+                                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5 opacity-60">Usage Metrics</p>
                                             <div className="space-y-2">
                                                 <div className="flex items-center justify-between bg-white dark:bg-slate-800/50 p-2 rounded-lg border border-[var(--color-border)]">
-                                                    <span className="text-[10px] font-bold opacity-40">Tokens</span>
-                                                    <span className="text-xs font-black">{Math.round((selectedLog.user_query.length + (selectedLog.ai_response?.length || 0)) / 4)}</span>
+                                                    <span className="text-xs font-bold opacity-40">Tokens</span>
+                                                    <span className="text-xs font-bold">{Math.round((selectedLog.user_query.length + (selectedLog.ai_response?.length || 0)) / 4)}</span>
                                                 </div>
                                                 <div className="flex items-center justify-between bg-white dark:bg-slate-800/50 p-2 rounded-lg border border-[var(--color-border)]">
-                                                    <span className="text-[10px] font-bold opacity-40">Cost</span>
-                                                    <span className="text-xs font-black text-emerald-500">${(Math.round((selectedLog.user_query.length + (selectedLog.ai_response?.length || 0)) / 4) * TOKEN_RATE).toFixed(4)}</span>
+                                                    <span className="text-xs font-bold opacity-40">Cost</span>
+                                                    <span className="text-xs font-bold text-emerald-500">${(Math.round((selectedLog.user_query.length + (selectedLog.ai_response?.length || 0)) / 4) * TOKEN_RATE).toFixed(4)}</span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div>
-                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 opacity-60">Security</p>
-                                            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${getSecurityStatus(selectedLog.user_query).bg} ${getSecurityStatus(selectedLog.user_query).color} border border-current opacity-70`}>
+                                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5 opacity-60">Security</p>
+                                            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wide ${getSecurityStatus(selectedLog.user_query).bg} ${getSecurityStatus(selectedLog.user_query).color} border border-current opacity-70`}>
                                                 {getSecurityStatus(selectedLog.user_query).label}
                                             </span>
                                         </div>
@@ -797,24 +797,24 @@ export default function AiInsightsPage() {
                                         <div className="hidden md:block pt-4 border-t border-[var(--color-border)] mt-4">
                                             <button
                                                 onClick={() => exportAudit(selectedLog)}
-                                                className="w-full py-2.5 rounded-xl border border-indigo-500/20 text-indigo-500 text-[10px] font-black uppercase tracking-widest hover:bg-indigo-500/10 transition-all flex items-center justify-center gap-2"
+                                                className="w-full py-2.5 rounded-xl border border-indigo-500/20 text-indigo-500 text-xs font-bold uppercase tracking-wide hover:bg-indigo-500/10 transition-all flex items-center justify-center gap-2"
                                             >
-                                                <Download />
+                                                <Download className="w-4 h-4" />
                                                 Export Record
                                             </button>
                                         </div>
                                     </div>
 
                                     <div className="mt-auto pt-4 border-t border-[var(--color-border)] opacity-20 hidden md:block">
-                                        <p className="text-[9px] font-black uppercase tracking-widest">Neural Console v4.0</p>
+                                        <p className="text-xs font-bold uppercase tracking-wide">Neural Console v4.0</p>
                                     </div>
 
                                     {/* Mobile Quick Stats & Export */}
                                     <div className="md:hidden flex items-center gap-2">
                                         <button onClick={() => exportAudit(selectedLog)} className="w-8 h-8 rounded-lg bg-indigo-600/10 text-indigo-600 border border-indigo-500/20 flex items-center justify-center">
-                                            <Download className="text-[10px]" />
+                                            <Download className="w-4 h-4" />
                                         </button>
-                                        <span className="text-[10px] font-black text-emerald-500 bg-emerald-500/5 px-2 py-1 rounded border border-emerald-500/20">${(Math.round((selectedLog.user_query.length + (selectedLog.ai_response?.length || 0)) / 4) * TOKEN_RATE).toFixed(4)}</span>
+                                        <span className="text-xs font-bold text-emerald-500 bg-emerald-500/5 px-2 py-1 rounded border border-emerald-500/20">${(Math.round((selectedLog.user_query.length + (selectedLog.ai_response?.length || 0)) / 4) * TOKEN_RATE).toFixed(4)}</span>
                                     </div>
                                 </div>
 
@@ -822,10 +822,10 @@ export default function AiInsightsPage() {
                                 <div className="flex-1 flex flex-col min-h-0 bg-[var(--color-background)]">
                                     <div className="px-5 py-3 md:px-6 md:py-4 border-b border-[var(--color-border)] flex items-center justify-between bg-white/30 dark:bg-slate-900/20 shrink-0">
                                         <div className="flex items-center gap-3">
-                                            <span className={`px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-widest border ${selectedLog.type === 'chat' ? 'bg-blue-500/10 text-blue-600 border-blue-500/10' : 'bg-amber-500/10 text-amber-600 border-amber-500/10'}`}>
+                                            <span className={`px-2 py-0.5 rounded-md text-xs font-bold uppercase tracking-wide border ${selectedLog.type === 'chat' ? 'bg-blue-500/10 text-blue-600 border-blue-500/10' : 'bg-amber-500/10 text-amber-600 border-amber-500/10'}`}>
                                                 {selectedLog.type}
                                             </span>
-                                            <h3 className="text-sm font-black text-[var(--color-text)] tracking-wider">Audit Inspection</h3>
+                                            <h3 className="text-sm font-bold text-[var(--color-text)] tracking-wider">Audit Inspection</h3>
                                         </div>
                                         <button onClick={() => setIsDetailModalOpen(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 flex items-center justify-center transition-all opacity-30 hover:opacity-100 border border-[var(--color-border)]">
                                             <span className="text-base">✕</span>
@@ -835,28 +835,28 @@ export default function AiInsightsPage() {
                                     <div className="flex-1 p-5 md:p-6 overflow-y-auto scrollbar-none space-y-5 touch-pan-y">
                                         {/* User Layer */}
                                         <div className="relative pl-12">
-                                            <div className="absolute left-0 top-0 w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[10px] font-black text-slate-400">USR</div>
+                                            <div className="absolute left-0 top-0 w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-400">USR</div>
                                             <div className="p-4 rounded-2xl rounded-tl-none bg-white dark:bg-slate-800 border border-[var(--color-border)] shadow-sm">
-                                                <p className="text-[13px] font-medium text-[var(--color-text)] leading-relaxed opacity-90">"{cleanText(selectedLog.user_query)}"</p>
+                                                <p className="text-sm font-medium text-[var(--color-text)] leading-relaxed opacity-90">"{cleanText(selectedLog.user_query)}"</p>
                                             </div>
                                         </div>
 
                                         {/* AI Layer */}
                                         <div className="relative pl-12">
                                             <div className="absolute left-0 top-0 w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-xs text-white">
-                                                <Bot />
+                                                <Bot className="w-4 h-4" />
                                             </div>
                                             <div className="p-5 rounded-2xl rounded-tl-none bg-indigo-50/10 dark:bg-indigo-600/[0.02] border border-indigo-500/10 shadow-sm">
-                                                <div className="text-[13px] text-[var(--color-text)] leading-relaxed space-y-2.5 opacity-90">
+                                                <div className="text-sm text-[var(--color-text)] leading-relaxed space-y-2.5 opacity-90">
                                                     {renderAiResponse(selectedLog.ai_response || "No data recorded.")}
                                                 </div>
 
                                                 <div className="mt-5 pt-3 border-t border-indigo-500/5 flex items-center justify-between opacity-50">
                                                     <div className="flex items-center gap-1.5">
                                                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                                        <span className="text-[9px] font-black uppercase tracking-widest text-emerald-500">Verified Log Record</span>
+                                                        <span className="text-xs font-bold uppercase tracking-wide text-emerald-500">Verified Log Record</span>
                                                     </div>
-                                                    <span className="text-[9px] font-black">GROQ ENGINE V3.3</span>
+                                                    <span className="text-xs font-bold">GROQ ENGINE V3.3</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -866,14 +866,14 @@ export default function AiInsightsPage() {
                                     </div>
 
                                     <div className="p-5 bg-slate-50 dark:bg-slate-900/30 border-t border-[var(--color-border)] flex items-center justify-between shrink-0">
-                                        <div className="hidden sm:flex items-center gap-2 text-[10px] font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-widest">
-                                            <ShieldHalf className="text-indigo-500" />
+                                        <div className="hidden sm:flex items-center gap-2 text-xs font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-wide">
+                                            <ShieldHalf className="w-4 h-4 text-indigo-500" />
                                             Secure Neural Trace Record
                                         </div>
-                                        <div className="sm:hidden text-[9px] font-bold opacity-30 uppercase">
+                                        <div className="sm:hidden text-xs font-bold opacity-30 uppercase">
                                             Trace Hash: {selectedLog.id.slice(0, 8)}
                                         </div>
-                                        <button onClick={() => setIsDetailModalOpen(false)} className="h-10 px-10 rounded-xl bg-indigo-600 text-white text-[11px] font-black uppercase tracking-widest shadow-md hover:scale-[1.02] active:scale-95 transition-all">
+                                        <button onClick={() => setIsDetailModalOpen(false)} className="h-10 px-10 rounded-xl bg-indigo-600 text-white text-xs font-bold uppercase tracking-wide shadow-md hover:scale-[1.02] active:scale-95 transition-all">
                                             Tutup
                                         </button>
                                     </div>

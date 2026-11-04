@@ -55,10 +55,10 @@ export default function Step0ClassSelection({
                         <AlertTriangle className="text-amber-500 w-3.5 h-3.5" />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-[11px] font-black text-[var(--color-text)] mb-0.5">
+                        <p className="text-xs font-bold text-[var(--color-text)] mb-0.5">
                             Raport {newMonthBanner.prevMonthStr} {newMonthBanner.prevYear} belum lengkap!
                         </p>
-                        <p className="text-[10px] text-[var(--color-text-muted)] mb-3">
+                        <p className="text-xs text-[var(--color-text-muted)] mb-3">
                             {newMonthBanner.classesNotArchived.length} kelas masih ada santri yang belum diisi.
                         </p>
 
@@ -78,10 +78,10 @@ export default function Step0ClassSelection({
                                         }
                                         setStep(2) // Go to Period Setup step
                                     }}
-                                    className="h-9 px-3 rounded-xl bg-white/70 border border-amber-500/30 text-amber-900 text-[10px] font-black hover:bg-white hover:shadow-md hover:border-amber-500 transition-all flex items-center justify-between gap-2 shrink-0 shadow-sm"
+                                    className="h-9 px-3 rounded-xl bg-white/70 border border-amber-500/30 text-amber-900 text-xs font-bold hover:bg-white hover:shadow-md hover:border-amber-500 transition-all flex items-center justify-between gap-2 shrink-0 shadow-sm"
                                 >
                                     <span className="truncate min-w-0">{cls.class_name.split(' ')[0]}</span>
-                                    <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded-md shrink-0 ${cls.filled === 0 ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>
+                                    <span className={`text-xs font-bold px-1.5 py-0.5 rounded-md shrink-0 ${cls.filled === 0 ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>
                                         {cls.filled}/{cls.total}
                                     </span>
                                 </button>
@@ -89,7 +89,7 @@ export default function Step0ClassSelection({
                             {!showAllIncompleteBanner && newMonthBanner.classesNotArchived.length > 8 && (
                                 <button
                                     onClick={() => setShowAllIncompleteBanner(true)}
-                                    className="h-9 px-3 rounded-xl bg-amber-500/10 border border-dashed border-amber-500/40 text-amber-600 text-[9px] font-black hover:bg-amber-500/20 transition-all flex items-center justify-center gap-1.5"
+                                    className="h-9 px-3 rounded-xl bg-amber-500/10 border border-dashed border-amber-500/40 text-amber-600 text-xs font-bold hover:bg-amber-500/20 transition-all flex items-center justify-center gap-1.5"
                                 >
                                     +{newMonthBanner.classesNotArchived.length - 8} kelas lagi
                                 </button>
@@ -97,7 +97,7 @@ export default function Step0ClassSelection({
                             {showAllIncompleteBanner && (
                                 <button
                                     onClick={() => setShowAllIncompleteBanner(false)}
-                                    className="h-9 px-3 rounded-xl text-amber-600 text-[9px] font-black hover:underline transition-all"
+                                    className="h-9 px-3 rounded-xl text-amber-600 text-xs font-bold hover:underline transition-all"
                                 >
                                     Sembunyikan
                                 </button>
@@ -107,7 +107,7 @@ export default function Step0ClassSelection({
                         <div className="flex items-center gap-2 mt-4 pt-3 border-t border-amber-500/10">
                             <button
                                 onClick={() => setNewMonthBanner(null)}
-                                className="h-8 px-4 rounded-xl bg-white/50 border border-amber-500/20 text-amber-700 text-[9px] font-black hover:bg-white transition-all"
+                                className="h-8 px-4 rounded-xl bg-white/50 border border-amber-500/20 text-amber-700 text-xs font-bold hover:bg-white transition-all"
                             >
                                 Nanti
                             </button>
@@ -116,7 +116,7 @@ export default function Step0ClassSelection({
                                     localStorage.setItem(newMonthBanner.dismissKey, '1')
                                     setNewMonthBanner(null)
                                 }}
-                                className="h-8 px-4 rounded-xl bg-white/50 border border-amber-500/20 text-amber-700 text-[9px] font-black hover:bg-white transition-all"
+                                className="h-8 px-4 rounded-xl bg-white/50 border border-amber-500/20 text-amber-700 text-xs font-bold hover:bg-white transition-all"
                             >
                                 Jangan ingatkan
                             </button>
@@ -132,8 +132,8 @@ export default function Step0ClassSelection({
                         <Zap className="text-indigo-500 w-3.5 h-3.5" />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-[11px] font-black text-[var(--color-text)] leading-tight">Lanjutkan yang tadi?</p>
-                        <p className="text-[9px] text-[var(--color-text-muted)] font-medium truncate opacity-70">
+                        <p className="text-xs font-bold text-[var(--color-text)] leading-tight">Lanjutkan yang tadi?</p>
+                        <p className="text-xs text-[var(--color-text-muted)] font-medium truncate opacity-70">
                             {lastSession.className} · {
                                 lastSession.reportType === 'bulanan'
                                     ? `${BULAN.find(b => b.id === lastSession.month)?.id_str} ${lastSession.year}`
@@ -153,7 +153,7 @@ export default function Step0ClassSelection({
                                 const ok = await loadStudents(lastSession.classId, lastSession.month, lastSession.year, lastSession.useLang)
                                 if (ok) setStep(3) // Go directly to input table
                             }}
-                            className="h-8 px-4 rounded-xl bg-indigo-600 text-white text-[9px] font-black hover:bg-indigo-700 transition-all shadow-md"
+                            className="h-8 px-4 rounded-xl bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 transition-all shadow-md"
                         >
                             Buka →
                         </button>
@@ -183,7 +183,7 @@ export default function Step0ClassSelection({
                         <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center">
                             <School className="text-indigo-500 w-3.5 h-3.5" />
                         </div>
-                        <label className="text-[10px] font-black uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
+                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                             Pilih Kelas · {rtObj.name}
                         </label>
                     </div>
@@ -199,7 +199,7 @@ export default function Step0ClassSelection({
                             placeholder="Cari nama kelas..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full h-11 pl-11 pr-10 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] outline-none text-[13px] font-bold transition-all focus:border-indigo-500/50 focus:shadow-xl text-[var(--color-text)]"
+                            className="w-full h-11 pl-11 pr-10 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] outline-none text-sm font-bold transition-all focus:border-indigo-500/50 focus:shadow-xl text-[var(--color-text)]"
                         />
                         {searchQuery && (
                             <button
@@ -221,7 +221,7 @@ export default function Step0ClassSelection({
                             <button
                                 key={opt.id}
                                 onClick={() => setFilterType(opt.id)}
-                                className={`h-9 sm:px-5 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-1.5 sm:gap-2 ${
+                                className={`h-9 sm:px-5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 sm:gap-2 ${
                                     filterType === opt.id
                                         ? 'bg-indigo-600 text-white shadow-lg'
                                         : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white dark:hover:bg-slate-800'
@@ -250,7 +250,7 @@ export default function Step0ClassSelection({
                         action={searchQuery && (
                             <button
                                 onClick={() => setSearchQuery('')}
-                                className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:shadow-lg transition-all flex items-center gap-2 mx-auto"
+                                className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:shadow-lg transition-all flex items-center gap-2 mx-auto"
                             >
                                 <X className="w-3.5 h-3.5 mr-1" /> Reset Filter
                             </button>
@@ -279,7 +279,7 @@ export default function Step0ClassSelection({
                                 >
                                     {/* Small Initial */}
                                     <div
-                                        className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 font-black text-[10px] transition-all ${
+                                        className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 font-bold text-xs transition-all ${
                                             isDone
                                                 ? 'bg-emerald-500 text-white'
                                                 : isBoarding
@@ -293,11 +293,11 @@ export default function Step0ClassSelection({
                                     {/* Main Info Area */}
                                     <div className="min-w-0 flex-1 flex flex-col justify-center gap-0.5">
                                         <div className="flex items-center gap-2">
-                                            <h3 className="text-[11px] font-black text-[var(--color-text)] truncate group-hover:text-indigo-600 transition-colors uppercase tracking-tight leading-none">
+                                            <h3 className="text-xs font-bold text-[var(--color-text)] truncate group-hover:text-indigo-600 transition-colors uppercase tracking-tight leading-none">
                                                 {cls.name}
                                             </h3>
                                             <span
-                                                className={`text-[6px] font-black px-1 py-0.5 rounded-md border shrink-0 ${
+                                                className={`text-[6px] font-bold px-1 py-0.5 rounded-md border shrink-0 ${
                                                     isBoarding
                                                         ? 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20'
                                                         : 'bg-sky-500/10 text-sky-500 border-sky-500/20'
@@ -306,7 +306,7 @@ export default function Step0ClassSelection({
                                                 {isBoarding ? 'B' : 'R'}
                                             </span>
                                         </div>
-                                        <p className="text-[9px] font-bold text-[var(--color-text-muted)] truncate opacity-60 leading-none">
+                                        <p className="text-xs font-bold text-[var(--color-text-muted)] truncate opacity-60 leading-none">
                                             {teacher}
                                         </p>
 
@@ -318,7 +318,7 @@ export default function Step0ClassSelection({
                                                     style={{ width: `${pct}%` }}
                                                 />
                                             </div>
-                                            <span className="text-[8px] font-black text-indigo-500 w-6 text-right">{pct}%</span>
+                                            <span className="text-xs font-bold text-indigo-500 w-6 text-right">{pct}%</span>
                                         </div>
                                     </div>
 

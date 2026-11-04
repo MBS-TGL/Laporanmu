@@ -71,7 +71,7 @@ export default function BehaviorTableRow({
                             {mask(tDb(s?.name) || '—')}
                         </p>
                         {s?.class_name && (
-                            <p className="text-[11px] text-[var(--color-text-muted)] font-medium uppercase tracking-wider opacity-50">
+                            <p className="text-xs text-[var(--color-text-muted)] font-medium uppercase tracking-wider opacity-50">
                                 {s.class_name}
                             </p>
                         )}
@@ -82,7 +82,7 @@ export default function BehaviorTableRow({
                 <td className="px-4 py-3">
                     <p className="text-xs font-bold text-[var(--color-text)]">{getTypeName(r.violation_type_id)}</p>
                     {r.notes && (
-                        <p className="text-[11px] text-[var(--color-text-muted)] opacity-60 truncate max-w-[280px]">
+                        <p className="text-xs text-[var(--color-text-muted)] opacity-60 truncate max-w-[280px]">
                             {mask(tDb(r.notes))}
                         </p>
                     )}
@@ -91,7 +91,7 @@ export default function BehaviorTableRow({
             {visibleCols.points && (
                 <td className="px-4 py-3 text-center">
                     <span
-                        className={`inline-flex items-center justify-center min-w-[40px] px-2 py-0.5 rounded-full text-[11px] font-bold border ${
+                        className={`inline-flex items-center justify-center min-w-[40px] px-2 py-0.5 rounded-full text-xs font-bold border ${
                             isP ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : 'bg-red-500/10 text-red-600 border-red-500/20'
                         }`}
                     >
@@ -103,12 +103,12 @@ export default function BehaviorTableRow({
             {visibleCols.time && (
                 <td className="px-4 py-3">
                     <p className="text-xs font-bold text-[var(--color-text)]">{fmtDate(r.reported_at)}</p>
-                    <p className="text-[11px] text-[var(--color-text-muted)] opacity-50 tabular-nums">{fmtTime(r.reported_at)}</p>
+                    <p className="text-xs text-[var(--color-text-muted)] opacity-50 tabular-nums">{fmtTime(r.reported_at)}</p>
                 </td>
             )}
             {visibleCols.teacher && (
                 <td className="px-4 py-3">
-                    <p className="text-[11px] font-medium text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 truncate max-w-[140px]">
+                    <p className="text-xs font-medium text-[var(--color-text-muted)] uppercase tracking-wide opacity-50 truncate max-w-[140px]">
                         {mask(r.teacher_name || '—')}
                     </p>
                 </td>

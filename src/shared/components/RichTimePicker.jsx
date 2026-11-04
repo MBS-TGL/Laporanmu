@@ -331,42 +331,42 @@ const RichTimePicker = memo(({
                         <button
                             type="button"
                             onClick={() => adjustHour(1)}
-                            className="w-8 h-6.5 flex items-center justify-center text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 rounded transition-colors active:scale-75"
+                            className="w-8 h-7 flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 rounded transition-colors active:scale-75"
                         >
-                            <ChevronUp />
+                            <ChevronUp className="w-4 h-4" />
                         </button>
-                        <span className="text-2xl font-bold tracking-wider text-[var(--color-text)] select-none">
+                        <span className="text-2xl font-bold tracking-tight tabular-nums leading-none text-[var(--color-text)] select-none">
                             {tNum(timeDisplay.hour)}
                         </span>
                         <button
                             type="button"
                             onClick={() => adjustHour(-1)}
-                            className="w-8 h-6.5 flex items-center justify-center text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 rounded transition-colors active:scale-75"
+                            className="w-8 h-7 flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 rounded transition-colors active:scale-75"
                         >
-                            <ChevronDown />
+                            <ChevronDown className="w-4 h-4" />
                         </button>
                     </div>
 
-                    <span className="text-xl font-bold text-[var(--color-text-muted)] pb-1 select-none">:</span>
+                    <span className="text-xl font-bold leading-none text-[var(--color-text-muted)] pb-1 select-none">:</span>
 
                     {/* Minute adjusters */}
                     <div className="flex flex-col items-center">
                         <button
                             type="button"
                             onClick={() => adjustMinute(1)}
-                            className="w-8 h-6.5 flex items-center justify-center text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 rounded transition-colors active:scale-75"
+                            className="w-8 h-7 flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 rounded transition-colors active:scale-75"
                         >
-                            <ChevronUp />
+                            <ChevronUp className="w-4 h-4" />
                         </button>
-                        <span className="text-2xl font-bold tracking-wider text-[var(--color-text)] select-none">
+                        <span className="text-2xl font-bold tracking-tight tabular-nums leading-none text-[var(--color-text)] select-none">
                             {tNum(timeDisplay.minute)}
                         </span>
                         <button
                             type="button"
                             onClick={() => adjustMinute(-1)}
-                            className="w-8 h-6.5 flex items-center justify-center text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 rounded transition-colors active:scale-75"
+                            className="w-8 h-7 flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 rounded transition-colors active:scale-75"
                         >
-                            <ChevronDown />
+                            <ChevronDown className="w-4 h-4" />
                         </button>
                     </div>
 
@@ -375,7 +375,7 @@ const RichTimePicker = memo(({
                         <button
                             type="button"
                             onClick={togglePeriod}
-                            className="ml-1 px-2.5 py-1.5 text-xs font-bold tracking-wider text-white bg-[var(--color-primary)] rounded-lg shadow-sm hover:brightness-110 active:scale-90 transition-all select-none"
+                            className="ml-1 px-2.5 py-1.5 text-xs font-bold tracking-wide leading-none text-white bg-[var(--color-primary)] rounded-lg shadow-sm hover:brightness-110 active:scale-90 transition-colors select-none"
                         >
                             {timeDisplay.period}
                         </button>
@@ -389,7 +389,7 @@ const RichTimePicker = memo(({
                     <button
                         type="button"
                         onClick={handleClear}
-                        className="px-3 h-8.5 rounded-xl border border-red-200 bg-red-50 text-red-500 hover:bg-red-100 text-xs font-bold tracking-wider uppercase transition-all shrink-0"
+                        className="px-3 h-8 rounded-xl border border-red-200 bg-red-50 text-red-500 hover:bg-red-100 text-xs font-bold tracking-wide leading-none uppercase transition-colors shrink-0"
                     >
                         {currentLocale.clear}
                     </button>
@@ -397,16 +397,16 @@ const RichTimePicker = memo(({
                 <button
                     type="button"
                     onClick={() => setIs24h(!is24h)}
-                    className="px-3 h-8.5 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] text-xs font-bold tracking-wider uppercase transition-colors shrink-0"
+                    className="px-3 h-8 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] text-xs font-bold tracking-wide leading-none uppercase transition-colors shrink-0"
                 >
                     {is24h ? '24H' : '12H'}
                 </button>
                 <button
                     type="button"
                     onClick={handleDone}
-                    className="flex-1 h-8.5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 shadow-sm"
+                    className="flex-1 h-8 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide leading-none hover:brightness-110 active:scale-[0.98] transition-colors flex items-center justify-center gap-1.5 shadow-sm"
                 >
-                    <Check className="text-xs text-white" />
+                    <Check className="w-4 h-4 text-white" />
                     <span>{currentLocale.done}</span>
                 </button>
             </div>
@@ -425,15 +425,15 @@ const RichTimePicker = memo(({
                 placeholder={placeholder}
                 inputMode={isMobile ? 'none' : undefined}
                 readOnly={isMobile || disabled}
-                className={`w-full pl-9 pr-8 h-[40px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] outline-none transition-all text-xs sm:text-sm font-medium shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`w-full pl-9 pr-8 h-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] outline-none transition-colors text-xs sm:text-sm font-medium leading-none tabular-nums shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
             />
             
             <Clock
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-[var(--color-text-muted)] opacity-50 pointer-events-none"
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)] opacity-50 pointer-events-none"
             />
 
             <ChevronDown
-                className={`absolute right-3.5 top-1/2 -translate-y-1/2 text-xs opacity-40 transition-transform duration-300 pointer-events-none ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
+                className={`absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 transition-transform duration-300 pointer-events-none ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
             />
 
             {/* Premium Headerless Highly-Readable Dropdown */}

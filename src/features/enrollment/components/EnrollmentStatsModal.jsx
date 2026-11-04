@@ -290,22 +290,22 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                     <div className="flex gap-2">
                         <button
                             onClick={handlePrint}
-                            className="h-10 px-4 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-200 text-[10px] font-black uppercase tracking-widest hover:bg-indigo-100 transition-all flex items-center gap-2"
+                            className="h-10 px-4 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-200 text-xs font-bold uppercase tracking-wide hover:bg-indigo-100 transition-all flex items-center gap-2"
                         >
-                            <Printer />
+                            <Printer className="w-4 h-4" />
                             Cetak Laporan
                         </button>
                         <button
                             onClick={handleExportExcel}
-                            className="h-10 px-4 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 text-[10px] font-black uppercase tracking-widest hover:bg-emerald-100 transition-all flex items-center gap-2"
+                            className="h-10 px-4 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 text-xs font-bold uppercase tracking-wide hover:bg-emerald-100 transition-all flex items-center gap-2"
                         >
-                            <FileSpreadsheet />
+                            <FileSpreadsheet className="w-4 h-4" />
                             Ekspor Excel
                         </button>
                     </div>
                     <button
                         onClick={onClose}
-                        className="h-10 px-6 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-border)] transition-all"
+                        className="h-10 px-6 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-border)] transition-all"
                     >
                         Tutup
                     </button>
@@ -507,7 +507,7 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
             {/* Header Toolbar: Wave Filter directly in statistics */}
             <div className="flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center pb-4 mb-4 border-b border-[var(--color-border)]/50 print:hidden">
                 <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Saring Gelombang:</span>
+                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Saring Gelombang:</span>
                     <RichSelect
                         value={selectedWave}
                         onChange={setSelectedWave}
@@ -521,10 +521,10 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
             {!hasData ? (
                 <div className="flex flex-col items-center justify-center py-20 text-center">
                     <div className="w-16 h-16 rounded-2xl bg-slate-100 text-slate-400 border border-slate-200/60 flex items-center justify-center text-2xl mb-4 animate-bounce">
-                        <Inbox />
+                        <Inbox className="w-6 h-6" />
                     </div>
-                    <h3 className="text-sm font-black text-[var(--color-text)]">Tidak Ada Data Ditemukan</h3>
-                    <p className="text-[11px] text-[var(--color-text-muted)] mt-1 max-w-sm">
+                    <h3 className="text-sm font-bold text-[var(--color-text)]">Tidak Ada Data Ditemukan</h3>
+                    <p className="text-xs text-[var(--color-text-muted)] mt-1 max-w-sm">
                         {selectedWave !== 'all'
                             ? 'Tidak ada calon santri terdaftar pada gelombang yang dipilih ini.'
                             : 'Tambahkan calon pendaftar atau impor berkas terlebih dahulu untuk melihat dashboard analitik.'}
@@ -536,14 +536,14 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                     <div className="hidden print:block mb-6 print-header-container">
                         <div className="flex justify-between items-center border-b-2 border-indigo-600 pb-4">
                             <div>
-                                <h1 className="text-2xl font-black tracking-tight text-indigo-950 uppercase">LAPORAN ANALISIS & STATISTIK PSB</h1>
-                                <p className="text-[10px] text-slate-500 font-extrabold mt-1">
+                                <h1 className="text-2xl font-bold tracking-tight text-indigo-950 uppercase">LAPORAN ANALISIS & STATISTIK PSB</h1>
+                                <p className="text-xs text-slate-500 font-bold mt-1">
                                     Penerimaan Santri Baru · Muhammadiyah Boarding School Tanggul
                                 </p>
                             </div>
                             <div className="text-right">
-                                <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Dicetak Tanggal</p>
-                                <p className="text-[10px] font-extrabold text-slate-700 mt-1">
+                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wide leading-none">Dicetak Tanggal</p>
+                                <p className="text-xs font-bold text-slate-700 mt-1">
                                     {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
                                 </p>
                             </div>
@@ -553,8 +553,8 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                     {/* Corong Seleksi Flow - Highly Visual Funnel with Arrow Connectors */}
                     <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm">
                         <div className="flex items-center justify-between mb-4">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Corong Seleksi (Funnel Pendaftaran)</span>
-                            <Funnel className="text-violet-500 text-xs" />
+                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Corong Seleksi (Funnel Pendaftaran)</span>
+                            <Funnel className="w-4 h-4 text-violet-500" />
                         </div>
 
                         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2">
@@ -567,17 +567,17 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                                 <React.Fragment key={idx}>
                                     {idx > 0 && (
                                         <div className="hidden md:flex items-center justify-center text-slate-300">
-                                            <ChevronRight className="text-lg animate-pulse" />
+                                            <ChevronRight className="w-5 h-5 animate-pulse" />
                                         </div>
                                     )}
                                     <div className={`flex-1 p-3 rounded-2xl border ${step.bg} flex flex-col items-center shadow-sm relative overflow-hidden group hover:scale-[1.02] transition-transform`}>
-                                        <div className="absolute right-0 top-0 w-8 h-8 bg-white/20 rounded-bl-3xl flex items-center justify-center font-bold text-[8px]">
+                                        <div className="absolute right-0 top-0 w-8 h-8 bg-white/20 rounded-bl-3xl flex items-center justify-center font-bold text-xs">
                                             #{idx + 1}
                                         </div>
-                                        <span className="text-[9px] font-black uppercase tracking-wider leading-none mb-1">{step.title}</span>
-                                        <span className="text-[8px] opacity-70 font-semibold mb-2">{step.sub}</span>
-                                        <span className="text-xl font-black leading-none mb-1.5">{step.count}</span>
-                                        <span className="text-[8px] font-black bg-white/40 px-2 py-0.5 rounded-full">{step.pct}</span>
+                                        <span className="text-xs font-bold uppercase tracking-wider leading-none mb-1">{step.title}</span>
+                                        <span className="text-xs opacity-70 font-semibold mb-2">{step.sub}</span>
+                                        <span className="text-xl font-bold leading-none mb-1.5">{step.count}</span>
+                                        <span className="text-xs font-bold bg-white/40 px-2 py-0.5 rounded-full">{step.pct}</span>
                                     </div>
                                 </React.Fragment>
                             ))}
@@ -589,12 +589,12 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                         {/* 1. Program & Gender Stacked Bar Chart */}
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm flex flex-col">
                             <div className="flex items-center justify-between mb-4">
-                                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Minat Program Studi + Gender</span>
-                                <GraduationCap className="text-emerald-500 text-xs" />
+                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Minat Program Studi + Gender</span>
+                                <GraduationCap className="w-4 h-4 text-emerald-500" />
                             </div>
                             <div className="h-44 relative">
                                 {stats.programGenderData.length === 0 ? (
-                                    <div className="h-full flex items-center justify-center text-[10px] text-[var(--color-text-muted)] italic">Belum ada data program</div>
+                                    <div className="h-full flex items-center justify-center text-xs text-[var(--color-text-muted)] italic">Belum ada data program</div>
                                 ) : (
                                     <ResponsiveContainer width="100%" height="100%">
                                         <BarChart data={stats.programGenderData} margin={{ left: -20, right: 10, top: 5, bottom: 5 }}>
@@ -614,12 +614,12 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                         {/* 2. Status Distribution (Pie) */}
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm flex flex-col">
                             <div className="flex items-center justify-between mb-4">
-                                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Status Kelulusan / Seleksi</span>
-                                <CircleCheck className="text-indigo-500 text-xs" />
+                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Status Kelulusan / Seleksi</span>
+                                <CircleCheck className="w-4 h-4 text-indigo-500" />
                             </div>
                             <div className="h-44 relative">
                                 {stats.statusData.length === 0 ? (
-                                    <div className="h-full flex items-center justify-center text-[10px] text-[var(--color-text-muted)] italic">Belum ada data status</div>
+                                    <div className="h-full flex items-center justify-center text-xs text-[var(--color-text-muted)] italic">Belum ada data status</div>
                                 ) : (
                                     <ResponsiveContainer width="100%" height="100%">
                                         <PieChart>
@@ -645,7 +645,7 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                             </div>
                             <div className="grid grid-cols-3 gap-2 mt-2">
                                 {stats.statusData.map((item, idx) => (
-                                    <div key={idx} className="flex items-center gap-1.5 text-[9px] font-black">
+                                    <div key={idx} className="flex items-center gap-1.5 text-xs font-bold">
                                         <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
                                         <span className="text-[var(--color-text-muted)] truncate">{item.name} ({item.value})</span>
                                     </div>
@@ -656,16 +656,16 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                         {/* 3. Progress Kuota per Gelombang - Thicker progress bars with responsive colors */}
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm flex flex-col">
                             <div className="flex items-center justify-between mb-3">
-                                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Keterisian Kuota Gelombang (Mutlak)</span>
-                                <AudioWaveform className="text-violet-500 text-xs" />
+                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Keterisian Kuota Gelombang (Mutlak)</span>
+                                <AudioWaveform className="w-4 h-4 text-violet-500" />
                             </div>
                             <div className="flex-1 space-y-3.5 max-h-[180px] overflow-y-auto pr-1 custom-scrollbar">
                                 {stats.waveQuotaData.length === 0 ? (
-                                    <p className="text-[10px] text-[var(--color-text-muted)] italic text-center py-8">Tidak ada gelombang aktif</p>
+                                    <p className="text-xs text-[var(--color-text-muted)] italic text-center py-8">Tidak ada gelombang aktif</p>
                                 ) : (
                                     stats.waveQuotaData.map((w, idx) => (
                                         <div key={idx} className="space-y-1.5">
-                                            <div className="flex justify-between items-center text-[10px] font-black">
+                                            <div className="flex justify-between items-center text-xs font-bold">
                                                 <span className="text-[var(--color-text)]">{w.name}</span>
                                                 <span className="text-[var(--color-text-muted)]">
                                                     {w.count} / <span className="text-[var(--color-text)]">{w.quota ? `${w.quota} Kuota` : '∞ (Tanpa Batas)'}</span>{w.quota ? ` (${w.percentage}%)` : ''}
@@ -695,14 +695,14 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                         {/* 4. Top Asal Sekolah (Bar) - Beautiful standard vertical BarChart */}
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm flex flex-col">
                             <div className="flex items-center justify-between mb-4">
-                                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
-                                    Top 5 Asal Sekolah SD/MI <span className="text-[9px] text-amber-600 font-extrabold normal-case ml-1.5">(Dari Total {stats.uniqueSchoolsCount} Sekolah)</span>
+                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
+                                    Top 5 Asal Sekolah SD/MI <span className="text-xs text-amber-600 font-bold normal-case ml-1.5">(Dari Total {stats.uniqueSchoolsCount} Sekolah)</span>
                                 </span>
-                                <School className="text-amber-500 text-xs" />
+                                <School className="w-4 h-4 text-amber-500" />
                             </div>
                             <div className="h-44 relative">
                                 {stats.schoolData.length === 0 ? (
-                                    <div className="h-full flex items-center justify-center text-[10px] text-[var(--color-text-muted)] italic">Belum ada data sekolah</div>
+                                    <div className="h-full flex items-center justify-center text-xs text-[var(--color-text-muted)] italic">Belum ada data sekolah</div>
                                 ) : (
                                     <ResponsiveContainer width="100%" height="100%">
                                         <BarChart data={stats.schoolData} margin={{ left: -20, right: 10, top: 5, bottom: 5 }}>
@@ -732,14 +732,14 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                         {/* 5. Sebaran Wilayah Asal Santri (Horizontal Bar Chart) */}
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm flex flex-col">
                             <div className="flex items-center justify-between mb-4">
-                                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
-                                    Sebaran Wilayah (Top Kota/Kab) <span className="text-[9px] text-indigo-600 font-extrabold normal-case ml-1.5">(Dari Total {stats.uniqueCitiesCount || 0} Daerah)</span>
+                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
+                                    Sebaran Wilayah (Top Kota/Kab) <span className="text-xs text-indigo-600 font-bold normal-case ml-1.5">(Dari Total {stats.uniqueCitiesCount || 0} Daerah)</span>
                                 </span>
-                                <MapPin className="text-rose-500 text-xs" />
+                                <MapPin className="w-4 h-4 text-rose-500" />
                             </div>
                             <div className="h-44 relative">
                                 {!stats.cityData || stats.cityData.length === 0 ? (
-                                    <div className="h-full flex items-center justify-center text-[10px] text-[var(--color-text-muted)] italic">Belum ada data wilayah</div>
+                                    <div className="h-full flex items-center justify-center text-xs text-[var(--color-text-muted)] italic">Belum ada data wilayah</div>
                                 ) : (
                                     <ResponsiveContainer width="100%" height="100%">
                                         <BarChart data={stats.cityData} layout="vertical" margin={{ left: -10, right: 10, top: 5, bottom: 5 }}>
@@ -762,12 +762,12 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                     {/* 5. Trend Pendaftaran Harian - Highly styled AreaChart with visible dot indicators */}
                     <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm">
                         <div className="flex items-center justify-between mb-4">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Trend Volume Pendaftaran Harian</span>
-                            <CalendarDays className="text-indigo-500 text-xs" />
+                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Trend Volume Pendaftaran Harian</span>
+                            <CalendarDays className="w-4 h-4 text-indigo-500" />
                         </div>
                         <div className="h-48 relative">
                             {stats.dailyData.length === 0 ? (
-                                <div className="h-full flex items-center justify-center text-[10px] text-[var(--color-text-muted)] italic">Belum ada data trend</div>
+                                <div className="h-full flex items-center justify-center text-xs text-[var(--color-text-muted)] italic">Belum ada data trend</div>
                             ) : (
                                 <ResponsiveContainer width="100%" height="100%">
                                     <AreaChart data={stats.dailyData} margin={{ left: -20, right: 10, top: 5, bottom: 5 }}>

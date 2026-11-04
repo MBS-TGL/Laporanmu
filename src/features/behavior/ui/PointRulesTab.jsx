@@ -63,14 +63,14 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                         <div className="min-w-0">
                             <h4 className="text-sm font-bold text-[var(--color-text)] leading-snug break-words">{v.name}</h4>
                             <div className="flex items-center gap-1.5 mt-1">
-                                <span className={`px-1.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${
+                                <span className={`px-1.5 py-0.5 rounded-md text-xs font-bold uppercase tracking-wider ${
                                     v.is_negative 
                                         ? 'bg-red-500/10 text-red-500' 
                                         : 'bg-emerald-500/10 text-emerald-500'
                                 }`}>
                                     {v.is_negative ? tp('violation') : tp('achievement')}
                                 </span>
-                                <span className="text-[11px] text-[var(--color-text-muted)] font-medium truncate">
+                                <span className="text-xs text-[var(--color-text-muted)] font-medium truncate">
                                     · {getCategoryLabel(v.category)}
                                 </span>
                             </div>
@@ -78,7 +78,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                     </div>
                     {/* Points & Action Button */}
                     <div className="flex items-center gap-2 shrink-0 mt-0.5">
-                        <div className={`px-2.5 py-1 rounded-xl text-[10px] font-bold ${
+                        <div className={`px-2.5 py-1 rounded-xl text-xs font-bold ${
                             v.is_negative 
                                 ? 'bg-red-500/10 text-red-500' 
                                 : 'bg-emerald-500/10 text-emerald-500'
@@ -101,7 +101,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                 </div>
 
                 {v.description && (
-                    <p className="text-[11px] font-medium text-[var(--color-text-muted)]/75 leading-relaxed px-3.5 pb-3.5 -mt-1 pl-[48px]">
+                    <p className="text-xs font-medium text-[var(--color-text-muted)]/75 leading-relaxed px-3.5 pb-3.5 -mt-1 pl-[48px]">
                         {v.description}
                     </p>
                 )}
@@ -961,7 +961,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
             {!canEdit && (
                 <div className="px-4 py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center gap-2">
                     <EyeOff className="text-rose-500 shrink-0 w-4 h-4" />
-                    <p className="text-[11px] font-bold text-rose-600">{tp('rulesReadOnlyBanner')}</p>
+                    <p className="text-xs font-bold text-rose-600">{tp('rulesReadOnlyBanner')}</p>
                 </div>
             )}
 
@@ -1078,7 +1078,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                 <button
                                     key={s.id}
                                     onClick={() => { setFilterType(s.id); setPage(1) }}
-                                    className={`flex-1 lg:flex-initial flex items-center justify-center gap-1 lg:gap-2 px-2 lg:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold uppercase tracking-wide whitespace-nowrap transition-all border ${
+                                    className={`flex-1 lg:flex-initial flex items-center justify-center gap-1 lg:gap-2 px-2 lg:px-3 py-1.5 rounded-xl text-xs sm:text-xs font-semibold uppercase tracking-wide whitespace-nowrap transition-all border ${
                                         filterType === s.id
                                             ? `${s.activeCls} text-white`
                                             : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5 hover:text-[var(--color-primary)]'
@@ -1110,7 +1110,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                             <Check className="w-3.5 h-3.5" />
                             <span className="hidden xl:inline">{selectedIds.length > 0 ? tp('selected') : tp('selectAll')}</span>
                             {selectedIds.length > 0 && (
-                                <span className="w-4 h-4 rounded-full bg-white/20 text-white text-[10px] font-bold flex items-center justify-center">
+                                <span className="w-4 h-4 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center">
                                     {tNum(selectedIds.length)}
                                 </span>
                             )}
@@ -1130,7 +1130,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                             <Sliders className="w-3.5 h-3.5" />
                             <span className="hidden xl:inline">{tp('filterShort')}</span>
                             {activeFilterCount > 0 && (
-                                <span className="w-4 h-4 rounded-full bg-white/30 text-white text-[10px] font-bold flex items-center justify-center">
+                                <span className="w-4 h-4 rounded-full bg-white/30 text-white text-xs font-bold flex items-center justify-center">
                                     {activeFilterCount}
                                 </span>
                             )}
@@ -1200,7 +1200,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                             </div>
                             <button
                                 onClick={resetAllFilters}
-                                className="text-[10px] font-bold uppercase tracking-wider text-red-500 hover:bg-red-500/5 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-500/10"
+                                className="text-xs font-bold uppercase tracking-wider text-red-500 hover:bg-red-500/5 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-500/10"
                             >
                                 <RotateCcw className="w-3 h-3" />
                                 <span className="sm:hidden">{tp('resetShort')}</span>
@@ -1252,7 +1252,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                             <div className="flex items-end justify-end">
                                 <button
                                     onClick={() => setIsFilterOpen(false)}
-                                    className="h-9 px-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] font-bold uppercase tracking-wider text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
+                                    className="h-9 px-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-wider text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
                                 >
                                     {tp('closePanel')}
                                 </button>
@@ -1267,11 +1267,11 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                 <div className="px-4 py-3 rounded-2xl bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-between gap-3 flex-wrap animate-in slide-in-from-top-2">
                     <p className="text-sm font-bold text-[var(--color-primary)] tracking-tight">{tp('rulesSelectedCount', { count: selectedIds.length })}</p>
                     <div className="flex items-center gap-2">
-                        <button onClick={() => setIsBulkDeleteOpen(true)} className="h-8 px-4 rounded-xl bg-red-500/10 text-red-600 text-[10px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all flex items-center gap-2">
+                        <button onClick={() => setIsBulkDeleteOpen(true)} className="h-8 px-4 rounded-xl bg-red-500/10 text-red-600 text-xs font-bold uppercase tracking-wide hover:bg-red-500 hover:text-white transition-all flex items-center gap-2">
                             <Trash2 className="w-3.5 h-3.5" />
                             <span>{tp('delete')}</span>
                         </button>
-                        <button onClick={() => setSelectedIds([])} className="h-8 px-4 rounded-xl bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest hover:text-[var(--color-text)] transition-all flex items-center gap-2">
+                        <button onClick={() => setSelectedIds([])} className="h-8 px-4 rounded-xl bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:text-[var(--color-text)] transition-all flex items-center gap-2">
                             <X className="w-3.5 h-3.5" />
                             <span>{tp('cancel')}</span>
                         </button>
@@ -1329,10 +1329,10 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                                             right: menuPos.right,
                                                             transform: menuPos.showUp ? 'translateY(-100%)' : undefined
                                                         }}>
-                                                         <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] px-3 py-2">{tp('manageColumns')}</p>
+                                                         <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] px-3 py-2">{tp('manageColumns')}</p>
                                                         {[{ key: 'description', label: tp('rulesColDescription') }, { key: 'type', label: tp('rulesColTypePreset') }, { key: 'category', label: tp('rulesColCategory') }, { key: 'points', label: tp('rulesColWeightPreset') }].map(({ key, label }) => (
                                                             <button key={key} onClick={() => setVisibleCols(p => ({ ...p, [key]: !p[key] }))} className="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-[var(--color-surface-alt)] transition-all group text-left">
-                                                                <span className="text-[10px] font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{label}</span>
+                                                                <span className="text-xs font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{label}</span>
                                                                 <div className={`w-7 h-4 rounded-full transition-all flex items-center px-0.5 ${visibleCols[key] ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}`}>
                                                                     <div className={`w-3 h-3 rounded-full bg-white shadow-sm transition-all ${visibleCols[key] ? 'translate-x-[12px]' : 'translate-x-0'}`} />
                                                                 </div>
@@ -1358,7 +1358,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                                     action={
                                                         <button
                                                             onClick={resetAllFilters}
-                                                            className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition"
+                                                            className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition"
                                                         >
                                                             {tp('resetAllFilters')}
                                                         </button>
@@ -1388,7 +1388,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                             )}
                                             {visibleCols.type && (
                                                 <td className="px-4 py-3 text-center">
-                                                    <span className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border ${rule.is_negative ? 'bg-red-500/10 border-red-500/20 text-red-600' : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600'}`}>
+                                                    <span className={`px-2 py-1 rounded-md text-xs font-bold uppercase tracking-wider border ${rule.is_negative ? 'bg-red-500/10 border-red-500/20 text-red-600' : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600'}`}>
                                                         {rule.is_negative ? tp('violation') : tp('achievement')}
                                                     </span>
                                                 </td>
@@ -1400,7 +1400,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                             )}
                                             {visibleCols.points && (
                                                 <td className="px-4 py-3 text-center">
-                                                    <span className={`inline-flex items-center justify-center min-w-[40px] px-2 py-0.5 rounded-full text-[11px] font-bold border ${
+                                                    <span className={`inline-flex items-center justify-center min-w-[40px] px-2 py-0.5 rounded-full text-xs font-bold border ${
                                                         rule.points > 0 ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : 'bg-red-500/10 text-red-600 border-red-500/20'
                                                     }`}>
                                                         {isPrivacyMode ? '***' : `${rule.points > 0 ? '+' : ''}${tNum(rule.points)}`}
@@ -1450,7 +1450,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                         action={
                                             <button
                                                 onClick={resetAllFilters}
-                                                className="h-8 px-3 rounded-lg text-[10px] font-black uppercase tracking-widest border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition"
+                                                className="h-8 px-3 rounded-lg text-xs font-bold uppercase tracking-wide border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition"
                                             >
                                                 {tp('resetAll')}
                                             </button>
@@ -1517,7 +1517,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                             <button
                                 type="button"
                                 onClick={() => setIsModalOpen(false)}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
                             >
                                 {tp('cancel')}
                             </button>
@@ -1526,7 +1526,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                 type="submit"
                                 form="point-rule-form"
                                 disabled={submitting}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
+                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
                             >
                                 {submitting ? (
                                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -1624,7 +1624,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                             <Trash2 className="w-3.5 h-3.5 text-red-500 shrink-0" />
                             <span className="text-sm text-red-500 font-bold break-words min-w-0">{itemToDelete?.name}</span>
                         </div>
-                        <p className="text-[11px] text-[var(--color-text-muted)] font-bold">
+                        <p className="text-xs text-[var(--color-text-muted)] font-bold">
                             {tp('rulesDeletePermanent')} — {tp('rulesDeleteRisk')}
                         </p>
                     </div>
@@ -1637,10 +1637,10 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                     <div className="space-y-6 text-center">
                         <div className="w-20 h-20 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-red-500/20 shadow-xl"><Trash2 className="text-3xl w-10 h-10" /></div>
                         <h3 className="text-base font-bold text-[var(--color-text)] uppercase tracking-tight">{tp('rulesBulkDeleteConfirmTitle', { count: selectedIds.length })}</h3>
-                        <p className="text-[11px] text-[var(--color-text-muted)] font-bold uppercase tracking-wider leading-relaxed">{tp('rulesBulkDeleteWarning')}</p>
+                        <p className="text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-wider leading-relaxed">{tp('rulesBulkDeleteWarning')}</p>
                         <div className="flex gap-3 pt-4">
-                            <button onClick={() => setIsBulkDeleteOpen(false)} className="h-11 flex-1 rounded-xl bg-[var(--color-surface-alt)] text-[var(--color-text)] font-black text-[10px] uppercase tracking-widest">{tp('cancel')}</button>
-                                <button onClick={handleBulkDelete} disabled={submitting} className="h-11 flex-1 rounded-xl bg-red-500 text-white font-black text-[10px] uppercase tracking-widest shadow-lg transition-all flex items-center justify-center">
+                            <button onClick={() => setIsBulkDeleteOpen(false)} className="h-11 flex-1 rounded-xl bg-[var(--color-surface-alt)] text-[var(--color-text)] font-bold text-xs uppercase tracking-wide">{tp('cancel')}</button>
+                                <button onClick={handleBulkDelete} disabled={submitting} className="h-11 flex-1 rounded-xl bg-red-500 text-white font-bold text-xs uppercase tracking-wide shadow-lg transition-all flex items-center justify-center">
                                 {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : tp('rulesBtnBulkDeleteConfirm')}
                             </button>
                         </div>
@@ -1683,7 +1683,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                             <button
                                 type="button"
                                 onClick={() => setIsResetModalOpen(false)}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
                             >
                                 {tp('cancel')}
                             </button>
@@ -1695,7 +1695,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                     setIsResetModalOpen(false)
                                     setIsResetConfirmOpen(true)
                                 }}
-                                className="h-10 px-6 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
+                                className="h-10 px-6 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
                             >
                                 <RotateCcw className="w-3.5 h-3.5" />
                                 <span>{tp('resetPointsBtnConfirm')}</span>
@@ -1804,7 +1804,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                         </div>
                         <div className="flex items-center gap-2 px-2.5 py-1 bg-red-500/5 rounded-lg border border-red-500/10">
                             <AlertCircle className="w-3.5 h-3.5 text-red-500 shrink-0" />
-                            <span className="text-[11px] text-red-600 dark:text-red-400 font-bold leading-snug">{tp('resetPointsWarning')}</span>
+                            <span className="text-xs text-red-600 dark:text-red-400 font-bold leading-snug">{tp('resetPointsWarning')}</span>
                         </div>
                     </div>
                 </Modal>
@@ -1824,7 +1824,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                     mobileVariant="bottom-sheet"
                     confirmText={language === 'ar' ? 'نعم، أعد التعيين الآن' : language === 'en' ? 'Yes, Reset Now' : 'Ya, Reset Sekarang'}
                     confirmIcon={RotateCcw}
-                    confirmClassName="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                    confirmClassName="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
                     confirmDisabled={confirmText.toUpperCase() !== 'RESET'}
                     cancelText={tp('cancel')}
                     submitting={resettingPoints}
@@ -1844,7 +1844,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                 ) : (
                                     <div className="flex flex-wrap gap-1.5 mt-1 max-h-[80px] overflow-y-auto custom-scrollbar pr-1">
                                         {classesList.filter(c => resetPointsClassIds.includes(c.id)).map(c => (
-                                            <span key={c.id} className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-md border border-[var(--color-primary)]/20 shrink-0">
+                                            <span key={c.id} className="text-xs font-bold uppercase tracking-wide px-2 py-0.5 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-md border border-[var(--color-primary)]/20 shrink-0">
                                                 {c.name}
                                             </span>
                                         ))}
@@ -1863,7 +1863,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                 value={confirmText}
                                 onChange={(e) => setConfirmText(e.target.value)}
                                 placeholder="RESET"
-                                className="w-full px-4 h-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-center text-sm font-bold tracking-widest focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition-all uppercase placeholder:opacity-30"
+                                className="w-full px-4 h-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-center text-sm font-bold tracking-wide focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition-all uppercase placeholder:opacity-30"
                             />
                         </div>
                     </div>

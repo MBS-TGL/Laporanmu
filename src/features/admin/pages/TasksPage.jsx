@@ -161,22 +161,22 @@ function ConfirmModal({ task, onConfirm, onCancel }) {
             <div className="relative w-full max-w-sm bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2rem] shadow-xl p-6 animate-in zoom-in-95 duration-200">
                 <div className="flex flex-col items-center text-center space-y-4">
                     <div className="w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500 text-2xl">
-                        <TriangleAlert />
+                        <TriangleAlert className="w-6 h-6" />
                     </div>
                     <div>
-                        <h3 className="text-base font-black text-[var(--color-text)]">Jalankan "{task.name}"?</h3>
-                        <p className="text-[11px] text-[var(--color-text-muted)] mt-2 leading-relaxed">
-                            Task ini bersifat <span className="font-black text-amber-500">destruktif</span> — data yang dihapus tidak bisa dikembalikan. Pastikan sudah ada backup sebelum melanjutkan.
+                        <h3 className="text-base font-bold text-[var(--color-text)]">Jalankan "{task.name}"?</h3>
+                        <p className="text-xs text-[var(--color-text-muted)] mt-2 leading-relaxed">
+                            Task ini bersifat <span className="font-bold text-amber-500">destruktif</span> — data yang dihapus tidak bisa dikembalikan. Pastikan sudah ada backup sebelum melanjutkan.
                         </p>
                     </div>
                     <div className="flex w-full gap-3 pt-2">
                         <button onClick={onCancel}
-                            className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-border)] transition-colors">
+                            className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-border)] transition-colors">
                             Batal
                         </button>
                         <button onClick={onConfirm}
-                            className="flex-1 h-11 rounded-xl bg-amber-500 text-white text-[10px] font-black uppercase tracking-widest hover:bg-amber-600 active:scale-95 transition-all flex items-center justify-center gap-2">
-                            <Play className="text-xs" /> Lanjutkan
+                            className="flex-1 h-11 rounded-xl bg-amber-500 text-white text-xs font-bold uppercase tracking-wide hover:bg-amber-600 active:scale-95 transition-all flex items-center justify-center gap-2">
+                            <Play className="w-4 h-4" /> Lanjutkan
                         </button>
                     </div>
                 </div>
@@ -294,16 +294,16 @@ export default function TasksPage() {
 
     return (
         <DashboardLayout title="Background Tasks">
-            <div className="p-4 md:p-6 space-y-6 min-h-[80vh]">
+            <div className="space-y-6 min-h-[80vh]">
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <Breadcrumb badge="Admin" items={['Background Tasks']} className="mb-1" />
                         <div className="flex items-center gap-2.5 mb-1 flex-wrap">
-                            <h1 className="text-2xl font-black font-heading tracking-tight text-[var(--color-text)]">Background Tasks</h1>
-                            <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 uppercase tracking-widest">Direct Query</span>
+                            <h1 className="text-2xl font-bold font-heading tracking-tight text-[var(--color-text)]">Background Tasks</h1>
+                            <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 uppercase tracking-wide">Direct Query</span>
                         </div>
-                        <p className="text-[var(--color-text-muted)] text-[11px] font-medium opacity-70">
+                        <p className="text-[var(--color-text-muted)] text-xs font-medium opacity-70">
                             Picu fungsi komputasi berat secara manual tanpa menunggu jadwal cron.
                         </p>
                     </div>
@@ -314,10 +314,10 @@ export default function TasksPage() {
                     <div className="lg:col-span-2 space-y-6 order-last lg:order-first">
                         <section className="space-y-4">
                             <div className="flex items-center gap-2 mb-2 flex-wrap">
-                                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Tersedia untuk Trigger</span>
+                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Tersedia untuk Trigger</span>
                                 <div className="h-px bg-[var(--color-border)] flex-1" />
                                 {isAnyRunning && (
-                                    <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 uppercase tracking-widest animate-pulse">
+                                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 uppercase tracking-wide animate-pulse">
                                         Task sedang berjalan
                                     </span>
                                 )}
@@ -350,32 +350,32 @@ export default function TasksPage() {
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
-                                                        <h2 className="text-[14px] sm:text-[15px] font-black text-[var(--color-text)] leading-tight">{task.name}</h2>
+                                                        <h2 className="text-[14px] sm:text-[15px] font-bold text-[var(--color-text)] leading-tight">{task.name}</h2>
                                                         <div className="flex items-center gap-1.5 flex-wrap">
                                                             {isRunning && (
-                                                                <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black uppercase tracking-tighter animate-pulse w-fit">
-                                                                    <LoaderCircle className="animate-spin" /> Sedang Diproses
+                                                                <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold uppercase tracking-tighter animate-pulse w-fit">
+                                                                    <LoaderCircle className="w-4 h-4 animate-spin" /> Sedang Diproses
                                                                 </span>
                                                             )}
                                                             {task.destructive && !isRunning && (
-                                                                <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 text-[8px] font-black uppercase tracking-tighter w-fit">
-                                                                    <TriangleAlert className="text-[7px]" /> Destruktif
+                                                                <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 text-xs font-bold uppercase tracking-tighter w-fit">
+                                                                    <TriangleAlert className="w-4 h-4" /> Destruktif
                                                                 </span>
                                                             )}
                                                         </div>
                                                     </div>
-                                                    <p className="text-[11px] text-[var(--color-text-muted)] font-medium max-w-full sm:max-w-md">{task.desc}</p>
+                                                    <p className="text-xs text-[var(--color-text-muted)] font-medium max-w-full sm:max-w-md">{task.desc}</p>
                                                     <div className="flex items-center gap-3 mt-3 flex-wrap">
-                                                        <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
-                                                            <History className="opacity-60" />
+                                                        <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
+                                                            <History className="w-4 h-4 opacity-60" />
                                                             Terakhir:
                                                             <span className="text-[var(--color-text)]" title={formatAbsolute(task.lastRun)}>
                                                                 {task.lastRun ? formatRelative(task.lastRun) : 'Belum pernah'}
                                                             </span>
                                                         </div>
                                                         {task.duration !== '—' && (
-                                                            <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
-                                                                <Zap className="opacity-60" />
+                                                            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
+                                                                <Zap className="w-4 h-4 opacity-60" />
                                                                 Durasi: <span className="text-[var(--color-text)]">{task.duration}</span>
                                                             </div>
                                                         )}
@@ -386,18 +386,18 @@ export default function TasksPage() {
                                             <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
                                                 {isRunning ? (
                                                     <div className="flex flex-row sm:flex-col items-center gap-2">
-                                                        <span className="text-[14px] font-black tabular-nums text-[var(--color-primary)]">{task.progress}%</span>
+                                                        <span className="text-[14px] font-bold tabular-nums text-[var(--color-primary)]">{task.progress}%</span>
                                                         <button onClick={() => cancelTask(task.id)}
                                                             className="w-10 h-10 rounded-2xl bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all active:scale-90 flex items-center justify-center"
                                                             title="Hentikan task">
-                                                            <X className="text-sm" />
+                                                            <X className="w-4 h-4" />
                                                         </button>
                                                     </div>
                                                 ) : (
                                                     <button onClick={() => handleRunClick(task)} disabled={isDisabled}
-                                                        className="group h-11 px-4 sm:px-6 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] text-[12px] font-black hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] disabled:cursor-not-allowed transition-all flex items-center gap-2 sm:gap-3 shadow-sm hover:shadow-md active:scale-95 disabled:active:scale-100">
+                                                        className="group h-11 px-4 sm:px-6 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] text-xs font-bold hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] disabled:cursor-not-allowed transition-all flex items-center gap-2 sm:gap-3 shadow-sm hover:shadow-md active:scale-95 disabled:active:scale-100">
                                                         <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center group-hover:bg-[var(--color-primary)]/10 transition-colors">
-                                                            <Play className="text-[9px] group-hover:scale-125 transition-transform" />
+                                                            <Play className="w-4 h-4 group-hover:scale-125 transition-transform" />
                                                         </div>
                                                         <span className="hidden sm:inline">Run Task</span>
                                                     </button>
@@ -414,30 +414,30 @@ export default function TasksPage() {
                             <div className="p-4 sm:p-5 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                 <div className="flex items-center gap-3">
                                     <div className="w-8 h-8 rounded-xl bg-slate-500/10 text-slate-500 flex items-center justify-center shrink-0">
-                                        <History />
+                                        <History className="w-4 h-4" />
                                     </div>
                                     <div>
-                                        <h3 className="font-black text-sm text-[var(--color-text)]">Audit Log Eksekusi</h3>
-                                        <p className="text-[9px] text-[var(--color-text-muted)] opacity-60 font-bold uppercase tracking-widest mt-0.5">{logs.length} entri · persisten</p>
+                                        <h3 className="font-bold text-sm text-[var(--color-text)]">Audit Log Eksekusi</h3>
+                                        <p className="text-xs text-[var(--color-text-muted)] opacity-60 font-bold uppercase tracking-wide mt-0.5">{logs.length} entri · persisten</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="relative flex-1 sm:flex-none">
-                                        <Funnel className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
+                                        <Funnel className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" />
                                         <input type="text" placeholder="Cari log..." value={searchLog}
                                             onChange={e => setSearchLog(e.target.value)}
-                                            className="h-8 pl-8 pr-3 w-full sm:w-48 text-[11px] font-medium bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl outline-none focus:border-[var(--color-primary)] transition-all" />
+                                            className="h-8 pl-8 pr-3 w-full sm:w-48 text-xs font-medium bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl outline-none focus:border-[var(--color-primary)] transition-all" />
                                     </div>
                                     {logs.length > 0 && (
                                         <>
                                             <button onClick={exportLogs} title="Export CSV"
-                                                className="h-8 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 transition-colors flex items-center gap-1.5 text-[10px] font-black shrink-0">
-                                                <Download className="text-[9px]" />
+                                                className="h-8 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 transition-colors flex items-center gap-1.5 text-xs font-bold shrink-0">
+                                                <Download className="w-4 h-4" />
                                                 <span className="hidden sm:inline">CSV</span>
                                             </button>
                                             <button onClick={clearLogs} title="Hapus semua log"
-                                                className="h-8 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-rose-500 hover:border-rose-500/30 transition-colors flex items-center gap-1.5 text-[10px] font-black shrink-0">
-                                                <Trash2 className="text-[9px]" />
+                                                className="h-8 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-rose-500 hover:border-rose-500/30 transition-colors flex items-center gap-1.5 text-xs font-bold shrink-0">
+                                                <Trash2 className="w-4 h-4" />
                                                 <span className="hidden sm:inline">Hapus</span>
                                             </button>
                                         </>
@@ -446,7 +446,7 @@ export default function TasksPage() {
                             </div>
                             <div className="divide-y divide-[var(--color-border)] max-h-[400px] overflow-y-auto">
                                 {filteredLogs.length === 0 ? (
-                                    <div className="p-10 text-center text-[var(--color-text-muted)] text-[11px] font-bold opacity-50">
+                                    <div className="p-10 text-center text-[var(--color-text-muted)] text-xs font-bold opacity-50">
                                         {logs.length === 0 ? 'Belum ada log eksekusi' : 'Tidak ada log yang sesuai'}
                                     </div>
                                 ) : filteredLogs.map(log => {
@@ -455,23 +455,23 @@ export default function TasksPage() {
                                         <div key={log.id} className="p-3 sm:p-4 flex items-start sm:items-center justify-between gap-3 transition-colors hover:bg-[var(--color-surface-alt)]/20">
                                             <div className="flex items-start sm:items-center gap-3 sm:gap-4 min-w-0">
                                                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${log.status === 'success' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-rose-500/10 text-rose-500'}`}>
-                                                    { log.status === 'success' ? <CircleCheck className="text-xs" /> : <CircleX className="text-xs" /> }
+                                                    { log.status === 'success' ? <CircleCheck className="w-4 h-4" /> : <CircleX className="w-4 h-4" /> }
                                                 </div>
                                                 <div className="min-w-0">
-                                                    <p className="text-[11px] font-black text-[var(--color-text)] truncate">{taskInfo?.name || 'Unknown Task'}</p>
-                                                    <p className="text-[10px] text-[var(--color-text-muted)] font-medium mt-0.5 leading-relaxed">{log.msg}</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text)] truncate">{taskInfo?.name || 'Unknown Task'}</p>
+                                                    <p className="text-xs text-[var(--color-text-muted)] font-medium mt-0.5 leading-relaxed">{log.msg}</p>
                                                 </div>
                                             </div>
                                             <div className="text-right shrink-0 ml-auto">
-                                                <p className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest whitespace-nowrap"
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide whitespace-nowrap"
                                                     title={formatAbsolute(log.timestamp)}>
                                                     {formatRelative(log.timestamp)}
                                                 </p>
                                                 <div className="flex items-center gap-1.5 justify-end mt-0.5">
                                                     {log.duration && log.duration !== '—' && (
-                                                        <span className="text-[8px] text-[var(--color-text-muted)] opacity-50 font-bold">{log.duration}</span>
+                                                        <span className="text-xs text-[var(--color-text-muted)] opacity-50 font-bold">{log.duration}</span>
                                                     )}
-                                                    <span className={`text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter ${log.status === 'success' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600'}`}>
+                                                    <span className={`text-xs font-bold px-1.5 py-0.5 rounded uppercase tracking-tighter ${log.status === 'success' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600'}`}>
                                                         {log.status}
                                                     </span>
                                                 </div>
@@ -487,8 +487,8 @@ export default function TasksPage() {
                     <div className="space-y-4 lg:order-last order-first">
                         <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] p-5">
                             <div className="flex items-center gap-3 mb-4">
-                                <Clock className="text-[var(--color-text-muted)] text-lg" />
-                                <h3 className="font-black text-sm text-[var(--color-text)]">Jadwal Otomatis (Cron)</h3>
+                                <Clock className="w-5 h-5 text-[var(--color-text-muted)]" />
+                                <h3 className="font-bold text-sm text-[var(--color-text)]">Jadwal Otomatis (Cron)</h3>
                             </div>
                             <div className="space-y-4 relative">
                                 <div className="absolute left-[5px] top-2 bottom-2 w-px bg-[var(--color-border)]" />
@@ -499,8 +499,8 @@ export default function TasksPage() {
                                 ].map((c, i) => (
                                     <div key={i} className="relative pl-6">
                                         <div className="absolute left-0 top-[3px] w-[11px] h-[11px] rounded-full bg-[var(--color-primary)] border-2 border-[var(--color-surface)]" />
-                                        <p className="text-[11px] font-black text-[var(--color-primary)]">{c.time}</p>
-                                        <p className="text-[11px] text-[var(--color-text-muted)] mt-0.5">{c.label}</p>
+                                        <p className="text-xs font-bold text-[var(--color-primary)]">{c.time}</p>
+                                        <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{c.label}</p>
                                     </div>
                                 ))}
                             </div>
@@ -508,21 +508,21 @@ export default function TasksPage() {
 
                         {/* Log stats */}
                         <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] p-5 space-y-3">
-                            <h3 className="font-black text-sm text-[var(--color-text)]">Statistik Log</h3>
+                            <h3 className="font-bold text-sm text-[var(--color-text)]">Statistik Log</h3>
                             {[
                                 { label: 'Total eksekusi', value: logs.length },
                                 { label: 'Berhasil', value: logs.filter(l => l.status === 'success').length, color: 'text-emerald-500' },
                                 { label: 'Gagal', value: logs.filter(l => l.status === 'error').length, color: 'text-rose-500' },
                             ].map((s, i) => (
                                 <div key={i} className="flex items-center justify-between">
-                                    <span className="text-[11px] text-[var(--color-text-muted)] font-medium">{s.label}</span>
-                                    <span className={`text-[13px] font-black ${s.color || 'text-[var(--color-text)]'}`}>{s.value}</span>
+                                    <span className="text-xs text-[var(--color-text-muted)] font-medium">{s.label}</span>
+                                    <span className={`text-sm font-bold ${s.color || 'text-[var(--color-text)]'}`}>{s.value}</span>
                                 </div>
                             ))}
                         </div>
 
-                        <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600/90 text-[11px] leading-relaxed flex gap-3">
-                            <TriangleAlert className="mt-0.5 shrink-0" />
+                        <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600/90 text-xs leading-relaxed flex gap-3">
+                            <TriangleAlert className="w-4 h-4 mt-0.5 shrink-0" />
                             <p>Menjalankan fungsi secara manual dapat memberatkan database. Pastikan tidak ada user lain yang sedang melakukan ekspor data masif.</p>
                         </div>
                     </div>

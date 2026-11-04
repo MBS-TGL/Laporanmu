@@ -294,7 +294,7 @@ export default function PublicVerifyPage() {
                                         <h1 className="text-sm sm:text-base font-bold text-[var(--color-text)]">
                                             Dokumen Raport Sah & Terdaftar
                                         </h1>
-                                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300">
+                                        <span className="px-2 py-0.5 rounded text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300">
                                             Terverifikasi
                                         </span>
                                     </div>
@@ -307,7 +307,7 @@ export default function PublicVerifyPage() {
                             {/* Metadata Nomor Raport & Periode */}
                             <div className="pt-3 border-t border-[var(--color-border)] grid grid-cols-2 gap-3 text-xs">
                                 <div>
-                                    <span className="text-[10px] text-[var(--color-text-muted)] block">Nomor Raport</span>
+                                    <span className="text-xs text-[var(--color-text-muted)] block">Nomor Raport</span>
                                     <button
                                         onClick={handleCopyNo}
                                         className="font-mono font-semibold text-[var(--color-text)] hover:text-[var(--color-primary)] inline-flex items-center gap-1 mt-0.5"
@@ -318,7 +318,7 @@ export default function PublicVerifyPage() {
                                     </button>
                                 </div>
                                 <div>
-                                    <span className="text-[10px] text-[var(--color-text-muted)] block">Periode</span>
+                                    <span className="text-xs text-[var(--color-text-muted)] block">Periode</span>
                                     <span className="font-semibold text-[var(--color-text)] mt-0.5 block">
                                         {parsedPeriod.monthName} {parsedPeriod.year}
                                     </span>
@@ -333,7 +333,7 @@ export default function PublicVerifyPage() {
                                     <QrCode className="w-4 h-4 text-[var(--color-text-muted)]" />
                                     Validasi Tanda Tangan Digital
                                 </span>
-                                <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+                                <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
                                     Resmi
                                 </span>
                             </div>
@@ -343,9 +343,9 @@ export default function PublicVerifyPage() {
                                     ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20'
                                     : 'border-[var(--color-border)] bg-[var(--color-surface-alt)]'
                                     }`}>
-                                    <span className="text-[10px] text-[var(--color-text-muted)] block">Kepala Sekolah</span>
+                                    <span className="text-xs text-[var(--color-text-muted)] block">Kepala Sekolah</span>
                                     <p className="font-semibold text-[var(--color-text)] mt-0.5">{kepalaSekolahName}</p>
-                                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium mt-1 inline-block">
+                                    <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-1 inline-block">
                                         ✓ Tanda tangan sah
                                     </span>
                                 </div>
@@ -354,9 +354,9 @@ export default function PublicVerifyPage() {
                                     ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20'
                                     : 'border-[var(--color-border)] bg-[var(--color-surface-alt)]'
                                     }`}>
-                                    <span className="text-[10px] text-[var(--color-text-muted)] block">Pengasuh Pesantren</span>
+                                    <span className="text-xs text-[var(--color-text-muted)] block">Pengasuh Pesantren</span>
                                     <p className="font-semibold text-[var(--color-text)] mt-0.5">{pengasuhName}</p>
-                                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium mt-1 inline-block">
+                                    <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-1 inline-block">
                                         ✓ Tanda tangan sah
                                     </span>
                                 </div>
@@ -412,7 +412,7 @@ export default function PublicVerifyPage() {
                                         <div key={k.key} className="py-2.5 flex items-center justify-between text-xs gap-3">
                                             <div>
                                                 <span className="font-medium text-[var(--color-text)]">{k.id}</span>
-                                                <span className="text-[11px] text-[var(--color-text-muted)] ml-1.5 opacity-70">
+                                                <span className="text-xs text-[var(--color-text-muted)] ml-1.5 opacity-70">
                                                     ({k.ar})
                                                 </span>
                                             </div>
@@ -423,7 +423,7 @@ export default function PublicVerifyPage() {
                                                 </span>
                                                 {kg && (
                                                     <span
-                                                        className="px-2 py-0.5 rounded text-[10px] font-medium"
+                                                        className="px-2 py-0.5 rounded text-xs font-medium"
                                                         style={{ backgroundColor: kg.bg, color: kg.uiColor }}
                                                     >
                                                         {kg.id}
@@ -444,19 +444,19 @@ export default function PublicVerifyPage() {
 
                             <div className="grid grid-cols-4 gap-2 text-center text-xs">
                                 <div className="p-2 rounded-lg bg-[var(--color-surface-alt)]">
-                                    <span className="text-[10px] text-[var(--color-text-muted)] block">Sakit</span>
+                                    <span className="text-xs text-[var(--color-text-muted)] block">Sakit</span>
                                     <span className="font-semibold text-[var(--color-text)]">{report.hari_sakit ?? 0} hari</span>
                                 </div>
                                 <div className="p-2 rounded-lg bg-[var(--color-surface-alt)]">
-                                    <span className="text-[10px] text-[var(--color-text-muted)] block">Izin</span>
+                                    <span className="text-xs text-[var(--color-text-muted)] block">Izin</span>
                                     <span className="font-semibold text-[var(--color-text)]">{report.hari_izin ?? 0} hari</span>
                                 </div>
                                 <div className="p-2 rounded-lg bg-[var(--color-surface-alt)]">
-                                    <span className="text-[10px] text-[var(--color-text-muted)] block">Alpa</span>
+                                    <span className="text-xs text-[var(--color-text-muted)] block">Alpa</span>
                                     <span className="font-semibold text-[var(--color-text)]">{report.hari_alpa ?? 0} hari</span>
                                 </div>
                                 <div className="p-2 rounded-lg bg-[var(--color-surface-alt)]">
-                                    <span className="text-[10px] text-[var(--color-text-muted)] block">Pulang</span>
+                                    <span className="text-xs text-[var(--color-text-muted)] block">Pulang</span>
                                     <span className="font-semibold text-[var(--color-text)]">{report.hari_pulang ?? 0} kali</span>
                                 </div>
                             </div>
@@ -465,25 +465,25 @@ export default function PublicVerifyPage() {
                                 <div className="pt-2 border-t border-[var(--color-border)] grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
                                     {report.tinggi_badan && (
                                         <div>
-                                            <span className="text-[10px] text-[var(--color-text-muted)] block">Tinggi Badan</span>
+                                            <span className="text-xs text-[var(--color-text-muted)] block">Tinggi Badan</span>
                                             <span className="font-semibold text-[var(--color-text)]">{report.tinggi_badan} cm</span>
                                         </div>
                                     )}
                                     {report.berat_badan && (
                                         <div>
-                                            <span className="text-[10px] text-[var(--color-text-muted)] block">Berat Badan</span>
+                                            <span className="text-xs text-[var(--color-text-muted)] block">Berat Badan</span>
                                             <span className="font-semibold text-[var(--color-text)]">{report.berat_badan} kg</span>
                                         </div>
                                     )}
                                     {report.ziyadah && (
                                         <div>
-                                            <span className="text-[10px] text-[var(--color-text-muted)] block">Ziyadah</span>
+                                            <span className="text-xs text-[var(--color-text-muted)] block">Ziyadah</span>
                                             <span className="font-semibold text-[var(--color-text)]">{report.ziyadah}</span>
                                         </div>
                                     )}
                                     {report.murojaah && (
                                         <div>
-                                            <span className="text-[10px] text-[var(--color-text-muted)] block">Muroja'ah</span>
+                                            <span className="text-xs text-[var(--color-text-muted)] block">Muroja'ah</span>
                                             <span className="font-semibold text-[var(--color-text)]">{report.murojaah}</span>
                                         </div>
                                     )}
@@ -505,10 +505,10 @@ export default function PublicVerifyPage() {
 
                         {/* Footer Resmi */}
                         <footer className="pt-3 pb-8 text-center space-y-1 text-xs text-[var(--color-text-muted)]">
-                            <p className="text-[11px] font-medium">
+                            <p className="text-xs font-medium">
                                 Sistem Verifikasi Raport Digital · MBS Tanggul
                             </p>
-                            <p className="text-[10px] opacity-70">
+                            <p className="text-xs opacity-70">
                                 Dokumen digital ini sah dan diterbitkan resmi melalui sistem LaporanMu.
                             </p>
                         </footer>

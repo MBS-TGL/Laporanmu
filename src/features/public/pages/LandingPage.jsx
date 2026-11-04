@@ -124,7 +124,7 @@ function NewsDetailModal({ news, onClose }) {
                         <img src={news.image_url} alt={news.image_alt || news.title} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                         <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-surface)] via-transparent to-transparent" />
                         <button onClick={onClose} className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center border border-white/10 transition-colors">
-                            <X />
+                            <X className="w-4 h-4" />
                         </button>
                     </div>
                 )}
@@ -133,11 +133,11 @@ function NewsDetailModal({ news, onClose }) {
                     {/* Meta + Font Size + Close — always in one row, no overlap */}
                     <div className="flex items-start justify-between gap-3 mb-4 flex-wrap">
                         <div className="flex items-center gap-2 flex-wrap">
-                            <span className="px-3 py-1.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] font-black uppercase tracking-[0.15em] border border-[var(--color-primary)]/10">{news.tag}</span>
-                            <span className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">{formatDate(news.created_at)}</span>
+                            <span className="px-3 py-1.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold uppercase tracking-wide border border-[var(--color-primary)]/10">{news.tag}</span>
+                            <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">{formatDate(news.created_at)}</span>
                             {news.read_time && (
-                                <span className="text-[10px] font-bold text-[var(--color-text-muted)] opacity-60 flex items-center gap-1">
-                                    <Clock className="text-[8px]" />{news.read_time} mnt baca
+                                <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-60 flex items-center gap-1">
+                                    <Clock className="w-4 h-4" />{news.read_time} mnt baca
                                 </span>
                             )}
                         </div>
@@ -146,7 +146,7 @@ function NewsDetailModal({ news, onClose }) {
                             <div className="flex items-center gap-0.5 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl p-1">
                                 {NEWS_FONT_SIZES.map((f, i) => (
                                     <button key={f.key} onClick={() => setFontSize(f.key)}
-                                        className={`w-7 h-7 rounded-lg flex items-center justify-center font-black transition-colors ${fontSize === f.key ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                                        className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold transition-colors ${fontSize === f.key ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                                         style={{ fontSize: 10 + i * 2 }}>
                                         A
                                     </button>
@@ -154,11 +154,11 @@ function NewsDetailModal({ news, onClose }) {
                             </div>
                             {/* Close button — next to font toggle, never overlaps */}
                             <button onClick={onClose} className="w-8 h-8 rounded-full bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] border border-[var(--color-border)] text-[var(--color-text-muted)] flex items-center justify-center transition-colors">
-                                <X className="text-xs" />
+                                <X className="w-4 h-4" />
                             </button>
                         </div>
                     </div>
-                    <h2 className={`${fs.title} font-black text-[var(--color-text)] mb-6 leading-tight tracking-tight`}>{news.title}</h2>
+                    <h2 className={`${fs.title} font-bold text-[var(--color-text)] mb-6 leading-tight tracking-tight`}>{news.title}</h2>
                     <style>{`
                         .news-modal-body p{margin-bottom:1rem}
                         .news-modal-body h2{font-size:1.3rem;font-weight:900;margin:1.5rem 0 .5rem;color:var(--color-text)}
@@ -177,18 +177,18 @@ function NewsDetailModal({ news, onClose }) {
                 </div>
                 {/* Footer */}
                 <div className="shrink-0 px-6 sm:px-10 py-4 border-t border-[var(--color-border)] bg-[var(--color-surface)] flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white font-black text-base shadow-md shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white font-bold text-base shadow-md shrink-0">
                         {(news.display_name || news.author || 'A').charAt(0).toUpperCase()}
                     </div>
                     <div>
-                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50 mb-0.5">Diterbitkan oleh</p>
-                        <p className="text-sm font-black text-[var(--color-text)]">{news.display_name || news.author?.split('@')[0] || 'Admin'}</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50 mb-0.5">Diterbitkan oleh</p>
+                        <p className="text-sm font-bold text-[var(--color-text)]">{news.display_name || news.author?.split('@')[0] || 'Admin'}</p>
                     </div>
                     <div className="ml-auto flex items-center gap-2">
-                        <button onClick={handlePrint} className="px-4 py-2 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors flex items-center gap-1.5">
-                            <Printer className="text-[9px]" /> Print
+                        <button onClick={handlePrint} className="px-4 py-2 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors flex items-center gap-1.5">
+                            <Printer className="w-4 h-4" /> Print
                         </button>
-                        <button onClick={onClose} className="px-4 py-2 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors">Tutup</button>
+                        <button onClick={onClose} className="px-4 py-2 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors">Tutup</button>
                     </div>
                 </div>
             </div>
@@ -291,7 +291,7 @@ export default function LandingPage() {
                             <a href="#Informasi" onClick={() => setNewsBadge(0)} className="relative text-[var(--color-text-muted)] hover:text-[var(--color-primary)] font-medium text-sm transition-all hover:scale-105 active:scale-95">
                                 Informasi
                                 {newsBadge > 0 && (
-                                    <span className="absolute -top-2 -right-3.5 min-w-[16px] h-4 px-0.5 rounded-full bg-rose-500 text-white text-[8px] font-black flex items-center justify-center leading-none shadow-sm">
+                                    <span className="absolute -top-2 -right-3.5 min-w-[16px] h-4 px-0.5 rounded-full bg-rose-500 text-white text-xs font-bold flex items-center justify-center leading-none shadow-sm">
                                         {newsBadge > 9 ? '9+' : newsBadge}
                                     </span>
                                 )}
@@ -301,12 +301,12 @@ export default function LandingPage() {
                         {/* Desktop Actions */}
                         <div className="hidden md:flex items-center gap-4 z-50">
                             <button onClick={toggleTheme} className="w-10 h-10 rounded-full flex items-center justify-center bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 transition-all" aria-label="Toggle theme">
-                                {isDark ? <Sun /> : <Moon />}
+                                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                             </button>
-                            <Link to="/check" className="inline-flex items-center px-4 py-2 text-[13px] font-bold rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all">
+                            <Link to="/check" className="inline-flex items-center px-4 py-2 text-sm font-bold rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all">
                                 Cek Poin & Raport
                             </Link>
-                                <Link to={user ? "/dashboard" : "/login"} className="inline-flex items-center px-5 py-2 text-[13px] font-black rounded-xl bg-[var(--color-primary)] text-white shadow-lg hover:scale-105 active:scale-95 transition-all">
+                                <Link to={user ? "/dashboard" : "/login"} className="inline-flex items-center px-5 py-2 text-sm font-bold rounded-xl bg-[var(--color-primary)] text-white shadow-lg hover:scale-105 active:scale-95 transition-all">
                                 {user ? 'Ke Dashboard' : 'Login Staff'}
                             </Link>
                         </div>
@@ -314,10 +314,10 @@ export default function LandingPage() {
                         {/* Mobile Actions */}
                         <div className="flex items-center gap-3 md:hidden z-50">
                             <button onClick={toggleTheme} className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text)]">
-                                {isDark ? <Sun /> : <Moon />}
+                                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                             </button>
                                 <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--color-primary)] text-white shadow-lg">
-                                {isMobileMenuOpen ? <X /> : <Menu />}
+                                {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
                             </button>
                         </div>
                     </div>
@@ -344,7 +344,7 @@ export default function LandingPage() {
                             </Link>
                                 <Link to={user ? "/dashboard" : "/login"} className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-[var(--color-primary)] text-white font-bold text-sm shadow-lg active:scale-95 transition-all w-full mt-2" onClick={() => setIsMobileMenuOpen(false)}>
                                 {user ? 'Ke Dashboard' : 'Login Staff'}
-                                <ArrowRight className="text-xs" />
+                                <ArrowRight className="w-4 h-4" />
                             </Link>
                         </div>
                     </div>
@@ -365,7 +365,7 @@ export default function LandingPage() {
                         </span>
                     </div>
 
-                    <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-[var(--color-text)] mb-8 leading-[1.1] max-w-4xl mx-auto animate-[fadeIn_1s_ease-out_0.2s_both]">
+                    <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-[var(--color-text)] mb-8 leading-[1.1] max-w-4xl mx-auto animate-[fadeIn_1s_ease-out_0.2s_both]">
                         Kelola Perilaku Siswa
                         <br className="hidden sm:block" />
                         <span className="gradient-text"> Lebih Modern & Terukur</span>
@@ -396,7 +396,7 @@ export default function LandingPage() {
                                 <div className="w-3 h-3 rounded-full bg-amber-400" />
                                 <div className="w-3 h-3 rounded-full bg-green-400" />
                                 <div className="mx-auto bg-[var(--color-surface)] border border-[var(--color-border)] rounded-md h-6 w-1/3 flex items-center justify-center">
-                                    <span className="text-[10px] text-[var(--color-text-muted)] font-mono">app.laporanmu.com</span>
+                                    <span className="text-xs text-[var(--color-text-muted)] font-mono">app.laporanmu.com</span>
                                 </div>
                             </div>
                             {/* Mockup Body */}
@@ -456,10 +456,10 @@ export default function LandingPage() {
                         <Reveal>
                             <div className="bg-slate-900 p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[3.5rem] text-white shadow-sm relative overflow-hidden group border border-white/5">
                                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-500">
-                                    <Quote className="text-8xl text-indigo-400" />
+                                    <Quote className="w-6 h-6 text-indigo-400" />
                                 </div>
-                                <span className="inline-block px-4 py-1.5 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-bold uppercase tracking-[0.2em] mb-8 border border-indigo-500/30">Visi Utama</span>
-                                <h2 className="text-3xl sm:text-4xl font-black mb-10 leading-tight">
+                                <span className="inline-block px-4 py-1.5 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold uppercase tracking-wide mb-8 border border-indigo-500/30">Visi Utama</span>
+                                <h2 className="text-3xl sm:text-4xl font-bold mb-10 leading-tight">
                                     Mewujudkan Ekosistem Sekolah yang <span className="text-indigo-400">Disiplin, Adil, dan Transparan</span> Melalui Pendekatan Inovatif.
                                 </h2>
                                 <p className="text-white/70 leading-relaxed text-lg border-l-2 border-indigo-500 pl-6">
@@ -471,8 +471,8 @@ export default function LandingPage() {
                         {/* Mission */}
                         <Reveal delay={0.15}>
                             <div className="py-2">
-                                <span className="text-[var(--color-primary)] font-bold uppercase tracking-[0.3em] text-[10px] mb-4 block">Misi Kedisiplinan</span>
-                                <h3 className="text-3xl font-black text-[var(--color-text)] mb-12 leading-tight">Membangun Karakter & Integritas Siswa Secara Berkelanjutan.</h3>
+                                <span className="text-[var(--color-primary)] font-bold uppercase tracking-wide text-xs mb-4 block">Misi Kedisiplinan</span>
+                                <h3 className="text-3xl font-bold text-[var(--color-text)] mb-12 leading-tight">Membangun Karakter & Integritas Siswa Secara Berkelanjutan.</h3>
 
                                 <div className="space-y-12">
                                     {[
@@ -504,8 +504,8 @@ export default function LandingPage() {
                 <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
                     <Reveal>
                         <div className="text-center mb-16">
-                            <span className="text-[var(--color-primary)] font-bold uppercase tracking-[0.3em] text-[10px] mb-3 block">Modul Terintegrasi</span>
-                            <h2 className="text-3xl sm:text-4xl font-black text-[var(--color-text)] mb-4">
+                            <span className="text-[var(--color-primary)] font-bold uppercase tracking-wide text-xs mb-3 block">Modul Terintegrasi</span>
+                            <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text)] mb-4">
                                 Fitur Unggulan <span className="text-[var(--color-primary)]">Laporanmu</span>
                             </h2>
                             <p className="text-sm sm:text-base text-[var(--color-text-muted)] max-w-xl mx-auto leading-relaxed">
@@ -544,13 +544,13 @@ export default function LandingPage() {
                         {/* Section header */}
                         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                             <div>
-                                <span className="text-[var(--color-primary)] font-bold uppercase tracking-[0.3em] text-[10px] mb-3 block">Informasi Terkini</span>
-                                <h2 className="text-3xl font-extrabold text-[var(--color-text)] mb-3">Informasi & <span className="text-[var(--color-primary)]">Pengumuman</span></h2>
+                                <span className="text-[var(--color-primary)] font-bold uppercase tracking-wide text-xs mb-3 block">Informasi Terkini</span>
+                                <h2 className="text-3xl font-bold text-[var(--color-text)] mb-3">Informasi & <span className="text-[var(--color-primary)]">Pengumuman</span></h2>
                                 <p className="text-[var(--color-text-muted)] font-medium text-sm sm:text-base max-w-md">Update terkini seputar Laporanmu, jadwal, dan pengumuman penting sekolah.</p>
                             </div>
                             <a href="/informasi" className="group text-[var(--color-primary)] font-bold flex items-center gap-2 hover:gap-3 text-sm transition-all shrink-0">
                                 Lihat Semua Informasi
-                                <ArrowRight className="text-xs group-hover:translate-x-0.5 transition-transform" />
+                                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                             </a>
                         </div>
 
@@ -561,7 +561,7 @@ export default function LandingPage() {
                                 ))}
                             </div>
                         ) : news.length === 0 ? (
-                            <div className="col-span-full py-20 text-center text-[var(--color-text-muted)] font-black bg-[var(--color-surface-alt)]/30 rounded-[3rem] border-2 border-dashed border-[var(--color-border)] uppercase tracking-[0.3em] text-[10px] opacity-50">
+                            <div className="col-span-full py-20 text-center text-[var(--color-text-muted)] font-bold bg-[var(--color-surface-alt)]/30 rounded-[3rem] border-2 border-dashed border-[var(--color-border)] uppercase tracking-wide text-xs opacity-50">
                                 Belum ada Informasi
                             </div>
                         ) : (
@@ -581,7 +581,7 @@ export default function LandingPage() {
                                                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                                                     ) : (
                                                         <div className="w-full h-full bg-[var(--color-primary)]/20 flex items-center justify-center">
-                                                            <Newspaper className="text-6xl text-[var(--color-primary)]/30" />
+                                                            <Newspaper className="w-6 h-6 text-[var(--color-primary)]/30" />
                                                         </div>
                                                     )}
                                                     <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[var(--color-surface)] to-transparent" />
@@ -589,32 +589,32 @@ export default function LandingPage() {
                                                 {/* Content */}
                                                 <div className="relative lg:order-1 p-8 sm:p-10 flex flex-col justify-center bg-[var(--color-surface)]">
                                                     <div className="flex items-center gap-2 mb-4 flex-wrap">
-                                                        <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 text-[9px] font-black uppercase tracking-widest border border-amber-500/20">
-                                                            <Star className="text-[7px]" /> Featured
+                                                        <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 text-xs font-bold uppercase tracking-wide border border-amber-500/20">
+                                                            <Star className="w-4 h-4" /> Featured
                                                         </span>
-                                                        <span className="px-3 py-1 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black uppercase tracking-widest border border-[var(--color-primary)]/10">
+                                                        <span className="px-3 py-1 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold uppercase tracking-wide border border-[var(--color-primary)]/10">
                                                             {news[0].tag}
                                                         </span>
                                                     </div>
-                                                    <h3 className="text-2xl sm:text-3xl font-black text-[var(--color-text)] leading-tight mb-4 group-hover:text-[var(--color-primary)] transition-colors">
+                                                    <h3 className="text-2xl sm:text-3xl font-bold text-[var(--color-text)] leading-tight mb-4 group-hover:text-[var(--color-primary)] transition-colors">
                                                         {news[0].title}
                                                     </h3>
                                                     <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-6 opacity-80 line-clamp-3">
                                                         {stripHtml(news[0].excerpt || news[0].content).slice(0, 160) + '…'}
                                                     </p>
-                                                    <div className="flex items-center gap-4 text-[10px] text-[var(--color-text-muted)] font-bold uppercase tracking-widest opacity-60">
+                                                    <div className="flex items-center gap-4 text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-wide opacity-60">
                                                         <span className="flex items-center gap-1.5">
-                                                            <Calendar />
+                                                            <Calendar className="w-4 h-4" />
                                                             {new Date(news[0].created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
                                                         </span>
                                                         {news[0].read_time && (
                                                             <span className="flex items-center gap-1.5">
-                                                                <Clock />
+                                                                <Clock className="w-4 h-4" />
                                                                 {news[0].read_time} mnt baca
                                                             </span>
                                                         )}
                                                         <span className="flex items-center gap-1.5">
-                                                            <User />
+                                                            <User className="w-4 h-4" />
                                                             {news[0].display_name || news[0].author?.split('@')[0] || 'Admin'}
                                                         </span>
                                                     </div>
@@ -638,39 +638,39 @@ export default function LandingPage() {
                                                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                                                     ) : (
                                                         <div className="w-full h-full bg-[var(--color-primary)]/20 flex items-center justify-center">
-                                                            <Newspaper className="text-4xl text-[var(--color-primary)]/30" />
+                                                            <Newspaper className="w-6 h-6 text-[var(--color-primary)]/30" />
                                                         </div>
                                                     )}
                                                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                                                 </div>
                                                 <div className="p-7 flex flex-col flex-1">
                                                     <div className="flex items-center gap-2 mb-4 flex-wrap">
-                                                        <span className="px-3 py-1 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black uppercase tracking-wider border border-[var(--color-primary)]/10">
+                                                        <span className="px-3 py-1 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold uppercase tracking-wider border border-[var(--color-primary)]/10">
                                                             {item.tag}
                                                         </span>
-                                                        <span className="text-[var(--color-text-muted)] text-[9px] font-bold uppercase tracking-widest opacity-50">
+                                                        <span className="text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide opacity-50">
                                                             {new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
                                                         </span>
                                                         {item.read_time && (
-                                                            <span className="text-[var(--color-text-muted)] text-[9px] font-bold opacity-50 flex items-center gap-1">
-                                                                <Clock className="text-[8px]" /> {item.read_time} mnt
+                                                            <span className="text-[var(--color-text-muted)] text-xs font-bold opacity-50 flex items-center gap-1">
+                                                                <Clock className="w-4 h-4" /> {item.read_time} mnt
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <h3 className="text-xl font-black text-[var(--color-text)] mb-3 leading-tight group-hover:text-[var(--color-primary)] transition-colors line-clamp-2">
+                                                    <h3 className="text-xl font-bold text-[var(--color-text)] mb-3 leading-tight group-hover:text-[var(--color-primary)] transition-colors line-clamp-2">
                                                         {item.title}
                                                     </h3>
                                                     <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-4 line-clamp-3 font-medium opacity-80">
                                                         {stripHtml(item.excerpt || item.content).slice(0, 140) + '…'}
                                                     </p>
                                                     <div className="mt-auto pt-5 border-t border-[var(--color-border)]/50 flex items-center justify-between">
-                                                        <span className="text-[9px] font-black text-[var(--color-text-muted)] opacity-50 uppercase tracking-widest flex items-center gap-1.5">
-                                                            <User className="text-[8px]" />
+                                                        <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-wide flex items-center gap-1.5">
+                                                            <User className="w-4 h-4" />
                                                             {item.display_name || item.author?.split('@')[0] || 'Admin'}
                                                         </span>
-                                                        <button className="group/btn inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)] hover:gap-2.5 transition-all duration-200">
+                                                        <button className="group/btn inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-[var(--color-primary)] hover:gap-2.5 transition-all duration-200">
                                                             Baca
-                                                            <ArrowRight className="text-[9px]" />
+                                                            <ArrowRight className="w-4 h-4" />
                                                         </button>
                                                     </div>
                                                 </div>
@@ -689,7 +689,7 @@ export default function LandingPage() {
                 <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
                     <Reveal>
                         <div className="text-center mb-16">
-                            <h2 className="text-3xl sm:text-4xl font-black text-[var(--color-text)] mb-4 leading-tight">
+                            <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text)] mb-4 leading-tight">
                                 Alur Kerja <span className="text-[var(--color-primary)]">Sederhana</span>
                             </h2>
                             <p className="text-sm sm:text-base text-[var(--color-text-muted)] max-w-xl mx-auto leading-relaxed">
@@ -707,7 +707,7 @@ export default function LandingPage() {
                         ].map((item, idx) => (
                             <Reveal key={idx} delay={0.12 * idx}>
                                 <div className="relative z-10 group bg-[var(--color-bg)] border border-[var(--color-border)] rounded-[2.5rem] p-8 hover:border-[var(--color-primary)]/50 transition-all duration-300 shadow-sm flex flex-col items-center text-center hover:shadow-xl">
-                                    <div className="w-14 h-14 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center font-black text-xl shadow-lg mb-8 group-hover:scale-110 transition-transform">
+                                    <div className="w-14 h-14 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center font-bold text-xl shadow-lg mb-8 group-hover:scale-110 transition-transform">
                                         {item.step}
                                     </div>
                                     <h4 className="font-bold text-[var(--color-text)] text-lg mb-3 tracking-tight group-hover:text-[var(--color-primary)] transition-colors">{item.title}</h4>
@@ -724,8 +724,8 @@ export default function LandingPage() {
                 <div className="max-w-4xl mx-auto px-6">
                     <Reveal>
                         <div className="text-center mb-16">
-                            <span className="text-[var(--color-primary)] font-bold uppercase tracking-[0.3em] text-[10px] mb-3 block">Tanya Jawab</span>
-                            <h2 className="text-3xl font-black text-[var(--color-text)] mb-4">Pertanyaan Populer</h2>
+                            <span className="text-[var(--color-primary)] font-bold uppercase tracking-wide text-xs mb-3 block">Tanya Jawab</span>
+                            <h2 className="text-3xl font-bold text-[var(--color-text)] mb-4">Pertanyaan Populer</h2>
                             <p className="text-sm text-[var(--color-text-muted)] max-w-md mx-auto">Masih bingung? Temukan jawaban untuk pertanyaan yang paling sering diajukan di bawah ini.</p>
                         </div>
                     </Reveal>
@@ -747,7 +747,7 @@ export default function LandingPage() {
                                         >
                                             <span>{faq.q}</span>
                                             <span className={`text-[var(--color-primary)] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
-                                                <ChevronDown className="text-xs" />
+                                                <ChevronDown className="w-4 h-4" />
                                             </span>
                                         </button>
                                         <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'max-h-48 border-t border-[var(--color-border)]' : 'max-h-0'}`}>
@@ -782,7 +782,7 @@ export default function LandingPage() {
                                         {user ? 'Ke Dashboard' : 'Login Staff / Guru'}
                                     </Link>
                                     <Link to="/check" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border-2 border-white/30 hover:bg-white/10 text-white font-bold text-lg transition-colors w-full sm:w-auto">
-                                        <Search className="text-sm" />
+                                        <Search className="w-4 h-4" />
                                         Cek Data Siswa
                                     </Link>
                                 </div>
@@ -799,28 +799,28 @@ export default function LandingPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-12 mb-12 border-b border-[var(--color-border)]">
                         <div className="flex items-start gap-4">
                             <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0">
-                                <Mail className="text-sm" />
+                                <Mail className="w-4 h-4" />
                             </div>
                             <div>
-                                <h5 className="font-bold text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Hubungi Kami</h5>
+                                <h5 className="font-bold text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Hubungi Kami</h5>
                                 <a href="mailto:support@laporanmu.com" className="text-sm font-semibold hover:text-[var(--color-primary)] transition-colors">itzme.rizal@gmail.com</a>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
                             <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0">
-                                <Phone className="text-sm" />
+                                <Phone className="w-4 h-4" />
                             </div>
                             <div>
-                                <h5 className="font-bold text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-1">WhatsApp Center</h5>
+                                <h5 className="font-bold text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">WhatsApp Center</h5>
                                 <a href="https://wa.me/6281230660013" target="_blank" rel="noreferrer" className="text-sm font-semibold hover:text-[var(--color-primary)] transition-colors">+62 812-3066-0013</a>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
                             <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0">
-                                <MapPin className="text-sm" />
+                                <MapPin className="w-4 h-4" />
                             </div>
                             <div>
-                                <h5 className="font-bold text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Alamat Layanan</h5>
+                                <h5 className="font-bold text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Alamat Layanan</h5>
                                 <p className="text-sm font-semibold text-[var(--color-text)]">Jln. Pemandian No. 88, Patemon, Tanggul.</p>
                             </div>
                         </div>
@@ -835,7 +835,7 @@ export default function LandingPage() {
                                 <span className="font-heading font-bold text-lg tracking-tight text-[var(--color-text)]">Laporanmu</span>
                             </Link>
 
-                            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[10px] md:text-[11px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
+                            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs md:text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                 {[
                                     { name: 'Visi', id: 'visi-misi' },
                                     { name: 'Fitur', id: 'fitur' },
@@ -850,9 +850,9 @@ export default function LandingPage() {
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-6 text-[10px] md:text-[11px] text-[var(--color-text-muted)] font-medium">
+                        <div className="flex items-center gap-6 text-xs md:text-xs text-[var(--color-text-muted)] font-medium">
                             <span>© 2026 <span className="text-[var(--color-text)] font-semibold">Laporanmu.</span> Built for excellence.</span>
-                            <div className="hidden sm:flex items-center gap-4 uppercase font-bold tracking-widest border-l border-[var(--color-border)] pl-6">
+                            <div className="hidden sm:flex items-center gap-4 uppercase font-bold tracking-wide border-l border-[var(--color-border)] pl-6">
                                 <Link to="/privacy" className="hover:text-[var(--color-text)] transition-colors">Privacy</Link>
                                 <Link to="/terms" className="hover:text-[var(--color-text)] transition-colors">Terms</Link>
                             </div>
@@ -877,7 +877,7 @@ export default function LandingPage() {
                 className={`fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-surface border border-[var(--color-border)] text-[var(--color-primary)] flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 active:scale-90 ${showScrollTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
                 aria-label="Scroll to top"
             >
-                <ArrowRight className="-rotate-90" />
+                <ArrowRight className="w-4 h-4 -rotate-90" />
             </button>
         </div>
     )

@@ -23,7 +23,7 @@ function Avatar({ url, name, size = "w-10 h-10", textSize = "text-base", rounded
     const showImg = url && !imgError
 
     return (
-        <div className={`${size} ${rounded} overflow-hidden shrink-0 flex items-center justify-center font-black text-white
+        <div className={`${size} ${rounded} overflow-hidden shrink-0 flex items-center justify-center font-bold text-white
             ${showImg ? 'bg-[var(--color-surface-alt)]' : 'bg-[var(--color-primary)]'}`}>
             {showImg
                 ? <img src={url} alt={name} className="w-full h-full object-cover" onError={() => setImgError(true)} loading="lazy" decoding="async" />
@@ -103,7 +103,7 @@ const TYPE_STYLE = {
 function NotifBadge({ count }) {
     if (!count) return null
     return (
-        <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-0.5 rounded-full bg-red-500 text-white text-[9px] font-black flex items-center justify-center leading-none pointer-events-none">
+        <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-0.5 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center leading-none pointer-events-none">
             {count > 9 ? '9+' : count}
         </span>
     )
@@ -118,28 +118,28 @@ function NotifItem({ notif, onDismiss, onNavigate }) {
         <div className={`group relative rounded-xl border p-3 transition-all ${s.bg} ${s.border}`}>
             <div className="flex items-start gap-2.5">
                 <div className={`mt-0.5 text-sm shrink-0 ${s.text}`}>
-                    <IconComp />
+                    <IconComp className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                    <p className="text-[11px] font-black text-[var(--color-text)] leading-tight">{notif.title}</p>
-                    <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5 leading-snug">{notif.body}</p>
+                    <p className="text-xs font-bold text-[var(--color-text)] leading-tight">{notif.title}</p>
+                    <p className="text-xs text-[var(--color-text-muted)] mt-0.5 leading-snug">{notif.body}</p>
                     {notif.action && (
                         <button
                             onClick={() => onNavigate(notif.action.route)}
                             aria-label={notif.action.label}
-                            className={`mt-1.5 text-[9px] font-black uppercase tracking-widest flex items-center gap-1 ${s.text} hover:opacity-70 transition-opacity`}
+                            className={`mt-1.5 text-xs font-bold uppercase tracking-wide flex items-center gap-1 ${s.text} hover:opacity-70 transition-opacity`}
                         >
-                            {notif.action.label} <ArrowRight className="text-[7px]" />
+                            {notif.action.label} <ArrowRight className="w-4 h-4" />
                         </button>
                     )}
                 </div>
                 <button
                     onClick={() => onDismiss(notif.id)}
-                    className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 rounded-md hover:bg-[var(--color-surface)] text-[var(--color-text-muted)] text-[9px]"
+                    className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 rounded-md hover:bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs"
                     title={t('notif.close')}
                     aria-label={t('notif.close')}
                 >
-                    <X />
+                    <X className="w-4 h-4" />
                 </button>
             </div>
         </div>
@@ -172,9 +172,9 @@ function NotifPanel({ isOpen, notifications, loading, refreshing, onDismiss, onR
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)]">
                 <div>
-                    <p className="text-[12px] font-black text-[var(--color-text)]">{t('notif.header')}</p>
+                    <p className="text-xs font-bold text-[var(--color-text)]">{t('notif.header')}</p>
                     {!loading && notifications.length > 0 && (
-                        <p className="text-[9px] text-[var(--color-text-muted)] mt-0.5">
+                        <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
                             {errCount > 0 && <span className="text-red-500 font-bold">{errCount} {t('notif.need_action')} · </span>}
                             {warnCount > 0 && <span className="text-amber-500 font-bold">{warnCount} {t('notif.warning')} · </span>}
                             {notifications.length} {t('notif.total')}
@@ -187,7 +187,7 @@ function NotifPanel({ isOpen, notifications, loading, refreshing, onDismiss, onR
                     aria-label={t('notif.refresh')}
                     className={`p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition text-xs ${refreshing ? 'animate-spin pointer-events-none' : ''}`}
                 >
-                    <RotateCw />
+                    <RotateCw className="w-4 h-4" />
                 </button>
             </div>
 
@@ -195,14 +195,14 @@ function NotifPanel({ isOpen, notifications, loading, refreshing, onDismiss, onR
             <div className="max-h-[60vh] overflow-y-auto p-3 space-y-2">
                 {loading ? (
                     <div className="py-8 flex flex-col items-center gap-2 text-[var(--color-text-muted)]">
-                        <RotateCw className="animate-spin text-lg" />
-                        <p className="text-[10px]">{t('notif.loading')}</p>
+                        <RotateCw className="w-5 h-5 animate-spin" />
+                        <p className="text-xs">{t('notif.loading')}</p>
                     </div>
                 ) : notifications.length === 0 ? (
                     <div className="py-8 flex flex-col items-center gap-2 text-[var(--color-text-muted)]">
                         <span className="text-2xl">🎉</span>
-                        <p className="text-[11px] font-bold">{t('notif.empty_title')}</p>
-                        <p className="text-[9px] text-center">{t('notif.empty_desc')}</p>
+                        <p className="text-xs font-bold">{t('notif.empty_title')}</p>
+                        <p className="text-xs text-center">{t('notif.empty_desc')}</p>
                     </div>
                 ) : (
                     notifications.map(n => (
@@ -221,7 +221,7 @@ function NotifPanel({ isOpen, notifications, loading, refreshing, onDismiss, onR
                 <div className="px-4 py-2.5 border-t border-[var(--color-border)] flex justify-end">
                     <button
                         onClick={() => notifications.forEach(n => onDismiss(n.id))}
-                        className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition"
+                        className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition"
                     >
                         {t('notif.close_all')}
                     </button>
@@ -369,7 +369,7 @@ export default function TopNav({ title, subtitle }) {
                     title={t('notif.header')}
                     type="button"
                 >
-                    <Bell />
+                    <Bell className="w-4 h-4" />
                     <NotifBadge count={urgentCount || (totalCount > 0 ? totalCount : 0)} />
                 </button>
             </div>
@@ -427,10 +427,10 @@ export default function TopNav({ title, subtitle }) {
                         <div className="flex items-start justify-between px-4 py-3">
                             {/* Left */}
                             <div className="min-w-0">
-                                <div className="text-base font-extrabold text-[var(--color-text)] truncate">
+                                <div className="text-base font-bold text-[var(--color-text)] truncate">
                                     {title || "Dashboard"}
                                 </div>
-                                <div className="text-[10px] font-bold tracking-widest uppercase text-[var(--color-text-muted)]">
+                                <div className="text-xs font-bold tracking-wide uppercase text-[var(--color-text-muted)]">
                                     {subtitle || today}
                                 </div>
                             </div>
@@ -445,7 +445,7 @@ export default function TopNav({ title, subtitle }) {
                                     className="p-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition"
                                     type="button"
                                 >
-                                    {isDark ? <Sun /> : <Moon />}
+                                    {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                                 </button>
 
                                 <div className="relative flex-shrink-0" ref={mobileProfileRef}>
@@ -457,7 +457,7 @@ export default function TopNav({ title, subtitle }) {
                                     >
                                         <Avatar url={profile?.avatar_url} name={profile?.name} />
                                         <ChevronDown
-                                            className={`text-xs text-[var(--color-text-muted)] transition-transform ${profileOpen ? "rotate-180" : ""}`}
+                                            className={`w-4 h-4 text-[var(--color-text-muted)] transition-transform ${profileOpen ? "rotate-180" : ""}`}
                                         />
                                     </button>
 
@@ -468,14 +468,14 @@ export default function TopNav({ title, subtitle }) {
                                                 className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[var(--color-surface-alt)] transition font-bold text-sm text-[var(--color-text)]"
                                                 type="button"
                                             >
-                                                <Settings /> Settings
+                                                <Settings className="w-4 h-4" /> Settings
                                             </button>
                                             <button
                                                 onClick={async () => { setProfileOpen(false); await signOut(); navigate("/login") }}
                                                 className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[var(--color-surface-alt)] transition font-bold text-sm text-red-600"
                                                 type="button"
                                             >
-                                                <LogOut /> Logout
+                                                <LogOut className="w-4 h-4" /> Logout
                                             </button>
                                         </div>
                                     )}
@@ -493,7 +493,7 @@ export default function TopNav({ title, subtitle }) {
                             {/* Left: Logo */}
                             <div className="flex items-center gap-2">
                                 <div
-                                    className="w-9 h-9 rounded-2xl bg-indigo-600 text-white font-black flex items-center justify-center shrink-0"
+                                    className="w-9 h-9 rounded-2xl bg-indigo-600 text-white font-bold flex items-center justify-center shrink-0"
                                     aria-label="Laporanmu Logo"
                                     role="img"
                                 >
@@ -501,8 +501,8 @@ export default function TopNav({ title, subtitle }) {
                                 </div>
 
                                 <div>
-                                    <p className="text-sm font-extrabold text-[var(--color-text)] leading-tight">{title || "Dashboard"}</p>
-                                    <p className="text-[9px] font-bold tracking-widest uppercase text-[var(--color-text-muted)]">{subtitle || today}</p>
+                                    <p className="text-sm font-bold text-[var(--color-text)] leading-tight">{title || "Dashboard"}</p>
+                                    <p className="text-xs font-bold tracking-wide uppercase text-[var(--color-text-muted)]">{subtitle || today}</p>
                                 </div>
                             </div>
                             <div className="flex justify-center">
@@ -510,16 +510,16 @@ export default function TopNav({ title, subtitle }) {
                                     <NavLink to="/dashboard" className={tabClass}>Dashboard</NavLink>
                                     <div className="relative" ref={academicRef}>
                                         <button onClick={() => setAcademicOpen(v => !v)} className={`px-3 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${academicOpen ? "bg-[var(--color-surface)] shadow-sm text-[var(--color-text)]" : "text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white/50 dark:hover:bg-white/5"}`} type="button">
-                                            <Calendar className="opacity-70" /> Akademik <ChevronDown className={`text-[10px] transition-transform ${academicOpen ? "rotate-180" : ""}`} />
+                                            <Calendar className="w-4 h-4 opacity-70" /> Akademik <ChevronDown className={`w-4 h-4 transition-transform ${academicOpen ? "rotate-180" : ""}`} />
                                         </button>
                                         {academicOpen && (
                                             <div className="absolute left-0 mt-2 w-64 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200">
-                                                <div className="px-3 py-2 text-[10px] font-black tracking-widest text-[var(--color-text-muted)] uppercase border-b border-[var(--color-border)]">Mesin Akademik</div>
+                                                <div className="px-3 py-2 text-xs font-bold tracking-wide text-[var(--color-text-muted)] uppercase border-b border-[var(--color-border)]">Mesin Akademik</div>
                                                 <div className="p-2">
                                                     {ACADEMIC_ITEMS.map(it => (
                                                         <button key={it.to} onClick={() => { setAcademicOpen(false); navigate(it.to) }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] transition group" type="button">
                                                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${it.color}`}><it.icon className="text-xs" /></div>
-                                                            <div className="text-left"><p className="text-[11px] font-black text-[var(--color-text)] leading-tight">{it.label}</p><p className="text-[9px] text-[var(--color-text-muted)] font-medium leading-tight mt-0.5">{it.desc}</p></div>
+                                                            <div className="text-left"><p className="text-xs font-bold text-[var(--color-text)] leading-tight">{it.label}</p><p className="text-xs text-[var(--color-text-muted)] font-medium leading-tight mt-0.5">{it.desc}</p></div>
                                                         </button>
                                                     ))}
                                                 </div>
@@ -528,16 +528,16 @@ export default function TopNav({ title, subtitle }) {
                                     </div>
                                     <div className="relative" ref={financeRef}>
                                         <button onClick={() => setFinanceOpen(v => !v)} className={`px-3 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${financeOpen ? "bg-[var(--color-surface)] shadow-sm text-[var(--color-text)]" : "text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white/50 dark:hover:bg-white/5"}`} type="button">
-                                            <Banknote className="opacity-70" /> Keuangan <ChevronDown className={`text-[10px] transition-transform ${financeOpen ? "rotate-180" : ""}`} />
+                                            <Banknote className="w-4 h-4 opacity-70" /> Keuangan <ChevronDown className={`w-4 h-4 transition-transform ${financeOpen ? "rotate-180" : ""}`} />
                                         </button>
                                         {financeOpen && (
                                             <div className="absolute left-0 mt-2 w-64 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200">
-                                                <div className="px-3 py-2 text-[10px] font-black tracking-widest text-[var(--color-text-muted)] uppercase border-b border-[var(--color-border)]">Manajemen Keuangan</div>
+                                                <div className="px-3 py-2 text-xs font-bold tracking-wide text-[var(--color-text-muted)] uppercase border-b border-[var(--color-border)]">Manajemen Keuangan</div>
                                                 <div className="p-2">
                                                     {FINANCE_ITEMS.map(it => (
                                                         <button key={it.to} onClick={() => { setFinanceOpen(false); navigate(it.to) }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] transition group" type="button">
                                                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${it.color}`}><it.icon className="text-xs" /></div>
-                                                            <div className="text-left"><p className="text-[11px] font-black text-[var(--color-text)] leading-tight">{it.label}</p><p className="text-[9px] text-[var(--color-text-muted)] font-medium leading-tight mt-0.5">{it.desc}</p></div>
+                                                            <div className="text-left"><p className="text-xs font-bold text-[var(--color-text)] leading-tight">{it.label}</p><p className="text-xs text-[var(--color-text-muted)] font-medium leading-tight mt-0.5">{it.desc}</p></div>
                                                         </button>
                                                     ))}
                                                 </div>
@@ -546,16 +546,16 @@ export default function TopNav({ title, subtitle }) {
                                     </div>
                                     <div className="relative" ref={reportsRef}>
                                         <button onClick={() => setReportsOpen(v => !v)} className={`px-3 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${reportsOpen ? "bg-[var(--color-surface)] shadow-sm text-[var(--color-text)]" : "text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white/50 dark:hover:bg-white/5"}`} type="button">
-                                            <ClipboardList className="opacity-70" /> Laporan <ChevronDown className={`text-[10px] transition-transform ${reportsOpen ? "rotate-180" : ""}`} />
+                                            <ClipboardList className="w-4 h-4 opacity-70" /> Laporan <ChevronDown className={`w-4 h-4 transition-transform ${reportsOpen ? "rotate-180" : ""}`} />
                                         </button>
                                         {reportsOpen && (
                                             <div className="absolute left-0 mt-2 w-64 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200">
-                                                <div className="px-3 py-2 text-[10px] font-black tracking-widest text-[var(--color-text-muted)] uppercase border-b border-[var(--color-border)]">Rekapitulasi</div>
+                                                <div className="px-3 py-2 text-xs font-bold tracking-wide text-[var(--color-text-muted)] uppercase border-b border-[var(--color-border)]">Rekapitulasi</div>
                                                 <div className="p-2">
                                                     {REPORTS_ITEMS.map(it => (
                                                         <button key={it.to} onClick={() => { setReportsOpen(false); navigate(it.to) }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] transition group" type="button">
                                                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${it.color}`}><it.icon className="text-xs" /></div>
-                                                            <div className="text-left"><p className="text-[11px] font-black text-[var(--color-text)] leading-tight">{it.label}</p><p className="text-[9px] text-[var(--color-text-muted)] font-medium leading-tight mt-0.5">{it.desc}</p></div>
+                                                            <div className="text-left"><p className="text-xs font-bold text-[var(--color-text)] leading-tight">{it.label}</p><p className="text-xs text-[var(--color-text-muted)] font-medium leading-tight mt-0.5">{it.desc}</p></div>
                                                         </button>
                                                     ))}
                                                 </div>
@@ -564,16 +564,16 @@ export default function TopNav({ title, subtitle }) {
                                     </div>
                                     <div className="relative" ref={masterRef}>
                                         <button onClick={() => setMasterOpen(v => !v)} className={`px-3 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${masterOpen ? "bg-[var(--color-surface)] shadow-sm text-[var(--color-text)]" : "text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white/50 dark:hover:bg-white/5"}`} type="button">
-                                            <Layers className="opacity-70" /> Master <ChevronDown className={`text-[10px] transition-transform ${masterOpen ? "rotate-180" : ""}`} />
+                                            <Layers className="w-4 h-4 opacity-70" /> Master <ChevronDown className={`w-4 h-4 transition-transform ${masterOpen ? "rotate-180" : ""}`} />
                                         </button>
                                         {masterOpen && (
                                             <div className="absolute left-0 mt-2 w-64 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200">
-                                                <div className="px-3 py-2 text-[10px] font-black tracking-widest text-[var(--color-text-muted)] uppercase border-b border-[var(--color-border)]">Pusat Data Master</div>
+                                                <div className="px-3 py-2 text-xs font-bold tracking-wide text-[var(--color-text-muted)] uppercase border-b border-[var(--color-border)]">Pusat Data Master</div>
                                                 <div className="p-2">
                                                     {MASTER_ITEMS.map(it => (
                                                         <button key={it.to} onClick={() => { setMasterOpen(false); navigate(it.to) }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] transition group" type="button">
                                                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-indigo-500/10 text-indigo-600`}><it.icon className="text-xs" /></div>
-                                                            <div className="text-left"><p className="text-[11px] font-black text-[var(--color-text)] leading-tight">{it.label}</p><p className="text-[9px] text-[var(--color-text-muted)] font-medium leading-tight mt-0.5">{it.desc}</p></div>
+                                                            <div className="text-left"><p className="text-xs font-bold text-[var(--color-text)] leading-tight">{it.label}</p><p className="text-xs text-[var(--color-text-muted)] font-medium leading-tight mt-0.5">{it.desc}</p></div>
                                                         </button>
                                                     ))}
                                                 </div>
@@ -593,14 +593,14 @@ export default function TopNav({ title, subtitle }) {
                                                         : "text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white/50 dark:hover:bg-white/5"}`}
                                                 type="button"
                                             >
-                                                <UserCog />
+                                                <UserCog className="w-4 h-4" />
                                                 Admin
-                                                <ChevronDown className={`text-xs transition-transform ${adminOpen ? "rotate-180" : ""}`} />
+                                                <ChevronDown className={`w-4 h-4 transition-transform ${adminOpen ? "rotate-180" : ""}`} />
                                             </button>
 
                                             {adminOpen && (
                                                 <div className="absolute right-0 lg:left-auto lg:right-0 mt-2 w-[calc(100vw-2rem)] sm:w-[480px] rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200 origin-top-right z-50">
-                                                    <div className="px-5 py-3.5 text-[10px] font-black tracking-[0.2em] text-[var(--color-text-muted)] uppercase border-b border-[var(--color-border)]/50 bg-[var(--color-surface-alt)]/30">
+                                                    <div className="px-5 py-3.5 text-xs font-bold tracking-wide text-[var(--color-text-muted)] uppercase border-b border-[var(--color-border)]/50 bg-[var(--color-surface-alt)]/30">
                                                         Infrastructure & Control
                                                     </div>
                                                     <div className="p-3 grid grid-cols-2 gap-1.5">
@@ -615,17 +615,17 @@ export default function TopNav({ title, subtitle }) {
                                                                     <it.icon className="text-sm" />
                                                                 </div>
                                                                 <div className="text-left min-w-0">
-                                                                    <p className={`text-[11px] font-black text-[var(--color-text)] leading-tight truncate ${idx === 0 ? 'text-indigo-600' : ''}`}>{it.label}</p>
-                                                                    <p className="text-[9px] text-[var(--color-text-muted)] font-bold leading-tight mt-0.5 opacity-60 line-clamp-1">{it.desc}</p>
+                                                                    <p className={`text-xs font-bold text-[var(--color-text)] leading-tight truncate ${idx === 0 ? 'text-indigo-600' : ''}`}>{it.label}</p>
+                                                                    <p className="text-xs text-[var(--color-text-muted)] font-bold leading-tight mt-0.5 opacity-60 line-clamp-1">{it.desc}</p>
                                                                 </div>
                                                             </button>
                                                         ))}
                                                     </div>
                                                     <div className="px-5 py-3 bg-[var(--color-surface-alt)]/50 flex justify-between items-center border-t border-[var(--color-border)]/50">
-                                                        <span className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest">LaporanMu Engine</span>
+                                                        <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide">LaporanMu Engine</span>
                                                         <div className="flex gap-1">
                                                             <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-                                                            <span className="text-[8px] font-black text-emerald-500 uppercase tracking-widest">All Systems Operational</span>
+                                                            <span className="text-xs font-bold text-emerald-500 uppercase tracking-wide">All Systems Operational</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -644,7 +644,7 @@ export default function TopNav({ title, subtitle }) {
                                             className="p-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition"
                                             type="button"
                                         >
-                                            {isDark ? <Sun /> : <Moon />}
+                                            {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                                         </button>
                                     </div>
                                 </nav>
@@ -662,11 +662,11 @@ export default function TopNav({ title, subtitle }) {
                                     >
                                         <Avatar url={profile?.avatar_url} name={profile?.name} />
                                         <div className="hidden sm:flex flex-col items-start leading-tight">
-                                            <span className="text-sm font-extrabold text-[var(--color-text)]">{profile?.name || "User"}</span>
-                                            <span className="text-[10px] font-bold tracking-widest uppercase text-[var(--color-text-muted)]">{profile?.role || "Staff"}</span>
+                                            <span className="text-sm font-bold text-[var(--color-text)]">{profile?.name || "User"}</span>
+                                            <span className="text-xs font-bold tracking-wide uppercase text-[var(--color-text-muted)]">{profile?.role || "Staff"}</span>
                                         </div>
                                         <ChevronDown
-                                            className={`text-xs text-[var(--color-text-muted)] transition-transform ${profileOpen ? "rotate-180" : ""}`}
+                                            className={`w-4 h-4 text-[var(--color-text-muted)] transition-transform ${profileOpen ? "rotate-180" : ""}`}
                                         />
                                     </button>
 
@@ -677,14 +677,14 @@ export default function TopNav({ title, subtitle }) {
                                                 className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[var(--color-surface-alt)] transition font-bold text-sm text-[var(--color-text)]"
                                                 type="button"
                                             >
-                                                <Settings /> Settings
+                                                <Settings className="w-4 h-4" /> Settings
                                             </button>
                                             <button
                                                 onClick={async () => { setProfileOpen(false); await signOut(); navigate("/login") }}
                                                 className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[var(--color-surface-alt)] transition font-bold text-sm text-red-600"
                                                 type="button"
                                             >
-                                                <LogOut /> Logout
+                                                <LogOut className="w-4 h-4" /> Logout
                                             </button>
                                         </div>
                                     )}

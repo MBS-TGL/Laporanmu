@@ -98,10 +98,10 @@ export default function Step3PreviewPrint({
                 <div className="w-full lg:w-64 xl:w-72 space-y-4 self-start lg:sticky lg:top-6">
                     <div className="p-4 lg:p-5 rounded-3xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] shadow-sm">
                         <div className="flex items-center justify-between mb-3 lg:mb-4 px-1">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                 {window.innerWidth < 1024 ? 'Navigasi Santri' : 'Pilih Santri'}
                             </p>
-                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-500 font-black">
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-500 font-bold">
                                 {totalCount}
                             </span>
                         </div>
@@ -128,7 +128,7 @@ export default function Step3PreviewPrint({
                                     ) : (
                                         <AlertCircle className="w-3 h-3 shrink-0 text-amber-500" />
                                     )}
-                                    <span className="text-[11px] font-bold text-[var(--color-text)] truncate">
+                                    <span className="text-xs font-bold text-[var(--color-text)] truncate">
                                         {students.find(s => s.id === (previewStudentId || students[0]?.id))?.name || 'Pilih Santri'}
                                     </span>
                                 </div>
@@ -170,7 +170,7 @@ export default function Step3PreviewPrint({
                                         >
                                             <div className="flex items-center gap-3 truncate">
                                                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${active ? 'bg-white/20' : 'bg-[var(--color-surface)]'}`}>
-                                                    <span className={`text-[10px] font-black ${active ? 'text-white' : 'text-indigo-500'}`}>
+                                                    <span className={`text-xs font-bold ${active ? 'text-white' : 'text-indigo-500'}`}>
                                                         {s.name.charAt(0)}
                                                     </span>
                                                 </div>
@@ -198,11 +198,11 @@ export default function Step3PreviewPrint({
                                     >
                                         <div className="flex items-center gap-2.5">
                                             <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${active ? 'bg-white/20' : 'bg-[var(--color-surface-alt)]'}`}>
-                                                <span className={`text-[9px] font-black ${active ? 'text-white' : 'text-indigo-500'}`}>
+                                                <span className={`text-xs font-bold ${active ? 'text-white' : 'text-indigo-500'}`}>
                                                     {s.name.charAt(0)}
                                                 </span>
                                             </div>
-                                            <span className="text-[11px] font-bold truncate flex-1">{s.name}</span>
+                                            <span className="text-xs font-bold truncate flex-1">{s.name}</span>
                                             {complete && <CheckCircle2 className={`w-3 h-3 ${active ? 'text-white' : 'text-emerald-500'}`} />}
                                         </div>
                                     </button>
@@ -214,13 +214,13 @@ export default function Step3PreviewPrint({
                     <div className="space-y-2">
                         <button
                             onClick={() => openPrintWindow(students)}
-                            className="w-full h-11 rounded-2xl bg-indigo-500 text-white text-xs font-black shadow-lg shadow-indigo-500/20 hover:bg-indigo-600 transition-all flex items-center justify-center gap-2"
+                            className="w-full h-11 rounded-2xl bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-500/20 hover:bg-indigo-600 transition-all flex items-center justify-center gap-2"
                         >
                             <Printer className="w-3.5 h-3.5 mr-1.5" /> Cetak Semua ({totalCount})
                         </button>
                         <button
                             onClick={() => setStep(2)}
-                            className="w-full h-11 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-xs font-black hover:text-[var(--color-text)] transition-all flex items-center justify-center gap-2"
+                            className="w-full h-11 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-xs font-bold hover:text-[var(--color-text)] transition-all flex items-center justify-center gap-2"
                         >
                             <ArrowLeft className="w-3.5 h-3.5 mr-1.5" /> Kembali ke Input
                         </button>
@@ -243,7 +243,7 @@ export default function Step3PreviewPrint({
                                 <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center">
                                     <Search className="w-3 h-3 text-indigo-500" />
                                 </div>
-                                <h4 className="text-[11px] font-black text-[var(--color-text)] uppercase tracking-wider">
+                                <h4 className="text-xs font-bold text-[var(--color-text)] uppercase tracking-wider">
                                     Preview Raport
                                 </h4>
                             </div>
@@ -260,14 +260,14 @@ export default function Step3PreviewPrint({
                                 <div className="flex-1 sm:flex-initial flex items-center gap-1 p-1 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm h-10">
                                     <button
                                         onClick={() => setPageSize('a4')}
-                                        className={`flex-1 sm:px-3 h-8 rounded-lg text-[10px] font-black transition-all ${pageSize === 'a4' ? 'bg-amber-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'
+                                        className={`flex-1 sm:px-3 h-8 rounded-lg text-xs font-bold transition-all ${pageSize === 'a4' ? 'bg-amber-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'
                                             }`}
                                     >
                                         A4
                                     </button>
                                     <button
                                         onClick={() => setPageSize('f4')}
-                                        className={`flex-1 sm:px-3 h-8 rounded-lg text-[10px] font-black transition-all ${pageSize === 'f4' ? 'bg-amber-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'
+                                        className={`flex-1 sm:px-3 h-8 rounded-lg text-xs font-bold transition-all ${pageSize === 'f4' ? 'bg-amber-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'
                                             }`}
                                     >
                                         F4
@@ -276,14 +276,14 @@ export default function Step3PreviewPrint({
                                 <div className="flex-1 sm:flex-initial flex items-center gap-1 p-1 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm h-10">
                                     <button
                                         onClick={() => setLang('ar')}
-                                        className={`flex-1 sm:px-3 h-8 rounded-lg text-[10px] font-black transition-all ${lang === 'ar' ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'
+                                        className={`flex-1 sm:px-3 h-8 rounded-lg text-xs font-bold transition-all ${lang === 'ar' ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'
                                             }`}
                                     >
                                         AR
                                     </button>
                                     <button
                                         onClick={() => setLang('id')}
-                                        className={`flex-1 sm:px-3 h-8 rounded-lg text-[10px] font-black transition-all ${lang === 'id' ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'
+                                        className={`flex-1 sm:px-3 h-8 rounded-lg text-xs font-bold transition-all ${lang === 'id' ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'
                                             }`}
                                     >
                                         ID
@@ -298,7 +298,7 @@ export default function Step3PreviewPrint({
                                             manualZoomRef.current = true
                                             setPreviewZoom(p => Math.max(0.3, p - 0.1))
                                         }}
-                                        className="flex-1 sm:w-8 h-8 text-[11px] text-[var(--color-text-muted)] hover:text-indigo-500 flex items-center justify-center"
+                                        className="flex-1 sm:w-8 h-8 text-xs text-[var(--color-text-muted)] hover:text-indigo-500 flex items-center justify-center"
                                     >
                                         <Search className="w-3 h-3 mr-0.5" />-
                                     </button>
@@ -314,7 +314,7 @@ export default function Step3PreviewPrint({
                                             setPreviewZoom(Math.min(1, Math.max(0.3, Math.floor((availW / docW) * 100) / 100)))
                                         }}
                                         title="Fit ke lebar layar"
-                                        className="text-[9px] font-black w-10 text-center text-indigo-500 tabular-nums hover:text-indigo-700 transition-colors cursor-pointer select-none"
+                                        className="text-xs font-bold w-10 text-center text-indigo-500 tabular-nums hover:text-indigo-700 transition-colors cursor-pointer select-none"
                                     >
                                         {Math.round(previewZoom * 100)}%
                                     </button>
@@ -323,7 +323,7 @@ export default function Step3PreviewPrint({
                                             manualZoomRef.current = true
                                             setPreviewZoom(p => Math.min(1.5, p + 0.1))
                                         }}
-                                        className="flex-1 sm:w-8 h-8 text-[11px] text-[var(--color-text-muted)] hover:text-indigo-500 flex items-center justify-center"
+                                        className="flex-1 sm:w-8 h-8 text-xs text-[var(--color-text-muted)] hover:text-indigo-500 flex items-center justify-center"
                                     >
                                         <Search className="w-3 h-3 mr-0.5" />+
                                     </button>
@@ -332,7 +332,7 @@ export default function Step3PreviewPrint({
                                 {previewStudent?.phone && (
                                     <button
                                         onClick={() => sendWATextOnly(previewStudent)}
-                                        className="h-10 px-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-700 text-[10px] font-black flex items-center justify-center gap-2 flex-1 sm:flex-initial"
+                                        className="h-10 px-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-700 text-xs font-bold flex items-center justify-center gap-2 flex-1 sm:flex-initial"
                                     >
                                         <WhatsAppIcon className="w-3.5 h-3.5 mr-1" /> <span className="hidden xs:inline">Whatsapp</span>
                                     </button>
@@ -340,7 +340,7 @@ export default function Step3PreviewPrint({
 
                                 <button
                                     onClick={() => openPrintWindow([previewStudent].filter(Boolean))}
-                                    className="h-10 px-5 rounded-xl bg-emerald-500 text-white text-[10px] font-black flex items-center justify-center gap-2 flex-1 sm:flex-initial shadow-lg shadow-emerald-500/20"
+                                    className="h-10 px-5 rounded-xl bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-2 flex-1 sm:flex-initial shadow-lg shadow-emerald-500/20"
                                 >
                                     <Printer className="w-3.5 h-3.5 mr-1" /> <span className="hidden xs:inline">Cetak</span>
                                 </button>
@@ -404,7 +404,7 @@ export default function Step3PreviewPrint({
                         {/* Animated hint badge - mobile only */}
                         <div className="lg:hidden flex items-center gap-1.5 mb-3 px-3 py-1.5 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-indigo-500/20 shadow-sm animate-pulse">
                             <Maximize2 className="w-3 h-3 text-indigo-500" />
-                            <span className="text-[9px] font-black text-indigo-500 uppercase tracking-widest">
+                            <span className="text-xs font-bold text-indigo-500 uppercase tracking-wide">
                                 Klik raport untuk memperbesar
                             </span>
                         </div>

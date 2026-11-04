@@ -133,7 +133,7 @@ export default function SuspensionDetailPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2 space-y-4">
               <section className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)]">
-                <h3 className="text-sm font-black text-[var(--color-text)] mb-3">Progres Harian</h3>
+                <h3 className="text-sm font-bold text-[var(--color-text)] mb-3">Progres Harian</h3>
                 <ProgressGrid
                   suspension={suspension}
                   logByDate={logByDate}
@@ -143,7 +143,7 @@ export default function SuspensionDetailPage() {
               </section>
 
               <section className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)]">
-                <h3 className="text-sm font-black text-[var(--color-text)] mb-1">
+                <h3 className="text-sm font-bold text-[var(--color-text)] mb-1">
                   {selectedDay ? `Isian ${formatTanggalPanjang(selectedDay)}` : 'Isian harian'}
                 </h3>
                 {!selectedDay ? (
@@ -158,7 +158,7 @@ export default function SuspensionDetailPage() {
                       if (!shown.length) return null
                       return (
                         <div key={block.key}>
-                          <p className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">
+                          <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">
                             {block.label} <span className="font-medium normal-case">({block.time})</span>
                           </p>
                           <dl className="divide-y divide-[var(--color-border)] rounded-xl border border-[var(--color-border)] overflow-hidden">
@@ -176,7 +176,7 @@ export default function SuspensionDetailPage() {
                     })}
                     {selectedLog.note_optional && (
                       <p className="text-xs text-[var(--color-text)] p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                        <span className="font-black">Catatan wali: </span>{selectedLog.note_optional}
+                        <span className="font-bold">Catatan wali: </span>{selectedLog.note_optional}
                       </p>
                     )}
                   </div>
@@ -184,7 +184,7 @@ export default function SuspensionDetailPage() {
               </section>
 
               <section className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)]">
-                <h3 className="text-sm font-black text-[var(--color-text)] mb-3 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-[var(--color-text)] mb-3 flex items-center gap-2">
                   <BookOpenCheck className="w-4 h-4" /> Tugas & Penilaian ({tasks.length})
                 </h3>
                 {!tasks.length ? (
@@ -198,9 +198,9 @@ export default function SuspensionDetailPage() {
                           <div className="flex items-start justify-between gap-2">
                             <div className="min-w-0">
                               <p className="text-sm font-bold text-[var(--color-text)]">{t.title}</p>
-                              <p className="text-[11px] text-[var(--color-text-muted)]">{t.subject}{t.due_date ? ` · tenggat ${t.due_date}` : ''}</p>
+                              <p className="text-xs text-[var(--color-text-muted)]">{t.subject}{t.due_date ? ` · tenggat ${t.due_date}` : ''}</p>
                             </div>
-                            <span className={`shrink-0 text-[10px] font-black px-2 py-1 rounded-lg border ${
+                            <span className={`shrink-0 text-xs font-bold px-2 py-1 rounded-lg border ${
                               !sub ? 'bg-slate-500/10 text-[var(--color-text-muted)] border-[var(--color-border)]'
                               : sub.status === 'dinilai' ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
                               : 'bg-amber-500/10 text-amber-600 border-amber-500/20'
@@ -224,7 +224,7 @@ export default function SuspensionDetailPage() {
 
             <div className="space-y-4">
               <section className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)]">
-                <h3 className="text-sm font-black text-[var(--color-text)] mb-2">Ringkasan</h3>
+                <h3 className="text-sm font-bold text-[var(--color-text)] mb-2">Ringkasan</h3>
                 <dl className="text-xs space-y-1.5">
                   <div className="flex justify-between gap-2">
                     <dt className="text-[var(--color-text-muted)]">Siswa</dt>

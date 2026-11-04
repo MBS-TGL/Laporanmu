@@ -80,7 +80,7 @@ tidak ada lagi ukuran arbiter per 1px (`text-[11px]`, `h-[60px]`, dll).
 | Item nav sidebar | `h-9` + `rounded-lg` |
 | Button | sm `h-8` · md `h-10` · lg `h-11` (shared `Button`) |
 | Input/select/textarea | class `.input-field` ≈ h-10 |
-| Konten halaman (DashboardLayout main) | `px-3 sm:px-4 lg:px-5` — sejajar tepi dengan topbar |
+| Konten halaman (DashboardLayout main) | `px-3 sm:px-4 lg:px-4` + `py-3 sm:py-4 lg:py-4`, cap `max-w-[1800px]` — sejajar tepi dengan topbar |
 | Card / modal / dropdown / popover | `rounded-xl` |
 | Bottom sheet mobile | `rounded-t-2xl` (desktop `rounded-xl`) |
 | Shadow | `shadow-sm` kartu · `shadow-xl` mengambang |
@@ -121,8 +121,13 @@ transisi `duration-150–200` per-properti.
 9. **Gambar:** setiap `<img>` wajib `loading="lazy" decoding="async"`, kecuali hero
    above-the-fold di halaman publik.
 10. **`transition-all` dilarang untuk kode baru** — sebutkan properti spesifik
-    (`transition-colors`, `transition-transform`, `transition-opacity`). Ada 2.175
-    pemakaian legacy; ganti saat menyentuh baris itu.
+   (`transition-colors`, `transition-transform`, `transition-opacity`). Ada 2.175
+   pemakaian legacy; ganti saat menyentuh baris itu.
+11. **Padding halaman milik `DashboardLayout`** — halaman child layout TIDAK boleh
+   menambah `p-4 md:p-6` atau `max-w-[1800px] mx-auto` sendiri (padding dobel = konten
+   renggang). Pakai `space-y-*` saja untuk ritme vertikal. Pengecualian: halaman
+   standalone (public/kiosk/print) yang tidak dibungkus layout, dan wrapper
+   `max-w-[1280px]` di halaman admin teknis.
 
 ## Pola Halaman (template: src/features/suspension)
 

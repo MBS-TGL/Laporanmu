@@ -149,10 +149,10 @@ export default function RaportSetupPage({ isAcademic = false }) {
                         <School className="w-6 h-6" />
                     </div>
                     <div className="min-w-0">
-                        <h2 className="text-base sm:text-lg font-black text-slate-800 dark:text-slate-100 tracking-tight leading-snug">
+                        <h2 className="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight leading-snug">
                             Pilih Kelas Raport
                         </h2>
-                        <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 font-medium leading-relaxed mt-0.5">
+                        <p className="text-xs sm:text-xs text-slate-600 dark:text-slate-400 font-medium leading-relaxed mt-0.5">
                             Langkah 1: Pilih kelas aktif untuk mulai mengisi atau mencetak {activeRtObj?.name || 'raport'}.
                         </p>
                     </div>
@@ -183,7 +183,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                                     key={opt.id}
                                     type="button"
                                     onClick={() => setClassSelectionType(opt.id)}
-                                    className={`h-10 px-4 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${classSelectionType === opt.id
+                                    className={`h-10 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${classSelectionType === opt.id
                                         ? 'bg-indigo-600 text-white shadow-md'
                                         : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]'
                                         }`}
@@ -200,7 +200,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
 
                     {/* Grade Filters */}
                     <div className="flex flex-wrap items-center gap-1.5">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mr-2">
+                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mr-2">
                             Tingkat Kelas:
                         </span>
                         {[
@@ -214,7 +214,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                                 key={opt.id}
                                 type="button"
                                 onClick={() => setClassSelectionGrade(opt.id)}
-                                className={`h-8 px-3.5 rounded-xl text-[10px] font-black border transition-all cursor-pointer ${classSelectionGrade === opt.id
+                                className={`h-8 px-3.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${classSelectionGrade === opt.id
                                     ? 'bg-indigo-500/10 border-indigo-500/40 text-indigo-600 dark:text-indigo-400 shadow-xs'
                                     : 'border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface)] hover:border-indigo-500/25 hover:text-indigo-600'
                                     }`}
@@ -258,7 +258,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                                             }`}
                                     >
                                         <div
-                                            className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 font-black text-xs transition-all ${isEmpty
+                                            className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 font-bold text-xs transition-all ${isEmpty
                                                 ? 'bg-slate-200 text-slate-400'
                                                 : isSelected
                                                     ? 'bg-indigo-500 text-white shadow-lg'
@@ -272,23 +272,23 @@ export default function RaportSetupPage({ isAcademic = false }) {
 
                                         <div className="min-w-0 flex-1">
                                             <div className="flex items-center justify-between gap-2 mb-1">
-                                                <span className={`text-[13px] font-black transition-colors truncate ${isSelected ? 'text-indigo-600 dark:text-indigo-400' : 'text-[var(--color-text)]'}`}>
+                                                <span className={`text-sm font-bold transition-colors truncate ${isSelected ? 'text-indigo-600 dark:text-indigo-400' : 'text-[var(--color-text)]'}`}>
                                                     {cls.name}
                                                 </span>
                                                 {isEmpty ? (
-                                                    <span className="text-[8px] font-black px-1.5 py-0.5 rounded-md bg-rose-500/10 text-rose-500 border border-rose-500/20 shrink-0">
+                                                    <span className="text-xs font-bold px-1.5 py-0.5 rounded-md bg-rose-500/10 text-rose-500 border border-rose-500/20 shrink-0">
                                                         Kosong
                                                     </span>
                                                 ) : (
-                                                    <span className={`text-[8px] font-black px-1.5 py-0.5 rounded-md border shrink-0 ${isBoarding ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20'}`}>
+                                                    <span className={`text-xs font-bold px-1.5 py-0.5 rounded-md border shrink-0 ${isBoarding ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20'}`}>
                                                         {isBoarding ? 'Boarding' : 'Reguler'}
                                                     </span>
                                                 )}
                                             </div>
                                             <div className="flex items-center gap-2 opacity-80">
-                                                <p className="text-[10px] font-bold text-[var(--color-text-muted)] truncate">{teacher}</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] truncate">{teacher}</p>
                                                 <div className="w-1 h-1 rounded-full bg-[var(--color-border)] shrink-0" />
-                                                <p className={`text-[10px] font-black shrink-0 ${isEmpty ? 'text-rose-500' : 'text-indigo-500'}`}>
+                                                <p className={`text-xs font-bold shrink-0 ${isEmpty ? 'text-rose-500' : 'text-indigo-500'}`}>
                                                     {count} Siswa
                                                 </p>
                                             </div>
@@ -304,7 +304,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                     <button
                         type="button"
                         onClick={() => navigate(basePath)}
-                        className="h-14 px-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] font-extrabold text-xs transition-all flex items-center justify-center gap-2 shadow-xs shrink-0 active:scale-98 cursor-pointer"
+                        className="h-14 px-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-xs shrink-0 active:scale-98 cursor-pointer"
                     >
                         <ArrowLeft className="w-4 h-4" />
                         <span>Kembali</span>
@@ -317,7 +317,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                             if (!tempSelectedClassId) return
                             navigate(`${basePath}/setup/${tempSelectedClassId}`)
                         }}
-                        className={`h-14 flex-1 px-6 rounded-2xl text-white font-black text-sm transition-all flex items-center justify-center gap-2 shadow-lg ${!tempSelectedClassId
+                        className={`h-14 flex-1 px-6 rounded-2xl text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-lg ${!tempSelectedClassId
                             ? 'bg-slate-300 dark:bg-slate-700 cursor-not-allowed shadow-none'
                             : 'bg-emerald-500 hover:bg-emerald-600 active:scale-[0.99] cursor-pointer'
                             }`}
@@ -343,7 +343,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                     <Sliders className="w-6 h-6" />
                 </div>
                 <div className="min-w-0">
-                    <h2 className="text-base font-black text-slate-800 dark:text-slate-100 leading-tight">{titleText}</h2>
+                    <h2 className="text-base font-bold text-slate-800 dark:text-slate-100 leading-tight">{titleText}</h2>
                     <p className="text-xs text-slate-600 dark:text-slate-400 font-medium mt-0.5">
                         Tentukan periode dan bahasa pengantar untuk raport kelas ini.
                     </p>
@@ -357,20 +357,20 @@ export default function RaportSetupPage({ isAcademic = false }) {
                 <div className="space-y-4">
                     {/* Kelas Terpilih */}
                     <div className="space-y-2">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-1.5">
+                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] flex items-center gap-1.5">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                             Kelas Terpilih
                         </label>
                         <div className="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 dark:bg-emerald-950/20 flex items-center justify-between gap-3">
                             <div className="flex items-center gap-3 min-w-0">
-                                <div className="w-11 h-11 rounded-full bg-emerald-500 text-white font-black text-sm flex items-center justify-center shrink-0 shadow-lg">
+                                <div className="w-11 h-11 rounded-full bg-emerald-500 text-white font-bold text-sm flex items-center justify-center shrink-0 shadow-lg">
                                     {gradeNum}
                                 </div>
                                 <div className="min-w-0">
-                                    <h3 className="text-sm font-black text-[var(--color-text)] truncate leading-tight">
+                                    <h3 className="text-sm font-bold text-[var(--color-text)] truncate leading-tight">
                                         {selectedClass?.name || 'Memuat Kelas...'}
                                     </h3>
-                                    <span className="text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">
+                                    <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">
                                         {displayStudentCount} Siswa Terdaftar
                                     </span>
                                 </div>
@@ -378,7 +378,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                             <button
                                 type="button"
                                 onClick={() => { setSelectedClassId(''); navigate(basePath) }}
-                                className="px-3 py-1.5 rounded-xl border border-emerald-500/40 bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 font-black text-xs hover:bg-emerald-50 dark:hover:bg-emerald-950/50 transition-all shrink-0 active:scale-95 cursor-pointer"
+                                className="px-3 py-1.5 rounded-xl border border-emerald-500/40 bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 font-bold text-xs hover:bg-emerald-50 dark:hover:bg-emerald-950/50 transition-all shrink-0 active:scale-95 cursor-pointer"
                             >
                                 Ganti
                             </button>
@@ -389,7 +389,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                     {isMonthly ? (
                         <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Bulan</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Bulan</label>
                                 <RichSelect
                                     value={selectedMonth}
                                     onChange={val => setSelectedMonth(Number(val))}
@@ -399,7 +399,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Tahun</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Tahun</label>
                                 <RichSelect
                                     value={selectedYear}
                                     onChange={val => setSelectedYear(Number(val))}
@@ -412,7 +412,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                     ) : (
                         <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Semester</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Semester</label>
                                 <RichSelect
                                     value={selectedSemester}
                                     onChange={val => setSelectedSemester(Number(val))}
@@ -425,7 +425,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Tahun Ajaran</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Tahun Ajaran</label>
                                 <RichSelect
                                     value={academicYear}
                                     onChange={val => setAcademicYear(val)}
@@ -447,7 +447,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                     {/* Musyrif */}
                     <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-1.5">
+                            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] flex items-center gap-1.5">
                                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
                                 Musyrif / Wali Kelas
                             </label>
@@ -455,7 +455,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                                 <button
                                     type="button"
                                     onClick={() => setMusyrif(homeroomTeacherName)}
-                                    className="text-[10px] font-bold text-indigo-500 hover:underline flex items-center gap-1"
+                                    className="text-xs font-bold text-indigo-500 hover:underline flex items-center gap-1"
                                 >
                                     <UserCheck className="w-3 h-3" />
                                     Pakai Wali Resmi
@@ -474,11 +474,11 @@ export default function RaportSetupPage({ isAcademic = false }) {
                     {/* Template Bahasa */}
                     <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Template Bahasa</label>
+                            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Template Bahasa</label>
                             <button
                                 type="button"
                                 onClick={() => setShowTemplateModal(true)}
-                                className="text-[10px] font-bold text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 flex items-center gap-1 cursor-pointer"
+                                className="text-xs font-bold text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 flex items-center gap-1 cursor-pointer"
                             >
                                 <Eye className="w-3.5 h-3.5" />
                                 Lihat Perbedaan
@@ -499,11 +499,11 @@ export default function RaportSetupPage({ isAcademic = false }) {
                                         }`}
                                 >
                                     <div>
-                                        <span className={`text-sm font-black flex items-center gap-1.5 leading-tight ${lang === id ? 'text-indigo-600 dark:text-indigo-400' : 'text-[var(--color-text)]'}`}>
+                                        <span className={`text-sm font-bold flex items-center gap-1.5 leading-tight ${lang === id ? 'text-indigo-600 dark:text-indigo-400' : 'text-[var(--color-text)]'}`}>
                                             {title}
                                             {lang === id && <Check className="w-4 h-4 text-indigo-600 dark:text-indigo-400 stroke-[3]" />}
                                         </span>
-                                        <span className="text-[10px] font-medium text-[var(--color-text-muted)]">{sub}</span>
+                                        <span className="text-xs font-medium text-[var(--color-text-muted)]">{sub}</span>
                                     </div>
                                     <Icon className={`w-5 h-5 shrink-0 ${lang === id ? 'text-indigo-600 dark:text-indigo-400' : 'text-[var(--color-text-muted)] opacity-60'}`} />
                                 </button>
@@ -514,7 +514,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
             </div>
 
             {/* Quick summary hint */}
-            <div className="flex items-center justify-between text-[11px] font-extrabold text-[var(--color-text-muted)] px-1 pt-1">
+            <div className="flex items-center justify-between text-xs font-bold text-[var(--color-text-muted)] px-1 pt-1">
                 <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                     <span>Konfigurasi: <strong className="text-[var(--color-text)]">{isMonthly ? `Raport Bulanan (${selectedMonth}/${selectedYear})` : `Semester ${selectedSemester} (${academicYear})`}</strong> • <strong className="text-indigo-600 dark:text-indigo-400">{lang === 'ar' ? 'Bahasa Arab (RTL)' : 'Bahasa Indonesia (LTR)'}</strong></span>
@@ -526,7 +526,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                 <button
                     type="button"
                     onClick={() => { setSelectedClassId(''); navigate(basePath) }}
-                    className="h-11 px-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] font-extrabold text-xs transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+                    className="h-11 px-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] font-bold text-xs transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer"
                 >
                     <ArrowLeft className="w-4 h-4" />
                     <span>Kembali</span>
@@ -535,7 +535,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                     type="button"
                     onClick={handleContinue}
                     disabled={submitting}
-                    className="h-11 flex-1 px-5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white font-black text-sm transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer"
+                    className="h-11 flex-1 px-5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer"
                 >
                     {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <ChevronRight className="w-5 h-5" />}
                     <span>{submitting ? 'Memuat Data...' : 'Mulai Input Nilai'}</span>
@@ -553,7 +553,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                     <div className="p-4 rounded-2xl border border-indigo-500/30 bg-indigo-500/5 dark:bg-indigo-950/20 space-y-2">
                         <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
                             <MoonStar className="w-5 h-5" />
-                            <h4 className="text-sm font-black">Template Bahasa Arab (Pondok / Boarding)</h4>
+                            <h4 className="text-sm font-bold">Template Bahasa Arab (Pondok / Boarding)</h4>
                         </div>
                         <ul className="text-xs text-[var(--color-text-muted)] space-y-1.5 font-medium pl-6 list-disc">
                             <li>Format cetak Right-to-Left (RTL) khas pesantren.</li>
@@ -565,7 +565,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                     <div className="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 dark:bg-emerald-950/20 space-y-2">
                         <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
                             <School className="w-5 h-5" />
-                            <h4 className="text-sm font-black">Template Bahasa Indonesia (Sekolah / Reguler)</h4>
+                            <h4 className="text-sm font-bold">Template Bahasa Indonesia (Sekolah / Reguler)</h4>
                         </div>
                         <ul className="text-xs text-[var(--color-text-muted)] space-y-1.5 font-medium pl-6 list-disc">
                             <li>Format cetak Left-to-Right (LTR) standar nasional.</li>

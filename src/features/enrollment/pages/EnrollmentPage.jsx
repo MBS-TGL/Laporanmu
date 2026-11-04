@@ -134,13 +134,13 @@ export default function EnrollmentPage() {
 
     return (
         <DashboardLayout title="PSB / Enrollment" subtitle="Penerimaan Santri Baru">
-            <div className="p-4 md:p-6 space-y-4 max-w-[1800px] mx-auto min-h-screen relative">
+            <div className="space-y-4 min-h-[calc(100dvh-6rem)] relative">
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                     <div>
                         <Breadcrumb badge="Master Data" items={['PSB / Enrollment']} className="mb-1" />
-                        <h1 className="text-2xl font-black font-heading tracking-tight text-[var(--color-text)]">Penerimaan Santri Baru</h1>
-                        <p className="text-[var(--color-text-muted)] text-[11px] mt-1 font-medium">Kelola pendaftaran dan seleksi calon santri baru</p>
+                        <h1 className="text-2xl font-bold font-heading tracking-tight text-[var(--color-text)]">Penerimaan Santri Baru</h1>
+                        <p className="text-[var(--color-text-muted)] text-xs mt-1 font-medium">Kelola pendaftaran dan seleksi calon santri baru</p>
                     </div>
                     <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
                         {/* Header Menu Button */}
@@ -150,7 +150,7 @@ export default function EnrollmentPage() {
                             className={`h-9 w-9 rounded-lg border flex items-center justify-center text-sm transition-all active:scale-95 ${isHeaderMenuOpen ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
                             title="Aksi lainnya"
                         >
-                            <SlidersHorizontal />
+                            <SlidersHorizontal className="w-4 h-4" />
                         </button>
 
                         {/* Portaled Header Menu Dropdown */}
@@ -167,58 +167,58 @@ export default function EnrollmentPage() {
                                         left: Math.max(10, headerMenuRect.right - 224)
                                     }}
                                 >
-                                    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">Data</p>
+                                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-2">Data</p>
                                     <button onClick={() => { setIsHeaderMenuOpen(false); ie.handleImportClick() }}
                                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                         <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <FileInput className="text-xs" />
+                                            <FileInput className="w-4 h-4" />
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-[11px] font-black leading-tight">Import Excel / CSV</p>
-                                            <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Unggah massal data calon santri</p>
+                                            <p className="text-xs font-bold leading-tight">Import Excel / CSV</p>
+                                            <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Unggah massal data calon santri</p>
                                         </div>
                                     </button>
                                     <button onClick={() => { setIsHeaderMenuOpen(false); ie.setIsExportModalOpen(true) }}
                                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                         <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <FileOutput className="text-xs" />
+                                            <FileOutput className="w-4 h-4" />
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-[11px] font-black leading-tight">Export Data</p>
-                                            <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Cadangkan data ke Excel, CSV, PDF</p>
+                                            <p className="text-xs font-bold leading-tight">Export Data</p>
+                                            <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Cadangkan data ke Excel, CSV, PDF</p>
                                         </div>
                                     </button>
                                     <button onClick={() => { setIsHeaderMenuOpen(false); setIsStatsModalOpen(true) }}
                                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                         <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <ChartPie className="text-xs" />
+                                            <ChartPie className="w-4 h-4" />
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-[11px] font-black leading-tight">Statistik PSB</p>
-                                            <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Visualisasi chart data pendaftaran</p>
+                                            <p className="text-xs font-bold leading-tight">Statistik PSB</p>
+                                            <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Visualisasi chart data pendaftaran</p>
                                         </div>
                                     </button>
 
                                     <div className="h-px bg-[var(--color-border)] my-1 mx-2" />
-                                    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">Manajemen</p>
+                                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-2">Manajemen</p>
                                     <button onClick={() => { setIsHeaderMenuOpen(false); setIsWaveModalOpen(true) }}
                                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                         <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <AudioWaveform className="text-xs" />
+                                            <AudioWaveform className="w-4 h-4" />
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-[11px] font-black leading-tight">Gelombang</p>
-                                            <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Atur periode & kuota pendaftaran</p>
+                                            <p className="text-xs font-bold leading-tight">Gelombang</p>
+                                            <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Atur periode & kuota pendaftaran</p>
                                         </div>
                                     </button>
                                     <button onClick={() => { setIsHeaderMenuOpen(false); setIsArchiveOpen(true); fetchArchivedEnrollments() }}
                                         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                         <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <Archive className="text-xs" />
+                                            <Archive className="w-4 h-4" />
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-[11px] font-black leading-tight">Arsip Pendaftar</p>
-                                            <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Lihat & pulihkan data yang diarsipkan</p>
+                                            <p className="text-xs font-bold leading-tight">Arsip Pendaftar</p>
+                                            <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Lihat & pulihkan data yang diarsipkan</p>
                                         </div>
                                     </button>
                                     <button onClick={async () => { 
@@ -231,11 +231,11 @@ export default function EnrollmentPage() {
                                         disabled={sendingReminders}
                                     >
                                         <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            {sendingReminders ? <LoaderCircle className={`text-xs ${sendingReminders ? 'animate-spin' : ''}`} /> : <Bell className={`text-xs ${sendingReminders ? 'animate-spin' : ''}`} />}
+                                            {sendingReminders ? <LoaderCircle className={`w-4 h-4 ${sendingReminders ? 'animate-spin' : ''}`} /> : <Bell className={`w-4 h-4 ${sendingReminders ? 'animate-spin' : ''}`} />}
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-[11px] font-black leading-tight">Pengingat Berkas</p>
-                                            <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Kirim auto-nudge kelengkapan dokumen via WA</p>
+                                            <p className="text-xs font-bold leading-tight">Pengingat Berkas</p>
+                                            <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Kirim auto-nudge kelengkapan dokumen via WA</p>
                                         </div>
                                     </button>
                                 </div>
@@ -243,8 +243,8 @@ export default function EnrollmentPage() {
                             getPortalContainer('portal-enrollment-header-menu')
                         )}
 
-                        <button onClick={handleAdd} className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md border border-white/10 shrink-0">
-                            <UserPlus className="text-[10px]" />
+                        <button onClick={handleAdd} className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md border border-white/10 shrink-0">
+                            <UserPlus className="w-4 h-4" />
                             <span>Tambah Pendaftar</span>
                         </button>
                     </div>
@@ -282,11 +282,11 @@ export default function EnrollmentPage() {
                                     <button
                                         key={s.id}
                                         onClick={() => { setFilterStatus(s.id); setPage(1); }}
-                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${filterStatus === s.id
+                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${filterStatus === s.id
                                             ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-sm'
                                             : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5'}`}
                                     >
-                                        <s.icon className={`text-[10px] ${filterStatus === s.id ? 'opacity-100' : 'opacity-30'}`} />
+                                        <s.icon className={`text-xs ${filterStatus === s.id ? 'opacity-100' : 'opacity-30'}`} />
                                         {s.label}
                                     </button>
                                 ))}
@@ -301,11 +301,11 @@ export default function EnrollmentPage() {
                                     <button
                                         key={g.id}
                                         onClick={() => { setFilterGender(filterGender === g.id ? '' : g.id); setPage(1); }}
-                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${filterGender === g.id
+                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${filterGender === g.id
                                             ? `${g.cls} text-white shadow-sm`
                                             : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5'}`}
                                     >
-                                        <g.icon className={`text-[10px] ${filterGender === g.id ? 'opacity-100' : 'opacity-30'}`} />
+                                        <g.icon className={`text-xs ${filterGender === g.id ? 'opacity-100' : 'opacity-30'}`} />
                                         {g.label}
                                     </button>
                                 ))}
@@ -315,22 +315,22 @@ export default function EnrollmentPage() {
                         {/* Action buttons */}
                         <div className="flex items-center gap-2 shrink-0 ml-auto">
                             <button onClick={toggleSelectAll}
-                                className={`h-9 px-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center gap-2 ${selectedIds.length > 0
+                                className={`h-9 px-3 rounded-xl border text-xs font-bold uppercase tracking-wide transition-all active:scale-95 flex items-center gap-2 ${selectedIds.length > 0
                                     ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md'
                                     : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                {selectedIds.length > 0 ? <CheckCheck /> : <SquareCheck />}
+                                {selectedIds.length > 0 ? <CheckCheck className="w-4 h-4" /> : <SquareCheck className="w-4 h-4" />}
                                 <span className="hidden xs:inline">{selectedIds.length > 0 ? 'Terpilih' : 'Pilih'}</span>
-                                {selectedIds.length > 0 && <span className="w-4 h-4 rounded-full bg-white/20 text-white text-[9px] font-black flex items-center justify-center">{selectedIds.length}</span>}
+                                {selectedIds.length > 0 && <span className="w-4 h-4 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center">{selectedIds.length}</span>}
                             </button>
 
                             <button
                                 onClick={() => setShowAdvancedFilter(!showAdvancedFilter)}
-                                className={`h-9 px-3 sm:px-4 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${showAdvancedFilter || activeFilterCount > 0 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
+                                className={`h-9 px-3 sm:px-4 rounded-xl border text-xs font-bold uppercase tracking-wide transition-all active:scale-95 flex items-center justify-center gap-2 ${showAdvancedFilter || activeFilterCount > 0 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
                             >
-                                <SlidersHorizontal />
+                                <SlidersHorizontal className="w-4 h-4" />
                                 <span className="hidden xs:inline">Filter</span>
                                 {activeFilterCount > 0 && (
-                                    <span className="w-4 h-4 rounded-full bg-white/30 text-white text-[9px] font-black flex items-center justify-center">
+                                    <span className="w-4 h-4 rounded-full bg-white/30 text-white text-xs font-bold flex items-center justify-center">
                                         {activeFilterCount}
                                     </span>
                                 )}
@@ -343,44 +343,44 @@ export default function EnrollmentPage() {
                         <div className="px-3 pb-3 -mt-1">
                             <div className="flex flex-wrap gap-2">
                                 {searchQuery && (
-                                    <button onClick={() => setSearchQuery('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-[10px] font-black text-[var(--color-text)]">
-                                        <Search className="text-[10px] opacity-60" />
+                                    <button onClick={() => setSearchQuery('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-xs font-bold text-[var(--color-text)]">
+                                        <Search className="w-4 h-4 opacity-60" />
                                         <span className="max-w-[180px] truncate">"{searchQuery}"</span>
-                                        <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500 transition-colors"><X className="text-[10px]" /></span>
+                                        <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500 transition-colors"><X className="w-4 h-4" /></span>
                                     </button>
                                 )}
                                 {filterStatus && (
-                                    <button onClick={() => setFilterStatus('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 text-[10px] font-black text-[var(--color-primary)]">
+                                    <button onClick={() => setFilterStatus('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 text-xs font-bold text-[var(--color-primary)]">
                                         Status: {STATUS_CONFIG[filterStatus]?.label}
-                                        <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-[var(--color-primary)]/20 flex items-center justify-center opacity-70 group-hover:opacity-100"><X className="text-[10px]" /></span>
+                                        <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-[var(--color-primary)]/20 flex items-center justify-center opacity-70 group-hover:opacity-100"><X className="w-4 h-4" /></span>
                                     </button>
                                 )}
                                 {filterWave && (
-                                    <button onClick={() => setFilterWave('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 text-[10px] font-black text-[var(--color-primary)]">
+                                    <button onClick={() => setFilterWave('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 text-xs font-bold text-[var(--color-primary)]">
                                         Gelombang: {waves && waves.find(w => w.id === filterWave)?.name}
-                                        <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-[var(--color-primary)]/20 flex items-center justify-center opacity-70 group-hover:opacity-100"><X className="text-[10px]" /></span>
+                                        <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-[var(--color-primary)]/20 flex items-center justify-center opacity-70 group-hover:opacity-100"><X className="w-4 h-4" /></span>
                                     </button>
                                 )}
                                 {filterGender && (
-                                    <button onClick={() => setFilterGender('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-[10px] font-black text-[var(--color-text)]">
-                                        {filterGender === 'L' ? <MarsIcon className="opacity-70" /> : <VenusIcon className="opacity-70" />} {filterGender === 'L' ? 'Putra' : 'Putri'}
-                                        <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500"><X className="text-[10px]" /></span>
+                                    <button onClick={() => setFilterGender('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-xs font-bold text-[var(--color-text)]">
+                                        {filterGender === 'L' ? <MarsIcon className="w-4 h-4 opacity-70" /> : <VenusIcon className="w-4 h-4 opacity-70" />} {filterGender === 'L' ? 'Putra' : 'Putri'}
+                                        <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500"><X className="w-4 h-4" /></span>
                                     </button>
                                 )}
                                 {filterProgram && (
-                                    <button onClick={() => setFilterProgram('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-indigo-500/20 bg-indigo-500/10 text-[10px] font-black text-indigo-600">
+                                    <button onClick={() => setFilterProgram('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-indigo-500/20 bg-indigo-500/10 text-xs font-bold text-indigo-600">
                                         Program: {PROGRAM_OPTIONS.find(p => p.id === filterProgram)?.name}
-                                        <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-indigo-500/20 flex items-center justify-center opacity-70 group-hover:opacity-100"><X className="text-[10px]" /></span>
+                                        <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-indigo-500/20 flex items-center justify-center opacity-70 group-hover:opacity-100"><X className="w-4 h-4" /></span>
                                     </button>
                                 )}
                                 {(filterDateFrom || filterDateTo) && (
-                                    <button onClick={() => { setFilterDateFrom(''); setFilterDateTo(''); }} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-teal-500/20 bg-teal-500/10 text-[10px] font-black text-teal-600">
+                                    <button onClick={() => { setFilterDateFrom(''); setFilterDateTo(''); }} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-teal-500/20 bg-teal-500/10 text-xs font-bold text-teal-600">
                                         Tanggal: {filterDateFrom ? new Date(filterDateFrom).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) : '...'} s/d {filterDateTo ? new Date(filterDateTo).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) : '...'}
-                                        <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-teal-500/20 flex items-center justify-center opacity-70 group-hover:opacity-100"><X className="text-[10px]" /></span>
+                                        <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-teal-500/20 flex items-center justify-center opacity-70 group-hover:opacity-100"><X className="w-4 h-4" /></span>
                                     </button>
                                 )}
-                                <button onClick={resetAllFilters} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-red-500/20 bg-red-500/5 text-[10px] font-black text-red-600">
-                                    <RotateCcw className="text-[10px]" /> Reset semua
+                                <button onClick={resetAllFilters} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-red-500/20 bg-red-500/5 text-xs font-bold text-red-600">
+                                    <RotateCcw className="w-4 h-4" /> Reset semua
                                 </button>
                             </div>
                         </div>
@@ -392,16 +392,16 @@ export default function EnrollmentPage() {
                             <div className="flex items-center justify-between mb-3">
                                 <div className="flex items-center gap-2.5">
                                     <div className="w-1 h-3.5 bg-indigo-500 rounded-full" />
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-600 flex items-center gap-2">
-                                        <SlidersHorizontal className="text-[9px] opacity-60" />
+                                    <span className="text-xs font-bold uppercase tracking-wide text-indigo-600 flex items-center gap-2">
+                                        <SlidersHorizontal className="w-4 h-4 opacity-60" />
                                         Filter Lanjutan
                                     </span>
                                 </div>
                                 <button
                                     onClick={resetAllFilters}
-                                    className="text-[9px] font-black uppercase tracking-widest text-red-500 hover:bg-red-50 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-100"
+                                    className="text-xs font-bold uppercase tracking-wide text-red-500 hover:bg-red-50 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-100"
                                 >
-                                    <RotateCcw className="text-[9px]" />
+                                    <RotateCcw className="w-4 h-4" />
                                     Reset Semua Filter
                                 </button>
                             </div>
@@ -409,7 +409,7 @@ export default function EnrollmentPage() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-3">
                                 {/* Status */}
                                 <div>
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Status</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Status</label>
                                     <RichSelect
                                         value={filterStatus}
                                         onChange={(val) => { setFilterStatus(val); setPage(1); }}
@@ -428,7 +428,7 @@ export default function EnrollmentPage() {
 
                                 {/* Gelombang */}
                                 <div>
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Gelombang</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Gelombang</label>
                                     <RichSelect
                                         value={filterWave}
                                         onChange={(val) => { setFilterWave(val); setPage(1); }}
@@ -443,7 +443,7 @@ export default function EnrollmentPage() {
 
                                 {/* Program */}
                                 <div>
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Program</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Program</label>
                                     <RichSelect
                                         value={filterProgram}
                                         onChange={(val) => { setFilterProgram(val); setPage(1); }}
@@ -458,7 +458,7 @@ export default function EnrollmentPage() {
 
                                 {/* Jenis Kelamin */}
                                 <div>
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Jenis Kelamin</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Jenis Kelamin</label>
                                     <RichSelect
                                         value={filterGender}
                                         onChange={(val) => { setFilterGender(val); setPage(1); }}
@@ -474,7 +474,7 @@ export default function EnrollmentPage() {
 
                                 {/* Rentang Tanggal */}
                                 <div className="sm:col-span-2 md:col-span-2 lg:col-span-2">
-                                    <label className="block text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Rentang Tanggal</label>
+                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Rentang Tanggal</label>
                                     <div className="flex items-center gap-1.5 w-full">
                                         <RichDatePicker
                                             value={filterDateFrom}
@@ -483,7 +483,7 @@ export default function EnrollmentPage() {
                                             small
                                             className="w-full"
                                         />
-                                        <span className="text-[10px] text-[var(--color-text-muted)] opacity-60 shrink-0">s/d</span>
+                                        <span className="text-xs text-[var(--color-text-muted)] opacity-60 shrink-0">s/d</span>
                                         <RichDatePicker
                                             value={filterDateTo}
                                             onChange={(val) => { setFilterDateTo(val); setPage(1); }}
@@ -504,7 +504,7 @@ export default function EnrollmentPage() {
                     <div className="hidden md:block overflow-x-auto">
                         <table className="w-full text-left">
                             <thead className="bg-[var(--color-surface-alt)]">
-                                <tr className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] border-b border-[var(--color-border)]">
+                                <tr className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] border-b border-[var(--color-border)]">
                                     <th className="w-10 pl-4 pr-1 py-3 text-center">
                                         <input
                                             type="checkbox"
@@ -535,8 +535,8 @@ export default function EnrollmentPage() {
                                                 title="Pencarian Tidak Ditemukan"
                                                 description="Maaf, kami tidak menemukan data pendaftar dengan kriteria tersebut. Coba ubah kata kunci atau reset filter."
                                                 action={
-                                                    <button onClick={resetAllFilters} className="px-5 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text)] transition-all shadow-sm active:scale-95 flex items-center justify-center gap-1.5 mx-auto">
-                                                        <RotateCcw className="text-[10px]" /> Reset Semua Filter
+                                                    <button onClick={resetAllFilters} className="px-5 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide text-[var(--color-text)] transition-all shadow-sm active:scale-95 flex items-center justify-center gap-1.5 mx-auto">
+                                                        <RotateCcw className="w-4 h-4" /> Reset Semua Filter
                                                     </button>
                                                 }
                                             />
@@ -547,8 +547,8 @@ export default function EnrollmentPage() {
                                                 title="Belum Ada Pendaftar"
                                                 description="Tambah pendaftar baru untuk memulai pendataan calon santri."
                                                 action={
-                                                    <button onClick={handleAdd} className="px-5 py-2.5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all active:scale-95 flex items-center justify-center gap-1.5 mx-auto">
-                                                        <UserPlus className="text-[10px]" /> Tambah Pendaftar
+                                                    <button onClick={handleAdd} className="px-5 py-2.5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all active:scale-95 flex items-center justify-center gap-1.5 mx-auto">
+                                                        <UserPlus className="w-4 h-4" /> Tambah Pendaftar
                                                     </button>
                                                 }
                                             />
@@ -574,7 +574,7 @@ export default function EnrollmentPage() {
                                     title="Pencarian Tidak Ditemukan"
                                     description="Ubah kata kunci atau reset filter"
                                     action={
-                                        <button onClick={resetAllFilters} className="px-4 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[9px] font-black uppercase tracking-widest text-[var(--color-text)] transition-all">
+                                        <button onClick={resetAllFilters} className="px-4 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold uppercase tracking-wide text-[var(--color-text)] transition-all">
                                             Reset Filter
                                         </button>
                                     }
@@ -586,7 +586,7 @@ export default function EnrollmentPage() {
                                     title="Belum Ada Pendaftar"
                                     description="Tambah pendaftar baru"
                                     action={
-                                        <button onClick={handleAdd} className="px-4 py-2 rounded-xl bg-[var(--color-primary)] text-white text-[9px] font-black uppercase tracking-widest">
+                                        <button onClick={handleAdd} className="px-4 py-2 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide">
                                             Tambah Pendaftar
                                         </button>
                                     }
@@ -660,7 +660,7 @@ export default function EnrollmentPage() {
                         <button
                             type="button"
                             onClick={() => setValidationModal(prev => ({ ...prev, isOpen: false }))}
-                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
                         >
                             Batal
                         </button>
@@ -671,20 +671,20 @@ export default function EnrollmentPage() {
                                 updateStatus(validationModal.enrollment, validationModal.nextStatus);
                                 setValidationModal(prev => ({ ...prev, isOpen: false }));
                             }}
-                            className="h-10 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
+                            className="h-10 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
                         >
-                            <ArrowRight className="text-[11px] opacity-70" />
+                            <ArrowRight className="w-4 h-4 opacity-70" />
                             Tetap Lanjutkan
                         </button>
                     </div>
                 }
             >
                 <div className="px-1 space-y-3">
-                    <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
+                    <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
                         {validationModal.type === 'docs'
                             ? `Siswa atas nama `
                             : `Siswa atas nama `}
-                        <span className="text-amber-600 font-black px-1.5 py-0.5 bg-amber-500/10 rounded-md border border-amber-500/20">{validationModal.enrollment?.name}</span>
+                        <span className="text-amber-600 font-bold px-1.5 py-0.5 bg-amber-500/10 rounded-md border border-amber-500/20">{validationModal.enrollment?.name}</span>
                         {validationModal.type === 'docs'
                             ? ` belum melengkapi dokumen berikut:`
                             : ` belum memiliki riwayat Nilai Tes/Seleksi. Apakah Anda yakin ingin meluluskannya secara langsung?`}
@@ -692,8 +692,8 @@ export default function EnrollmentPage() {
                     {validationModal.type === 'docs' && validationModal.missingDocs.length > 0 && (
                         <div className="flex flex-col gap-1.5 py-1">
                             {validationModal.missingDocs.map((doc, idx) => (
-                                <div key={idx} className="flex items-center gap-2 text-[10px] font-bold text-[var(--color-text)] bg-[var(--color-surface-alt)] px-3 py-2 rounded-lg border border-[var(--color-border)]">
-                                    <CircleX className="text-rose-500 shrink-0" />
+                                <div key={idx} className="flex items-center gap-2 text-xs font-bold text-[var(--color-text)] bg-[var(--color-surface-alt)] px-3 py-2 rounded-lg border border-[var(--color-border)]">
+                                    <CircleX className="w-4 h-4 text-rose-500 shrink-0" />
                                     {doc.name}
                                 </div>
                             ))}
@@ -705,13 +705,13 @@ export default function EnrollmentPage() {
             {/* Archive confirmation */}
             <Modal isOpen={activeModal === 'delete'} onClose={closeModal} title="Arsipkan Pendaftar" maxWidth="max-w-sm">
                 <div className="px-6 py-4 text-center">
-                    <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-amber-500/10 flex items-center justify-center"><Archive className="text-amber-500 text-xl" /></div>
+                    <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-amber-500/10 flex items-center justify-center"><Archive className="w-5 h-5 text-amber-500" /></div>
                     <p className="text-sm font-bold text-[var(--color-text)] mb-1">Arsipkan "{enrollmentToDelete?.name}"?</p>
-                    <p className="text-[11px] text-[var(--color-text-muted)]">Data pendaftaran akan dipindahkan ke folder Arsip.</p>
+                    <p className="text-xs text-[var(--color-text-muted)]">Data pendaftaran akan dipindahkan ke folder Arsip.</p>
                 </div>
                 <div className="px-6 py-4 border-t border-[var(--color-border)] flex justify-end gap-2">
-                    <button onClick={closeModal} className="px-4 py-2.5 rounded-xl border border-[var(--color-border)] text-[11px] font-bold text-[var(--color-text-muted)]">Batal</button>
-                    <button onClick={executeDelete} className="px-4 py-2.5 rounded-xl bg-amber-500 text-white text-[11px] font-black">Arsipkan</button>
+                    <button onClick={closeModal} className="px-4 py-2.5 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)]">Batal</button>
+                    <button onClick={executeDelete} className="px-4 py-2.5 rounded-xl bg-amber-500 text-white text-xs font-bold">Arsipkan</button>
                 </div>
             </Modal>
 
@@ -732,7 +732,7 @@ export default function EnrollmentPage() {
                             <button
                                 type="button"
                                 onClick={closeModal}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
                             >
                                 Batal
                             </button>
@@ -740,23 +740,23 @@ export default function EnrollmentPage() {
                             <button
                                 type="button"
                                 onClick={handleBulkApprove}
-                                className="h-10 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
+                                className="h-10 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
                             >
-                                <CircleCheck className="text-[11px] opacity-70" />
+                                <CircleCheck className="w-4 h-4 opacity-70" />
                                 Terima Semua
                             </button>
                         </div>
                     }
                 >
                     <div className="px-1 space-y-3">
-                        <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
-                            Anda akan menyetujui pendaftaran untuk calon santri berikut. Status mereka akan diubah menjadi <span className="text-emerald-600 font-black px-1.5 py-0.5 bg-emerald-500/10 rounded-md border border-emerald-500/20">Diterima</span>.
+                        <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
+                            Anda akan menyetujui pendaftaran untuk calon santri berikut. Status mereka akan diubah menjadi <span className="text-emerald-600 font-bold px-1.5 py-0.5 bg-emerald-500/10 rounded-md border border-emerald-500/20">Diterima</span>.
                         </p>
                         <div className="max-h-28 overflow-y-auto pr-1 flex flex-wrap gap-1.5 py-1 scrollbar-thin">
                             {enrollments
                                 .filter(e => selectedIds.includes(e.id))
                                 .map(e => (
-                                    <span key={e.id} className="text-[10px] font-black px-2 py-0.5 bg-emerald-500/10 text-emerald-600 border border-emerald-500/15 rounded-md">
+                                    <span key={e.id} className="text-xs font-bold px-2 py-0.5 bg-emerald-500/10 text-emerald-600 border border-emerald-500/15 rounded-md">
                                         {e.name}
                                     </span>
                                 ))}
@@ -782,7 +782,7 @@ export default function EnrollmentPage() {
                             <button
                                 type="button"
                                 onClick={closeModal}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
                             >
                                 Batal
                             </button>
@@ -790,23 +790,23 @@ export default function EnrollmentPage() {
                             <button
                                 type="button"
                                 onClick={handleBulkReject}
-                                className="h-10 px-6 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
+                                className="h-10 px-6 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
                             >
-                                <CircleX className="text-[11px] opacity-70" />
+                                <CircleX className="w-4 h-4 opacity-70" />
                                 Tolak Semua
                             </button>
                         </div>
                     }
                 >
                     <div className="px-1 space-y-3">
-                        <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
-                            Anda akan menolak pendaftaran untuk calon santri berikut. Status mereka akan diubah menjadi <span className="text-rose-500 font-black px-1.5 py-0.5 bg-rose-500/10 rounded-md border border-rose-500/20">Ditolak</span>.
+                        <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
+                            Anda akan menolak pendaftaran untuk calon santri berikut. Status mereka akan diubah menjadi <span className="text-rose-500 font-bold px-1.5 py-0.5 bg-rose-500/10 rounded-md border border-rose-500/20">Ditolak</span>.
                         </p>
                         <div className="max-h-28 overflow-y-auto pr-1 flex flex-wrap gap-1.5 py-1 scrollbar-thin">
                             {enrollments
                                 .filter(e => selectedIds.includes(e.id))
                                 .map(e => (
-                                    <span key={e.id} className="text-[10px] font-black px-2 py-0.5 bg-rose-500/10 text-rose-500 border border-rose-500/15 rounded-md">
+                                    <span key={e.id} className="text-xs font-bold px-2 py-0.5 bg-rose-500/10 text-rose-500 border border-rose-500/15 rounded-md">
                                         {e.name}
                                     </span>
                                 ))}
@@ -832,7 +832,7 @@ export default function EnrollmentPage() {
                             <button
                                 type="button"
                                 onClick={closeModal}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
                             >
                                 Batal
                             </button>
@@ -843,23 +843,23 @@ export default function EnrollmentPage() {
                                     await handleBulkArchive();
                                     closeModal();
                                 }}
-                                className="h-10 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
+                                className="h-10 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
                             >
-                                <Archive className="text-[11px] opacity-70" />
+                                <Archive className="w-4 h-4 opacity-70" />
                                 Arsipkan Semua
                             </button>
                         </div>
                     }
                 >
                     <div className="px-1 space-y-3">
-                        <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
+                        <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
                             Anda akan mengarsipkan calon santri berikut. Data pendaftaran akan dipindahkan ke folder Arsip dan tetap tersimpan dengan aman.
                         </p>
                         <div className="max-h-28 overflow-y-auto pr-1 flex flex-wrap gap-1.5 py-1 scrollbar-thin">
                             {enrollments
                                 .filter(e => selectedIds.includes(e.id))
                                 .map(e => (
-                                    <span key={e.id} className="text-[10px] font-black px-2 py-0.5 bg-amber-500/10 text-amber-500 border border-amber-500/15 rounded-md">
+                                    <span key={e.id} className="text-xs font-bold px-2 py-0.5 bg-amber-500/10 text-amber-500 border border-amber-500/15 rounded-md">
                                         {e.name}
                                     </span>
                                 ))}
@@ -885,7 +885,7 @@ export default function EnrollmentPage() {
                             <button
                                 type="button"
                                 onClick={closeModal}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
                             >
                                 Batal
                             </button>
@@ -893,7 +893,7 @@ export default function EnrollmentPage() {
                     }
                 >
                     <div className="space-y-4 py-1">
-                        <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
+                        <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
                             Pilih status baru yang ingin Anda terapkan untuk calon santri yang terpilih:
                         </p>
 
@@ -925,14 +925,14 @@ export default function EnrollmentPage() {
 
                                         {/* Text Info */}
                                         <div className="min-w-0">
-                                            <p className="text-[10px] font-black uppercase tracking-wider text-[var(--color-text)] leading-none mb-1">{opt.label}</p>
-                                            <p className="text-[10px] text-[var(--color-text-muted)] font-medium leading-none truncate">{opt.desc}</p>
+                                            <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text)] leading-none mb-1">{opt.label}</p>
+                                            <p className="text-xs text-[var(--color-text-muted)] font-medium leading-none truncate">{opt.desc}</p>
                                         </div>
                                     </div>
 
                                     {/* Right Select Hint */}
                                     <div className="opacity-0 group-hover/opt:opacity-100 transition-all duration-200 transform translate-x-2 group-hover/opt:translate-x-0 pr-1 shrink-0">
-                                        <span className={`text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg ${opt.activeColor}`}>
+                                        <span className={`text-xs font-bold uppercase tracking-wide px-2.5 py-1 rounded-lg ${opt.activeColor}`}>
                                             Pilih →
                                         </span>
                                     </div>
@@ -942,12 +942,12 @@ export default function EnrollmentPage() {
 
                         {/* Selection list summary */}
                         <div className="pt-2 border-t border-[var(--color-border)] mt-4">
-                            <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Santri yang akan diperbarui ({selectedIds.length}):</p>
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-2">Santri yang akan diperbarui ({selectedIds.length}):</p>
                             <div className="max-h-24 overflow-y-auto pr-1 flex flex-wrap gap-1.5 scrollbar-thin">
                                 {enrollments
                                     .filter(e => selectedIds.includes(e.id))
                                     .map(e => (
-                                        <span key={e.id} className="text-[10px] font-black px-2 py-0.5 bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] rounded-md">
+                                        <span key={e.id} className="text-xs font-bold px-2 py-0.5 bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] rounded-md">
                                             {e.name}
                                         </span>
                                     ))}
@@ -980,12 +980,12 @@ export default function EnrollmentPage() {
 
                                 {/* Left: count badge + label */}
                                 <div className="flex items-center gap-2 shrink-0">
-                                    <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)] flex items-center justify-center font-black text-sm shrink-0">
+                                    <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)] flex items-center justify-center font-bold text-sm shrink-0">
                                         {selectedIds.length}
                                     </div>
                                     <div className="hidden sm:block">
-                                        <p className="text-[9px] font-black uppercase tracking-widest opacity-50 leading-none">Terpilih</p>
-                                        <p className="text-[10px] font-bold leading-none mt-0.5">Aksi Massal</p>
+                                        <p className="text-xs font-bold uppercase tracking-wide opacity-50 leading-none">Terpilih</p>
+                                        <p className="text-xs font-bold leading-none mt-0.5">Aksi Massal</p>
                                     </div>
                                 </div>
 
@@ -996,37 +996,37 @@ export default function EnrollmentPage() {
                                 <div className="flex items-center gap-1.5 py-0.5 overflow-x-auto no-scrollbar">
                                     <button
                                         onClick={() => setActiveModal('bulkApprove')}
-                                        className="h-8 px-2.5 sm:px-3 shrink-0 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all duration-200 flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest"
+                                        className="h-8 px-2.5 sm:px-3 shrink-0 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all duration-200 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide"
                                         title="Terima Massal"
                                     >
-                                        <CircleCheck className="text-xs animate-pulse" />
+                                        <CircleCheck className="w-4 h-4 animate-pulse" />
                                         <span className="hidden sm:inline">Terima</span>
                                     </button>
 
                                     <button
                                         onClick={() => setActiveModal('bulkReject')}
-                                        className="h-8 px-2.5 sm:px-3 shrink-0 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500 hover:text-white transition-all duration-200 flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest"
+                                        className="h-8 px-2.5 sm:px-3 shrink-0 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500 hover:text-white transition-all duration-200 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide"
                                         title="Tolak Massal"
                                     >
-                                        <CircleX className="text-xs" />
+                                        <CircleX className="w-4 h-4" />
                                         <span className="hidden sm:inline">Tolak</span>
                                     </button>
 
                                     <button
                                         onClick={() => setActiveModal('bulkArchive')}
-                                        className="h-8 px-2.5 sm:px-3 shrink-0 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500 hover:text-white transition-all duration-200 flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest"
+                                        className="h-8 px-2.5 sm:px-3 shrink-0 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500 hover:text-white transition-all duration-200 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide"
                                         title="Arsip Massal"
                                     >
-                                        <Archive className="text-xs" />
+                                        <Archive className="w-4 h-4" />
                                         <span className="hidden sm:inline">Arsip</span>
                                     </button>
 
                                     <button
                                         onClick={() => setActiveModal('bulkStatusChange')}
-                                        className="h-8 px-2.5 sm:px-3 shrink-0 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500 hover:text-white transition-all duration-200 flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest"
+                                        className="h-8 px-2.5 sm:px-3 shrink-0 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500 hover:text-white transition-all duration-200 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide"
                                         title="Ubah Status Massal"
                                     >
-                                        <SlidersHorizontal className="text-xs" />
+                                        <SlidersHorizontal className="w-4 h-4" />
                                         <span className="hidden sm:inline">Status</span>
                                     </button>
                                 </div>
@@ -1040,7 +1040,7 @@ export default function EnrollmentPage() {
                                     className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-all flex items-center justify-center text-xs shrink-0"
                                     title="Batal Pilih Semua"
                                 >
-                                    <X />
+                                    <X className="w-4 h-4" />
                                 </button>
                             </div>
                         </div>

@@ -232,14 +232,14 @@ export default function BehaviorPage() {
                     100% { width: 100%; }
                 }
             `}</style>
-            <div className="p-4 md:p-6 space-y-4 max-w-[1800px] mx-auto">
+            <div className="space-y-4">
 
 
                 {/* Read-only Banner — access.teacher_poin flag off */}
                 {!canInput && (
                     <div className="px-4 py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center gap-2">
                         <EyeOff className="text-rose-500 shrink-0 w-4 h-4" />
-                        <p className="text-[11px] font-bold text-rose-600 flex-1">{tp('readOnlyBanner')}</p>
+                        <p className="text-xs font-bold text-rose-600 flex-1">{tp('readOnlyBanner')}</p>
                     </div>
                 )}
 
@@ -345,7 +345,7 @@ export default function BehaviorPage() {
                                                 left: Math.max(10, headerMenuRect.right - 224)
                                             }}
                                         >
-                                            <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] px-3 py-2">{tp('reportOptions')}</p>
+                                            <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] px-3 py-2">{tp('reportOptions')}</p>
                                             <button onClick={() => { setIsImportModalOpen(true); setIsHeaderMenuOpen(false) }}
                                                 className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group text-left">
                                                 <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -353,7 +353,7 @@ export default function BehaviorPage() {
                                                 </div>
                                                 <div className="text-left">
                                                     <p className="text-xs font-bold leading-tight">{tp('importData')}</p>
-                                                    <p className="text-[10px] opacity-40 font-bold uppercase tracking-wider">xls, csv</p>
+                                                    <p className="text-xs opacity-40 font-bold uppercase tracking-wider">xls, csv</p>
                                                 </div>
                                             </button>
                                             <button onClick={() => { setIsExportModalOpen(true); setIsHeaderMenuOpen(false) }}
@@ -363,7 +363,7 @@ export default function BehaviorPage() {
                                                 </div>
                                                 <div className="text-left">
                                                     <p className="text-xs font-bold leading-tight">{tp('exportData')}</p>
-                                                    <p className="text-[10px] opacity-40 font-bold uppercase tracking-wider">xls, csv</p>
+                                                    <p className="text-xs opacity-40 font-bold uppercase tracking-wider">xls, csv</p>
                                                 </div>
                                             </button>
                                         </div>
@@ -398,7 +398,7 @@ export default function BehaviorPage() {
                                         >
                                             <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
                                                 <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text)]">{tp('shortcuts')}</p>
-                                                <span className="text-[10px] text-[var(--color-text-muted)] font-medium">{tp('shortcutToggle')}</span>
+                                                <span className="text-xs text-[var(--color-text-muted)] font-medium">{tp('shortcutToggle')}</span>
                                             </div>
                                             <div className="p-3 space-y-0.5">
                                                 {[
@@ -415,13 +415,13 @@ export default function BehaviorPage() {
                                                     { keys: ['X'], label: tp('shortcutReset') },
                                                     { keys: ['?'], label: tp('shortcutShow') },
                                                 ].map((item, i) => item.section ? (
-                                                    <p key={i} className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
+                                                    <p key={i} className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
                                                 ) : (
                                                     <div key={i} className="flex items-center justify-between px-1 py-1 rounded-lg hover:bg-[var(--color-surface-alt)] transition-all">
                                                         <span className="text-xs font-medium text-[var(--color-text)]">{item.label}</span>
                                                         <div className="flex items-center gap-1">
                                                             {item.keys.map((k, ki) => (
-                                                                <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-muted)] font-mono">{k}</span>
+                                                                <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] font-mono">{k}</span>
                                                             ))}
                                                         </div>
                                                     </div>
@@ -487,7 +487,7 @@ export default function BehaviorPage() {
                     <div className="flex gap-1 sm:gap-1.5 p-1 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] w-full lg:w-fit overflow-x-auto scrollbar-hide">
                         <button
                             onClick={() => handleTabChange('reports')}
-                            className={`flex-1 lg:flex-none h-9 px-6 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'reports'
+                            className={`flex-1 lg:flex-none h-9 px-6 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'reports'
                                 ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm'
                                 : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                         >
@@ -496,7 +496,7 @@ export default function BehaviorPage() {
                         </button>
                         <button
                             onClick={() => handleTabChange('rules')}
-                            className={`flex-1 lg:flex-none h-9 px-6 rounded-xl text-xs sm:text-[13px] font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'rules'
+                            className={`flex-1 lg:flex-none h-9 px-6 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all whitespace-nowrap ${activeTab === 'rules'
                                 ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm'
                                 : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                         >
@@ -611,7 +611,7 @@ export default function BehaviorPage() {
                                         <button
                                             type="button"
                                             onClick={resetAllFilters}
-                                            className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
+                                            className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
                                         >
                                             {tp('resetAllFilters')}
                                         </button>
@@ -636,7 +636,7 @@ export default function BehaviorPage() {
                                                 <div className="flex items-center gap-3 bg-[var(--color-surface)] pl-4 pr-5 py-1.5 rounded-2xl border border-[var(--color-border)] w-fit shadow-md/[0.02] shrink-0">
                                                 <span className="text-xs font-bold uppercase text-[var(--color-text)] tracking-wider leading-none whitespace-nowrap">{fmtDayLabel(date)}</span>
                                                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] opacity-40 animate-pulse shrink-0" />
-                                                <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider font-bold leading-none whitespace-nowrap">{tNum(items.length)} {tp('reportCount')}</span>
+                                                <span className="text-xs text-[var(--color-text-muted)] uppercase tracking-wider font-bold leading-none whitespace-nowrap">{tNum(items.length)} {tp('reportCount')}</span>
                                             </div>
                                         </div>
 
@@ -701,7 +701,7 @@ export default function BehaviorPage() {
                                         <button
                                             type="button"
                                             onClick={resetAllFilters}
-                                            className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
+                                            className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
                                         >
                                             {tp('resetAllFilters')}
                                         </button>
@@ -750,7 +750,7 @@ export default function BehaviorPage() {
                                                                     right: menuPos.right,
                                                                     transform: menuPos.showUp ? 'translateY(-100%)' : undefined
                                                                 }}>
-                                                                <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-text-muted)] px-3 py-2">{tp('manageColumns')}</p>
+                                                                <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] px-3 py-2">{tp('manageColumns')}</p>
                                                                 {[
                                                                     { key: 'type', label: tp('reportType') },
                                                                     { key: 'points', label: tp('points') },
@@ -758,7 +758,7 @@ export default function BehaviorPage() {
                                                                     { key: 'teacher', label: tp('recordedBy') }
                                                                 ].map(({ key, label }) => (
                                                                     <button key={key} onClick={() => setVisibleCols(p => ({ ...p, [key]: !p[key] }))} className="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-[var(--color-surface-alt)] transition-all group text-left">
-                                                                        <span className="text-[10px] font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary)]">{label}</span>
+                                                                        <span className="text-xs font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary)]">{label}</span>
                                                                         <div className={`w-7 h-4 rounded-full transition-all flex items-center px-0.5 ${visibleCols[key] ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}`}>
                                                                             <div className={`w-3 h-3 rounded-full bg-white shadow-sm transition-all ${visibleCols[key] ? 'translate-x-[12px]' : 'translate-x-0'}`} />
                                                                         </div>
@@ -819,7 +819,7 @@ export default function BehaviorPage() {
                             setExportScope('selected');
                             setIsExportModalOpen(true);
                         }}
-                        className="h-9 px-4 rounded-xl transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white justify-center shadow-lg"
+                        className="h-9 px-4 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wide bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white justify-center shadow-lg"
                     >
                         <Download className="w-3.5 h-3.5" />
                         <span>{tp('exportData')}</span>
@@ -829,7 +829,7 @@ export default function BehaviorPage() {
                     {canInput && (
                         <button
                             onClick={() => setIsBulkDeleteOpen(true)}
-                            className="h-9 px-4 rounded-xl transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500 hover:text-white justify-center shadow-lg"
+                            className="h-9 px-4 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wide bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500 hover:text-white justify-center shadow-lg"
                         >
                             <Trash2 className="w-3.5 h-3.5" />
                             <span>{tp('delete')}</span>
@@ -868,7 +868,7 @@ export default function BehaviorPage() {
                         submitting={submitting}
                     >
                         <div className="px-1">
-                            <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
+                            <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
                                 {(() => {
                                     const deleteConfirmText = tp('deleteConfirmTemplate')
                                         .replace('{student}', '___STUDENT___')
@@ -913,7 +913,7 @@ export default function BehaviorPage() {
                     >
                         <div className="px-1 space-y-3">
                             {/* Warning text */}
-                            <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
+                            <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
                                 {tp('bulkDeleteWarning1')} <span className="text-red-500 font-bold px-1.5 py-0.5 bg-red-500/10 rounded-md border border-red-500/20">{tNum(selectedIds.length)} {tp('reportCount')}</span> {tp('bulkDeleteWarning2')}
                             </p>
 
@@ -927,16 +927,16 @@ export default function BehaviorPage() {
                                     return (
                                         <div key={id} className={`flex items-center gap-2.5 px-3 py-2 ${idx < selectedIds.length - 1 ? 'border-b border-red-500/10' : ''}`}>
                                             {/* Avatar */}
-                                            <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-bold text-[10px] shrink-0 ${isPos ? 'bg-emerald-500/10 text-emerald-600' : 'bg-red-500/10 text-red-600'}`}>
+                                            <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 ${isPos ? 'bg-emerald-500/10 text-emerald-600' : 'bg-red-500/10 text-red-600'}`}>
                                                 {(s?.name || '?')[0].toUpperCase()}
                                             </div>
                                             {/* Info */}
                                             <div className="flex-1 min-w-0">
                                                 <p className="text-xs font-bold text-[var(--color-text)] truncate">{isPrivacyMode ? mask(s?.name || '—') : (s?.name || '—')}</p>
-                                                <p className="text-[10px] text-[var(--color-text-muted)] opacity-60 truncate">{getTypeName(r.violation_type_id)}</p>
+                                                <p className="text-xs text-[var(--color-text-muted)] opacity-60 truncate">{getTypeName(r.violation_type_id)}</p>
                                             </div>
                                             {/* Points badge */}
-                                            <span className={`shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-lg border ${isPos ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : 'bg-red-500/10 text-red-600 border-red-500/20'}`}>
+                                            <span className={`shrink-0 text-xs font-bold px-1.5 py-0.5 rounded-lg border ${isPos ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : 'bg-red-500/10 text-red-600 border-red-500/20'}`}>
                                                 {isPos ? '+' : ''}{tNum(r.points)}
                                             </span>
                                         </div>

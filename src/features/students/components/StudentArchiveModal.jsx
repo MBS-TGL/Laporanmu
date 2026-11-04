@@ -96,7 +96,7 @@ export default function StudentArchiveModal({
                 <div className="flex items-center w-full">
                     <button
                         onClick={onClose}
-                        className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center"
+                        className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center"
                     >
                         Tutup
                     </button>
@@ -111,11 +111,11 @@ export default function StudentArchiveModal({
                     className={`absolute inset-0 z-20 bg-[var(--color-surface)] flex flex-col items-center justify-center gap-4 p-6 rounded-xl transition-all duration-300 ease-out ${deleteTarget ? 'opacity-100 visible scale-100' : 'opacity-0 invisible scale-95 pointer-events-none'}`}
                 >
                     <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
-                        <TriangleAlert className="text-red-500 text-2xl" />
+                        <TriangleAlert className="w-6 h-6 text-red-500" />
                     </div>
                     <div className="text-center max-w-xs">
-                        <p className="text-sm font-black text-[var(--color-text)] mb-1">Hapus Permanen?</p>
-                        <p className="text-[11px] font-medium text-[var(--color-text-muted)] leading-relaxed">
+                        <p className="text-sm font-bold text-[var(--color-text)] mb-1">Hapus Permanen?</p>
+                        <p className="text-xs font-medium text-[var(--color-text-muted)] leading-relaxed">
                             Data siswa <b className="text-red-500">{deleteTarget?.name}</b> beserta semua relasi (poin, absen, histori) akan dihapus secara permanen. Tindakan ini <b>tidak dapat dibatalkan</b>.
                         </p>
                     </div>
@@ -123,7 +123,7 @@ export default function StudentArchiveModal({
                         <button
                             onClick={() => setDeleteTarget(null)}
                             disabled={deleting}
-                            className="h-10 px-5 rounded-xl bg-[var(--color-surface-alt)] font-black text-[10px] uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors border border-[var(--color-border)] disabled:opacity-50 shrink-0"
+                            className="h-10 px-5 rounded-xl bg-[var(--color-surface-alt)] font-bold text-xs uppercase tracking-wide text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors border border-[var(--color-border)] disabled:opacity-50 shrink-0"
                         >
                             Batal
                         </button>
@@ -131,25 +131,25 @@ export default function StudentArchiveModal({
                         <button
                             onClick={confirmPermanentDelete}
                             disabled={deleting}
-                            className="h-10 px-5 rounded-xl bg-red-500 hover:brightness-110 text-white text-[10px] font-black uppercase tracking-widest transition-all shadow-lg disabled:opacity-50 flex items-center justify-center gap-2 shrink-0"
+                            className="h-10 px-5 rounded-xl bg-red-500 hover:brightness-110 text-white text-xs font-bold uppercase tracking-wide transition-all shadow-lg disabled:opacity-50 flex items-center justify-center gap-2 shrink-0"
                         >
-                            {deleting ? <><LoaderCircle className="animate-spin" /> Menghapus...</> : <><Trash2 /> Hapus Permanen</>}
+                            {deleting ? <><LoaderCircle className="w-4 h-4 animate-spin" /> Menghapus...</> : <><Trash2 className="w-4 h-4" /> Hapus Permanen</>}
                         </button>
                     </div>
                 </div>
 
                 {/* ====== MAIN CONTENT ====== */}
                 <div className="p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20 flex items-center gap-3">
-                    <Archive className="text-amber-600 text-base shrink-0" />
+                    <Archive className="w-5 h-5 text-amber-600 shrink-0" />
                     <div>
-                        <p className="text-[11px] font-black text-amber-700 dark:text-amber-400">{archivedStudents.length} siswa di arsip</p>
-                        <p className="text-[10px] text-[var(--color-text-muted)] font-medium">Pulihkan untuk mengembalikan ke daftar aktif, atau hapus permanen.</p>
+                        <p className="text-xs font-bold text-amber-700 dark:text-amber-400">{archivedStudents.length} siswa di arsip</p>
+                        <p className="text-xs text-[var(--color-text-muted)] font-medium">Pulihkan untuk mengembalikan ke daftar aktif, atau hapus permanen.</p>
                     </div>
                 </div>
 
                 {loadingArchived ? (
                     <div className="text-center py-12 text-[var(--color-text-muted)]">
-                        <LoaderCircle className="animate-spin mb-3 text-xl" />
+                        <LoaderCircle className="w-5 h-5 animate-spin mb-3" />
                         <p className="text-xs font-bold">Memuat arsip...</p>
                     </div>
                 ) : archivedStudents.length === 0 ? (
@@ -165,7 +165,7 @@ export default function StudentArchiveModal({
                         <div className="border border-[var(--color-border)] rounded-xl overflow-hidden bg-[var(--color-surface)] shadow-sm">
                             <table className="w-full text-xs">
                                 <thead className="bg-[var(--color-surface-alt)] sticky top-0">
-                                    <tr className="text-left text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] border-b border-[var(--color-border)]">
+                                    <tr className="text-left text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] border-b border-[var(--color-border)]">
                                         <th className="px-3 py-2.5">Siswa</th>
                                         <th className="px-3 py-2.5 text-center whitespace-nowrap">Kelas</th>
                                         <th className="px-3 py-2.5 text-center whitespace-nowrap">Diarsipkan</th>
@@ -177,12 +177,12 @@ export default function StudentArchiveModal({
                                         <tr key={s.id} className="border-b last:border-0 border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]/40 transition-colors">
                                             <td className="px-3 py-2.5">
                                                 <p className="font-bold text-[var(--color-text)] text-xs leading-snug whitespace-nowrap">{s.name}</p>
-                                                <p className="text-[9px] font-mono text-[var(--color-text-muted)]">{s.registration_code}</p>
+                                                <p className="text-xs font-mono text-[var(--color-text-muted)]">{s.registration_code}</p>
                                             </td>
                                             <td className="px-3 py-2.5 text-center whitespace-nowrap">
-                                                <span className="text-[9px] font-black bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-1.5 py-0.5 rounded-md border border-[var(--color-primary)]/20">{s.className}</span>
+                                                <span className="text-xs font-bold bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-1.5 py-0.5 rounded-md border border-[var(--color-primary)]/20">{s.className}</span>
                                             </td>
-                                            <td className="px-3 py-2.5 text-center text-[10px] font-medium text-[var(--color-text-muted)] whitespace-nowrap">
+                                            <td className="px-3 py-2.5 text-center text-xs font-medium text-[var(--color-text-muted)] whitespace-nowrap">
                                                 {formatRelativeDate(s.deleted_at)}
                                             </td>
                                             <td className="px-3 py-2.5 text-right">
@@ -190,16 +190,16 @@ export default function StudentArchiveModal({
                                                     <button
                                                         onClick={() => handleRestoreStudent(s)}
                                                         disabled={restoring}
-                                                        className="h-7 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500 hover:text-white border border-emerald-500/20 text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-1 disabled:opacity-50"
+                                                        className="h-7 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500 hover:text-white border border-emerald-500/20 text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1 disabled:opacity-50"
                                                     >
-                                                        <RotateCcw className="text-[8px]" />
+                                                        <RotateCcw className="w-4 h-4" />
                                                         Pulihkan
                                                     </button>
                                                     <button
                                                         onClick={() => setDeleteTarget(s)}
-                                                        className="h-7 px-2.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-1"
+                                                        className="h-7 px-2.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1"
                                                     >
-                                                        <Trash2 className="text-[8px]" />
+                                                        <Trash2 className="w-4 h-4" />
                                                         Hapus
                                                     </button>
                                                 </div>
@@ -213,7 +213,7 @@ export default function StudentArchiveModal({
                         {/* Pagination Arsip */}
                         {archivedStudents.length > archivePageSize && (
                             <div className="flex items-center justify-between px-1">
-                                <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest">
+                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide">
                                     Halaman {archivePage} dari {Math.ceil(archivedStudents.length / archivePageSize)}
                                 </p>
                                 <div className="flex gap-1.5">
@@ -222,14 +222,14 @@ export default function StudentArchiveModal({
                                         onClick={() => setArchivePage(p => p - 1)}
                                         className="w-7 h-7 rounded-lg border border-[var(--color-border)] flex items-center justify-center disabled:opacity-30 hover:bg-[var(--color-surface-alt)] shadow-sm transition-colors"
                                     >
-                                        <ChevronLeft className="text-[9px]" />
+                                        <ChevronLeft className="w-4 h-4" />
                                     </button>
                                     <button
                                         disabled={archivePage >= Math.ceil(archivedStudents.length / archivePageSize)}
                                         onClick={() => setArchivePage(p => p + 1)}
                                         className="w-7 h-7 rounded-lg border border-[var(--color-border)] flex items-center justify-center disabled:opacity-30 hover:bg-[var(--color-surface-alt)] shadow-sm transition-colors"
                                     >
-                                        <ChevronRight className="text-[9px]" />
+                                        <ChevronRight className="w-4 h-4" />
                                     </button>
                                 </div>
                             </div>

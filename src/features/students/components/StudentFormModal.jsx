@@ -352,7 +352,7 @@ const StudentFormModal = memo(function StudentFormModal({
                             style={{ width: `${overallProgress}%` }}
                         />
                     </div>
-                    <span className="text-[10px] font-black text-[var(--color-primary)]">{overallProgress}% Lengkap</span>
+                    <span className="text-xs font-bold text-[var(--color-primary)]">{overallProgress}% Lengkap</span>
                 </div>
             }
             icon={selectedStudent ? SquarePen : Plus}
@@ -373,9 +373,9 @@ const StudentFormModal = memo(function StudentFormModal({
                                     e.stopPropagation()
                                     setCurrentStep(prev => prev - 1)
                                 }}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all shadow-sm shrink-0"
+                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all shadow-sm shrink-0"
                             >
-                                <ArrowLeft className="text-[10px] opacity-50" />
+                                <ArrowLeft className="w-4 h-4 opacity-50" />
                                 Kembali
                             </button>
                         ) : (
@@ -383,7 +383,7 @@ const StudentFormModal = memo(function StudentFormModal({
                                 key="btn-close"
                                 type="button"
                                 onClick={handleSafeClose}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0 flex items-center justify-center"
+                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0 flex items-center justify-center"
                             >
                                 Batal
                             </button>
@@ -398,9 +398,9 @@ const StudentFormModal = memo(function StudentFormModal({
                                 form="student-form-modal"
                                 disabled={submitting}
                                 title="Lewati Step 2 & 3 dan langsung simpan"
-                                className="h-10 px-4 sm:px-5 rounded-xl bg-emerald-500/10 text-emerald-600 text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20 flex items-center justify-center gap-2 shrink-0 group"
+                                className="h-10 px-4 sm:px-5 rounded-xl bg-emerald-500/10 text-emerald-600 text-xs font-bold uppercase tracking-wide hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20 flex items-center justify-center gap-2 shrink-0 group"
                             >
-                                <Zap className="opacity-70 group-hover:animate-pulse" />
+                                <Zap className="w-4 h-4 opacity-70 group-hover:animate-pulse" />
                                 <span className="hidden sm:inline">Daftar Cepat</span>
                             </button>
                         )}
@@ -418,11 +418,11 @@ const StudentFormModal = memo(function StudentFormModal({
                                     }
                                     setCurrentStep(prev => prev + 1)
                                 }}
-                                className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg border border-white/10 shrink-0"
+                                className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg border border-white/10 shrink-0"
                             >
                                 <span className="hidden sm:inline">Selanjutnya</span>
                                 <span className="sm:hidden">Lanjut</span>
-                                <ArrowRight className="text-[10px] opacity-80" />
+                                <ArrowRight className="w-4 h-4 opacity-80" />
                             </button>
                         ) : (
                             <button
@@ -430,16 +430,16 @@ const StudentFormModal = memo(function StudentFormModal({
                                 type="submit"
                                 form="student-form-modal"
                                 disabled={submitting}
-                                className="h-10 px-6 sm:px-8 rounded-xl bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 shrink-0"
+                                className="h-10 px-6 sm:px-8 rounded-xl bg-emerald-600 text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 shrink-0"
                             >
                                 {submitting ? (
                                     <>
-                                        <LoaderCircle className="animate-spin" />
+                                        <LoaderCircle className="w-4 h-4 animate-spin" />
                                         <span>Menyimpan...</span>
                                     </>
                                 ) : (
                                     <>
-                                        <Save className="text-xs opacity-80 shrink-0" />
+                                        <Save className="w-4 h-4 opacity-80 shrink-0" />
                                         <span className="truncate hidden sm:inline">{selectedStudent ? 'Simpan Perubahan' : 'Daftarkan Siswa'}</span>
                                         <span className="truncate sm:hidden">Simpan</span>
                                     </>
@@ -460,12 +460,12 @@ const StudentFormModal = memo(function StudentFormModal({
                     {hasDraft && (
                         <div className="flex items-center justify-between p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 animate-in slide-in-from-top-2">
                             <div className="flex items-center gap-2">
-                                <History className="text-amber-500 text-[10px]" />
-                                <span className="text-[10px] font-bold text-amber-700">Ada draft data yang belum selesai</span>
+                                <History className="w-4 h-4 text-amber-500" />
+                                <span className="text-xs font-bold text-amber-700">Ada draft data yang belum selesai</span>
                             </div>
                             <div className="flex gap-2">
-                                <button onClick={clearDraft} className="text-[9px] font-black uppercase text-amber-600/50 hover:text-amber-600">Hapus</button>
-                                <button onClick={loadDraft} className="px-2 py-1 rounded-lg bg-amber-500 text-white text-[9px] font-black uppercase tracking-wider shadow-sm">Lanjutkan</button>
+                                <button onClick={clearDraft} className="text-xs font-bold uppercase text-amber-600/50 hover:text-amber-600">Hapus</button>
+                                <button onClick={loadDraft} className="px-2 py-1 rounded-lg bg-amber-500 text-white text-xs font-bold uppercase tracking-wider shadow-sm">Lanjutkan</button>
                             </div>
                         </div>
                     )}
@@ -484,10 +484,10 @@ const StudentFormModal = memo(function StudentFormModal({
                                         }}
                                         className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all relative ${currentStep === step ? 'bg-[var(--color-primary)] text-white shadow-lg scale-110' : step < currentStep ? 'bg-emerald-500 text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}
                                     >
-                                        {step < currentStep ? <CircleCheck className="text-[10px]" /> : <span className="text-[10px] font-black">{step}</span>}
+                                        {step < currentStep ? <CircleCheck className="w-4 h-4" /> : <span className="text-xs font-bold">{step}</span>}
 
                                         {/* Tooltip-like label */}
-                                        <span className={`absolute -bottom-5 left-1/2 -translate-x-1/2 text-[7px] font-black uppercase tracking-tighter whitespace-nowrap transition-opacity ${currentStep === step ? 'opacity-100' : 'opacity-0'}`}>
+                                        <span className={`absolute -bottom-5 left-1/2 -translate-x-1/2 text-[7px] font-bold uppercase tracking-tighter whitespace-nowrap transition-opacity ${currentStep === step ? 'opacity-100' : 'opacity-0'}`}>
                                             {step === 1 ? 'Pokok' : step === 2 ? 'Keluarga' : 'Lengkap'}
                                         </span>
                                     </button>
@@ -504,8 +504,8 @@ const StudentFormModal = memo(function StudentFormModal({
                             }}
                             className={`h-7 px-2.5 rounded-lg border transition-all flex items-center gap-2 ${isQuickMode ? 'bg-amber-500 border-amber-500 text-white shadow-lg' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
                         >
-                            <Zap className={`text-[10px] ${isQuickMode ? 'animate-pulse' : 'opacity-40'}`} />
-                            <span className="text-[9px] font-black uppercase tracking-wider">Mode Cepat</span>
+                            <Zap className={`w-4 h-4 ${isQuickMode ? 'animate-pulse' : 'opacity-40'}`} />
+                            <span className="text-xs font-bold uppercase tracking-wider">Mode Cepat</span>
                         </button>
                     </div>
                     <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent opacity-30 mt-1" />
@@ -531,8 +531,8 @@ const StudentFormModal = memo(function StudentFormModal({
                                             loading="lazy" decoding="async" />
                                     ) : (
                                         <div className="flex flex-col items-center justify-center gap-1.5 opacity-40 group-hover:opacity-100 group-hover:text-[var(--color-primary)] transition-all">
-                                            <Camera className="text-xl" />
-                                            <span className="text-[8px] font-bold uppercase tracking-wider">Foto</span>
+                                            <Camera className="w-5 h-5" />
+                                            <span className="text-xs font-bold uppercase tracking-wider">Foto</span>
                                         </div>
                                     )}
                                 </div>
@@ -551,14 +551,14 @@ const StudentFormModal = memo(function StudentFormModal({
                             />
                             {uploadingPhoto && (
                                 <div className="absolute inset-0 rounded-2xl bg-[var(--color-surface)] flex items-center justify-center z-20 border border-[var(--color-border)]">
-                                    <LoaderCircle className="animate-spin text-[var(--color-primary)] text-sm" />
+                                    <LoaderCircle className="w-4 h-4 animate-spin text-[var(--color-primary)]" />
                                 </div>
                             )}
 
                             {/* Basic Inputs */}
                             <div className="flex-1 w-full space-y-3">
                                 <div className="relative group">
-                                    <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">
+                                    <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">
                                         Nama Lengkap <span className="text-rose-500">*</span>
                                     </label>
                                     <div className="relative">
@@ -577,17 +577,17 @@ const StudentFormModal = memo(function StudentFormModal({
                                                         'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]'}`}
                                             autoFocus
                                         />
-                                        <User className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-xs transition-colors ${getStatus('name', true) === 'error' ? 'text-rose-500' : getStatus('name', true) === 'success' ? 'text-emerald-500' : 'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)]'}`} />
+                                        <User className={`w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors ${getStatus('name', true) === 'error' ? 'text-rose-500' : getStatus('name', true) === 'success' ? 'text-emerald-500' : 'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)]'}`} />
 
                                         {getStatus('name', true) === 'success' && (
-                                            <CircleCheck className="absolute right-3.5 top-1/2 -translate-y-1/2 text-emerald-500 text-[10px] animate-in zoom-in" />
+                                            <CircleCheck className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-emerald-500 animate-in zoom-in" />
                                         )}
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="relative group">
-                                        <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">NISN</label>
+                                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">NISN</label>
                                         <div className="relative">
                                             <input
                                                 type="text"
@@ -595,16 +595,16 @@ const StudentFormModal = memo(function StudentFormModal({
                                                 onChange={(e) => setField('nisn', e.target.value.replace(/\D/g, '').slice(0, 10))}
                                                 onBlur={() => setFieldTouched('nisn')}
                                                 placeholder="10 Digit"
-                                                className={`w-full pl-9 pr-3 h-11 rounded-xl border outline-none transition-all text-[13px] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40 bg-[var(--color-surface)]
+                                                className={`w-full pl-9 pr-3 h-11 rounded-xl border outline-none transition-all text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40 bg-[var(--color-surface)]
                                                 ${touched.nisn && form.nisn && form.nisn.length !== 10 ? 'border-amber-500 bg-amber-50/10' :
                                                         getStatus('nisn') === 'success' ? 'border-emerald-500/30 bg-emerald-50/5' : 'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]'}`}
                                             />
-                                            <IdCard className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-xs transition-colors ${getStatus('nisn') === 'success' ? 'text-emerald-500' : 'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)]'}`} />
+                                            <IdCard className={`w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors ${getStatus('nisn') === 'success' ? 'text-emerald-500' : 'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)]'}`} />
                                         </div>
                                     </div>
 
                                     <div className="relative group">
-                                        <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">NIS</label>
+                                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">NIS</label>
                                         <div className="relative">
                                             <input
                                                 type="text"
@@ -612,10 +612,10 @@ const StudentFormModal = memo(function StudentFormModal({
                                                 onChange={(e) => setField('nis', e.target.value.replace(/\D/g, ''))}
                                                 onBlur={() => setFieldTouched('nis')}
                                                 placeholder="Cth: 2024001"
-                                                className={`w-full pl-9 pr-3 h-11 rounded-xl border outline-none transition-all text-[13px] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40 bg-[var(--color-surface)]
+                                                className={`w-full pl-9 pr-3 h-11 rounded-xl border outline-none transition-all text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40 bg-[var(--color-surface)]
                                                 ${getStatus('nis') === 'success' ? 'border-emerald-500/30 bg-emerald-50/5' : 'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]'}`}
                                             />
-                                            <IdCard className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-xs transition-colors ${getStatus('nis') === 'success' ? 'text-emerald-500' : 'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)]'}`} />
+                                            <IdCard className={`w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors ${getStatus('nis') === 'success' ? 'text-emerald-500' : 'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)]'}`} />
                                         </div>
                                     </div>
                                 </div>
@@ -624,15 +624,15 @@ const StudentFormModal = memo(function StudentFormModal({
 
                         <div className="flex items-center gap-2.5 pt-2">
                             <div className="w-1 h-4 bg-[var(--color-primary)] rounded-full" />
-                            <User className="text-[var(--color-primary)] text-[10px] opacity-70" />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Detail Personal</span>
+                            <User className="w-4 h-4 text-[var(--color-primary)] opacity-70" />
+                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Detail Personal</span>
                             <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                         </div>
 
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">
+                                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">
                                     Jenis Kelamin <span className="text-rose-500">*</span>
                                 </label>
                                 <div className="flex p-1 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl h-11">
@@ -644,7 +644,7 @@ const StudentFormModal = memo(function StudentFormModal({
                                             key={val}
                                             type="button"
                                             onClick={() => setField('gender', val)}
-                                            className={`flex-1 rounded-lg text-[11px] font-bold tracking-wider transition-all duration-200 ${form.gender === val
+                                            className={`flex-1 rounded-lg text-xs font-bold tracking-wider transition-all duration-200 ${form.gender === val
                                                 ? activeCls
                                                 : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                                         >
@@ -654,7 +654,7 @@ const StudentFormModal = memo(function StudentFormModal({
                                 </div>
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Status</label>
+                                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Status</label>
                                 <div className="flex p-1 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl h-11">
                                     {[
                                       { key: 'aktif', label: 'Aktif', activeCls: 'bg-emerald-500 text-white shadow-lg' },
@@ -665,7 +665,7 @@ const StudentFormModal = memo(function StudentFormModal({
                                             key={opt.key}
                                             type="button"
                                             onClick={() => setField('status', opt.key)}
-                                            className={`flex-1 rounded-lg text-[10px] font-bold tracking-wider transition-all duration-200 ${form.status === opt.key
+                                            className={`flex-1 rounded-lg text-xs font-bold tracking-wider transition-all duration-200 ${form.status === opt.key
                                                 ? opt.activeCls
                                                 : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                                         >
@@ -679,7 +679,7 @@ const StudentFormModal = memo(function StudentFormModal({
                         {/* 1.5 Additional Identitas */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="relative group">
-                                <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">NIK</label>
+                                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">NIK</label>
                                 <div className="relative">
                                     <input
                                         type="text"
@@ -689,13 +689,13 @@ const StudentFormModal = memo(function StudentFormModal({
                                             setField('nik', val)
                                         }}
                                         placeholder="Cth: 327101..."
-                                        className="w-full pl-9 pr-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all text-[13px] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40"
+                                        className="w-full pl-9 pr-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40"
                                     />
-                                    <IdCard className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs transition-colors group-focus-within:text-[var(--color-primary)]" />
+                                    <IdCard className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 transition-colors group-focus-within:text-[var(--color-primary)]" />
                                 </div>
                             </div>
                             <div className="relative group">
-                                <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Agama</label>
+                                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Agama</label>
                                 <RichSelect
                                     value={form.religion}
                                     onChange={(val) => setField('religion', val)}
@@ -709,22 +709,22 @@ const StudentFormModal = memo(function StudentFormModal({
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="relative group">
-                                <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tempat Lahir</label>
+                                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tempat Lahir</label>
                                 <div className="relative">
                                     <input
                                         type="text"
                                         value={form.birth_place}
                                         onChange={(e) => setField('birth_place', e.target.value)}
                                         placeholder="Cth: Jakarta"
-                                        className="w-full pl-9 pr-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all text-[13px] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40"
+                                        className="w-full pl-9 pr-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40"
                                     />
-                                    <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs transition-colors group-focus-within:text-[var(--color-primary)]" />
+                                    <MapPin className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 transition-colors group-focus-within:text-[var(--color-primary)]" />
                                 </div>
                             </div>
                             <div className="relative group">
-                                <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tanggal Lahir</label>
+                                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tanggal Lahir</label>
                                 <div className="relative h-11 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus-within:border-[var(--color-primary)] focus-within:ring-1 focus-within:ring-[var(--color-primary)] transition-all">
-                                    <div className={`absolute inset-0 flex items-center pl-9 pr-3 pointer-events-none text-[13px] ${form.birth_date ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-40'}`}>
+                                    <div className={`absolute inset-0 flex items-center pl-9 pr-3 pointer-events-none text-sm ${form.birth_date ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-40'}`}>
                                         {form.birth_date ? (() => {
                                             const parts = form.birth_date.split('-')
                                             if (parts.length === 3) {
@@ -740,22 +740,22 @@ const StudentFormModal = memo(function StudentFormModal({
                                         onChange={(e) => setField('birth_date', e.target.value)}
                                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer outline-none bg-transparent date-input-hidden z-10"
                                     />
-                                    <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs transition-colors group-focus-within:text-[var(--color-primary)] pointer-events-none" />
+                                    <Calendar className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 transition-colors group-focus-within:text-[var(--color-primary)] pointer-events-none" />
                                 </div>
                             </div>
                         </div>
 
                         <div className="flex items-center gap-2.5 pt-2">
                             <div className="w-1 h-4 bg-[var(--color-primary)] rounded-full" />
-                            <School className="text-[var(--color-primary)] text-[10px] opacity-70" />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Penempatan & Akademik</span>
+                            <School className="w-4 h-4 text-[var(--color-primary)] opacity-70" />
+                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Penempatan & Akademik</span>
                             <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                         </div>
 
                         {/* 2. Placement - Flat layout */}
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Kamar Asrama</label>
+                                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Kamar Asrama</label>
                                 <RichSelect
                                     value={form.kamar}
                                     onChange={(val) => setField('kamar', val)}
@@ -768,7 +768,7 @@ const StudentFormModal = memo(function StudentFormModal({
                                 />
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">
+                                <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">
                                     Kelas Akademik <span className="text-rose-500">*</span>
                                 </label>
                                 <RichSelect
@@ -787,9 +787,9 @@ const StudentFormModal = memo(function StudentFormModal({
                                 {/* Duplicate Warning */}
                                 {duplicateWarning && (
                                     <div className="p-3 rounded-xl border border-amber-500/30 bg-amber-50 dark:bg-amber-500/5 text-amber-700 dark:text-amber-400 animate-in slide-in-from-top-2 flex gap-3">
-                                        <TriangleAlert className="text-amber-500 text-sm mt-0.5" />
+                                        <TriangleAlert className="w-4 h-4 text-amber-500 mt-0.5" />
                                         <div>
-                                            <p className="text-[10px] font-bold uppercase tracking-wider mb-1">Potensi Duplikasi</p>
+                                            <p className="text-xs font-bold uppercase tracking-wider mb-1">Potensi Duplikasi</p>
                                             <div className="space-y-0.5">
                                                 {duplicateWarning.map(d => (
                                                     <p key={d.id} className="text-xs">
@@ -810,13 +810,13 @@ const StudentFormModal = memo(function StudentFormModal({
                     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                         <div className="flex items-center gap-3">
                             <div className="h-0.5 flex-1 bg-gradient-to-r from-transparent to-indigo-500/20" />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-indigo-500">Data Keluarga & Kontak</span>
+                            <span className="text-xs font-bold uppercase tracking-wide text-indigo-500">Data Keluarga & Kontak</span>
                             <div className="h-0.5 flex-1 bg-gradient-to-l from-transparent to-indigo-500/20" />
                         </div>
 
                         <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-indigo-500/[0.03] border border-indigo-500/10">
-                            <span className="text-[9px] font-bold text-indigo-600/70 uppercase">Progress Section</span>
-                            <span className="text-[10px] font-black text-indigo-600">{calculateStepProgress(2)}%</span>
+                            <span className="text-xs font-bold text-indigo-600/70 uppercase">Progress Section</span>
+                            <span className="text-xs font-bold text-indigo-600">{calculateStepProgress(2)}%</span>
                         </div>
 
                         <div className="space-y-4">
@@ -826,32 +826,32 @@ const StudentFormModal = memo(function StudentFormModal({
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-2.5 pt-2">
                                         <div className="w-1 h-4 bg-[var(--color-primary)] rounded-full" />
-                                        <IdCard className="text-[var(--color-primary)] text-[10px] opacity-70" />
-                                        <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Data Ayah</span>
+                                        <IdCard className="w-4 h-4 text-[var(--color-primary)] opacity-70" />
+                                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Data Ayah</span>
                                         <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Nama Ayah</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Nama Ayah</label>
                                             <input
                                                 type="text" value={form.father_name}
                                                 onChange={(e) => setField('father_name', e.target.value)}
-                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] outline-none focus:border-indigo-500 transition-all"
+                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-indigo-500 transition-all"
                                                 placeholder="Nama Lengkap Ayah"
                                             />
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">NIK Ayah</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">NIK Ayah</label>
                                             <input
                                                 type="text" value={form.father_nik}
                                                 onChange={(e) => setField('father_nik', e.target.value.replace(/\D/g, '').slice(0, 16))}
-                                                className={`w-full px-3 h-11 rounded-xl border bg-[var(--color-surface)] text-[13px] outline-none transition-all ${getStatus('father_nik') === 'warning' ? 'border-amber-500 bg-amber-50/10' : 'border-[var(--color-border)] focus:border-indigo-500'}`}
+                                                className={`w-full px-3 h-11 rounded-xl border bg-[var(--color-surface)] text-sm outline-none transition-all ${getStatus('father_nik') === 'warning' ? 'border-amber-500 bg-amber-50/10' : 'border-[var(--color-border)] focus:border-indigo-500'}`}
                                                 placeholder="16 Digit NIK"
                                             />
-                                            {getStatus('father_nik') === 'warning' && <p className="text-[9px] text-amber-600 mt-1 ml-1">NIK harus 16 digit</p>}
+                                            {getStatus('father_nik') === 'warning' && <p className="text-xs text-amber-600 mt-1 ml-1">NIK harus 16 digit</p>}
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Pendidikan</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Pendidikan</label>
                                             <RichSelect
                                                 value={form.father_education}
                                                 onChange={(val) => setField('father_education', val)}
@@ -861,7 +861,7 @@ const StudentFormModal = memo(function StudentFormModal({
                                             />
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Pekerjaan</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Pekerjaan</label>
                                             <RichSelect
                                                 value={form.father_occupation}
                                                 onChange={(val) => setField('father_occupation', val)}
@@ -871,7 +871,7 @@ const StudentFormModal = memo(function StudentFormModal({
                                             />
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Penghasilan Bulanan</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Penghasilan Bulanan</label>
                                             <RichSelect
                                                 value={form.father_income}
                                                 onChange={(val) => setField('father_income', val)}
@@ -881,7 +881,7 @@ const StudentFormModal = memo(function StudentFormModal({
                                             />
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Status</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Status</label>
                                             <div className="flex p-1 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl h-11">
                                                 {[
                                                   { v: true, l: 'Masih Hidup', activeCls: 'bg-indigo-500 text-white shadow-lg' },
@@ -890,7 +890,7 @@ const StudentFormModal = memo(function StudentFormModal({
                                                     <button
                                                         key={String(opt.v)} type="button"
                                                         onClick={() => setField('father_alive', opt.v)}
-                                                        className={`flex-1 rounded-lg text-[11px] font-bold tracking-wider transition-all duration-200 ${form.father_alive === opt.v
+                                                        className={`flex-1 rounded-lg text-xs font-bold tracking-wider transition-all duration-200 ${form.father_alive === opt.v
                                                             ? opt.activeCls
                                                             : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                                                     >
@@ -906,32 +906,32 @@ const StudentFormModal = memo(function StudentFormModal({
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-2.5">
                                         <div className="w-1 h-4 bg-[var(--color-primary)] rounded-full" />
-                                        <User className="text-[var(--color-primary)] text-[10px] opacity-70" />
-                                        <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Data Ibu</span>
+                                        <User className="w-4 h-4 text-[var(--color-primary)] opacity-70" />
+                                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Data Ibu</span>
                                         <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Nama Ibu <span className="text-rose-500">*</span></label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Nama Ibu <span className="text-rose-500">*</span></label>
                                             <input
                                                 type="text" value={form.mother_name}
                                                 onChange={(e) => setField('mother_name', e.target.value)}
-                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] outline-none focus:border-rose-500 transition-all"
+                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-rose-500 transition-all"
                                                 placeholder="Nama Lengkap Ibu"
                                             />
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">NIK Ibu</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">NIK Ibu</label>
                                             <input
                                                 type="text" value={form.mother_nik}
                                                 onChange={(e) => setField('mother_nik', e.target.value.replace(/\D/g, '').slice(0, 16))}
-                                                className={`w-full px-3 h-11 rounded-xl border bg-[var(--color-surface)] text-[13px] outline-none transition-all ${getStatus('mother_nik') === 'warning' ? 'border-amber-500 bg-amber-50/10' : 'border-[var(--color-border)] focus:border-rose-500'}`}
+                                                className={`w-full px-3 h-11 rounded-xl border bg-[var(--color-surface)] text-sm outline-none transition-all ${getStatus('mother_nik') === 'warning' ? 'border-amber-500 bg-amber-50/10' : 'border-[var(--color-border)] focus:border-rose-500'}`}
                                                 placeholder="16 Digit NIK"
                                             />
-                                            {getStatus('mother_nik') === 'warning' && <p className="text-[9px] text-amber-600 mt-1 ml-1">NIK harus 16 digit</p>}
+                                            {getStatus('mother_nik') === 'warning' && <p className="text-xs text-amber-600 mt-1 ml-1">NIK harus 16 digit</p>}
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Pendidikan</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Pendidikan</label>
                                             <RichSelect
                                                 value={form.mother_education}
                                                 onChange={(val) => setField('mother_education', val)}
@@ -941,7 +941,7 @@ const StudentFormModal = memo(function StudentFormModal({
                                             />
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Pekerjaan</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Pekerjaan</label>
                                             <RichSelect
                                                 value={form.mother_occupation}
                                                 onChange={(val) => setField('mother_occupation', val)}
@@ -951,7 +951,7 @@ const StudentFormModal = memo(function StudentFormModal({
                                             />
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Penghasilan Bulanan</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Penghasilan Bulanan</label>
                                             <RichSelect
                                                 value={form.mother_income}
                                                 onChange={(val) => setField('mother_income', val)}
@@ -961,7 +961,7 @@ const StudentFormModal = memo(function StudentFormModal({
                                             />
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Status</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Status</label>
                                             <div className="flex p-1 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl h-11">
                                                 {[
                                                   { v: true, l: 'Masih Hidup', activeCls: 'bg-rose-500 text-white shadow-lg' },
@@ -970,7 +970,7 @@ const StudentFormModal = memo(function StudentFormModal({
                                                     <button
                                                         key={String(opt.v)} type="button"
                                                         onClick={() => setField('mother_alive', opt.v)}
-                                                        className={`flex-1 rounded-lg text-[11px] font-bold tracking-wider transition-all duration-200 ${form.mother_alive === opt.v
+                                                        className={`flex-1 rounded-lg text-xs font-bold tracking-wider transition-all duration-200 ${form.mother_alive === opt.v
                                                             ? opt.activeCls
                                                             : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                                                     >
@@ -987,42 +987,42 @@ const StudentFormModal = memo(function StudentFormModal({
                             <div className="p-4 border border-[var(--color-border)] rounded-2xl bg-[var(--color-surface)] space-y-4">
                                 <div className="flex items-center gap-2.5 pt-2">
                                     <div className="w-1 h-4 bg-[var(--color-primary)] rounded-full" />
-                                    <Phone className="text-[var(--color-primary)] text-[10px] opacity-70" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Info Wali & Kontak</span>
+                                    <Phone className="w-4 h-4 text-[var(--color-primary)] opacity-70" />
+                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Info Wali & Kontak</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
                                 <div className="space-y-4">
                                     <div className="relative group">
-                                        <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Nama Wali</label>
+                                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Nama Wali</label>
                                         <div className="relative">
                                             <input
                                                 type="text"
                                                 value={form.guardian_name}
                                                 onChange={(e) => setField('guardian_name', e.target.value)}
                                                 placeholder="Cth: Ahmad Fauzi"
-                                                className="w-full pl-9 pr-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all text-[13px] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40"
+                                                className="w-full pl-9 pr-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40"
                                             />
-                                            <User className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs" />
+                                            <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50" />
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">No. HP Wali <span className="text-emerald-500">*</span></label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">No. HP Wali <span className="text-emerald-500">*</span></label>
                                             <div className="relative">
                                                 <input
                                                     type="text"
                                                     value={form.phone}
                                                     onChange={(e) => setField('phone', e.target.value.replace(/\D/g, '').slice(0, 15))}
                                                     placeholder="08xxxxxxxxxx"
-                                                    className={`w-full pl-9 pr-3 h-11 rounded-xl border bg-[var(--color-surface)] outline-none transition-all text-[13px] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40 
+                                                    className={`w-full pl-9 pr-3 h-11 rounded-xl border bg-[var(--color-surface)] outline-none transition-all text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40 
                                                         ${getStatus('phone') === 'warning' ? 'border-amber-500 bg-amber-50/10' : 'focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] border-[var(--color-border)]'}`}
                                                 />
-                                                <WhatsAppIcon className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-xs transition-colors ${getStatus('phone') === 'warning' ? 'text-amber-500' : 'text-emerald-500 opacity-70'}`} />
+                                                <WhatsAppIcon className={`w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors ${getStatus('phone') === 'warning' ? 'text-amber-500' : 'text-emerald-500 opacity-70'}`} />
                                             </div>
-                                            {getStatus('phone') === 'warning' && <p className="text-[9px] text-amber-600 mt-1 ml-1">Format HP tidak valid (08... min 10 digit)</p>}
+                                            {getStatus('phone') === 'warning' && <p className="text-xs text-amber-600 mt-1 ml-1">Format HP tidak valid (08... min 10 digit)</p>}
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Hubungan</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Hubungan</label>
                                             <RichSelect
                                                 value={form.guardian_relation}
                                                 onChange={(val) => setField('guardian_relation', val)}
@@ -1047,14 +1047,14 @@ const StudentFormModal = memo(function StudentFormModal({
                     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                         <div className="flex items-center gap-3">
                             <div className="h-0.5 flex-1 bg-gradient-to-r from-transparent to-emerald-500/20" />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600">Alamat, Dokumen & Review</span>
+                            <span className="text-xs font-bold uppercase tracking-wide text-emerald-600">Alamat, Dokumen & Review</span>
                             <div className="h-0.5 flex-1 bg-gradient-to-l from-transparent to-emerald-500/20" />
                         </div>
 
                         {/* Completion indicator */}
                         <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-emerald-500/[0.03] border border-emerald-500/10">
-                            <span className="text-[9px] font-bold text-emerald-600/70 uppercase">Progress Section</span>
-                            <span className="text-[10px] font-black text-emerald-600">{calculateStepProgress(3)}%</span>
+                            <span className="text-xs font-bold text-emerald-600/70 uppercase">Progress Section</span>
+                            <span className="text-xs font-bold text-emerald-600">{calculateStepProgress(3)}%</span>
                         </div>
 
                         {/* Address & Docs content */}
@@ -1062,89 +1062,89 @@ const StudentFormModal = memo(function StudentFormModal({
                             <div className="p-4 border border-[var(--color-border)] rounded-2xl bg-[var(--color-surface)] space-y-4">
                                 <div className="flex items-center gap-2.5 pt-2">
                                     <div className="w-1 h-4 bg-emerald-500 rounded-full" />
-                                    <MapPin className="text-emerald-500 text-[10px] opacity-70" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Alamat & Domisili</span>
+                                    <MapPin className="w-4 h-4 text-emerald-500 opacity-70" />
+                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Alamat & Domisili</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
                                 <div className="space-y-4">
                                     <div className="relative group">
-                                        <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Alamat Lengkap</label>
+                                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Alamat Lengkap</label>
                                         <textarea
                                             value={form.address}
                                             onChange={(e) => setField('address', e.target.value)}
-                                            className="w-full p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] outline-none focus:border-emerald-500 transition-all min-h-[80px]"
+                                            className="w-full p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-emerald-500 transition-all min-h-[80px]"
                                             placeholder="Nama jalan, nomor rumah, dll..."
                                         />
                                     </div>
                                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">RT/RW</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">RT/RW</label>
                                             <div className="flex gap-2">
                                                 <input
                                                     type="text" value={form.address_rt}
                                                     onChange={(e) => setField('address_rt', e.target.value.substring(0, 3))}
-                                                    className="w-full px-2 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] outline-none focus:border-emerald-500 text-center"
+                                                    className="w-full px-2 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-emerald-500 text-center"
                                                     placeholder="00"
                                                 />
                                                 <input
                                                     type="text" value={form.address_rw}
                                                     onChange={(e) => setField('address_rw', e.target.value.substring(0, 3))}
-                                                    className="w-full px-2 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] outline-none focus:border-emerald-500 text-center"
+                                                    className="w-full px-2 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-emerald-500 text-center"
                                                     placeholder="00"
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-span-2 relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Desa / Kelurahan</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Desa / Kelurahan</label>
                                             <input
                                                 type="text" value={form.address_village}
                                                 onChange={(e) => setField('address_village', e.target.value)}
-                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] outline-none focus:border-emerald-500 transition-all"
+                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-emerald-500 transition-all"
                                             />
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Kecamatan</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Kecamatan</label>
                                             <input
                                                 type="text" value={form.address_district}
                                                 onChange={(e) => setField('address_district', e.target.value)}
-                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] outline-none focus:border-emerald-500 transition-all"
+                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-emerald-500 transition-all"
                                                 placeholder="Cth: Kebayoran Baru"
                                             />
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Kabupaten / Kota</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Kabupaten / Kota</label>
                                             <input
                                                 type="text" value={form.address_city}
                                                 onChange={(e) => setField('address_city', e.target.value)}
-                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] outline-none focus:border-emerald-500 transition-all"
+                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-emerald-500 transition-all"
                                                 placeholder="Cth: Jakarta Selatan"
                                             />
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Provinsi</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Provinsi</label>
                                             <input
                                                 type="text" value={form.address_province}
                                                 onChange={(e) => setField('address_province', e.target.value)}
-                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] outline-none focus:border-emerald-500 transition-all"
+                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-emerald-500 transition-all"
                                                 placeholder="Cth: DKI Jakarta"
                                             />
                                         </div>
                                         <div className="relative group">
-                                            <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Kode Pos</label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Kode Pos</label>
                                             <input
                                                 type="text" value={form.address_postal_code}
                                                 onChange={(e) => setField('address_postal_code', e.target.value.replace(/\D/g, '').slice(0, 5))}
-                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] outline-none focus:border-emerald-500 transition-all"
+                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-emerald-500 transition-all"
                                                 placeholder="12345"
                                             />
                                         </div>
                                     </div>
                                     <div className="relative group">
-                                        <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tinggal Bersama</label>
+                                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tinggal Bersama</label>
                                         <RichSelect
                                             value={form.living_with}
                                             onChange={(val) => setField('living_with', val)}
@@ -1160,21 +1160,21 @@ const StudentFormModal = memo(function StudentFormModal({
                             <div className="p-4 border border-[var(--color-border)] rounded-2xl bg-[var(--color-surface)] space-y-4">
                                 <div className="flex items-center gap-2.5 pt-2">
                                     <div className="w-1 h-4 bg-amber-500 rounded-full" />
-                                    <FileText className="text-amber-500 text-[10px] opacity-70" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Dokumen & EMIS</span>
+                                    <FileText className="w-4 h-4 text-amber-500 opacity-70" />
+                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Dokumen & EMIS</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
                                 <div className="relative group">
-                                    <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">No. Akta Kelahiran</label>
+                                    <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">No. Akta Kelahiran</label>
                                     <input
                                         type="text" value={form.no_akta}
                                         onChange={(e) => setField('no_akta', e.target.value)}
-                                        className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] outline-none focus:border-amber-500"
+                                        className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-amber-500"
                                         placeholder="Cth: 12345/01/2024"
                                     />
                                 </div>
                                 <div className="relative group">
-                                    <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Kebutuhan Khusus</label>
+                                    <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Kebutuhan Khusus</label>
                                     <RichSelect
                                         value={form.special_needs}
                                         onChange={(val) => setField('special_needs', val)}
@@ -1184,25 +1184,25 @@ const StudentFormModal = memo(function StudentFormModal({
                                     />
                                 </div>
                                 <div className="relative group">
-                                    <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Hobi</label>
+                                    <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Hobi</label>
                                     <input
                                         type="text" value={form.hobby}
                                         onChange={(e) => setField('hobby', e.target.value)}
-                                        className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] outline-none focus:border-amber-500"
+                                        className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-amber-500"
                                         placeholder="Cth: Membaca, Olahraga"
                                     />
                                 </div>
                                 <div className="relative group">
-                                    <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Cita-cita</label>
+                                    <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Cita-cita</label>
                                     <input
                                         type="text" value={form.aspiration}
                                         onChange={(e) => setField('aspiration', e.target.value)}
-                                        className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] outline-none focus:border-amber-500"
+                                        className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-amber-500"
                                         placeholder="Cth: Guru, Insinyur"
                                     />
                                 </div>
                                 <div className="relative group">
-                                    <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Transportasi</label>
+                                    <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Transportasi</label>
                                     <RichSelect
                                         value={form.transport}
                                         onChange={(val) => setField('transport', val)}
@@ -1222,20 +1222,20 @@ const StudentFormModal = memo(function StudentFormModal({
                                 >
                                     <div className="flex items-center gap-3 text-left">
                                         <div className="w-8 h-8 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center border border-[var(--color-border)]">
-                                            <Pen className="text-xs text-[var(--color-text-muted)]" />
+                                            <Pen className="w-4 h-4 text-[var(--color-text-muted)]" />
                                         </div>
                                         <div>
-                                            <p className="text-[11px] font-bold text-[var(--color-text)]">Catatan Khusus</p>
-                                            <p className="text-[9px] text-[var(--color-text-muted)]">Alergi, Riwayat Kesehatan, dll.</p>
+                                            <p className="text-xs font-bold text-[var(--color-text)]">Catatan Khusus</p>
+                                            <p className="text-xs text-[var(--color-text-muted)]">Alergi, Riwayat Kesehatan, dll.</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         {metadataFields.length > 0 && (
-                                            <span className="text-[8px] font-black bg-[var(--color-primary)] text-white px-2 py-0.5 rounded-full">
+                                            <span className="text-xs font-bold bg-[var(--color-primary)] text-white px-2 py-0.5 rounded-full">
                                                 {metadataFields.length}
                                             </span>
                                         )}
-                                        <ChevronDown className={`text-[10px] opacity-40 transition-transform duration-300 ${showMetadata ? 'rotate-180' : ''}`} />
+                                        <ChevronDown className={`w-4 h-4 opacity-40 transition-transform duration-300 ${showMetadata ? 'rotate-180' : ''}`} />
                                     </div>
                                 </button>
 
@@ -1247,13 +1247,13 @@ const StudentFormModal = memo(function StudentFormModal({
                                                     <div key={idx} className="flex gap-2 items-start animate-in slide-in-from-left-2 duration-300">
                                                         <input
                                                             placeholder="Label"
-                                                            className="w-1/3 px-3 h-9 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all"
+                                                            className="w-1/3 px-3 h-9 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-xs outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all"
                                                             value={m.key}
                                                             onChange={(e) => handleUpdateMeta(idx, e.target.value, m.value)}
                                                         />
                                                         <input
                                                             placeholder="Keterangan..."
-                                                            className="flex-1 px-3 h-9 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all"
+                                                            className="flex-1 px-3 h-9 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-xs outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all"
                                                             value={m.value}
                                                             onChange={(e) => handleUpdateMeta(idx, m.key, e.target.value)}
                                                         />
@@ -1262,7 +1262,7 @@ const StudentFormModal = memo(function StudentFormModal({
                                                             onClick={() => handleRemoveMeta(idx)}
                                                             className="w-9 h-9 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10 transition-colors shrink-0"
                                                         >
-                                                            <Trash2 className="text-sm" />
+                                                            <Trash2 className="w-4 h-4" />
                                                         </button>
                                                     </div>
                                                 ))}
@@ -1270,9 +1270,9 @@ const StudentFormModal = memo(function StudentFormModal({
                                             <button
                                                 type="button"
                                                 onClick={handleAddMeta}
-                                                className="w-full h-9 rounded-lg border border-dashed border-[var(--color-border)] bg-transparent hover:bg-[var(--color-surface-alt)]/50 transition-colors text-[11px] font-semibold flex items-center justify-center gap-2 mt-2 text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+                                                className="w-full h-9 rounded-lg border border-dashed border-[var(--color-border)] bg-transparent hover:bg-[var(--color-surface-alt)]/50 transition-colors text-xs font-semibold flex items-center justify-center gap-2 mt-2 text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
                                             >
-                                                <Plus className="text-[10px]" />
+                                                <Plus className="w-4 h-4" />
                                                 Tambah Field
                                             </button>
                                         </div>
@@ -1288,11 +1288,11 @@ const StudentFormModal = memo(function StudentFormModal({
                                 <div className="flex items-center justify-between relative z-10">
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-                                            <Eye className="text-emerald-500 text-sm" />
+                                            <Eye className="w-4 h-4 text-emerald-500" />
                                         </div>
                                         <div>
-                                            <span className="text-[12px] font-black uppercase tracking-wider text-[var(--color-text)]">Review Konfirmasi</span>
-                                            <p className="text-[10px] text-[var(--color-text-muted)] font-medium">Validasi akhir data santri</p>
+                                            <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text)]">Review Konfirmasi</span>
+                                            <p className="text-xs text-[var(--color-text-muted)] font-medium">Validasi akhir data santri</p>
                                         </div>
                                     </div>
                                     {/* Completion Ring */}
@@ -1307,7 +1307,7 @@ const StudentFormModal = memo(function StudentFormModal({
                                                     <circle cx="20" cy="20" r={radius} fill="none" stroke="var(--color-border)" strokeWidth="3.5" />
                                                     <circle cx="20" cy="20" r={radius} fill="none" stroke={pct === 100 ? '#10b981' : '#6366f1'} strokeWidth="3.5" strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round" className="transition-all duration-1000" />
                                                 </svg>
-                                                <span className={`absolute inset-0 flex items-center justify-center text-[10px] font-black ${pct === 100 ? 'text-emerald-500' : 'text-indigo-500'}`}>{pct}%</span>
+                                                <span className={`absolute inset-0 flex items-center justify-center text-xs font-bold ${pct === 100 ? 'text-emerald-500' : 'text-indigo-500'}`}>{pct}%</span>
                                             </div>
                                         )
                                     })()}
@@ -1317,49 +1317,49 @@ const StudentFormModal = memo(function StudentFormModal({
                                     {/* Identitas Section */}
                                     <div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm">
                                         <div className="flex items-center gap-2 mb-3">
-                                            <IdCard className="text-[10px] text-indigo-500" />
-                                            <span className="text-[9px] font-black uppercase tracking-widest text-indigo-500/80">Identitas Santri</span>
+                                            <IdCard className="w-4 h-4 text-indigo-500" />
+                                            <span className="text-xs font-bold uppercase tracking-wide text-indigo-500/80">Identitas Santri</span>
                                         </div>
                                         <div className="grid grid-cols-2 gap-y-3 gap-x-4">
                                             <div>
-                                                <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Nama</p>
-                                                <p className="text-[11px] font-bold text-[var(--color-text)] truncate">{form.name || <span className="text-[var(--color-text-muted)] italic opacity-40">belum diisi</span>}</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Nama</p>
+                                                <p className="text-xs font-bold text-[var(--color-text)] truncate">{form.name || <span className="text-[var(--color-text-muted)] italic opacity-40">belum diisi</span>}</p>
                                             </div>
                                             <div>
-                                                <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">NISN / NIS</p>
-                                                <p className="text-[11px] font-bold text-[var(--color-text)]">{form.nisn || '---'} / {form.nis || '---'}</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">NISN / NIS</p>
+                                                <p className="text-xs font-bold text-[var(--color-text)]">{form.nisn || '---'} / {form.nis || '---'}</p>
                                             </div>
                                             <div>
-                                                <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Kelas</p>
-                                                <p className="text-[11px] font-bold text-[var(--color-text)]">{classesList.find(c => c.id === form.class_id)?.name || '---'}</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Kelas</p>
+                                                <p className="text-xs font-bold text-[var(--color-text)]">{classesList.find(c => c.id === form.class_id)?.name || '---'}</p>
                                             </div>
                                             <div>
-                                                <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Gender / Status</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Gender / Status</p>
                                                 <div className="flex items-center gap-1.5 mt-0.5">
                                                     {form.gender === 'L' ? (
                                                         <div className="flex items-center gap-1.5 px-1.5 py-0.5 rounded-md bg-indigo-500/10 border border-indigo-500/20">
-                                                            <MarsIcon className="text-[9px] text-indigo-500" />
-                                                            <span className="text-[10px] font-bold text-indigo-500 uppercase tracking-tight">Putra</span>
+                                                            <MarsIcon className="w-4 h-4 text-indigo-500" />
+                                                            <span className="text-xs font-bold text-indigo-500 uppercase tracking-tight">Putra</span>
                                                         </div>
                                                     ) : form.gender === 'P' ? (
                                                         <div className="flex items-center gap-1.5 px-1.5 py-0.5 rounded-md bg-rose-500/10 border border-rose-500/20">
-                                                            <VenusIcon className="text-[9px] text-rose-500" />
-                                                            <span className="text-[10px] font-bold text-rose-500 uppercase tracking-tight">Putri</span>
+                                                            <VenusIcon className="w-4 h-4 text-rose-500" />
+                                                            <span className="text-xs font-bold text-rose-500 uppercase tracking-tight">Putri</span>
                                                         </div>
                                                     ) : (
-                                                        <span className="text-[11px] font-bold text-[var(--color-text)]">---</span>
+                                                        <span className="text-xs font-bold text-[var(--color-text)]">---</span>
                                                     )}
                                                     <span className="text-[var(--color-text-muted)] mx-0.5 opacity-30">·</span>
-                                                    <span className="text-emerald-500 text-[10px] font-black uppercase tracking-wider">{form.status || '---'}</span>
+                                                    <span className="text-emerald-500 text-xs font-bold uppercase tracking-wider">{form.status || '---'}</span>
                                                 </div>
                                             </div>
                                             <div>
-                                                <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">TTL</p>
-                                                <p className="text-[11px] font-bold text-[var(--color-text)] truncate">{form.birth_place || '---'}, {form.birth_date || '---'}</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">TTL</p>
+                                                <p className="text-xs font-bold text-[var(--color-text)] truncate">{form.birth_place || '---'}, {form.birth_date || '---'}</p>
                                             </div>
                                             <div>
-                                                <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Kamar</p>
-                                                <p className="text-[11px] font-bold text-[var(--color-text)]">{form.kamar || '---'}</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Kamar</p>
+                                                <p className="text-xs font-bold text-[var(--color-text)]">{form.kamar || '---'}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -1367,26 +1367,26 @@ const StudentFormModal = memo(function StudentFormModal({
                                     {/* Keluarga Section */}
                                     <div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm">
                                         <div className="flex items-center gap-2 mb-3">
-                                            <Users className="text-[10px] text-rose-500" />
-                                            <span className="text-[9px] font-black uppercase tracking-widest text-rose-500/80">Keluarga & Kontak</span>
+                                            <Users className="w-4 h-4 text-rose-500" />
+                                            <span className="text-xs font-bold uppercase tracking-wide text-rose-500/80">Keluarga & Kontak</span>
                                         </div>
                                         <div className="grid grid-cols-2 gap-y-3 gap-x-4">
                                             <div>
-                                                <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Ayah</p>
-                                                <p className="text-[11px] font-bold text-[var(--color-text)] truncate">{form.father_name || '---'}</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Ayah</p>
+                                                <p className="text-xs font-bold text-[var(--color-text)] truncate">{form.father_name || '---'}</p>
                                             </div>
                                             <div>
-                                                <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Ibu</p>
-                                                <p className="text-[11px] font-bold text-[var(--color-text)] truncate">{form.mother_name || '---'}</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Ibu</p>
+                                                <p className="text-xs font-bold text-[var(--color-text)] truncate">{form.mother_name || '---'}</p>
                                             </div>
                                             <div>
-                                                <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Wali</p>
-                                                <p className="text-[11px] font-bold text-[var(--color-text)] truncate">{form.guardian_name || '---'}</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Wali</p>
+                                                <p className="text-xs font-bold text-[var(--color-text)] truncate">{form.guardian_name || '---'}</p>
                                             </div>
                                             <div>
-                                                <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Kontak WA</p>
-                                                <p className="text-[11px] font-bold text-emerald-500 flex items-center gap-1.5">
-                                                    <WhatsAppIcon className="text-[10px]" />
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Kontak WA</p>
+                                                <p className="text-xs font-bold text-emerald-500 flex items-center gap-1.5">
+                                                    <WhatsAppIcon className="w-4 h-4" />
                                                     {form.phone || '---'}
                                                 </p>
                                             </div>
@@ -1397,17 +1397,17 @@ const StudentFormModal = memo(function StudentFormModal({
                                         {/* Alamat Section */}
                                         <div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm">
                                             <div className="flex items-center gap-2 mb-3">
-                                                <MapPin className="text-[10px] text-emerald-500" />
-                                                <span className="text-[9px] font-black uppercase tracking-widest text-emerald-500/80">Alamat</span>
+                                                <MapPin className="w-4 h-4 text-emerald-500" />
+                                                <span className="text-xs font-bold uppercase tracking-wide text-emerald-500/80">Alamat</span>
                                             </div>
                                             <div className="space-y-2.5">
                                                 <div>
-                                                    <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Alamat Lengkap</p>
-                                                    <p className="text-[11px] font-bold text-[var(--color-text)] line-clamp-2 leading-relaxed">{form.address || '---'}</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Alamat Lengkap</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text)] line-clamp-2 leading-relaxed">{form.address || '---'}</p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Kota / Prov</p>
-                                                    <p className="text-[11px] font-bold text-[var(--color-text)] truncate">{form.address_city || '---'}, {form.address_province || '---'}</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Kota / Prov</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text)] truncate">{form.address_city || '---'}, {form.address_province || '---'}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1415,17 +1415,17 @@ const StudentFormModal = memo(function StudentFormModal({
                                         {/* Dokumen Section */}
                                         <div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm">
                                             <div className="flex items-center gap-2 mb-3">
-                                                <FileText className="text-[10px] text-amber-500" />
-                                                <span className="text-[9px] font-black uppercase tracking-widest text-amber-500/80">Dokumen</span>
+                                                <FileText className="w-4 h-4 text-amber-500" />
+                                                <span className="text-xs font-bold uppercase tracking-wide text-amber-500/80">Dokumen</span>
                                             </div>
                                             <div className="space-y-2.5">
                                                 <div>
-                                                    <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">NIK Siswa</p>
-                                                    <p className="text-[11px] font-bold text-[var(--color-text)]">{form.nik || '---'}</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">NIK Siswa</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text)]">{form.nik || '---'}</p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">No. Akta</p>
-                                                    <p className="text-[11px] font-bold text-[var(--color-text)]">{form.no_akta || '---'}</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">No. Akta</p>
+                                                    <p className="text-xs font-bold text-[var(--color-text)]">{form.no_akta || '---'}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1436,9 +1436,9 @@ const StudentFormModal = memo(function StudentFormModal({
                                 <div className="pt-4 border-t border-[var(--color-border)] flex items-center justify-between relative z-10">
                                     <div className="flex items-center gap-2.5">
                                         <div className="w-6 h-6 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
-                                            <CircleCheck className="text-emerald-500 text-[10px]" />
+                                            <CircleCheck className="w-4 h-4 text-emerald-500" />
                                         </div>
-                                        <p className="text-[10px] text-[var(--color-text-muted)] italic leading-snug">Data valid & siap disimpan.</p>
+                                        <p className="text-xs text-[var(--color-text-muted)] italic leading-snug">Data valid & siap disimpan.</p>
                                     </div>
                                     <div className="flex -space-x-2">
                                         {[1, 2, 3].map(i => (

@@ -887,20 +887,20 @@ export default function NewsEditorPage() {
                 <div className="relative w-full max-w-[380px] bg-[var(--color-surface)] rounded-[2.5rem] border border-[var(--color-border)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-300">
                     <div className="p-8 text-center pb-6">
                         <div className="w-14 h-14 rounded-2xl bg-rose-500/10 flex items-center justify-center text-rose-500 text-xl mx-auto mb-6">
-                            <TriangleAlert />
+                            <TriangleAlert className="w-6 h-6" />
                         </div>
-                        <h3 className="text-xl font-black text-[var(--color-text)] mb-3 tracking-tight">Batalkan Penulisan?</h3>
-                        <p className="text-[12px] font-bold text-[var(--color-text-muted)] leading-relaxed px-4 opacity-80">
+                        <h3 className="text-xl font-bold text-[var(--color-text)] mb-3 tracking-tight">Batalkan Penulisan?</h3>
+                        <p className="text-xs font-bold text-[var(--color-text-muted)] leading-relaxed px-4 opacity-80">
                             Ada perubahan yang belum disimpan. Konten yang baru saja kamu tulis akan hilang secara permanen.
                         </p>
                     </div>
                     <div className="flex gap-3 px-8 pb-8 pt-2">
                         <button onClick={onClose}
-                            className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] active:scale-95 transition-all">
+                            className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold uppercase tracking-wide text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] active:scale-95 transition-all">
                             Batal
                         </button>
                         <button onClick={onConfirm}
-                            className="flex-1 h-11 rounded-xl bg-rose-500 text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 active:scale-95 transition-all">
+                            className="flex-1 h-11 rounded-xl bg-rose-500 text-white text-xs font-bold uppercase tracking-wide shadow-lg hover:brightness-110 active:scale-95 transition-all">
                             Ya, Buang
                         </button>
                     </div>
@@ -937,7 +937,7 @@ export default function NewsEditorPage() {
     if (isLoading) {
         return (
             <DashboardLayout title="Loading Editor...">
-                <div className="max-w-[1800px] mx-auto space-y-6">
+                <div className="space-y-6">
                     <div className="h-32 bg-[var(--color-surface-alt)] animate-pulse rounded-[2rem]" />
                     <div className="flex gap-6">
                         <div className="flex-1 space-y-6">
@@ -960,16 +960,16 @@ export default function NewsEditorPage() {
                     <div className="flex items-center justify-between p-4 bg-amber-500/10 border border-amber-500/20 rounded-[1.5rem] animate-in fade-in slide-in-from-top-4">
                         <div className="flex items-center gap-4 px-2">
                             <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-600">
-                                <TriangleAlert />
+                                <TriangleAlert className="w-4 h-4" />
                             </div>
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-widest text-amber-700">Draft Ditemukan!</p>
-                                <p className="text-[9px] font-bold text-amber-600/80">Kamu punya tulisan yang belum diselesaikan sebelumnya.</p>
+                                <p className="text-xs font-bold uppercase tracking-wide text-amber-700">Draft Ditemukan!</p>
+                                <p className="text-xs font-bold text-amber-600/80">Kamu punya tulisan yang belum diselesaikan sebelumnya.</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
-                            <button onClick={discardDraft} className="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-rose-500 hover:bg-rose-500/5 rounded-xl transition-all">Abaikan</button>
-                                <button onClick={recoverDraft} className="px-6 py-3 bg-amber-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl shadow-lg active:scale-95 transition-all">Pulihkan Konten</button>
+                            <button onClick={discardDraft} className="px-4 py-2 text-xs font-bold uppercase tracking-wide text-rose-500 hover:bg-rose-500/5 rounded-xl transition-all">Abaikan</button>
+                                <button onClick={recoverDraft} className="px-6 py-3 bg-amber-500 text-white text-xs font-bold uppercase tracking-wide rounded-xl shadow-lg active:scale-95 transition-all">Pulihkan Konten</button>
                         </div>
                     </div>
                 )}
@@ -985,9 +985,9 @@ export default function NewsEditorPage() {
                     <div className="flex items-center justify-between gap-3 min-w-0">
                         <div className="flex items-center gap-2 md:gap-4 min-w-0">
                             <button onClick={handleGoBack} className="shrink-0 w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-xl md:rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
-                                <ChevronLeft className="text-xs md:text-sm" />
+                                <ChevronLeft className="w-4 h-4 md:" />
                             </button>
-                            <h1 className="text-lg md:text-2xl font-black font-heading tracking-tight text-[var(--color-text)] truncate">
+                            <h1 className="text-lg md:text-2xl font-bold font-heading tracking-tight text-[var(--color-text)] truncate">
                                 {isEdit ? 'Edit Informasi' : 'Tulis Informasi Baru'}
                             </h1>
                         </div>
@@ -1000,7 +1000,7 @@ export default function NewsEditorPage() {
                                         {user.avatar_url ? (
                                             <img src={user.avatar_url} className="w-8 h-8 rounded-full border-2 border-[var(--color-surface)] shadow-sm object-cover" alt={user.name} loading="lazy" decoding="async" />
                                         ) : (
-                                            <div className="w-8 h-8 rounded-full border-2 border-[var(--color-surface)] bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center text-[10px] font-black shadow-sm">
+                                            <div className="w-8 h-8 rounded-full border-2 border-[var(--color-surface)] bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center text-xs font-bold shadow-sm">
                                                 {user.name.charAt(0).toUpperCase()}
                                             </div>
                                         )}
@@ -1008,7 +1008,7 @@ export default function NewsEditorPage() {
                                         <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-[var(--color-surface)]" />
 
                                         {/* Tooltip */}
-                                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-1.5 bg-slate-900 text-white text-[9px] font-black uppercase tracking-widest rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-[110] shadow-xl">
+                                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-1.5 bg-slate-900 text-white text-xs font-bold uppercase tracking-wide rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-[110] shadow-xl">
                                             {user.name} sedang mengedit
                                         </div>
                                     </div>
@@ -1017,7 +1017,7 @@ export default function NewsEditorPage() {
                                 {collaborators.length > 0 && (
                                     <div className="ml-4 flex items-center gap-2">
                                         <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                        <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Kolaborasi Aktif</span>
+                                        <span className="text-xs font-bold text-emerald-600 uppercase tracking-wide">Kolaborasi Aktif</span>
                                     </div>
                                 )}
                             </div>
@@ -1025,12 +1025,12 @@ export default function NewsEditorPage() {
 
                         <div className="flex items-center gap-1.5 md:gap-3 shrink-0">
                             <button type="button" onClick={handleGoBack}
-                                className="h-9 md:h-10 px-3 md:px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] text-[10px] md:text-[11px] font-black uppercase tracking-widest active:scale-95 transition-all">
+                                className="h-9 md:h-10 px-3 md:px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] text-xs md:text-xs font-bold uppercase tracking-wide active:scale-95 transition-all">
                                 Batal
                             </button>
                             <button type="button" onClick={handleSave} disabled={isSaving || !form.title.trim() || !form.content.trim()}
-                                className="h-9 md:h-10 px-4 md:px-6 rounded-xl bg-[var(--color-primary)] text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none shadow-lg">
-                                {isSaving ? <LoaderCircle className="animate-spin" /> : <Save />}
+                                className="h-9 md:h-10 px-4 md:px-6 rounded-xl bg-[var(--color-primary)] text-white text-xs md:text-xs font-bold uppercase tracking-wide flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none shadow-lg">
+                                {isSaving ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                                 <span className="hidden xs:inline">{isSaving ? 'Menyimpan...' : 'Simpan'}</span>
                                 <span className="xs:hidden">{isSaving ? '...' : (isEdit ? 'Update' : 'Kirim')}</span>
                             </button>
@@ -1041,8 +1041,8 @@ export default function NewsEditorPage() {
                 {/* ── Mobile Sticky Footer ── */}
                 <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] p-4 bg-[var(--color-surface)] border-t border-[var(--color-border)] shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.1)] flex items-center gap-3">
                     <button type="button" onClick={handleSave} disabled={isSaving || !form.title.trim() || !form.content.trim()}
-                        className="flex-1 h-12 rounded-2xl bg-[var(--color-primary)] text-white text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all">
-                        {isSaving ? <LoaderCircle className="animate-spin" /> : <Save />}
+                        className="flex-1 h-12 rounded-2xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all">
+                        {isSaving ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                         <span>{isSaving ? 'Menyimpan...' : (isEdit ? 'Update Informasi' : 'Terbitkan Sekarang')}</span>
                     </button>
                 </div>
@@ -1129,8 +1129,8 @@ export default function NewsEditorPage() {
                                 ...(!isSidePreview ? [{ id: 'preview', label: 'Preview', icon: Eye }] : []),
                             ].map(t => (
                                 <button key={t.id} type="button" onClick={() => setActiveTab(t.id)}
-                                    className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-2 sm:px-4 py-2 rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-tight sm:tracking-widest transition-all duration-300 ${activeTab === t.id ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] active' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)]'}`}>
-                                    <t.icon className="text-[10px] sm:text-xs" />
+                                    className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-2 sm:px-4 py-2 rounded-xl text-xs sm:text-xs font-bold uppercase tracking-tight sm:tracking-wide transition-all duration-300 ${activeTab === t.id ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] active' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)]'}`}>
+                                    <t.icon className="text-xs sm:text-xs" />
                                     <span className="whitespace-nowrap">{t.label}</span>
                                 </button>
                             ))}
@@ -1145,19 +1145,19 @@ export default function NewsEditorPage() {
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-3">
-                                                <label className="text-xs font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-80">
-                                                    <Newspaper className="mr-2" />Judul Informasi <span className="text-rose-500">*</span>
+                                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-80">
+                                                    <Newspaper className="w-4 h-4 mr-2" />Judul Informasi <span className="text-rose-500">*</span>
                                                 </label>
                                                 <button
                                                     type="button"
                                                     onClick={() => setIsAiModalOpen(true)}
-                                                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-600 text-[9px] font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all active:scale-95 animate-pulse-slow"
+                                                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-600 text-xs font-bold uppercase tracking-wide hover:bg-indigo-600 hover:text-white transition-all active:scale-95 animate-pulse-slow"
                                                 >
-                                                    <WandSparkles className="text-[8px]" />
+                                                    <WandSparkles className="w-4 h-4" />
                                                     ASISTEN AI
                                                 </button>
                                             </div>
-                                            <span className={`text-[10px] font-black px-2.5 py-1 rounded-full ${(form.title?.length || 0) > 60 ? 'bg-rose-500/10 text-rose-500' : (form.title?.length || 0) >= 50 ? 'bg-emerald-500/10 text-emerald-500' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
+                                            <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${(form.title?.length || 0) > 60 ? 'bg-rose-500/10 text-rose-500' : (form.title?.length || 0) >= 50 ? 'bg-emerald-500/10 text-emerald-500' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
                                                 {form.title?.length || 0}/60
                                             </span>
                                         </div>
@@ -1170,8 +1170,8 @@ export default function NewsEditorPage() {
 
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
-                                            <label className="text-xs font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-80">
-                                                <TextAlignStart className="mr-2" />Ringkasan Singkat
+                                            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-80">
+                                                <TextAlignStart className="w-4 h-4 mr-2" />Ringkasan Singkat
                                             </label>
                                             <div className="flex items-center gap-3">
                                                 <button type="button"
@@ -1187,11 +1187,11 @@ export default function NewsEditorPage() {
                                                         setForm(f => ({ ...f, excerpt: summary }));
                                                         addToast('Ringkasan SEO berhasil diekstrak dari konten.', 'success');
                                                     }}
-                                                    className="text-[9px] font-black uppercase tracking-widest text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] flex items-center gap-1.5 transition-all bg-[var(--color-primary)]/5 px-2 py-1 rounded-lg hover:bg-[var(--color-primary)]/10">
-                                                    <WandSparkles />
+                                                    className="text-xs font-bold uppercase tracking-wide text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] flex items-center gap-1.5 transition-all bg-[var(--color-primary)]/5 px-2 py-1 rounded-lg hover:bg-[var(--color-primary)]/10">
+                                                    <WandSparkles className="w-4 h-4" />
                                                     Generate Otomatis
                                                 </button>
-                                                <span className={`text-[10px] font-black px-2.5 py-1 rounded-full ${(form.excerpt?.length || 0) > 160 ? 'bg-rose-500/10 text-rose-500' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
+                                                <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${(form.excerpt?.length || 0) > 160 ? 'bg-rose-500/10 text-rose-500' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
                                                     {form.excerpt?.length || 0}/160
                                                 </span>
                                             </div>
@@ -1205,26 +1205,26 @@ export default function NewsEditorPage() {
 
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between mt-6 mb-2">
-                                            <label className="text-xs font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-80">
-                                                <BookOpen className="mr-2" />Isi Informasi <span className="text-rose-500">*</span>
+                                            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-80">
+                                                <BookOpen className="w-4 h-4 mr-2" />Isi Informasi <span className="text-rose-500">*</span>
                                             </label>
                                             {/* Preview toggle desktop */}
                                             <div className="flex items-center gap-2">
-                                                <div className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-500/5 border border-slate-500/10 text-[var(--color-text-muted)] text-[9px] font-black uppercase tracking-widest">
-                                                    <Clock className="text-[var(--color-primary)]/50" />
+                                                <div className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-500/5 border border-slate-500/10 text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide">
+                                                    <Clock className="w-4 h-4 text-[var(--color-primary)]/50" />
                                                     {calculatedReadTime} menit baca
                                                 </div>
 
                                                 <button type="button" onClick={() => setIsSidePreview(p => !p)}
-                                                    className={`hidden xl:flex items-center gap-2 h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 border ${isSidePreview ? 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]' : 'bg-[var(--color-primary)]/10 border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white shadow-lg'}`}>
-                                                    {isSidePreview ? <EyeOff /> : <Eye />}
+                                                    className={`hidden xl:flex items-center gap-2 h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide transition-all active:scale-95 border ${isSidePreview ? 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]' : 'bg-[var(--color-primary)]/10 border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white shadow-lg'}`}>
+                                                    {isSidePreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                                     <span>{isSidePreview ? 'Tutup Preview' : 'Live Preview'}</span>
                                                 </button>
 
                                                 <button type="button" onClick={() => setIsZenMode(true)}
-                                                    className="flex items-center gap-2 px-4 h-9 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 hover:bg-[var(--color-primary)] hover:text-white transition-all shadow-sm font-black text-[10px] uppercase tracking-widest group"
+                                                    className="flex items-center gap-2 px-4 h-9 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 hover:bg-[var(--color-primary)] hover:text-white transition-all shadow-sm font-bold text-xs uppercase tracking-wide group"
                                                     title="Focus Zen Mode">
-                                                    <Maximize2 className="text-xs group-hover:scale-110 transition-transform" />
+                                                    <Maximize2 className="w-4 h-4 group-hover:scale-110 transition-transform" />
                                                     <span>Focus Mode</span>
                                                 </button>
                                             </div>
@@ -1251,15 +1251,15 @@ export default function NewsEditorPage() {
                                             {/* Command Strip UI (Enterprise Style) */}
                                             <div className={`absolute top-[42px] inset-x-0 z-[30] flex justify-center transition-all duration-300 ease-out ${commandStrip.open ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'}`}>
                                                 <div className="mx-4 mt-2 p-2 flex items-center gap-2 bg-[var(--color-surface)] border border-[var(--color-border)] shadow-xl rounded-2xl min-w-[400px] max-w-[600px] w-full animate-in zoom-in-95">
-                                                    <div className={`w-8 h-8 shrink-0 rounded-xl flex items-center justify-center text-[10px] shadow-sm ${commandStrip.type === 'link' ? 'bg-blue-500/10 text-blue-500' : 'bg-rose-500/10 text-rose-500'}`}>
-                                                        {commandStrip.type === 'link' ? <Pen /> : <BookOpen />}
+                                                    <div className={`w-8 h-8 shrink-0 rounded-xl flex items-center justify-center text-xs shadow-sm ${commandStrip.type === 'link' ? 'bg-blue-500/10 text-blue-500' : 'bg-rose-500/10 text-rose-500'}`}>
+                                                        {commandStrip.type === 'link' ? <Pen className="w-4 h-4" /> : <BookOpen className="w-4 h-4" />}
                                                     </div>
 
                                                     {commandStrip.type === 'link' && (
                                                         <input type="text" value={commandStrip.text}
                                                             onChange={e => setCommandStrip(s => ({ ...s, text: e.target.value }))}
                                                             placeholder="Teks tautan..."
-                                                            className="w-28 h-8 px-3 text-[11px] font-bold rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] outline-none focus:border-blue-500/50 transition-all" />
+                                                            className="w-28 h-8 px-3 text-xs font-bold rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] outline-none focus:border-blue-500/50 transition-all" />
                                                     )}
 
                                                     <input type="url" value={commandStrip.url}
@@ -1289,11 +1289,11 @@ export default function NewsEditorPage() {
                                                                 setCommandStrip(s => ({ ...s, open: false }));
                                                             }
                                                         }}
-                                                        className="flex-1 h-8 px-3 text-[11px] font-black rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] outline-none focus:border-[var(--color-primary)]/50 transition-all" />
+                                                        className="flex-1 h-8 px-3 text-xs font-bold rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] outline-none focus:border-[var(--color-primary)]/50 transition-all" />
 
                                                     <div className="flex items-center gap-1 shrink-0">
                                                         <button type="button" onClick={() => setCommandStrip(s => ({ ...s, open: false }))}
-                                                            className="w-8 h-8 rounded-lg text-slate-400 hover:bg-slate-100 transition-all text-[10px]" title="Batal (Esc)"><RotateCcw /></button>
+                                                            className="w-8 h-8 rounded-lg text-slate-400 hover:bg-slate-100 transition-all text-xs" title="Batal (Esc)"><RotateCcw className="w-4 h-4" /></button>
                                                         <button type="button" disabled={!commandStrip.url}
                                                             onClick={() => {
                                                                 const event = new KeyboardEvent('keydown', { key: 'Enter' });
@@ -1312,7 +1312,7 @@ export default function NewsEditorPage() {
                                                                 setCommandStrip(s => ({ ...s, open: false }));
                                                                 addToast('Berhasil disisipkan', 'success');
                                                             }}
-                                                            className={`h-8 px-4 rounded-lg text-[9px] font-black uppercase tracking-widest text-white shadow-md transition-all active:scale-95 ${commandStrip.type === 'link' ? 'bg-blue-500' : 'bg-rose-500'}`}>OK</button>
+                                                            className={`h-8 px-4 rounded-lg text-xs font-bold uppercase tracking-wide text-white shadow-md transition-all active:scale-95 ${commandStrip.type === 'link' ? 'bg-blue-500' : 'bg-rose-500'}`}>OK</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1322,14 +1322,14 @@ export default function NewsEditorPage() {
                                                 <div className="absolute z-[40] flex items-center gap-1 p-1 bg-slate-900 shadow-xl rounded-xl border border-white/10 animate-in fade-in zoom-in-95 duration-200"
                                                     style={{ left: bubbleMenu.x, top: bubbleMenu.y, transform: 'translateY(-100%)' }}>
                                                     <button type="button" onClick={() => quillRef.current.getEditor().format('bold', !quillRef.current.getEditor().getFormat().bold)}
-                                                        className="w-8 h-8 rounded-lg text-white hover:bg-white/20 transition-all flex items-center justify-center text-xs"><Bold /></button>
+                                                        className="w-8 h-8 rounded-lg text-white hover:bg-white/20 transition-all flex items-center justify-center text-xs"><Bold className="w-4 h-4" /></button>
                                                     <button type="button" onClick={() => quillRef.current.getEditor().format('italic', !quillRef.current.getEditor().getFormat().italic)}
-                                                        className="w-8 h-8 rounded-lg text-white hover:bg-white/20 transition-all flex items-center justify-center text-xs"><Italic /></button>
+                                                        className="w-8 h-8 rounded-lg text-white hover:bg-white/20 transition-all flex items-center justify-center text-xs"><Italic className="w-4 h-4" /></button>
                                                     <button type="button" onClick={() => handlers.link.call({ quill: quillRef.current.getEditor() })}
-                                                        className="w-8 h-8 rounded-lg text-white hover:bg-white/20 transition-all flex items-center justify-center text-xs"><Link /></button>
+                                                        className="w-8 h-8 rounded-lg text-white hover:bg-white/20 transition-all flex items-center justify-center text-xs"><Link className="w-4 h-4" /></button>
                                                     <div className="w-[1px] h-4 bg-white/10 mx-1" />
                                                     <button type="button" onClick={() => quillRef.current.getEditor().format('header', 2)}
-                                                        className="w-8 h-8 rounded-lg text-white hover:bg-white/20 transition-all flex items-center justify-center text-[10px] font-black">H2</button>
+                                                        className="w-8 h-8 rounded-lg text-white hover:bg-white/20 transition-all flex items-center justify-center text-xs font-bold">H2</button>
                                                 </div>
                                             )}
 
@@ -1344,12 +1344,12 @@ export default function NewsEditorPage() {
                                             </Suspense>
                                             <div className="flex items-center justify-between p-4 bg-[var(--color-surface-alt)]/50 border-t border-[var(--color-border)] rounded-b-[1.5rem]">
                                                 <div className="flex items-center gap-4">
-                                                    <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] group cursor-help transition-all" title="Target: > 100 kata untuk SEO yang baik">
-                                                        <TextAlignStart className={`${(form.content?.replace(/<[^>]*>/g, '').length || 0) > 500 ? 'text-emerald-500' : 'text-[var(--color-primary)]/50'}`} />
+                                                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] group cursor-help transition-all" title="Target: > 100 kata untuk SEO yang baik">
+                                                        <TextAlignStart className={`w-4 h-4 ${(form.content?.replace(/<[^>]*>/g, '').length || 0) > 500 ? 'text-emerald-500' : 'text-[var(--color-primary)]/50'}`} />
                                                         <span>{form.content?.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').trim().split(/\s+/).filter(Boolean).length || 0} Kata</span>
                                                     </div>
-                                                    <div className="hidden sm:flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">
-                                                        <Hash />
+                                                    <div className="hidden sm:flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60">
+                                                        <Hash className="w-4 h-4" />
                                                         <span>{form.content?.length || 0} Karakter</span>
                                                     </div>
                                                 </div>
@@ -1382,17 +1382,17 @@ export default function NewsEditorPage() {
                                                             ].map((item, i) => (
                                                                 <div key={i}
                                                                     title={item.label}
-                                                                    className={`w-5 h-5 rounded-full border-2 border-[var(--color-surface)] flex items-center justify-center text-[7px] font-black cursor-help transition-all hover:scale-110 ${item.check ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-400'}`}>
+                                                                    className={`w-5 h-5 rounded-full border-2 border-[var(--color-surface)] flex items-center justify-center text-[7px] font-bold cursor-help transition-all hover:scale-110 ${item.check ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-400'}`}>
                                                                     {item.icon}
                                                                 </div>
                                                             ))}
                                                         </div>
-                                                        <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Post Health</span>
+                                                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Post Health</span>
                                                     </div>
 
-                                                    <div className="hidden sm:flex items-center gap-2 text-[11px] font-bold text-[var(--color-text-muted)] py-1.5 px-3 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)]">
+                                                    <div className="hidden sm:flex items-center gap-2 text-xs font-bold text-[var(--color-text-muted)] py-1.5 px-3 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)]">
                                                         <div className="w-6 h-6 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)]">
-                                                            <User className="text-[10px]" />
+                                                            <User className="w-4 h-4" />
                                                         </div>
                                                         <span className="opacity-80 font-heading">{form.display_name || 'Admin'}</span>
                                                     </div>
@@ -1408,7 +1408,7 @@ export default function NewsEditorPage() {
                                 <div className="space-y-5 animate-in fade-in duration-300 max-w-3xl">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div className="space-y-2">
-                                            <label className="text-xs font-black uppercase tracking-widest text-[var(--color-text-muted)]">Kategori</label>
+                                            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Kategori</label>
                                             <div className="relative group">
                                                 <input type="text" value={form.tag}
                                                     onChange={e => { setForm(f => ({ ...f, tag: e.target.value })); setShowTagSuggestions(true) }}
@@ -1416,12 +1416,12 @@ export default function NewsEditorPage() {
                                                     placeholder="Pilih atau ketik kategori..."
                                                     className="w-full h-10 px-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-sm font-bold outline-none transition-all"
                                                 />
-                                                <Tags className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] opacity-40 pointer-events-none" />
+                                                <Tags className="w-4 h-4 absolute right-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-40 pointer-events-none" />
 
                                                 {showTagSuggestions && existingTags.length > 0 && (
                                                     <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-white border border-[var(--color-border)] rounded-xl shadow-xl py-2 animate-in fade-in slide-in-from-top-2 duration-200">
                                                         <div className="px-3 pb-2 mb-1 border-b border-[var(--color-border)]">
-                                                            <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Saran Kategori</p>
+                                                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Saran Kategori</p>
                                                         </div>
                                                         <div className="max-h-[160px] overflow-y-auto">
                                                             {['Informasi', 'Pengumuman', 'Akademik', 'Event', 'Prestasi', ...existingTags.filter(t => !['Informasi', 'Pengumuman', 'Akademik', 'Event', 'Prestasi'].includes(t))]
@@ -1434,14 +1434,14 @@ export default function NewsEditorPage() {
                                                                 ))}
                                                         </div>
                                                         <div className="mx-3 mt-1 pt-2 border-t border-[var(--color-border)]">
-                                                            <button type="button" onClick={() => setShowTagSuggestions(false)} className="text-[9px] font-black uppercase tracking-widest text-rose-500">Tutup</button>
+                                                            <button type="button" onClick={() => setShowTagSuggestions(false)} className="text-xs font-bold uppercase tracking-wide text-rose-500">Tutup</button>
                                                         </div>
                                                     </div>
                                                 )}
                                             </div>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-xs font-black uppercase tracking-widest text-[var(--color-text-muted)]">Nama Penulis</label>
+                                            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Nama Penulis</label>
                                             <input type="text" value={form.display_name}
                                                 onChange={e => setForm(f => ({ ...f, display_name: e.target.value }))}
                                                 placeholder="Tulis nama penulis..."
@@ -1454,13 +1454,13 @@ export default function NewsEditorPage() {
                                         {/* Slug */}
                                         <div className="space-y-2">
                                             <div className="flex items-center justify-between">
-                                                <label className="text-xs font-black uppercase tracking-widest text-[var(--color-text-muted)]">Slug URL</label>
-                                                <button type="button" onClick={refreshSlug} className="text-[9px] font-black uppercase tracking-widest text-[var(--color-primary)] hover:underline flex items-center gap-1">
-                                                    <RotateCcw className="text-[8px]" /> Sinkron Judul
+                                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Slug URL</label>
+                                                <button type="button" onClick={refreshSlug} className="text-xs font-bold uppercase tracking-wide text-[var(--color-primary)] hover:underline flex items-center gap-1">
+                                                    <RotateCcw className="w-4 h-4" /> Sinkron Judul
                                                 </button>
                                             </div>
                                             <div className="flex group">
-                                                <div className="h-10 px-4 flex items-center bg-[var(--color-surface)] border border-r-0 border-[var(--color-border)] rounded-l-xl text-xs font-black text-[var(--color-text-muted)] opacity-60">/news/</div>
+                                                <div className="h-10 px-4 flex items-center bg-[var(--color-surface)] border border-r-0 border-[var(--color-border)] rounded-l-xl text-xs font-bold text-[var(--color-text-muted)] opacity-60">/news/</div>
                                                 <input type="text" value={form.slug}
                                                     onChange={e => setForm(f => ({ ...f, slug: e.target.value }))}
                                                     className="flex-1 h-10 px-4 rounded-r-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] text-sm font-bold outline-none transition-all"
@@ -1469,7 +1469,7 @@ export default function NewsEditorPage() {
                                         </div>
                                         {/* Jadwal */}
                                         <div className="space-y-2">
-                                            <label className="text-xs font-black uppercase tracking-widest text-[var(--color-text-muted)]">Jadwal Tayang</label>
+                                            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Jadwal Tayang</label>
                                             <input type="datetime-local" value={form.scheduled_at}
                                                 onChange={e => setForm(f => ({ ...f, scheduled_at: e.target.value }))}
                                                 className="w-full h-10 px-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-sm font-bold outline-none transition-all"
@@ -1479,7 +1479,7 @@ export default function NewsEditorPage() {
 
                                     {/* Thumbnail Upload */}
                                     <div className="space-y-2.5">
-                                        <label className="text-xs font-black uppercase tracking-widest text-[var(--color-text-muted)]">Thumbnail Utama</label>
+                                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Thumbnail Utama</label>
                                         <div onClick={() => fileInputRef.current?.click()}
                                             onDragOver={(e) => { e.preventDefault(); setIsDragging(true) }}
                                             onDragLeave={() => setIsDragging(false)}
@@ -1489,8 +1489,8 @@ export default function NewsEditorPage() {
                                                 <>
                                                     <img src={imagePreview} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Thumbnail" loading="lazy" decoding="async" />
                                                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                                                        <button type="button" onClick={() => fileInputRef.current?.click()} className="group/btn relative px-5 py-2.5 bg-white text-black text-[10px] font-black uppercase tracking-widest rounded-xl shadow-xl flex items-center gap-2 hover:bg-[var(--color-primary)] hover:text-white transition-all">
-                                                            <Pen /> Ganti
+                                                        <button type="button" onClick={() => fileInputRef.current?.click()} className="group/btn relative px-5 py-2.5 bg-white text-black text-xs font-bold uppercase tracking-wide rounded-xl shadow-xl flex items-center gap-2 hover:bg-[var(--color-primary)] hover:text-white transition-all">
+                                                            <Pen className="w-4 h-4" /> Ganti
                                                         </button>
                                                         <button type="button"
                                                             onClick={(e) => {
@@ -1500,18 +1500,18 @@ export default function NewsEditorPage() {
                                                                 setForm(f => ({ ...f, image_url: '' }));
                                                             }}
                                                             className="w-10 h-10 bg-rose-500 text-white rounded-xl shadow-xl flex items-center justify-center hover:bg-rose-600 transition-all" title="Hapus Gambar">
-                                                            <Trash2 />
+                                                            <Trash2 className="w-4 h-4" />
                                                         </button>
                                                     </div>
                                                 </>
                                             ) : (
                                                 <div className="h-full flex items-center justify-center p-6 text-center gap-6">
                                                     <div className="w-12 h-12 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:scale-110 group-hover:bg-[var(--color-primary)]/10 group-hover:text-[var(--color-primary)] group-hover:border-[var(--color-primary)]/30 transition-all shadow-sm">
-                                                        <CloudUpload className="text-xl" />
+                                                        <CloudUpload className="w-5 h-5" />
                                                     </div>
                                                     <div className="text-left">
-                                                        <p className="text-[11px] font-black text-[var(--color-text)] uppercase tracking-widest mb-1">{isDragging ? 'Lepas Gambar' : 'Klik atau Seret Gambar'}</p>
-                                                        <p className="text-[10px] font-bold text-[var(--color-text-muted)] opacity-60">Format JPG, PNG atau WEBP (Maksimal 5MB)</p>
+                                                        <p className="text-xs font-bold text-[var(--color-text)] uppercase tracking-wide mb-1">{isDragging ? 'Lepas Gambar' : 'Klik atau Seret Gambar'}</p>
+                                                        <p className="text-xs font-bold text-[var(--color-text-muted)] opacity-60">Format JPG, PNG atau WEBP (Maksimal 5MB)</p>
                                                     </div>
                                                 </div>
                                             )}
@@ -1521,24 +1521,24 @@ export default function NewsEditorPage() {
                                         <div className="flex items-center justify-between mt-2">
                                             {imageError ? (
                                                 <p className="text-xs font-bold text-rose-500 flex items-center gap-1.5">
-                                                    <TriangleAlert /> {imageError}
+                                                    <TriangleAlert className="w-4 h-4" /> {imageError}
                                                 </p>
                                             ) : <div className="flex items-center gap-2">
-                                                <button type="button" onClick={() => setIsMediaModalOpen(true)} className="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)] bg-[var(--color-primary)]/5 hover:bg-[var(--color-primary)]/10 rounded-xl transition-colors flex items-center gap-2">
-                                                    <Image /> Pilih dari Galeri
+                                                <button type="button" onClick={() => setIsMediaModalOpen(true)} className="px-4 py-2 text-xs font-bold uppercase tracking-wide text-[var(--color-primary)] bg-[var(--color-primary)]/5 hover:bg-[var(--color-primary)]/10 rounded-xl transition-colors flex items-center gap-2">
+                                                    <Image className="w-4 h-4" /> Pilih dari Galeri
                                                 </button>
                                             </div>}
 
                                             {imagePreview && (
                                                 <button type="button" onClick={(e) => { e.stopPropagation(); setImagePreview(null); setImageFile(null); setForm(f => ({ ...f, image_url: '' })) }}
-                                                    className="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-rose-500 hover:bg-rose-500/10 rounded-xl transition-colors flex items-center gap-2">
-                                                    <Trash2 /> Hapus Gambar
+                                                    className="px-4 py-2 text-xs font-bold uppercase tracking-wide text-rose-500 hover:bg-rose-500/10 rounded-xl transition-colors flex items-center gap-2">
+                                                    <Trash2 className="w-4 h-4" /> Hapus Gambar
                                                 </button>
                                             )}
                                         </div>
 
                                         <div className="space-y-2 pt-3 border-t border-[var(--color-border)]">
-                                            <label className="text-xs font-black uppercase tracking-widest text-[var(--color-text-muted)]">Alt Text Gambar</label>
+                                            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Alt Text Gambar</label>
                                             <input type="text" value={form.image_alt}
                                                 onChange={e => setForm(f => ({ ...f, image_alt: e.target.value }))}
                                                 placeholder="Deskripsi gambar untuk aksesibilitas netra & SEO..."
@@ -1557,8 +1557,8 @@ export default function NewsEditorPage() {
                                                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
                                             </label>
                                             <div className="min-w-0">
-                                                <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Visibilitas</p>
-                                                <p className="text-[10px] font-bold text-[var(--color-text-muted)] truncate">{form.is_published ? 'Publik' : 'Draft Pribadi'}</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Visibilitas</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] truncate">{form.is_published ? 'Publik' : 'Draft Pribadi'}</p>
                                             </div>
                                         </div>
 
@@ -1570,8 +1570,8 @@ export default function NewsEditorPage() {
                                                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-500"></div>
                                             </label>
                                             <div className="min-w-0">
-                                                <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Urutan</p>
-                                                <p className="text-[10px] font-bold text-[var(--color-text-muted)] truncate">{form.is_featured ? 'Hot News (Top)' : 'Berita Standar'}</p>
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Urutan</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] truncate">{form.is_featured ? 'Hot News (Top)' : 'Berita Standar'}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -1587,19 +1587,19 @@ export default function NewsEditorPage() {
                                             <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full -mr-12 -mt-12" />
 
                                             <div className="flex items-center gap-4">
-                                                <div className={`w-14 h-14 shrink-0 rounded-2xl flex items-center justify-center text-lg font-black shadow-inner ${form.seo_score >= 80 ? 'bg-emerald-500 text-white' : form.seo_score >= 50 ? 'bg-amber-500 text-white' : 'bg-rose-500 text-white'}`}>
+                                                <div className={`w-14 h-14 shrink-0 rounded-2xl flex items-center justify-center text-lg font-bold shadow-inner ${form.seo_score >= 80 ? 'bg-emerald-500 text-white' : form.seo_score >= 50 ? 'bg-amber-500 text-white' : 'bg-rose-500 text-white'}`}>
                                                     {form.seo_score}
                                                 </div>
                                                 <div>
-                                                    <p className="text-[10px] font-black uppercase tracking-widest text-indigo-900/60 mb-0.5">Overall SEO Health</p>
-                                                    <p className="text-xs font-black text-indigo-950 uppercase tracking-tight leading-tight">
+                                                    <p className="text-xs font-bold uppercase tracking-wide text-indigo-900/60 mb-0.5">Overall SEO Health</p>
+                                                    <p className="text-xs font-bold text-indigo-950 uppercase tracking-tight leading-tight">
                                                         {form.seo_score >= 80 ? 'Sangat Optimal' : form.seo_score >= 50 ? 'Butuh Perbaikan' : 'Buruk (Segera Perbaiki)'}
                                                     </p>
                                                 </div>
                                             </div>
 
                                             <div className="space-y-2">
-                                                <label className="text-[10px] font-black uppercase tracking-widest text-indigo-900/40">Focus Keyword</label>
+                                                <label className="text-xs font-bold uppercase tracking-wide text-indigo-900/40">Focus Keyword</label>
                                                 <input type="text" value={form.focus_keyword}
                                                     onChange={e => setForm(f => ({ ...f, focus_keyword: e.target.value }))}
                                                     placeholder="Contoh: PPDB 2024..."
@@ -1611,18 +1611,18 @@ export default function NewsEditorPage() {
                                         {/* Real-time Checklist */}
                                         <div className="flex-1 p-4 rounded-[1.5rem] bg-[var(--color-surface-alt)]/30 border border-[var(--color-border)] flex flex-col gap-3.5">
                                             <div className="flex items-center justify-between">
-                                                <h4 className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">SEO Analysis Checklist</h4>
+                                                <h4 className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">SEO Analysis Checklist</h4>
                                                 <button type="button" onClick={generateAiSeo} disabled={isGeneratingSeo || !form.content}
-                                                    className="h-8 px-4 rounded-lg bg-indigo-500 text-white text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all shadow-lg disabled:opacity-50 flex items-center justify-center gap-2 whitespace-nowrap">
-                                                    {isGeneratingSeo ? <LoaderCircle className="animate-spin text-[8px]" /> : <WandSparkles className="text-[8px]" />}
+                                                    className="h-8 px-4 rounded-lg bg-indigo-500 text-white text-xs font-bold uppercase tracking-wide active:scale-95 transition-all shadow-lg disabled:opacity-50 flex items-center justify-center gap-2 whitespace-nowrap">
+                                                    {isGeneratingSeo ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <WandSparkles className="w-4 h-4" />}
                                                     {isGeneratingSeo ? 'Gen...' : 'AI Optimizer'}
                                                 </button>
                                             </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2.5 overflow-y-auto pr-2 custom-scrollbar">
                                                 {seoAnalysis.map((item, idx) => (
-                                                    <div key={idx} className="flex items-start gap-2.5 text-[9px] sm:text-[10px]">
+                                                    <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-xs">
                                                         <div className={`w-3.5 h-3.5 shrink-0 mt-0.5 rounded-full flex items-center justify-center text-[6px] ${item.st === 'success' ? 'bg-emerald-500 text-white' : item.st === 'error' ? 'bg-rose-500 text-white' : 'bg-amber-500 text-white'}`}>
-                                                            {item.st === 'success' ? <Check /> : item.st === 'error' ? <X /> : <TriangleAlert />}
+                                                            {item.st === 'success' ? <Check className="w-4 h-4" /> : item.st === 'error' ? <X className="w-4 h-4" /> : <TriangleAlert className="w-4 h-4" />}
                                                         </div>
                                                         <span className={`font-bold leading-tight ${item.st === 'success' ? 'text-emerald-700/80' : item.st === 'error' ? 'text-rose-700/80' : 'text-amber-700/80'}`}>{item.label}</span>
                                                     </div>
@@ -1631,9 +1631,9 @@ export default function NewsEditorPage() {
                                             <div className="flex items-center gap-4 pt-2 border-t border-[var(--color-border)]">
                                                 <div className="flex items-center h-7 gap-1 p-1 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg w-fit">
                                                     <button type="button" onClick={() => setSeoView('search')}
-                                                        className={`h-full px-3 rounded-md text-[8px] font-black uppercase tracking-widest transition-all ${seoView === 'search' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>Google</button>
+                                                        className={`h-full px-3 rounded-md text-xs font-bold uppercase tracking-wide transition-all ${seoView === 'search' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>Google</button>
                                                     <button type="button" onClick={() => setSeoView('social')}
-                                                        className={`h-full px-3 rounded-md text-[8px] font-black uppercase tracking-widest transition-all ${seoView === 'social' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>Social</button>
+                                                        className={`h-full px-3 rounded-md text-xs font-bold uppercase tracking-wide transition-all ${seoView === 'social' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>Social</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1643,8 +1643,8 @@ export default function NewsEditorPage() {
                                         <div className="space-y-6">
                                             <div className="space-y-2">
                                                 <div className="flex items-center justify-between">
-                                                    <label className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">SEO Title</label>
-                                                    <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${form.meta_title?.length > 60 ? 'bg-rose-500/10 text-rose-500' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
+                                                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">SEO Title</label>
+                                                    <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${form.meta_title?.length > 60 ? 'bg-rose-500/10 text-rose-500' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
                                                         {form.meta_title?.length || 0}/60
                                                     </span>
                                                 </div>
@@ -1657,8 +1657,8 @@ export default function NewsEditorPage() {
 
                                             <div className="space-y-2">
                                                 <div className="flex items-center justify-between">
-                                                    <label className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Meta Description</label>
-                                                    <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${form.meta_description?.length > 160 ? 'bg-rose-500/10 text-rose-500' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
+                                                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Meta Description</label>
+                                                    <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${form.meta_description?.length > 160 ? 'bg-rose-500/10 text-rose-500' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
                                                         {form.meta_description?.length || 0}/160
                                                     </span>
                                                 </div>
@@ -1672,11 +1672,11 @@ export default function NewsEditorPage() {
 
                                         <div className="space-y-4">
                                             <div className="flex items-center justify-between border-b border-[var(--color-border)] pb-2">
-                                                <p className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-2">
-                                                    {seoView === 'search' ? <Globe className="opacity-50" /> : <Share2 className="opacity-50" />}
+                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] flex items-center gap-2">
+                                                    {seoView === 'search' ? <Globe className="w-4 h-4 opacity-50" /> : <Share2 className="w-4 h-4 opacity-50" />}
                                                     {seoView === 'search' ? 'Google Search Preview' : 'Social Media Card Preview'}
                                                 </p>
-                                                <span className="text-[9px] font-black text-emerald-500 bg-emerald-500/10 px-2.5 py-1 rounded-full uppercase tracking-tighter whitespace-nowrap">Live Simulation</span>
+                                                <span className="text-xs font-bold text-emerald-500 bg-emerald-500/10 px-2.5 py-1 rounded-full uppercase tracking-tighter whitespace-nowrap">Live Simulation</span>
                                             </div>
 
                                             {seoView === 'search' ? (
@@ -1686,12 +1686,12 @@ export default function NewsEditorPage() {
                                                             {settings.logo_url ? (
                                                                 <img src={settings.logo_url} className="w-full h-full object-contain p-0.5" alt="Favicon" loading="lazy" decoding="async" />
                                                             ) : (
-                                                                <Globe className="text-xs text-gray-400" />
+                                                                <Globe className="w-4 h-4 text-gray-400" />
                                                             )}
                                                         </div>
                                                         <div className="flex flex-col min-w-0">
-                                                            <span className="text-[12px] font-medium text-[#202124] dark:text-[#dadce0] truncate uppercase tracking-tighter">{settings.school_name_id}</span>
-                                                            <span className="text-[11px] text-[#4d5156] dark:text-[#bdc1c6] truncate">
+                                                            <span className="text-xs font-medium text-[#202124] dark:text-[#dadce0] truncate uppercase tracking-tighter">{settings.school_name_id}</span>
+                                                            <span className="text-xs text-[#4d5156] dark:text-[#bdc1c6] truncate">
                                                                 https://{settings.app_domain} › news › {form.slug || 'slug'}
                                                             </span>
                                                         </div>
@@ -1699,7 +1699,7 @@ export default function NewsEditorPage() {
                                                     <h3 className="text-xl text-[#1a0dab] dark:text-[#8ab4f8] font-normal hover:underline cursor-pointer mb-1 truncate">
                                                         {form.meta_title || form.title || 'Judul Halaman...'}
                                                     </h3>
-                                                    <p className="text-[13px] text-[#4d5156] dark:text-[#bdc1c6] line-clamp-2 leading-relaxed">
+                                                    <p className="text-sm text-[#4d5156] dark:text-[#bdc1c6] line-clamp-2 leading-relaxed">
                                                         <span className="text-gray-400 mr-1">{new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })} —</span>
                                                         {form.meta_description || form.excerpt || 'Ringkasan berita akan tampil di sini saat pengunjung mencari melalui Google...'}
                                                     </p>
@@ -1717,17 +1717,17 @@ export default function NewsEditorPage() {
                                                         <h4 className="text-[14px] font-bold text-gray-900 dark:text-gray-100 truncate">
                                                             {form.meta_title || form.title || 'Judul Konten'}
                                                         </h4>
-                                                        <p className="text-[12px] text-gray-500 dark:text-gray-400 truncate">
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                                                             {form.meta_description || form.excerpt || 'Dapatkan informasi selengkapnya...'}
                                                         </p>
-                                                        <p className="text-[10px] font-black uppercase tracking-widest text-emerald-600">
+                                                        <p className="text-xs font-bold uppercase tracking-wide text-emerald-600">
                                                             {settings.app_domain?.toUpperCase()}
                                                         </p>
                                                     </div>
                                                 </div>
                                             )}
 
-                                            <p className="text-[10px] text-[var(--color-text-muted)] italic font-medium leading-relaxed">
+                                            <p className="text-xs text-[var(--color-text-muted)] italic font-medium leading-relaxed">
                                                 * Pratinjau di atas adalah simulasi metadata OpenGraph (OG) saat link artikel dibagikan di WhatsApp, Facebook, atau LinkedIn.
                                             </p>
                                         </div>
@@ -1740,24 +1740,24 @@ export default function NewsEditorPage() {
                                 <div className="space-y-6 animate-in fade-in duration-300 max-w-3xl mx-auto">
                                     {imagePreview && <img src={imagePreview} className="w-full h-64 md:h-80 object-cover rounded-[2rem] shadow-xl border border-[var(--color-border)]" alt="Preview" loading="lazy" decoding="async" />}
                                     <div className="flex items-center gap-3 flex-wrap">
-                                        <span className="px-4 py-1.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-black uppercase tracking-widest">{form.tag}</span>
+                                        <span className="px-4 py-1.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold uppercase tracking-wide">{form.tag}</span>
                                         <span className="text-[var(--color-text-muted)] text-sm font-bold flex items-center gap-2">
-                                            <Clock className="opacity-50" /> {calculatedReadTime} menit baca
+                                            <Clock className="w-4 h-4 opacity-50" /> {calculatedReadTime} menit baca
                                         </span>
                                     </div>
-                                    <h2 className="text-3xl md:text-4xl font-black font-heading leading-tight text-[var(--color-text)]">
+                                    <h2 className="text-3xl md:text-4xl font-bold font-heading leading-tight text-[var(--color-text)]">
                                         {form.title || 'Judul Utama Informasi Akan Ditampilkan Dengan Gaya Tipografi Heading'}
                                     </h2>
                                     <div className="flex items-center gap-4 py-6 border-y border-[var(--color-border)]">
                                         <div className="w-12 h-12 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-xl text-[var(--color-text-muted)]">
-                                            <User loading="lazy" decoding="async" />
+                                            <User loading="lazy" decoding="async" className="w-4 h-4" />
                                         </div>
                                         <div className="flex flex-col">
-                                            <span className="text-sm font-black text-[var(--color-text)]">{form.display_name || 'Admin Platform'}</span>
+                                            <span className="text-sm font-bold text-[var(--color-text)]">{form.display_name || 'Admin Platform'}</span>
                                             <span className="text-xs font-medium text-[var(--color-text-muted)]">{new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span>
                                         </div>
                                     </div>
-                                    <div className="preview-content text-base md:text-lg text-[var(--color-text)] leading-relaxed prose prose-lg dark:prose-invert prose-headings:font-black prose-a:text-[var(--color-primary)] max-w-none"
+                                    <div className="preview-content text-base md:text-lg text-[var(--color-text)] leading-relaxed prose prose-lg dark:prose-invert prose-headings:font-bold prose-a:text-[var(--color-primary)] max-w-none"
                                         dangerouslySetInnerHTML={{ __html: form.content || '<p class="opacity-30 italic">Tulis konten untuk melihat preview aslinya di sini...</p>' }} />
                                 </div>
                             )}
@@ -1776,7 +1776,7 @@ export default function NewsEditorPage() {
                                     <div className="w-3 h-3 rounded-full bg-amber-400 shadow-sm" />
                                     <div className="w-3 h-3 rounded-full bg-emerald-400 shadow-sm" />
                                 </div>
-                                <span className="text-[10px] font-black tracking-widest uppercase text-[var(--color-primary)] flex items-center gap-2 bg-[var(--color-primary)]/10 px-3 py-1 rounded-full">
+                                <span className="text-xs font-bold tracking-wide uppercase text-[var(--color-primary)] flex items-center gap-2 bg-[var(--color-primary)]/10 px-3 py-1 rounded-full">
                                     <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse" />
                                     Live Preview
                                 </span>
@@ -1788,22 +1788,22 @@ export default function NewsEditorPage() {
                                         <img src={imagePreview} className="w-full aspect-[4/3] object-cover rounded-[1.5rem] shadow-md border border-[var(--color-border)]" alt="Preview Thumbnail" loading="lazy" decoding="async" />
                                     )}
                                     <div className="flex items-center gap-2 flex-wrap pb-2">
-                                        <span className="px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest shadow-sm">{form.tag}</span>
-                                        <span className="text-[var(--color-text-muted)] text-[11px] font-bold uppercase tracking-widest"><Clock className="mr-1" /> {calculatedReadTime} mnt</span>
+                                        <span className="px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide shadow-sm">{form.tag}</span>
+                                        <span className="text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide"><Clock className="w-4 h-4 mr-1" /> {calculatedReadTime} mnt</span>
                                     </div>
-                                    <h2 className="text-2xl font-black font-heading leading-snug text-[var(--color-text)]">
+                                    <h2 className="text-2xl font-bold font-heading leading-snug text-[var(--color-text)]">
                                         {form.title || 'Judul Simulasi UI'}
                                     </h2>
                                     <div className="flex items-center gap-3 border-b border-[var(--color-border)] pb-5 pt-2 mt-4">
                                         <div className="w-10 h-10 rounded-[1rem] bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)]">
-                                            <User className="text-sm" />
+                                            <User className="w-4 h-4" />
                                         </div>
                                         <div className="flex flex-col">
-                                            <span className="text-sm font-black text-[var(--color-text)] leading-none mb-1">{form.display_name || 'Admin'}</span>
-                                            <span className="text-[10px] font-bold tracking-widest uppercase text-[var(--color-text-muted)]">{new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric' })}</span>
+                                            <span className="text-sm font-bold text-[var(--color-text)] leading-none mb-1">{form.display_name || 'Admin'}</span>
+                                            <span className="text-xs font-bold tracking-wide uppercase text-[var(--color-text-muted)]">{new Date().toLocaleDateString('id-ID', { month: 'short', day: 'numeric' })}</span>
                                         </div>
                                     </div>
-                                    <div className="preview-content mt-4 max-w-none prose prose-sm dark:prose-invert prose-headings:font-black prose-headings:tracking-tight prose-a:text-[var(--color-primary)] prose-img:rounded-xl text-[var(--color-text)] opacity-90"
+                                    <div className="preview-content mt-4 max-w-none prose prose-sm dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-[var(--color-primary)] prose-img:rounded-xl text-[var(--color-text)] opacity-90"
                                         dangerouslySetInnerHTML={{
                                             __html: (form.content || '<p class="opacity-30 italic">Tulis di editor untuk melihat simulasi hasil akhir...</p>')
                                                 // Convert YouTube embed URLs to static "Unplayable" Premium Placeholders
@@ -1815,7 +1815,7 @@ export default function NewsEditorPage() {
                                                                 <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                                                             </div>
                                                         </div>
-                                                            <div class="absolute bottom-3 left-3 px-2 py-1 bg-black/60 rounded text-[8px] font-black text-white uppercase tracking-widest border border-white/10">Preview Only</div>
+                                                            <div class="absolute bottom-3 left-3 px-2 py-1 bg-black/60 rounded text-xs font-bold text-white uppercase tracking-wide border border-white/10">Preview Only</div>
                                                     </div>
                                                 `)
                                                 .replace(/<a[^>]+href="(https?:\/\/www\.youtube\.com\/embed\/([^"]+))"[^>]*>.*?<\/a>/g, (match, url, id) => `
@@ -1826,7 +1826,7 @@ export default function NewsEditorPage() {
                                                                 <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                                                             </div>
                                                         </div>
-                                                            <div class="absolute bottom-3 left-3 px-2 py-1 bg-black/60 rounded text-[8px] font-black text-white uppercase tracking-widest border border-white/10">Preview Only</div>
+                                                            <div class="absolute bottom-3 left-3 px-2 py-1 bg-black/60 rounded text-xs font-bold text-white uppercase tracking-wide border border-white/10">Preview Only</div>
                                                     </div>
                                                 `)
                                         }} />
@@ -1846,11 +1846,11 @@ export default function NewsEditorPage() {
                             <div className={`sticky top-0 z-[30] bg-[var(--color-surface)] px-4 sm:px-8 py-3 sm:py-4 flex items-center justify-between border-b border-[var(--color-border)] transition-all duration-700 ${isTyping ? 'opacity-10 pointer-events-none translate-y-[-10px]' : 'opacity-100'}`}>
                                 <div className="flex items-center gap-3 sm:gap-4 overflow-hidden">
                                     <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] shrink-0">
-                                        <ExternalLink className="text-sm sm:text-base" />
+                                        <ExternalLink className="w-5 h-5 sm:" />
                                     </div>
                                     <div className="truncate">
-                                        <h2 className="text-base sm:text-xl font-black text-[var(--color-text)] tracking-tight">Focus Zen Mode</h2>
-                                        <p className="hidden sm:block text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-[0.2em] opacity-50">Editor Bebas Gangguan</p>
+                                        <h2 className="text-base sm:text-xl font-bold text-[var(--color-text)] tracking-tight">Focus Zen Mode</h2>
+                                        <p className="hidden sm:block text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50">Editor Bebas Gangguan</p>
                                     </div>
                                 </div>
 
@@ -1871,7 +1871,7 @@ export default function NewsEditorPage() {
                                             onClick={() => setTypewriterEnabled(!typewriterEnabled)}
                                             className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${typewriterEnabled ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/10' : 'text-slate-400 opacity-40'}`}
                                             title="Typewriter Sound">
-                                            <Keyboard className="text-xs" />
+                                            <Keyboard className="w-4 h-4" />
                                         </button>
 
                                         <div className="w-[1px] h-4 bg-slate-200 dark:bg-white/10 mx-1" />
@@ -1905,7 +1905,7 @@ export default function NewsEditorPage() {
                                                     setAmbience({ type: 'custom_audio', url: val, playing: true, title: val.split('/').pop() });
                                                 }
                                             }}
-                                            className="w-32 h-8 px-3 rounded-lg bg-white/50 dark:bg-black/20 border border-slate-200 dark:border-white/10 text-[9px] font-bold text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]/50 transition-all placeholder:opacity-30"
+                                            className="w-32 h-8 px-3 rounded-lg bg-white/50 dark:bg-black/20 border border-slate-200 dark:border-white/10 text-xs font-bold text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]/50 transition-all placeholder:opacity-30"
                                         />
 
                                         {ambience.type !== 'none' && ambience.type !== 'custom_yt' && (
@@ -1913,12 +1913,12 @@ export default function NewsEditorPage() {
                                         )}
                                     </div>
 
-                                    <div className={`hidden sm:flex items-center gap-2 px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest border transition-all ${form.seo_score >= 80 ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-amber-500/10 text-amber-500 border-amber-500/20'}`}>
+                                    <div className={`hidden sm:flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold uppercase tracking-wide border transition-all ${form.seo_score >= 80 ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-amber-500/10 text-amber-500 border-amber-500/20'}`}>
                                         <div className={`w-2 h-2 rounded-full animate-pulse ${form.seo_score >= 80 ? 'bg-emerald-500' : 'bg-amber-500'}`} />
                                         Score: {form.seo_score}
                                     </div>
                                     <button onClick={() => setIsZenMode(false)}
-                                        className="h-11 px-7 rounded-2xl bg-[var(--color-primary)] text-white text-[11px] font-black uppercase tracking-widest shadow-xl active:scale-95 transition-all">
+                                        className="h-11 px-7 rounded-2xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide shadow-xl active:scale-95 transition-all">
                                         Simpan & Keluar Zen
                                     </button>
                                 </div>
@@ -1932,9 +1932,9 @@ export default function NewsEditorPage() {
                                         <div className="bg-white/40 dark:bg-slate-900/40 rounded-3xl p-6 border border-white/20 shadow-sm">
                                             <div className="flex items-center gap-3 mb-6">
                                                 <div className="w-8 h-8 rounded-xl bg-[var(--color-primary)]/20 flex items-center justify-center text-[var(--color-primary)]">
-                                                    <TextAlignStart className="text-sm" />
+                                                    <TextAlignStart className="w-4 h-4" />
                                                 </div>
-                                                <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Navigate article</span>
+                                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Navigate article</span>
                                             </div>
                                             <div className="space-y-4">
                                                 {toc.map((item, idx) => (
@@ -1973,12 +1973,7 @@ export default function NewsEditorPage() {
                                                     }`}>
                                                     <div className="absolute inset-1 rounded-full border border-white/10" />
                                                     <div className="w-2.5 h-2.5 rounded-full bg-slate-950 border border-white/40 z-10" />
-                                                    <Music className={`text-white transition-all ${ambience.playing ? 'scale-110 opacity-70' : 'scale-90 opacity-20'
-                                                        } ${ambience.type === 'rain' ? 'text-blue-400' :
-                                                            ambience.type === 'cafe' ? 'text-amber-400' :
-                                                                ambience.type === 'forest' ? 'text-emerald-400' :
-                                                                    'text-purple-400'
-                                                        }`} />
+                                                    <Music className={`w-4 h-4 text-white transition-all ${ambience.playing ? 'scale-110 opacity-70' : 'scale-90 opacity-20' } ${ambience.type === 'rain' ? 'text-blue-400' : ambience.type === 'cafe' ? 'text-amber-400' : ambience.type === 'forest' ? 'text-emerald-400' : 'text-purple-400' }`} />
                                                 </div>
 
                                                 {/* Zen Visualizer (Bars) */}
@@ -2001,8 +1996,8 @@ export default function NewsEditorPage() {
                                             {/* Controls & Info - Expands on Hover */}
                                             <div className="flex items-center gap-6 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-150 whitespace-nowrap">
                                                 <div className="flex flex-col -space-y-0.5 min-w-[150px]">
-                                                    <span className="text-[9px] font-black text-white/40 uppercase tracking-widest leading-none mb-1">Now Playing</span>
-                                                    <span className="text-sm font-black text-white truncate max-w-[200px] leading-none">
+                                                    <span className="text-xs font-bold text-white/40 uppercase tracking-wide leading-none mb-1">Now Playing</span>
+                                                    <span className="text-sm font-bold text-white truncate max-w-[200px] leading-none">
                                                         {ambience.title || (ambienceOptions.find(o => o.id === ambience.type)?.label || 'Ambience')}
                                                     </span>
                                                 </div>
@@ -2014,8 +2009,8 @@ export default function NewsEditorPage() {
                                                             if (ambience.type === 'custom_yt' && ytPlayerRef.current) ytPlayerRef.current.seekTo(ytPlayerRef.current.getCurrentTime() - 10);
                                                             else if (audioRef.current) audioRef.current.currentTime -= 10;
                                                         }}
-                                                        className="text-white opacity-40 hover:opacity-100 transition-colors text-[11px]">
-                                                        <Rewind />
+                                                        className="text-white opacity-40 hover:opacity-100 transition-colors text-xs">
+                                                        <Rewind className="w-4 h-4" />
                                                     </button>
 
                                                     <button
@@ -2023,8 +2018,8 @@ export default function NewsEditorPage() {
                                                             e.stopPropagation();
                                                             setAmbience({ ...ambience, playing: !ambience.playing });
                                                         }}
-                                                        className="w-11 h-11 rounded-full bg-white text-black flex items-center justify-center text-[11px] shadow-lg hover:scale-110 active:scale-95 transition-all">
-                                                        {ambience.playing ? <Pause /> : <Play />}
+                                                        className="w-11 h-11 rounded-full bg-white text-black flex items-center justify-center text-xs shadow-lg hover:scale-110 active:scale-95 transition-all">
+                                                        {ambience.playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                                                     </button>
 
                                                     <button
@@ -2033,8 +2028,8 @@ export default function NewsEditorPage() {
                                                             if (ambience.type === 'custom_yt' && ytPlayerRef.current) ytPlayerRef.current.seekTo(ytPlayerRef.current.getCurrentTime() + 10);
                                                             else if (audioRef.current) audioRef.current.currentTime += 10;
                                                         }}
-                                                        className="text-white opacity-40 hover:opacity-100 transition-colors text-[11px]">
-                                                        <FastForward />
+                                                        className="text-white opacity-40 hover:opacity-100 transition-colors text-xs">
+                                                        <FastForward className="w-4 h-4" />
                                                     </button>
 
                                                     <button
@@ -2042,14 +2037,14 @@ export default function NewsEditorPage() {
                                                             e.stopPropagation();
                                                             setAmbience({ ...ambience, repeat: !ambience.repeat });
                                                         }}
-                                                        className={`text-[11px] transition-all ${ambience.repeat ? 'text-[var(--color-primary)]' : 'text-white opacity-30 hover:opacity-100'}`}>
-                                                        <Repeat />
+                                                        className={`text-xs transition-all ${ambience.repeat ? 'text-[var(--color-primary)]' : 'text-white opacity-30 hover:opacity-100'}`}>
+                                                        <Repeat className="w-4 h-4" />
                                                     </button>
 
                                                     <div className="w-[1px] h-4 bg-white/10 mx-1" />
 
                                                     <div className="flex items-center gap-2">
-                                                        <Music className="text-[10px] text-white/20" />
+                                                        <Music className="w-4 h-4 text-white/20" />
                                                         <input
                                                             type="range" min="0" max="1" step="0.05"
                                                             value={ambience.volume ?? 0.4}
@@ -2080,7 +2075,7 @@ export default function NewsEditorPage() {
                                         }}
                                         placeholder="Apa yang ingin Anda ceritakan hari ini?"
                                         rows={1}
-                                        className="w-full text-3xl sm:text-5xl font-black font-heading bg-transparent outline-none border-none placeholder:opacity-15 text-[var(--color-text)] leading-[1.2] tracking-tight resize-none overflow-hidden"
+                                        className="w-full text-3xl sm:text-5xl font-bold font-heading bg-transparent outline-none border-none placeholder:opacity-15 text-[var(--color-text)] leading-[1.2] tracking-tight resize-none overflow-hidden"
                                     />
 
                                     <div className="flex-1 flex flex-col zen-quill-wrapper">
@@ -2130,27 +2125,27 @@ export default function NewsEditorPage() {
 
                                 {/* Floating Stats & Auto-save */}
                                 <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[50] flex items-center gap-3 px-6 py-3 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-full shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] opacity-60">
-                                        <TextAlignStart className="text-[var(--color-primary)]" />
+                                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60">
+                                        <TextAlignStart className="w-4 h-4 text-[var(--color-primary)]" />
                                         <span>{form.content?.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').trim().split(/\s+/).filter(Boolean).length || 0} Kata</span>
                                     </div>
                                     <div className="w-px h-3 bg-[var(--color-border)]" />
-                                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500">
-                                        <CloudUpload className="animate-pulse" />
+                                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-emerald-500">
+                                        <CloudUpload className="w-4 h-4 animate-pulse" />
                                         <span>Tersimpan Otomatis</span>
                                     </div>
                                     <div className="w-px h-3 bg-[var(--color-border)]" />
-                                    <div className="flex items-center gap-2 text-[9px] font-black text-[var(--color-text-muted)] opacity-40">
+                                    <div className="flex items-center gap-2 text-xs font-bold text-[var(--color-text-muted)] opacity-40">
                                         <span className="px-1.5 py-0.5 rounded border border-[var(--color-border)] uppercase">Ctrl+K</span>
                                         <span>Palette</span>
                                     </div>
-                                    <div className="flex items-center gap-2 text-[9px] font-black text-[var(--color-text-muted)] opacity-40">
+                                    <div className="flex items-center gap-2 text-xs font-bold text-[var(--color-text-muted)] opacity-40">
                                         <span className="px-1.5 py-0.5 rounded border border-[var(--color-border)] uppercase">Ctrl+J</span>
                                         <span>AI</span>
                                     </div>
                                 </div>
 
-                                <div className="text-center pt-16 pb-16 text-[9px] font-black text-[var(--color-text-muted)] opacity-20 uppercase tracking-[0.4em] pointer-events-none">
+                                <div className="text-center pt-16 pb-16 text-xs font-bold text-[var(--color-text-muted)] opacity-20 uppercase tracking-wide pointer-events-none">
                                     Focus Mode • Kedamaian dalam Tulisan
                                 </div>
                             </div>
@@ -2231,9 +2226,9 @@ function CommandPalette({ isOpen, onClose, actions }) {
         <div className="fixed inset-0 z-[11000] flex items-start justify-center pt-24 px-4 bg-slate-900/40 animate-in fade-in duration-200" onClick={onClose}>
             <div className="w-full max-w-xl bg-[var(--color-surface)] rounded-3xl border border-[var(--color-border)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
                 <div className="p-4 border-b border-[var(--color-border)] flex items-center gap-3">
-                    <Funnel className="text-[var(--color-text-muted)] opacity-30" />
+                    <Funnel className="w-4 h-4 text-[var(--color-text-muted)] opacity-30" />
                     <input autoFocus placeholder="Ketik perintah atau navigasi..." className="flex-1 bg-transparent border-none outline-none text-sm font-bold text-[var(--color-text)]" value={search} onChange={e => setSearch(e.target.value)} />
-                    <div className="px-2 py-1 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest">ESC</div>
+                    <div className="px-2 py-1 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide">ESC</div>
                 </div>
                 <div className="max-h-80 overflow-y-auto p-2">
                     {filtered.map((opt, i) => (
@@ -2242,7 +2237,7 @@ function CommandPalette({ isOpen, onClose, actions }) {
                                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${i === activeIndex ? 'bg-white/20' : 'bg-[var(--color-surface-alt)] group-hover:bg-white/10 opacity-70'}`}>
                                     <opt.icon className="text-sm" />
                                 </div>
-                                <span className="text-[13px] font-bold">{opt.label}</span>
+                                <span className="text-sm font-bold">{opt.label}</span>
                             </div>
                         </div>
                     ))}
@@ -2288,8 +2283,8 @@ function AiAssistant({ isOpen, onClose, content, title, onApply }) {
             size="md"
             footer={
                 <div className="flex items-center justify-center gap-2 w-full opacity-60">
-                    <Info className="text-indigo-500 text-[9px]" />
-                    <span className="text-[9px] font-black text-[var(--color-text-muted)] tracking-tight">
+                    <Info className="w-4 h-4 text-indigo-500" />
+                    <span className="text-xs font-bold text-[var(--color-text-muted)] tracking-tight">
                         Hasil AI perlu ditinjau kembali oleh manusia.
                     </span>
                 </div>
@@ -2300,13 +2295,13 @@ function AiAssistant({ isOpen, onClose, content, title, onApply }) {
                 <div className="space-y-3">
                     <div className="flex items-center gap-2 ml-1">
                         <div className="w-1 h-1 rounded-full bg-indigo-500"></div>
-                        <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Gaya Bahasa</label>
+                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Gaya Bahasa</label>
                     </div>
                     <div className="grid grid-cols-3 gap-2">
                         {tones.map(t => (
                             <button key={t.val} onClick={() => handleGenerate(t.val)} className={`group relative h-9 rounded-xl border border-[var(--color-border)] ${t.bg} flex items-center justify-center gap-2 transition-all duration-300 ${t.hover} hover:border-indigo-500/30 active:scale-95`}>
-                                <t.icon className={`text-[10px] ${t.color} opacity-40 group-hover:opacity-100 transition-opacity`} />
-                                <span className="text-[9px] font-black uppercase tracking-tight text-[var(--color-text)]">{t.label}</span>
+                                <t.icon className={`text-xs ${t.color} opacity-40 group-hover:opacity-100 transition-opacity`} />
+                                <span className="text-xs font-bold uppercase tracking-tight text-[var(--color-text)]">{t.label}</span>
                             </button>
                         ))}
                     </div>
@@ -2315,7 +2310,7 @@ function AiAssistant({ isOpen, onClose, content, title, onApply }) {
                 <div className="relative">
                     <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-[var(--color-border)] opacity-30"></span></div>
                     <div className="relative flex justify-center">
-                        <span className="bg-[var(--color-surface)] px-3 text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] italic">Instruksi Kustom</span>
+                        <span className="bg-[var(--color-surface)] px-3 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] italic">Instruksi Kustom</span>
                     </div>
                 </div>
 
@@ -2327,9 +2322,9 @@ function AiAssistant({ isOpen, onClose, content, title, onApply }) {
                             value={prompt}
                             onChange={e => setPrompt(e.target.value)}
                             placeholder="Contoh: Buat konten lebih singkat, padat, dan gunakan bahasa yang lebih persuasif..."
-                            className="w-full h-24 p-5 rounded-2xl bg-[var(--color-surface-alt)] border border-transparent outline-none focus:border-indigo-500/20 focus:bg-[var(--color-surface)] text-[13px] font-medium leading-relaxed transition-all duration-300 resize-none shadow-inner scrollbar-none"
+                            className="w-full h-24 p-5 rounded-2xl bg-[var(--color-surface-alt)] border border-transparent outline-none focus:border-indigo-500/20 focus:bg-[var(--color-surface)] text-sm font-medium leading-relaxed transition-all duration-300 resize-none shadow-inner scrollbar-none"
                         />
-                        <div className="absolute bottom-3 right-5 text-[8px] font-black uppercase tracking-widest text-slate-300 opacity-30 group-focus-within:opacity-100 transition-opacity">
+                        <div className="absolute bottom-3 right-5 text-xs font-bold uppercase tracking-wide text-slate-300 opacity-30 group-focus-within:opacity-100 transition-opacity">
                             Ghost Prompt
                         </div>
                     </div>
@@ -2342,11 +2337,11 @@ function AiAssistant({ isOpen, onClose, content, title, onApply }) {
                         <div className="absolute inset-0 bg-primary"></div>
                         <div className="relative flex items-center justify-center gap-2">
                             {loading ? (
-                                <LoaderCircle className="animate-spin text-white text-xs" />
+                                <LoaderCircle className="w-4 h-4 animate-spin text-white" />
                             ) : (
                                 <>
-                                    <span className="text-[10px] font-black uppercase tracking-[0.15em] text-white">Olah Konten</span>
-                                    <ArrowRight className="text-white/40 text-[10px] group-hover:translate-x-1 transition-transform" />
+                                    <span className="text-xs font-bold uppercase tracking-wide text-white">Olah Konten</span>
+                                    <ArrowRight className="w-4 h-4 text-white/40 group-hover:translate-x-1 transition-transform" />
                                 </>
                             )}
                         </div>
@@ -2359,16 +2354,16 @@ function AiAssistant({ isOpen, onClose, content, title, onApply }) {
                         <div className="flex items-center justify-between px-1">
                             <div className="flex items-center gap-2">
                                 <div className="w-1 h-1 rounded-full bg-emerald-500"></div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-emerald-600/80">AI Response</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-emerald-600/80">AI Response</label>
                             </div>
                         </div>
 
-                        <div className="relative group p-6 rounded-3xl bg-emerald-500/5 border border-emerald-500/10 text-[12px] font-medium leading-relaxed shadow-inner">
+                        <div className="relative group p-6 rounded-3xl bg-emerald-500/5 border border-emerald-500/10 text-xs font-medium leading-relaxed shadow-inner">
                             <div className="text-[var(--color-text)] opacity-90 whitespace-pre-wrap">{result}</div>
                             <div className="mt-5 flex justify-end">
                                 <button
                                     onClick={() => { onApply(result); onClose(); }}
-                                    className="h-9 px-6 rounded-lg bg-indigo-600 text-white text-[9px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all active:scale-95 shadow-lg"
+                                    className="h-9 px-6 rounded-lg bg-indigo-600 text-white text-xs font-bold uppercase tracking-wide hover:bg-indigo-700 transition-all active:scale-95 shadow-lg"
                                 >
                                     Terapkan Perubahan
                                 </button>
@@ -2387,17 +2382,17 @@ function RevisionHistoryModal({ isOpen, onClose, id }) {
         <div className="fixed inset-0 z-[11000] flex items-center justify-center p-4 bg-slate-900/60 animate-in fade-in duration-300" onClick={onClose}>
             <div className="w-full max-w-lg bg-[var(--color-surface)] rounded-[2rem] border border-[var(--color-border)] shadow-xl p-8 animate-in zoom-in-95 duration-300" onClick={e => e.stopPropagation()}>
                 <div className="flex items-center gap-4 mb-8">
-                    <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 text-xl"><RotateCcw /></div>
+                    <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 text-xl"><RotateCcw className="w-6 h-6" /></div>
                     <div>
-                        <h3 className="text-lg font-black text-[var(--color-text)]">Riwayat Revisi</h3>
-                        <p className="text-[10px] text-[var(--color-text-muted)] font-black uppercase tracking-widest">Snapshot konten artikel ini</p>
+                        <h3 className="text-lg font-bold text-[var(--color-text)]">Riwayat Revisi</h3>
+                        <p className="text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-wide">Snapshot konten artikel ini</p>
                     </div>
                 </div>
                 <div className="space-y-3 opacity-40 text-center py-12 border-2 border-dashed border-[var(--color-border)] rounded-2xl">
-                    <p className="text-[11px] font-black uppercase tracking-widest">Belum ada riwayat revisi</p>
-                    <p className="text-[9px]">Revisi akan tercatat otomatis setiap kali Anda klik Simpan.</p>
+                    <p className="text-xs font-bold uppercase tracking-wide">Belum ada riwayat revisi</p>
+                    <p className="text-xs">Revisi akan tercatat otomatis setiap kali Anda klik Simpan.</p>
                 </div>
-                <button onClick={onClose} className="w-full h-11 mt-6 rounded-xl border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-surface-alt)]">Tutup</button>
+                <button onClick={onClose} className="w-full h-11 mt-6 rounded-xl border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)]">Tutup</button>
             </div>
         </div>, document.body
     )

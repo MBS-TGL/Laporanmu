@@ -195,7 +195,7 @@ function FlagRoute({ children, flag, label }) {
   if (loading) return (
     <DashboardLayout>
       <div className="flex items-center justify-center min-h-[60vh]">
-        <LoaderCircle className="animate-spin text-2xl text-[var(--color-primary)]" />
+        <LoaderCircle className="w-6 h-6 animate-spin text-[var(--color-primary)]" />
       </div>
     </DashboardLayout>
   )
@@ -209,16 +209,16 @@ function FlagRoute({ children, flag, label }) {
           {/* Animated Icon Container */}
           <div className="relative mb-8">
             <div className="relative w-20 h-20 rounded-[2.5rem] bg-amber-400 flex items-center justify-center shadow-sm">
-              <Lock className="text-3xl text-white drop-shadow-md" />
+              <Lock className="w-6 h-6 text-white drop-shadow-md" />
             </div>
           </div>
 
           {/* Text Content */}
           <div className="text-center space-y-3 mb-10">
-            <h2 className="text-2xl font-black text-[var(--color-text)] tracking-tight">
+            <h2 className="text-2xl font-bold text-[var(--color-text)] tracking-tight">
               Modul Tidak Aktif
             </h2>
-            <p className="text-[13px] text-[var(--color-text-muted)] leading-relaxed px-4 opacity-80">
+            <p className="text-sm text-[var(--color-text-muted)] leading-relaxed px-4 opacity-80">
               Fitur <span className="font-bold text-[var(--color-text)] px-1.5 py-0.5 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)]">{label || flag}</span> saat ini sedang dinonaktifkan oleh administrator sistem.
             </p>
           </div>
@@ -226,7 +226,7 @@ function FlagRoute({ children, flag, label }) {
           {/* Action Button */}
           <button
             onClick={() => navigate(-1)}
-            className="group relative h-12 px-8 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-black/10 flex items-center gap-3"
+            className="group relative h-12 px-8 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold uppercase tracking-wide hover:scale-105 active:scale-95 transition-all shadow-xl shadow-black/10 flex items-center gap-3"
           >
             <span className="opacity-70 group-hover:opacity-100 transition-opacity">←</span>
             Kembali Sekarang
@@ -254,7 +254,7 @@ function RoleFlagRoute({ children, roles = [], flag, label }) {
   if (loading) return (
     <DashboardLayout>
       <div className="flex items-center justify-center min-h-[60vh]">
-        <LoaderCircle className="animate-spin text-2xl text-[var(--color-primary)]" />
+        <LoaderCircle className="w-6 h-6 animate-spin text-[var(--color-primary)]" />
       </div>
     </DashboardLayout>
   )
@@ -267,22 +267,22 @@ function RoleFlagRoute({ children, roles = [], flag, label }) {
         <div className="relative z-10 flex flex-col items-center max-w-sm w-full">
           <div className="relative mb-8">
             <div className="relative w-20 h-20 rounded-[2.5rem] bg-rose-400 flex items-center justify-center shadow-sm">
-              <Lock className="text-3xl text-white drop-shadow-md" />
+              <Lock className="w-6 h-6 text-white drop-shadow-md" />
             </div>
           </div>
 
           <div className="text-center space-y-3 mb-10">
-            <h2 className="text-2xl font-black text-[var(--color-text)] tracking-tight">
+            <h2 className="text-2xl font-bold text-[var(--color-text)] tracking-tight">
               Akses Ditolak
             </h2>
-            <p className="text-[13px] text-[var(--color-text-muted)] leading-relaxed px-4 opacity-80">
-              Maaf, halaman ini tidak dapat diakses oleh role <span className="font-bold text-rose-500 px-1.5 py-0.5 rounded-lg bg-rose-500/5 border border-rose-500/10 uppercase tracking-tighter text-[10px]">{(role?.charAt(0).toUpperCase() + role?.slice(1)) || 'Pengguna'}</span>.
+            <p className="text-sm text-[var(--color-text-muted)] leading-relaxed px-4 opacity-80">
+              Maaf, halaman ini tidak dapat diakses oleh role <span className="font-bold text-rose-500 px-1.5 py-0.5 rounded-lg bg-rose-500/5 border border-rose-500/10 uppercase tracking-tighter text-xs">{(role?.charAt(0).toUpperCase() + role?.slice(1)) || 'Pengguna'}</span>.
             </p>
           </div>
 
           <button
             onClick={() => navigate(-1)}
-            className="group h-12 px-8 rounded-2xl bg-rose-500 text-white text-xs font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-rose-500/20 flex items-center gap-3"
+            className="group h-12 px-8 rounded-2xl bg-rose-500 text-white text-xs font-bold uppercase tracking-wide hover:scale-105 active:scale-95 transition-all shadow-xl shadow-rose-500/20 flex items-center gap-3"
           >
             <span>←</span>
             Kembali
@@ -300,22 +300,22 @@ function RoleFlagRoute({ children, roles = [], flag, label }) {
         <div className="relative z-10 flex flex-col items-center max-w-sm w-full">
           <div className="relative mb-8">
             <div className="relative w-20 h-20 rounded-[2.5rem] bg-amber-400 flex items-center justify-center shadow-sm">
-              <Lock className="text-3xl text-white drop-shadow-md" />
+              <Lock className="w-6 h-6 text-white drop-shadow-md" />
             </div>
           </div>
 
           <div className="text-center space-y-3 mb-10">
-            <h2 className="text-2xl font-black text-[var(--color-text)] tracking-tight">
+            <h2 className="text-2xl font-bold text-[var(--color-text)] tracking-tight">
               Modul Tidak Aktif
             </h2>
-            <p className="text-[13px] text-[var(--color-text-muted)] leading-relaxed px-4 opacity-80">
+            <p className="text-sm text-[var(--color-text-muted)] leading-relaxed px-4 opacity-80">
               Fitur <span className="font-bold text-[var(--color-text)] px-1.5 py-0.5 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)]">{label || flag}</span> saat ini sedang dinonaktifkan oleh administrator sistem.
             </p>
           </div>
 
           <button
             onClick={() => navigate(-1)}
-            className="group h-12 px-8 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-black/10 flex items-center gap-3"
+            className="group h-12 px-8 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold uppercase tracking-wide hover:scale-105 active:scale-95 transition-all shadow-xl shadow-black/10 flex items-center gap-3"
           >
             <span>←</span>
             Kembali Sekarang
@@ -342,12 +342,12 @@ function MaintenancePage() {
         {/* Icon */}
         <div className="flex items-center justify-center mb-6">
           <div className="w-24 h-24 rounded-3xl bg-amber-500/10 border-2 border-amber-500/20 flex items-center justify-center shadow-xl shadow-amber-500/10">
-            <Wrench className="text-4xl text-amber-500" />
+            <Wrench className="w-6 h-6 text-amber-500" />
           </div>
         </div>
 
         {/* Text */}
-        <h1 className="text-3xl font-black font-heading tracking-tight text-[var(--color-text)] mb-3">
+        <h1 className="text-3xl font-bold font-heading tracking-tight text-[var(--color-text)] mb-3">
           Sedang Maintenance
         </h1>
         <p className="text-[var(--color-text-muted)] text-sm leading-relaxed mb-2">
@@ -360,10 +360,10 @@ function MaintenancePage() {
         {/* Info card */}
         <div className="bg-surface rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 mb-8 text-left">
           <div className="flex items-start gap-3">
-            <TriangleAlert className="text-amber-500 mt-0.5 shrink-0" />
+            <TriangleAlert className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
             <div>
-              <p className="text-[12px] font-black text-amber-700 mb-1">Informasi</p>
-              <p className="text-[11px] text-amber-600/80 leading-relaxed">
+              <p className="text-xs font-bold text-amber-700 mb-1">Informasi</p>
+              <p className="text-xs text-amber-600/80 leading-relaxed">
                 Seluruh data kamu aman. Maintenance ini bersifat sementara dan tidak menghapus data apapun.
               </p>
             </div>
@@ -372,13 +372,13 @@ function MaintenancePage() {
 
         {/* Login as different account or logout */}
         <div className="flex flex-col items-center gap-2">
-          <p className="text-[11px] text-[var(--color-text-muted)]">
-            Login sebagai: <span className="font-black text-[var(--color-text)]">{profile?.name}</span>
-            <span className="ml-1.5 px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] text-[10px] font-black uppercase border border-[var(--color-border)]">{profile?.role}</span>
+          <p className="text-xs text-[var(--color-text-muted)]">
+            Login sebagai: <span className="font-bold text-[var(--color-text)]">{profile?.name}</span>
+            <span className="ml-1.5 px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] text-xs font-bold uppercase border border-[var(--color-border)]">{profile?.role}</span>
           </p>
           <button
             onClick={async () => { await signOut(); navigate('/login') }}
-            className="h-9 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[11px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all"
+            className="h-9 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all"
           >
             Ganti Akun
           </button>
@@ -421,10 +421,10 @@ function NotFoundPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--color-surface)] px-4">
       <div className="text-center max-w-sm">
-        <div className="text-[80px] font-black font-heading leading-none gradient-text mb-2 select-none">
+        <div className="text-[80px] font-bold font-heading leading-none gradient-text mb-2 select-none">
           404
         </div>
-        <h2 className="text-xl font-black text-[var(--color-text)] mb-2">
+        <h2 className="text-xl font-bold text-[var(--color-text)] mb-2">
           Halaman Tidak Ditemukan
         </h2>
         <p className="text-sm text-[var(--color-text-muted)] mb-8 leading-relaxed">
@@ -433,7 +433,7 @@ function NotFoundPage() {
         <div className="flex items-center justify-center gap-3">
           <button
             onClick={() => navigate(-1)}
-            className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-sm font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">
+            className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-sm font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">
             ← Kembali
           </button>
           <a href="/dashboard" className="btn btn-primary h-10 px-5 text-sm">

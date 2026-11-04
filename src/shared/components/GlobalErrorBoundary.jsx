@@ -120,7 +120,7 @@ function ErrorFallback({
                 <span className={`
                     absolute top-4 right-4
                     px-3 py-1 rounded-full font-mono
-                    text-[10px] font-black uppercase tracking-[0.15em]
+                    text-xs font-bold uppercase tracking-wide leading-none
                     border
                     ${isAmber
                         ? 'bg-amber-500/10 text-amber-600 border-amber-500/20'
@@ -137,16 +137,16 @@ function ErrorFallback({
                         : 'bg-red-500/10 border-red-500/20'}
                 `}>
                     {isOffline
-                        ? <CircleAlert className={`text-xl ${isAmber ? 'text-amber-500' : 'text-red-500'}`} />
-                        : <TriangleAlert className={`text-xl ${isAmber ? 'text-amber-500' : 'text-red-500'}`} />}
+                        ? <CircleAlert className={`w-6 h-6 ${isAmber ? 'text-amber-500' : 'text-red-500'}`} />
+                        : <TriangleAlert className={`w-6 h-6 ${isAmber ? 'text-amber-500' : 'text-red-500'}`} />}
                 </div>
 
                 {/* Heading + subtext */}
                 <div className="text-center max-w-xs">
-                    <p className="text-base font-black text-[var(--color-text)] tracking-tight mb-1.5">
+                    <p className="text-base font-bold text-[var(--color-text)] tracking-tight mb-1.5">
                         {isOffline ? 'Tidak ada koneksi' : isModuleError ? 'Gagal memuat modul' : 'Terjadi kesalahan'}
                     </p>
-                    <p className="text-[12px] text-[var(--color-text-muted)] leading-relaxed">
+                    <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
                         {isOffline
                             ? 'Periksa koneksi internet kamu, lalu coba lagi.'
                             : isModuleError
@@ -161,7 +161,7 @@ function ErrorFallback({
                         role="code"
                         aria-label="Pesan error"
                         className={`
-                            w-full font-mono text-[11.5px] leading-relaxed break-all
+                            w-full font-mono text-xs leading-relaxed break-all
                             bg-[var(--color-surface-alt)] border border-[var(--color-border)]
                             border-l-[3px] rounded-r-xl px-3 py-2.5
                             ${isAmber ? 'border-l-amber-500 text-amber-600' : 'border-l-red-500 text-red-500'}
@@ -175,7 +175,7 @@ function ErrorFallback({
                 {isDev && errorInfo?.componentStack && (
                     <details open className="w-full">
                         <summary className="
-                            text-[11px] text-[var(--color-text-muted)] cursor-pointer select-none
+                            text-xs text-[var(--color-text-muted)] cursor-pointer select-none
                             list-none inline-flex items-center gap-1.5
                             hover:text-[var(--color-text)] transition-colors
                         ">
@@ -189,7 +189,7 @@ function ErrorFallback({
                         <pre className="
                             mt-2 p-3 rounded-xl
                             bg-[var(--color-surface-alt)] border border-[var(--color-border)]
-                            text-[10px] text-red-400 overflow-auto max-h-44
+                            text-xs text-red-400 overflow-auto max-h-44
                             leading-relaxed whitespace-pre-wrap
                         ">
                             {errorInfo.componentStack.trim()}
@@ -202,7 +202,7 @@ function ErrorFallback({
                     <p
                         role="status"
                         aria-live="polite"
-                        className={`text-[11px] text-center ${canRetry ? 'text-amber-500' : 'text-red-500'}`}
+                        className={`text-xs text-center ${canRetry ? 'text-amber-500' : 'text-red-500'}`}
                     >
                         {canRetry
                             ? `Percobaan ke-${retryCount} dari ${maxRetries}`
@@ -221,9 +221,9 @@ function ErrorFallback({
                         aria-label={isModuleError ? 'Muat ulang halaman' : canRetry ? `Coba lagi, percobaan ke-${retryCount + 1}` : 'Batas percobaan tercapai'}
                         className={`
                             w-full h-10 rounded-xl
-                            text-white text-[12px] font-black uppercase tracking-widest
+                            text-white text-xs font-bold uppercase tracking-wide
                             flex items-center justify-center gap-2
-                            hover:scale-[1.02] active:scale-[0.98] transition-all duration-200
+                            hover:scale-[1.02] active:scale-[0.98] transition-colors duration-200
                             disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100
                             ${isAmber
                                 ? 'bg-warning shadow-lg'
@@ -231,7 +231,7 @@ function ErrorFallback({
                             }
                         `}
                     >
-                        <RotateCw />
+                        <RotateCw className="w-4 h-4" />
                         {isModuleError ? 'Muat Ulang Halaman' : canRetry ? 'Coba Lagi' : 'Batas Tercapai'}
                     </button>
 
@@ -247,13 +247,13 @@ function ErrorFallback({
                                     className="
                                         flex-1 h-10 rounded-xl
                                         bg-[var(--color-surface-alt)] border border-[var(--color-border)]
-                                        text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest
+                                        text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide
                                         flex items-center justify-center gap-1.5
                                         hover:bg-[var(--color-border)] hover:text-[var(--color-text)]
-                                        active:scale-95 transition-all duration-150
+                                        active:scale-95 transition-colors duration-150
                                     "
                                 >
-                                    <IconComp />
+                                    <IconComp className="w-4 h-4" />
                                     {label}
                                 </button>
                             )
@@ -263,7 +263,7 @@ function ErrorFallback({
             </div>
 
             {/* Footer: Error ID + timestamp */}
-            <p className="text-[10px] font-mono text-[var(--color-text-muted)] opacity-60 text-center tracking-wide">
+            <p className="text-xs font-mono text-[var(--color-text-muted)] opacity-60 text-center tracking-wide">
                 <span aria-label={`Error ID: ${errorId}`}>{errorId}</span>
                 {' \u00b7 '}
                 <time>{timestamp}</time>

@@ -363,7 +363,7 @@ function ArchiveDetail(props) {
                         return (
                             <label key={k.key} className="flex flex-col p-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]">
                                 <span className="text-xs font-bold" style={{ color: k.color || 'inherit' }}>{k.id}</span>
-                                <span className="text-[10px] text-[var(--color-text-muted)] font-medium mb-1.5 truncate">{k.label || ''}</span>
+                                <span className="text-xs text-[var(--color-text-muted)] font-medium mb-1.5 truncate">{k.label || ''}</span>
                                 <div className="flex items-center gap-1.5 mt-auto">
                                     <input
                                         type="text"
@@ -374,7 +374,7 @@ function ArchiveDetail(props) {
                                         className="w-full h-9 text-center text-sm font-bold rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-indigo-500 outline-none text-[var(--color-text)]"
                                     />
                                     {g && (
-                                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0" style={{ background: g.bg, color: g.color }}>{g.id}</span>
+                                        <span className="text-xs font-bold px-1.5 py-0.5 rounded shrink-0" style={{ background: g.bg, color: g.color }}>{g.id}</span>
                                     )}
                                 </div>
                             </label>
@@ -395,7 +395,7 @@ function ArchiveDetail(props) {
                                         <div key={f.key} className={fieldBox}>
                                             <Icon style={{ color: f.color }} className="w-3.5 h-3.5 shrink-0 opacity-80" />
                                             <input type="number" inputMode="decimal" placeholder={f.label} value={editEx(pStudent.id)?.[f.key] ?? ''} onChange={(e) => handleExtraEdit(f.key, e.target.value)} className="flex-1 w-0 text-xs font-bold bg-transparent text-[var(--color-text)] outline-none" />
-                                            <span className="text-[10px] text-[var(--color-text-muted)] font-bold">{f.unit}</span>
+                                            <span className="text-xs text-[var(--color-text-muted)] font-bold">{f.unit}</span>
                                         </div>
                                     )
                                 })}
@@ -435,7 +435,7 @@ function ArchiveDetail(props) {
                                 <span className="text-xs font-bold text-[var(--color-text-muted)]">{item.label}</span>
                                 <div className="flex items-center justify-center gap-1">
                                     <input type="number" min="0" placeholder="0" value={editEx(pStudent.id)?.[item.key] ?? ''} onChange={(e) => handleExtraEdit(item.key, e.target.value)} className="w-12 h-8 text-center text-sm font-bold rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] outline-none focus:border-indigo-500" />
-                                    <span className="text-[10px] font-bold text-[var(--color-text-muted)]">hari</span>
+                                    <span className="text-xs font-bold text-[var(--color-text-muted)]">hari</span>
                                 </div>
                             </label>
                         ))}
@@ -497,7 +497,7 @@ function ArchiveDetail(props) {
                     <div className="p-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] lg:sticky lg:top-4">
                         <div className="flex items-center justify-between mb-2">
                             <span className={sectionTitle}>Daftar santri</span>
-                            <span className="text-[11px] font-bold text-[var(--color-text-muted)] tabular-nums">{completeCount}/{pStu.length} lengkap</span>
+                            <span className="text-xs font-bold text-[var(--color-text-muted)] tabular-nums">{completeCount}/{pStu.length} lengkap</span>
                         </div>
                         {pStu.length > 10 && (
                             <div className="relative mb-2">
@@ -616,7 +616,7 @@ function ArchiveCard({ entry, loadArchiveDetail, exportBulkPDF, setConfirmDelete
                         {periodLabel(entry)} · {entry.lang === 'ar' ? 'عربي' : 'Indonesia'}
                     </p>
                 </div>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${entry.lang === 'ar' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-indigo-500/10 text-indigo-600'}`}>
+                <span className={`text-xs font-bold px-2 py-0.5 rounded-full shrink-0 ${entry.lang === 'ar' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-indigo-500/10 text-indigo-600'}`}>
                     {entry.lang === 'ar' ? 'Pondok' : 'Reguler'}
                 </span>
             </div>
@@ -676,7 +676,7 @@ function ArchiveStats({ summary, loadArchiveDetail }) {
     const sorted = [...entries].sort((a, b) => pctOf(a) - pctOf(b))
     const stat = (label, value) => (
         <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]">
-            <p className="text-[11px] font-bold text-[var(--color-text-muted)]">{label}</p>
+            <p className="text-xs font-bold text-[var(--color-text-muted)]">{label}</p>
             <p className="text-xl font-bold text-[var(--color-text)] tabular-nums">{value}</p>
         </div>
     )

@@ -67,20 +67,20 @@ const ConfirmDeleteModal = memo(({ isOpen, onClose, onConfirm, title, isDeleting
             <div className="relative w-full max-w-sm bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2rem] shadow-xl p-6 animate-in zoom-in-95 duration-200">
                 <div className="flex flex-col items-center text-center space-y-4">
                     <div className="w-16 h-16 rounded-full bg-rose-500/10 flex items-center justify-center text-rose-500 text-2xl">
-                        <TriangleAlert />
+                        <TriangleAlert className="w-6 h-6" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-black text-[var(--color-text)]">Hapus Informasi?</h3>
-                        <p className="text-[11px] text-[var(--color-text-muted)] mt-1.5 font-medium leading-relaxed">
-                            "<span className="font-black">{title}</span>" akan dihapus permanen dan tidak bisa dikembalikan.
+                        <h3 className="text-lg font-bold text-[var(--color-text)]">Hapus Informasi?</h3>
+                        <p className="text-xs text-[var(--color-text-muted)] mt-1.5 font-medium leading-relaxed">
+                            "<span className="font-bold">{title}</span>" akan dihapus permanen dan tidak bisa dikembalikan.
                         </p>
                     </div>
                     <div className="flex w-full gap-3 pt-2">
-                        <button onClick={onClose} className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-border)] transition-colors">
+                        <button onClick={onClose} className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-border)] transition-colors">
                             Batal
                         </button>
-                        <button onClick={onConfirm} disabled={isDeleting} className="flex-1 h-11 rounded-xl bg-rose-500 text-white text-[10px] font-black uppercase tracking-widest hover:bg-rose-600 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-60">
-                            {isDeleting ? <LoaderCircle className="animate-spin" /> : <Trash2 />}
+                        <button onClick={onConfirm} disabled={isDeleting} className="flex-1 h-11 rounded-xl bg-rose-500 text-white text-xs font-bold uppercase tracking-wide hover:bg-rose-600 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-60">
+                            {isDeleting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
                             Hapus Permanen
                         </button>
                     </div>
@@ -100,20 +100,20 @@ const ConfirmDuplicateModal = memo(({ isOpen, onClose, onConfirm, title, isDupli
             <div className="relative w-full max-w-sm bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2rem] shadow-xl p-6 animate-in zoom-in-95 duration-200">
                 <div className="flex flex-col items-center text-center space-y-4">
                     <div className="w-16 h-16 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-500 text-2xl">
-                        <Copy />
+                        <Copy className="w-6 h-6" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-black text-[var(--color-text)]">Duplikat Informasi?</h3>
-                        <p className="text-[11px] text-[var(--color-text-muted)] mt-1.5 font-medium leading-relaxed">
-                            Bikin salinan draf untuk "<span className="font-black">{title}</span>".
+                        <h3 className="text-lg font-bold text-[var(--color-text)]">Duplikat Informasi?</h3>
+                        <p className="text-xs text-[var(--color-text-muted)] mt-1.5 font-medium leading-relaxed">
+                            Bikin salinan draf untuk "<span className="font-bold">{title}</span>".
                         </p>
                     </div>
                     <div className="flex w-full gap-3 pt-2">
-                        <button onClick={onClose} className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-border)] transition-colors">
+                        <button onClick={onClose} className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-border)] transition-colors">
                             Batal
                         </button>
-                        <button onClick={onConfirm} disabled={isDuplicating} className="flex-1 h-11 rounded-xl bg-indigo-500 text-white text-[10px] font-black uppercase tracking-widest hover:bg-indigo-600 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-60">
-                            {isDuplicating ? <LoaderCircle className="animate-spin" /> : <Copy />}
+                        <button onClick={onConfirm} disabled={isDuplicating} className="flex-1 h-11 rounded-xl bg-indigo-500 text-white text-xs font-bold uppercase tracking-wide hover:bg-indigo-600 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-60">
+                            {isDuplicating ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Copy className="w-4 h-4" />}
                             Duplikat
                         </button>
                     </div>
@@ -183,8 +183,8 @@ const NewsCard = memo(({ news, isSelected, onSelect, onEdit, onDelete, onToggleS
                 className="absolute top-4 left-4 z-10 w-8 h-8 rounded-xl flex items-center justify-center transition-all bg-white shadow-sm border border-[var(--color-border)] opacity-0 group-hover:opacity-100 data-[selected=true]:opacity-100"
                 data-selected={isSelected}>
                 {isSelected
-                    ? <SquareCheck className={`text-sm ${isSelected ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
-                    : <Square className={`text-sm ${isSelected ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />}
+                    ? <SquareCheck className={`w-4 h-4 ${isSelected ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
+                    : <Square className={`w-4 h-4 ${isSelected ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />}
             </button>
 
             {/* Thumbnail */}
@@ -194,14 +194,14 @@ const NewsCard = memo(({ news, isSelected, onSelect, onEdit, onDelete, onToggleS
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" decoding="async" />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center opacity-15">
-                        <Newspaper className="text-5xl" />
+                        <Newspaper className="w-6 h-6" />
                     </div>
                 )}
 
                 {/* View count overlay */}
                 <div className="absolute top-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <span className="px-3 py-1 rounded-full bg-black/40 text-white text-[9px] font-black tracking-widest flex items-center gap-1.5 border border-white/10 uppercase">
-                        <Eye className="text-[8px]" />
+                    <span className="px-3 py-1 rounded-full bg-black/40 text-white text-xs font-bold tracking-wide flex items-center gap-1.5 border border-white/10 uppercase">
+                        <Eye className="w-4 h-4" />
                         {news.view_count || 0} Views
                     </span>
                 </div>
@@ -210,7 +210,7 @@ const NewsCard = memo(({ news, isSelected, onSelect, onEdit, onDelete, onToggleS
                 <div className="absolute top-4 right-4 flex flex-col items-center gap-2">
                     {news.is_featured && (
                         <span className="w-8 h-8 rounded-xl bg-amber-400 flex items-center justify-center shadow-lg" title="Featured">
-                            <Star className="text-white text-[10px]" />
+                            <Star className="w-4 h-4 text-white" />
                         </span>
                     )}
                     <button onClick={() => onToggleStatus(news)}
@@ -218,11 +218,11 @@ const NewsCard = memo(({ news, isSelected, onSelect, onEdit, onDelete, onToggleS
                             ? 'bg-[var(--color-primary)] border-[var(--color-primary)]/20 text-white'
                             : 'bg-white border-[var(--color-border)] text-[var(--color-text-muted)]'}`}
                         title={news.is_published ? 'Arsipkan' : 'Publikasikan'}>
-                        <Rocket className="text-[10px]" />
+                        <Rocket className="w-4 h-4" />
                     </button>
                 </div>
                 <div className="absolute bottom-4 left-4">
-                    <span className="px-3 py-1.5 rounded-xl bg-white text-[9px] font-black uppercase tracking-widest text-[var(--color-primary)] shadow-sm border border-[var(--color-border)]">
+                    <span className="px-3 py-1.5 rounded-xl bg-white text-xs font-bold uppercase tracking-wide text-[var(--color-primary)] shadow-sm border border-[var(--color-border)]">
                         {news.tag}
                     </span>
                 </div>
@@ -230,34 +230,34 @@ const NewsCard = memo(({ news, isSelected, onSelect, onEdit, onDelete, onToggleS
 
             {/* Body */}
             <div className="p-6">
-                <div className="flex items-center gap-3 text-[9px] text-[var(--color-text-muted)] font-black uppercase tracking-widest mb-3 opacity-60">
+                <div className="flex items-center gap-3 text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-wide mb-3 opacity-60">
                     <span className="flex items-center gap-1.5">
-                        <Calendar className="text-[8px]" />
+                        <Calendar className="w-4 h-4" />
                         {getRelativeTime(news.created_at)}
                     </span>
                     <span className="flex items-center gap-1.5 border-l border-[var(--color-border)] pl-3">
-                        <Clock className="text-[8px]" />
+                        <Clock className="w-4 h-4" />
                         {readTime} mnt
                     </span>
                 </div>
-                <h3 className="text-[15px] font-black text-[var(--color-text)] leading-tight line-clamp-2 mb-2.5 group-hover:text-[var(--color-primary)] transition-colors">{news.title}</h3>
+                <h3 className="text-[15px] font-bold text-[var(--color-text)] leading-tight line-clamp-2 mb-2.5 group-hover:text-[var(--color-primary)] transition-colors">{news.title}</h3>
                 {news.excerpt && (
-                    <p className="text-[11px] text-[var(--color-text-muted)] line-clamp-2 leading-relaxed mb-4 opacity-70 font-medium">{decodeEntities(news.excerpt)}</p>
+                    <p className="text-xs text-[var(--color-text-muted)] line-clamp-2 leading-relaxed mb-4 opacity-70 font-medium">{decodeEntities(news.excerpt)}</p>
                 )}
 
                 <div className="flex items-center justify-between mb-5">
                     <div className="flex items-center gap-2">
                         <div className="w-6 h-6 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] border border-[var(--color-border)]">
-                            <User className="text-[8px]" />
+                            <User className="w-4 h-4" />
                         </div>
-                        <span className="text-[10px] font-bold text-[var(--color-text-muted)] opacity-60 capitalize">
+                        <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-60 capitalize">
                             {news.display_name || news.author?.split('@')[0] || 'Admin'}
                         </span>
                     </div>
 
                     {/* View count (Desktop constant visibility) */}
-                    <div className="flex items-center gap-1.5 text-[9px] font-black text-[var(--color-text-muted)] opacity-40 uppercase tracking-widest">
-                        <Eye />
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-[var(--color-text-muted)] opacity-40 uppercase tracking-wide">
+                        <Eye className="w-4 h-4" />
                         {news.view_count || 0}
                     </div>
                 </div>
@@ -265,24 +265,24 @@ const NewsCard = memo(({ news, isSelected, onSelect, onEdit, onDelete, onToggleS
                 {/* Status badge */}
                 {news.scheduled_at && !news.is_published && (
                     <div className="flex items-center gap-2 mb-4 text-amber-600 bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-xl w-fit">
-                        <Clock className="text-[10px] animate-pulse" />
-                        <span className="text-[10px] font-black uppercase tracking-widest">Terjadwal: {new Date(news.scheduled_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}</span>
+                        <Clock className="w-4 h-4 animate-pulse" />
+                        <span className="text-xs font-bold uppercase tracking-wide">Terjadwal: {new Date(news.scheduled_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}</span>
                     </div>
                 )}
 
                 {/* Actions */}
                 <div className="flex items-center gap-2 pt-4 border-t border-[var(--color-border)]">
                     <button onClick={() => onEdit(news)}
-                        className="flex-1 h-10 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-primary)] hover:text-white hover:border-[var(--color-primary)] transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm">
-                        <Pen className="text-[9px]" /> Edit
+                        className="flex-1 h-10 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-primary)] hover:text-white hover:border-[var(--color-primary)] transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm">
+                        <Pen className="w-4 h-4" /> Edit
                     </button>
                     <button onClick={() => onDuplicate(news)} title="Duplikat sebagai draft"
                         className="w-10 h-10 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-sky-500/10 hover:text-sky-500 hover:border-sky-500/30 transition-all flex items-center justify-center active:scale-95">
-                        <Copy className="text-[10px]" />
+                        <Copy className="w-4 h-4" />
                     </button>
                     <button onClick={() => onDelete(news)}
                         className="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-500 border border-rose-500/20 hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center active:scale-95 shadow-sm">
-                        <Trash2 className="text-[10px]" />
+                        <Trash2 className="w-4 h-4" />
                     </button>
                 </div>
             </div>
@@ -297,23 +297,23 @@ const BulkActionBar = memo(({ count, onPublish, onArchive, onSetFeatured, onRemo
     if (count === 0) return null
     return (
         <div className="flex items-center gap-3 px-4 py-3 bg-[var(--color-primary)] rounded-2xl shadow-lg animate-in slide-in-from-bottom-4 duration-200 overflow-x-auto scrollbar-hide relative max-w-full">
-            <span className="text-white text-[11px] font-black shrink-0 whitespace-nowrap">{count} dipilih</span>
+            <span className="text-white text-xs font-bold shrink-0 whitespace-nowrap">{count} dipilih</span>
             <div className="h-4 w-px bg-white/20 shrink-0" />
-            <button onClick={onPublish} className="shrink-0 text-white text-[10px] font-black uppercase tracking-widest hover:opacity-80 transition-opacity flex items-center gap-1.5 px-2">
-                <Rocket className="text-[9px]" /> Publikasikan
+            <button onClick={onPublish} className="shrink-0 text-white text-xs font-bold uppercase tracking-wide hover:opacity-80 transition-opacity flex items-center gap-1.5 px-2">
+                <Rocket className="w-4 h-4" /> Publikasikan
             </button>
-            <button onClick={onArchive} className="shrink-0 text-white text-[10px] font-black uppercase tracking-widest hover:opacity-80 transition-opacity flex items-center gap-1.5 px-2">
-                <Archive className="text-[9px]" /> Arsipkan
+            <button onClick={onArchive} className="shrink-0 text-white text-xs font-bold uppercase tracking-wide hover:opacity-80 transition-opacity flex items-center gap-1.5 px-2">
+                <Archive className="w-4 h-4" /> Arsipkan
             </button>
-            <button onClick={onSetFeatured} className="shrink-0 text-white text-[10px] font-black uppercase tracking-widest hover:opacity-80 transition-opacity flex items-center gap-1.5 px-2">
-                <Star className="text-[9px]" /> Highlight
+            <button onClick={onSetFeatured} className="shrink-0 text-white text-xs font-bold uppercase tracking-wide hover:opacity-80 transition-opacity flex items-center gap-1.5 px-2">
+                <Star className="w-4 h-4" /> Highlight
             </button>
-            <button onClick={onRemoveFeatured} className="shrink-0 text-white text-[10px] font-black uppercase tracking-widest hover:opacity-80 transition-opacity flex items-center gap-1.5 px-2">
-                <Star className="text-[9px] opacity-40" /> Unhighlight
+            <button onClick={onRemoveFeatured} className="shrink-0 text-white text-xs font-bold uppercase tracking-wide hover:opacity-80 transition-opacity flex items-center gap-1.5 px-2">
+                <Star className="w-4 h-4 opacity-40" /> Unhighlight
             </button>
             <div className="h-4 w-px bg-white/20 shrink-0 mx-1" />
-            <button onClick={onDelete} className="shrink-0 text-rose-200 text-[10px] font-black uppercase tracking-widest hover:text-white transition-colors flex items-center gap-1.5 px-2">
-                <Trash2 className="text-[9px]" /> Hapus
+            <button onClick={onDelete} className="shrink-0 text-rose-200 text-xs font-bold uppercase tracking-wide hover:text-white transition-colors flex items-center gap-1.5 px-2">
+                <Trash2 className="w-4 h-4" /> Hapus
             </button>
             <div className="h-4 w-px bg-white/20 shrink-0 mx-1" />
             
@@ -325,17 +325,17 @@ const BulkActionBar = memo(({ count, onPublish, onArchive, onSetFeatured, onRemo
                             e.target.value = ""
                         }
                     }}
-                    className="h-8 pl-3 pr-8 rounded-xl bg-white/10 border border-white/20 text-white text-[9px] font-black uppercase tracking-widest outline-none focus:bg-white/20 transition-all appearance-none cursor-pointer min-w-[120px]"
+                    className="h-8 pl-3 pr-8 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-bold uppercase tracking-wide outline-none focus:bg-white/20 transition-all appearance-none cursor-pointer min-w-[120px]"
                 >
                     <option value="" className="text-slate-900">Ubah Kategori...</option>
                     {tags.map(t => <option key={t} value={t} className="text-slate-900">{t}</option>)}
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-[8px] text-white/50 pointer-events-none" />
+                <ChevronDown className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
             </div>
 
             <div className="ml-auto flex items-center shrink-0">
                 <button onClick={onClear} className="w-8 h-8 flex items-center justify-center rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors">
-                    <X className="text-sm" />
+                    <X className="w-4 h-4" />
                 </button>
             </div>
         </div>
@@ -666,24 +666,24 @@ export default function NewsListPage() {
 
     return (
         <DashboardLayout title="Manajemen Informasi">
-            <div className="p-4 md:p-6 space-y-5 max-w-[1800px] mx-auto">
+            <div className="space-y-5">
 
                 {/* ── Header Section ── */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 animate-in slide-in-from-top-4 duration-500">
                     <div>
                         <Breadcrumb badge="Admin" items={['CMS Management']} className="mb-1" />
                         <div className="flex items-center gap-2.5 mb-1">
-                            <h1 className="text-2xl font-black font-heading tracking-tight text-[var(--color-text)]">Manajemen Informasi</h1>
-                            <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-500 uppercase tracking-widest">Portal Berita</span>
+                            <h1 className="text-2xl font-bold font-heading tracking-tight text-[var(--color-text)]">Manajemen Informasi</h1>
+                            <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-500 uppercase tracking-wide">Portal Berita</span>
                         </div>
-                        <p className="text-[var(--color-text-muted)] text-[11px] mt-1 font-medium opacity-70">
+                        <p className="text-[var(--color-text-muted)] text-xs mt-1 font-medium opacity-70">
                             Kelola konten berita, pengumuman, dan artikel prestasi sekolah.
                         </p>
                     </div>
                     <div className="flex items-center gap-2">
                         <button onClick={() => navigate('/admin/news/create')}
-                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black flex items-center gap-2 hover:opacity-90 transition-all shadow-lg">
-                            <Plus className="text-[10px]" />Buat Informasi
+                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold flex items-center gap-2 hover:opacity-90 transition-all shadow-lg">
+                            <Plus className="w-4 h-4" />Buat Informasi
                         </button>
                     </div>
                 </div>
@@ -715,8 +715,8 @@ export default function NewsListPage() {
                                         <s.icon className={s.color} />
                                     </div>
                                     <div className="min-w-0">
-                                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 leading-none mb-1">{s.label}</p>
-                                        <p className={`text-xl font-black font-heading leading-none tabular-nums ${s.color}`}>{loading ? '…' : s.val}</p>
+                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 leading-none mb-1">{s.label}</p>
+                                        <p className={`text-xl font-bold font-heading leading-none tabular-nums ${s.color}`}>{loading ? '…' : s.val}</p>
                                     </div>
                                 </div>
                             ))}
@@ -747,16 +747,16 @@ export default function NewsListPage() {
                     <div className="flex flex-row items-center gap-2 p-3">
                         {/* Search */}
                         <div className="relative flex-1 min-w-0">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
+                            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" />
                             <input
                                 value={searchInput}
                                 onChange={e => setSearchInput(e.target.value)}
                                 placeholder="Cari judul, kategori, konten, atau penulis..."
-                                className="w-full h-9 pl-8 pr-8 rounded-xl border border-[var(--color-border)] bg-transparent text-[11px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition-all"
+                                className="w-full h-9 pl-8 pr-8 rounded-xl border border-[var(--color-border)] bg-transparent text-xs font-bold focus:outline-none focus:border-[var(--color-primary)] transition-all"
                             />
                             {searchInput && (
                                 <button onClick={() => { setSearchInput(''); setSearch('') }} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-                                    <X className="text-[9px]" />
+                                    <X className="w-4 h-4" />
                                 </button>
                             )}
                         </div>
@@ -766,11 +766,11 @@ export default function NewsListPage() {
                             {/* Select All */}
                             {newsList.length > 0 && (
                                 <button onClick={() => selectedIds.size === paginatedNews.length ? clearSelection() : selectAll()}
-                                    className={`h-9 px-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${selectedIds.size > 0 ? 'bg-indigo-500 border-indigo-500 text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                    {selectedIds.size > 0 ? <SquareCheck className="text-[9px]" /> : <Square className="text-[9px]" />}
+                                    className={`h-9 px-3 rounded-xl border text-xs font-bold uppercase tracking-wide transition-all active:scale-95 flex items-center justify-center gap-2 ${selectedIds.size > 0 ? 'bg-indigo-500 border-indigo-500 text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
+                                    {selectedIds.size > 0 ? <SquareCheck className="w-4 h-4" /> : <Square className="w-4 h-4" />}
                                     <span className="hidden xs:inline">{selectedIds.size > 0 ? 'Terpilih' : 'Pilih'}</span>
                                     {selectedIds.size > 0 && (
-                                        <span className="w-4 h-4 rounded-full bg-white/20 text-white text-[9px] font-black flex items-center justify-center">
+                                        <span className="w-4 h-4 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center">
                                             {selectedIds.size}
                                         </span>
                                     )}
@@ -780,12 +780,12 @@ export default function NewsListPage() {
                             {/* Filter toggle */}
                             <button
                                 onClick={() => setShowFilter(!showFilter)}
-                                className={`h-9 px-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${showFilter || filterStatus !== 'all' || sortBy !== 'newest' ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
+                                className={`h-9 px-3 rounded-xl border text-xs font-bold uppercase tracking-wide transition-all active:scale-95 flex items-center justify-center gap-2 ${showFilter || filterStatus !== 'all' || sortBy !== 'newest' ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
                             >
-                                <SlidersHorizontal />
+                                <SlidersHorizontal className="w-4 h-4" />
                                 <span className="hidden xs:inline">Filter</span>
                                 {(filterStatus !== 'all' || sortBy !== 'newest') && (
-                                    <span className="w-4 h-4 rounded-full bg-white/30 text-white text-[9px] font-black flex items-center justify-center">
+                                    <span className="w-4 h-4 rounded-full bg-white/30 text-white text-xs font-bold flex items-center justify-center">
                                         {(filterStatus !== 'all' ? 1 : 0) + (sortBy !== 'newest' ? 1 : 0)}
                                     </span>
                                 )}
@@ -796,12 +796,12 @@ export default function NewsListPage() {
                                 <button onClick={() => setViewMode('grid')}
                                     className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${viewMode === 'grid' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm border border-[var(--color-border)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                                     title="Tampilan Grid">
-                                    <GripHorizontal className="text-[10px]" />
+                                    <GripHorizontal className="w-4 h-4" />
                                 </button>
                                 <button onClick={() => setViewMode('list')}
                                     className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${viewMode === 'list' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm border border-[var(--color-border)]' : 'text-[var(--color-text-muted)] hover:text(--color-text)'}`}
                                     title="Tampilan List">
-                                    <TableProperties className="text-[10px]" />
+                                    <TableProperties className="w-4 h-4" />
                                 </button>
                             </div>
 
@@ -813,9 +813,9 @@ export default function NewsListPage() {
                                         setFilterStatus('all'); setSortBy('newest');
                                         setFilterAuthor('all'); setFilterDateRange('all');
                                     }}
-                                    className="h-9 px-3 rounded-xl border border-red-500/20 bg-red-500/5 text-red-500 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-red-500/10 active:scale-95 flex items-center gap-1.5"
+                                    className="h-9 px-3 rounded-xl border border-red-500/20 bg-red-500/5 text-red-500 text-xs font-bold uppercase tracking-wide transition-all hover:bg-red-500/10 active:scale-95 flex items-center gap-1.5"
                                 >
-                                    <X />
+                                    <X className="w-4 h-4" />
                                     <span className="hidden sm:inline">Reset</span>
                                 </button>
                             )}
@@ -827,11 +827,11 @@ export default function NewsListPage() {
                         <div className="px-3 pb-3 -mt-1 flex flex-col gap-3 animate-in slide-in-from-top-2 fade-in duration-300 border-t border-[var(--color-border)] pt-3 mx-3">
                             <div className="flex flex-wrap items-center gap-4">
                                 <div className="flex flex-col gap-1.5">
-                                    <label className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] ml-1">Status Publikasi</label>
+                                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] ml-1">Status Publikasi</label>
                                     <div className="flex gap-1.5 flex-wrap">
                                         {[{k:'all',l:'Semua'},{k:'published',l:'Terpublikasi'},{k:'draft',l:'Draf'},{k:'scheduled',l:'Terjadwal'},{k:'featured',l:'Unggulan'}].map(({k:s,l}) => (
                                             <button key={s} onClick={() => { setFilterStatus(s); setPage(0) }}
-                                                className={`h-7 px-3 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${filterStatus === s ? 'bg-[var(--color-primary)] text-white shadow-md' : 'border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                                                className={`h-7 px-3 rounded-lg text-xs font-bold uppercase tracking-wide transition-all ${filterStatus === s ? 'bg-[var(--color-primary)] text-white shadow-md' : 'border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                                                 {l}
                                             </button>
                                         ))}
@@ -841,18 +841,18 @@ export default function NewsListPage() {
                                 <div className="h-8 w-px bg-[var(--color-border)] hidden lg:block" />
 
                                 <div className="flex flex-col gap-1.5 flex-1 min-w-[150px]">
-                                    <label className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] ml-1">Penulis</label>
+                                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] ml-1">Penulis</label>
                                     <select value={filterAuthor} onChange={e => setFilterAuthor(e.target.value)}
-                                        className="h-8 pl-3 pr-8 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] transition-all appearance-none cursor-pointer">
+                                        className="h-8 pl-3 pr-8 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] transition-all appearance-none cursor-pointer">
                                         <option value="all">Semua Penulis</option>
                                         {authorsList.map(a => <option key={a} value={a}>{a}</option>)}
                                     </select>
                                 </div>
 
                                 <div className="flex flex-col gap-1.5 flex-1 min-w-[150px]">
-                                    <label className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] ml-1">Rentang Waktu</label>
+                                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] ml-1">Rentang Waktu</label>
                                     <select value={filterDateRange} onChange={e => setFilterDateRange(e.target.value)}
-                                        className="h-8 pl-3 pr-8 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] transition-all appearance-none cursor-pointer">
+                                        className="h-8 pl-3 pr-8 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] transition-all appearance-none cursor-pointer">
                                         <option value="all">Semua Waktu</option>
                                         <option value="today">Hari Ini</option>
                                         <option value="week">7 Hari Terakhir</option>
@@ -861,9 +861,9 @@ export default function NewsListPage() {
                                 </div>
 
                                 <div className="flex flex-col gap-1.5 flex-1 min-w-[150px]">
-                                    <label className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] ml-1">Urutan</label>
+                                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] ml-1">Urutan</label>
                                     <select value={sortBy} onChange={e => setSortBy(e.target.value)}
-                                        className="h-8 pl-3 pr-8 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] transition-all appearance-none cursor-pointer">
+                                        className="h-8 pl-3 pr-8 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] transition-all appearance-none cursor-pointer">
                                         <option value="newest">Terbaru</option>
                                         <option value="oldest">Terlama</option>
                                         <option value="views">Paling Banyak Dilihat</option>
@@ -872,7 +872,7 @@ export default function NewsListPage() {
                             </div>
                             
                             <div className="flex items-center justify-between pt-2 border-t border-[var(--color-border)] border-dashed">
-                                <span className="text-[9px] font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-widest">
+                                <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-wide">
                                     Hasil Pencarian: {totalCount} Artikel ditemukan
                                 </span>
                             </div>
@@ -885,24 +885,24 @@ export default function NewsListPage() {
                             <div className="flex flex-wrap items-center gap-2">
                                 {search && (
                                     <button type="button" onClick={() => { setSearchInput(''); setSearch('') }}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-[10px] font-black text-[var(--color-text)]" title="Hapus pencarian">
-                                        <Search className="text-[10px] opacity-60" />
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-xs font-bold text-[var(--color-text)]" title="Hapus pencarian">
+                                        <Search className="w-4 h-4 opacity-60" />
                                         <span className="max-w-[140px] truncate">"{search}"</span>
                                         <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500 transition-colors">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterStatus !== 'all' && (
                                     <button type="button" onClick={() => setFilterStatus('all')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-indigo-500/20 bg-indigo-500/5 text-[10px] font-black text-indigo-600" title="Hapus filter status">
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-indigo-500/20 bg-indigo-500/5 text-xs font-bold text-indigo-600" title="Hapus filter status">
                                         Status: {{published:'Terpublikasi',draft:'Draf',scheduled:'Terjadwal',featured:'Unggulan'}[filterStatus] || filterStatus}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-indigo-500/20 flex items-center justify-center text-indigo-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <X className="text-[10px]" />
+                                            <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
-                                <span className="ml-auto text-[9px] font-black text-[var(--color-text-muted)] opacity-40 uppercase tracking-widest">
+                                <span className="ml-auto text-xs font-bold text-[var(--color-text-muted)] opacity-40 uppercase tracking-wide">
                                     {totalCount} hasil total
                                 </span>
                             </div>
@@ -936,27 +936,27 @@ export default function NewsListPage() {
                     <div className="flex flex-col items-center justify-center py-20 px-6 bg-surface rounded-[3rem] border border-dashed border-[var(--color-border)] animate-in fade-in zoom-in-95 duration-500">
                         <div className="relative mb-6">
                             <div className="w-24 h-24 rounded-full bg-blue-500/5 flex items-center justify-center text-blue-500/20 text-5xl">
-                                <Search />
+                                <Search className="w-6 h-6" />
                             </div>
                             <div className="absolute -top-1 -right-1 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center text-rose-500 border border-[var(--color-border)]">
-                                <X className="text-sm" />
+                                <X className="w-4 h-4" />
                             </div>
                         </div>
-                        <h3 className="text-xl font-black text-[var(--color-text)] mb-2">Informasi Tidak Ditemukan</h3>
-                        <p className="text-[11px] text-[var(--color-text-muted)] opacity-60 font-medium text-center max-w-xs mb-8 leading-relaxed">
+                        <h3 className="text-xl font-bold text-[var(--color-text)] mb-2">Informasi Tidak Ditemukan</h3>
+                        <p className="text-xs text-[var(--color-text-muted)] opacity-60 font-medium text-center max-w-xs mb-8 leading-relaxed">
                             {search ? `Kami tidak menemukan berita yang cocok dengan "${search}".` : 'Belum ada konten berita yang dibuat.'}
                         </p>
                         <div className="flex gap-3">
                             {(search || filterStatus !== 'all') ? (
                                 <button onClick={() => { setSearchInput(''); setSearch(''); setFilterStatus('all') }}
-                                    className="h-11 px-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-surface-alt)] transition-all flex items-center gap-2">
-                                    <RotateCcw className="text-[8px]" />
+                                    className="h-11 px-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all flex items-center gap-2">
+                                    <RotateCcw className="w-4 h-4" />
                                     Reset semua filter
                                 </button>
                             ) : (
                                 <button onClick={() => navigate('/admin/news/create')}
-                                    className="h-11 px-8 rounded-2xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all flex items-center gap-2 shadow-lg">
-                                    <Plus className="text-[9px]" />
+                                    className="h-11 px-8 rounded-2xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 active:scale-95 transition-all flex items-center gap-2 shadow-lg">
+                                    <Plus className="w-4 h-4" />
                                     Buat Informasi Pertama
                                 </button>
                             )}
@@ -985,25 +985,25 @@ export default function NewsListPage() {
                                     <table className="w-full text-left border-collapse">
                                         <thead>
                                             <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/50">
-                                                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] w-12 text-center">
+                                                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] w-12 text-center">
                                                     <button onClick={() => selectedIds.size === paginatedNews.length ? clearSelection() : selectAll()}>
-                                                        {selectedIds.size > 0 ? <SquareCheck className={selectedIds.size > 0 ? 'text-[var(--color-primary)]' : ''} /> : <Square className={selectedIds.size > 0 ? 'text-[var(--color-primary)]' : ''} />}
+                                                        {selectedIds.size > 0 ? <SquareCheck className={`w-4 h-4 ${selectedIds.size > 0 ? 'text-[var(--color-primary)]' : ''}`} /> : <Square className={`w-4 h-4 ${selectedIds.size > 0 ? 'text-[var(--color-primary)]' : ''}`} />}
                                                     </button>
                                                 </th>
-                                                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Informasi</th>
-                                                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hidden md:table-cell">
+                                                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Informasi</th>
+                                                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hidden md:table-cell">
                                                     <div className="flex justify-center">KATEGORI</div>
                                                 </th>
-                                                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hidden lg:table-cell">
+                                                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hidden lg:table-cell">
                                                     <div className="flex justify-center">STATUS</div>
                                                 </th>
-                                                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hidden xl:table-cell">
+                                                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hidden xl:table-cell">
                                                     <div className="flex justify-center">SEO</div>
                                                 </th>
-                                                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hidden xl:table-cell">
+                                                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hidden xl:table-cell">
                                                     <div className="flex justify-center">VIEWS</div>
                                                 </th>
-                                                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                                                <th className="px-6 py-4 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                                     <div className="flex justify-center">AKSI</div>
                                                 </th>
                                             </tr>
@@ -1013,17 +1013,17 @@ export default function NewsListPage() {
                                                 <tr key={news.id} className={`hover:bg-[var(--color-surface-alt)]/30 transition-colors ${selectedIds.has(news.id) ? 'bg-[var(--color-primary)]/5' : ''}`}>
                                                     <td className="px-6 py-4 text-center">
                                                         <button onClick={() => toggleSelect(news.id)}>
-                                                            {selectedIds.has(news.id) ? <SquareCheck className={selectedIds.has(news.id) ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-30'} /> : <Square className={selectedIds.has(news.id) ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-30'} />}
+                                                            {selectedIds.has(news.id) ? <SquareCheck className={selectedIds.has(news.id) ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-30'} className="w-4 h-4" /> : <Square className={selectedIds.has(news.id) ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-30'} className="w-4 h-4" />}
                                                         </button>
                                                     </td>
                                                     <td className="px-6 py-4 min-w-[300px]">
                                                         <div className="flex items-center gap-4">
                                                             <div className="w-12 h-12 rounded-xl bg-[var(--color-surface-alt)] overflow-hidden shrink-0 border border-[var(--color-border)]">
-                                                                {news.image_url ? <img src={news.image_url} className="w-full h-full object-cover" loading="lazy" decoding="async" /> : <div className="w-full h-full flex items-center justify-center opacity-20"><Newspaper /></div>}
+                                                                {news.image_url ? <img src={news.image_url} className="w-full h-full object-cover" loading="lazy" decoding="async" /> : <div className="w-full h-full flex items-center justify-center opacity-20"><Newspaper className="w-4 h-4" /></div>}
                                                             </div>
                                                             <div>
-                                                                <h4 className="text-[13px] font-black text-[var(--color-text)] line-clamp-1 mb-0.5">{news.title}</h4>
-                                                                <div className="flex items-center gap-3 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider">
+                                                                <h4 className="text-sm font-bold text-[var(--color-text)] line-clamp-1 mb-0.5">{news.title}</h4>
+                                                                <div className="flex items-center gap-3 text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">
                                                                     <span>{new Date(news.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}</span>
                                                                     <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" loading="lazy" decoding="async" />
                                                                     <span>{news.display_name || news.author?.split('@')[0] || 'Admin'}</span>
@@ -1033,7 +1033,7 @@ export default function NewsListPage() {
                                                     </td>
                                                     <td className="px-6 py-4 hidden md:table-cell">
                                                         <div className="flex justify-center">
-                                                            <span className="px-2.5 py-1 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[9px] font-black uppercase tracking-widest text-[var(--color-primary)]">
+                                                            <span className="px-2.5 py-1 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-primary)]">
                                                                 {news.tag}
                                                             </span>
                                                         </div>
@@ -1041,31 +1041,31 @@ export default function NewsListPage() {
                                                     <td className="px-6 py-4 hidden lg:table-cell">
                                                         <div className="flex items-center justify-center gap-2">
                                                             <div className={`w-2 h-2 rounded-full ${news.is_published ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-amber-500 animate-pulse'}`} />
-                                                            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">
+                                                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">
                                                                 {news.is_published ? 'Publik' : 'Draft'}
                                                             </span>
                                                         </div>
                                                     </td>
                                                     <td className="px-6 py-4 hidden xl:table-cell text-center">
                                                         <div className="flex items-center justify-center">
-                                                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-[10px] font-black shadow-sm ${news.seo_score >= 80 ? 'bg-emerald-500/10 text-emerald-600' : news.seo_score >= 50 ? 'bg-amber-500/10 text-amber-600' : 'bg-rose-500/10 text-rose-600'}`} title={`SEO Score: ${news.seo_score || 0}/100`}>
+                                                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold shadow-sm ${news.seo_score >= 80 ? 'bg-emerald-500/10 text-emerald-600' : news.seo_score >= 50 ? 'bg-amber-500/10 text-amber-600' : 'bg-rose-500/10 text-rose-600'}`} title={`SEO Score: ${news.seo_score || 0}/100`}>
                                                                 {news.seo_score || 0}
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td className="px-6 py-4 hidden xl:table-cell text-center">
-                                                        <div className="flex items-center justify-center gap-1.5 text-[10px] font-black text-[var(--color-text-muted)]">
-                                                            <Eye className="opacity-40" />
+                                                        <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-[var(--color-text-muted)]">
+                                                            <Eye className="w-4 h-4 opacity-40" />
                                                             {news.view_count || 0}
                                                         </div>
                                                     </td>
                                                     <td className="px-6 py-4 text-center">
                                                         <div className="flex items-center justify-center gap-1">
                                                             <button onClick={() => navigate(`/admin/news/edit/${news.id}`)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 transition-all text-sm" title="Edit">
-                                                                <Pen className="text-xs" />
+                                                                <Pen className="w-4 h-4" />
                                                             </button>
                                                             <button onClick={() => setDeleteModal({ isOpen: true, data: news, isDeleting: false })} className="w-8 h-8 rounded-lg flex items-center justify-center text-rose-500 hover:bg-rose-500/10 transition-all text-sm" title="Hapus">
-                                                                <Trash2 className="text-xs" />
+                                                                <Trash2 className="w-4 h-4" />
                                                             </button>
                                                         </div>
                                                     </td>
@@ -1082,7 +1082,7 @@ export default function NewsListPage() {
                             <div className="flex items-center justify-center gap-2 pt-8">
                                 <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}
                                     className="w-10 h-10 rounded-xl border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] disabled:opacity-30 disabled:cursor-not-allowed transition-all bg-[var(--color-surface)]">
-                                    <ChevronLeft className="text-xs" />
+                                    <ChevronLeft className="w-4 h-4" />
                                 </button>
                                 {Array.from({ length: totalPages }, (_, i) => i).filter(i => {
                                     if (totalPages <= 7) return true
@@ -1095,20 +1095,20 @@ export default function NewsListPage() {
                                     return acc
                                 }, []).map((item) => {
                                     if (typeof item === 'string') return (
-                                        <span key={item} className="w-10 h-10 flex items-center justify-center text-[11px] font-black text-[var(--color-text-muted)] select-none">…</span>
+                                        <span key={item} className="w-10 h-10 flex items-center justify-center text-xs font-bold text-[var(--color-text-muted)] select-none">…</span>
                                     )
                                     return (
                                         <button key={item} onClick={() => setPage(item)}
-                                            className={`w-10 h-10 rounded-xl text-[11px] font-black transition-all ${item === page ? 'bg-[var(--color-primary)] text-white shadow-lg' : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'}`}>
+                                            className={`w-10 h-10 rounded-xl text-xs font-bold transition-all ${item === page ? 'bg-[var(--color-primary)] text-white shadow-lg' : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'}`}>
                                             {item + 1}
                                         </button>
                                     )
                                 })}
                                 <button onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={page === totalPages - 1}
                                     className="w-10 h-10 rounded-xl border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] disabled:opacity-30 disabled:cursor-not-allowed transition-all bg-[var(--color-surface)]">
-                                    <ChevronRight className="text-xs" />
+                                    <ChevronRight className="w-4 h-4" />
                                 </button>
-                                <span className="text-[10px] text-[var(--color-text-muted)] font-black uppercase tracking-widest ml-4 opacity-40">
+                                <span className="text-xs text-[var(--color-text-muted)] font-bold uppercase tracking-wide ml-4 opacity-40">
                                     Hal {page + 1} dari {totalPages}
                                 </span>
                             </div>

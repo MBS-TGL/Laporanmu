@@ -147,17 +147,17 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
             title: 'Dua Cara Memulai Input Nilai',
             subtitle: 'Pilih jalur yang paling nyaman untukmu',
             body: (
-                <div className="space-y-3 text-[11px] text-[var(--color-text)] leading-relaxed">
+                <div className="space-y-3 text-xs text-[var(--color-text)] leading-relaxed">
                     <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]">
-                        <p className="font-black text-[var(--color-text)] mb-1 flex items-center gap-1.5">
-                            <span className="w-5 h-5 rounded-full bg-indigo-500 text-white text-[9px] font-black flex items-center justify-center shrink-0">1</span>
+                        <p className="font-bold text-[var(--color-text)] mb-1 flex items-center gap-1.5">
+                            <span className="w-5 h-5 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>
                             Lewat tombol "＋ Buat Raport"
                         </p>
                         <p className="text-[var(--color-text-muted)] pl-6">Klik tombol di pojok kanan atas → pilih kelas → atur bulan & tahun → isi nama Musyrif → pilih template bahasa → klik <strong>"Mulai Input Nilai"</strong>.</p>
                     </div>
                     <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]">
-                        <p className="font-black text-[var(--color-text)] mb-1 flex items-center gap-1.5">
-                            <span className="w-5 h-5 rounded-full bg-emerald-500 text-white text-[9px] font-black flex items-center justify-center shrink-0">2</span>
+                        <p className="font-bold text-[var(--color-text)] mb-1 flex items-center gap-1.5">
+                            <span className="w-5 h-5 rounded-full bg-emerald-500 text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>
                             Langsung klik kartu kelas
                         </p>
                         <p className="text-[var(--color-text-muted)] pl-6">Di halaman utama, klik langsung kartu kelas yang ingin diisi. Kamu akan langsung masuk ke halaman input nilai tanpa perlu mengatur periode.</p>
@@ -173,7 +173,7 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
             iconBg: 'bg-indigo-500/15',
             title: 'Mengisi Nilai Santri',
             subtitle: 'Input 5 kriteria penilaian karakter',
-            body: <p className="text-[12px] text-[var(--color-text)] leading-relaxed">Setiap santri memiliki 5 kolom nilai: Akhlak, Ibadah, Kebersihan, Al-Quran, dan Bahasa. Nilai berkisar antara 0–9. Tekan <strong>Tab</strong> or <strong>Enter</strong> untuk berpindah ke cell berikutnya dengan cepat.</p>,
+            body: <p className="text-xs text-[var(--color-text)] leading-relaxed">Setiap santri memiliki 5 kolom nilai: Akhlak, Ibadah, Kebersihan, Al-Quran, dan Bahasa. Nilai berkisar antara 0–9. Tekan <strong>Tab</strong> or <strong>Enter</strong> untuk berpindah ke cell berikutnya dengan cepat.</p>,
             tips: 'Ketik angka 0–9 langsung saat cell aktif. Warna cell berubah otomatis sesuai grade — hijau untuk nilai tinggi, merah untuk nilai rendah.',
             img: TUTORIAL_IMAGES[1],
         },
@@ -183,7 +183,7 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
             iconBg: 'bg-sky-500/15',
             title: 'Auto-Save & Status Simpan',
             subtitle: 'Data tersimpan otomatis ke server',
-            body: <p className="text-[12px] text-[var(--color-text)] leading-relaxed">Setiap perubahan nilai tersimpan otomatis ke database dalam 1.5 detik. Indikator berwarna hijau (✓) menandakan data sudah tersimpan. Tekan <strong>Ctrl+S</strong> atau klik "Simpan Semua" untuk menyimpan sekaligus.</p>,
+            body: <p className="text-xs text-[var(--color-text)] leading-relaxed">Setiap perubahan nilai tersimpan otomatis ke database dalam 1.5 detik. Indikator berwarna hijau (✓) menandakan data sudah tersimpan. Tekan <strong>Ctrl+S</strong> atau klik "Simpan Semua" untuk menyimpan sekaligus.</p>,
             tips: 'Jika koneksi terputus, nilai tetap tersimpan sementara sebagai draft di browser. Saat online kembali, muat draft untuk melanjutkan.',
             img: TUTORIAL_IMAGES[2],
         },
@@ -193,7 +193,7 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
             iconBg: 'bg-violet-500/15',
             title: 'Data Tambahan per Santri',
             subtitle: 'Kesehatan, hafalan & catatan',
-            body: <p className="text-[12px] text-[var(--color-text)] leading-relaxed">Selain nilai karakter, isi juga data tambahan: berat & tinggi badan, jumlah hari sakit / izin / alpa, progress Ziyadah & Murojaah hafalan, serta catatan khusus yang akan tercetak di raport untuk orang tua.</p>,
+            body: <p className="text-xs text-[var(--color-text)] leading-relaxed">Selain nilai karakter, isi juga data tambahan: berat & tinggi badan, jumlah hari sakit / izin / alpa, progress Ziyadah & Murojaah hafalan, serta catatan khusus yang akan tercetak di raport untuk orang tua.</p>,
             tips: 'Data tambahan ini opsional — raport tetap bisa dicetak meski tidak diisi. Namun semakin lengkap datanya, semakin informatif raport yang diterima orang tua.',
             img: TUTORIAL_IMAGES[3],
         },
@@ -203,7 +203,7 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
             iconBg: 'bg-rose-500/15',
             title: 'Isi Massal & Copy Bulan Lalu',
             subtitle: 'Hemat waktu untuk nilai yang sama',
-            body: <p className="text-[12px] text-[var(--color-text)] leading-relaxed">Gunakan "Isi Massal" untuk mengisi nilai yang sama ke banyak santri sekaligus — centang santri yang ingin diisi, set nilai, klik Terapkan. Gunakan "Copy Bulan Lalu" untuk menyalin nilai dari periode sebelumnya sebagai titik awal.</p>,
+            body: <p className="text-xs text-[var(--color-text)] leading-relaxed">Gunakan "Isi Massal" untuk mengisi nilai yang sama ke banyak santri sekaligus — centang santri yang ingin diisi, set nilai, klik Terapkan. Gunakan "Copy Bulan Lalu" untuk menyalin nilai dari periode sebelumnya sebagai titik awal.</p>,
             tips: 'Undo/Redo tersedia dengan Ctrl+Z dan Ctrl+Y jika ingin membatalkan perubahan nilai yang sudah diisi.',
             img: TUTORIAL_IMAGES[4],
         },
@@ -213,7 +213,7 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
             iconBg: 'bg-red-500/15',
             title: 'Cetak, ZIP & WA Blast',
             subtitle: 'Distribusikan raport ke orang tua',
-            body: <p className="text-[12px] text-[var(--color-text)] leading-relaxed">Klik ikon Print untuk mencetak raport dari browser. Klik ZIP untuk mengunduh semua raport dalam satu file. Klik ikon WhatsApp di tiap baris santri untuk kirim raport ke orang tua, atau gunakan "WA Blast" untuk kirim ke semua sekaligus.</p>,
+            body: <p className="text-xs text-[var(--color-text)] leading-relaxed">Klik ikon Print untuk mencetak raport dari browser. Klik ZIP untuk mengunduh semua raport dalam satu file. Klik ikon WhatsApp di tiap baris santri untuk kirim raport ke orang tua, atau gunakan "WA Blast" untuk kirim ke semua sekaligus.</p>,
             tips: 'Hanya santri yang nilainya sudah lengkap (semua 5 kriteria terisi) yang bisa diekspor ke PDF / ZIP / WA.',
             img: TUTORIAL_IMAGES[5],
         },
@@ -223,7 +223,7 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
             iconBg: 'bg-teal-500/15',
             title: 'Arsip & Riwayat',
             subtitle: 'Lihat dan edit raport bulan lalu',
-            body: <p className="text-[12px] text-[var(--color-text)] leading-relaxed">Semua raport yang pernah disimpan tersedia di tab "Riwayat". Kamu bisa melihat raport per kelas per bulan, mengedit nilai yang sudah tersimpan, menghapus arsip, hingga mencetak atau mengirim ulang via WA.</p>,
+            body: <p className="text-xs text-[var(--color-text)] leading-relaxed">Semua raport yang pernah disimpan tersedia di tab "Riwayat". Kamu bisa melihat raport per kelas per bulan, mengedit nilai yang sudah tersimpan, menghapus arsip, hingga mencetak atau mengirim ulang via WA.</p>,
             tips: 'Filter arsip berdasarkan tahun, bulan, atau kelas. Gunakan "Edit Arsip" untuk memperbaiki nilai yang salah input bulan lalu.',
             img: TUTORIAL_IMAGES[6],
         },
@@ -239,29 +239,29 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
             <button 
                 onClick={() => setStep(v => Math.max(0, v - 1))} 
                 disabled={isFirst}
-                className="h-10 px-4 rounded-xl border border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-2 active:scale-95"
+                className="h-10 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-2 active:scale-95"
             >
                 <ChevronLeft className="w-3.5 h-3.5" /> Sebelumnya
             </button>
 
             {/* Pagination badge */}
             <div className="flex items-center gap-1 bg-[var(--color-surface-alt)] px-3 py-1.5 rounded-full border border-[var(--color-border)]">
-                <span className="text-[10px] text-[var(--color-text-muted)] font-black">{step + 1}</span>
-                <span className="text-[9px] text-[var(--color-text-muted)]/50 font-bold">/</span>
-                <span className="text-[9px] text-[var(--color-text-muted)] font-bold">{totalSteps}</span>
+                <span className="text-xs text-[var(--color-text-muted)] font-bold">{step + 1}</span>
+                <span className="text-xs text-[var(--color-text-muted)]/50 font-bold">/</span>
+                <span className="text-xs text-[var(--color-text-muted)] font-bold">{totalSteps}</span>
             </div>
 
             {isLast ? (
                 <button 
                     onClick={onClose}
-                    className="h-10 px-6 rounded-xl bg-amber-500 text-white text-[11px] font-black hover:bg-amber-600 transition-all flex items-center gap-2 shadow-lg active:scale-95"
+                    className="h-10 px-6 rounded-xl bg-amber-500 text-white text-xs font-bold hover:bg-amber-600 transition-all flex items-center gap-2 shadow-lg active:scale-95"
                 >
                     <Check className="w-3.5 h-3.5" /> Selesai
                 </button>
             ) : (
                 <button 
                     onClick={() => setStep(v => Math.min(totalSteps - 1, v + 1))}
-                    className="h-10 px-6 rounded-xl bg-amber-500 text-white text-[11px] font-black hover:bg-amber-600 transition-all flex items-center gap-2 shadow-lg active:scale-95"
+                    className="h-10 px-6 rounded-xl bg-amber-500 text-white text-xs font-bold hover:bg-amber-600 transition-all flex items-center gap-2 shadow-lg active:scale-95"
                 >
                     Berikutnya <ChevronRight className="w-3.5 h-3.5" />
                 </button>
@@ -296,7 +296,7 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
                                 className="w-full object-contain max-h-[300px] md:max-h-[380px] transition-all duration-300 group-hover:scale-[1.01] group-hover:brightness-95" 
                                 loading="lazy" decoding="async" />
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none bg-slate-950/10">
-                                <div className="bg-slate-950/75 text-white text-[10px] font-black px-4 py-2 rounded-full flex items-center gap-1.5 shadow-lg">
+                                <div className="bg-slate-950/75 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1.5 shadow-lg">
                                     <Search className="w-2.5 h-2.5" /> Klik untuk zoom
                                 </div>
                             </div>
@@ -308,19 +308,19 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
                                     const IconComp = currentSlide.icon
                                     return <IconComp className="w-6 h-6 mb-2" />
                                 })()}
-                                <p className="text-[9px] font-black uppercase tracking-widest">Screenshot Slide {step + 1}</p>
+                                <p className="text-xs font-bold uppercase tracking-wide">Screenshot Slide {step + 1}</p>
                             </div>
                         </div>
                     )}
                     
-                    <div className="text-[13px] leading-relaxed text-[var(--color-text)]">
+                    <div className="text-sm leading-relaxed text-[var(--color-text)]">
                         {currentSlide.body}
                     </div>
 
                     {/* Tips Box */}
                     <div className="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/15 flex items-start gap-3">
                         <Lightbulb className="w-3.5 h-3.5 text-amber-500 mt-0.5 shrink-0" />
-                        <p className="text-[11px] font-bold text-amber-700 dark:text-amber-400 leading-normal">{currentSlide.tips}</p>
+                        <p className="text-xs font-bold text-amber-700 dark:text-amber-400 leading-normal">{currentSlide.tips}</p>
                     </div>
                 </div>
             </Modal>
@@ -410,7 +410,7 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
                     </div>
 
                     {/* Minimalist guide caption */}
-                    <p className="mt-6 text-white text-[11px] font-black tracking-widest uppercase animate-lightbox-slide-up select-none pointer-events-none text-center px-4">
+                    <p className="mt-6 text-white text-xs font-bold tracking-wide uppercase animate-lightbox-slide-up select-none pointer-events-none text-center px-4">
                         {isZoomedIn 
                             ? 'Klik & geser gambar untuk detail · Klik sekali untuk zoom-out'
                             : 'Klik gambar untuk zoom-in · Klik luar / tekan ESC untuk keluar'

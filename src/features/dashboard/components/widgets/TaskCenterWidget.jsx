@@ -96,7 +96,7 @@ export function TaskCenterWidget() {
               <ClipboardList className="w-4.5 h-4.5" />
             </div>
             <div>
-              <p className="text-base font-black text-[var(--color-text)]">Pusat Tugas</p>
+              <p className="text-base font-bold text-[var(--color-text)]">Pusat Tugas</p>
               <p className="text-xs text-[var(--color-text-muted)] opacity-75 mt-0.5">Checklist aktivitas hari ini</p>
             </div>
           </div>
@@ -107,7 +107,7 @@ export function TaskCenterWidget() {
 
         {/* Progress Bar */}
         <div className="mt-4 space-y-1.5">
-          <div className="flex justify-between items-center text-xs font-extrabold text-[var(--color-text-muted)]">
+          <div className="flex justify-between items-center text-xs font-bold text-[var(--color-text-muted)]">
             <span>Progress Kerja</span>
             <span className="text-[var(--color-primary)]">{progressPercentage}%</span>
           </div>
@@ -122,19 +122,19 @@ export function TaskCenterWidget() {
         {/* Tasks List */}
         <div className="mt-4 space-y-2.5">
           {pendingTasks.slice(0, 3).map(task => (
-            <div key={task.id} className="flex items-center justify-between text-xs sm:text-[13px] font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors py-1">
+            <div key={task.id} className="flex items-center justify-between text-xs sm:text-sm font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors py-1">
               <div className="flex items-center gap-2 min-w-0">
                 <Circle className="w-4 h-4 text-[var(--color-text-muted)]/50 shrink-0" />
                 <span className="truncate">{task.title}</span>
               </div>
               <div className="flex items-center gap-1.5 shrink-0">
                 {task.urgent && (
-                  <span className="text-[10px] font-black uppercase text-amber-500 flex items-center gap-0.5">
+                  <span className="text-xs font-bold uppercase text-amber-500 flex items-center gap-0.5">
                     <AlertTriangle className="w-3 h-3" />
                     Penting
                   </span>
                 )}
-                <span className="text-[10px] font-bold bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] px-2 py-0.5 rounded-md">
+                <span className="text-xs font-bold bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] px-2 py-0.5 rounded-md">
                   {task.role}
                 </span>
               </div>

@@ -152,7 +152,7 @@ export default function DormTabPlotting({
                             <CheckCircle2 className="w-4 h-4" />
                             <span className="hidden sm:inline">{selectedIds.length > 0 ? t('dorms.plotting.selected') : t('dorms.plotting.selectAll')}</span>
                             {selectedIds.length > 0 && (
-                                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-white/20 text-white leading-none">
+                                <span className="text-xs font-bold px-1.5 py-0.5 rounded-full bg-white/20 text-white leading-none">
                                     {selectedIds.length}
                                 </span>
                             )}
@@ -169,7 +169,7 @@ export default function DormTabPlotting({
                             <Sliders className="w-4 h-4" />
                             <span className="hidden sm:inline">{t('dorms.plotting.filter')}</span>
                             {activeFilters.length > 0 && (
-                                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-white/30 text-white leading-none">
+                                <span className="text-xs font-bold px-1.5 py-0.5 rounded-full bg-white/30 text-white leading-none">
                                     {activeFilters.length}
                                 </span>
                             )}
@@ -326,7 +326,7 @@ export default function DormTabPlotting({
                                         setSelectedBuildingFilter('')
                                         setPage(1)
                                     }}
-                                    className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition"
+                                    className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition"
                                 >
                                     {t('dorms.plotting.resetFilter')}
                                 </button>
@@ -364,7 +364,7 @@ export default function DormTabPlotting({
 
                                         <div className="flex items-center justify-between border-t border-[var(--color-border)] pt-3 mt-1">
                                             <div>
-                                                <p className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider">{t('dorms.plotting.kamarOccupancy')}</p>
+                                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">{t('dorms.plotting.kamarOccupancy')}</p>
                                                 {room ? (
                                                     (() => {
                                                         const roomDetails = dorms.find(d => d.id === room)
@@ -373,7 +373,7 @@ export default function DormTabPlotting({
                                                         return (
                                                             <p className="text-xs font-bold mt-0.5 text-indigo-600 flex items-center gap-1.5">
                                                                 <span>{room}</span>
-                                                                <span className="text-[10px] text-[var(--color-text-muted)] font-semibold">({occupiedCount}/{cap})</span>
+                                                                <span className="text-xs text-[var(--color-text-muted)] font-semibold">({occupiedCount}/{cap})</span>
                                                             </p>
                                                         )
                                                     })()
@@ -453,11 +453,11 @@ export default function DormTabPlotting({
                                             </td>
                                             <td className="px-5 py-3">
                                                 {room ? (
-                                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-600 border border-emerald-500/25">
+                                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-600 border border-emerald-500/25">
                                                         {t('dorms.plotting.badgeAssigned')}
                                                     </span>
                                                 ) : (
-                                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-amber-500/10 text-amber-600 border border-dashed border-amber-500/25">
+                                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-amber-500/10 text-amber-600 border border-dashed border-amber-500/25">
                                                         {t('dorms.plotting.badgeUnassigned')}
                                                     </span>
                                                 )}
@@ -478,7 +478,7 @@ export default function DormTabPlotting({
                                                                 <Bed className="w-3.5 h-3.5 opacity-70" />
                                                                 {room}
                                                             </span>
-                                                            <span className="text-[10px] text-[var(--color-text-muted)] font-medium">
+                                                            <span className="text-xs text-[var(--color-text-muted)] font-medium">
                                                                 {occupiedCount} / {cap} {t('dorms.plotting.occupied')}
                                                             </span>
                                                         </div>

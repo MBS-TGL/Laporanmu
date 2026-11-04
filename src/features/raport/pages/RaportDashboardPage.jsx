@@ -45,30 +45,30 @@ const ClassRow = memo(function ClassRow({ cls, progress, onSelect, onArchive }) 
     return (
         <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:border-indigo-400/40 hover:bg-[var(--color-surface-alt)]/60 transition-all group">
             {/* Grade badge */}
-            <div className={`w-8 h-8 shrink-0 rounded-lg border flex items-center justify-center text-[11px] font-black leading-none ${gradeColor}`}>
+            <div className={`w-8 h-8 shrink-0 rounded-lg border flex items-center justify-center text-xs font-bold leading-none ${gradeColor}`}>
                 {gradeNum ?? '—'}
             </div>
 
             {/* Info */}
             <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5 min-w-0">
-                    <span className="text-[11px] font-black text-[var(--color-text)] truncate leading-tight">
+                    <span className="text-xs font-bold text-[var(--color-text)] truncate leading-tight">
                         {cls.name}
                     </span>
                     {total > 0 && (
-                        <span className="shrink-0 text-[9px] font-black px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]">
+                        <span className="shrink-0 text-xs font-bold px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]">
                             {total}
                         </span>
                     )}
                 </div>
-                <p className="text-[9px] text-[var(--color-text-muted)] font-medium truncate opacity-70 leading-tight mt-0.5">
+                <p className="text-xs text-[var(--color-text-muted)] font-medium truncate opacity-70 leading-tight mt-0.5">
                     {cls.teachers?.name || 'Wali Kelas —'}
                 </p>
             </div>
 
             {/* Progress */}
             <div className="shrink-0 flex flex-col items-end gap-1 w-12">
-                <span className={`text-[10px] font-black ${pct === 100 ? 'text-emerald-500' : pct > 0 ? 'text-indigo-500' : 'text-[var(--color-text-muted)]'}`}>
+                <span className={`text-xs font-bold ${pct === 100 ? 'text-emerald-500' : pct > 0 ? 'text-indigo-500' : 'text-[var(--color-text-muted)]'}`}>
                     {pct}%
                 </span>
                 <div className="w-full h-1 rounded-full bg-[var(--color-border)]">
@@ -77,7 +77,7 @@ const ClassRow = memo(function ClassRow({ cls, progress, onSelect, onArchive }) 
                         style={{ width: `${pct}%` }}
                     />
                 </div>
-                <span className="text-[8px] text-[var(--color-text-muted)] opacity-50 font-bold">{done}/{total}</span>
+                <span className="text-xs text-[var(--color-text-muted)] opacity-50 font-bold">{done}/{total}</span>
             </div>
 
             {/* Actions */}
@@ -107,10 +107,10 @@ const ClassGroup = memo(function ClassGroup({ label, accent, classes, classProgr
         <div>
             <div className={`flex items-center gap-2 mb-2 px-1`}>
                 <div className={`w-1.5 h-4 rounded-full ${accent}`} />
-                <span className="text-[10px] font-black uppercase tracking-[0.12em] text-[var(--color-text-muted)]">
+                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                     {label}
                 </span>
-                <span className="text-[9px] font-bold text-[var(--color-text-muted)] opacity-50">
+                <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-50">
                     ({classes.length} kelas)
                 </span>
             </div>
@@ -204,7 +204,7 @@ export default function RaportDashboardPage({ isAcademic = false }) {
                         <button
                             key={rt.id}
                             onClick={() => setReportType(rt.id)}
-                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[11px] font-black transition-all ${isActive ? 'bg-[var(--color-surface)] text-indigo-600 shadow-sm border border-indigo-500/20' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${isActive ? 'bg-[var(--color-surface)] text-indigo-600 shadow-sm border border-indigo-500/20' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                         >
                             {rt.name}
                         </button>
@@ -217,8 +217,8 @@ export default function RaportDashboardPage({ isAcademic = false }) {
                 <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-indigo-500/20 bg-indigo-500/5">
                     <Zap className="text-indigo-500 w-3.5 h-3.5 shrink-0" />
                     <div className="flex-1 min-w-0">
-                        <span className="text-[11px] font-black text-[var(--color-text)]">Lanjutkan: </span>
-                        <span className="text-[11px] text-[var(--color-text-muted)] font-medium truncate">
+                        <span className="text-xs font-bold text-[var(--color-text)]">Lanjutkan: </span>
+                        <span className="text-xs text-[var(--color-text-muted)] font-medium truncate">
                             {lastSession.className} · {BULAN.find(b => b.id === lastSession.month)?.id_str} {lastSession.year}
                         </span>
                     </div>
@@ -227,7 +227,7 @@ export default function RaportDashboardPage({ isAcademic = false }) {
                             setSelectedClassId(lastSession.classId)
                             navigate(`${basePath}/input/${lastSession.classId}?month=${lastSession.month}&year=${lastSession.year}`)
                         }}
-                        className="h-7 px-3 rounded-lg bg-indigo-600 text-white text-[9px] font-black hover:bg-indigo-700 transition-all shrink-0 shadow-md"
+                        className="h-7 px-3 rounded-lg bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 transition-all shrink-0 shadow-md"
                     >
                         Buka →
                     </button>
@@ -249,7 +249,7 @@ export default function RaportDashboardPage({ isAcademic = false }) {
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
                         placeholder="Cari nama kelas atau wali kelas..."
-                        className="w-full h-9 pl-9 pr-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-bold placeholder:text-[var(--color-text-muted)]/50 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 transition-all"
+                        className="w-full h-9 pl-9 pr-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold placeholder:text-[var(--color-text-muted)]/50 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 transition-all"
                     />
                 </div>
                 <div className="flex items-center gap-1.5">
@@ -261,7 +261,7 @@ export default function RaportDashboardPage({ isAcademic = false }) {
                         <button
                             key={key}
                             onClick={() => setFilterType(key)}
-                            className={`h-9 px-3.5 rounded-xl text-[10px] font-black transition-all whitespace-nowrap ${filterType === key ? 'bg-indigo-500 text-white shadow-md' : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                            className={`h-9 px-3.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${filterType === key ? 'bg-indigo-500 text-white shadow-md' : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                         >
                             {label}
                         </button>

@@ -381,7 +381,7 @@ export default function RaportInputPage({ isAcademic = false }) {
         return (
             <div className="p-8 text-center space-y-4">
                 <p className="text-sm font-bold text-[var(--color-text-muted)]">Kelas tidak ditemukan.</p>
-                <button onClick={() => navigate(basePath)} className="px-4 py-2 rounded-xl bg-indigo-500 text-white text-xs font-black">
+                <button onClick={() => navigate(basePath)} className="px-4 py-2 rounded-xl bg-indigo-500 text-white text-xs font-bold">
                     Kembali ke Dashboard
                 </button>
             </div>

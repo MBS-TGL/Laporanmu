@@ -34,15 +34,15 @@ export const ShortcutModalContent = memo(() => {
     return (
         <div className="p-3 space-y-0.5">
             {items.map((item, i) => item.section ? (
-                <p key={i} className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] pt-3 pb-1 px-1 first:pt-0">{item.section}</p>
+                <p key={i} className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] pt-3 pb-1 px-1 first:pt-0">{item.section}</p>
             ) : (
                 <div key={i} className="flex items-center justify-between px-1.5 py-1.5 rounded-lg hover:bg-[var(--color-surface-alt)] transition-all">
-                    <span className="text-[11px] font-semibold text-[var(--color-text)] opacity-80">{item.label}</span>
+                    <span className="text-xs font-semibold text-[var(--color-text)] opacity-80">{item.label}</span>
                     <div className="flex items-center gap-1">
                         {item.keys.map((k, ki) => (
                             <div key={ki} className="flex items-center gap-1">
-                                <span className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[9px] font-black text-[var(--color-text-muted)] font-mono min-w-[20px] text-center shadow-sm">{k}</span>
-                                {ki < item.keys.length - 1 && <span className="text-[9px] opacity-30">+</span>}
+                                <span className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] font-mono min-w-[20px] text-center shadow-sm">{k}</span>
+                                {ki < item.keys.length - 1 && <span className="text-xs opacity-30">+</span>}
                             </div>
                         ))}
                     </div>
@@ -98,11 +98,11 @@ export const WaBlastConfirmContent = memo(({ isOpen, onClose, queue, onConfirm, 
             size="md"
             footer={
                 <div className="flex items-center w-full gap-3">
-                    <button onClick={onCancel} className="h-10 px-5 rounded-xl border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">
+                    <button onClick={onCancel} className="h-10 px-5 rounded-xl border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">
                         Batal
                     </button>
                     <div className="flex-1" />
-                    <button onClick={handleConfirm} disabled={selectedIds.size === 0} className={`h-10 px-6 rounded-xl text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center gap-2 disabled:opacity-50 ${isDebug
+                    <button onClick={handleConfirm} disabled={selectedIds.size === 0} className={`h-10 px-6 rounded-xl text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center gap-2 disabled:opacity-50 ${isDebug
                         ? 'bg-amber-500 hover:bg-amber-600'
                         : 'bg-green-500 hover:bg-green-600'
                         }`}>
@@ -114,7 +114,7 @@ export const WaBlastConfirmContent = memo(({ isOpen, onClose, queue, onConfirm, 
         >
             <div className="space-y-3">
                 {/* Header info */}
-                <div className="flex items-start gap-2.5 p-3 rounded-xl bg-amber-500/5 border border-amber-500/10 text-[11px] text-amber-800 dark:text-amber-300 font-semibold leading-relaxed">
+                <div className="flex items-start gap-2.5 p-3 rounded-xl bg-amber-500/5 border border-amber-500/10 text-xs text-amber-800 dark:text-amber-300 font-semibold leading-relaxed">
                     <Info className="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
                     <p className="flex-1">
                         Sistem mengirim pesan otomatis di latar belakang (Background API). Pastikan token API (Fonnte) valid dan kuota mencukupi agar proses lancar.
@@ -125,11 +125,11 @@ export const WaBlastConfirmContent = memo(({ isOpen, onClose, queue, onConfirm, 
                 <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] space-y-2">
                     <div className="flex items-center gap-1.5">
                         <ClipboardList className="w-3.5 h-3.5 text-[var(--color-primary)]" />
-                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text)]">Pengaturan Dokumen Raport</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Pengaturan Dokumen Raport</p>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div className="space-y-0.5 text-left">
-                            <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-wider">Bahasa Raport</label>
+                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Bahasa Raport</label>
                             <RichSelect
                                 value={lang}
                                 onChange={setLang}
@@ -138,7 +138,7 @@ export const WaBlastConfirmContent = memo(({ isOpen, onClose, queue, onConfirm, 
                             />
                         </div>
                         <div className="space-y-0.5 text-left">
-                            <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-wider">Ukuran Kertas</label>
+                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Ukuran Kertas</label>
                             <RichSelect
                                 value={pageSize}
                                 onChange={setPageSize}
@@ -147,11 +147,11 @@ export const WaBlastConfirmContent = memo(({ isOpen, onClose, queue, onConfirm, 
                             />
                         </div>
                         <div className="space-y-0.5 text-left flex flex-col justify-end">
-                            <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-wider block mb-1">Status Pengiriman</label>
+                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider block mb-1">Status Pengiriman</label>
                             <button
                                 type="button"
                                 onClick={() => setIsDebug(d => !d)}
-                                className={`h-[34px] w-full flex items-center justify-center gap-1.5 px-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all ${isDebug
+                                className={`h-[34px] w-full flex items-center justify-center gap-1.5 px-3 rounded-xl border text-xs font-bold uppercase tracking-wide transition-all ${isDebug
                                     ? 'bg-amber-500/10 border-amber-500/30 text-amber-600'
                                     : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
                                     }`}
@@ -167,13 +167,13 @@ export const WaBlastConfirmContent = memo(({ isOpen, onClose, queue, onConfirm, 
                 <div className="border border-[var(--color-border)] rounded-2xl bg-[var(--color-surface)] overflow-hidden shadow-sm">
                     {/* Select All header */}
                     <div className="flex items-center justify-between px-4 py-3 bg-[var(--color-surface-alt)] border-b border-[var(--color-border)]">
-                        <button onClick={toggleAll} className="flex items-center gap-2 text-[10px] font-black text-[var(--color-text)] hover:text-green-600 transition-colors">
+                        <button onClick={toggleAll} className="flex items-center gap-2 text-xs font-bold text-[var(--color-text)] hover:text-green-600 transition-colors">
                             <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${selectedIds.size === queue.length ? 'bg-green-500 border-green-500' : 'border-[var(--color-border)] bg-white'}`}>
                                 {selectedIds.size === queue.length && <Check className="w-2.5 h-2.5 text-white" />}
                             </div>
                             Pilih Semua ({queue.length})
                         </button>
-                        <span className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-wider">Target Pengiriman</span>
+                        <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">Target Pengiriman</span>
                     </div>
                     {/* Scrollable list */}
                     <div className="p-2 space-y-1 max-h-[160px] overflow-y-auto custom-scrollbar bg-[var(--color-surface)]">
@@ -190,13 +190,13 @@ export const WaBlastConfirmContent = memo(({ isOpen, onClose, queue, onConfirm, 
                                         </div>
                                         {/* Index + Name */}
                                         <div className="flex items-center gap-2 flex-1 min-w-0">
-                                            <span className="text-[9px] font-black text-[var(--color-text-muted)] w-5 shrink-0">{idx + 1}</span>
+                                            <span className="text-xs font-bold text-[var(--color-text-muted)] w-5 shrink-0">{idx + 1}</span>
                                             <div className="min-w-0">
-                                                <div className="text-[11px] font-black text-[var(--color-text)] truncate">{s.name}</div>
+                                                <div className="text-xs font-bold text-[var(--color-text)] truncate">{s.name}</div>
                                             </div>
                                         </div>
                                         {/* Phone Number */}
-                                        <div className="text-[10px] font-black text-[var(--color-text-muted)] px-2">
+                                        <div className="text-xs font-bold text-[var(--color-text-muted)] px-2">
                                             {s.phone ? (s.phone.length > 8 ? s.phone.substring(0, 4) + '****' + s.phone.slice(-4) : s.phone) : '—'}
                                         </div>
                                     </button>
@@ -248,7 +248,7 @@ export const WaBlastConfirmContent = memo(({ isOpen, onClose, queue, onConfirm, 
                             <button
                                 type="button"
                                 onClick={() => setShowPreviewMsg(v => !v)}
-                                className="text-[10px] font-black text-green-600 hover:text-green-700 transition-colors uppercase tracking-wider flex items-center gap-1"
+                                className="text-xs font-bold text-green-600 hover:text-green-700 transition-colors uppercase tracking-wider flex items-center gap-1"
                             >
                                 <FileText className="w-3.5 h-3.5" />
                                 {showPreviewMsg ? 'Sembunyikan Preview Pesan' : 'Lihat Preview Pesan (Simulasi)'}
@@ -256,14 +256,14 @@ export const WaBlastConfirmContent = memo(({ isOpen, onClose, queue, onConfirm, 
                         </div>
                         {showPreviewMsg && firstSelectedStudent && (
                             <div className="p-3 rounded-2xl bg-[#e5ddd5] dark:bg-zinc-800 border border-[var(--color-border)] space-y-1.5 max-h-[220px] overflow-y-auto custom-scrollbar shadow-inner text-left">
-                                <div className="text-[9px] font-black text-zinc-500 dark:text-zinc-400 uppercase tracking-widest flex items-center justify-between">
+                                <div className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide flex items-center justify-between">
                                     <span>WhatsApp Bubble Preview</span>
                                     <div className="flex items-center gap-1.5">
                                         {onPreviewStudent && (
                                             <button
                                                 type="button"
                                                 onClick={() => onPreviewStudent(firstSelectedStudent.id)}
-                                                className="bg-green-600 hover:bg-green-700 text-white font-black text-[9px] uppercase tracking-wider px-2.5 py-0.5 rounded transition-all flex items-center gap-1"
+                                                className="bg-green-600 hover:bg-green-700 text-white font-bold text-xs uppercase tracking-wider px-2.5 py-0.5 rounded transition-all flex items-center gap-1"
                                             >
                                                 👁️ Preview Raport
                                             </button>
@@ -273,7 +273,7 @@ export const WaBlastConfirmContent = memo(({ isOpen, onClose, queue, onConfirm, 
                                                 type="button"
                                                 disabled={generatingPdfIds?.has(firstSelectedStudent.id)}
                                                 onClick={() => handleDownloadPdf(firstSelectedStudent)}
-                                                className="bg-zinc-600 hover:bg-zinc-700 disabled:bg-zinc-400 text-white font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded transition-all flex items-center gap-1.5"
+                                                className="bg-zinc-600 hover:bg-zinc-700 disabled:bg-zinc-400 text-white font-bold text-xs uppercase tracking-wider px-2 py-0.5 rounded transition-all flex items-center gap-1.5"
                                             >
                                                 {generatingPdfIds?.has(firstSelectedStudent.id) ? (
                                                     <Loader2 className="w-2.5 h-2.5 animate-spin" />
@@ -326,7 +326,7 @@ const CircleRing = ({ pct, color, trackColor, size = 112, stroke = 9 }) => {
 const InitialAvatar = ({ name, color = 'bg-slate-500' }) => {
     const initials = name ? name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase() : '?'
     return (
-        <div className={`w-9 h-9 rounded-xl ${color} flex items-center justify-center text-white text-xs font-black shrink-0`}>
+        <div className={`w-9 h-9 rounded-xl ${color} flex items-center justify-center text-white text-xs font-bold shrink-0`}>
             {initials}
         </div>
     )
@@ -352,7 +352,7 @@ const StepPipeline = ({ steps, currentStatus, accentColor = '#22c55e' }) => {
                 const isActive = i === currentIdx
                 return (
                     <div key={s.key} className="flex items-center gap-1">
-                        <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[8.5px] font-black uppercase tracking-wider transition-all duration-300 ${isDone ? 'bg-emerald-500/15 text-emerald-600' :
+                        <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[8.5px] font-bold uppercase tracking-wider transition-all duration-300 ${isDone ? 'bg-emerald-500/15 text-emerald-600' :
                                 isActive ? 'text-white' :
                                     'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] opacity-50'
                             }`} style={isActive ? { backgroundColor: accentColor } : {}}>
@@ -421,8 +421,8 @@ export const WaBlastProgressContent = memo(({ progress, total, done, failed, act
                                 </svg>
                             ) : (
                                 <>
-                                    <span className="text-lg font-black tabular-nums leading-none" style={{ color: accent }}>{pct}</span>
-                                    <span className="text-[9px] font-black opacity-60" style={{ color: accent }}>%</span>
+                                    <span className="text-lg font-bold tabular-nums leading-none" style={{ color: accent }}>{pct}</span>
+                                    <span className="text-xs font-bold opacity-60" style={{ color: accent }}>%</span>
                                 </>
                             )}
                         </div>
@@ -430,14 +430,14 @@ export const WaBlastProgressContent = memo(({ progress, total, done, failed, act
 
                     {/* Text block */}
                     <div className="flex-1 min-w-0">
-                        <p className="text-[17px] font-black tracking-tight leading-snug" style={{ color: isAborted ? '#dc2626' : isFinished ? '#059669' : 'var(--color-text)' }}>
+                        <p className="text-[17px] font-bold tracking-tight leading-snug" style={{ color: isAborted ? '#dc2626' : isFinished ? '#059669' : 'var(--color-text)' }}>
                             {isAborted ? 'Blast Dibatalkan' :
                                 isFinished ? 'Blast Selesai!' :
                                     isSimulating ? 'Mensimulasikan...' :
                                         'Mengirim Raport...'}
                         </p>
-                        <p className="text-[11px] text-[var(--color-text-muted)] font-semibold mt-0.5 tabular-nums">
-                            <span className="font-black" style={{ color: accent }}>{progress}</span> / {total} santri
+                        <p className="text-xs text-[var(--color-text-muted)] font-semibold mt-0.5 tabular-nums">
+                            <span className="font-bold" style={{ color: accent }}>{progress}</span> / {total} santri
                         </p>
                         {active && !isFinished && (
                             <div className="mt-2">
@@ -464,8 +464,8 @@ export const WaBlastProgressContent = memo(({ progress, total, done, failed, act
                     { label: 'Tersisa', val: remaining, color: '#64748b', bg: 'bg-slate-50 dark:bg-slate-900/30', border: 'border-slate-200 dark:border-slate-700/50', icon: '…' },
                 ].map(({ label, val, color, bg, border, icon }) => (
                     <div key={label} className={`${bg} border ${border} rounded-2xl py-3 px-2 flex flex-col items-center gap-0.5 transition-all`}>
-                        <span className="text-[8px] font-black uppercase tracking-widest opacity-60" style={{ color }}>{label}</span>
-                        <span className="text-[22px] font-black tabular-nums leading-none" style={{ color }}>{val}</span>
+                        <span className="text-xs font-bold uppercase tracking-wide opacity-60" style={{ color }}>{label}</span>
+                        <span className="text-[22px] font-bold tabular-nums leading-none" style={{ color }}>{val}</span>
                     </div>
                 ))}
             </div>
@@ -475,8 +475,8 @@ export const WaBlastProgressContent = memo(({ progress, total, done, failed, act
                 <div className="flex items-center gap-3 px-3.5 py-3 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
                     <InitialAvatar name={activeName} color="bg-green-600" />
                     <div className="flex-1 min-w-0">
-                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] leading-none">Dikirim ke</p>
-                        <p className="text-[13px] font-black text-[var(--color-text)] truncate mt-1 leading-none">{activeName}</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] leading-none">Dikirim ke</p>
+                        <p className="text-sm font-bold text-[var(--color-text)] truncate mt-1 leading-none">{activeName}</p>
                     </div>
                     {/* Triple dot pulse */}
                     <div className="flex items-center gap-1 shrink-0">
@@ -491,7 +491,7 @@ export const WaBlastProgressContent = memo(({ progress, total, done, failed, act
             {active && onCancel && (
                 <button
                     onClick={onCancel}
-                    className="w-full h-10 rounded-2xl text-rose-500 text-[10px] font-black uppercase tracking-widest transition-all active:scale-[0.98] hover:bg-rose-50 dark:hover:bg-rose-950/30 border border-rose-200 dark:border-rose-800/50 flex items-center justify-center gap-1.5"
+                    className="w-full h-10 rounded-2xl text-rose-500 text-xs font-bold uppercase tracking-wide transition-all active:scale-[0.98] hover:bg-rose-50 dark:hover:bg-rose-950/30 border border-rose-200 dark:border-rose-800/50 flex items-center justify-center gap-1.5"
                 >
                     <X className="w-3.5 h-3.5" />
                     Batalkan Antrean
@@ -541,21 +541,21 @@ export const ZipBlastProgressContent = memo(({ progress, total, done, failed, ac
                                 </svg>
                             ) : (
                                 <>
-                                    <span className="text-lg font-black tabular-nums leading-none" style={{ color: accent }}>{pct}</span>
-                                    <span className="text-[9px] font-black opacity-60" style={{ color: accent }}>%</span>
+                                    <span className="text-lg font-bold tabular-nums leading-none" style={{ color: accent }}>{pct}</span>
+                                    <span className="text-xs font-bold opacity-60" style={{ color: accent }}>%</span>
                                 </>
                             )}
                         </div>
                     </div>
 
                     <div className="flex-1 min-w-0">
-                        <p className="text-[17px] font-black tracking-tight leading-snug" style={{ color: isAborted ? '#dc2626' : isFinished ? '#059669' : 'var(--color-text)' }}>
+                        <p className="text-[17px] font-bold tracking-tight leading-snug" style={{ color: isAborted ? '#dc2626' : isFinished ? '#059669' : 'var(--color-text)' }}>
                             {isAborted ? 'Ekspor Dibatalkan' :
                                 isFinished ? 'Ekspor Selesai!' :
                                     'Mengemas ZIP...'}
                         </p>
-                        <p className="text-[11px] text-[var(--color-text-muted)] font-semibold mt-0.5 tabular-nums">
-                            <span className="font-black" style={{ color: accent }}>{progress}</span> / {total} raport
+                        <p className="text-xs text-[var(--color-text-muted)] font-semibold mt-0.5 tabular-nums">
+                            <span className="font-bold" style={{ color: accent }}>{progress}</span> / {total} raport
                         </p>
                         {active && !isFinished && (
                             <div className="mt-2">
@@ -581,8 +581,8 @@ export const ZipBlastProgressContent = memo(({ progress, total, done, failed, ac
                     { label: 'Tersisa', val: remaining, color: '#64748b', bg: 'bg-slate-50 dark:bg-slate-900/30', border: 'border-slate-200 dark:border-slate-700/50' },
                 ].map(({ label, val, color, bg, border }) => (
                     <div key={label} className={`${bg} border ${border} rounded-2xl py-3 px-2 flex flex-col items-center gap-0.5`}>
-                        <span className="text-[8px] font-black uppercase tracking-widest opacity-60" style={{ color }}>{label}</span>
-                        <span className="text-[22px] font-black tabular-nums leading-none" style={{ color }}>{val}</span>
+                        <span className="text-xs font-bold uppercase tracking-wide opacity-60" style={{ color }}>{label}</span>
+                        <span className="text-[22px] font-bold tabular-nums leading-none" style={{ color }}>{val}</span>
                     </div>
                 ))}
             </div>
@@ -592,8 +592,8 @@ export const ZipBlastProgressContent = memo(({ progress, total, done, failed, ac
                 <div className="flex items-center gap-3 px-3.5 py-3 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
                     <InitialAvatar name={activeName} color="bg-teal-600" />
                     <div className="flex-1 min-w-0">
-                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] leading-none">Sedang dikemas</p>
-                        <p className="text-[13px] font-black text-[var(--color-text)] truncate mt-1 leading-none">{activeName}</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] leading-none">Sedang dikemas</p>
+                        <p className="text-sm font-bold text-[var(--color-text)] truncate mt-1 leading-none">{activeName}</p>
                     </div>
                     <div className="flex items-center gap-1 shrink-0">
                         {[0, 1, 2].map(i => (
@@ -607,7 +607,7 @@ export const ZipBlastProgressContent = memo(({ progress, total, done, failed, ac
             {active && onCancel && (
                 <button
                     onClick={onCancel}
-                    className="w-full h-10 rounded-2xl text-rose-500 text-[10px] font-black uppercase tracking-widest transition-all active:scale-[0.98] hover:bg-rose-50 dark:hover:bg-rose-950/30 border border-rose-200 dark:border-rose-800/50 flex items-center justify-center gap-1.5"
+                    className="w-full h-10 rounded-2xl text-rose-500 text-xs font-bold uppercase tracking-wide transition-all active:scale-[0.98] hover:bg-rose-50 dark:hover:bg-rose-950/30 border border-rose-200 dark:border-rose-800/50 flex items-center justify-center gap-1.5"
                 >
                     <X className="w-3.5 h-3.5" />
                     Batal Ekspor

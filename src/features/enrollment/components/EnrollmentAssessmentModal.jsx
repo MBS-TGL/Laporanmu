@@ -19,9 +19,9 @@ function ScoreSlider({ label, value, onChange }) {
 
     return (
         <div className="space-y-1">
-            <div className="flex justify-between items-center text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-60">
+            <div className="flex justify-between items-center text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-60">
                 <span>{label}</span>
-                <span className={`px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider ${getColor(value)}`}>
+                <span className={`px-1.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider ${getColor(value)}`}>
                     {value} · {getLabel(value)}
                 </span>
             </div>
@@ -97,12 +97,12 @@ export default function EnrollmentAssessmentModal({ isOpen, onClose, onSubmit, e
                 {/* Column 1: Quran & Kelulusan */}
                 <div className="space-y-4">
                     <div className="flex items-center gap-2 pb-1 border-b border-[var(--color-border)]/50">
-                        <BookOpenText className="text-emerald-500 text-xs opacity-75" />
-                        <span className="text-[10px] font-black uppercase tracking-wider text-emerald-600">Evaluasi Al-Qur'an & Seleksi</span>
+                        <BookOpenText className="w-4 h-4 text-emerald-500 opacity-75" />
+                        <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">Evaluasi Al-Qur'an & Seleksi</span>
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Tingkat Bacaan Quran</label>
+                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Tingkat Bacaan Quran</label>
                         <RichSelect
                             value={form.quran_level}
                             onChange={v => setForm(prev => ({ ...prev, quran_level: v }))}
@@ -113,7 +113,7 @@ export default function EnrollmentAssessmentModal({ isOpen, onClose, onSubmit, e
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Jumlah Hafalan (Juz)</label>
+                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Jumlah Hafalan (Juz)</label>
                         <div className="flex items-center gap-3 h-11 px-3 border border-[var(--color-border)] rounded-xl bg-[var(--color-surface-alt)]/20 overflow-hidden focus-within:border-[var(--color-primary)] focus-within:ring-1 focus-within:ring-[var(--color-primary)] transition-all">
                             <input
                                 type="range"
@@ -123,12 +123,12 @@ export default function EnrollmentAssessmentModal({ isOpen, onClose, onSubmit, e
                                 onChange={e => setForm(prev => ({ ...prev, hafalan_quran: Number(e.target.value) }))}
                                 className="min-w-0 w-full flex-1 accent-emerald-500 h-1 rounded-lg cursor-pointer"
                             />
-                            <span className="text-sm font-black text-emerald-600 w-6 text-right tabular-nums shrink-0">{form.hafalan_quran}</span>
+                            <span className="text-sm font-bold text-emerald-600 w-6 text-right tabular-nums shrink-0">{form.hafalan_quran}</span>
                         </div>
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Nilai Akhir Kelulusan</label>
+                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Nilai Akhir Kelulusan</label>
                         <RichSelect
                             value={form.test_score}
                             onChange={v => setForm(prev => ({ ...prev, test_score: v }))}
@@ -149,8 +149,8 @@ export default function EnrollmentAssessmentModal({ isOpen, onClose, onSubmit, e
                 {/* Column 2: Wawancara Digital */}
                 <div className="space-y-4">
                     <div className="flex items-center gap-2 pb-1 border-b border-[var(--color-border)]/50">
-                        <Star className="text-indigo-500 text-xs opacity-75" />
-                        <span className="text-[10px] font-black uppercase tracking-wider text-indigo-600">Skoring Aspek Kepribadian</span>
+                        <Star className="w-4 h-4 text-indigo-500 opacity-75" />
+                        <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">Skoring Aspek Kepribadian</span>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -177,9 +177,9 @@ export default function EnrollmentAssessmentModal({ isOpen, onClose, onSubmit, e
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Penguji / Pewawancara</label>
+                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Penguji / Pewawancara</label>
                         <div className="flex items-center gap-2 px-3 h-10 border border-[var(--color-border)] rounded-xl bg-[var(--color-surface)] focus-within:border-[var(--color-primary)] transition-all">
-                            <User className="text-[10px] text-[var(--color-text-muted)] opacity-40 shrink-0" />
+                            <User className="w-4 h-4 text-[var(--color-text-muted)] opacity-40 shrink-0" />
                             <input
                                 type="text"
                                 value={form.interview.interviewer_name}
@@ -191,9 +191,9 @@ export default function EnrollmentAssessmentModal({ isOpen, onClose, onSubmit, e
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Catatan Wawancara</label>
+                        <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Catatan Wawancara</label>
                         <div className="flex items-start gap-2 p-3 border border-[var(--color-border)] rounded-xl bg-[var(--color-surface)] focus-within:border-[var(--color-primary)] transition-all">
-                            <MessagesSquare className="text-[10px] text-[var(--color-text-muted)] opacity-40 shrink-0 mt-0.5" />
+                            <MessagesSquare className="w-4 h-4 text-[var(--color-text-muted)] opacity-40 shrink-0 mt-0.5" />
                             <textarea
                                 value={form.interview.notes}
                                 onChange={e => handleInterviewChange('notes', e.target.value)}
@@ -210,23 +210,23 @@ export default function EnrollmentAssessmentModal({ isOpen, onClose, onSubmit, e
                 <button
                     onClick={onClose}
                     disabled={submitting}
-                    className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0 disabled:opacity-50"
+                    className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0 disabled:opacity-50"
                 >
                     Batal
                 </button>
                 <button
                     onClick={() => onSubmit(form)}
                     disabled={!form.test_score || submitting}
-                    className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg border border-white/10 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg border border-white/10 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {submitting ? (
                         <>
-                            <Save className="animate-spin" />
+                            <Save className="w-4 h-4 animate-spin" />
                             <span>Menyimpan...</span>
                         </>
                     ) : (
                         <>
-                            <Save className="opacity-80 shrink-0" />
+                            <Save className="w-4 h-4 opacity-80 shrink-0" />
                             <span>Simpan & Luluskan</span>
                         </>
                     )}

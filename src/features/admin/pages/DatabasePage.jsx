@@ -149,13 +149,13 @@ function TableRow({ table, data, isExpanded, onToggle }) {
         return (
             <div className="flex items-center gap-3 px-5 py-3.5 opacity-40">
                 <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${table.bg}`}>
-                    <table.icon className={`text-[11px] ${table.color}`} />
+                    <table.icon className={`text-xs ${table.color}`} />
                 </div>
                 <div className="flex-1 min-w-0">
-                    <p className="text-[12px] font-black text-[var(--color-text-muted)]">{table.label}</p>
-                    <p className="text-[9px] text-[var(--color-text-muted)] font-mono">{table.key}</p>
+                    <p className="text-xs font-bold text-[var(--color-text-muted)]">{table.label}</p>
+                    <p className="text-xs text-[var(--color-text-muted)] font-mono">{table.key}</p>
                 </div>
-                <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]">
+                <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]">
                     Tidak ada
                 </span>
             </div>
@@ -171,49 +171,49 @@ function TableRow({ table, data, isExpanded, onToggle }) {
                 {/* Name */}
                 <div className="flex items-center gap-3 min-w-0">
                     <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${table.bg}`}>
-                        <table.icon className={`text-[11px] ${table.color}`} />
+                        <table.icon className={`text-xs ${table.color}`} />
                     </div>
                     <div className="min-w-0">
-                        <p className="text-[12px] font-black text-[var(--color-text)] truncate">{table.label}</p>
-                        <p className="text-[9px] text-[var(--color-text-muted)] font-mono">{table.key}</p>
+                        <p className="text-xs font-bold text-[var(--color-text)] truncate">{table.label}</p>
+                        <p className="text-xs text-[var(--color-text-muted)] font-mono">{table.key}</p>
                     </div>
                 </div>
 
                 {/* Active */}
                 <div className="hidden md:block text-center">
-                    <p className="text-[15px] font-black text-[var(--color-text)] tabular-nums">{fmtNumber(active ?? total)}</p>
-                    <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Aktif</p>
+                    <p className="text-[15px] font-bold text-[var(--color-text)] tabular-nums">{fmtNumber(active ?? total)}</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Aktif</p>
                 </div>
 
                 {/* Deleted */}
                 <div className="hidden md:block text-center">
                     {table.softDelete ? (
                         <>
-                            <p className={`text-[15px] font-black tabular-nums ${deleted > 0 ? 'text-amber-500' : 'text-[var(--color-text-muted)]'}`}>
+                            <p className={`text-[15px] font-bold tabular-nums ${deleted > 0 ? 'text-amber-500' : 'text-[var(--color-text-muted)]'}`}>
                                 {fmtNumber(deleted ?? 0)}
                             </p>
-                            <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Dihapus</p>
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Dihapus</p>
                         </>
                     ) : (
-                        <span className="text-[8px] text-[var(--color-text-muted)]">—</span>
+                        <span className="text-xs text-[var(--color-text-muted)]">—</span>
                     )}
                 </div>
 
                 {/* Total */}
                 <div className="hidden md:block text-center">
-                    <p className="text-[15px] font-black text-[var(--color-primary)] tabular-nums">{fmtNumber(total)}</p>
-                    <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Total</p>
+                    <p className="text-[15px] font-bold text-[var(--color-primary)] tabular-nums">{fmtNumber(total)}</p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Total</p>
                 </div>
 
                 {/* Last created */}
                 <div className="hidden md:block">
-                    <p className="text-[10px] font-bold text-[var(--color-text-muted)] truncate">{fmtDateTime(lastCreated)}</p>
-                    <p className="text-[8px] text-[var(--color-text-muted)] opacity-60">Terakhir dibuat</p>
+                    <p className="text-xs font-bold text-[var(--color-text-muted)] truncate">{fmtDateTime(lastCreated)}</p>
+                    <p className="text-xs text-[var(--color-text-muted)] opacity-60">Terakhir dibuat</p>
                 </div>
 
                 {/* Expand */}
                 <div className="hidden md:flex items-center justify-center">
-                    { isExpanded ? <ChevronUp className={`text-[10px] ${isExpanded ? 'text-[var(--color-primary)]' : 'text-[var(--color-border)]'}`} /> : <ChevronDown className={`text-[10px] ${isExpanded ? 'text-[var(--color-primary)]' : 'text-[var(--color-border)]'}`} /> }
+                    { isExpanded ? <ChevronUp className={`w-4 h-4 ${isExpanded ? 'text-[var(--color-primary)]' : 'text-[var(--color-border)]'}`} /> : <ChevronDown className={`w-4 h-4 ${isExpanded ? 'text-[var(--color-primary)]' : 'text-[var(--color-border)]'}`} /> }
                 </div>
             </div>
 
@@ -222,24 +222,24 @@ function TableRow({ table, data, isExpanded, onToggle }) {
                 <div className="px-5 pb-4 border-t border-[var(--color-border)]/50">
                     <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
                         <div className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                            <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Aktif</p>
-                            <p className="text-lg font-black text-[var(--color-text)] tabular-nums">{fmtNumber(active ?? total)}</p>
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Aktif</p>
+                            <p className="text-lg font-bold text-[var(--color-text)] tabular-nums">{fmtNumber(active ?? total)}</p>
                         </div>
                         {table.softDelete && (
                             <div className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                                <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Soft Deleted</p>
-                                <p className={`text-lg font-black tabular-nums ${deleted > 0 ? 'text-amber-500' : 'text-[var(--color-text)]'}`}>
+                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Soft Deleted</p>
+                                <p className={`text-lg font-bold tabular-nums ${deleted > 0 ? 'text-amber-500' : 'text-[var(--color-text)]'}`}>
                                     {fmtNumber(deleted ?? 0)}
                                 </p>
                             </div>
                         )}
                         <div className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                            <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Total Rows</p>
-                            <p className="text-lg font-black text-[var(--color-primary)] tabular-nums">{fmtNumber(total)}</p>
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Total Rows</p>
+                            <p className="text-lg font-bold text-[var(--color-primary)] tabular-nums">{fmtNumber(total)}</p>
                         </div>
                         <div className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                            <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Entry Terakhir</p>
-                            <p className="text-[11px] font-bold text-[var(--color-text)]">{fmtDateTime(lastCreated)}</p>
+                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Entry Terakhir</p>
+                            <p className="text-xs font-bold text-[var(--color-text)]">{fmtDateTime(lastCreated)}</p>
                         </div>
                     </div>
                 </div>
@@ -268,23 +268,23 @@ function IntegrityRow({ check, result, isExpanded, onToggle, onRepair }) {
                 onClick={canExpand ? onToggle : undefined}
             >
                 <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${style.bg}`}>
-                    { isOk ? <CircleCheck className={`text-[11px] ${style.color}`} /> : <style.icon className={`text-[11px] ${style.color}`} /> }
+                    { isOk ? <CircleCheck className={`w-4 h-4 ${style.color}`} /> : <style.icon className={`text-xs ${style.color}`} /> }
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                        <p className={`text-[12px] font-black leading-tight ${isOk ? 'text-[var(--color-text-muted)]' : 'text-[var(--color-text)]'}`}>
+                        <p className={`text-xs font-bold leading-tight ${isOk ? 'text-[var(--color-text-muted)]' : 'text-[var(--color-text)]'}`}>
                             {check.label}
                         </p>
                         {count !== null && !isOk && (
-                            <span className={`text-[8px] font-black px-1.5 py-0.5 rounded-full border ${style.bg} ${style.color} ${style.border}`}>
+                            <span className={`text-xs font-bold px-1.5 py-0.5 rounded-full border ${style.bg} ${style.color} ${style.border}`}>
                                 {count} ditemukan
                             </span>
                         )}
                     </div>
-                    <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">{check.desc}</p>
+                    <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{check.desc}</p>
                 </div>
                 {count !== null && isOk && (
-                    <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 shrink-0">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 shrink-0">
                         Bersih
                     </span>
                 )}
@@ -294,14 +294,14 @@ function IntegrityRow({ check, result, isExpanded, onToggle, onRepair }) {
                             <button
                                 onClick={(e) => { e.stopPropagation(); onRepair(check.id) }}
                                 disabled={repairing}
-                                className={`text-[10px] font-black px-3 py-1.5 rounded-lg border transition-all flex items-center gap-1.5 disabled:opacity-50 ${style.bg} ${style.color} ${style.border} hover:scale-105 active:scale-95`}
+                                className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all flex items-center gap-1.5 disabled:opacity-50 ${style.bg} ${style.color} ${style.border} hover:scale-105 active:scale-95`}
                                 title={`Bersihkan data ${check.label}`}
                             >
-                                { repairing ? <LoaderCircle className={repairing ? 'animate-spin' : ''} /> : <Trash2 className={repairing ? 'animate-spin' : ''} /> }
+                                { repairing ? <LoaderCircle className={repairing ? 'animate-spin' : ''} className="w-4 h-4" /> : <Trash2 className={repairing ? 'animate-spin' : ''} className="w-4 h-4" /> }
                                 <span>{repairing ? 'Membersihkan...' : 'Bersihkan'}</span>
                             </button>
                         )}
-                        { isExpanded ? <ChevronUp className={`text-[10px] ${isExpanded ? style.color : 'text-[var(--color-text-muted)]'}`} /> : <ChevronDown className={`text-[10px] ${isExpanded ? style.color : 'text-[var(--color-text-muted)]'}`} /> }
+                        { isExpanded ? <ChevronUp className={`w-4 h-4 ${isExpanded ? style.color : 'text-[var(--color-text-muted)]'}`} /> : <ChevronDown className={`w-4 h-4 ${isExpanded ? style.color : 'text-[var(--color-text-muted)]'}`} /> }
                     </div>
                 )}
             </div>
@@ -313,7 +313,7 @@ function IntegrityRow({ check, result, isExpanded, onToggle, onRepair }) {
                         {/* Column headers */}
                         <div className="grid gap-2 px-3 py-2 bg-[var(--color-surface-alt)] border-b border-[var(--color-border)]" style={{ gridTemplateColumns: check.columns?.map(c => c.width || '1fr').join(' ') || '1fr' }}>
                             {(check.columns || [{ label: 'Data', key: 'label' }]).map((col, i) => (
-                                <p key={i} className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                                <p key={i} className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                     {col.label}
                                 </p>
                             ))}
@@ -328,7 +328,7 @@ function IntegrityRow({ check, result, isExpanded, onToggle, onRepair }) {
                                     style={{ gridTemplateColumns: check.columns?.map(c => c.width || '1fr').join(' ') || '1fr' }}
                                 >
                                     {(check.columns || [{ key: 'label' }]).map((col, i) => (
-                                        <p key={i} className={`text-[11px] truncate ${col.mono ? 'font-mono text-[10px] text-[var(--color-text-muted)]'
+                                        <p key={i} className={`text-xs truncate ${col.mono ? 'font-mono text-xs text-[var(--color-text-muted)]'
                                             : col.highlight ? `font-bold ${style.color}`
                                                 : 'font-medium text-[var(--color-text)]'
                                             }`}>
@@ -342,7 +342,7 @@ function IntegrityRow({ check, result, isExpanded, onToggle, onRepair }) {
                         {/* Footer — if truncated */}
                         {items.length > 50 && (
                             <div className="px-3 py-2 bg-[var(--color-surface-alt)] border-t border-[var(--color-border)]">
-                                <p className="text-[9px] text-[var(--color-text-muted)] font-bold">
+                                <p className="text-xs text-[var(--color-text-muted)] font-bold">
                                     Menampilkan 50 dari {items.length} data. Sisanya bisa dilihat langsung di Supabase.
                                 </p>
                             </div>
@@ -718,12 +718,12 @@ export default function DatabasePage() {
         <DashboardLayout title="Database Health">
             <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
                 <div className="w-20 h-20 rounded-3xl bg-red-500/10 flex items-center justify-center">
-                    <ShieldHalf className="text-3xl text-red-500" />
+                    <ShieldHalf className="w-6 h-6 text-red-500" />
                 </div>
                 <div className="text-center">
-                    <h2 className="text-xl font-black text-[var(--color-text)] mb-2">Akses Terbatas</h2>
+                    <h2 className="text-xl font-bold text-[var(--color-text)] mb-2">Akses Terbatas</h2>
                     <p className="text-[var(--color-text-muted)] text-sm">
-                        Halaman ini hanya untuk <span className="font-black text-red-500">Admin</span> atau <span className="font-black text-red-500">Developer</span>.
+                        Halaman ini hanya untuk <span className="font-bold text-red-500">Admin</span> atau <span className="font-bold text-red-500">Developer</span>.
                     </p>
                 </div>
             </div>
@@ -734,17 +734,17 @@ export default function DatabasePage() {
 
     return (
         <DashboardLayout title="Database Health">
-            <div className="p-4 md:p-6 space-y-4">
+            <div className="space-y-4">
 
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <Breadcrumb badge="Admin" items={['Engine Health']} className="mb-1" />
                         <div className="flex items-center gap-2.5 mb-1">
-                            <h1 className="text-2xl font-black font-heading tracking-tight text-[var(--color-text)]">Database Health</h1>
+                            <h1 className="text-2xl font-bold font-heading tracking-tight text-[var(--color-text)]">Database Health</h1>
                             {integrityScore && (
                                 <div
-                                    className={`px-2 py-0.5 rounded-full border text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 ${integrityScore.percentage >= 90 ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600'
+                                    className={`px-2 py-0.5 rounded-full border text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 ${integrityScore.percentage >= 90 ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600'
                                         : integrityScore.percentage >= 70 ? 'bg-amber-500/10 border-amber-500/20 text-amber-600'
                                             : 'bg-red-500/10 border-red-500/20 text-red-600'
                                         }`}
@@ -753,11 +753,11 @@ export default function DatabasePage() {
                                     <span>Score: {integrityScore.percentage}%</span>
                                 </div>
                             )}
-                            <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 uppercase tracking-widest">
+                            <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 uppercase tracking-wide">
                                 Admin Only
                             </span>
                         </div>
-                        <p className="text-[var(--color-text-muted)] text-[11px] font-medium opacity-70">
+                        <p className="text-[var(--color-text-muted)] text-xs font-medium opacity-70">
                             Monitoring jumlah data, integritas, dan kesehatan database.
                             {lastRefresh && (
                                 <span className="ml-2 tabular-nums">
@@ -769,13 +769,13 @@ export default function DatabasePage() {
                     <div className="flex gap-2 items-center">
                         <button
                             onClick={() => setAutoRefresh(v => !v)}
-                            className={`h-9 px-3 rounded-xl border text-[10px] font-black flex items-center gap-2 transition-all ${autoRefresh
+                            className={`h-9 px-3 rounded-xl border text-xs font-bold flex items-center gap-2 transition-all ${autoRefresh
                                 ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600'
                                 : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
                                 }`}
                             title="Auto-refresh 60 detik"
                         >
-                            <RefreshCw className={autoRefresh ? 'animate-spin' : ''} style={{ animationDuration: '3s' }} />
+                            <RefreshCw className={autoRefresh ? 'animate-spin' : ''} style={{ animationDuration: '3s' }} className="w-4 h-4" />
                             <span className="hidden sm:inline">{autoRefresh ? 'Auto On' : 'Auto-refresh'}</span>
                         </button>
                         <button
@@ -784,14 +784,14 @@ export default function DatabasePage() {
                             className="h-9 w-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] flex items-center justify-center hover:text-[var(--color-text)] transition-all disabled:opacity-50"
                             title="Refresh"
                         >
-                            <RotateCw className={`text-sm ${loadingTables ? 'animate-spin' : ''}`} />
+                            <RotateCw className={`w-4 h-4 ${loadingTables ? 'animate-spin' : ''}`} />
                         </button>
                         <button
                             onClick={exportSummary}
                             disabled={loadingTables}
-                            className="h-9 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-[10px] font-black flex items-center gap-1.5 hover:text-[var(--color-text)] transition-all disabled:opacity-40"
+                            className="h-9 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-xs font-bold flex items-center gap-1.5 hover:text-[var(--color-text)] transition-all disabled:opacity-40"
                         >
-                            <Download className="text-[10px]" />
+                            <Download className="w-4 h-4" />
                             <span className="hidden sm:inline">Export</span>
                         </button>
                     </div>
@@ -810,8 +810,8 @@ export default function DatabasePage() {
                                 <s.icon className={`text-sm ${s.color}`} />
                             </div>
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">{s.label}</p>
-                                <p className={`text-xl font-black font-heading tabular-nums ${i === 2 ? s.color : 'text-[var(--color-text)]'}`}>
+                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">{s.label}</p>
+                                <p className={`text-xl font-bold font-heading tabular-nums ${i === 2 ? s.color : 'text-[var(--color-text)]'}`}>
                                     {loadingTables && i !== 2 ? '—' : s.value}
                                 </p>
                             </div>
@@ -823,7 +823,7 @@ export default function DatabasePage() {
                 <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
                     <div className="flex items-center gap-2 p-3">
                         <div className="flex-1 relative">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-sm pointer-events-none" />
+                            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" />
                             <input
                                 type="text" value={search} onChange={e => setSearch(e.target.value)}
                                 placeholder="Cari tabel..."
@@ -831,11 +831,11 @@ export default function DatabasePage() {
                             />
                             {search && (
                                 <button onClick={() => setSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-                                    <X className="text-xs" />
+                                    <X className="w-4 h-4" />
                                 </button>
                             )}
                         </div>
-                        <span className="text-[10px] font-bold text-[var(--color-text-muted)] shrink-0 tabular-nums">
+                        <span className="text-xs font-bold text-[var(--color-text-muted)] shrink-0 tabular-nums">
                             {filteredTables.length} tabel
                         </span>
                     </div>
@@ -845,7 +845,7 @@ export default function DatabasePage() {
                 <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
                     <div className="hidden md:grid grid-cols-[1fr_100px_100px_100px_140px_40px] gap-3 px-5 py-3 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]">
                         {['Tabel', 'Aktif', 'Dihapus', 'Total', 'Terakhir Dibuat', ''].map((h, i) => (
-                            <div key={i} className={`text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] ${i > 0 && i < 4 ? 'text-center' : ''}`}>
+                            <div key={i} className={`text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] ${i > 0 && i < 4 ? 'text-center' : ''}`}>
                                 {h}
                             </div>
                         ))}
@@ -869,11 +869,11 @@ export default function DatabasePage() {
                     ) : filteredTables.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-20 gap-4">
                             <div className="w-14 h-14 rounded-2xl bg-[var(--color-surface-alt)] flex items-center justify-center">
-                                <Database className="text-2xl text-[var(--color-text-muted)] opacity-30" />
+                                <Database className="w-6 h-6 text-[var(--color-text-muted)] opacity-30" />
                             </div>
                             <div className="text-center">
-                                <p className="text-[13px] font-black text-[var(--color-text)] mb-1">Tidak ditemukan</p>
-                                <p className="text-[11px] text-[var(--color-text-muted)] opacity-60">Coba ubah kata kunci pencarian.</p>
+                                <p className="text-sm font-bold text-[var(--color-text)] mb-1">Tidak ditemukan</p>
+                                <p className="text-xs text-[var(--color-text-muted)] opacity-60">Coba ubah kata kunci pencarian.</p>
                             </div>
                         </div>
                     ) : (
@@ -896,11 +896,11 @@ export default function DatabasePage() {
                     <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]">
                         <div className="flex items-center gap-3">
                             <div className="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
-                                <CheckCheck className="text-sm text-emerald-500" />
+                                <CheckCheck className="w-4 h-4 text-emerald-500" />
                             </div>
                             <div>
-                                <p className="text-[13px] font-black text-[var(--color-text)]">Cek Integritas Data</p>
-                                <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">
+                                <p className="text-sm font-bold text-[var(--color-text)]">Cek Integritas Data</p>
+                                <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
                                     Periksa data yang tidak konsisten, orphan, atau duplikat.
                                 </p>
                             </div>
@@ -908,7 +908,7 @@ export default function DatabasePage() {
                         <div className="flex items-center gap-2">
                             {integrityScore && (
                                 <div className="hidden sm:flex items-center gap-2">
-                                    <div className={`text-[10px] font-black px-2.5 py-1 rounded-full ${integrityScore.failed === 0
+                                    <div className={`text-xs font-bold px-2.5 py-1 rounded-full ${integrityScore.failed === 0
                                         ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
                                         : 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
                                         }`}>
@@ -925,12 +925,12 @@ export default function DatabasePage() {
                             <button
                                 onClick={fetchIntegrity}
                                 disabled={loadingIntegrity}
-                                className="h-9 px-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 text-[10px] font-black flex items-center gap-1.5 hover:bg-emerald-500/20 transition-all disabled:opacity-50"
+                                className="h-9 px-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 text-xs font-bold flex items-center gap-1.5 hover:bg-emerald-500/20 transition-all disabled:opacity-50"
                             >
                                 {loadingIntegrity ? (
-                                    <LoaderCircle className="animate-spin text-[10px]" />
+                                    <LoaderCircle className="w-4 h-4 animate-spin" />
                                 ) : (
-                                    <CheckCheck className="text-[10px]" />
+                                    <CheckCheck className="w-4 h-4" />
                                 )}
                                 <span className="hidden sm:inline">{loadingIntegrity ? 'Memeriksa...' : 'Jalankan Cek'}</span>
                             </button>
@@ -941,11 +941,11 @@ export default function DatabasePage() {
                         {Object.keys(integrityResults).length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-12 gap-3">
                                 <div className="w-14 h-14 rounded-2xl bg-[var(--color-surface-alt)] flex items-center justify-center">
-                                    <CheckCheck className="text-2xl text-[var(--color-text-muted)] opacity-30" />
+                                    <CheckCheck className="w-6 h-6 text-[var(--color-text-muted)] opacity-30" />
                                 </div>
                                 <div className="text-center">
-                                    <p className="text-[13px] font-black text-[var(--color-text)] mb-1">Belum Diperiksa</p>
-                                    <p className="text-[11px] text-[var(--color-text-muted)] opacity-60">
+                                    <p className="text-sm font-bold text-[var(--color-text)] mb-1">Belum Diperiksa</p>
+                                    <p className="text-xs text-[var(--color-text-muted)] opacity-60">
                                         Klik "Jalankan Cek" untuk memeriksa konsistensi dan integritas data.
                                     </p>
                                 </div>
@@ -967,9 +967,9 @@ export default function DatabasePage() {
 
                 {/* Info note */}
                 <div className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-start gap-2.5">
-                    <Info className="text-[var(--color-text-muted)] text-xs mt-0.5 shrink-0" />
-                    <p className="text-[10px] text-[var(--color-text-muted)] leading-relaxed">
-                        Data ditarik langsung dari Supabase via <code className="bg-[var(--color-surface)] px-1 rounded font-mono text-[9px]">SELECT COUNT(*)</code>.
+                    <Info className="w-4 h-4 text-[var(--color-text-muted)] mt-0.5 shrink-0" />
+                    <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
+                        Data ditarik langsung dari Supabase via <code className="bg-[var(--color-surface)] px-1 rounded font-mono text-xs">SELECT COUNT(*)</code>.
                         Integritas data dicek dengan cross-reference antar tabel. Tidak ada data yang diubah — hanya baca.
                     </p>
                 </div>

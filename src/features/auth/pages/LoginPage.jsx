@@ -168,7 +168,7 @@ export default function LoginPage() {
                         className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 transition-all"
                         aria-label="Toggle theme"
                     >
-                        { isDark ? <Sun className="text-sm" /> : <Moon className="text-sm" /> }
+                        { isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" /> }
                     </button>
                 </div>
 
@@ -191,7 +191,7 @@ export default function LoginPage() {
                                     setShowDemoDrawer(true)
                                 }
                             }}
-                            className="text-[10px] font-black uppercase tracking-widest text-amber-600/60 hover:text-amber-600 bg-amber-500/5 hover:bg-amber-500/10 border border-amber-500/10 px-4 py-1.5 rounded-full transition-all flex items-center gap-2 group"
+                            className="text-xs font-bold uppercase tracking-wide text-amber-600/60 hover:text-amber-600 bg-amber-500/5 hover:bg-amber-500/10 border border-amber-500/10 px-4 py-1.5 rounded-full transition-all flex items-center gap-2 group"
                         >
                             <span className="w-1.5 h-1.5 rounded-full bg-amber-500 group-hover:scale-125 transition-transform animate-pulse" />
                             {isDemoMode ? "Punya Akun Demo? Klik di sini" : "Aktifkan Demo Mode"}
@@ -203,7 +203,7 @@ export default function LoginPage() {
                                     localStorage.removeItem('laporanmu_force_demo')
                                     window.location.reload()
                                 }}
-                                className="text-[8px] font-black uppercase tracking-widest text-indigo-500 hover:text-indigo-600 hover:underline transition-all"
+                                className="text-xs font-bold uppercase tracking-wide text-indigo-500 hover:text-indigo-600 hover:underline transition-all"
                             >
                                 Kembali ke Mode Database (Real)
                             </button>
@@ -215,11 +215,11 @@ export default function LoginPage() {
                 {sessionReason === 'session_expired' && (
                     <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-3">
                         <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-600 flex items-center justify-center shrink-0">
-                            <TriangleAlert />
+                            <TriangleAlert className="w-4 h-4" />
                         </div>
                         <div>
-                            <p className="text-[13px] font-black text-amber-700">Sesi telah berakhir</p>
-                            <p className="text-[11px] text-amber-600/80 mt-0.5 leading-relaxed">
+                            <p className="text-sm font-bold text-amber-700">Sesi telah berakhir</p>
+                            <p className="text-xs text-amber-600/80 mt-0.5 leading-relaxed">
                                 Sesi kamu dicabut oleh administrator. Silakan login kembali.
                             </p>
                         </div>
@@ -235,7 +235,7 @@ export default function LoginPage() {
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider pl-1">Email</label>
                             <div className="relative">
-                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[var(--color-text-muted)] opacity-70" />
+                                <Mail className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-70" />
                                 <input
                                     type="email"
                                     value={email}
@@ -257,7 +257,7 @@ export default function LoginPage() {
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider pl-1">Password</label>
                             <div className="relative">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[var(--color-text-muted)] opacity-70" />
+                                <Lock className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-70" />
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
@@ -273,19 +273,19 @@ export default function LoginPage() {
                                     className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors p-2"
                                     aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
                                 >
-                                    { showPassword ? <EyeOff className="text-sm" /> : <Eye className="text-sm" /> }
+                                    { showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" /> }
                                 </button>
                             </div>
                             <div className="flex items-center justify-between px-1">
                                 {capsLockOn ? (
-                                    <p className="text-[10px] text-amber-500 font-black uppercase tracking-widest flex items-center gap-1.5 animate-pulse">
-                                        <TriangleAlert className="text-[10px]" /> Caps Lock Aktif
+                                    <p className="text-xs text-amber-500 font-bold uppercase tracking-wide flex items-center gap-1.5 animate-pulse">
+                                        <TriangleAlert className="w-4 h-4" /> Caps Lock Aktif
                                     </p>
                                 ) : <div />}
                                 <button
                                     type="button"
                                     onClick={() => setShowHelpModal(true)}
-                                    className="text-[11px] font-bold text-[var(--color-primary)] hover:text-[var(--color-accent)] transition-colors hover:underline"
+                                    className="text-xs font-bold text-[var(--color-primary)] hover:text-[var(--color-accent)] transition-colors hover:underline"
                                 >
                                     Lupa password?
                                 </button>
@@ -320,11 +320,11 @@ export default function LoginPage() {
                             className={`btn btn-primary w-full py-3.5 mt-2 shadow-lg ${(loading || cooldownRemaining > 0) ? 'opacity-70 cursor-not-allowed' : ''}`}
                         >
                             {loading ? (
-                                <><LoaderCircle className="animate-spin text-sm" /> Memproses...</>
+                                <><LoaderCircle className="w-4 h-4 animate-spin" /> Memproses...</>
                             ) : cooldownRemaining > 0 ? (
                                 <>Coba lagi dalam {cooldownRemaining}s</>
                             ) : (
-                                <>Masuk <ArrowRight className="text-sm ml-1" /></>
+                                <>Masuk <ArrowRight className="w-4 h-4 ml-1" /></>
                             )}
                         </button>
                     </form>
@@ -332,14 +332,14 @@ export default function LoginPage() {
 
                 {/* Footer Links */}
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-2 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
-                    <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
+                    <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                         <Link to="/check" className="hover:text-[var(--color-primary)] transition-colors">Wali Murid</Link>
                         <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
                         <Link to="/privacy" className="hover:text-[var(--color-primary)] transition-colors">Privasi</Link>
                         <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
                         <Link to="/contact" className="hover:text-[var(--color-primary)] transition-colors">Bantuan</Link>
                     </div>
-                    <Link to="/" className="text-[11px] font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-2">
+                    <Link to="/" className="text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-2">
                         <span>← Beranda</span>
                     </Link>
                 </div>
@@ -361,7 +361,7 @@ export default function LoginPage() {
                     </p>
                     <button
                         onClick={() => setShowHelpModal(false)}
-                        className="btn btn-primary w-full py-4 text-xs font-black uppercase tracking-widest"
+                        className="btn btn-primary w-full py-4 text-xs font-bold uppercase tracking-wide"
                     >
                         Saya Mengerti
                     </button>
@@ -374,7 +374,7 @@ export default function LoginPage() {
                 onClose={() => setShowDemoDrawer(false)}
                 title="Akun Demo"
                 description={
-                    <span className="text-amber-500 font-extrabold uppercase tracking-widest text-[9px]">
+                    <span className="text-amber-500 font-bold uppercase tracking-wide text-xs">
                         Gunakan password: demo123
                     </span>
                 }
@@ -403,10 +403,10 @@ export default function LoginPage() {
                             </div>
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center justify-between mb-0.5">
-                                    <span className="text-xs font-black uppercase tracking-wider">{u.role}</span>
-                                    <code className="text-[9px] font-mono text-[var(--color-text-muted)]">{u.email}</code>
+                                    <span className="text-xs font-bold uppercase tracking-wider">{u.role}</span>
+                                    <code className="text-xs font-mono text-[var(--color-text-muted)]">{u.email}</code>
                                 </div>
-                                <p className="text-[11px] text-[var(--color-text-muted)]">{u.desc}</p>
+                                <p className="text-xs text-[var(--color-text-muted)]">{u.desc}</p>
                             </div>
                         </button>
                     ))}

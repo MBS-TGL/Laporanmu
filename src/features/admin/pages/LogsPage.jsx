@@ -152,10 +152,10 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
             >
                 {/* Waktu */}
                 <div className="w-40 shrink-0">
-                    <p className="text-[11px] font-black text-[var(--color-text)] tabular-nums">
+                    <p className="text-xs font-bold text-[var(--color-text)] tabular-nums">
                         {fmtRelative(entry.created_at)}
                     </p>
-                    <p className="text-[9px] text-[var(--color-text-muted)] mt-0.5 tabular-nums">
+                    <p className="text-xs text-[var(--color-text-muted)] mt-0.5 tabular-nums">
                         {fmtDate(entry.created_at)} • {fmtTime(entry.created_at)}
                     </p>
                 </div>
@@ -164,16 +164,16 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                         <ActionBadge action={entry.action} />
-                        <p className="text-[12px] font-bold text-[var(--color-text)] truncate">
+                        <p className="text-xs font-bold text-[var(--color-text)] truncate">
                             {TABLE_LABELS[entry.table_name] || entry.table_name}
                         </p>
                     </div>
-                    <p className="text-[10px] text-[var(--color-text-muted)] truncate opacity-70">
-                        Record ID: <span className="font-mono text-[9px]">{entry.record_id || 'N/A'}</span>
+                    <p className="text-xs text-[var(--color-text-muted)] truncate opacity-70">
+                        Record ID: <span className="font-mono text-xs">{entry.record_id || 'N/A'}</span>
                         {entry.severity && entry.severity !== 'LOW' && (() => {
                             const sev = SEVERITY_STYLES[entry.severity] || SEVERITY_STYLES.LOW
                             return (
-                                <span className={`ml-2 inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-widest border ${sev.color}`}>
+                                <span className={`ml-2 inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[7px] font-bold uppercase tracking-wide border ${sev.color}`}>
                                     <sev.icon className="text-[6px]" />
                                     {sev.label}
                                 </span>
@@ -186,18 +186,18 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                 <div className="w-36 hidden lg:block">
                     <div className="flex items-center gap-2">
                         <div className="w-7 h-7 rounded-lg bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/20 flex items-center justify-center shrink-0">
-                            <span className="text-[10px] font-black text-[var(--color-primary)]">{initial}</span>
+                            <span className="text-xs font-bold text-[var(--color-primary)]">{initial}</span>
                         </div>
                         <div className="min-w-0">
-                            <p className="text-[11px] font-bold text-[var(--color-text)] truncate leading-tight">
+                            <p className="text-xs font-bold text-[var(--color-text)] truncate leading-tight">
                                 {displayName}
                             </p>
                             {displayRole ? (
-                                <p className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">
+                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">
                                     {displayRole}
                                 </p>
                             ) : (
-                                <p className="text-[8px] font-mono text-[var(--color-text-muted)] opacity-40 truncate">
+                                <p className="text-xs font-mono text-[var(--color-text-muted)] opacity-40 truncate">
                                     {entry.user_id ? entry.user_id.slice(0, 12) + '...' : 'SYSTEM'}
                                 </p>
                             )}
@@ -207,10 +207,10 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
 
                 {/* Badge kategori */}
                 <div className="hidden md:flex flex-row items-center gap-2 w-28 justify-end">
-                    <span className={`text-[8px] font-black px-2 py-0.5 rounded-full border uppercase tracking-widest ${meta.bg} ${meta.border} ${meta.color}`}>
+                    <span className={`text-xs font-bold px-2 py-0.5 rounded-full border uppercase tracking-wide ${meta.bg} ${meta.border} ${meta.color}`}>
                         {meta.label}
                     </span>
-                    { isExpanded ? <X className="text-[10px] text-[var(--color-text-muted)] opacity-30" /> : <ChevronDown className="text-[10px] text-[var(--color-text-muted)] opacity-30" /> }
+                    { isExpanded ? <X className="w-4 h-4 text-[var(--color-text-muted)] opacity-30" /> : <ChevronDown className="w-4 h-4 text-[var(--color-text-muted)] opacity-30" /> }
                 </div>
             </div>
 
@@ -222,18 +222,18 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                         {/* Kiri: metadata forensik + raw JSON */}
                         <div className="space-y-4">
                             <div className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] space-y-2">
-                                <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-2">
-                                    <Info /> Forensic Context
+                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] flex items-center gap-2">
+                                    <Info className="w-4 h-4" /> Forensic Context
                                 </p>
                                 <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-3 border-t border-[var(--color-border)] mt-1">
                                     {/* User Agent */}
                                     <div className="flex items-center gap-2 group cursor-help" title={entry.user_agent}>
                                         <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:bg-[var(--color-primary)]/10 group-hover:text-[var(--color-primary)] transition-colors">
-                                            <Monitor className="text-[10px]" />
+                                            <Monitor className="w-4 h-4" />
                                         </div>
                                         <div className="flex flex-col min-w-0">
-                                            <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">User Agent</span>
-                                            <span className="text-[10px] font-bold text-[var(--color-text)] truncate max-w-[200px] block lg:max-w-[400px]">
+                                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60">User Agent</span>
+                                            <span className="text-xs font-bold text-[var(--color-text)] truncate max-w-[200px] block lg:max-w-[400px]">
                                                 {entry.user_agent || 'Unknown'}
                                             </span>
                                         </div>
@@ -241,11 +241,11 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                                     {/* Remote IP */}
                                     <div className="flex items-center gap-2">
                                         <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)]">
-                                            <Globe className="text-[10px]" />
+                                            <Globe className="w-4 h-4" />
                                         </div>
                                         <div className="flex flex-col">
-                                            <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Remote IP</span>
-                                            <span className="text-[10px] font-mono font-bold text-[var(--color-text)]">
+                                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60">Remote IP</span>
+                                            <span className="text-xs font-mono font-bold text-[var(--color-text)]">
                                                 {entry.ip_address || '0.0.0.0'}
                                             </span>
                                         </div>
@@ -253,11 +253,11 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                                     {/* URL */}
                                     <div className="flex items-center gap-2 group min-w-0 flex-1">
                                         <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)]">
-                                            <Link className="text-[10px]" />
+                                            <Link className="w-4 h-4" />
                                         </div>
                                         <div className="flex flex-col min-w-0 flex-1">
-                                            <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Interaction URL</span>
-                                            <span className="text-[10px] font-bold text-[var(--color-text)] break-all leading-tight">
+                                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60">Interaction URL</span>
+                                            <span className="text-xs font-bold text-[var(--color-text)] break-all leading-tight">
                                                 {entry.url || 'Internal Action'}
                                             </span>
                                         </div>
@@ -266,11 +266,11 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                                     {entry.actor_role && (
                                         <div className="flex items-center gap-2">
                                             <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)]">
-                                                <ShieldCheck className="text-[10px]" />
+                                                <ShieldCheck className="w-4 h-4" />
                                             </div>
                                             <div className="flex flex-col">
-                                                <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Role</span>
-                                                <span className="text-[10px] font-bold text-[var(--color-text)] capitalize">
+                                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60">Role</span>
+                                                <span className="text-xs font-bold text-[var(--color-text)] capitalize">
                                                     {entry.actor_role}
                                                 </span>
                                             </div>
@@ -282,11 +282,11 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                                         return (
                                             <div className="flex items-center gap-2">
                                                 <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)]">
-                                                    <TriangleAlert className="text-[10px]" />
+                                                    <TriangleAlert className="w-4 h-4" />
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Severity</span>
-                                                    <span className={`text-[10px] font-black uppercase ${sev.color.split(' ')[1]}`}>
+                                                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60">Severity</span>
+                                                    <span className={`text-xs font-bold uppercase ${sev.color.split(' ')[1]}`}>
                                                         {sev.label}
                                                     </span>
                                                 </div>
@@ -297,11 +297,11 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                                     {entry.session_id && (
                                         <div className="flex items-center gap-2 group cursor-help" title={entry.session_id}>
                                             <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:bg-[var(--color-primary)]/10 group-hover:text-[var(--color-primary)] transition-colors">
-                                                <FingerprintPattern className="text-[10px]" />
+                                                <FingerprintPattern className="w-4 h-4" />
                                             </div>
                                             <div className="flex flex-col min-w-0">
-                                                <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Session</span>
-                                                <span className="text-[10px] font-mono font-bold text-[var(--color-text)] truncate max-w-[150px] block">
+                                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60">Session</span>
+                                                <span className="text-xs font-mono font-bold text-[var(--color-text)] truncate max-w-[150px] block">
                                                     {entry.session_id.slice(0, 16)}...
                                                 </span>
                                             </div>
@@ -311,11 +311,11 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                                     {entry.duration_ms != null && (
                                         <div className="flex items-center gap-2">
                                             <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)]">
-                                                <Timer className="text-[10px]" />
+                                                <Timer className="w-4 h-4" />
                                             </div>
                                             <div className="flex flex-col">
-                                                <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Durasi</span>
-                                                <span className={`text-[10px] font-mono font-bold ${entry.duration_ms > 2000 ? 'text-rose-500' : entry.duration_ms > 500 ? 'text-amber-500' : 'text-emerald-500'}`}>
+                                                <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60">Durasi</span>
+                                                <span className={`text-xs font-mono font-bold ${entry.duration_ms > 2000 ? 'text-rose-500' : entry.duration_ms > 500 ? 'text-amber-500' : 'text-emerald-500'}`}>
                                                     {entry.duration_ms}ms
                                                 </span>
                                             </div>
@@ -327,8 +327,8 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                             {/* Raw JSON — hanya untuk DELETE (data lama), hidden untuk INSERT/UPDATE */}
                             {entry.action === 'DELETE' && (
                                 <div className="space-y-2">
-                                    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Raw JSON (Data Lama)</p>
-                                    <pre className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-mono overflow-auto max-h-40">
+                                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Raw JSON (Data Lama)</p>
+                                    <pre className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-mono overflow-auto max-h-40">
                                         {JSON.stringify(entry.old_data || {}, null, 2)}
                                     </pre>
                                 </div>
@@ -336,8 +336,8 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
 
                             {entry.action === 'UPDATE' && (
                                 <div className="space-y-2">
-                                    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Data Lama (Raw)</p>
-                                    <pre className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-mono overflow-auto max-h-40">
+                                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Data Lama (Raw)</p>
+                                    <pre className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-mono overflow-auto max-h-40">
                                         {JSON.stringify(entry.old_data || {}, null, 2)}
                                     </pre>
                                 </div>
@@ -348,7 +348,7 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                         <div className="space-y-2">
                             {entry.action === 'UPDATE' && (
                                 <>
-                                    <p className="text-[9px] font-black uppercase tracking-widest text-indigo-500">Perubahan Data</p>
+                                    <p className="text-xs font-bold uppercase tracking-wide text-indigo-500">Perubahan Data</p>
                                     <div className="p-4 rounded-xl bg-[var(--color-surface-alt)]/50 border border-[var(--color-border)]">
                                         <DiffViewer
                                             oldData={entry.old_data}
@@ -361,7 +361,7 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
 
                             {entry.action === 'DELETE' && (
                                 <>
-                                    <p className="text-[9px] font-black uppercase tracking-widest text-rose-500">Record yang Dihapus</p>
+                                    <p className="text-xs font-bold uppercase tracking-wide text-rose-500">Record yang Dihapus</p>
                                     <div className="p-4 rounded-xl bg-[var(--color-surface-alt)]/50 border border-rose-500/10">
                                         <DeleteTombstone data={entry.old_data} />
                                     </div>
@@ -370,7 +370,7 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
 
                             {entry.action === 'INSERT' && (
                                 <>
-                                    <p className="text-[9px] font-black uppercase tracking-widest text-emerald-500">Data Record Baru</p>
+                                    <p className="text-xs font-bold uppercase tracking-wide text-emerald-500">Data Record Baru</p>
                                     <div className="p-4 rounded-xl bg-[var(--color-surface-alt)]/50 border border-emerald-500/10">
                                         <InsertViewer data={entry.new_data} />
                                     </div>
@@ -380,7 +380,7 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                             {/* Aksi lain (LOGIN, RESTORE, EXECUTE, dll) */}
                             {!['UPDATE', 'DELETE', 'INSERT'].includes(entry.action) && (
                                 <>
-                                    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Metadata</p>
+                                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Metadata</p>
                                     <div className="p-4 rounded-xl bg-[var(--color-surface-alt)]/50 border border-[var(--color-border)]">
                                         <DiffViewer oldData={entry.old_data} newData={entry.new_data} />
                                     </div>
@@ -393,9 +393,9 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                         <div className="pt-2 border-t border-[var(--color-border)] flex justify-end">
                             <button
                                 onClick={() => onRestore(entry)}
-                                className="h-8 px-4 rounded-xl bg-amber-500 text-white text-[10px] font-black hover:bg-amber-600 transition-all shadow-lg flex items-center gap-2"
+                                className="h-8 px-4 rounded-xl bg-amber-500 text-white text-xs font-bold hover:bg-amber-600 transition-all shadow-lg flex items-center gap-2"
                             >
-                                <ArchiveRestore /> Pulihkan Record ini
+                                <ArchiveRestore className="w-4 h-4" /> Pulihkan Record ini
                             </button>
                         </div>
                     )}
@@ -716,7 +716,7 @@ export default function LogsPage() {
     if (!isAllowed) return (
         <DashboardLayout title="Akses Dibatasi">
             <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-                <ShieldHalf className="text-4xl text-rose-500 opacity-20" />
+                <ShieldHalf className="w-6 h-6 text-rose-500 opacity-20" />
                 <p className="text-sm font-bold text-[var(--color-text-muted)]">Hanya untuk Admin/Developer.</p>
             </div>
         </DashboardLayout>
@@ -724,13 +724,13 @@ export default function LogsPage() {
 
     return (
         <DashboardLayout title="Audit Logs">
-            <div className="p-4 md:p-6 space-y-4 max-w-[1800px] mx-auto">
+            <div className="space-y-4">
 
                 {/* Header */}
                 <div className="flex flex-col gap-1">
                     <Breadcrumb badge="Admin" items={['Audit Center']} className="mb-0" />
-                    <h1 className="text-2xl font-black font-heading text-[var(--color-text)]">Pusat Audit Sistem</h1>
-                    <p className="text-[11px] font-medium text-[var(--color-text-muted)] opacity-60">
+                    <h1 className="text-2xl font-bold font-heading text-[var(--color-text)]">Pusat Audit Sistem</h1>
+                    <p className="text-xs font-medium text-[var(--color-text-muted)] opacity-60">
                         Jejak digital lengkap aktivitas sistem dan akses data.
                     </p>
                 </div>
@@ -740,17 +740,17 @@ export default function LogsPage() {
                     <div className="lg:col-span-2 bg-surface rounded-2xl p-5 border border-[var(--color-border)] relative overflow-hidden">
                         <div className="flex items-center justify-between mb-4">
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-2">
-                                    <ChartLine className="text-[var(--color-primary)]" /> Tren Aktivitas 24 Jam
+                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] flex items-center gap-2">
+                                    <ChartLine className="w-4 h-4 text-[var(--color-primary)]" /> Tren Aktivitas 24 Jam
                                 </p>
-                                <p className="text-[9px] text-[var(--color-text-muted)] opacity-60 mt-0.5">
+                                <p className="text-xs text-[var(--color-text-muted)] opacity-60 mt-0.5">
                                     Frekuensi perubahan data per jam.
                                 </p>
                             </div>
                             {/* Always-on live indicator */}
                             <div className="flex items-center gap-2 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
                                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                <span className="text-[8px] font-black text-emerald-600 uppercase tracking-widest">Live</span>
+                                <span className="text-xs font-bold text-emerald-600 uppercase tracking-wide">Live</span>
                             </div>
                         </div>
                         <ActivityTrends data={logs} loading={loading} />
@@ -770,9 +770,9 @@ export default function LogsPage() {
                                         <s.icon />
                                     </div>
                                     <div>
-                                        <div className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-0.5">{s.label}</div>
-                                        <div className="text-2xl font-black">{loading ? '...' : s.value}</div>
-                                        {s.sub && <div className="text-[8px] font-medium text-[var(--color-text-muted)] mt-1">{s.sub}</div>}
+                                        <div className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-0.5">{s.label}</div>
+                                        <div className="text-2xl font-bold">{loading ? '...' : s.value}</div>
+                                        {s.sub && <div className="text-xs font-medium text-[var(--color-text-muted)] mt-1">{s.sub}</div>}
                                     </div>
                                 </div>
                             </div>
@@ -784,7 +784,7 @@ export default function LogsPage() {
                 <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                     <div className="flex flex-wrap items-center gap-2 p-3">
                         <div className="flex-1 min-w-[200px] relative">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-sm" />
+                            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
                             <input
                                 type="text"
                                 value={search}
@@ -796,16 +796,16 @@ export default function LogsPage() {
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={() => fetchLogs()}
-                                className="h-10 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-surface)] text-[11px] font-black flex items-center gap-2 transition-all"
+                                className="h-10 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-surface)] text-xs font-bold flex items-center gap-2 transition-all"
                             >
-                                <RotateCw className={loading ? 'animate-spin' : ''} />
+                                <RotateCw className={loading ? 'animate-spin' : ''} className="w-4 h-4" />
                                 <span className="hidden sm:inline">Refresh</span>
                             </button>
                             <button
                                 onClick={() => setShowFilters(!showFilters)}
-                                className={`h-10 px-4 rounded-xl border font-black text-[11px] flex items-center gap-2 transition-all ${showFilters ? 'bg-[var(--color-primary)] text-white border-transparent' : 'border-[var(--color-border)] bg-[var(--color-surface-alt)]'}`}
+                                className={`h-10 px-4 rounded-xl border font-bold text-xs flex items-center gap-2 transition-all ${showFilters ? 'bg-[var(--color-primary)] text-white border-transparent' : 'border-[var(--color-border)] bg-[var(--color-surface-alt)]'}`}
                             >
-                                <Funnel /> Filter
+                                <Funnel className="w-4 h-4" /> Filter
                             </button>
                             <div className="h-8 w-px bg-[var(--color-border)] mx-1" />
                             <div className="flex items-center gap-1.5">
@@ -815,14 +815,14 @@ export default function LogsPage() {
                                     className="h-10 w-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] hover:text-emerald-500 transition-all flex items-center justify-center"
                                     title="Export CSV"
                                 >
-                                    <FileOutput />
+                                    <FileOutput className="w-4 h-4" />
                                 </button>
                                 <button
                                     onClick={() => setIsCleanupOpen(true)}
                                     className="h-10 w-10 rounded-xl border border-rose-500/20 bg-rose-500/5 text-rose-500 hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center"
                                     title="Cleanup Logs"
                                 >
-                                    <Eraser />
+                                    <Eraser className="w-4 h-4" />
                                 </button>
                             </div>
                         </div>
@@ -832,7 +832,7 @@ export default function LogsPage() {
                     {showFilters && (
                         <div className="px-3 pb-3 border-t border-[var(--color-border)] pt-4 flex flex-wrap gap-4 items-end animate-in fade-in duration-200">
                             <div className="space-y-1.5">
-                                <label className="text-[9px] font-black uppercase text-[var(--color-text-muted)] px-1">Kategori</label>
+                                <label className="text-xs font-bold uppercase text-[var(--color-text-muted)] px-1">Kategori</label>
                                 <div className="flex gap-1 bg-[var(--color-surface-alt)] p-1 rounded-xl border border-[var(--color-border)]">
                                     {[
                                         { v: '', l: 'Semua' },
@@ -843,7 +843,7 @@ export default function LogsPage() {
                                         <button
                                             key={opt.v}
                                             onClick={() => setFilterSource(opt.v)}
-                                            className={`h-7 px-3 rounded-lg text-[10px] font-black transition-all ${filterSource === opt.v ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-border)]'}`}
+                                            className={`h-7 px-3 rounded-lg text-xs font-bold transition-all ${filterSource === opt.v ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-border)]'}`}
                                         >
                                             {opt.l}
                                         </button>
@@ -852,7 +852,7 @@ export default function LogsPage() {
                             </div>
                             {/* Filter Aksi */}
                             <div className="space-y-1.5">
-                                <label className="text-[9px] font-black uppercase text-[var(--color-text-muted)] px-1">Aksi</label>
+                                <label className="text-xs font-bold uppercase text-[var(--color-text-muted)] px-1">Aksi</label>
                                 <div className="flex gap-1 bg-[var(--color-surface-alt)] p-1 rounded-xl border border-[var(--color-border)]">
                                     {[
                                         { v: '', l: 'Semua' },
@@ -863,7 +863,7 @@ export default function LogsPage() {
                                         <button
                                             key={opt.v}
                                             onClick={() => setFilterAction(opt.v)}
-                                            className={`h-7 px-3 rounded-lg text-[10px] font-black transition-all ${filterAction === opt.v ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-border)]'}`}
+                                            className={`h-7 px-3 rounded-lg text-xs font-bold transition-all ${filterAction === opt.v ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-border)]'}`}
                                         >
                                             {opt.l}
                                         </button>
@@ -872,7 +872,7 @@ export default function LogsPage() {
                             </div>
                             {/* Filter Severity */}
                             <div className="space-y-1.5">
-                                <label className="text-[9px] font-black uppercase text-[var(--color-text-muted)] px-1">Severity</label>
+                                <label className="text-xs font-bold uppercase text-[var(--color-text-muted)] px-1">Severity</label>
                                 <div className="flex gap-1 bg-[var(--color-surface-alt)] p-1 rounded-xl border border-[var(--color-border)]">
                                     {[
                                         { v: '', l: 'Semua' },
@@ -884,7 +884,7 @@ export default function LogsPage() {
                                         <button
                                             key={opt.v}
                                             onClick={() => setFilterSeverity(opt.v)}
-                                            className={`h-7 px-3 rounded-lg text-[10px] font-black transition-all ${filterSeverity === opt.v ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-border)]'}`}
+                                            className={`h-7 px-3 rounded-lg text-xs font-bold transition-all ${filterSeverity === opt.v ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-border)]'}`}
                                         >
                                             {opt.l}
                                         </button>
@@ -892,29 +892,29 @@ export default function LogsPage() {
                                 </div>
                             </div>
                             <div className="space-y-1.5 flex-1 min-w-[150px]">
-                                <label className="text-[9px] font-black uppercase text-[var(--color-text-muted)] px-1">Pilih Tabel</label>
+                                <label className="text-xs font-bold uppercase text-[var(--color-text-muted)] px-1">Pilih Tabel</label>
                                 <select
                                     value={filterTable}
                                     onChange={e => setFilterTable(e.target.value)}
-                                    className="w-full h-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black px-3 outline-none focus:border-[var(--color-primary)]"
+                                    className="w-full h-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold px-3 outline-none focus:border-[var(--color-primary)]"
                                 >
                                     <option value="">Semua Perubahan</option>
                                     {Object.entries(TABLE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                                 </select>
                             </div>
                             <div className="space-y-1.5 shrink-0">
-                                <label className="text-[9px] font-black uppercase text-[var(--color-text-muted)] px-1">Rentang Tanggal</label>
+                                <label className="text-xs font-bold uppercase text-[var(--color-text-muted)] px-1">Rentang Tanggal</label>
                                 <div className="flex items-center gap-2">
-                                    <input type="date" value={filterRange.from} onChange={e => setFilterRange({ ...filterRange, from: e.target.value })} className="h-9 px-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-bold" />
-                                    <span className="text-[10px] font-bold opacity-30">—</span>
-                                    <input type="date" value={filterRange.to} onChange={e => setFilterRange({ ...filterRange, to: e.target.value })} className="h-9 px-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-bold" />
+                                    <input type="date" value={filterRange.from} onChange={e => setFilterRange({ ...filterRange, from: e.target.value })} className="h-9 px-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold" />
+                                    <span className="text-xs font-bold opacity-30">—</span>
+                                    <input type="date" value={filterRange.to} onChange={e => setFilterRange({ ...filterRange, to: e.target.value })} className="h-9 px-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold" />
                                 </div>
                             </div>
                             <button
                                 onClick={() => { setFilterSource(''); setFilterTable(''); setFilterRange({ from: '', to: '' }); setFilterAction(''); setFilterSeverity('') }}
-                                className="h-9 px-4 rounded-xl border border-rose-500/20 text-rose-500 text-[10px] font-black flex items-center gap-2 hover:bg-rose-500/5 transition-all"
+                                className="h-9 px-4 rounded-xl border border-rose-500/20 text-rose-500 text-xs font-bold flex items-center gap-2 hover:bg-rose-500/5 transition-all"
                             >
-                                <X /> Reset
+                                <X className="w-4 h-4" /> Reset
                             </button>
                         </div>
                     )}
@@ -931,10 +931,10 @@ export default function LogsPage() {
                         className="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-2xl bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/15 transition-all group animate-in slide-in-from-top-2 duration-300"
                     >
                         <div className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-ping" />
-                        <span className="text-[11px] font-black text-[var(--color-primary)]">
+                        <span className="text-xs font-bold text-[var(--color-primary)]">
                             {newLogsCount} log baru masuk
                         </span>
-                        <h4 className="text-[11px] font-black text-[var(--color-text)] leading-tight uppercase tracking-tight group-hover:text-[var(--color-primary)] transition-colors">
+                        <h4 className="text-xs font-bold text-[var(--color-text)] leading-tight uppercase tracking-tight group-hover:text-[var(--color-primary)] transition-colors">
                             — klik untuk lihat
                         </h4>
                     </button>
@@ -944,7 +944,7 @@ export default function LogsPage() {
                 <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                     <div className="hidden md:grid grid-cols-[160px_1fr_128px_96px] gap-3 px-5 py-3 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/50">
                         {['Waktu', 'Aksi & Subjek', 'Actor', 'Kategori'].map((h, i) => (
-                            <div key={i} className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">{h}</div>
+                            <div key={i} className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">{h}</div>
                         ))}
                     </div>
 
@@ -960,11 +960,11 @@ export default function LogsPage() {
                         ) : logs.length === 0 ? (
                             <div className="py-20 flex flex-col items-center justify-center gap-4 text-center">
                                 <div className="w-16 h-16 rounded-3xl bg-[var(--color-surface-alt)] flex items-center justify-center">
-                                    <Database className="text-2xl text-[var(--color-text-muted)] opacity-20" />
+                                    <Database className="w-6 h-6 text-[var(--color-text-muted)] opacity-20" />
                                 </div>
                                 <div>
-                                    <p className="text-sm font-black">Tidak Ada Jejak Audit</p>
-                                    <p className="text-[11px] text-[var(--color-text-muted)]">Belum ada aktivitas yang direkam untuk kriteria ini.</p>
+                                    <p className="text-sm font-bold">Tidak Ada Jejak Audit</p>
+                                    <p className="text-xs text-[var(--color-text-muted)]">Belum ada aktivitas yang direkam untuk kriteria ini.</p>
                                 </div>
                             </div>
                         ) : (
@@ -983,18 +983,18 @@ export default function LogsPage() {
                     {/* Pagination */}
                     {total > pageSize && (
                         <div className="px-5 py-3 border-t border-[var(--color-border)] bg-[var(--color-surface-alt)]/30 flex items-center justify-between">
-                            <p className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider">
+                            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider">
                                 Menampilkan {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, total)} dari {total} log
                             </p>
                             <div className="flex items-center gap-1">
                                 <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="w-8 h-8 rounded-lg border border-[var(--color-border)] flex items-center justify-center disabled:opacity-30 hover:bg-[var(--color-surface)]">
-                                    <ChevronLeft className="text-[10px]" />
+                                    <ChevronLeft className="w-4 h-4" />
                                 </button>
-                                <div className="px-3 h-8 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[10px] font-black">
+                                <div className="px-3 h-8 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-xs font-bold">
                                     {page}
                                 </div>
                                 <button onClick={() => setPage(p => p + 1)} disabled={page >= Math.ceil(total / pageSize)} className="w-8 h-8 rounded-lg border border-[var(--color-border)] flex items-center justify-center disabled:opacity-30 hover:bg-[var(--color-surface)]">
-                                    <ChevronRight className="text-[10px]" />
+                                    <ChevronRight className="w-4 h-4" />
                                 </button>
                             </div>
                         </div>
@@ -1003,10 +1003,10 @@ export default function LogsPage() {
 
                 {/* Catatan integritas */}
                 <div className="p-4 rounded-2xl bg-indigo-500/5 border border-indigo-500/10 flex items-start gap-3">
-                    <Info className="text-indigo-500 text-sm mt-0.5" />
+                    <Info className="w-4 h-4 text-indigo-500 mt-0.5" />
                     <div>
-                        <p className="text-[11px] font-black text-indigo-500 uppercase tracking-widest mb-1">Penting: Integritas Data</p>
-                        <p className="text-[10px] text-[var(--color-text-muted)] leading-relaxed">
+                        <p className="text-xs font-bold text-indigo-500 uppercase tracking-wide mb-1">Penting: Integritas Data</p>
+                        <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
                             Audit trail ini adalah record permanen yang tidak dapat diubah oleh administrator biasa.
                             Gunakan data ini untuk investigasi forensik jika terjadi kejanggalan pada data Master atau Operational.
                         </p>
@@ -1022,10 +1022,10 @@ export default function LogsPage() {
                     <div className="w-full max-w-sm bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
                         <div className="p-6">
                             <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-4">
-                                <ArchiveRestore className="text-xl text-amber-500" />
+                                <ArchiveRestore className="w-5 h-5 text-amber-500" />
                             </div>
-                            <h3 className="text-lg font-black text-[var(--color-text)] mb-1">Pulihkan Data?</h3>
-                            <p className="text-[11px] text-[var(--color-text-muted)] mb-4 leading-relaxed">
+                            <h3 className="text-lg font-bold text-[var(--color-text)] mb-1">Pulihkan Data?</h3>
+                            <p className="text-xs text-[var(--color-text-muted)] mb-4 leading-relaxed">
                                 Anda akan mengembalikan data yang dihapus ke tabel{' '}
                                 <span className="font-bold text-amber-600 underline">
                                     {TABLE_LABELS[restoreEntry.table_name] || restoreEntry.table_name}
@@ -1033,11 +1033,11 @@ export default function LogsPage() {
                                 Tindakan ini sendiri akan dicatat sebagai entri Audit baru.
                             </p>
                             <div className="flex gap-2 pt-2">
-                                <button onClick={() => setRestoreEntry(null)} className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-[11px] font-black hover:bg-[var(--color-surface-alt)] transition-all">
+                                <button onClick={() => setRestoreEntry(null)} className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-xs font-bold hover:bg-[var(--color-surface-alt)] transition-all">
                                     Batal
                                 </button>
-                                    <button onClick={handleRestore} disabled={restoring} className="flex-1 h-10 rounded-xl bg-amber-500 text-white text-[11px] font-black hover:bg-amber-600 transition-all shadow-lg disabled:opacity-50 flex items-center justify-center gap-2">
-                                    {restoring ? <LoaderCircle className="animate-spin" /> : 'Ya, Pulihkan'}
+                                    <button onClick={handleRestore} disabled={restoring} className="flex-1 h-10 rounded-xl bg-amber-500 text-white text-xs font-bold hover:bg-amber-600 transition-all shadow-lg disabled:opacity-50 flex items-center justify-center gap-2">
+                                    {restoring ? <LoaderCircle className="w-4 h-4 animate-spin" /> : 'Ya, Pulihkan'}
                                 </button>
                             </div>
                         </div>
@@ -1051,20 +1051,20 @@ export default function LogsPage() {
                     <div className="w-full max-w-sm bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
                         <div className="p-6">
                             <div className="w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center mb-4">
-                                <Eraser className="text-xl text-rose-500" />
+                                <Eraser className="w-5 h-5 text-rose-500" />
                             </div>
-                            <h3 className="text-lg font-black text-[var(--color-text)] mb-1">Pembersihan Log</h3>
-                            <p className="text-[11px] text-[var(--color-text-muted)] mb-4 leading-relaxed">
+                            <h3 className="text-lg font-bold text-[var(--color-text)] mb-1">Pembersihan Log</h3>
+                            <p className="text-xs text-[var(--color-text-muted)] mb-4 leading-relaxed">
                                 Hapus log audit permanen untuk menjaga performa sistem. Log yang dihapus tidak dapat dipulihkan.
                             </p>
                             <div className="space-y-3 mb-6">
-                                <label className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Hapus log lebih lama dari:</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Hapus log lebih lama dari:</label>
                                 <div className="grid grid-cols-3 gap-2">
                                     {[30, 90, 180].map(d => (
                                         <button
                                             key={d}
                                             onClick={() => setCleanupDays(d)}
-                                            className={`h-9 rounded-xl border text-[10px] font-black transition-all ${cleanupDays === d ? 'bg-rose-500 border-rose-500 text-white shadow-lg' : 'border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]'}`}
+                                            className={`h-9 rounded-xl border text-xs font-bold transition-all ${cleanupDays === d ? 'bg-rose-500 border-rose-500 text-white shadow-lg' : 'border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]'}`}
                                         >
                                             {d} Hari
                                         </button>
@@ -1072,11 +1072,11 @@ export default function LogsPage() {
                                 </div>
                             </div>
                             <div className="flex gap-2 pt-2">
-                                <button onClick={() => setIsCleanupOpen(false)} className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-[11px] font-black hover:bg-[var(--color-surface-alt)] transition-all">
+                                <button onClick={() => setIsCleanupOpen(false)} className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-xs font-bold hover:bg-[var(--color-surface-alt)] transition-all">
                                     Batal
                                 </button>
-                                    <button onClick={handleCleanup} disabled={clearing} className="flex-1 h-10 rounded-xl bg-rose-500 text-white text-[11px] font-black hover:bg-rose-600 transition-all shadow-lg disabled:opacity-50 flex items-center justify-center gap-2">
-                                    {clearing ? <LoaderCircle className="animate-spin" /> : 'Eksekusi Hapus'}
+                                    <button onClick={handleCleanup} disabled={clearing} className="flex-1 h-10 rounded-xl bg-rose-500 text-white text-xs font-bold hover:bg-rose-600 transition-all shadow-lg disabled:opacity-50 flex items-center justify-center gap-2">
+                                    {clearing ? <LoaderCircle className="w-4 h-4 animate-spin" /> : 'Eksekusi Hapus'}
                                 </button>
                             </div>
                         </div>

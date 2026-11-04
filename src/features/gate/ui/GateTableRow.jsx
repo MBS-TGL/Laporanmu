@@ -48,40 +48,40 @@ const GateTableRow = memo(function GateTableRow({
           </div>
           <div className={dir === 'rtl' ? 'text-right' : ''}>
             <p className="text-sm font-bold text-[var(--color-text)] leading-tight">{log.visitor_name}</p>
-            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${meta.bg} ${meta.color} leading-none inline-block mt-0.5`}>{meta.label}</span>
+            <span className={`text-xs font-bold px-1.5 py-0.5 rounded ${meta.bg} ${meta.color} leading-none inline-block mt-0.5`}>{meta.label}</span>
           </div>
         </div>
       </td>
       <td className="px-4 py-2">
         <p className="text-xs font-medium text-[var(--color-text-muted)] leading-tight">{translatePurpose(log.purpose, language)}</p>
-        {log.destination && <p className="text-[11px] text-[var(--color-text-muted)] leading-none mt-0.5">→ {log.destination}</p>}
+        {log.destination && <p className="text-xs text-[var(--color-text-muted)] leading-none mt-0.5">→ {log.destination}</p>}
       </td>
       <td className="px-4 py-2">
         <p className="text-xs font-bold text-[var(--color-text)] leading-none">{fmtTime(log.check_in, language)}</p>
         {log.estimated_return && isActive && (
-          <p className={`text-[11px] font-bold mt-1 leading-none ${etaPassed ? 'text-red-600' : 'text-[var(--color-text-muted)]'}`}>
+          <p className={`text-xs font-bold mt-1 leading-none ${etaPassed ? 'text-red-600' : 'text-[var(--color-text-muted)]'}`}>
             ETA {fmtTime(log.estimated_return, language)}
           </p>
         )}
       </td>
       <td className="px-4 py-2">
         {dur
-          ? <span className="text-[11px] font-bold text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] px-2 py-0.5 rounded leading-none">{dur}</span>
+          ? <span className="text-xs font-bold text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] px-2 py-0.5 rounded leading-none">{dur}</span>
           : <span className="text-xs text-[var(--color-text-muted)] opacity-40">—</span>}
       </td>
       <td className="px-4 py-2 text-start">
         <div className="flex items-center justify-start gap-1.5 flex-wrap">
           {isActive ? (
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 leading-none">
+            <span className="text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 leading-none">
               {language === 'en' ? 'ACTIVE' : language === 'ar' ? 'نشط' : 'AKTIF'}
             </span>
           ) : (
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-slate-100 text-slate-500 border border-slate-200 leading-none">
+            <span className="text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wider bg-slate-100 text-slate-500 border border-slate-200 leading-none">
               {language === 'en' ? 'DONE' : language === 'ar' ? 'مكتمل' : 'SELESAI'}
             </span>
           )}
-          {etaPassed && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-600 text-white leading-none">{language === 'en' ? 'PAST DUE' : language === 'ar' ? 'متأخر' : 'LEWAT ETA'}</span>}
-          {overTime && !etaPassed && <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-600 leading-none">{language === 'en' ? 'OVER TIME' : language === 'ar' ? 'تجاوز' : 'LAMA'}</span>}
+          {etaPassed && <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-red-600 text-white leading-none">{language === 'en' ? 'PAST DUE' : language === 'ar' ? 'متأخر' : 'LEWAT ETA'}</span>}
+          {overTime && !etaPassed && <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-600 leading-none">{language === 'en' ? 'OVER TIME' : language === 'ar' ? 'تجاوز' : 'LAMA'}</span>}
         </div>
       </td>
       <td className="px-4 py-2 text-center">

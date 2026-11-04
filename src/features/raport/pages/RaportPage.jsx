@@ -1688,8 +1688,8 @@ await Promise.all([
                         <AlertTriangle className="text-amber-500 w-3.5 h-3.5" />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-[11px] font-black text-[var(--color-text)] mb-0.5">Raport {newMonthBanner.prevMonthStr} {newMonthBanner.prevYear} belum lengkap!</p>
-                        <p className="text-[10px] text-[var(--color-text-muted)] mb-3">
+                        <p className="text-xs font-bold text-[var(--color-text)] mb-0.5">Raport {newMonthBanner.prevMonthStr} {newMonthBanner.prevYear} belum lengkap!</p>
+                        <p className="text-xs text-[var(--color-text-muted)] mb-3">
                             {newMonthBanner.classesNotArchived.length} kelas masih ada santri yang belum diisi.
                         </p>
 
@@ -1709,10 +1709,10 @@ await Promise.all([
                                         };
                                         setStep(1)
                                     }}
-                                    className="h-9 px-3 rounded-xl bg-white/70 border border-amber-500/30 text-amber-900 text-[10px] font-black hover:bg-white hover:shadow-md hover:border-amber-500 transition-all flex items-center justify-between gap-2 shrink-0 shadow-sm"
+                                    className="h-9 px-3 rounded-xl bg-white/70 border border-amber-500/30 text-amber-900 text-xs font-bold hover:bg-white hover:shadow-md hover:border-amber-500 transition-all flex items-center justify-between gap-2 shrink-0 shadow-sm"
                                 >
                                     <span className="truncate min-w-0">{cls.class_name.split(' ')[0]}</span>
-                                    <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded-md shrink-0 ${cls.filled === 0 ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>
+                                    <span className={`text-xs font-bold px-1.5 py-0.5 rounded-md shrink-0 ${cls.filled === 0 ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>
                                         {cls.filled}/{cls.total}
                                     </span>
                                 </button>
@@ -1720,7 +1720,7 @@ await Promise.all([
                             {!showAllIncompleteBanner && newMonthBanner.classesNotArchived.length > 8 && (
                                 <button
                                     onClick={() => setShowAllIncompleteBanner(true)}
-                                    className="h-9 px-3 rounded-xl bg-amber-500/10 border border-dashed border-amber-500/40 text-amber-600 text-[9px] font-black hover:bg-amber-500/20 transition-all flex items-center justify-center gap-1.5"
+                                    className="h-9 px-3 rounded-xl bg-amber-500/10 border border-dashed border-amber-500/40 text-amber-600 text-xs font-bold hover:bg-amber-500/20 transition-all flex items-center justify-center gap-1.5"
                                 >
                                     +{newMonthBanner.classesNotArchived.length - 8} kelas lagi
                                 </button>
@@ -1728,7 +1728,7 @@ await Promise.all([
                             {showAllIncompleteBanner && (
                                 <button
                                     onClick={() => setShowAllIncompleteBanner(false)}
-                                    className="h-9 px-3 rounded-xl text-amber-600 text-[9px] font-black hover:underline transition-all"
+                                    className="h-9 px-3 rounded-xl text-amber-600 text-xs font-bold hover:underline transition-all"
                                 >
                                     Sembunyikan
                                 </button>
@@ -1736,10 +1736,10 @@ await Promise.all([
                         </div>
 
                         <div className="flex items-center gap-2 mt-4 pt-3 border-t border-amber-500/10">
-                            <button onClick={() => setNewMonthBanner(null)} className="h-8 px-4 rounded-xl bg-white/50 border border-amber-500/20 text-amber-700 text-[9px] font-black hover:bg-white transition-all">
+                            <button onClick={() => setNewMonthBanner(null)} className="h-8 px-4 rounded-xl bg-white/50 border border-amber-500/20 text-amber-700 text-xs font-bold hover:bg-white transition-all">
                                 Nanti
                             </button>
-                            <button onClick={() => { localStorage.setItem(newMonthBanner.dismissKey, '1'); setNewMonthBanner(null) }} className="h-8 px-4 rounded-xl bg-white/50 border border-amber-500/20 text-amber-700 text-[9px] font-black hover:bg-white transition-all">
+                            <button onClick={() => { localStorage.setItem(newMonthBanner.dismissKey, '1'); setNewMonthBanner(null) }} className="h-8 px-4 rounded-xl bg-white/50 border border-amber-500/20 text-amber-700 text-xs font-bold hover:bg-white transition-all">
                                 Jangan ingatkan
                             </button>
                         </div>
@@ -1754,8 +1754,8 @@ await Promise.all([
                         <Zap className="text-indigo-500 w-3.5 h-3.5" />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-[11px] font-black text-[var(--color-text)] leading-tight">Lanjutkan yang tadi?</p>
-                        <p className="text-[9px] text-[var(--color-text-muted)] font-medium truncate opacity-70">
+                        <p className="text-xs font-bold text-[var(--color-text)] leading-tight">Lanjutkan yang tadi?</p>
+                        <p className="text-xs text-[var(--color-text-muted)] font-medium truncate opacity-70">
                             {lastSession.className} · {BULAN.find(b => b.id === lastSession.month)?.id_str} {lastSession.year}
                         </p>
                     </div>
@@ -1769,7 +1769,7 @@ await Promise.all([
                                 const ok = await loadStudents(lastSession.classId, lastSession.month, lastSession.year, lastSession.useLang, lastSession.reportType, lastSession.selectedSemester, lastSession.academicYear)
                                 if (ok) setStep(2)
                             }}
-                            className="h-8 px-4 rounded-xl bg-indigo-600 text-white text-[9px] font-black hover:bg-indigo-700 transition-all shadow-md"
+                            className="h-8 px-4 rounded-xl bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 transition-all shadow-md"
                         >
                             Buka →
                         </button>
@@ -1790,7 +1790,7 @@ await Promise.all([
                         <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center">
                             <School className="text-indigo-500 w-3.5 h-3.5" />
                         </div>
-                        <label className="text-[10px] font-black uppercase tracking-[0.15em] text-[var(--color-text-muted)]">Pilih Kelas</label>
+                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Pilih Kelas</label>
                     </div>
                 </div>
 
@@ -1804,7 +1804,7 @@ await Promise.all([
                             placeholder="Cari nama kelas..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full h-11 pl-11 pr-10 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] outline-none text-[13px] font-bold transition-all focus:border-indigo-500/50 focus:shadow-xl text-[var(--color-text)]"
+                            className="w-full h-11 pl-11 pr-10 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] outline-none text-sm font-bold transition-all focus:border-indigo-500/50 focus:shadow-xl text-[var(--color-text)]"
                         />
                         {searchQuery && (
                             <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg hover:bg-red-50 flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 transition-all">
@@ -1823,7 +1823,7 @@ await Promise.all([
                             <button
                                 key={opt.id}
                                 onClick={() => setFilterType(opt.id)}
-                                className={`h-9 sm:px-5 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-1.5 sm:gap-2 ${filterType === opt.id ? 'bg-indigo-600 text-white shadow-lg' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white dark:hover:bg-slate-800'}`}
+                                className={`h-9 sm:px-5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 sm:gap-2 ${filterType === opt.id ? 'bg-indigo-600 text-white shadow-lg' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white dark:hover:bg-slate-800'}`}
                             >
                                 {(() => { const Icon = opt.icon; return <Icon className="w-2.5 h-2.5 shrink-0" /> })()}
                                 <span className="whitespace-nowrap">{opt.label}</span>
@@ -1843,7 +1843,7 @@ await Promise.all([
                         title={searchQuery ? `"${searchQuery}" tidak ditemukan` : 'Belum ada kelas'}
                         description={searchQuery ? 'Coba kata kunci lain atau hapus filter.' : 'Tambahkan kelas di menu Master Terlebih dahulu.'}
                         action={searchQuery && (
-                            <button onClick={() => setSearchQuery('')} className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:shadow-lg transition-all flex items-center gap-2 mx-auto">
+                            <button onClick={() => setSearchQuery('')} className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:shadow-lg transition-all flex items-center gap-2 mx-auto">
                                 <X className="w-3.5 h-3.5 mr-1" /> Reset Filter
                             </button>
                         )}
@@ -1877,19 +1877,19 @@ await Promise.all([
                                     className="group relative rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:border-indigo-500/50 hover:shadow-md cursor-pointer transition-all duration-200 flex items-center p-2.5 gap-3 h-[72px]"
                                 >
                                     {/* Small Initial */}
-                                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 font-black text-[10px] transition-all ${isDone ? 'bg-emerald-500 text-white' : isBoarding ? 'bg-indigo-500/10 text-indigo-600' : 'bg-emerald-500/10 text-emerald-600'}`}>
+                                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 font-bold text-xs transition-all ${isDone ? 'bg-emerald-500 text-white' : isBoarding ? 'bg-indigo-500/10 text-indigo-600' : 'bg-emerald-500/10 text-emerald-600'}`}>
                                         {cls.name?.charAt(0)}
                                     </div>
 
                                     {/* Main Info Area */}
                                     <div className="min-w-0 flex-1 flex flex-col justify-center gap-0.5">
                                         <div className="flex items-center gap-2">
-                                            <h3 className="text-[11px] font-black text-[var(--color-text)] truncate group-hover:text-indigo-600 transition-colors uppercase tracking-tight leading-none">{cls.name}</h3>
-                                            <span className={`text-[6px] font-black px-1 py-0.5 rounded-md border shrink-0 ${isBoarding ? 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20' : 'bg-sky-500/10 text-sky-500 border-sky-500/20'}`}>
+                                            <h3 className="text-xs font-bold text-[var(--color-text)] truncate group-hover:text-indigo-600 transition-colors uppercase tracking-tight leading-none">{cls.name}</h3>
+                                            <span className={`text-[6px] font-bold px-1 py-0.5 rounded-md border shrink-0 ${isBoarding ? 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20' : 'bg-sky-500/10 text-sky-500 border-sky-500/20'}`}>
                                                 {isBoarding ? 'B' : 'R'}
                                             </span>
                                         </div>
-                                        <p className="text-[9px] font-bold text-[var(--color-text-muted)] truncate opacity-60 leading-none">{teacher}</p>
+                                        <p className="text-xs font-bold text-[var(--color-text-muted)] truncate opacity-60 leading-none">{teacher}</p>
 
                                         {/* Slim Progress */}
                                         <div className="flex items-center gap-2 mt-1">
@@ -1899,7 +1899,7 @@ await Promise.all([
                                                     style={{ width: `${pct}%` }}
                                                 />
                                             </div>
-                                            <span className="text-[8px] font-black text-indigo-500 w-6 text-right">{pct}%</span>
+                                            <span className="text-xs font-bold text-indigo-500 w-6 text-right">{pct}%</span>
                                         </div>
                                     </div>
 
@@ -1942,7 +1942,7 @@ await Promise.all([
             return (
                 <div className="py-20 flex flex-col items-center justify-center gap-3">
                     <Loader2 className="w-8 h-8 animate-spin text-[var(--color-primary)]" />
-                    <p className="text-xs font-black text-[var(--color-text-muted)] animate-pulse">Mengalihkan ke Dashboard...</p>
+                    <p className="text-xs font-bold text-[var(--color-text-muted)] animate-pulse">Mengalihkan ke Dashboard...</p>
                 </div>
             )
         }
@@ -1955,8 +1955,8 @@ await Promise.all([
                             <ClipboardList className="text-emerald-500 w-5 h-5" />
                         </div>
                         <div>
-                            <h3 className="text-sm font-black text-[var(--color-text)]">Setup {isAcademicRaport ? 'Rapor & Penilaian' : 'Raport Pondok'}</h3>
-                            <p className="text-[11px] text-[var(--color-text-muted)] font-medium">Langkah 1: Tentukan periode dan bahasa pengantar untuk raport kelas ini.</p>
+                            <h3 className="text-sm font-bold text-[var(--color-text)]">Setup {isAcademicRaport ? 'Rapor & Penilaian' : 'Raport Pondok'}</h3>
+                            <p className="text-xs text-[var(--color-text-muted)] font-medium">Langkah 1: Tentukan periode dan bahasa pengantar untuk raport kelas ini.</p>
                         </div>
                     </div>
                 </div>
@@ -1964,26 +1964,26 @@ await Promise.all([
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-2">
+                            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] flex items-center gap-2">
                                 <School className="w-3.5 h-3.5 opacity-60 mr-1" /> Kelas Terpilih
                             </label>
                             <div className="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 flex items-center justify-between gap-4">
                                 <div className="flex items-center gap-3 min-w-0 flex-1">
-                                    <div className="w-10 h-10 rounded-[1.2rem] bg-emerald-500 flex items-center justify-center text-white text-xs font-black shadow-lg shrink-0">
+                                    <div className="w-10 h-10 rounded-[1.2rem] bg-emerald-500 flex items-center justify-center text-white text-xs font-bold shadow-lg shrink-0">
                                         {selectedClass?.name?.charAt(0) || 'K'}
                                     </div>
                                     <div className="min-w-0 flex-1">
-                                        <p className="text-[14px] font-black text-[var(--color-text)] truncate leading-tight">
+                                        <p className="text-[14px] font-bold text-[var(--color-text)] truncate leading-tight">
                                             {selectedClass?.name || 'Memuat nama kelas...'}
                                         </p>
-                                        <p className="text-[10px] text-emerald-600/70 font-bold uppercase tracking-wider">
+                                        <p className="text-xs text-emerald-600/70 font-bold uppercase tracking-wider">
                                             {(classProgress[selectedClass?.id]?.total || 0)} Siswa Terdaftar
                                         </p>
                                     </div>
                                 </div>
                                 <button
                                     onClick={() => { setSelectedClassId(''); setMusyrif(''); setStep(0) }}
-                                    className="h-9 px-4 rounded-xl border border-emerald-500/30 bg-white text-emerald-600 text-[11px] font-black hover:bg-emerald-500/10 transition-all shrink-0 shadow-sm active:scale-95 dark:bg-slate-800 dark:hover:bg-slate-700"
+                                    className="h-9 px-4 rounded-xl border border-emerald-500/30 bg-white text-emerald-600 text-xs font-bold hover:bg-emerald-500/10 transition-all shrink-0 shadow-sm active:scale-95 dark:bg-slate-800 dark:hover:bg-slate-700"
                                 >
                                     Ganti
                                 </button>
@@ -1993,7 +1993,7 @@ await Promise.all([
                         {reportType === 'bulanan' ? (
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Bulan</label>
+                                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Bulan</label>
                                     <RichSelect
                                         value={selectedMonth}
                                         onChange={val => setSelectedMonth(Number(val))}
@@ -2002,7 +2002,7 @@ await Promise.all([
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Tahun</label>
+                                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Tahun</label>
                                     <RichSelect
                                         value={selectedYear}
                                         onChange={val => setSelectedYear(Number(val))}
@@ -2014,7 +2014,7 @@ await Promise.all([
                         ) : (
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Semester</label>
+                                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Semester</label>
                                     <RichSelect
                                         value={selectedSemester}
                                         onChange={val => setSelectedSemester(Number(val))}
@@ -2026,7 +2026,7 @@ await Promise.all([
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Tahun Ajaran</label>
+                                    <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Tahun Ajaran</label>
                                     <RichSelect
                                         value={academicYear}
                                         onChange={val => setAcademicYear(val)}
@@ -2045,9 +2045,9 @@ await Promise.all([
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Musyrif / Wali Kelas</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Musyrif / Wali Kelas</label>
                                 {homeroomTeacherName && musyrif !== homeroomTeacherName && (
-                                    <button type="button" onClick={() => setMusyrif(homeroomTeacherName)} className="text-[9px] font-black text-indigo-500 hover:underline">Reset ke Wali Kelas</button>
+                                    <button type="button" onClick={() => setMusyrif(homeroomTeacherName)} className="text-xs font-bold text-indigo-500 hover:underline">Reset ke Wali Kelas</button>
                                 )}
                             </div>
                             <input value={musyrif} onChange={e => setMusyrif(e.target.value)} placeholder={homeroomTeacherName || "Nama lengkap musyrif..."} className="w-full h-11 px-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-sm font-bold text-[var(--color-text)] outline-none focus:border-indigo-500/50 transition-all" />
@@ -2055,11 +2055,11 @@ await Promise.all([
 
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Template Bahasa</label>
+                                <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Template Bahasa</label>
                                 <button
                                     type="button"
                                     onClick={() => setShowTemplatePreviewModal(true)}
-                                    className="text-[9px] font-black text-indigo-500 hover:underline flex items-center gap-1"
+                                    className="text-xs font-bold text-indigo-500 hover:underline flex items-center gap-1"
                                 >
                                     <Eye className="w-3.5 h-3.5 mr-1.5" /> Lihat Perbedaan Template
                                 </button>
@@ -2071,10 +2071,10 @@ await Promise.all([
                                 ].map(opt => (
                                     <button key={opt.v} onClick={() => setLang(opt.v)} className={`p-4 rounded-2xl border text-left transition-all ${lang === opt.v ? 'bg-indigo-500/10 border-indigo-500/50 shadow-sm' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] hover:border-indigo-500/20'}`}>
                                         <div className="flex items-center justify-between mb-1">
-                                            <span className={`text-base font-black ${lang === opt.v ? 'text-indigo-600' : 'text-[var(--color-text)]'}`}>{opt.label}</span>
+                                            <span className={`text-base font-bold ${lang === opt.v ? 'text-indigo-600' : 'text-[var(--color-text)]'}`}>{opt.label}</span>
                                             {(() => { const Icon = opt.icon; return <Icon className={`w-4 h-4 transition-colors ${lang === opt.v ? opt.color : 'text-[var(--color-text-muted)] opacity-60'}`} /> })()}
                                         </div>
-                                        <p className="text-[10px] text-[var(--color-text-muted)] font-medium leading-tight">{opt.sub}</p>
+                                        <p className="text-xs text-[var(--color-text-muted)] font-medium leading-tight">{opt.sub}</p>
                                     </button>
                                 ))}
                             </div>
@@ -2083,10 +2083,10 @@ await Promise.all([
                 </div>
 
                 <div className="flex gap-2 sm:gap-4 pt-4 border-t border-[var(--color-border)]">
-                    <button onClick={() => { setSelectedClassId(''); setMusyrif(''); setStep(0) }} className="h-12 px-4 rounded-2xl border border-[var(--color-border)] text-xs sm:text-sm font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-2 shrink-0">
+                    <button onClick={() => { setSelectedClassId(''); setMusyrif(''); setStep(0) }} className="h-12 px-4 rounded-2xl border border-[var(--color-border)] text-xs sm:text-sm font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-2 shrink-0">
                         <ArrowLeft className="w-3.5 h-3.5 mr-1.5" /> <span className="hidden sm:inline">Kembali</span>
                     </button>
-                        <button onClick={async () => { if (!selectedClassId) return; const ok = await loadStudents(); if (ok) setStep(2) }} disabled={!selectedClassId || loading} className="flex-1 h-12 rounded-2xl bg-emerald-500 text-white text-xs sm:text-sm font-black shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 overflow-hidden px-2">
+                        <button onClick={async () => { if (!selectedClassId) return; const ok = await loadStudents(); if (ok) setStep(2) }} disabled={!selectedClassId || loading} className="flex-1 h-12 rounded-2xl bg-emerald-500 text-white text-xs sm:text-sm font-bold shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 overflow-hidden px-2">
                         {loading ? (
                             <Loader2 className="w-3.5 h-3.5 animate-spin" />
                         ) : (
@@ -2106,7 +2106,7 @@ await Promise.all([
             <Suspense fallback={
                 <div className="py-20 flex flex-col items-center justify-center gap-3">
                     <Loader2 className="w-8 h-8 animate-spin text-[var(--color-primary)]" />
-                    <p className="text-xs font-black text-[var(--color-text-muted)] uppercase tracking-widest animate-pulse">Memuat Lembar Input Nilai...</p>
+                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide animate-pulse">Memuat Lembar Input Nilai...</p>
                 </div>
             }>
                 <LazyRaportInputTable
@@ -2219,8 +2219,8 @@ await Promise.all([
                     <div className="w-full lg:w-64 xl:w-72 space-y-4 self-start lg:sticky lg:top-6">
                         <div className="p-4 lg:p-5 rounded-3xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] shadow-sm">
                             <div className="flex items-center justify-between mb-3 lg:mb-4 px-1">
-                                <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">{window.innerWidth < 1024 ? 'Navigasi Santri' : 'Pilih Santri'}</p>
-                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-500 font-black">{totalCount}</span>
+                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">{window.innerWidth < 1024 ? 'Navigasi Santri' : 'Pilih Santri'}</p>
+                                <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-500 font-bold">{totalCount}</span>
                             </div>
 
                             {/* MOBILE: Smart Selector with Arrows & Custom FontAwesome Picker */}
@@ -2245,7 +2245,7 @@ await Promise.all([
                                         ) : (
                                             <AlertCircle className="w-3 h-3 shrink-0 text-amber-500" />
                                         )}
-                                        <span className="text-[11px] font-bold text-[var(--color-text)] truncate">
+                                        <span className="text-xs font-bold text-[var(--color-text)] truncate">
                                             {students.find(s => s.id === (previewStudentId || students[0]?.id))?.name || 'Pilih Santri'}
                                         </span>
                                     </div>
@@ -2285,7 +2285,7 @@ await Promise.all([
                                             >
                                                 <div className="flex items-center gap-3 truncate">
                                                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${active ? 'bg-white/20' : 'bg-[var(--color-surface)]'}`}>
-                                                        <span className={`text-[10px] font-black ${active ? 'text-white' : 'text-indigo-500'}`}>{s.name.charAt(0)}</span>
+                                                        <span className={`text-xs font-bold ${active ? 'text-white' : 'text-indigo-500'}`}>{s.name.charAt(0)}</span>
                                                     </div>
                                                     <span className="text-xs font-bold truncate">{s.name}</span>
                                                 </div>
@@ -2308,9 +2308,9 @@ await Promise.all([
                                         >
                                             <div className="flex items-center gap-2.5">
                                                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${active ? 'bg-white/20' : 'bg-[var(--color-surface-alt)]'}`}>
-                                                    <span className={`text-[9px] font-black ${active ? 'text-white' : 'text-indigo-500'}`}>{s.name.charAt(0)}</span>
+                                                    <span className={`text-xs font-bold ${active ? 'text-white' : 'text-indigo-500'}`}>{s.name.charAt(0)}</span>
                                                 </div>
-                                                <span className="text-[11px] font-bold truncate flex-1">{s.name}</span>
+                                                <span className="text-xs font-bold truncate flex-1">{s.name}</span>
                                                 {complete && <CheckCircle2 className={`w-3 h-3 ${active ? 'text-white' : 'text-emerald-500'}`} />}
                                             </div>
                                         </button>
@@ -2320,10 +2320,10 @@ await Promise.all([
                         </div>
 
                         <div className="space-y-2">
-                            <button onClick={() => openPrintWindow(students)} className="w-full h-11 rounded-2xl bg-indigo-500 text-white text-xs font-black shadow-lg hover:bg-indigo-600 transition-all flex items-center justify-center gap-2">
+                            <button onClick={() => openPrintWindow(students)} className="w-full h-11 rounded-2xl bg-indigo-500 text-white text-xs font-bold shadow-lg hover:bg-indigo-600 transition-all flex items-center justify-center gap-2">
                                 <Printer className="w-3.5 h-3.5 mr-1.5" /> Cetak Semua ({totalCount})
                             </button>
-                            <button onClick={() => setStep(2)} className="w-full h-11 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-xs font-black hover:text-[var(--color-text)] transition-all flex items-center justify-center gap-2">
+                            <button onClick={() => setStep(2)} className="w-full h-11 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-xs font-bold hover:text-[var(--color-text)] transition-all flex items-center justify-center gap-2">
                                 <ArrowLeft className="w-3.5 h-3.5 mr-1.5" /> Kembali ke Input
                             </button>
                         </div>
@@ -2343,7 +2343,7 @@ await Promise.all([
                                     <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center">
                                         <Search className="w-3 h-3 text-indigo-500" />
                                     </div>
-                                    <h4 className="text-[11px] font-black text-[var(--color-text)] uppercase tracking-wider">Preview Raport</h4>
+                                    <h4 className="text-xs font-bold text-[var(--color-text)] uppercase tracking-wider">Preview Raport</h4>
                                 </div>
                                 <button
                                     onClick={() => setIsFullScreenPreview(true)}
@@ -2357,21 +2357,21 @@ await Promise.all([
                             <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-start sm:justify-end gap-1.5 w-full sm:flex-1">
                                 {/* Page Size selector */}
                                 <div className="flex items-center gap-1 p-1 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm h-10 w-full sm:w-auto shrink-0 justify-center">
-                                    <button onClick={() => setPageSize('a4')} className={`flex-1 sm:flex-none px-3 h-8 rounded-lg text-[10px] font-black transition-all ${pageSize === 'a4' ? 'bg-amber-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>A4</button>
-                                    <button onClick={() => setPageSize('f4')} className={`flex-1 sm:flex-none px-3 h-8 rounded-lg text-[10px] font-black transition-all ${pageSize === 'f4' ? 'bg-amber-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>F4</button>
+                                    <button onClick={() => setPageSize('a4')} className={`flex-1 sm:flex-none px-3 h-8 rounded-lg text-xs font-bold transition-all ${pageSize === 'a4' ? 'bg-amber-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>A4</button>
+                                    <button onClick={() => setPageSize('f4')} className={`flex-1 sm:flex-none px-3 h-8 rounded-lg text-xs font-bold transition-all ${pageSize === 'f4' ? 'bg-amber-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>F4</button>
                                 </div>
 
                                 {/* Language selector */}
                                 <div className="flex items-center gap-1 p-1 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm h-10 w-full sm:w-auto shrink-0 justify-center">
-                                    <button onClick={() => setLang('ar')} className={`flex-1 sm:flex-none px-3 h-8 rounded-lg text-[10px] font-black transition-all ${lang === 'ar' ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>AR</button>
-                                    <button onClick={() => setLang('id')} className={`flex-1 sm:flex-none px-3 h-8 rounded-lg text-[10px] font-black transition-all ${lang === 'id' ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>ID</button>
+                                    <button onClick={() => setLang('ar')} className={`flex-1 sm:flex-none px-3 h-8 rounded-lg text-xs font-bold transition-all ${lang === 'ar' ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>AR</button>
+                                    <button onClick={() => setLang('id')} className={`flex-1 sm:flex-none px-3 h-8 rounded-lg text-xs font-bold transition-all ${lang === 'id' ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>ID</button>
                                 </div>
 
                                 {/* Group: Signature Dropdown Selector */}
                                 <div className="relative flex items-center w-full sm:w-auto shrink-0" data-sig-dropdown-anchor>
                                     <button
                                         onClick={() => setShowSigDropdown(p => !p)}
-                                        className="w-full sm:w-auto h-10 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm text-[10px] font-black text-[var(--color-text)] flex items-center justify-between sm:justify-start gap-1.5 hover:bg-[var(--color-surface-alt)] active:scale-95 transition-all select-none whitespace-nowrap"
+                                        className="w-full sm:w-auto h-10 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm text-xs font-bold text-[var(--color-text)] flex items-center justify-between sm:justify-start gap-1.5 hover:bg-[var(--color-surface-alt)] active:scale-95 transition-all select-none whitespace-nowrap"
                                     >
                                         <span className="flex items-center gap-1.5">
                                             {signMode === 'digital' ? (
@@ -2393,7 +2393,7 @@ await Promise.all([
                                                     handleSetSignMode('basah');
                                                     setShowSigDropdown(false);
                                                 }}
-                                                className={`w-full px-3.5 py-2.5 text-left text-[10px] font-black transition-colors flex items-center gap-2 ${signMode === 'basah' ? 'bg-[var(--color-surface-alt)] text-indigo-500' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]/50'}`}
+                                                className={`w-full px-3.5 py-2.5 text-left text-xs font-bold transition-colors flex items-center gap-2 ${signMode === 'basah' ? 'bg-[var(--color-surface-alt)] text-indigo-500' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]/50'}`}
                                             >
                                                 <PenTool className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
                                                 <span>TTD Manual</span>
@@ -2403,7 +2403,7 @@ await Promise.all([
                                                     handleSetSignMode('digital');
                                                     setShowSigDropdown(false);
                                                 }}
-                                                className={`w-full px-3.5 py-2.5 text-left text-[10px] font-black transition-colors flex items-center gap-2 ${signMode === 'digital' ? 'bg-[var(--color-surface-alt)] text-emerald-500' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]/50'}`}
+                                                className={`w-full px-3.5 py-2.5 text-left text-xs font-bold transition-colors flex items-center gap-2 ${signMode === 'digital' ? 'bg-[var(--color-surface-alt)] text-emerald-500' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]/50'}`}
                                             >
                                                 <Fingerprint className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                                                 <span>TTD Digital</span>
@@ -2413,7 +2413,7 @@ await Promise.all([
                                                     handleSetSignMode('qrcode');
                                                     setShowSigDropdown(false);
                                                 }}
-                                                className={`w-full px-3.5 py-2.5 text-left text-[10px] font-black transition-colors flex items-center gap-2 ${signMode === 'qrcode' ? 'bg-[var(--color-surface-alt)] text-cyan-500' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]/50'}`}
+                                                className={`w-full px-3.5 py-2.5 text-left text-xs font-bold transition-colors flex items-center gap-2 ${signMode === 'qrcode' ? 'bg-[var(--color-surface-alt)] text-cyan-500' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]/50'}`}
                                             >
                                                 <QrCode className="w-3.5 h-3.5 text-cyan-500 shrink-0" />
                                                 <span>TTD QR Code</span>
@@ -2424,7 +2424,7 @@ await Promise.all([
 
                                 {/* Zoom Control */}
                                 <div className="flex items-center justify-between sm:justify-center gap-1 p-1 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm h-10 w-full sm:w-auto shrink-0">
-                                    <button onClick={() => { manualZoomRef.current = true; setPreviewZoom(p => Math.max(0.3, p - 0.1)) }} className="flex-1 sm:flex-none h-8 text-[11px] text-[var(--color-text-muted)] hover:text-indigo-500 flex items-center justify-center"><Search className="w-3 h-3 mr-0.5" />-</button>
+                                    <button onClick={() => { manualZoomRef.current = true; setPreviewZoom(p => Math.max(0.3, p - 0.1)) }} className="flex-1 sm:flex-none h-8 text-xs text-[var(--color-text-muted)] hover:text-indigo-500 flex items-center justify-center"><Search className="w-3 h-3 mr-0.5" />-</button>
                                     <button
                                         onClick={() => {
                                             manualZoomRef.current = false
@@ -2436,16 +2436,16 @@ await Promise.all([
                                             setPreviewZoom(Math.min(1, Math.max(0.3, Math.floor((availW / docW) * 100) / 100)))
                                         }}
                                         title="Fit ke lebar layar"
-                                        className="flex-1 sm:flex-none text-[9px] font-black w-10 text-center text-indigo-500 tabular-nums hover:text-indigo-700 transition-colors cursor-pointer select-none"
+                                        className="flex-1 sm:flex-none text-xs font-bold w-10 text-center text-indigo-500 tabular-nums hover:text-indigo-700 transition-colors cursor-pointer select-none"
                                     >{Math.round(previewZoom * 100)}%</button>
-                                    <button onClick={() => { manualZoomRef.current = true; setPreviewZoom(p => Math.min(1.5, p + 0.1)) }} className="flex-1 sm:flex-none h-8 text-[11px] text-[var(--color-text-muted)] hover:text-indigo-500 flex items-center justify-center"><Search className="w-3 h-3 mr-0.5" />+</button>
+                                    <button onClick={() => { manualZoomRef.current = true; setPreviewZoom(p => Math.min(1.5, p + 0.1)) }} className="flex-1 sm:flex-none h-8 text-xs text-[var(--color-text-muted)] hover:text-indigo-500 flex items-center justify-center"><Search className="w-3 h-3 mr-0.5" />+</button>
                                 </div>
 
                                 {/* Action Dropdown Selector */}
                                 <div className="relative flex items-center w-full sm:w-auto col-span-2 sm:col-span-1 shrink-0" data-action-dropdown-anchor>
                                     <button
                                         onClick={() => setShowActionDropdown(p => !p)}
-                                        className="w-full sm:w-auto h-10 px-3.5 rounded-xl bg-indigo-500 text-white text-[10px] font-black flex items-center justify-center gap-1.5 hover:bg-indigo-600 active:scale-95 transition-all select-none shadow-lg"
+                                        className="w-full sm:w-auto h-10 px-3.5 rounded-xl bg-indigo-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-indigo-600 active:scale-95 transition-all select-none shadow-lg"
                                     >
                                         <Sliders className="w-3.5 h-3.5" />
                                         <span>Aksi Raport</span>
@@ -2459,7 +2459,7 @@ await Promise.all([
                                                     setShowActionDropdown(false);
                                                     openPrintWindow([previewStudent].filter(Boolean));
                                                 }}
-                                                className="w-full px-3.5 py-2.5 text-left text-[10px] font-bold text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all flex items-center gap-2"
+                                                className="w-full px-3.5 py-2.5 text-left text-xs font-bold text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all flex items-center gap-2"
                                             >
                                                 <Printer className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                                                 <span>Cetak Raport</span>
@@ -2472,7 +2472,7 @@ await Promise.all([
                                                         setShowActionDropdown(false);
                                                         handleDownloadPdf(previewStudent);
                                                     }}
-                                                    className="w-full px-3.5 py-2.5 text-left text-[10px] font-bold text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all flex items-center gap-2 disabled:opacity-50"
+                                                    className="w-full px-3.5 py-2.5 text-left text-xs font-bold text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all flex items-center gap-2 disabled:opacity-50"
                                                 >
                                                     {generatingPdfIds.has(previewStudent.id) ? (
                                                         <Loader2 className="w-3.5 h-3.5 animate-spin text-indigo-500 shrink-0" />
@@ -2489,7 +2489,7 @@ await Promise.all([
                                                         setShowActionDropdown(false);
                                                         sendWATextOnly(previewStudent);
                                                     }}
-                                                    className="w-full px-3.5 py-2.5 text-left text-[10px] font-bold text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all flex items-center gap-2"
+                                                    className="w-full px-3.5 py-2.5 text-left text-xs font-bold text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all flex items-center gap-2"
                                                 >
                                                     <WhatsAppIcon className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                                                     <span>WhatsApp</span>
@@ -2541,7 +2541,7 @@ await Promise.all([
                             {/* #2: Animated eye-catching hint badge — hanya di mobile */}
                             <div className="lg:hidden flex items-center gap-1.5 mb-3 px-3 py-1.5 rounded-full bg-white dark:bg-slate-800 border border-indigo-500/20 shadow-sm animate-pulse">
                                 <Maximize2 className="w-3 h-3 text-indigo-500" />
-                                <span className="text-[9px] font-black text-indigo-500 uppercase tracking-widest">Klik raport untuk memperbesar</span>
+                                <span className="text-xs font-bold text-indigo-500 uppercase tracking-wide">Klik raport untuk memperbesar</span>
                             </div>
                             {/* Layout Wrapper — menggunakan transform:scale agar layout width selalu akurat di Android */}
                             {(() => {
@@ -2670,18 +2670,18 @@ await Promise.all([
                                 <ArrowLeft className="w-4 h-4" />
                             </button>
                             <div>
-                                <h3 className="text-base font-black text-[var(--color-text)]">{entry.class_name}</h3>
-                                <p className="text-[11px] text-[var(--color-text-muted)] font-medium">{BULAN.find(b => b.id === entry.month)?.id_str} {entry.year} · {pStu.length} Santri</p>
+                                <h3 className="text-base font-bold text-[var(--color-text)]">{entry.class_name}</h3>
+                                <p className="text-xs text-[var(--color-text-muted)] font-medium">{BULAN.find(b => b.id === entry.month)?.id_str} {entry.year} · {pStu.length} Santri</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-2 flex-wrap">
-                            <button onClick={() => setArchiveEditMode(!archiveEditMode)} className={`h-9 px-4 rounded-xl border text-xs font-black transition-all ${archiveEditMode ? 'bg-violet-500 border-violet-500 text-white shadow-lg' : 'bg-violet-500/10 border-violet-500/20 text-violet-600 hover:bg-violet-500/20'}`}>
+                            <button onClick={() => setArchiveEditMode(!archiveEditMode)} className={`h-9 px-4 rounded-xl border text-xs font-bold transition-all ${archiveEditMode ? 'bg-violet-500 border-violet-500 text-white shadow-lg' : 'bg-violet-500/10 border-violet-500/20 text-violet-600 hover:bg-violet-500/20'}`}>
                                 <Sliders className="w-3.5 h-3.5 mr-2" /> {archiveEditMode ? 'Selesai Edit' : 'Edit Arsip'}
                             </button>
-                            <button onClick={() => runZipBlast(pStu, entry)} className="h-9 px-4 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-600 text-xs font-black hover:bg-teal-500/20 transition-all">
+                            <button onClick={() => runZipBlast(pStu, entry)} className="h-9 px-4 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-600 text-xs font-bold hover:bg-teal-500/20 transition-all">
                                 <FileArchive className="w-3.5 h-3.5 mr-2" /> ZIP PDF
                             </button>
-                            <button onClick={() => openPrintWindow(pStu)} className="h-9 px-4 rounded-xl bg-indigo-500 text-white text-xs font-black hover:bg-indigo-600 transition-all flex items-center gap-2">
+                            <button onClick={() => openPrintWindow(pStu)} className="h-9 px-4 rounded-xl bg-indigo-500 text-white text-xs font-bold hover:bg-indigo-600 transition-all flex items-center gap-2">
                                 <Printer className="w-3.5 h-3.5 mr-1.5" /> Cetak Semua
                             </button>
                         </div>
@@ -2691,8 +2691,8 @@ await Promise.all([
                         {/* Left: Sidebar Navigation */}
                         <div className="w-full lg:w-64 xl:w-72 p-4 lg:p-5 rounded-3xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] shadow-sm self-start lg:sticky lg:top-6">
                             <div className="flex items-center justify-between mb-4 px-1">
-                                <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Pilih Santri</p>
-                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-500 font-black">{pStu.length}</span>
+                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Pilih Santri</p>
+                                <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-500 font-bold">{pStu.length}</span>
                             </div>
                             <div className="flex flex-col gap-1.5 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
                                 {pStu.map(s => {
@@ -2707,9 +2707,9 @@ await Promise.all([
                                         >
                                             <div className="flex items-center gap-2.5">
                                                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${active ? 'bg-white/20' : 'bg-[var(--color-surface-alt)]'}`}>
-                                                    <span className={`text-[9px] font-black ${active ? 'text-white' : 'text-indigo-500'}`}>{s.name.charAt(0)}</span>
+                                                    <span className={`text-xs font-bold ${active ? 'text-white' : 'text-indigo-500'}`}>{s.name.charAt(0)}</span>
                                                 </div>
-                                                <span className="text-[11px] font-bold truncate flex-1">{s.name}</span>
+                                                <span className="text-xs font-bold truncate flex-1">{s.name}</span>
                                                 {complete && <CheckCircle2 className={`w-3 h-3 ${active ? 'text-white' : 'text-emerald-500'}`} />}
                                             </div>
                                         </button>
@@ -2729,14 +2729,14 @@ await Promise.all([
                                                     <Sliders className="w-3.5 h-3.5" />
                                                 </div>
                                                 <div>
-                                                    <h4 className="text-sm font-black text-[var(--color-text)]">Edit Mode: {pStudent.name}</h4>
-                                                    <p className="text-[10px] text-[var(--color-text-muted)] font-medium">Ubah nilai dan data tambahan untuk periode ini.</p>
+                                                    <h4 className="text-sm font-bold text-[var(--color-text)]">Edit Mode: {pStudent.name}</h4>
+                                                    <p className="text-xs text-[var(--color-text-muted)] font-medium">Ubah nilai dan data tambahan untuk periode ini.</p>
                                                 </div>
                                             </div>
 
                                             {/* Nilai Kriteria */}
                                             <div className="space-y-2">
-                                                <h5 className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-1.5">
+                                                <h5 className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] flex items-center gap-1.5">
                                                     <ClipboardList className="w-3.5 h-3.5 opacity-50 mr-1.5" /> Nilai Kriteria
                                                 </h5>
                                                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -2745,7 +2745,7 @@ await Promise.all([
                                                         const g = val !== '' ? GRADE(Number(val)) : null;
                                                         return (
                                                             <div key={k.key} className="flex flex-col p-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] shadow-sm">
-                                                                <span className="text-[9px] font-black" style={{ color: k.color }}>{k.id}</span>
+                                                                <span className="text-xs font-bold" style={{ color: k.color }}>{k.id}</span>
                                                                 <span className="text-[7px] text-[var(--color-text-muted)] font-medium leading-none mb-1.5 truncate">{k.label}</span>
                                                                 <div className="flex items-center gap-1.5 mt-auto">
                                                                     <input
@@ -2753,11 +2753,11 @@ await Promise.all([
                                                                         inputMode="numeric"
                                                                         value={val}
                                                                         onChange={(e) => handleScoreEdit(k.key, e.target.value)}
-                                                                        className="w-full h-8 text-center text-[12px] font-black rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-indigo-500 outline-none text-[var(--color-text)]"
+                                                                        className="w-full h-8 text-center text-xs font-bold rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-indigo-500 outline-none text-[var(--color-text)]"
                                                                         placeholder="—"
                                                                     />
                                                                     {g && (
-                                                                        <span className="text-[8px] font-black px-1.5 py-0.5 rounded shrink-0" style={{ background: g.bg, color: g.color }}>
+                                                                        <span className="text-xs font-bold px-1.5 py-0.5 rounded shrink-0" style={{ background: g.bg, color: g.color }}>
                                                                             {g.id}
                                                                         </span>
                                                                     )}
@@ -2774,7 +2774,7 @@ await Promise.all([
                                                     {/* Fisik */}
                                                     {activeRtObj.hasFisik && (
                                                         <div className="space-y-2">
-                                                            <h5 className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Kondisi Fisik</h5>
+                                                            <h5 className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Kondisi Fisik</h5>
                                                             <div className="grid grid-cols-2 gap-2">
                                                                 {FISIK_FIELDS.filter(f => f.key === 'berat_badan' || f.key === 'tinggi_badan').map(f => (
                                                                     <div key={f.key} className="flex items-center gap-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-2.5 h-10">
@@ -2785,9 +2785,9 @@ await Promise.all([
                                                                             placeholder={f.label}
                                                                             value={editEx(pStudent.id)?.[f.key] ?? ''}
                                                                             onChange={(e) => handleExtraEdit(f.key, e.target.value)}
-                                                                            className="flex-1 w-0 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none"
+                                                                            className="flex-1 w-0 text-xs font-bold bg-transparent text-[var(--color-text)] outline-none"
                                                                         />
-                                                                        <span className="text-[9px] text-[var(--color-text-muted)] font-black">{f.unit}</span>
+                                                                        <span className="text-xs text-[var(--color-text-muted)] font-bold">{f.unit}</span>
                                                                     </div>
                                                                 ))}
                                                             </div>
@@ -2797,7 +2797,7 @@ await Promise.all([
                                                     {/* Hafalan */}
                                                     {activeRtObj.hasHafalan && (
                                                         <div className="space-y-2">
-                                                            <h5 className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Perkembangan Hafalan</h5>
+                                                            <h5 className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Perkembangan Hafalan</h5>
                                                             <div className="grid grid-cols-2 gap-2">
                                                                 {HAFALAN_FIELDS.map(f => (
                                                                     <div key={f.key} className="flex items-center gap-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-2.5 h-10">
@@ -2807,7 +2807,7 @@ await Promise.all([
                                                                             placeholder={f.ph}
                                                                             value={editEx(pStudent.id)?.[f.key] ?? ''}
                                                                             onChange={(e) => handleExtraEdit(f.key, e.target.value)}
-                                                                            className="flex-1 w-0 text-[11px] font-bold bg-transparent text-[var(--color-text)] outline-none"
+                                                                            className="flex-1 w-0 text-xs font-bold bg-transparent text-[var(--color-text)] outline-none"
                                                                         />
                                                                     </div>
                                                                 ))}
@@ -2820,7 +2820,7 @@ await Promise.all([
                                             {/* Ketidakhadiran */}
                                             {activeRtObj.hasAttendance && (
                                                 <div className="space-y-2">
-                                                    <h5 className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Ketidakhadiran</h5>
+                                                    <h5 className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Ketidakhadiran</h5>
                                                     <div className="grid grid-cols-4 gap-2">
                                                         {[
                                                             { key: 'hari_sakit', label: 'Sakit', color: '#ef4444' },
@@ -2829,17 +2829,17 @@ await Promise.all([
                                                             { key: 'hari_pulang', label: 'Pulang', color: '#10b981' }
                                                         ].map(item => (
                                                             <div key={item.key} className="flex flex-col p-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-center">
-                                                                <span className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-wider mb-1">{item.label}</span>
+                                                                <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider mb-1">{item.label}</span>
                                                                 <div className="flex items-center justify-center gap-1">
                                                                     <input
                                                                         type="number"
                                                                         min={0}
                                                                         value={editEx(pStudent.id)?.[item.key] ?? ''}
                                                                         onChange={(e) => handleExtraEdit(item.key, e.target.value)}
-                                                                        className="w-10 h-7 text-center text-[11px] font-black rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] outline-none"
+                                                                        className="w-10 h-7 text-center text-xs font-bold rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] outline-none"
                                                                         placeholder="0"
                                                                     />
-                                                                    <span className="text-[9px] text-[var(--color-text-muted)] font-bold">Hari</span>
+                                                                    <span className="text-xs text-[var(--color-text-muted)] font-bold">Hari</span>
                                                                 </div>
                                                             </div>
                                                         ))}
@@ -2851,13 +2851,13 @@ await Promise.all([
                                             {activeRtObj.hasCatatan && (
                                                 <div className="space-y-2">
                                                     <div className="flex items-center justify-between">
-                                                        <h5 className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Catatan Musyrif</h5>
+                                                        <h5 className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Catatan Musyrif</h5>
                                                         <button
                                                             onClick={() => {
                                                                 const c = generateAutoComment(editSc(pStudent.id), pStudent.id, []);
                                                                 if (c) handleExtraEdit('catatan', c);
                                                             }}
-                                                            className="h-6 px-2 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 text-[8px] font-black flex items-center gap-1 transition-all active:scale-95"
+                                                            className="h-6 px-2 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 text-xs font-bold flex items-center gap-1 transition-all active:scale-95"
                                                         >
                                                             <Zap className="w-3 h-3" />
                                                             Generate Catatan
@@ -2870,14 +2870,14 @@ await Promise.all([
                                                             onChange={(e) => handleExtraEdit('catatan', e.target.value)}
                                                             maxLength={200}
                                                             rows={3}
-                                                            className="w-full p-3 text-[11px] bg-transparent text-[var(--color-text)] outline-none resize-none leading-relaxed"
+                                                            className="w-full p-3 text-xs bg-transparent text-[var(--color-text)] outline-none resize-none leading-relaxed"
                                                         />
                                                     </div>
                                                 </div>
                                             )}
 
                                             <div className="flex gap-3 pt-2">
-                                                <button onClick={saveArchiveEdit} disabled={archiveEditSaving} className="flex-1 h-10 rounded-xl bg-emerald-500 text-white text-xs font-black shadow-lg hover:bg-emerald-600 disabled:opacity-60 transition-all active:scale-95 flex items-center justify-center gap-2">
+                                                <button onClick={saveArchiveEdit} disabled={archiveEditSaving} className="flex-1 h-10 rounded-xl bg-emerald-500 text-white text-xs font-bold shadow-lg hover:bg-emerald-600 disabled:opacity-60 transition-all active:scale-95 flex items-center justify-center gap-2">
                                                     {archiveEditSaving ? 'Menyimpan...' : 'Simpan Semua Perubahan'}
                                                 </button>
                                             </div>
@@ -2891,7 +2891,7 @@ await Promise.all([
                                                         <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center">
                                                             <Search className="w-3 h-3 text-indigo-500" />
                                                         </div>
-                                                        <h4 className="text-[11px] font-black text-[var(--color-text)] uppercase tracking-wider">Preview Raport</h4>
+                                                        <h4 className="text-xs font-bold text-[var(--color-text)] uppercase tracking-wider">Preview Raport</h4>
                                                     </div>
                                                     <button
                                                         onClick={() => setIsFullScreenPreview(true)}
@@ -2906,12 +2906,12 @@ await Promise.all([
                                                     {/* Group: Format & Lang - Stretching on Mobile */}
                                                     <div className="flex items-center gap-2 w-full sm:w-auto">
                                                         <div className="flex-1 sm:flex-initial flex items-center gap-1 p-1 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm h-10">
-                                                            <button onClick={() => setPageSize('a4')} className={`flex-1 sm:px-3 h-8 rounded-lg text-[10px] font-black transition-all ${pageSize === 'a4' ? 'bg-amber-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>A4</button>
-                                                            <button onClick={() => setPageSize('f4')} className={`flex-1 sm:px-3 h-8 rounded-lg text-[10px] font-black transition-all ${pageSize === 'f4' ? 'bg-amber-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>F4</button>
+                                                            <button onClick={() => setPageSize('a4')} className={`flex-1 sm:px-3 h-8 rounded-lg text-xs font-bold transition-all ${pageSize === 'a4' ? 'bg-amber-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>A4</button>
+                                                            <button onClick={() => setPageSize('f4')} className={`flex-1 sm:px-3 h-8 rounded-lg text-xs font-bold transition-all ${pageSize === 'f4' ? 'bg-amber-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>F4</button>
                                                         </div>
                                                         <div className="flex-1 sm:flex-initial flex items-center gap-1 p-1 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm h-10">
-                                                            <button onClick={() => setLang('ar')} className={`flex-1 sm:px-3 h-8 rounded-lg text-[10px] font-black transition-all ${lang === 'ar' ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>AR</button>
-                                                            <button onClick={() => setLang('id')} className={`flex-1 sm:px-3 h-8 rounded-lg text-[10px] font-black transition-all ${lang === 'id' ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>ID</button>
+                                                            <button onClick={() => setLang('ar')} className={`flex-1 sm:px-3 h-8 rounded-lg text-xs font-bold transition-all ${lang === 'ar' ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>AR</button>
+                                                            <button onClick={() => setLang('id')} className={`flex-1 sm:px-3 h-8 rounded-lg text-xs font-bold transition-all ${lang === 'id' ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)]'}`}>ID</button>
                                                         </div>
                                                     </div>
 
@@ -2919,7 +2919,7 @@ await Promise.all([
                                                     <div className="flex items-center gap-2 w-full sm:w-auto">
                                                         {/* Zoom Control stretches on mobile */}
                                                         <div className="flex-1 sm:flex-initial flex items-center gap-1 p-1 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm h-10">
-                                                            <button onClick={() => { manualZoomRef.current = true; setPreviewZoom(p => Math.max(0.3, p - 0.1)) }} className="flex-1 sm:w-8 h-8 text-[11px] text-[var(--color-text-muted)] hover:text-indigo-500 flex items-center justify-center"><Search className="w-3 h-3 mr-0.5" />-</button>
+                                                            <button onClick={() => { manualZoomRef.current = true; setPreviewZoom(p => Math.max(0.3, p - 0.1)) }} className="flex-1 sm:w-8 h-8 text-xs text-[var(--color-text-muted)] hover:text-indigo-500 flex items-center justify-center"><Search className="w-3 h-3 mr-0.5" />-</button>
                                                             <button
                                                                 onClick={() => {
                                                                     manualZoomRef.current = false
@@ -2931,18 +2931,18 @@ await Promise.all([
                                                                     setPreviewZoom(Math.min(1, Math.max(0.3, Math.floor((availW / docW) * 100) / 100)))
                                                                 }}
                                                                 title="Fit ke lebar layar"
-                                                                className="text-[9px] font-black w-10 text-center text-indigo-500 tabular-nums hover:text-indigo-700 transition-colors cursor-pointer select-none"
+                                                                className="text-xs font-bold w-10 text-center text-indigo-500 tabular-nums hover:text-indigo-700 transition-colors cursor-pointer select-none"
                                                             >{Math.round(previewZoom * 100)}%</button>
-                                                            <button onClick={() => { manualZoomRef.current = true; setPreviewZoom(p => Math.min(1.5, p + 0.1)) }} className="flex-1 sm:w-8 h-8 text-[11px] text-[var(--color-text-muted)] hover:text-indigo-500 flex items-center justify-center"><Search className="w-3 h-3 mr-0.5" />+</button>
+                                                            <button onClick={() => { manualZoomRef.current = true; setPreviewZoom(p => Math.min(1.5, p + 0.1)) }} className="flex-1 sm:w-8 h-8 text-xs text-[var(--color-text-muted)] hover:text-indigo-500 flex items-center justify-center"><Search className="w-3 h-3 mr-0.5" />+</button>
                                                         </div>
 
                                                         {pStudent?.phone && (
-                                                            <button onClick={() => sendWATextOnly(pStudent)} className="h-10 px-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-700 text-[10px] font-black flex items-center justify-center gap-2 flex-1 sm:flex-initial">
+                                                            <button onClick={() => sendWATextOnly(pStudent)} className="h-10 px-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-700 text-xs font-bold flex items-center justify-center gap-2 flex-1 sm:flex-initial">
                                                                 <WhatsAppIcon className="w-3.5 h-3.5 mr-1" /> <span className="hidden xs:inline">Whatsapp</span>
                                                             </button>
                                                         )}
 
-                                                        <button onClick={() => openPrintWindow([pStudent].filter(Boolean))} className="h-10 px-5 rounded-xl bg-emerald-500 text-white text-[10px] font-black flex items-center justify-center gap-2 flex-1 sm:flex-initial shadow-lg">
+                                                        <button onClick={() => openPrintWindow([pStudent].filter(Boolean))} className="h-10 px-5 rounded-xl bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-2 flex-1 sm:flex-initial shadow-lg">
                                                             <Printer className="w-3.5 h-3.5 mr-1" /> <span className="hidden xs:inline">Cetak</span>
                                                         </button>
 
@@ -2998,7 +2998,7 @@ await Promise.all([
             <Suspense fallback={
                 <div className="py-20 flex flex-col items-center justify-center gap-3">
                     <Loader2 className="w-8 h-8 animate-spin text-[var(--color-primary)]" />
-                    <p className="text-xs font-black text-[var(--color-text-muted)] uppercase tracking-widest animate-pulse">Memuat Arsip Raport...</p>
+                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide animate-pulse">Memuat Arsip Raport...</p>
                 </div>
             }>
                 <LazyRaportArchive
@@ -3114,15 +3114,15 @@ await Promise.all([
     )
     if (!isAllowed) return (
         <DashboardLayout>
-            <div className="p-4 md:p-6 flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center">
+            <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center">
                 <div className="w-16 h-16 rounded-2xl bg-red-500/10 flex items-center justify-center">
                     <Lock className="w-8 h-8 text-red-500" />
                 </div>
                 <div>
-                    <h2 className="text-xl font-black text-[var(--color-text)] mb-1">Akses Ditolak</h2>
-                    <p className="text-[12px] text-[var(--color-text-muted)] max-w-xs">Halaman ini hanya dapat diakses oleh <strong>Guru</strong> dan <strong>Admin</strong>.</p>
+                    <h2 className="text-xl font-bold text-[var(--color-text)] mb-1">Akses Ditolak</h2>
+                    <p className="text-xs text-[var(--color-text-muted)] max-w-xs">Halaman ini hanya dapat diakses oleh <strong>Guru</strong> dan <strong>Admin</strong>.</p>
                 </div>
-                <button onClick={() => navigate(-1)} className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black hover:opacity-90 transition-all">Kembali</button>
+                <button onClick={() => navigate(-1)} className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:opacity-90 transition-all">Kembali</button>
             </div>
         </DashboardLayout>
     )
@@ -3167,19 +3167,19 @@ await Promise.all([
         <DashboardLayout title={isAcademicRaport ? 'Rapor & Penilaian' : 'Raport Pondok'}>
             {/* Global auto-save indicator */}
             {step === 2 && globalSaveIndicator && (
-                <div className={`fixed bottom-6 right-6 z-[9999] flex items-center gap-2 px-3.5 py-2.5 rounded-xl border shadow-xl text-[10px] font-black transition-all duration-300 ${globalSaveIndicator === 'saving' ? 'bg-amber-500/10 dark:bg-amber-500/20 border-amber-500/20 text-amber-600 dark:text-amber-400' : 'bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500/20 text-emerald-600 dark:text-emerald-400'}`}>
+                <div className={`fixed bottom-6 right-6 z-[9999] flex items-center gap-2 px-3.5 py-2.5 rounded-xl border shadow-xl text-xs font-bold transition-all duration-300 ${globalSaveIndicator === 'saving' ? 'bg-amber-500/10 dark:bg-amber-500/20 border-amber-500/20 text-amber-600 dark:text-amber-400' : 'bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500/20 text-emerald-600 dark:text-emerald-400'}`}>
                     {globalSaveIndicator === 'saving' ? <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500" /> : <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />}
                     {globalSaveIndicator === 'saving' ? 'Menyimpan...' : 'Tersimpan ✓'}
                 </div>
             )}
             {/* TAMBAH INI: */}
-            <div className="p-4 md:p-6 space-y-4 max-w-[1800px] mx-auto">
+            <div className="space-y-4">
 
                 {/* Read-only Banner — access.teacher_raport flag off */}
                 {!canEdit && (
                     <div className="px-4 py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center gap-2">
                         <Lock className="w-3.5 h-3.5 text-rose-500 shrink-0" />
-                        <p className="text-[11px] font-bold text-rose-600 flex-1">Mode Read-only — Edit raport dinonaktifkan oleh administrator.</p>
+                        <p className="text-xs font-bold text-rose-600 flex-1">Mode Read-only — Edit raport dinonaktifkan oleh administrator.</p>
                     </div>
                 )}
 
@@ -3195,10 +3195,10 @@ await Promise.all([
                                 <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] mr-2 shadow-sm">
                                     {stepLabels.map((label, i) => (
                                         <div key={i} className="flex items-center gap-1.5">
-                                            <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-black transition-all ${activeStepIndex === i ? 'bg-indigo-500 text-white shadow-md' : activeStepIndex > i ? 'bg-emerald-500/20 text-emerald-500' : 'bg-[var(--color-surface)] text-[var(--color-text-muted)]'}`}>
+                                            <div className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold transition-all ${activeStepIndex === i ? 'bg-indigo-500 text-white shadow-md' : activeStepIndex > i ? 'bg-emerald-500/20 text-emerald-500' : 'bg-[var(--color-surface)] text-[var(--color-text-muted)]'}`}>
                                                 {activeStepIndex > i ? <Check className="w-2 h-2" /> : i + 1}
                                             </div>
-                                            <span className={`text-[9px] font-bold transition-all ${activeStepIndex === i ? 'text-indigo-600 font-extrabold' : activeStepIndex > i ? 'text-emerald-600' : 'text-[var(--color-text-muted)]'}`}>{label}</span>
+                                            <span className={`text-xs font-bold transition-all ${activeStepIndex === i ? 'text-indigo-600 font-bold' : activeStepIndex > i ? 'text-emerald-600' : 'text-[var(--color-text-muted)]'}`}>{label}</span>
                                             {i < stepLabels.length - 1 && <div className="w-4 h-px bg-[var(--color-border)]" />}
                                         </div>
                                     ))}
@@ -3227,7 +3227,7 @@ await Promise.all([
                                 <Keyboard className="w-3.5 h-3.5" />
                             </button>
 
-                            <button onClick={() => setShowTutorialModal(true)} aria-label="Panduan penggunaan" className="h-9 px-3 gap-1.5 rounded-lg border border-amber-500/30 bg-amber-500/8 text-amber-500 text-[10px] font-black flex items-center justify-center hover:bg-amber-500/15 transition-all" title="Panduan & Tutorial">
+                            <button onClick={() => setShowTutorialModal(true)} aria-label="Panduan penggunaan" className="h-9 px-3 gap-1.5 rounded-lg border border-amber-500/30 bg-amber-500/8 text-amber-500 text-xs font-bold flex items-center justify-center hover:bg-amber-500/15 transition-all" title="Panduan & Tutorial">
                                 <Lightbulb className="w-3 h-3" />
                                 Tutorial
                             </button>
@@ -3301,7 +3301,7 @@ await Promise.all([
                             }}
                         >
                             <div className="p-2 space-y-1">
-                                <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-1">Data</p>
+                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-1">Data</p>
 
                                 {/* Import Section */}
                                 <button onClick={() => { setIsHeaderMenuOpen(false); setIsImportModalOpen(true) }}
@@ -3310,8 +3310,8 @@ await Promise.all([
                                         <Upload className="w-3.5 h-3.5" />
                                     </div>
                                     <div className="text-left">
-                                        <p className="text-[11px] font-black leading-tight">Import XLS</p>
-                                        <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Restore data dari file Excel backup</p>
+                                        <p className="text-xs font-bold leading-tight">Import XLS</p>
+                                        <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Restore data dari file Excel backup</p>
                                     </div>
                                 </button>
 
@@ -3321,13 +3321,13 @@ await Promise.all([
                                         <Download className="w-3.5 h-3.5" />
                                     </div>
                                     <div className="text-left">
-                                        <p className="text-[11px] font-black leading-tight">Export Data</p>
-                                        <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Cadangkan, backup, atau cetak massal</p>
+                                        <p className="text-xs font-bold leading-tight">Export Data</p>
+                                        <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Cadangkan, backup, atau cetak massal</p>
                                     </div>
                                 </button>
 
                                 <div className="h-px bg-[var(--color-border)] my-1 mx-2" />
-                                <p className="px-3 py-2 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Manajemen</p>
+                                <p className="px-3 py-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Manajemen</p>
 
                                 <button onClick={() => { setIsHeaderMenuOpen(false); setStep(4); loadArchive() }}
                                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
@@ -3335,8 +3335,8 @@ await Promise.all([
                                         <Archive className="w-3.5 h-3.5" />
                                     </div>
                                     <div className="text-left">
-                                        <p className="text-[11px] font-black leading-tight">Riwayat Raport</p>
-                                        <p className="text-[9px] opacity-60 font-medium leading-tight mt-0.5">Lihat dan cetak arsip bulan sebelumnya</p>
+                                        <p className="text-xs font-bold leading-tight">Riwayat Raport</p>
+                                        <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Lihat dan cetak arsip bulan sebelumnya</p>
                                     </div>
                                 </button>
                             </div>
@@ -3428,8 +3428,8 @@ await Promise.all([
                             }}
                         >
                             <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between bg-[var(--color-surface)]">
-                                <p className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text)]">Pintasan Keyboard</p>
-                                <span className="text-[9px] text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
+                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Pintasan Keyboard</p>
+                                <span className="text-xs text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
                             </div>
                             <div className="max-h-[60vh] overflow-y-auto">
                                 <ShortcutModalContent />
@@ -3539,7 +3539,7 @@ await Promise.all([
                         isOpen={true}
                         onClose={() => setConfirmDelete(null)}
                         title="Hapus Arsip Raport"
-                        description={<span className="text-red-500 font-black">Aksi ini tidak bisa dibatalkan!</span>}
+                        description={<span className="text-red-500 font-bold">Aksi ini tidak bisa dibatalkan!</span>}
                         icon={AlertTriangle}
                         iconBg="bg-red-500/10"
                         iconColor="text-red-500"
@@ -3548,26 +3548,26 @@ await Promise.all([
                             <div className="flex gap-3">
                                 <button
                                     onClick={() => setConfirmDelete(null)}
-                                    className="flex-1 h-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] active:scale-95 transition-all shadow-sm"
+                                    className="flex-1 h-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] active:scale-95 transition-all shadow-sm"
                                 >
                                     Batal
                                 </button>
                                 <button
                                     onClick={() => executeDeleteArchive(confirmDelete)}
-                                    className="flex-1 h-10 rounded-xl bg-red-500 text-white text-[11px] font-black shadow-md hover:bg-red-600 active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                                    className="flex-1 h-10 rounded-xl bg-red-500 text-white text-xs font-bold shadow-md hover:bg-red-600 active:scale-95 transition-all flex items-center justify-center gap-1.5"
                                 >
                                     Ya, Hapus Permanen
                                 </button>
                             </div>
                         }
                     >
-                        <div className="py-2 text-[12px] font-bold text-[var(--color-text)] leading-relaxed">
+                        <div className="py-2 text-xs font-bold text-[var(--color-text)] leading-relaxed">
                             Anda akan menghapus arsip raport kelas{' '}
-                            <span className="bg-red-500/10 text-red-600 px-2 py-0.5 rounded-lg font-black inline-block">
+                            <span className="bg-red-500/10 text-red-600 px-2 py-0.5 rounded-lg font-bold inline-block">
                                 {confirmDelete.class_name}
                             </span>{' '}
                             untuk periode{' '}
-                            <span className="bg-red-500/10 text-red-600 px-2 py-0.5 rounded-lg font-black inline-block">
+                            <span className="bg-red-500/10 text-red-600 px-2 py-0.5 rounded-lg font-bold inline-block">
                                 {BULAN.find(b => b.id === confirmDelete.month)?.id_str} {confirmDelete.year}
                             </span>{' '}
                             secara permanen.
@@ -3582,11 +3582,11 @@ await Promise.all([
                         <div className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 rounded-2xl shadow-xl border border-amber-500/30 bg-[var(--color-surface)] animate-bounce-subtle w-max max-w-[95vw]"
                             style={{ boxShadow: '0 8px 32px rgba(245,158,11,0.18)' }}>
                             <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0" />
-                            <span className="text-[10px] md:text-[11px] font-black text-[var(--color-text)] whitespace-nowrap">
+                            <span className="text-xs md:text-xs font-bold text-[var(--color-text)] whitespace-nowrap">
                                 Ada perubahan yang belum disimpan
                             </span>
                             <button onClick={saveAll} disabled={savingAll}
-                                className="h-8 px-4 rounded-xl bg-amber-500 text-white text-[10px] font-black hover:bg-amber-600 transition-all flex items-center gap-1.5 disabled:opacity-60 shadow-md">
+                                className="h-8 px-4 rounded-xl bg-amber-500 text-white text-xs font-bold hover:bg-amber-600 transition-all flex items-center gap-1.5 disabled:opacity-60 shadow-md">
                                 {savingAll ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3" />}
                                 {savingAll ? 'Menyimpan...' : 'Simpan'}
                             </button>
@@ -3618,19 +3618,19 @@ await Promise.all([
                         <div className="flex flex-col gap-2">
                             <button
                                 onClick={async () => { await saveAll(); const action = pendingNav.action; setPendingNav(null); action() }}
-                                className="h-11 rounded-xl bg-emerald-500 text-white text-sm font-black shadow-lg"
+                                className="h-11 rounded-xl bg-emerald-500 text-white text-sm font-bold shadow-lg"
                             >
                                 Simpan & Lanjut
                             </button>
                             <button
                                 onClick={() => { const action = pendingNav.action; setPendingNav(null); action() }}
-                                className="h-11 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500 text-sm font-black"
+                                className="h-11 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500 text-sm font-bold"
                             >
                                 Buang Perubahan
                             </button>
                             <button
                                 onClick={() => setPendingNav(null)}
-                                className="h-10 text-[var(--color-text-muted)] text-xs font-black"
+                                className="h-10 text-[var(--color-text-muted)] text-xs font-bold"
                             >
                                 Batal
                             </button>
@@ -3674,7 +3674,7 @@ await Promise.all([
                                         </div>
 
                                         <div className="space-y-3">
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Histori Bulanan</p>
+                                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Histori Bulanan</p>
                                             {[...history].reverse().map(h => {
                                                 const avg = calcAvg(h.scores)
                                                 const g = avg ? GRADE(Number(avg)) : null
@@ -3682,13 +3682,13 @@ await Promise.all([
                                                     <div key={`${h.year}-${h.month}`} className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] hover:border-indigo-500/30 transition-all">
                                                         <div className="flex items-center justify-between mb-4">
                                                             <div>
-                                                                <p className="text-xs font-black text-[var(--color-text)]">{BULAN.find(b => b.id === h.month)?.id_str} {h.year}</p>
-                                                                <p className="text-[10px] text-[var(--color-text-muted)] font-medium mt-0.5">Musyrif: {h.musyrif || '—'}</p>
+                                                                <p className="text-xs font-bold text-[var(--color-text)]">{BULAN.find(b => b.id === h.month)?.id_str} {h.year}</p>
+                                                                <p className="text-xs text-[var(--color-text-muted)] font-medium mt-0.5">Musyrif: {h.musyrif || '—'}</p>
                                                             </div>
                                                             {avg && g && (
                                                                 <div className="text-right">
-                                                                    <p className="text-sm font-black" style={{ color: g.uiColor }}>{avg}</p>
-                                                                    <p className="text-[9px] font-black uppercase tracking-widest opacity-60" style={{ color: g.uiColor }}>{g.id}</p>
+                                                                    <p className="text-sm font-bold" style={{ color: g.uiColor }}>{avg}</p>
+                                                                    <p className="text-xs font-bold uppercase tracking-wide opacity-60" style={{ color: g.uiColor }}>{g.id}</p>
                                                                 </div>
                                                             )}
                                                         </div>
@@ -3698,8 +3698,8 @@ await Promise.all([
                                                                 const scG = val !== null ? GRADE(Number(val)) : null
                                                                 return (
                                                                     <div key={k.key} className="text-center">
-                                                                        <p className="text-[8px] font-black uppercase text-[var(--color-text-muted)] mb-1">{k.id.slice(0, 3)}</p>
-                                                                        <div className="h-8 rounded-lg flex items-center justify-center text-xs font-black border border-[var(--color-border)]" style={{ background: scG?.bg || 'var(--color-surface)', color: scG?.uiColor || 'var(--color-text-muted)' }}>
+                                                                        <p className="text-xs font-bold uppercase text-[var(--color-text-muted)] mb-1">{k.id.slice(0, 3)}</p>
+                                                                        <div className="h-8 rounded-lg flex items-center justify-center text-xs font-bold border border-[var(--color-border)]" style={{ background: scG?.bg || 'var(--color-surface)', color: scG?.uiColor || 'var(--color-text-muted)' }}>
                                                                             {val ?? '—'}
                                                                         </div>
                                                                     </div>
@@ -3707,7 +3707,7 @@ await Promise.all([
                                                             })}
                                                         </div>
                                                         {h.catatan && (
-                                                            <div className="mt-3 p-2.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[11px] text-[var(--color-text-muted)] leading-relaxed">
+                                                            <div className="mt-3 p-2.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs text-[var(--color-text-muted)] leading-relaxed">
                                                                 "{h.catatan}"
                                                             </div>
                                                         )}
@@ -3738,7 +3738,7 @@ await Promise.all([
                             <button
                                 type="button"
                                 onClick={() => setSaveAllConfirm(null)}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0"
+                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
                             >
                                 Batal
                             </button>
@@ -3746,7 +3746,7 @@ await Promise.all([
                             <button
                                 type="button"
                                 onClick={_doSaveAll}
-                                className="h-10 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
+                                className="h-10 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
                             >
                                 <Save className="w-3.5 h-3.5 opacity-70" />
                                 Simpan yang Terisi
@@ -3756,10 +3756,10 @@ await Promise.all([
                 >
                     {saveAllConfirm && (
                         <div className="space-y-4 px-1">
-                            <div className="p-3.5 rounded-xl bg-amber-500/5 border border-amber-500/20 text-[11px] text-amber-700 font-bold leading-relaxed">
-                                <span className="font-black text-amber-800">Perhatian:</span> Ada <span className="font-black text-amber-900">{saveAllConfirm.incompleteCount} santri</span> yang nilainya belum lengkap di bulan ini.
+                            <div className="p-3.5 rounded-xl bg-amber-500/5 border border-amber-500/20 text-xs text-amber-700 font-bold leading-relaxed">
+                                <span className="font-bold text-amber-800">Perhatian:</span> Ada <span className="font-bold text-amber-900">{saveAllConfirm.incompleteCount} santri</span> yang nilainya belum lengkap di bulan ini.
                             </div>
-                            <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed font-bold">
+                            <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
                                 Anda tetap bisa menyimpan raport yang sudah terisi. Santri dengan nilai kosong akan tetap disimpan dengan status "Belum Lengkap" di database.
                             </p>
                         </div>
@@ -3810,10 +3810,10 @@ await Promise.all([
                                         <ArrowLeft className="w-3.5 h-3.5" />
                                     </button>
                                     <div className="min-w-0">
-                                        <p className="text-slate-800 text-[11px] font-black truncate max-w-[140px] sm:max-w-xs">
+                                        <p className="text-slate-800 text-xs font-bold truncate max-w-[140px] sm:max-w-xs">
                                             {fsStudent?.name || 'Preview'}
                                         </p>
-                                        <p className="text-[8px] text-slate-400 font-bold uppercase tracking-[0.14em]">
+                                        <p className="text-xs text-slate-400 font-bold uppercase tracking-wide">
                                             Digital Preview
                                         </p>
                                     </div>
@@ -3821,11 +3821,11 @@ await Promise.all([
 
                                 <div className="flex items-center gap-2">
                                     <div className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-100 border border-slate-200">
-                                        <span className="text-[9px] font-black text-slate-500">SIZE {pageSize.toUpperCase()}</span>
+                                        <span className="text-xs font-bold text-slate-500">SIZE {pageSize.toUpperCase()}</span>
                                         <span className="text-slate-300">|</span>
-                                        <span className="text-[9px] font-black text-slate-500">LANG {lang.toUpperCase()}</span>
+                                        <span className="text-xs font-bold text-slate-500">LANG {lang.toUpperCase()}</span>
                                         <span className="text-slate-300">|</span>
-                                        <span className="text-[9px] font-black text-slate-500">TTD {isArchiveMode ? 'BASAH' : signMode.toUpperCase()}</span>
+                                        <span className="text-xs font-bold text-slate-500">TTD {isArchiveMode ? 'BASAH' : signMode.toUpperCase()}</span>
                                     </div>
                                     {fsStudent && (
                                         <button
@@ -3976,7 +3976,7 @@ await Promise.all([
                                             className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl text-slate-500 hover:text-slate-700 hover:bg-white transition-all flex items-center justify-center"
                                         >
                                             <Search className="w-3 h-3" />
-                                            <span className="text-[10px] font-black leading-none ml-0.5">-</span>
+                                            <span className="text-xs font-bold leading-none ml-0.5">-</span>
                                         </button>
                                         <button
                                             ref={fullScreenZoomLabelRef}
@@ -3984,7 +3984,7 @@ await Promise.all([
                                                 setFullScreenZoom(getFullScreenFitZoom(isMobileViewport))
                                             }}
                                             title="Fit ke lebar viewer"
-                                            className="min-w-[52px] h-9 sm:min-w-[56px] sm:h-10 px-1.5 sm:px-2 rounded-lg sm:rounded-xl text-indigo-500 hover:text-indigo-700 hover:bg-indigo-500/10 transition-all text-[10px] sm:text-[11px] font-black tabular-nums"
+                                            className="min-w-[52px] h-9 sm:min-w-[56px] sm:h-10 px-1.5 sm:px-2 rounded-lg sm:rounded-xl text-indigo-500 hover:text-indigo-700 hover:bg-indigo-500/10 transition-all text-xs sm:text-xs font-bold tabular-nums"
                                         >
                                             {Math.round(fullScreenZoom * 100)}%
                                         </button>
@@ -3993,7 +3993,7 @@ await Promise.all([
                                             className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl text-slate-500 hover:text-slate-700 hover:bg-white transition-all flex items-center justify-center"
                                         >
                                             <Search className="w-3 h-3" />
-                                            <span className="text-[10px] font-black leading-none ml-0.5">+</span>
+                                            <span className="text-xs font-bold leading-none ml-0.5">+</span>
                                         </button>
                                         <div className="w-px h-5 sm:h-6 bg-slate-300 mx-0.5 sm:mx-1" />
                                         <button
@@ -4006,7 +4006,7 @@ await Promise.all([
                                         >
                                             <ChevronLeft className="w-3 h-3" />
                                         </button>
-                                        <span className="min-w-[46px] sm:min-w-[54px] text-center text-[9px] sm:text-[10px] font-black text-slate-400 tabular-nums">
+                                        <span className="min-w-[46px] sm:min-w-[54px] text-center text-xs sm:text-xs font-bold text-slate-400 tabular-nums">
                                             {(fsStudentsList.findIndex(s => s.id === fsStudent?.id) + 1)}/{fsStudentsList.length}
                                         </span>
                                         <button
@@ -4048,7 +4048,7 @@ await Promise.all([
                                 <button
                                     type="button"
                                     onClick={() => setShowTemplatePreviewModal(false)}
-                                    className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-xs font-black hover:opacity-90 transition-all shadow-md"
+                                    className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:opacity-90 transition-all shadow-md"
                                 >
                                     Pahami Perbedaan
                                 </button>
@@ -4065,12 +4065,12 @@ await Promise.all([
                                             <MoonStar className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <h4 className="text-xs font-black text-emerald-700">العربية (Boarding / Pondok)</h4>
-                                            <p className="text-[9px] text-emerald-600/70 font-bold uppercase tracking-wider">Desain Khusus Kepesantrenan</p>
+                                            <h4 className="text-xs font-bold text-emerald-700">العربية (Boarding / Pondok)</h4>
+                                            <p className="text-xs text-emerald-600/70 font-bold uppercase tracking-wider">Desain Khusus Kepesantrenan</p>
                                         </div>
                                     </div>
 
-                                    <ul className="space-y-2.5 text-[11px] text-[var(--color-text)]">
+                                    <ul className="space-y-2.5 text-xs text-[var(--color-text)]">
                                         <li className="flex items-start gap-2">
                                             <Check className="text-emerald-500 w-3 h-3 mt-0.5" />
                                             <span><strong>Bahasa Pengantar:</strong> Seluruh nama kriteria, predikat, dan nilai dikonversi otomatis ke Bahasa Arab formal (Fusha).</span>
@@ -4093,12 +4093,12 @@ await Promise.all([
                                             <School className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <h4 className="text-xs font-black text-indigo-700">Indonesia (Sekolah / Reguler)</h4>
-                                            <p className="text-[9px] text-indigo-600/70 font-bold uppercase tracking-wider">Desain Akademik Formal</p>
+                                            <h4 className="text-xs font-bold text-indigo-700">Indonesia (Sekolah / Reguler)</h4>
+                                            <p className="text-xs text-indigo-600/70 font-bold uppercase tracking-wider">Desain Akademik Formal</p>
                                         </div>
                                     </div>
 
-                                    <ul className="space-y-2.5 text-[11px] text-[var(--color-text)]">
+                                    <ul className="space-y-2.5 text-xs text-[var(--color-text)]">
                                         <li className="flex items-start gap-2">
                                             <Check className="text-indigo-500 w-3 h-3 mt-0.5" />
                                             <span><strong>Bahasa Pengantar:</strong> Seluruh kriteria, label, dan deskripsi menggunakan Bahasa Indonesia yang formal dan baku.</span>

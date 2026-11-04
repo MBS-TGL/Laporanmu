@@ -377,9 +377,9 @@ const RichDatePicker = memo(({
                     onClick={handlePrevMonth}
                     className="w-8 h-8 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] flex items-center justify-center transition-colors border border-[var(--color-border)]/30 active:scale-90"
                 >
-                    <ChevronLeft className="text-xs opacity-70" />
+                    <ChevronLeft className="w-4 h-4 opacity-70" />
                 </button>
-                <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text)]">
+                <span className="text-xs font-bold uppercase tracking-wide leading-none text-[var(--color-text)] truncate px-1">
                     {currentLocale.months[month]} {tNum(year)}
                 </span>
                 <button
@@ -387,14 +387,14 @@ const RichDatePicker = memo(({
                     onClick={handleNextMonth}
                     className="w-8 h-8 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] flex items-center justify-center transition-colors border border-[var(--color-border)]/30 active:scale-90"
                 >
-                    <ChevronRight className="text-xs opacity-70" />
+                    <ChevronRight className="w-4 h-4 opacity-70" />
                 </button>
             </div>
 
             {/* Days Short Name Header */}
             <div className="grid grid-cols-7 text-center mb-1.5 select-none">
                 {currentLocale.daysShort.map((d, i) => (
-                    <span key={i} className="text-xs font-semibold text-[var(--color-text-muted)] tracking-wider opacity-70">
+                    <span key={i} className="text-xs font-semibold leading-none text-[var(--color-text-muted)] tracking-wide opacity-70">
                         {d}
                     </span>
                 ))}
@@ -415,7 +415,7 @@ const RichDatePicker = memo(({
                             key={`day-${day}`}
                             type="button"
                             onClick={() => handleSelectDay(day)}
-                            className={`w-full aspect-square max-w-[40px] max-h-[40px] mx-auto rounded-xl text-xs font-semibold transition-all relative flex items-center justify-center ${selected
+                            className={`w-full aspect-square max-w-[40px] max-h-[40px] mx-auto rounded-xl text-xs font-semibold leading-none tabular-nums transition-colors relative flex items-center justify-center ${selected
                                 ? 'bg-[var(--color-primary)] text-white font-bold shadow-md scale-105'
                                 : activeToday
                                     ? 'border-2 border-[var(--color-primary)] text-[var(--color-primary)] font-bold'
@@ -434,7 +434,7 @@ const RichDatePicker = memo(({
                     <button
                         type="button"
                         onClick={handleClear}
-                        className="text-xs font-bold uppercase tracking-wider text-red-500 hover:bg-red-50 px-2.5 py-1.5 rounded-lg transition-all border border-transparent hover:border-red-100"
+                        className="text-xs font-bold uppercase tracking-wide leading-none text-red-500 hover:bg-red-50 px-2.5 py-1.5 rounded-lg transition-colors border border-transparent hover:border-red-100"
                     >
                         {currentLocale.clear}
                     </button>
@@ -444,7 +444,7 @@ const RichDatePicker = memo(({
                 <button
                     type="button"
                     onClick={handleToday}
-                    className="text-xs font-bold uppercase tracking-wider text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 px-2.5 py-1.5 rounded-lg transition-all border border-transparent"
+                    className="text-xs font-bold uppercase tracking-wide leading-none text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 px-2.5 py-1.5 rounded-lg transition-colors border border-transparent"
                 >
                     {currentLocale.today}
                 </button>
@@ -464,15 +464,15 @@ const RichDatePicker = memo(({
                 placeholder={defaultPlaceholder}
                 inputMode={isMobile ? 'none' : undefined}
                 readOnly={isMobile || disabled}
-                className={`w-full pl-9 pr-8 h-[40px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] outline-none transition-all text-xs sm:text-sm font-medium shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`w-full pl-9 pr-8 h-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] outline-none transition-colors text-xs sm:text-sm font-medium leading-none tabular-nums shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
             />
 
             <Calendar
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-[var(--color-text-muted)] opacity-50 pointer-events-none"
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)] opacity-50 pointer-events-none"
             />
 
             <ChevronDown
-                className={`absolute right-3.5 top-1/2 -translate-y-1/2 text-xs opacity-40 transition-transform duration-300 pointer-events-none ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
+                className={`absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 transition-transform duration-300 pointer-events-none ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
             />
 
             {/* Portal Dropdown Calendar */}

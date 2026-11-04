@@ -43,16 +43,16 @@ const Navbar = memo(() => {
                     {/* Desktop Nav - centered */}
                     <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8 bg-[var(--color-surface)] dark:bg-[var(--color-surface-alt)] px-6 py-2.5 rounded-full border border-[var(--color-border)]">
                         <Link to="/" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] font-medium text-sm transition-all hover:scale-105 active:scale-95">Beranda</Link>
-                        <Link to="/informasi" className="text-[var(--color-primary)] font-black text-sm">Informasi</Link>
+                        <Link to="/informasi" className="text-[var(--color-primary)] font-bold text-sm">Informasi</Link>
                         <Link to="/check" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] font-medium text-sm transition-all hover:scale-105 active:scale-95">Cek Poin</Link>
                     </div>
 
                     {/* Desktop Actions */}
                     <div className="hidden md:flex items-center gap-4 z-50">
                         <button onClick={toggleTheme} className="w-10 h-10 rounded-full flex items-center justify-center bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 transition-all">
-                            {isDark ? <Sun /> : <Moon />}
+                            {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                         </button>
-                            <Link to={user ? "/dashboard" : "/login"} className="inline-flex items-center px-5 py-2 text-[13px] font-black rounded-xl bg-[var(--color-primary)] text-white shadow-lg hover:scale-105 active:scale-95 transition-all">
+                            <Link to={user ? "/dashboard" : "/login"} className="inline-flex items-center px-5 py-2 text-sm font-bold rounded-xl bg-[var(--color-primary)] text-white shadow-lg hover:scale-105 active:scale-95 transition-all">
                             {user ? 'Ke Dashboard' : 'Login Staff'}
                         </Link>
                     </div>
@@ -60,10 +60,10 @@ const Navbar = memo(() => {
                     {/* Mobile Actions */}
                     <div className="flex items-center gap-3 md:hidden z-50">
                         <button onClick={toggleTheme} className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text)]">
-                            {isDark ? <Sun /> : <Moon />}
+                            {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                         </button>
                             <button onClick={() => setMenuOpen(p => !p)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--color-primary)] text-white shadow-lg">
-                            {menuOpen ? <X /> : <Menu />}
+                            {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
                         </button>
                     </div>
                 </div>
@@ -126,7 +126,7 @@ const DetailModal = memo(({ item, onClose }) => {
                         <img src={item.image_url} alt={item.image_alt || item.title} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                         <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-surface)] via-transparent to-transparent" />
                         <button onClick={onClose} className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center border border-white/10 transition-colors">
-                            <X />
+                            <X className="w-4 h-4" />
                         </button>
                     </div>
                 )}
@@ -135,11 +135,11 @@ const DetailModal = memo(({ item, onClose }) => {
                     {/* Meta + Font Size + Close — always in one row, no overlap */}
                     <div className="flex items-start justify-between gap-3 mb-4 flex-wrap">
                         <div className="flex items-center gap-2 flex-wrap">
-                            <span className="px-3 py-1.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] font-black uppercase tracking-[0.15em] border border-[var(--color-primary)]/10">{item.tag}</span>
-                            <span className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">{formatDate(item.created_at)}</span>
+                            <span className="px-3 py-1.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold uppercase tracking-wide border border-[var(--color-primary)]/10">{item.tag}</span>
+                            <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">{formatDate(item.created_at)}</span>
                             {item.read_time && (
-                                <span className="text-[10px] font-bold text-[var(--color-text-muted)] opacity-60 flex items-center gap-1">
-                                    <Clock className="text-[8px]" />{item.read_time} mnt baca
+                                <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-60 flex items-center gap-1">
+                                    <Clock className="w-4 h-4" />{item.read_time} mnt baca
                                 </span>
                             )}
                         </div>
@@ -148,7 +148,7 @@ const DetailModal = memo(({ item, onClose }) => {
                             <div className="flex items-center gap-0.5 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl p-1">
                                 {FONT_SIZES.map((f, i) => (
                                     <button key={f.key} onClick={() => setFontSize(f.key)}
-                                        className={`w-7 h-7 rounded-lg flex items-center justify-center font-black transition-colors ${fontSize === f.key ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                                        className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold transition-colors ${fontSize === f.key ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                                         style={{ fontSize: 10 + i * 2 }}>
                                         A
                                     </button>
@@ -156,11 +156,11 @@ const DetailModal = memo(({ item, onClose }) => {
                             </div>
                             {/* Close button — next to font toggle, never overlaps */}
                             <button onClick={onClose} className="w-8 h-8 rounded-full bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] border border-[var(--color-border)] text-[var(--color-text-muted)] flex items-center justify-center transition-colors">
-                                <X className="text-xs" />
+                                <X className="w-4 h-4" />
                             </button>
                         </div>
                     </div>
-                    <h2 className={`${fs.title} font-black text-[var(--color-text)] mb-6 leading-tight tracking-tight`}>{item.title}</h2>
+                    <h2 className={`${fs.title} font-bold text-[var(--color-text)] mb-6 leading-tight tracking-tight`}>{item.title}</h2>
                     <style>{`
                         .news-modal-body p{margin-bottom:1rem}
                         .news-modal-body h2{font-size:1.3rem;font-weight:900;margin:1.5rem 0 .5rem;color:var(--color-text)}
@@ -179,18 +179,18 @@ const DetailModal = memo(({ item, onClose }) => {
                 </div>
                 {/* Footer */}
                 <div className="shrink-0 px-6 sm:px-10 py-4 border-t border-[var(--color-border)] bg-[var(--color-surface)] flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white font-black text-base shadow-md shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white font-bold text-base shadow-md shrink-0">
                         {(item.display_name || item.author || 'A').charAt(0).toUpperCase()}
                     </div>
                     <div>
-                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50 mb-0.5">Diterbitkan oleh</p>
-                        <p className="text-sm font-black text-[var(--color-text)]">{item.display_name || item.author?.split('@')[0] || 'Admin'}</p>
+                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-50 mb-0.5">Diterbitkan oleh</p>
+                        <p className="text-sm font-bold text-[var(--color-text)]">{item.display_name || item.author?.split('@')[0] || 'Admin'}</p>
                     </div>
                     <div className="ml-auto flex items-center gap-2">
-                        <button onClick={handlePrint} className="px-4 py-2 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors flex items-center gap-1.5">
-                            <Printer className="text-[9px]" /> Print
+                        <button onClick={handlePrint} className="px-4 py-2 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors flex items-center gap-1.5">
+                            <Printer className="w-4 h-4" /> Print
                         </button>
-                        <button onClick={onClose} className="px-4 py-2 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors">Tutup</button>
+                        <button onClick={onClose} className="px-4 py-2 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors">Tutup</button>
                     </div>
                 </div>
             </div>
@@ -218,22 +218,22 @@ const NewsCard = memo(({ item, onClick }) => {
             <div className="h-44 overflow-hidden shrink-0 bg-[var(--color-surface-alt)]">
                 {item.image_url
                     ? <img src={item.image_url} alt={item.image_alt || item.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                    : <div className="w-full h-full flex items-center justify-center opacity-15"><Newspaper className="text-4xl" /></div>
+                    : <div className="w-full h-full flex items-center justify-center opacity-15"><Newspaper className="w-6 h-6" /></div>
                 }
             </div>
             <div className="p-6 flex flex-col flex-1">
                 <div className="flex items-center gap-2 mb-3 flex-wrap">
-                    <span className="px-2.5 py-1 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black uppercase tracking-wider border border-[var(--color-primary)]/10">{item.tag}</span>
-                    <span className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest opacity-50">{formatDate(item.created_at)}</span>
-                    {item.read_time && <span className="text-[9px] text-[var(--color-text-muted)] opacity-50 flex items-center gap-1"><Clock className="text-[8px]" />{item.read_time} mnt</span>}
+                    <span className="px-2.5 py-1 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold uppercase tracking-wider border border-[var(--color-primary)]/10">{item.tag}</span>
+                    <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-50">{formatDate(item.created_at)}</span>
+                    {item.read_time && <span className="text-xs text-[var(--color-text-muted)] opacity-50 flex items-center gap-1"><Clock className="w-4 h-4" />{item.read_time} mnt</span>}
                 </div>
-                <h3 className="text-base font-black text-[var(--color-text)] leading-tight mb-2 group-hover:text-[var(--color-primary)] transition-colors line-clamp-2">{item.title}</h3>
-                <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed line-clamp-3 opacity-75 flex-1">{excerpt}</p>
+                <h3 className="text-base font-bold text-[var(--color-text)] leading-tight mb-2 group-hover:text-[var(--color-primary)] transition-colors line-clamp-2">{item.title}</h3>
+                <p className="text-xs text-[var(--color-text-muted)] leading-relaxed line-clamp-3 opacity-75 flex-1">{excerpt}</p>
                 <div className="flex items-center justify-between pt-4 mt-3 border-t border-[var(--color-border)]/50">
-                    <span className="text-[9px] font-bold text-[var(--color-text-muted)] opacity-50 flex items-center gap-1">
-                        <User className="text-[8px]" />{item.display_name || item.author?.split('@')[0] || 'Admin'}
+                    <span className="text-xs font-bold text-[var(--color-text-muted)] opacity-50 flex items-center gap-1">
+                        <User className="w-4 h-4" />{item.display_name || item.author?.split('@')[0] || 'Admin'}
                     </span>
-                    <span className="text-[10px] font-black text-[var(--color-primary)] flex items-center gap-1.5">Baca <ArrowRight className="text-[9px]" /></span>
+                    <span className="text-xs font-bold text-[var(--color-primary)] flex items-center gap-1.5">Baca <ArrowRight className="w-4 h-4" /></span>
                 </div>
             </div>
         </div>
@@ -317,11 +317,11 @@ export default function InformationPage() {
                             {newsBadge} berita baru tersedia
                         </p>
                         <button onClick={() => { fetchNews(); setNewsBadge(0) }}
-                            className="px-3 py-1.5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-all shrink-0">
+                            className="px-3 py-1.5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 transition-all shrink-0">
                             Muat Ulang
                         </button>
                         <button onClick={() => setNewsBadge(0)} className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
-                            <X className="text-xs" />
+                            <X className="w-4 h-4" />
                         </button>
                     </div>
                 </div>
@@ -332,21 +332,21 @@ export default function InformationPage() {
                 <div className="absolute inset-0 pointer-events-none">
                 </div>
                 <div className="relative max-w-2xl mx-auto">
-                    <span className="text-[var(--color-primary)] font-bold uppercase tracking-[0.3em] text-[10px] mb-3 block">Portal Informasi</span>
-                    <h1 className="text-4xl sm:text-5xl font-black text-[var(--color-text)] mb-3 leading-tight tracking-tight">
+                    <span className="text-[var(--color-primary)] font-bold uppercase tracking-wide text-xs mb-3 block">Portal Informasi</span>
+                    <h1 className="text-4xl sm:text-5xl font-bold text-[var(--color-text)] mb-3 leading-tight tracking-tight">
                         Informasi & <span className="text-[var(--color-primary)]">Pengumuman</span>
                     </h1>
                     <p className="text-[var(--color-text-muted)] text-base mb-8">
                         Update terkini seputar Laporanmu, jadwal, dan pengumuman penting sekolah.
                     </p>
                     <div className="relative max-w-lg mx-auto">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-sm pointer-events-none" />
+                        <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" />
                         <input type="text" value={inputVal} onChange={e => handleSearch(e.target.value)}
                             placeholder="Cari informasi atau pengumuman..."
                             className="w-full pl-12 pr-12 h-14 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10 text-sm font-medium outline-none transition-all shadow-lg" />
                         {inputVal && (
                             <button onClick={() => { setInputVal(''); setSearch(''); setPage(1) }} className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
-                                <X />
+                                <X className="w-4 h-4" />
                             </button>
                         )}
                     </div>
@@ -358,13 +358,13 @@ export default function InformationPage() {
                 <div className="flex items-center gap-2 flex-wrap mb-8">
                     {CATEGORIES.map(cat => (
                         <button key={cat} onClick={() => { setActiveCategory(cat); setPage(1) }}
-                            className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-colors border ${activeCategory === cat
+                            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wide transition-colors border ${activeCategory === cat
                                 ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-md'
                                 : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30'}`}>
                             {cat}
                         </button>
                     ))}
-                    {!loading && <span className="ml-auto text-[10px] font-black text-[var(--color-text-muted)] opacity-50 uppercase tracking-widest">{totalCount} informasi</span>}
+                    {!loading && <span className="ml-auto text-xs font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-wide">{totalCount} informasi</span>}
                 </div>
 
                 {search && !loading && (
@@ -381,9 +381,9 @@ export default function InformationPage() {
                 ) : news.length === 0 ? (
                     <div className="flex flex-col items-center py-32 text-center">
                         <div className="w-20 h-20 rounded-full bg-[var(--color-surface-alt)] flex items-center justify-center mb-6">
-                            <Newspaper className="text-3xl text-[var(--color-text-muted)] opacity-30" />
+                            <Newspaper className="w-6 h-6 text-[var(--color-text-muted)] opacity-30" />
                         </div>
-                        <h3 className="text-xl font-black text-[var(--color-text)] mb-2">Tidak ada informasi</h3>
+                        <h3 className="text-xl font-bold text-[var(--color-text)] mb-2">Tidak ada informasi</h3>
                         <p className="text-sm text-[var(--color-text-muted)]">{search ? `Tidak ada yang cocok dengan "${search}".` : 'Belum ada informasi dipublikasikan.'}</p>
                         {(search || activeCategory !== 'Semua') && (
                             <button onClick={() => { setInputVal(''); setSearch(''); setActiveCategory('Semua'); setPage(1) }}
@@ -401,7 +401,7 @@ export default function InformationPage() {
                             <div className="flex items-center justify-center gap-2 mt-14">
                                 <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}
                                     className="w-10 h-10 rounded-xl border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:border-[var(--color-primary)] disabled:opacity-30 transition-colors">
-                                    <ChevronLeft className="text-xs" />
+                                    <ChevronLeft className="w-4 h-4" />
                                 </button>
                                 {Array.from({ length: totalPages }, (_, i) => i + 1)
                                     .filter(p => p === 1 || p === totalPages || Math.abs(p - page) <= 1)
@@ -409,13 +409,13 @@ export default function InformationPage() {
                                     .map((p, i) => p === '…'
                                         ? <span key={`e${i}`} className="w-10 h-10 flex items-center justify-center text-[var(--color-text-muted)]">…</span>
                                         : <button key={p} onClick={() => setPage(p)}
-                                            className={`w-10 h-10 rounded-xl text-[11px] font-black transition-colors ${p === page ? 'bg-[var(--color-primary)] text-white' : 'border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]'}`}>
+                                            className={`w-10 h-10 rounded-xl text-xs font-bold transition-colors ${p === page ? 'bg-[var(--color-primary)] text-white' : 'border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]'}`}>
                                             {p}
                                         </button>
                                     )}
                                 <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page >= totalPages}
                                     className="w-10 h-10 rounded-xl border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:border-[var(--color-primary)] disabled:opacity-30 transition-colors">
-                                    <ChevronRight className="text-xs" />
+                                    <ChevronRight className="w-4 h-4" />
                                 </button>
                             </div>
                         )}
@@ -424,7 +424,7 @@ export default function InformationPage() {
             </div>
 
             <footer className="border-t border-[var(--color-border)] py-6 px-6">
-                <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[var(--color-text-muted)]">
+                <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--color-text-muted)]">
                     <Link to="/" className="font-heading font-bold text-base text-[var(--color-text)]">Laporanmu</Link>
                     <span>© 2026 Laporanmu. All rights reserved.</span>
                     <div className="flex items-center gap-4">

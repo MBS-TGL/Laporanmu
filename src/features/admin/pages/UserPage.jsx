@@ -37,8 +37,8 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || ''
 function RoleBadge({ role }) {
     const meta = ROLE_META[role] || { label: role, color: 'text-gray-500', bg: 'bg-gray-500/10', border: 'border-gray-500/20', icon: UserCog }
     return (
-        <span className={`inline-flex items-center gap-1.5 text-[10px] font-black px-2 py-0.5 rounded-lg border ${meta.bg} ${meta.color} ${meta.border}`}>
-            <meta.icon className="text-[8px]" />
+        <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-2 py-0.5 rounded-lg border ${meta.bg} ${meta.color} ${meta.border}`}>
+            <meta.icon className="text-xs" />
             {meta.label}
         </span>
     )
@@ -547,21 +547,21 @@ export default function UserManagementPage() {
     // ─────────────────────────────────────────────────────────────────────────
     return (
         <DashboardLayout title="Manajemen User">
-            <div className="p-4 md:p-6 space-y-5 max-w-[1800px] mx-auto">
+            <div className="space-y-5">
 
 
                 {/* ── Banner: profile_id belum ada ── */}
                 {!profileIdExists && (
                     <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-start gap-3">
                         <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-600 flex items-center justify-center shrink-0 text-sm">
-                            <Database />
+                            <Database className="w-4 h-4" />
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-black text-amber-700">Kolom <code className="px-1 py-0.5 bg-amber-100 rounded text-[11px]">profile_id</code> belum ada di tabel <code className="px-1 py-0.5 bg-amber-100 rounded text-[11px]">teachers</code></p>
-                            <p className="text-[11px] text-amber-600/80 font-bold mt-0.5">Fitur link teacher ke akun belum bisa digunakan. Jalankan migrasi SQL terlebih dahulu.</p>
+                            <p className="text-sm font-bold text-amber-700">Kolom <code className="px-1 py-0.5 bg-amber-100 rounded text-xs">profile_id</code> belum ada di tabel <code className="px-1 py-0.5 bg-amber-100 rounded text-xs">teachers</code></p>
+                            <p className="text-xs text-amber-600/80 font-bold mt-0.5">Fitur link teacher ke akun belum bisa digunakan. Jalankan migrasi SQL terlebih dahulu.</p>
                         </div>
-                        <button onClick={() => setSqlModal(true)} className="shrink-0 h-8 px-3 rounded-xl bg-amber-500 text-white text-[10px] font-black hover:brightness-105 transition-all flex items-center gap-1.5">
-                            <Code className="text-[9px]" />Lihat SQL
+                        <button onClick={() => setSqlModal(true)} className="shrink-0 h-8 px-3 rounded-xl bg-amber-500 text-white text-xs font-bold hover:brightness-105 transition-all flex items-center gap-1.5">
+                            <Code className="w-4 h-4" />Lihat SQL
                         </button>
                     </div>
                 )}
@@ -571,10 +571,10 @@ export default function UserManagementPage() {
                     <div>
                         <Breadcrumb badge="Admin" items={['User']} className="mb-1" />
                         <div className="flex items-center gap-2.5 mb-1">
-                            <h1 className="text-2xl font-black font-heading tracking-tight text-[var(--color-text)]">Manajemen User</h1>
-                            <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 uppercase tracking-widest">Admin Only</span>
+                            <h1 className="text-2xl font-bold font-heading tracking-tight text-[var(--color-text)]">Manajemen User</h1>
+                            <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 uppercase tracking-wide">Admin Only</span>
                         </div>
-                        <p className="text-[var(--color-text-muted)] text-[11px] mt-1 font-medium opacity-70">
+                        <p className="text-[var(--color-text-muted)] text-xs mt-1 font-medium opacity-70">
                             Kelola akun login guru, karyawan, dan staff sistem.
                         </p>
                     </div>
@@ -586,29 +586,29 @@ export default function UserManagementPage() {
                                 setIsPrivacyMode(next)
                                 addToast(next ? 'Mode privasi diaktifkan — Data sensitif disembunyikan' : 'Mode privasi dinonaktifkan', next ? 'info' : 'success')
                             }}
-                            className={`h-9 px-3 rounded-xl border flex items-center gap-2 transition-all text-[10px] font-black uppercase tracking-widest
+                            className={`h-9 px-3 rounded-xl border flex items-center gap-2 transition-all text-xs font-bold uppercase tracking-wide
                                 ${isPrivacyMode
                                     ? 'bg-amber-500/10 border-amber-500/30 text-amber-600'
                                     : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
                                 }`}
                             title={isPrivacyMode ? 'Matikan Mode Privasi' : 'Aktifkan Mode Privasi'}
                         >
-                            { isPrivacyMode ? <EyeOff className="text-sm" /> : <Eye className="text-sm" /> }
+                            { isPrivacyMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" /> }
                             <span className="hidden sm:inline">{isPrivacyMode ? 'Privasi On' : 'Privasi'}</span>
                         </button>
                         <button onClick={() => { fetchUsers(); fetchUnlinked() }}
                             className="h-9 w-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all flex items-center justify-center"
                             title="Refresh">
-                            <RotateCw className="text-sm" />
+                            <RotateCw className="w-4 h-4" />
                         </button>
                         {currentUser?.role === 'developer' && (
                             <button
                                 onClick={() => setSessionModal(true)}
-                                className="h-9 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all flex items-center gap-2 text-[10px] font-black">
-                                <Shield className="text-sm" />
+                                className="h-9 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all flex items-center gap-2 text-xs font-bold">
+                                <Shield className="w-4 h-4" />
                                 <span className="hidden sm:inline">Sessions</span>
                                 {onlineUserIds.size > 0 && (
-                                    <span className="w-4 h-4 rounded-full bg-emerald-500 text-white text-[8px] font-black flex items-center justify-center">
+                                    <span className="w-4 h-4 rounded-full bg-emerald-500 text-white text-xs font-bold flex items-center justify-center">
                                         {onlineUserIds.size}
                                     </span>
                                 )}
@@ -617,8 +617,8 @@ export default function UserManagementPage() {
                         <button
                             onClick={() => { setCreateEmail(''); setCreateName(''); setCreateRole('guru'); setCreateTeacherId(''); setCreatePassword(''); setCreateModal(true) }}
                             disabled={!canCreateUsers(currentUser?.role)}
-                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black flex items-center gap-2 hover:opacity-90 transition-all shadow-lg disabled:opacity-40 disabled:cursor-not-allowed">
-                            <UserPlus className="text-[10px]" />Buat Akun
+                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold flex items-center gap-2 hover:opacity-90 transition-all shadow-lg disabled:opacity-40 disabled:cursor-not-allowed">
+                            <UserPlus className="w-4 h-4" />Buat Akun
                         </button>
                     </div>
                 </div>
@@ -648,8 +648,8 @@ export default function UserManagementPage() {
                                     <s.icon className={s.color} />
                                 </div>
                                 <div className="min-w-0">
-                                    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 leading-none mb-1">{s.label}</p>
-                                    <p className={`text-xl font-black font-heading leading-none tabular-nums ${s.color}`}>{loading ? '…' : s.val}</p>
+                                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 leading-none mb-1">{s.label}</p>
+                                    <p className={`text-xl font-bold font-heading leading-none tabular-nums ${s.color}`}>{loading ? '…' : s.val}</p>
                                 </div>
                             </div>
                         ))}
@@ -676,17 +676,17 @@ export default function UserManagementPage() {
                 <div className="bg-surface rounded-[1.5rem] px-4 py-3 flex items-center gap-2 flex-wrap border border-[var(--color-border)]">
                     {/* Search */}
                     <div className="relative flex-1 min-w-[180px]">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
+                        <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" />
                         <input
                             ref={searchRef}
                             value={search}
                             onChange={e => setSearch(e.target.value)}
                             placeholder="Cari nama, email, atau nama guru..."
-                            className="w-full h-9 pl-8 pr-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition-all"
+                            className="w-full h-9 pl-8 pr-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold focus:outline-none focus:border-[var(--color-primary)] transition-all"
                         />
                         {search && (
                             <button onClick={() => setSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-                                <X className="text-[9px]" />
+                                <X className="w-4 h-4" />
                             </button>
                         )}
                     </div>
@@ -695,7 +695,7 @@ export default function UserManagementPage() {
                     <div className="flex gap-1 flex-wrap">
                         {[{ key: '', label: 'Semua' }, ...ROLES].map(r => (
                             <button key={r.key || 'all'} onClick={() => { setFilterRole(r.key || ''); setPage(1) }}
-                                className={`h-8 px-3 rounded-xl text-[10px] font-black transition-all ${filterRole === (r.key || '')
+                                className={`h-8 px-3 rounded-xl text-xs font-bold transition-all ${filterRole === (r.key || '')
                                     ? 'bg-[var(--color-primary)] text-white shadow-md'
                                     : 'border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                                 {r.label}
@@ -705,7 +705,7 @@ export default function UserManagementPage() {
 
                     {/* Filter Linked */}
                     <select value={filterLinked} onChange={e => { setFilterLinked(e.target.value); setPage(1) }}
-                        className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all">
+                        className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all">
                         <option value="">Semua (link status)</option>
                         <option value="linked">Sudah di-link</option>
                         <option value="unlinked">Belum di-link</option>
@@ -713,7 +713,7 @@ export default function UserManagementPage() {
 
                     {/* Sort */}
                     <select value={sortBy} onChange={e => setSortBy(e.target.value)}
-                        className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all">
+                        className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all">
                         <option value="name_asc">Nama A–Z</option>
                         <option value="name_desc">Nama Z–A</option>
                         <option value="email_asc">Email A–Z</option>
@@ -721,12 +721,12 @@ export default function UserManagementPage() {
                     </select>
 
                     {hasFilters && (
-                        <button onClick={resetFilters} className="h-8 px-3 rounded-xl text-[10px] font-black uppercase tracking-widest text-red-500 hover:bg-red-500/10 transition-all border border-transparent hover:border-red-500/20">
+                        <button onClick={resetFilters} className="h-8 px-3 rounded-xl text-xs font-bold uppercase tracking-wide text-red-500 hover:bg-red-500/10 transition-all border border-transparent hover:border-red-500/20">
                             Reset
                         </button>
                     )}
 
-                    <span className="text-[10px] font-bold text-[var(--color-text-muted)] ml-auto shrink-0">
+                    <span className="text-xs font-bold text-[var(--color-text-muted)] ml-auto shrink-0">
                         {filteredUsers.length} user
                     </span>
                 </div>
@@ -736,7 +736,7 @@ export default function UserManagementPage() {
                     <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
                         <table className="w-full text-sm">
                             <thead className="bg-[var(--color-surface-alt)]">
-                                <tr className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] text-left">
+                                <tr className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] text-left">
                                     <th className="px-5 py-4">User</th>
                                     <th className="px-5 py-4">Role</th>
                                     <th className="px-5 py-4">Linked Teacher</th>
@@ -760,7 +760,7 @@ export default function UserManagementPage() {
                         <div className="overflow-x-auto">
                             <table className="w-full min-w-[700px] text-sm">
                                 <thead className="bg-[var(--color-surface-alt)] sticky top-0 z-10">
-                                    <tr className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] text-left">
+                                    <tr className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] text-left">
                                         <th className="px-5 py-3.5">User</th>
                                         <th className="px-5 py-3.5">Role</th>
                                         <th className="px-5 py-3.5">Linked Teacher</th>
@@ -771,10 +771,10 @@ export default function UserManagementPage() {
                                     {pagedUsers.length === 0 ? (
                                         <tr><td colSpan={4} className="px-5 py-16">
                                             <div className="flex flex-col items-center gap-2 text-center">
-                                                <Users className="text-3xl text-[var(--color-text-muted)] opacity-20 mb-2" />
-                                                <p className="text-sm font-black text-[var(--color-text)]">Tidak ada user ditemukan</p>
+                                                <Users className="w-6 h-6 text-[var(--color-text-muted)] opacity-20 mb-2" />
+                                                <p className="text-sm font-bold text-[var(--color-text)]">Tidak ada user ditemukan</p>
                                                 <p className="text-xs text-[var(--color-text-muted)]">Coba ubah filter atau kata kunci pencarian.</p>
-                                                {hasFilters && <button onClick={resetFilters} className="mt-2 h-8 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black hover:bg-[var(--color-surface-alt)] transition-all">Reset Filter</button>}
+                                                {hasFilters && <button onClick={resetFilters} className="mt-2 h-8 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold hover:bg-[var(--color-surface-alt)] transition-all">Reset Filter</button>}
                                             </div>
                                         </td></tr>
                                     ) : pagedUsers.map(user => (
@@ -813,43 +813,43 @@ export default function UserManagementPage() {
                 <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
                     <div className="px-5 py-4 border-b border-[var(--color-border)] flex items-center justify-between">
                         <div>
-                            <p className="text-[13px] font-black text-[var(--color-text)]">Guru & Karyawan Belum Punya Akun</p>
-                            <p className="text-[10px] text-[var(--color-text-muted)] opacity-70 mt-0.5">Teacher di tabel <code className="text-[9px] bg-[var(--color-surface-alt)] px-1 rounded">teachers</code> yang belum di-link ke akun login.</p>
+                            <p className="text-sm font-bold text-[var(--color-text)]">Guru & Karyawan Belum Punya Akun</p>
+                            <p className="text-xs text-[var(--color-text-muted)] opacity-70 mt-0.5">Teacher di tabel <code className="text-xs bg-[var(--color-surface-alt)] px-1 rounded">teachers</code> yang belum di-link ke akun login.</p>
                         </div>
                         {unlinkedTeachers.length > 0 && (
-                            <span className="text-[9px] font-black px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-600 border border-amber-500/20">{unlinkedTeachers.length} orang</span>
+                            <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-600 border border-amber-500/20">{unlinkedTeachers.length} orang</span>
                         )}
                     </div>
                     {loadingUnlinked ? (
                         <div className="flex items-center justify-center py-12 gap-2 text-[var(--color-text-muted)]">
-                            <LoaderCircle className="animate-spin" />
+                            <LoaderCircle className="w-4 h-4 animate-spin" />
                             <span className="text-xs font-bold">Memuat...</span>
                         </div>
                     ) : !profileIdExists ? (
                         <div className="px-5 py-10 flex flex-col items-center gap-2 text-center">
-                            <Database className="text-2xl text-amber-500/50" />
-                            <p className="text-sm font-black text-[var(--color-text-muted)]">Kolom <code>profile_id</code> belum ada</p>
-                            <p className="text-[11px] text-[var(--color-text-muted)] opacity-70">Jalankan SQL migration terlebih dahulu.</p>
-                            <button onClick={() => setSqlModal(true)} className="mt-2 h-8 px-4 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-600 text-[10px] font-black hover:bg-amber-500/20 transition-all">Lihat SQL Migration</button>
+                            <Database className="w-6 h-6 text-amber-500/50" />
+                            <p className="text-sm font-bold text-[var(--color-text-muted)]">Kolom <code>profile_id</code> belum ada</p>
+                            <p className="text-xs text-[var(--color-text-muted)] opacity-70">Jalankan SQL migration terlebih dahulu.</p>
+                            <button onClick={() => setSqlModal(true)} className="mt-2 h-8 px-4 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-600 text-xs font-bold hover:bg-amber-500/20 transition-all">Lihat SQL Migration</button>
                         </div>
                     ) : unlinkedTeachers.length === 0 ? (
                         <div className="px-5 py-10 flex flex-col items-center gap-2 text-center">
-                            <CircleCheck className="text-2xl text-emerald-500/50" />
-                            <p className="text-sm font-black text-emerald-600">Semua teacher sudah punya akun!</p>
+                            <CircleCheck className="w-6 h-6 text-emerald-500/50" />
+                            <p className="text-sm font-bold text-emerald-600">Semua teacher sudah punya akun!</p>
                         </div>
                     ) : (
                         <div className="divide-y divide-[var(--color-border)]">
                             {unlinkedTeachers.map(t => (
                                 <div key={t.id} className="flex items-center gap-3 px-5 py-3 hover:bg-[var(--color-surface-alt)]/40 transition-colors group">
-                                    <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)]/20 flex items-center justify-center text-[var(--color-primary)] font-black text-sm shrink-0">
+                                    <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)]/20 flex items-center justify-center text-[var(--color-primary)] font-bold text-sm shrink-0">
                                         {t.name.charAt(0).toUpperCase()}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-[12px] font-black text-[var(--color-text)] truncate">{disp(t.name)}</p>
+                                        <p className="text-xs font-bold text-[var(--color-text)] truncate">{disp(t.name)}</p>
                                         <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                                            {t.nbm && <span className="text-[9px] font-bold text-[var(--color-text-muted)]">{t.nbm}</span>}
+                                            {t.nbm && <span className="text-xs font-bold text-[var(--color-text-muted)]">{t.nbm}</span>}
                                             {t.type && <RoleBadge role={t.type} />}
-                                            {t.email && <span className="text-[9px] text-[var(--color-text-muted)] opacity-70">{disp(t.email)}</span>}
+                                            {t.email && <span className="text-xs text-[var(--color-text-muted)] opacity-70">{disp(t.email)}</span>}
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2 shrink-0">
@@ -863,8 +863,8 @@ export default function UserManagementPage() {
                                                 setCreateModal(true)
                                             }}
                                             disabled={!canCreateUsers(currentUser?.role)}
-                                            className="h-8 px-3 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] font-black hover:bg-[var(--color-primary)] hover:text-white transition-all flex items-center gap-1.5 disabled:opacity-40">
-                                            <UserPlus className="text-[9px]" />Buat Akun
+                                            className="h-8 px-3 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold hover:bg-[var(--color-primary)] hover:text-white transition-all flex items-center gap-1.5 disabled:opacity-40">
+                                            <UserPlus className="w-4 h-4" />Buat Akun
                                         </button>
                                     </div>
                                 </div>
@@ -882,39 +882,39 @@ export default function UserManagementPage() {
             <Modal isOpen={createModal} onClose={() => setCreateModal(false)} title="Buat Akun Login" size="sm">
                 <div className="space-y-4">
                     <div className="p-3 rounded-xl bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/15 flex items-center gap-3">
-                        <Info className="text-[var(--color-primary)] shrink-0" />
-                        <p className="text-[10px] text-[var(--color-text-muted)] font-bold leading-relaxed">
+                        <Info className="w-4 h-4 text-[var(--color-primary)] shrink-0" />
+                        <p className="text-xs text-[var(--color-text-muted)] font-bold leading-relaxed">
                             Akun akan dibuat via <strong>Edge Function</strong>. Pastikan sudah di-deploy. Password bisa segera diganti oleh user lewat fitur reset.
                         </p>
                     </div>
 
                     {/* Email */}
                     <div>
-                        <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">Email <span className="text-red-400">*</span></label>
+                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 mb-1.5 block">Email <span className="text-red-400">*</span></label>
                         <div className="relative">
-                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
+                            <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" />
                             <input value={createEmail} onChange={e => setCreateEmail(e.target.value)}
                                 placeholder="email@sekolah.id"
-                                className="w-full h-10 pl-8 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/40 focus:outline-none focus:border-[var(--color-primary)] transition-all" />
+                                className="w-full h-10 pl-8 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/40 focus:outline-none focus:border-[var(--color-primary)] transition-all" />
                         </div>
                     </div>
 
                     {/* Nama */}
                     <div>
-                        <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">Nama Lengkap <span className="text-red-400">*</span></label>
+                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 mb-1.5 block">Nama Lengkap <span className="text-red-400">*</span></label>
                         <input value={createName} onChange={e => setCreateName(e.target.value)}
                             placeholder="Nama lengkap..."
-                            className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/40 focus:outline-none focus:border-[var(--color-primary)] transition-all" />
+                            className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/40 focus:outline-none focus:border-[var(--color-primary)] transition-all" />
                     </div>
 
                     {/* Role */}
                     <div>
-                        <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">Role</label>
+                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 mb-1.5 block">Role</label>
                         <div className="grid grid-cols-3 gap-1.5">
                             {ROLES.map(r => (
                                 <button key={r.key} onClick={() => setCreateRole(r.key)}
-                                    className={`h-9 rounded-xl text-[10px] font-black flex items-center justify-center gap-1.5 border transition-all ${createRole === r.key ? `${r.bg} ${r.color} ${r.border}` : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                                    <r.icon className="text-[9px]" />{r.label}
+                                    className={`h-9 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 border transition-all ${createRole === r.key ? `${r.bg} ${r.color} ${r.border}` : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                                    <r.icon className="text-xs" />{r.label}
                                 </button>
                             ))}
                         </div>
@@ -922,26 +922,26 @@ export default function UserManagementPage() {
 
                     {/* Password */}
                     <div>
-                        <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">Password Sementara <span className="text-red-400">*</span></label>
+                        <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 mb-1.5 block">Password Sementara <span className="text-red-400">*</span></label>
                         <div className="relative">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
+                            <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" />
                             <input
                                 type={showCreatePw ? 'text' : 'password'}
                                 value={createPassword} onChange={e => setCreatePassword(e.target.value)}
                                 placeholder="Min. 8 karakter..."
-                                className="w-full h-10 pl-8 pr-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/40 focus:outline-none focus:border-[var(--color-primary)] transition-all" />
+                                className="w-full h-10 pl-8 pr-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]/40 focus:outline-none focus:border-[var(--color-primary)] transition-all" />
                             <button type="button" onClick={() => setShowCreatePw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
-                                { showCreatePw ? <EyeOff className="text-[10px]" /> : <Eye className="text-[10px]" /> }
+                                { showCreatePw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" /> }
                             </button>
                         </div>
-                        <p className="text-[9px] text-[var(--color-text-muted)] font-bold mt-1 opacity-60">User bisa reset password lewat email setelah login pertama.</p>
+                        <p className="text-xs text-[var(--color-text-muted)] font-bold mt-1 opacity-60">User bisa reset password lewat email setelah login pertama.</p>
                     </div>
 
                     {/* Link Teacher (jika dari unlinked) */}
                     {createTeacherId && (
                         <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2">
-                            <Link className="text-emerald-600 text-[11px] shrink-0" />
-                            <p className="text-[10px] font-black text-emerald-700">Akan otomatis di-link ke data teacher.</p>
+                            <Link className="w-4 h-4 text-emerald-600 shrink-0" />
+                            <p className="text-xs font-bold text-emerald-700">Akan otomatis di-link ke data teacher.</p>
                         </div>
                     )}
 
@@ -951,14 +951,14 @@ export default function UserManagementPage() {
                             className={`w-9 h-5 rounded-full transition-all flex items-center px-0.5 cursor-pointer ${createSendEmail ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}`}>
                             <div className={`w-4 h-4 rounded-full bg-white shadow-sm transition-all ${createSendEmail ? 'translate-x-4' : 'translate-x-0'}`} />
                         </div>
-                        <span className="text-[11px] font-bold text-[var(--color-text)]">Kirim notifikasi email ke user</span>
+                        <span className="text-xs font-bold text-[var(--color-text)]">Kirim notifikasi email ke user</span>
                     </label>
 
                     <div className="flex gap-3 pt-2">
-                        <button onClick={() => setCreateModal(false)} className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
+                        <button onClick={() => setCreateModal(false)} className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
                         <button onClick={handleCreate} disabled={submitting || !createEmail || !createName || !createPassword}
-                            className="flex-1 h-10 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg">
-                            {submitting ? <LoaderCircle className="animate-spin" /> : <UserPlus className="text-[10px]" />}
+                            className="flex-1 h-10 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg">
+                            {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <UserPlus className="w-4 h-4" />}
                             Buat Akun
                         </button>
                     </div>
@@ -971,28 +971,28 @@ export default function UserManagementPage() {
                     <div className="space-y-4">
                         {/* User info header */}
                         <div className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                            <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)] flex items-center justify-center text-white font-black text-base shrink-0">
+                            <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)] flex items-center justify-center text-white font-bold text-base shrink-0">
                                 {(editModal.name || editModal.email || '?').charAt(0).toUpperCase()}
                             </div>
                             <div className="min-w-0">
-                                <p className="text-[12px] font-black text-[var(--color-text)] truncate">{editModal.name || '—'}</p>
-                                <p className="text-[10px] text-[var(--color-text-muted)] truncate">{editModal.email}</p>
+                                <p className="text-xs font-bold text-[var(--color-text)] truncate">{editModal.name || '—'}</p>
+                                <p className="text-xs text-[var(--color-text-muted)] truncate">{editModal.email}</p>
                             </div>
                         </div>
 
                         <div>
-                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">Nama Tampilan</label>
+                            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 mb-1.5 block">Nama Tampilan</label>
                             <input value={editName} onChange={e => setEditName(e.target.value)}
-                                className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all" />
+                                className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all" />
                         </div>
 
                         <div>
-                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">Role</label>
+                            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 mb-1.5 block">Role</label>
                             <div className="grid grid-cols-3 gap-1.5">
                                 {ROLES.map(r => (
                                     <button key={r.key} onClick={() => setEditRole(r.key)}
-                                        className={`h-9 rounded-xl text-[10px] font-black flex items-center justify-center gap-1.5 border transition-all ${editRole === r.key ? `${r.bg} ${r.color} ${r.border}` : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                                        <r.icon className="text-[9px]" />{r.label}
+                                        className={`h-9 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 border transition-all ${editRole === r.key ? `${r.bg} ${r.color} ${r.border}` : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                                        <r.icon className="text-xs" />{r.label}
                                     </button>
                                 ))}
                             </div>
@@ -1000,16 +1000,16 @@ export default function UserManagementPage() {
 
                         {editModal.id === currentUser?.id && (
                             <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center gap-2">
-                                <TriangleAlert className="text-amber-600 text-[11px] shrink-0" />
-                                <p className="text-[10px] font-bold text-amber-700">Kamu sedang mengedit akun milikmu sendiri.</p>
+                                <TriangleAlert className="w-4 h-4 text-amber-600 shrink-0" />
+                                <p className="text-xs font-bold text-amber-700">Kamu sedang mengedit akun milikmu sendiri.</p>
                             </div>
                         )}
 
                         <div className="flex gap-3 pt-2">
-                            <button onClick={() => setEditModal(null)} className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
+                            <button onClick={() => setEditModal(null)} className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
                             <button onClick={handleEditSave} disabled={submitting}
-                                className="flex-1 h-10 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black hover:opacity-90 transition-all disabled:opacity-40 flex items-center justify-center gap-2">
-                                {submitting ? <LoaderCircle className="animate-spin" /> : null} Simpan
+                                className="flex-1 h-10 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:opacity-90 transition-all disabled:opacity-40 flex items-center justify-center gap-2">
+                                {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : null} Simpan
                             </button>
                         </div>
                     </div>
@@ -1021,19 +1021,19 @@ export default function UserManagementPage() {
                 {linkModal && (
                     <div className="space-y-4">
                         <div className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                            <p className="text-[11px] font-black text-[var(--color-text)]">Akun: {linkModal.name}</p>
-                            <p className="text-[10px] text-[var(--color-text-muted)]">{linkModal.email}</p>
+                            <p className="text-xs font-bold text-[var(--color-text)]">Akun: {linkModal.name}</p>
+                            <p className="text-xs text-[var(--color-text-muted)]">{linkModal.email}</p>
                         </div>
 
                         <div>
-                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">Pilih Teacher</label>
+                            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 mb-1.5 block">Pilih Teacher</label>
                             {unlinkedTeachers.length === 0 ? (
                                 <div className="p-3 rounded-xl bg-[var(--color-surface-alt)] text-center">
-                                    <p className="text-[11px] font-black text-emerald-600">Semua teacher sudah punya akun!</p>
+                                    <p className="text-xs font-bold text-emerald-600">Semua teacher sudah punya akun!</p>
                                 </div>
                             ) : (
                                 <select value={linkTeacherId} onChange={e => setLinkTeacherId(e.target.value)}
-                                    className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all">
+                                    className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all">
                                     <option value="">-- Pilih teacher --</option>
                                     {unlinkedTeachers.map(t => (
                                         <option key={t.id} value={t.id}>{t.name}{t.nbm ? ` (${t.nbm})` : ''} — {t.type}</option>
@@ -1042,15 +1042,15 @@ export default function UserManagementPage() {
                             )}
                         </div>
 
-                        <p className="text-[10px] text-[var(--color-text-muted)] leading-relaxed">
+                        <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
                             Setelah di-link, data laporan dan portal keluar-masuk akan terhubung ke akun ini secara otomatis.
                         </p>
 
                         <div className="flex gap-3 pt-2">
-                            <button onClick={() => setLinkModal(null)} className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
+                            <button onClick={() => setLinkModal(null)} className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
                             <button onClick={handleLinkTeacher} disabled={submitting || !linkTeacherId}
-                                className="flex-1 h-10 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black hover:opacity-90 transition-all disabled:opacity-40 flex items-center justify-center gap-2">
-                                {submitting ? <LoaderCircle className="animate-spin" /> : <Link className="text-[10px]" />} Link Teacher
+                                className="flex-1 h-10 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:opacity-90 transition-all disabled:opacity-40 flex items-center justify-center gap-2">
+                                {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Link className="w-4 h-4" />} Link Teacher
                             </button>
                         </div>
                     </div>
@@ -1063,42 +1063,42 @@ export default function UserManagementPage() {
                     <div className="space-y-4">
                         <div className="p-4 rounded-2xl bg-[var(--color-primary)]/8 border border-[var(--color-primary)]/20 flex items-center gap-4">
                             <div className="w-11 h-11 rounded-xl bg-[var(--color-primary)]/20 flex items-center justify-center shrink-0 text-lg">
-                                <Key className="text-[var(--color-primary)]" />
+                                <Key className="w-4 h-4 text-[var(--color-primary)]" />
                             </div>
                             <div>
-                                <p className="text-[12px] font-black text-[var(--color-text)]">{resetModal.name}</p>
-                                <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">{resetModal.email}</p>
+                                <p className="text-xs font-bold text-[var(--color-text)]">{resetModal.name}</p>
+                                <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{resetModal.email}</p>
                             </div>
                         </div>
 
                         <div>
-                            <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">
+                            <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 mb-1.5 block">
                                 Password Baru <span className="text-red-400">*</span>
                             </label>
                             <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
+                                <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" />
                                 <input
                                     type={showResetPw ? 'text' : 'password'}
                                     value={resetPassword}
                                     onChange={e => setResetPassword(e.target.value)}
                                     placeholder="Min. 8 karakter..."
-                                    className="w-full h-10 pl-8 pr-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition-all"
+                                    className="w-full h-10 pl-8 pr-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold focus:outline-none focus:border-[var(--color-primary)] transition-all"
                                 />
                                 <button type="button" onClick={() => setShowResetPw(v => !v)}
                                     className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
-                                    { showResetPw ? <EyeOff className="text-[10px]" /> : <Eye className="text-[10px]" /> }
+                                    { showResetPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" /> }
                                 </button>
                             </div>
                         </div>
 
                         <div className="flex gap-3 pt-2">
                             <button onClick={() => { setResetModal(null); setResetPassword('') }}
-                                className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">
+                                className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">
                                 Batal
                             </button>
                             <button onClick={handleResetPassword} disabled={submitting || resetPassword.length < 8}
-                                className="flex-1 h-10 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black hover:opacity-90 transition-all disabled:opacity-40 flex items-center justify-center gap-2 shadow-lg">
-                                {submitting ? <LoaderCircle className="animate-spin" /> : <Key className="text-[10px]" />}
+                                className="flex-1 h-10 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:opacity-90 transition-all disabled:opacity-40 flex items-center justify-center gap-2 shadow-lg">
+                                {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Key className="w-4 h-4" />}
                                 Set Password
                             </button>
                         </div>
@@ -1112,20 +1112,20 @@ export default function UserManagementPage() {
                     {/* Header bar */}
                     <div className="flex items-center justify-between gap-3">
                         <div className="flex items-center gap-2">
-                            <p className="text-[11px] font-bold text-[var(--color-text-muted)]">
+                            <p className="text-xs font-bold text-[var(--color-text-muted)]">
                                 {sessions.length} session aktif
                             </p>
                             {onlineUserIds.size > 0 && (
-                                <span className="flex items-center gap-1 text-[9px] font-black text-emerald-600 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                                <span className="flex items-center gap-1 text-xs font-bold text-emerald-600 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
                                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                                     {onlineUserIds.size} online
                                 </span>
                             )}
-                            <span className="text-[9px] text-[var(--color-text-muted)] opacity-50">Auto-refresh 30s</span>
+                            <span className="text-xs text-[var(--color-text-muted)] opacity-50">Auto-refresh 30s</span>
                         </div>
                         <button onClick={() => fetchSessions()} disabled={loadingSessions}
-                            className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] flex items-center gap-1.5 transition-all">
-                            <RotateCw className={loadingSessions ? 'animate-spin' : ''} />
+                            className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] flex items-center gap-1.5 transition-all">
+                            <RotateCw className={loadingSessions ? 'animate-spin' : ''} className="w-4 h-4" />
                             Refresh
                         </button>
                     </div>
@@ -1133,22 +1133,22 @@ export default function UserManagementPage() {
                     {/* Search + filter */}
                     <div className="flex gap-2">
                         <div className="relative flex-1">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
+                            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" />
                             <input
                                 value={sessionSearch}
                                 onChange={e => setSessionSearch(e.target.value)}
                                 placeholder="Cari nama atau email..."
-                                className="w-full h-8 pl-8 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition-all"
+                                className="w-full h-8 pl-8 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold focus:outline-none focus:border-[var(--color-primary)] transition-all"
                             />
                         </div>
                         <select value={sessionFilterRole} onChange={e => setSessionFilterRole(e.target.value)}
-                            className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all">
+                            className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-all">
                             <option value="">Semua Role</option>
                             {ROLES.map(r => <option key={r.key} value={r.key}>{r.label}</option>)}
                         </select>
                         {(sessionSearch || sessionFilterRole) && (
                             <button onClick={() => { setSessionSearch(''); setSessionFilterRole('') }}
-                                className="h-8 px-3 rounded-xl text-[10px] font-black text-red-500 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all">
+                                className="h-8 px-3 rounded-xl text-xs font-bold text-red-500 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all">
                                 Reset
                             </button>
                         )}
@@ -1156,7 +1156,7 @@ export default function UserManagementPage() {
 
                     {loadingSessions ? (
                         <div className="flex items-center justify-center py-12 gap-2 text-[var(--color-text-muted)]">
-                            <LoaderCircle className="animate-spin" />
+                            <LoaderCircle className="w-4 h-4 animate-spin" />
                             <span className="text-xs font-bold">Memuat sessions...</span>
                         </div>
                     ) : groupedSessions.length === 0 ? (
@@ -1173,7 +1173,7 @@ export default function UserManagementPage() {
                                         {/* User header */}
                                         <div className="flex items-center gap-3 px-4 py-3 bg-[var(--color-surface-alt)]/50 border-b border-[var(--color-border)]">
                                             <div className="relative shrink-0">
-                                                <div className="w-8 h-8 rounded-xl bg-[var(--color-primary)]/20 flex items-center justify-center text-[var(--color-primary)] font-black text-sm">
+                                                <div className="w-8 h-8 rounded-xl bg-[var(--color-primary)]/20 flex items-center justify-center text-[var(--color-primary)] font-bold text-sm">
                                                     {(profile?.name || profile?.email || '?').charAt(0).toUpperCase()}
                                                 </div>
                                                 {isOnline && (
@@ -1181,32 +1181,32 @@ export default function UserManagementPage() {
                                                 )}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-[12px] font-black text-[var(--color-text)]">{profile?.name || '—'}</p>
-                                                <p className="text-[10px] text-[var(--color-text-muted)]">{profile?.email}</p>
+                                                <p className="text-xs font-bold text-[var(--color-text)]">{profile?.name || '—'}</p>
+                                                <p className="text-xs text-[var(--color-text-muted)]">{profile?.email}</p>
                                             </div>
                                             <div className="flex items-center gap-2 shrink-0">
                                                 <RoleBadge role={profile?.role} />
-                                                <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+                                                <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
                                                     {userSessions.length} session
                                                 </span>
                                                 {userId !== currentUser?.id && (
                                                     isConfirmingRevoke ? (
                                                         <div className="flex items-center gap-1">
-                                                            <span className="text-[9px] font-bold text-red-500">Yakin?</span>
+                                                            <span className="text-xs font-bold text-red-500">Yakin?</span>
                                                             <button onClick={() => handleRevokeAllUserSessions(userId, profile?.name)}
-                                                                className="h-6 px-2 rounded-lg text-[9px] font-black bg-red-500 text-white hover:bg-red-600 transition-all">
+                                                                className="h-6 px-2 rounded-lg text-xs font-bold bg-red-500 text-white hover:bg-red-600 transition-all">
                                                                 Ya
                                                             </button>
                                                             <button onClick={() => setConfirmRevokeAll(null)}
-                                                                className="h-6 px-2 rounded-lg text-[9px] font-black border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">
+                                                                className="h-6 px-2 rounded-lg text-xs font-bold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">
                                                                 Batal
                                                             </button>
                                                         </div>
                                                     ) : (
                                                         <button
                                                             onClick={() => setConfirmRevokeAll({ userId, userName: profile?.name })}
-                                                            className="h-7 px-2.5 rounded-lg text-[9px] font-black text-red-500 border border-red-500/20 hover:bg-red-500/10 transition-all flex items-center gap-1">
-                                                            <UserX className="text-[8px]" />
+                                                            className="h-7 px-2.5 rounded-lg text-xs font-bold text-red-500 border border-red-500/20 hover:bg-red-500/10 transition-all flex items-center gap-1">
+                                                            <UserX className="w-4 h-4" />
                                                             Logout Semua
                                                         </button>
                                                     )
@@ -1229,21 +1229,21 @@ export default function UserManagementPage() {
                                                         <div className={`w-2 h-2 rounded-full shrink-0 ${minutesAgo < 5 ? 'bg-emerald-500 animate-pulse' : minutesAgo < 60 ? 'bg-amber-400' : 'bg-[var(--color-border)]'}`} />
                                                         <div className="flex-1 min-w-0">
                                                             <div className="flex items-center gap-2 flex-wrap">
-                                                                <p className="text-[11px] font-bold text-[var(--color-text)]">
+                                                                <p className="text-xs font-bold text-[var(--color-text)]">
                                                                     Session {s.id.slice(0, 8)}...
                                                                 </p>
                                                                 {isOwnSession && (
-                                                                    <span className="text-[8px] font-black px-1.5 py-0.5 rounded-md bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20">
+                                                                    <span className="text-xs font-bold px-1.5 py-0.5 rounded-md bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20">
                                                                         Sesi ini
                                                                     </span>
                                                                 )}
                                                                 {isExpiringSoon && (
-                                                                    <span className="text-[8px] font-black px-1.5 py-0.5 rounded-md bg-amber-500/10 text-amber-600 border border-amber-500/20">
+                                                                    <span className="text-xs font-bold px-1.5 py-0.5 rounded-md bg-amber-500/10 text-amber-600 border border-amber-500/20">
                                                                         Segera expired
                                                                     </span>
                                                                 )}
                                                             </div>
-                                                            <p className="text-[9px] text-[var(--color-text-muted)]">
+                                                            <p className="text-xs text-[var(--color-text-muted)]">
                                                                 Aktif: {activeLabel}
                                                                 {expiresAt && (
                                                                     <> · Expired: {expiresAt.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</>
@@ -1255,7 +1255,7 @@ export default function UserManagementPage() {
                                                                 onClick={() => handleRevokeSession(s.id)}
                                                                 className="h-7 w-7 rounded-lg text-[var(--color-text-muted)] hover:text-red-500 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 flex items-center justify-center transition-all shrink-0"
                                                                 title="Cabut session ini">
-                                                                <X className="text-[10px]" />
+                                                                <X className="w-4 h-4" />
                                                             </button>
                                                         )}
                                                     </div>
@@ -1276,32 +1276,32 @@ export default function UserManagementPage() {
                     <div className="space-y-5">
                         <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center gap-4 text-red-500">
                             <div className="w-11 h-11 rounded-xl bg-red-500/20 flex items-center justify-center shrink-0 text-lg border border-red-500/30">
-                                <Trash2 />
+                                <Trash2 className="w-4 h-4" />
                             </div>
                             <div>
-                                <p className="text-[13px] font-black">Hapus profil ini?</p>
-                                <p className="text-[10px] font-bold opacity-80 mt-0.5">{deleteModal.name} · {deleteModal.email}</p>
+                                <p className="text-sm font-bold">Hapus profil ini?</p>
+                                <p className="text-xs font-bold opacity-80 mt-0.5">{deleteModal.name} · {deleteModal.email}</p>
                             </div>
                         </div>
                         <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-2">
-                            <TriangleAlert className="text-amber-600 text-[11px] mt-0.5 shrink-0" />
-                            <div className="text-[10px] font-bold text-amber-700 leading-relaxed space-y-1">
+                            <TriangleAlert className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
+                            <div className="text-xs font-bold text-amber-700 leading-relaxed space-y-1">
                                 <p>Ini hanya menghapus <strong>data profil</strong> dari tabel <code className="bg-amber-100 px-1 rounded">profiles</code>.</p>
                                 <p>Akun auth Supabase <strong>akan ikut terhapus permanen</strong> dari Authentication. Tindakan ini tidak bisa dibatalkan.</p>
                             </div>
                         </div>
                         <div className="flex gap-3">
-                            <button onClick={() => setDeleteModal(null)} className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
+                            <button onClick={() => setDeleteModal(null)} className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
                             <button onClick={handleDelete} disabled={submitting || deleteModal.id === currentUser?.id || !canDeleteUsers(currentUser?.role)}
-                                className="flex-1 h-10 rounded-xl bg-red-500 hover:bg-red-600 text-white text-[11px] font-black transition-all disabled:opacity-40 flex items-center justify-center gap-2 shadow-lg">
-                                {submitting ? <LoaderCircle className="animate-spin" /> : null} Hapus Profil
+                                className="flex-1 h-10 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold transition-all disabled:opacity-40 flex items-center justify-center gap-2 shadow-lg">
+                                {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : null} Hapus Profil
                             </button>
                         </div>
                         {deleteModal.id === currentUser?.id && (
-                            <p className="text-[10px] text-red-500 font-bold text-center">Tidak bisa menghapus akun milikmu sendiri.</p>
+                            <p className="text-xs text-red-500 font-bold text-center">Tidak bisa menghapus akun milikmu sendiri.</p>
                         )}
                         {deleteModal.id !== currentUser?.id && !canDeleteUsers(currentUser?.role) && (
-                            <p className="text-[10px] text-amber-600 font-bold text-center">Role kamu tidak memiliki izin hapus user.</p>
+                            <p className="text-xs text-amber-600 font-bold text-center">Role kamu tidak memiliki izin hapus user.</p>
                         )}
                     </div>
                 )}
@@ -1312,12 +1312,12 @@ export default function UserManagementPage() {
                 {detailModal && (
                     <div className="space-y-4">
                         <div className="flex items-center gap-4 p-4 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                            <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary)] flex items-center justify-center text-white text-2xl font-black shrink-0">
+                            <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary)] flex items-center justify-center text-white text-2xl font-bold shrink-0">
                                 {(detailModal.name || detailModal.email || '?').charAt(0).toUpperCase()}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-[14px] font-black text-[var(--color-text)]">{disp(detailModal.name)}</p>
-                                <p className="text-[11px] text-[var(--color-text-muted)] mt-0.5">{disp(detailModal.email)}</p>
+                                <p className="text-[14px] font-bold text-[var(--color-text)]">{disp(detailModal.name)}</p>
+                                <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{disp(detailModal.email)}</p>
                                 <div className="mt-1.5"><RoleBadge role={detailModal.role} /></div>
                             </div>
                         </div>
@@ -1330,12 +1330,12 @@ export default function UserManagementPage() {
                                 { label: 'Dibuat', val: detailModal.created_at ? new Date(detailModal.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) : '—' },
                             ].map((item, i) => (
                                 <div key={i} className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                                    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1">{item.label}</p>
+                                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-60 mb-1">{item.label}</p>
                                     <div className="flex items-center gap-1.5">
-                                        <p className="text-[11px] font-bold text-[var(--color-text)] truncate flex-1">{item.val}</p>
+                                        <p className="text-xs font-bold text-[var(--color-text)] truncate flex-1">{item.val}</p>
                                         {item.copyable && (
                                             <button onClick={() => copyText(item.full || item.val)} className="w-5 h-5 flex items-center justify-center rounded-md hover:bg-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all shrink-0">
-                                                <Copy className="text-[8px]" />
+                                                <Copy className="w-4 h-4" />
                                             </button>
                                         )}
                                     </div>
@@ -1345,12 +1345,12 @@ export default function UserManagementPage() {
 
                         {detailModal.linkedTeacher && (
                             <div className="p-3 rounded-xl bg-emerald-500/8 border border-emerald-500/20">
-                                <p className="text-[9px] font-black uppercase tracking-widest text-emerald-600 mb-1.5 flex items-center gap-1.5">
-                                    <Link />Linked Teacher
+                                <p className="text-xs font-bold uppercase tracking-wide text-emerald-600 mb-1.5 flex items-center gap-1.5">
+                                    <Link className="w-4 h-4" />Linked Teacher
                                 </p>
-                                <p className="text-[12px] font-black text-[var(--color-text)]">{disp(detailModal.linkedTeacher.name)}</p>
+                                <p className="text-xs font-bold text-[var(--color-text)]">{disp(detailModal.linkedTeacher.name)}</p>
                                 <div className="flex items-center gap-2 mt-0.5">
-                                    {detailModal.linkedTeacher.nbm && <span className="text-[9px] text-[var(--color-text-muted)]">{detailModal.linkedTeacher.nbm}</span>}
+                                    {detailModal.linkedTeacher.nbm && <span className="text-xs text-[var(--color-text-muted)]">{detailModal.linkedTeacher.nbm}</span>}
                                     <RoleBadge role={detailModal.linkedTeacher.type} />
                                 </div>
                             </div>
@@ -1358,12 +1358,12 @@ export default function UserManagementPage() {
 
                         <div className="flex gap-2 pt-1">
                             <button onClick={() => { setDetailModal(null); setResetModal(detailModal) }}
-                                className="flex-1 h-9 rounded-xl border border-[var(--color-primary)]/30 bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] font-black hover:bg-[var(--color-primary)] hover:text-white transition-all flex items-center justify-center gap-1.5">
-                                <Key className="text-[9px]" />Reset PW
+                                className="flex-1 h-9 rounded-xl border border-[var(--color-primary)]/30 bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold hover:bg-[var(--color-primary)] hover:text-white transition-all flex items-center justify-center gap-1.5">
+                                <Key className="w-4 h-4" />Reset PW
                             </button>
                             <button onClick={() => { setDetailModal(null); setEditModal(detailModal); setEditRole(detailModal.role || ''); setEditName(detailModal.name || '') }}
-                                className="flex-1 h-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text)] text-[10px] font-black hover:bg-[var(--color-border)] transition-all flex items-center justify-center gap-1.5">
-                                <SquarePen className="text-[9px]" />Edit
+                                className="flex-1 h-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text)] text-xs font-bold hover:bg-[var(--color-border)] transition-all flex items-center justify-center gap-1.5">
+                                <SquarePen className="w-4 h-4" />Edit
                             </button>
                         </div>
                     </div>
@@ -1374,21 +1374,21 @@ export default function UserManagementPage() {
             <Modal isOpen={sqlModal} onClose={() => setSqlModal(false)} title="SQL Migration" size="md">
                 <div className="space-y-4">
                     <div className="p-3 rounded-xl bg-[var(--color-primary)]/8 border border-[var(--color-primary)]/15 flex items-start gap-3">
-                        <Database className="text-[var(--color-primary)] shrink-0 mt-0.5" />
+                        <Database className="w-4 h-4 text-[var(--color-primary)] shrink-0 mt-0.5" />
                         <div>
-                            <p className="text-[11px] font-black text-[var(--color-text)]">Jalankan SQL berikut di Supabase Dashboard → SQL Editor</p>
-                            <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">Diperlukan untuk fitur link teacher ke akun login.</p>
+                            <p className="text-xs font-bold text-[var(--color-text)]">Jalankan SQL berikut di Supabase Dashboard → SQL Editor</p>
+                            <p className="text-xs text-[var(--color-text-muted)] mt-0.5">Diperlukan untuk fitur link teacher ke akun login.</p>
                         </div>
                     </div>
 
                     <div>
-                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2 flex items-center justify-between">
+                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-2 flex items-center justify-between">
                             Step 1 — Tambah kolom profile_id di teachers
                             <button onClick={() => copyText(`-- Step 1: Add profile_id to teachers\nALTER TABLE teachers\nADD COLUMN IF NOT EXISTS profile_id UUID\n  REFERENCES auth.users(id)\n  ON DELETE SET NULL;\n\nCREATE INDEX IF NOT EXISTS idx_teachers_profile_id\n  ON teachers(profile_id);`)} className="flex items-center gap-1 text-[var(--color-primary)] hover:underline">
-                                <Copy className="text-[8px]" />Salin
+                                <Copy className="w-4 h-4" />Salin
                             </button>
                         </p>
-                        <pre className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-mono text-[var(--color-text)] overflow-x-auto leading-relaxed whitespace-pre-wrap">{`-- Step 1: Add profile_id to teachers
+                        <pre className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-mono text-[var(--color-text)] overflow-x-auto leading-relaxed whitespace-pre-wrap">{`-- Step 1: Add profile_id to teachers
 ALTER TABLE teachers
 ADD COLUMN IF NOT EXISTS profile_id UUID
   REFERENCES auth.users(id)
@@ -1399,13 +1399,13 @@ CREATE INDEX IF NOT EXISTS idx_teachers_profile_id
                     </div>
 
                     <div>
-                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-2 flex items-center justify-between">
+                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-2 flex items-center justify-between">
                             Step 2 — Edge Function create-user (deploy via Supabase CLI)
                             <button onClick={() => copyText(`// supabase/functions/create-user/index.ts\nimport { createClient } from 'https://esm.sh/@supabase/supabase-js@2'\n\nDeno.serve(async (req) => {\n  const { email, name, role, teacher_id, password } = await req.json()\n  const supabaseAdmin = createClient(\n    Deno.env.get('SUPABASE_URL')!,\n    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!\n  )\n  // Verify caller is admin\n  const authHeader = req.headers.get('Authorization')?.replace('Bearer ', '')\n  const { data: { user } } = await supabaseAdmin.auth.getUser(authHeader)\n  const { data: callerProfile } = await supabaseAdmin\n    .from('profiles').select('role').eq('id', user?.id).single()\n  if (callerProfile?.role !== 'admin') return new Response('Forbidden', { status: 403 })\n  // Create user\n  const { data: newUser, error } = await supabaseAdmin.auth.admin.createUser({\n    email, password, email_confirm: true, user_metadata: { name, role }\n  })\n  if (error) return Response.json({ error: error.message }, { status: 400 })\n  // Upsert profile\n  await supabaseAdmin.from('profiles').upsert({ id: newUser.user.id, email, name, role })\n  // Link teacher if provided\n  if (teacher_id) {\n    await supabaseAdmin.from('teachers')\n      .update({ profile_id: newUser.user.id }).eq('id', teacher_id)\n  }\n  return Response.json({ success: true })\n})`)} className="flex items-center gap-1 text-[var(--color-primary)] hover:underline">
-                                <Copy className="text-[8px]" />Salin
+                                <Copy className="w-4 h-4" />Salin
                             </button>
                         </p>
-                        <pre className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-mono text-[var(--color-text)] overflow-x-auto leading-relaxed whitespace-pre-wrap max-h-48">{`// supabase/functions/create-user/index.ts
+                        <pre className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-mono text-[var(--color-text)] overflow-x-auto leading-relaxed whitespace-pre-wrap max-h-48">{`// supabase/functions/create-user/index.ts
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 Deno.serve(async (req) => {
@@ -1440,11 +1440,11 @@ Deno.serve(async (req) => {
                     </div>
 
                     <div className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
-                        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-1.5">Deploy Edge Function</p>
-                        <code className="text-[10px] font-mono text-[var(--color-text)]">supabase functions deploy create-user</code>
+                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5">Deploy Edge Function</p>
+                        <code className="text-xs font-mono text-[var(--color-text)]">supabase functions deploy create-user</code>
                     </div>
 
-                    <button onClick={() => setSqlModal(false)} className="w-full h-10 rounded-xl border border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Tutup</button>
+                    <button onClick={() => setSqlModal(false)} className="w-full h-10 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Tutup</button>
                 </div>
             </Modal>
         </DashboardLayout>
@@ -1468,7 +1468,7 @@ function UserRow({ user, currentUser, isPrivacyMode, isOnline, onDetail, onEdit,
             <td className="px-5 py-3">
                 <div className="flex items-center gap-3">
                     <div className="relative shrink-0">
-                        <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)]/20 flex items-center justify-center text-[var(--color-primary)] font-black text-sm">
+                        <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)]/20 flex items-center justify-center text-[var(--color-primary)] font-bold text-sm">
                             {(user.name || user.email || '?').charAt(0).toUpperCase()}
                         </div>
                         {isOnline && (
@@ -1477,10 +1477,10 @@ function UserRow({ user, currentUser, isPrivacyMode, isOnline, onDetail, onEdit,
                     </div>
                     <div className="min-w-0">
                         <div className="flex items-center gap-1.5">
-                            <p className="text-[12px] font-black text-[var(--color-text)] truncate">{disp(user.name)}</p>
-                            {isSelf && <span className="text-[8px] font-black px-1.5 py-0.5 rounded-md bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20">Saya</span>}
+                            <p className="text-xs font-bold text-[var(--color-text)] truncate">{disp(user.name)}</p>
+                            {isSelf && <span className="text-xs font-bold px-1.5 py-0.5 rounded-md bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20">Saya</span>}
                         </div>
-                        <p className="text-[10px] text-[var(--color-text-muted)] truncate">{disp(user.email)}</p>
+                        <p className="text-xs text-[var(--color-text-muted)] truncate">{disp(user.email)}</p>
                     </div>
                 </div>
             </td>
@@ -1494,20 +1494,20 @@ function UserRow({ user, currentUser, isPrivacyMode, isOnline, onDetail, onEdit,
             <td className="px-5 py-3">
                 {user.linkedTeacher ? (
                     <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-1.5 text-[10px]">
-                            <Link className="text-emerald-500 text-[9px]" />
-                            <span className="font-black text-[var(--color-text)] truncate max-w-[140px]">{disp(user.linkedTeacher.name)}</span>
+                        <div className="flex items-center gap-1.5 text-xs">
+                            <Link className="w-4 h-4 text-emerald-500" />
+                            <span className="font-bold text-[var(--color-text)] truncate max-w-[140px]">{disp(user.linkedTeacher.name)}</span>
                             {user.linkedTeacher.nbm && <span className="text-[var(--color-text-muted)] opacity-60">{user.linkedTeacher.nbm}</span>}
                         </div>
                         <button
                             onClick={e => { e.stopPropagation(); onUnlink() }}
                             className="opacity-0 group-hover:opacity-100 w-6 h-6 rounded-md flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-all"
                             title="Unlink teacher">
-                            <Unlink className="text-[9px]" />
+                            <Unlink className="w-4 h-4" />
                         </button>
                     </div>
                 ) : (
-                    <span className="text-[10px] text-[var(--color-text-muted)] opacity-40">Belum di-link</span>
+                    <span className="text-xs text-[var(--color-text-muted)] opacity-40">Belum di-link</span>
                 )}
             </td>
 
@@ -1518,24 +1518,24 @@ function UserRow({ user, currentUser, isPrivacyMode, isOnline, onDetail, onEdit,
                     {!user.linkedTeacher && (
                         <button onClick={onLink} title="Link ke teacher"
                             className="h-8 w-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-emerald-600 hover:border-emerald-500/30 hover:bg-emerald-500/10 flex items-center justify-center transition-all">
-                            <Link className="text-[10px]" />
+                            <Link className="w-4 h-4" />
                         </button>
                     )}
                     {/* Reset password */}
                     <button onClick={onReset} title="Reset password"
                         className="h-8 w-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5 flex items-center justify-center transition-all">
-                        <Key className="text-[10px]" />
+                        <Key className="w-4 h-4" />
                     </button>
                     {/* Edit */}
                     <button onClick={onEdit} title="Edit user"
                         className="h-8 w-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 flex items-center justify-center transition-all">
-                        <SquarePen className="text-[10px]" />
+                        <SquarePen className="w-4 h-4" />
                     </button>
                     {/* Delete — only for users with delete permission, not self */}
                     {!isSelf && canDeleteUsers(currentUser?.role) && (
                         <button onClick={onDelete} title="Hapus profil"
                             className="h-8 w-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-red-500 hover:border-red-500/30 hover:bg-red-500/10 flex items-center justify-center transition-all">
-                            <Trash2 className="text-[10px]" />
+                            <Trash2 className="w-4 h-4" />
                         </button>
                     )}
                 </div>

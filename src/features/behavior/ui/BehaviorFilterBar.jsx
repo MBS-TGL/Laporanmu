@@ -88,7 +88,7 @@ export default function BehaviorFilterBar({
                                     setFilterType(s.id)
                                     setPage(1)
                                 }}
-                                className={`flex items-center gap-1 lg:gap-2 px-2 lg:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold uppercase tracking-wide whitespace-nowrap transition-all border ${
+                                className={`flex items-center gap-1 lg:gap-2 px-2 lg:px-3 py-1.5 rounded-xl text-xs sm:text-xs font-semibold uppercase tracking-wide whitespace-nowrap transition-all border ${
                                     filterType === s.id
                                         ? `${s.activeCls} text-white`
                                         : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5 hover:text-[var(--color-primary)]'
@@ -105,7 +105,7 @@ export default function BehaviorFilterBar({
                             setSortBy(sortBy === 'newest' ? 'oldest' : 'newest')
                             setPage(1)
                         }}
-                        className={`flex items-center gap-1 lg:gap-2 px-2 lg:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold uppercase tracking-wide whitespace-nowrap transition-all border shrink-0 ${
+                        className={`flex items-center gap-1 lg:gap-2 px-2 lg:px-3 py-1.5 rounded-xl text-xs sm:text-xs font-semibold uppercase tracking-wide whitespace-nowrap transition-all border shrink-0 ${
                             sortBy === 'oldest'
                                 ? 'bg-amber-500 border-amber-500 text-white'
                                 : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-amber-500/30 hover:bg-amber-500/5 hover:text-amber-600'
@@ -159,7 +159,7 @@ export default function BehaviorFilterBar({
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         <span className="hidden xl:inline">{selectedIds.length > 0 ? tp('selected') : tp('selectAll')}</span>
                         {selectedIds.length > 0 && (
-                            <span className="w-4 h-4 rounded-full bg-white/20 text-white text-[10px] font-bold flex items-center justify-center">
+                            <span className="w-4 h-4 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center">
                                 {tNum(selectedIds.length)}
                             </span>
                         )}
@@ -179,7 +179,7 @@ export default function BehaviorFilterBar({
                         <Sliders className="w-3.5 h-3.5" />
                         <span className="hidden xl:inline">{tp('filterShort')}</span>
                         {activeFilters.length > 0 && (
-                            <span className="w-4 h-4 rounded-full bg-white/30 text-white text-[10px] font-bold flex items-center justify-center">
+                            <span className="w-4 h-4 rounded-full bg-white/30 text-white text-xs font-bold flex items-center justify-center">
                                 {tNum(activeFilters.length)}
                             </span>
                         )}
@@ -230,7 +230,7 @@ export default function BehaviorFilterBar({
                         </div>
                         <button
                             onClick={resetAllFilters}
-                            className="text-[10px] font-bold uppercase tracking-wider text-red-500 hover:bg-red-500/5 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-500/10"
+                            className="text-xs font-bold uppercase tracking-wider text-red-500 hover:bg-red-500/5 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-500/10"
                         >
                             <RotateCcw className="w-3 h-3" />
                             <span className="sm:hidden">{tp('resetShort')}</span>
@@ -292,7 +292,7 @@ export default function BehaviorFilterBar({
                         <div className="flex items-end justify-end">
                             <button
                                 onClick={() => setShowAdvFilter(false)}
-                                className="h-9 px-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] font-bold uppercase tracking-wider text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
+                                className="h-9 px-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-wider text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
                             >
                                 {tp('closePanel')}
                             </button>

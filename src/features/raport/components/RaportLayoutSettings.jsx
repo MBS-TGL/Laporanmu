@@ -52,21 +52,21 @@ function SliderControl({ label, sublabel, icon: Icon, value, min, max, step = 0.
                         </div>
                     )}
                     <div className="min-w-0">
-                        <p className="text-[11px] font-bold text-[var(--color-text)] leading-tight truncate">{label}</p>
-                        {sublabel && <p className="text-[9px] text-[var(--color-text-muted)] leading-tight truncate mt-0.5">{sublabel}</p>}
+                        <p className="text-xs font-bold text-[var(--color-text)] leading-tight truncate">{label}</p>
+                        {sublabel && <p className="text-xs text-[var(--color-text-muted)] leading-tight truncate mt-0.5">{sublabel}</p>}
                     </div>
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
                     <button
                         onClick={() => onChange(Math.max(min, Number((value - step).toFixed(1))))}
-                        className="w-6 h-6 rounded-md bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-indigo-500 hover:border-indigo-500/40 transition-all flex items-center justify-center text-[12px] font-black leading-none"
+                        className="w-6 h-6 rounded-md bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-indigo-500 hover:border-indigo-500/40 transition-all flex items-center justify-center text-xs font-bold leading-none"
                     >−</button>
-                    <span className="text-[11px] font-black tabular-nums w-14 text-center rounded-lg px-1 py-1 border border-[var(--color-border)] bg-[var(--color-surface)]" style={{ color: accentColor }}>
+                    <span className="text-xs font-bold tabular-nums w-14 text-center rounded-lg px-1 py-1 border border-[var(--color-border)] bg-[var(--color-surface)]" style={{ color: accentColor }}>
                         {value}{unit}
                     </span>
                     <button
                         onClick={() => onChange(Math.min(max, Number((value + step).toFixed(1))))}
-                        className="w-6 h-6 rounded-md bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-indigo-500 hover:border-indigo-500/40 transition-all flex items-center justify-center text-[12px] font-black leading-none"
+                        className="w-6 h-6 rounded-md bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-indigo-500 hover:border-indigo-500/40 transition-all flex items-center justify-center text-xs font-bold leading-none"
                     >+</button>
                 </div>
             </div>
@@ -98,8 +98,8 @@ function ToggleControl({ label, sublabel, icon: Icon, checked, onChange, accentC
                     </div>
                 )}
                 <div className="min-w-0">
-                    <p className="text-[11px] font-bold text-[var(--color-text)] leading-tight truncate">{label}</p>
-                    {sublabel && <p className="text-[9px] text-[var(--color-text-muted)] leading-tight truncate mt-0.5">{sublabel}</p>}
+                    <p className="text-xs font-bold text-[var(--color-text)] leading-tight truncate">{label}</p>
+                    {sublabel && <p className="text-xs text-[var(--color-text-muted)] leading-tight truncate mt-0.5">{sublabel}</p>}
                 </div>
             </div>
             <button
@@ -126,7 +126,7 @@ function SectionHeader({ icon: Icon, label, color = '#6366f1' }) {
             <div className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${color}18` }}>
                 <Icon className="w-3 h-3" style={{ color }} />
             </div>
-            <p className="text-[10px] font-black uppercase tracking-widest" style={{ color }}>{label}</p>
+            <p className="text-xs font-bold uppercase tracking-wide" style={{ color }}>{label}</p>
             <div className="flex-1 h-px" style={{ background: `${color}25` }} />
         </div>
     )
@@ -152,10 +152,10 @@ export default function RaportLayoutSettings({ config, onChange }) {
             {/* Reset hint */}
             {isModified && (
                 <div className="flex items-center justify-between px-1">
-                    <span className="text-[9px] font-black px-2 py-1 rounded-full bg-violet-500/10 text-violet-500">DIUBAH</span>
+                    <span className="text-xs font-bold px-2 py-1 rounded-full bg-violet-500/10 text-violet-500">DIUBAH</span>
                     <button
                         onClick={reset}
-                        className="h-7 px-3 rounded-lg text-[9px] font-black text-amber-600 bg-amber-500/10 hover:bg-amber-500/20 transition-all flex items-center gap-1.5"
+                        className="h-7 px-3 rounded-lg text-xs font-bold text-amber-600 bg-amber-500/10 hover:bg-amber-500/20 transition-all flex items-center gap-1.5"
                     >
                         <RotateCcw className="w-3 h-3" /> Reset ke Default
                     </button>
@@ -269,7 +269,7 @@ export default function RaportLayoutSettings({ config, onChange }) {
             {/* Hint */}
             <div className="flex items-start gap-2 px-2.5 py-2 rounded-xl bg-indigo-500/5 border border-indigo-500/15">
                 <Lightbulb className="w-3 h-3 text-indigo-400 shrink-0 mt-0.5" />
-                <p className="text-[8px] text-indigo-400 leading-relaxed">
+                <p className="text-xs text-indigo-400 leading-relaxed">
                     Perubahan langsung terlihat di preview. Pengaturan disimpan otomatis di browser ini.
                 </p>
             </div>

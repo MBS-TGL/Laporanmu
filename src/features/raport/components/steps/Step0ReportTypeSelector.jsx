@@ -14,8 +14,8 @@ export default function Step0ReportTypeSelector({
             badge: 'Bulanan',
             badgeBg: 'bg-indigo-500/10 text-indigo-500 border-indigo-500/20',
             icon: Calendar,
-            color: 'from-indigo-500 to-purple-500',
-            glow: 'shadow-indigo-500/10 hover:shadow-indigo-500/20 hover:border-indigo-500/50'
+            color: 'bg-indigo-500',
+            glow: 'hover:border-indigo-500/50'
         },
         {
             type: RAPORT_TYPES.pondok_lisan,
@@ -23,8 +23,8 @@ export default function Step0ReportTypeSelector({
             badge: 'Semester',
             badgeBg: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
             icon: Mic,
-            color: 'from-emerald-500 to-teal-500',
-            glow: 'shadow-emerald-500/10 hover:shadow-emerald-500/20 hover:border-emerald-500/50'
+            color: 'bg-emerald-500',
+            glow: 'hover:border-emerald-500/50'
         },
         {
             type: RAPORT_TYPES.pondok_mapel,
@@ -32,8 +32,8 @@ export default function Step0ReportTypeSelector({
             badge: 'Semester',
             badgeBg: 'bg-amber-500/10 text-amber-600 border-amber-500/20',
             icon: BookOpen,
-            color: 'from-amber-500 to-orange-500',
-            glow: 'shadow-amber-500/10 hover:shadow-amber-500/20 hover:border-amber-500/50'
+            color: 'bg-amber-500',
+            glow: 'hover:border-amber-500/50'
         },
         {
             type: RAPORT_TYPES.umum,
@@ -41,8 +41,8 @@ export default function Step0ReportTypeSelector({
             badge: 'Semester',
             badgeBg: 'bg-sky-500/10 text-sky-500 border-sky-500/20',
             icon: Award,
-            color: 'from-sky-500 to-blue-500',
-            glow: 'shadow-sky-500/10 hover:shadow-sky-500/20 hover:border-sky-500/50'
+            color: 'bg-sky-500',
+            glow: 'hover:border-sky-500/50'
         }
     ]
 
@@ -70,12 +70,11 @@ export default function Step0ReportTypeSelector({
                         className={`p-6 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] text-left transition-all duration-300 flex flex-col justify-between relative overflow-hidden group shadow-md active:scale-[0.99] ${glow}`}
                     >
                         {/* Background subtle gradient glow on hover */}
-                        <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-5 blur-2xl transition-all duration-500 rounded-full`} />
 
                         <div>
                             {/* Card Header: Icon & Badge */}
                             <div className="flex items-center justify-between mb-4">
-                                <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform duration-300`}>
+                                <div className={`w-12 h-12 rounded-2xl ${color} flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform duration-300`}>
                                     <Icon className="w-5.5 h-5.5" />
                                 </div>
                                 <span className={`text-[10px] font-black px-2.5 py-1 rounded-full border ${badgeBg}`}>

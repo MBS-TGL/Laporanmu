@@ -460,7 +460,7 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                         <button
                             type="button"
                             onClick={() => { setShowSigDropdown(false); setShowPrintDropdown(p => !p) }}
-                            className="h-8.5 px-4 rounded-xl bg-indigo-600 text-white text-[10px] font-black flex items-center gap-1.5 hover:bg-indigo-700 transition-all shadow-md shadow-indigo-500/20 select-none"
+                            className="h-8.5 px-4 rounded-xl bg-indigo-600 text-white text-[10px] font-black flex items-center gap-1.5 hover:bg-indigo-700 transition-all shadow-md select-none"
                         >
                             <Printer className="w-3.5 h-3.5" />
                             <span>Cetak</span>
@@ -635,7 +635,7 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                                         key={tab.id}
                                         onClick={() => setFilterStatus(tab.id)}
                                         className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all ${filterStatus === tab.id
-                                            ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-500/20'
+                                            ? 'bg-indigo-600 text-white shadow-sm'
                                             : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'
                                             }`}
                                     >
@@ -676,7 +676,7 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                                             key={s.id}
                                             onClick={() => setPreviewStudentId(s.id)}
                                             className={`group relative w-full text-left p-2.5 rounded-xl border transition-all duration-200 cursor-pointer flex items-center gap-2.5 ${isSel
-                                                ? 'bg-indigo-500/8 border-indigo-500/40 shadow-sm shadow-indigo-500/5'
+                                                ? 'bg-indigo-500/8 border-indigo-500/40 shadow-sm'
                                                 : 'bg-[var(--color-surface)] border-[var(--color-border)]/60 hover:border-indigo-500/30 hover:bg-[var(--color-surface-alt)]/70'
                                                 }`}
                                         >
@@ -687,7 +687,7 @@ export default function RaportPreviewPage({ isAcademic = false }) {
 
                                             {/* Avatar Inisial */}
                                             <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-[10px] font-black shrink-0 transition-all ${isSel
-                                                ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-500/30'
+                                                ? 'bg-indigo-600 text-white shadow-sm'
                                                 : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] group-hover:border-indigo-500/30 group-hover:text-indigo-600'
                                                 }`}>
                                                 {initials}
@@ -826,7 +826,7 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                                 type="button"
                                 onClick={() => setZoomMode('fit')}
                                 className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase transition-all flex items-center gap-1 ${zoomMode === 'fit'
-                                    ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-500/20'
+                                    ? 'bg-indigo-600 text-white shadow-sm'
                                     : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'
                                     }`}
                                 title="Otomatis sesuaikan skala agar pas di tengah layar"
@@ -879,7 +879,7 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                         {currentStudent ? (
                             <div className="w-full flex justify-center py-2">
                                 <div
-                                    className="shadow-2xl rounded-sm transition-all duration-200 border border-black/10 dark:border-white/10 mx-auto"
+                                    className="shadow-sm rounded-sm transition-all duration-200 border border-black/10 dark:border-white/10 mx-auto"
                                     style={{
                                         width: pageSize === 'f4' ? `calc(215mm * ${currentZoom})` : `calc(210mm * ${currentZoom})`,
                                         height: pageSize === 'f4' ? `calc(330mm * ${currentZoom})` : `calc(297mm * ${currentZoom})`,
@@ -947,7 +947,7 @@ export default function RaportPreviewPage({ isAcademic = false }) {
                 iconColor="text-amber-500"
                 confirmText="Tetap Cetak"
                 confirmIcon={Printer}
-                confirmClassName="h-10 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-indigo-500/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                confirmClassName="h-10 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
                 cancelText="Batal"
             />
 

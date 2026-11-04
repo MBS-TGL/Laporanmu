@@ -1,17 +1,9 @@
 import { useState, useEffect, useCallback, useMemo, memo, useRef } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faLayerGroup, faCompass, faUserShield, faGear,
-    faToggleOn, faTriangleExclamation, faSpinner,
-    faRotateRight, faBolt, faFileLines, faSave,
-    faRotateLeft, faUpload, faSchool, faUser,
-    faPalette, faEye, faCheck,
-    faChevronRight, faSearch, faXmark, faSkull,
-    faTrash, faCircleExclamation, faCode, faSync, faUsers,
-    faHistory, faCheckCircle, faCircleInfo, faChartPie,
-    faTags, faCalendarDays, faQrcode, faPenFancy
-} from '@fortawesome/free-solid-svg-icons'
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
+import { CalendarDays, ChartPie, Check, CircleCheck, Code, Compass, Eye, FileText, History, Layers, LoaderCircle, Palette, PenLine, QrCode, RefreshCw, RotateCcw, RotateCw, Save, School, Search, Settings, ShieldCheck, Skull, Tags, ToggleRight, Trash2, TriangleAlert, Upload, User, Users, X, Zap } from 'lucide-react'
+import { WhatsAppIcon } from '@shared/components'
+
+
+
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import Breadcrumb from '@shared/components/Breadcrumb'
 import Pagination from '@shared/components/Pagination'
@@ -26,11 +18,11 @@ import mbsLogo from '@assets/images/logos/logo-mbs.png'
 
 // ─── Tabs ─────────────────────────────────────────────────────────────────────
 const TABS = [
-    { id: 'flags', label: 'Feature Flags', icon: faToggleOn },
-    { id: 'raport', label: 'Raport', icon: faFileLines },
-    { id: 'signatures', label: 'Tanda Tangan', icon: faUpload },
-    { id: 'activity', label: 'Aktivitas', icon: faHistory },
-    { id: 'danger', label: 'Bahaya', icon: faSkull },
+    { id: 'flags', label: 'Feature Flags', icon: ToggleRight },
+    { id: 'raport', label: 'Raport', icon: FileText },
+    { id: 'signatures', label: 'Tanda Tangan', icon: Upload },
+    { id: 'activity', label: 'Aktivitas', icon: History },
+    { id: 'danger', label: 'Bahaya', icon: Skull },
 ]
 
 // ─── Category config ──────────────────────────────────────────────────────────
@@ -38,7 +30,7 @@ const CATEGORIES = [
     {
         id: 'module', label: 'Modul Utama',
         desc: 'Aktifkan atau nonaktifkan fitur utama aplikasi',
-        icon: faLayerGroup,
+        icon: Layers,
         color: 'text-indigo-500', bg: 'bg-indigo-500/10',
         border: 'border-indigo-500/25',
         gradient: 'from-indigo-500/8 to-transparent',
@@ -47,7 +39,7 @@ const CATEGORIES = [
     {
         id: 'students', label: 'Data Siswa',
         desc: 'Kontrol fitur manajemen, import, dan export siswa',
-        icon: faUsers,
+        icon: Users,
         color: 'text-sky-500', bg: 'bg-sky-500/10',
         border: 'border-sky-500/25',
         gradient: 'from-sky-500/8 to-transparent',
@@ -56,7 +48,7 @@ const CATEGORIES = [
     {
         id: 'nav', label: 'Navigasi',
         desc: 'Kontrol item yang tampil di menu navigasi',
-        icon: faCompass,
+        icon: Compass,
         color: 'text-emerald-500', bg: 'bg-emerald-500/10',
         border: 'border-emerald-500/25',
         gradient: 'from-emerald-500/8 to-transparent',
@@ -65,7 +57,7 @@ const CATEGORIES = [
     {
         id: 'access', label: 'Hak Akses',
         desc: 'Izin per-role untuk mengakses fitur tertentu',
-        icon: faUserShield,
+        icon: ShieldCheck,
         color: 'text-orange-500', bg: 'bg-orange-500/10',
         border: 'border-orange-500/25',
         gradient: 'from-orange-500/8 to-transparent',
@@ -74,7 +66,7 @@ const CATEGORIES = [
     {
         id: 'system', label: 'Sistem',
         desc: 'Pengaturan sistem & mode khusus developer',
-        icon: faGear,
+        icon: Settings,
         color: 'text-rose-500', bg: 'bg-rose-500/10',
         border: 'border-rose-500/25',
         gradient: 'from-rose-500/8 to-transparent',
@@ -140,7 +132,7 @@ const RAPORT_SECTIONS = [
         id: 'identitas',
         label: 'Identitas Sekolah',
         desc: 'Nama, alamat, dan logo yang tampil di header raport',
-        icon: faSchool,
+        icon: School,
         color: 'text-indigo-500', bg: 'bg-indigo-500/10',
         gradient: 'from-indigo-500/8 to-transparent',
     },
@@ -148,7 +140,7 @@ const RAPORT_SECTIONS = [
         id: 'kepala',
         label: 'Kepala Sekolah / Pengasuh',
         desc: 'Nama, jabatan, dan prefix untuk tanda tangan raport',
-        icon: faUser,
+        icon: User,
         color: 'text-emerald-500', bg: 'bg-emerald-500/10',
         gradient: 'from-emerald-500/8 to-transparent',
     },
@@ -156,7 +148,7 @@ const RAPORT_SECTIONS = [
         id: 'labels',
         label: 'Label Raport',
         desc: 'Label section, catatan, dan istilah yang tampil di raport',
-        icon: faTags,
+        icon: Tags,
         color: 'text-amber-500', bg: 'bg-amber-500/10',
         gradient: 'from-amber-500/8 to-transparent',
     },
@@ -164,7 +156,7 @@ const RAPORT_SECTIONS = [
         id: 'ujian',
         label: 'Label Ujian & Semester',
         desc: 'Nama ujian, semester, dan periode akademik',
-        icon: faCalendarDays,
+        icon: CalendarDays,
         color: 'text-sky-500', bg: 'bg-sky-500/10',
         gradient: 'from-sky-500/8 to-transparent',
     },
@@ -172,7 +164,7 @@ const RAPORT_SECTIONS = [
         id: 'grading',
         label: 'Skala Penilaian',
         desc: 'Label predikat nilai (Sangat Baik, Baik, dll)',
-        icon: faPenFancy,
+        icon: PenLine,
         color: 'text-rose-500', bg: 'bg-rose-500/10',
         gradient: 'from-rose-500/8 to-transparent',
     },
@@ -180,7 +172,7 @@ const RAPORT_SECTIONS = [
         id: 'verifikasi',
         label: 'Verifikasi & QR Code',
         desc: 'Label portal, instruksi QR, dan domain verifikasi',
-        icon: faQrcode,
+        icon: QrCode,
         color: 'text-cyan-500', bg: 'bg-cyan-500/10',
         gradient: 'from-cyan-500/8 to-transparent',
     },
@@ -188,7 +180,7 @@ const RAPORT_SECTIONS = [
         id: 'warna',
         label: 'Warna & Tampilan',
         desc: 'Palet warna header raport dan footer WhatsApp',
-        icon: faPalette,
+        icon: Palette,
         color: 'text-purple-500', bg: 'bg-purple-500/10',
         gradient: 'from-purple-500/8 to-transparent',
     },
@@ -228,7 +220,7 @@ function SectionHeader({ section }) {
     return (
         <div className={`flex items-center gap-3 px-5 py-4 border-b border-[var(--color-border)] bg-gradient-to-r ${section.gradient}`}>
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${section.bg}`}>
-                <FontAwesomeIcon icon={section.icon} className={`text-sm ${section.color}`} />
+                <section.icon className={`text-sm ${section.color}`} />
             </div>
             <div className="flex-1 min-w-0">
                 <p className="font-black text-[13px] text-[var(--color-text)] leading-tight">{section.label}</p>
@@ -282,7 +274,7 @@ function RaportPreview({ form }) {
                     alt="logo kiri"
                     className="w-[52px] h-[52px] object-contain shrink-0"
                     onError={e => { e.target.style.display = 'none' }}
-                />
+                    loading="lazy" decoding="async" />
                 {/* Teks tengah */}
                 <div className="flex-1 text-center leading-tight min-w-0 pt-0.5">
                     {form.school_subtitle_ar && <div className="text-[7.5px] text-gray-500 mb-1" dir="rtl" style={{ fontFamily: 'Arial, sans-serif' }}>{form.school_subtitle_ar}</div>}
@@ -299,7 +291,7 @@ function RaportPreview({ form }) {
                     alt="logo kanan"
                     className="w-[52px] h-[52px] object-contain shrink-0"
                     onError={e => { e.target.style.display = 'none' }}
-                />
+                    loading="lazy" decoding="async" />
             </div>
 
             {/* Gradient + double border */}
@@ -429,7 +421,7 @@ const FlagRow = memo(({ flag, cat, onToggle, isSaving, query }) => {
 
             {/* Toggle area */}
             <div className="flex items-center gap-2 flex-shrink-0">
-                {isSaving && <FontAwesomeIcon icon={faSpinner} className="animate-spin text-[10px] text-[var(--color-text-muted)]" />}
+                {isSaving && <LoaderCircle className="animate-spin text-[10px] text-[var(--color-text-muted)]" />}
                 <Toggle
                     checked={flag.enabled}
                     onChange={() => onToggle(flag)}
@@ -456,7 +448,7 @@ function CategoryNavCard({ cat, flags, isActive, onClick }) {
             className={`
                 group relative w-full text-left p-3 rounded-2xl border transition-all duration-300
                 ${isActive
-                    ? `bg-white dark:bg-slate-800 border-[var(--color-border)] shadow-xl shadow-slate-200/50 dark:shadow-none translate-x-1`
+                    ? `bg-white dark:bg-slate-800 border-[var(--color-border)] shadow-xl dark:shadow-none translate-x-1`
                     : 'bg-transparent border-transparent hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:translate-x-1'
                 }
             `}
@@ -466,7 +458,7 @@ function CategoryNavCard({ cat, flags, isActive, onClick }) {
                     w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300
                     ${isActive ? `${cat.bg} scale-110 shadow-lg` : 'bg-slate-100 dark:bg-slate-800'}
                 `}>
-                    <FontAwesomeIcon icon={cat.icon} className={`text-sm ${isActive ? cat.color : 'text-slate-400'}`} />
+                    <cat.icon className={`text-sm ${isActive ? cat.color : 'text-slate-400'}`} />
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
@@ -496,7 +488,7 @@ function CategoryNavCard({ cat, flags, isActive, onClick }) {
 function GlobalStatusCard({ total, enabled }) {
     const progress = total > 0 ? (enabled / total) * 100 : 0
     return (
-        <div className="glass rounded-2xl border border-[var(--color-border)] p-4 relative overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/5">
+        <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-4 relative overflow-hidden group transition-all duration-300 hover:shadow-lg">
             <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
                     <div>
@@ -509,7 +501,7 @@ function GlobalStatusCard({ total, enabled }) {
                         </div>
                     </div>
                     <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-                        <FontAwesomeIcon icon={faCheck} className="text-emerald-500 text-sm" />
+                        <Check className="text-emerald-500 text-sm" />
                     </div>
                 </div>
 
@@ -531,7 +523,7 @@ function GlobalStatusCard({ total, enabled }) {
                     </div>
                     <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden p-[1.5px]">
                         <div
-                            className="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.4)] transition-all duration-1000"
+                            className="h-full bg-emerald-400 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.4)] transition-all duration-1000"
                             style={{ width: `${progress}%` }}
                         />
                     </div>
@@ -596,7 +588,7 @@ function ActivityFeed({ refreshKey, flags }) {
 
     return (
         <div className="space-y-3">
-            <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden shadow-sm">
+            <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden shadow-sm">
                 {/* Unified Toolbar */}
                 <div className="p-2 border-b border-[var(--color-border)] bg-slate-50/30 dark:bg-slate-800/20 flex flex-col sm:flex-row items-center gap-2">
                     <div className="flex items-center gap-1 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-1 shadow-sm">
@@ -615,7 +607,7 @@ function ActivityFeed({ refreshKey, flags }) {
                     </div>
 
                     <div className="relative flex-1 w-full sm:w-auto">
-                        <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-400" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-400" />
                         <input
                             type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
                             placeholder="Cari aktivitas atau fitur..."
@@ -631,7 +623,7 @@ function ActivityFeed({ refreshKey, flags }) {
                             onClick={fetchLogs}
                             className="w-9 h-9 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-slate-400 hover:text-[var(--color-primary)] transition-all flex items-center justify-center shadow-sm"
                         >
-                            <FontAwesomeIcon icon={faRotateRight} className={loading ? 'fa-spin' : ''} />
+                            <RotateCw className={loading ? 'animate-spin' : ''} />
                         </button>
                     </div>
                 </div>
@@ -667,7 +659,7 @@ function ActivityFeed({ refreshKey, flags }) {
                                             </td>
                                             <td className="px-4 py-3 text-center">
                                                 <div className={`w-6 h-6 mx-auto rounded-lg flex items-center justify-center ${log.new_data?.enabled ? 'bg-emerald-500/10 text-emerald-500' : 'bg-slate-500/10 text-slate-500'}`}>
-                                                    <FontAwesomeIcon icon={log.new_data?.enabled ? faCheck : faXmark} className="text-[10px]" />
+                                                    { log.new_data?.enabled ? <Check className="text-[10px]" /> : <X className="text-[10px]" /> }
                                                 </div>
                                             </td>
                                             <td className="px-4 py-3">
@@ -701,9 +693,9 @@ function ActivityFeed({ refreshKey, flags }) {
                             
                             {/* Top Stats Row - 4 Columns */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                <div className="glass p-4 rounded-2xl border border-[var(--color-border)] shadow-sm flex items-center gap-4">
+                                <div className="bg-surface p-4 rounded-2xl border border-[var(--color-border)] shadow-sm flex items-center gap-4">
                                     <div className="w-11 h-11 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center text-lg shrink-0">
-                                        <FontAwesomeIcon icon={faSync} />
+                                        <RefreshCw />
                                     </div>
                                     <div className="min-w-0">
                                         <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Total Aktivitas</p>
@@ -711,9 +703,9 @@ function ActivityFeed({ refreshKey, flags }) {
                                     </div>
                                 </div>
 
-                                <div className="glass p-4 rounded-2xl border border-[var(--color-border)] shadow-sm flex items-center gap-4">
+                                    <div className="bg-surface p-4 rounded-2xl border border-[var(--color-border)] shadow-sm flex items-center gap-4">
                                     <div className="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-lg shrink-0">
-                                        <FontAwesomeIcon icon={faBolt} />
+                                        <Zap />
                                     </div>
                                     <div className="min-w-0">
                                         <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Fitur Teraktif</p>
@@ -723,9 +715,9 @@ function ActivityFeed({ refreshKey, flags }) {
                                     </div>
                                 </div>
 
-                                <div className="glass p-4 rounded-2xl border border-[var(--color-border)] shadow-sm flex items-center gap-4">
+                                    <div className="bg-surface p-4 rounded-2xl border border-[var(--color-border)] shadow-sm flex items-center gap-4">
                                     <div className="w-11 h-11 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-lg shrink-0">
-                                        <FontAwesomeIcon icon={faHistory} />
+                                        <History />
                                     </div>
                                     <div className="min-w-0">
                                         <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Update Terakhir</p>
@@ -735,9 +727,9 @@ function ActivityFeed({ refreshKey, flags }) {
                                     </div>
                                 </div>
 
-                                <div className="glass p-4 rounded-2xl border border-[var(--color-border)] shadow-sm flex items-center gap-4">
+                                    <div className="bg-surface p-4 rounded-2xl border border-[var(--color-border)] shadow-sm flex items-center gap-4">
                                     <div className="w-11 h-11 rounded-xl bg-sky-500/10 text-sky-500 flex items-center justify-center text-lg shrink-0">
-                                        <FontAwesomeIcon icon={faCheckCircle} />
+                                        <CircleCheck />
                                     </div>
                                     <div className="min-w-0">
                                         <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Status Sync</p>
@@ -750,7 +742,7 @@ function ActivityFeed({ refreshKey, flags }) {
                             <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                                 
                                 {/* Left: Progress Bars for Top Features */}
-                                <div className="xl:col-span-2 glass rounded-2xl border border-[var(--color-border)] overflow-hidden flex flex-col">
+                                <div className="xl:col-span-2 bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden flex flex-col">
                                     <div className="px-5 py-4 border-b border-[var(--color-border)] bg-slate-50/50 dark:bg-slate-800/50 flex items-center justify-between">
                                         <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Top 5 Intensitas Perubahan</h4>
                                         <span className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Berdasarkan Log</span>
@@ -767,7 +759,7 @@ function ActivityFeed({ refreshKey, flags }) {
                                                     </div>
                                                     <div className="h-3 w-full bg-slate-100/50 dark:bg-slate-800/50 rounded-full overflow-hidden p-0.5 border border-[var(--color-border)]">
                                                         <div 
-                                                            className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500 transition-all duration-1000 shadow-[0_0_10px_rgba(99,102,241,0.2)]"
+                                                            className="h-full rounded-full bg-indigo-500 transition-all duration-1000 shadow-[0_0_10px_rgba(99,102,241,0.2)]"
                                                             style={{ width: `${percent}%` }}
                                                         />
                                                     </div>
@@ -776,7 +768,7 @@ function ActivityFeed({ refreshKey, flags }) {
                                         })}
                                         {stats.length === 0 && (
                                             <div className="h-full flex flex-col items-center justify-center opacity-30 py-12">
-                                                <FontAwesomeIcon icon={faChartPie} className="text-4xl mb-3" />
+                                                <ChartPie className="text-4xl mb-3" />
                                                 <p className="text-[10px] font-black uppercase tracking-widest">Belum ada data tersedia</p>
                                             </div>
                                         )}
@@ -784,11 +776,10 @@ function ActivityFeed({ refreshKey, flags }) {
                                 </div>
                                 {/* Right: Distribution & Health */}
                                 <div className="space-y-6">
-                                    <div className="glass rounded-2xl border border-[var(--color-border)] p-5 flex flex-col items-center text-center relative overflow-hidden h-full">
-                                        <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-500/5 rounded-full blur-3xl -mr-20 -mt-20" />
+                                    <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-5 flex flex-col items-center text-center relative overflow-hidden h-full">
                                         
                                         <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-800 shadow-lg border border-[var(--color-border)] flex items-center justify-center mb-5 relative z-10">
-                                            <FontAwesomeIcon icon={faChartPie} className="text-2xl text-indigo-500" />
+                                            <ChartPie className="text-2xl text-indigo-500" />
                                         </div>
                                         <h4 className="text-xs font-black text-slate-700 dark:text-slate-200 relative z-10 uppercase tracking-widest">Analitik Sistem</h4>
                                         <p className="text-[11px] text-slate-400 mt-3 leading-relaxed relative z-10 px-4">
@@ -823,9 +814,9 @@ function ActivityFeed({ refreshKey, flags }) {
                             </div>
 
                             {/* Bottom Row - Recent Activity Timeline (Fills horizontal space) */}
-                            <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                            <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                                 <div className="px-5 py-3 border-b border-[var(--color-border)] bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-2">
-                                    <FontAwesomeIcon icon={faHistory} className="text-[10px] text-slate-400" />
+                                    <History className="text-[10px] text-slate-400" />
                                     <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Timeline Aktivitas Terakhir</h4>
                                 </div>
                                 <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -833,7 +824,7 @@ function ActivityFeed({ refreshKey, flags }) {
                                         <div key={log.id} className="flex items-start gap-3 p-3 rounded-xl bg-slate-50/50 dark:bg-slate-800/30 border border-[var(--color-border)] relative overflow-hidden group">
                                             <div className={`absolute left-0 top-0 bottom-0 w-1 ${log.new_data?.enabled ? 'bg-emerald-500' : 'bg-slate-400'}`} />
                                             <div className={`w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-xs ${log.new_data?.enabled ? 'bg-emerald-500/10 text-emerald-500' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}`}>
-                                                <FontAwesomeIcon icon={log.new_data?.enabled ? faCheck : faXmark} />
+                                                { log.new_data?.enabled ? <Check /> : <X /> }
                                             </div>
                                             <div className="min-w-0">
                                                 <p className="text-[11px] font-black text-slate-700 dark:text-slate-200 truncate group-hover:text-indigo-500 transition-colors">
@@ -1160,7 +1151,7 @@ export default function AdminSettingsPage() {
                             </h1>
                             {maintenanceOn && (
                                 <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-rose-500/15 text-rose-500 border border-rose-500/30 animate-pulse">
-                                    <FontAwesomeIcon icon={faTriangleExclamation} className="text-[9px]" /> Maintenance
+                                    <TriangleAlert className="text-[9px]" /> Maintenance
                                 </span>
                             )}
                             <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 uppercase tracking-widest">
@@ -1178,21 +1169,21 @@ export default function AdminSettingsPage() {
                             className="h-9 px-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition-all flex items-center gap-2"
                             title="Sinkronisasi flag yang ada di kode ke database"
                         >
-                            {syncingFlags ? <FontAwesomeIcon icon={faSpinner} className="fa-spin" /> : <FontAwesomeIcon icon={faSync} />}
+                            {syncingFlags ? <LoaderCircle className="animate-spin" /> : <RefreshCw />}
                             <span className="hidden sm:inline">Sync Flags</span>
                         </button>
                         <button
                             onClick={() => fetchFlags(true)} disabled={refreshing} type="button"
                             className="flex-shrink-0 w-9 h-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition flex items-center justify-center"
                         >
-                            <FontAwesomeIcon icon={faRotateRight} className={`text-sm ${refreshing ? 'animate-spin' : ''}`} />
+                            <RotateCw className={`text-sm ${refreshing ? 'animate-spin' : ''}`} />
                         </button>
                     </div>
                 </div>
 
                 {/* ── Tab bar ─────────────────────────────────────────── */}
                 <div className="mb-6">
-                    <div className="inline-grid grid-cols-5 sm:flex w-full sm:w-fit bg-[var(--color-surface-alt)]/50 backdrop-blur-sm rounded-2xl border border-[var(--color-border)] p-1.5 gap-1 shadow-sm">
+                    <div className="inline-grid grid-cols-5 sm:flex w-full sm:w-fit bg-[var(--color-surface-alt)] rounded-2xl border border-[var(--color-border)] p-1.5 gap-1 shadow-sm">
                         {TABS.map(t => (
                             <button
                                 key={t.id} onClick={() => setActiveTab(t.id)} type="button"
@@ -1204,7 +1195,7 @@ export default function AdminSettingsPage() {
                                            ${t.id === 'danger' ? 'hover:text-rose-500 hover:bg-rose-500/5' : 'hover:bg-[var(--color-surface)]/40'}`
                                     }`}
                             >
-                                <FontAwesomeIcon icon={t.icon} className="text-[11px] sm:text-[12px] opacity-80" />
+                                <t.icon className="text-[11px] sm:text-[12px] opacity-80" />
                                 <span className="truncate">
                                     {t.id === 'flags' ? (
                                         <>
@@ -1230,7 +1221,7 @@ export default function AdminSettingsPage() {
                         {maintenanceOn && (
                             <div className="flex items-center gap-3 p-4 rounded-2xl border border-rose-500/30 bg-rose-500/10 mb-6">
                                 <div className="w-9 h-9 rounded-xl bg-rose-500/20 flex items-center justify-center flex-shrink-0">
-                                    <FontAwesomeIcon icon={faTriangleExclamation} className="text-rose-500" />
+                                    <TriangleAlert className="text-rose-500" />
                                 </div>
                                 <div>
                                     <p className="font-black text-sm text-rose-500">Maintenance Mode Aktif</p>
@@ -1279,7 +1270,7 @@ export default function AdminSettingsPage() {
                                     </div>
 
                                     <div className="flex items-start gap-2 px-1 pt-2">
-                                        <FontAwesomeIcon icon={faBolt} className="text-[9px] text-amber-400 flex-shrink-0 mt-0.5" />
+                                        <Zap className="text-[9px] text-amber-400 flex-shrink-0 mt-0.5" />
                                         <p className="text-[10px] text-[var(--color-text-muted)] leading-snug">
                                             Perubahan tersimpan real-time ke Supabase.
                                         </p>
@@ -1288,12 +1279,12 @@ export default function AdminSettingsPage() {
 
                                 {/* ── Right panel ── */}
                                 <div className="space-y-3 min-w-0">
-                                    <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                                    <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                                         {/* Panel header */}
                                         {activeCat && (
                                             <div className={`flex items-center gap-3 px-5 py-4 border-b border-[var(--color-border)] bg-gradient-to-r ${activeCat.gradient}`}>
                                                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${activeCat.bg}`}>
-                                                    <FontAwesomeIcon icon={activeCat.icon} className={`${activeCat.color}`} />
+                                                    <activeCat.icon className={`${activeCat.color}`} />
                                                 </div>
                                                 <div className="flex-1">
                                                     <h2 className="text-[14px] font-black text-[var(--color-text)] leading-none">{activeCat.label}</h2>
@@ -1310,7 +1301,7 @@ export default function AdminSettingsPage() {
                                         <div className="p-3 space-y-3">
                                             {/* Search inside flags */}
                                             <div className="relative mb-5">
-                                                <FontAwesomeIcon icon={faSearch} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[11px] text-[var(--color-text-muted)] pointer-events-none opacity-60" />
+                                                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[11px] text-[var(--color-text-muted)] pointer-events-none opacity-60" />
                                                 <input
                                                     ref={searchInputRef}
                                                     type="text" value={flagSearch} onChange={e => setFlagSearch(e.target.value)}
@@ -1330,7 +1321,7 @@ export default function AdminSettingsPage() {
                                                 )}
                                                 {flagSearch && (
                                                     <button onClick={() => setFlagSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-lg hover:bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-rose-500 transition-all">
-                                                        <FontAwesomeIcon icon={faXmark} className="text-[10px]" />
+                                                        <X className="text-[10px]" />
                                                     </button>
                                                 )}
                                             </div>
@@ -1389,7 +1380,7 @@ export default function AdminSettingsPage() {
                                                     (activeCategory === 'system' && !flagSearch.trim()) ? null : (
                                                         <div className="col-span-full py-12 flex flex-col items-center justify-center opacity-30 gap-3 bg-[var(--color-surface-alt)]/30 rounded-3xl border border-dashed border-[var(--color-border)]">
                                                             <div className="w-16 h-16 rounded-2xl bg-[var(--color-surface-alt)] flex items-center justify-center mb-1">
-                                                                <FontAwesomeIcon icon={faToggleOn} className="text-xl text-[var(--color-text-muted)] opacity-20" />
+                                                                <ToggleRight className="text-xl text-[var(--color-text-muted)] opacity-20" />
                                                             </div>
                                                             <div className="text-center">
                                                                 <p className="text-[13px] font-black text-[var(--color-text)]">
@@ -1432,10 +1423,10 @@ export default function AdminSettingsPage() {
                 {activeTab === 'signatures' && (
                     <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-6 items-start animate-in fade-in duration-200">
                         {/* Left: Add/Upload Signature Form */}
-                        <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden shadow-sm">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden shadow-sm">
                             <div className="px-5 py-4 border-b border-[var(--color-border)] bg-gradient-to-r from-indigo-500/8 to-transparent flex items-center gap-3">
                                 <div className="w-9 h-9 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-500 shrink-0">
-                                    <FontAwesomeIcon icon={faUpload} />
+                                    <Upload />
                                 </div>
                                 <div>
                                     <p className="font-black text-[13px] text-[var(--color-text)] leading-tight">Unggah Tanda Tangan</p>
@@ -1490,16 +1481,16 @@ export default function AdminSettingsPage() {
                                 <button
                                     type="submit"
                                     disabled={uploadingSig || loadingSignatures}
-                                    className="w-full h-11 rounded-xl bg-[var(--color-primary)] hover:opacity-90 text-white text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg shadow-[var(--color-primary)]/15 disabled:opacity-60 transition-all"
+                                    className="w-full h-11 rounded-xl bg-[var(--color-primary)] hover:opacity-90 text-white text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg disabled:opacity-60 transition-all"
                                 >
                                     {uploadingSig ? (
                                         <>
-                                            <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+                                            <LoaderCircle className="animate-spin" />
                                             <span>Mengunggah...</span>
                                         </>
                                     ) : (
                                         <>
-                                            <FontAwesomeIcon icon={faUpload} />
+                                            <Upload />
                                             <span>Simpan Tanda Tangan</span>
                                         </>
                                     )}
@@ -1509,7 +1500,7 @@ export default function AdminSettingsPage() {
 
                         {/* Right: Active Signatures Grid */}
                         <div className="space-y-4 min-w-0">
-                            <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden shadow-sm">
+                            <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden shadow-sm">
                                 <div className="px-5 py-4 border-b border-[var(--color-border)] bg-slate-50/30 dark:bg-slate-800/20 flex items-center justify-between">
                                     <div>
                                         <p className="font-black text-[13px] text-[var(--color-text)]">Daftar Tanda Tangan Digital</p>
@@ -1522,13 +1513,13 @@ export default function AdminSettingsPage() {
 
                                 {loadingSignatures && signaturesList.length === 0 ? (
                                     <div className="p-12 text-center">
-                                        <FontAwesomeIcon icon={faSpinner} className="animate-spin text-2xl text-[var(--color-text-muted)]" />
+                                        <LoaderCircle className="animate-spin text-2xl text-[var(--color-text-muted)]" />
                                         <p className="text-[11px] text-[var(--color-text-muted)] mt-2 font-bold uppercase tracking-widest">Memuat data...</p>
                                     </div>
                                 ) : signaturesList.length === 0 ? (
                                     <div className="p-12 flex flex-col items-center justify-center text-center opacity-40">
                                         <div className="w-16 h-16 rounded-2xl bg-[var(--color-surface-alt)] flex items-center justify-center mb-3">
-                                            <FontAwesomeIcon icon={faUpload} className="text-xl text-[var(--color-text-muted)]" />
+                                            <Upload className="text-xl text-[var(--color-text-muted)]" />
                                         </div>
                                         <p className="text-[13px] font-black text-[var(--color-text)]">Belum ada tanda tangan digital</p>
                                         <p className="text-[11px] text-[var(--color-text-muted)] mt-1 max-w-[280px]">
@@ -1572,7 +1563,7 @@ export default function AdminSettingsPage() {
                                                         alt={`TTD ${sig.teachers?.name}`}
                                                         className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform"
                                                         crossOrigin="anonymous"
-                                                    />
+                                                        loading="lazy" decoding="async" />
                                                 </div>
 
                                                 {/* Footer actions */}
@@ -1586,7 +1577,7 @@ export default function AdminSettingsPage() {
                                                         className="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center"
                                                         title="Hapus Tanda Tangan"
                                                     >
-                                                        <FontAwesomeIcon icon={faTrash} className="text-xs" />
+                                                        <Trash2 className="text-xs" />
                                                     </button>
                                                 </div>
                                             </div>
@@ -1605,7 +1596,7 @@ export default function AdminSettingsPage() {
                     <div className="space-y-5">
 
                         {/* ── Section: Identitas Sekolah ── */}
-                        <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                             <SectionHeader section={RAPORT_SECTIONS[0]} />
                             <div className="p-5 grid sm:grid-cols-2 gap-4">
                                 <div className="sm:col-span-2">
@@ -1662,7 +1653,7 @@ export default function AdminSettingsPage() {
                                                 alt="logo utama"
                                                 className="w-16 h-16 object-contain p-1"
                                                 onError={e => { e.target.src = mbsLogo }}
-                                            />
+                                                loading="lazy" decoding="async" />
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <input
@@ -1686,7 +1677,7 @@ export default function AdminSettingsPage() {
                                                 alt="logo kedua"
                                                 className="w-16 h-16 object-contain p-1"
                                                 onError={e => { e.target.src = mbsLogo }}
-                                            />
+                                                loading="lazy" decoding="async" />
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <input
@@ -1705,7 +1696,7 @@ export default function AdminSettingsPage() {
                         </div>
 
                         {/* ── Section: Kepala Sekolah ── */}
-                        <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                             <SectionHeader section={RAPORT_SECTIONS[1]} />
                             <div className="p-5 grid sm:grid-cols-2 gap-4">
                                 <div>
@@ -1827,7 +1818,7 @@ export default function AdminSettingsPage() {
                         </div>
 
                         {/* ── Section: Label Raport ── */}
-                        <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                             <SectionHeader section={RAPORT_SECTIONS[2]} />
                             <div className="p-5 space-y-4">
                                 <p className="text-[11px] text-[var(--color-text-muted)] -mt-2 mb-3">Label section yang tampil di dalam raport. Gunakan format ID / Arab.</p>
@@ -1902,7 +1893,7 @@ export default function AdminSettingsPage() {
                         </div>
 
                         {/* ── Section: Label Ujian & Semester ── */}
-                        <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                             <SectionHeader section={RAPORT_SECTIONS[3]} />
                             <div className="p-5 space-y-4">
                                 <div className="grid sm:grid-cols-2 gap-4">
@@ -2021,7 +2012,7 @@ export default function AdminSettingsPage() {
                         </div>
 
                         {/* ── Section: Skala Penilaian ── */}
-                        <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                             <SectionHeader section={RAPORT_SECTIONS[4]} />
                             <div className="p-5 space-y-4">
                                 <p className="text-[11px] text-[var(--color-text-muted)] -mt-2 mb-3">Label predikat nilai yang tampil di raport.</p>
@@ -2055,7 +2046,7 @@ export default function AdminSettingsPage() {
                         </div>
 
                         {/* ── Section: Verifikasi & QR Code ── */}
-                        <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                             <SectionHeader section={RAPORT_SECTIONS[5]} />
                             <div className="p-5 space-y-4">
                                 <div className="grid sm:grid-cols-2 gap-4">
@@ -2107,7 +2098,7 @@ export default function AdminSettingsPage() {
                         </div>
 
                         {/* ── Section: Warna & Tampilan ── */}
-                        <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                             <SectionHeader section={RAPORT_SECTIONS[6]} />
                             <div className="p-5 space-y-5">
                                 <div className="grid sm:grid-cols-2 gap-4">
@@ -2126,7 +2117,7 @@ export default function AdminSettingsPage() {
                                 {/* Preview */}
                                 <div>
                                     <div className="flex items-center gap-2 mb-3">
-                                        <FontAwesomeIcon icon={faEye} className="text-[10px] text-[var(--color-text-muted)]" />
+                                        <Eye className="text-[10px] text-[var(--color-text-muted)]" />
                                         <span className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest">
                                             Preview Header Raport
                                         </span>
@@ -2137,7 +2128,7 @@ export default function AdminSettingsPage() {
                                 {/* WhatsApp footer */}
                                 <div className="pt-4 border-t border-[var(--color-border)]">
                                     <div className="flex items-center gap-2 mb-3">
-                                        <FontAwesomeIcon icon={faWhatsapp} className="text-[10px] text-emerald-500" />
+                                        <WhatsAppIcon className="text-[10px] text-emerald-500" />
                                         <span className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest">
                                             Footer WhatsApp
                                         </span>
@@ -2167,7 +2158,7 @@ export default function AdminSettingsPage() {
                         {/* Warning banner */}
                         <div className="flex items-start gap-3 p-4 rounded-2xl border border-red-500/30 bg-red-500/8">
                             <div className="w-9 h-9 rounded-xl bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                                <FontAwesomeIcon icon={faTriangleExclamation} className="text-red-500" />
+                                <TriangleAlert className="text-red-500" />
                             </div>
                             <div>
                                 <p className="font-black text-sm text-red-600">Zona Berbahaya</p>
@@ -2178,10 +2169,10 @@ export default function AdminSettingsPage() {
                         </div>
 
                         {/* Maintenance Mode */}
-                        <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                             <div className="flex items-center gap-3 px-5 py-4 border-b border-[var(--color-border)] bg-gradient-to-r from-rose-500/8 to-transparent">
                                 <div className="w-9 h-9 rounded-xl bg-rose-500/10 flex items-center justify-center shrink-0">
-                                    <FontAwesomeIcon icon={faGear} className="text-rose-500 text-sm" />
+                                    <Settings className="text-rose-500 text-sm" />
                                 </div>
                                 <div className="flex-1">
                                     <p className="font-black text-[13px] text-[var(--color-text)]">Maintenance Mode</p>
@@ -2204,7 +2195,7 @@ export default function AdminSettingsPage() {
                                                     ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/30 hover:bg-emerald-500 hover:text-white'
                                                     : 'bg-rose-500/10 text-rose-600 border border-rose-500/30 hover:bg-rose-500 hover:text-white'}`}>
                                                 {savingKey === mFlag.key
-                                                    ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+                                                    ? <LoaderCircle className="animate-spin" />
                                                     : null}
                                                 {mFlag.enabled ? 'Matikan Maintenance' : 'Aktifkan Maintenance'}
                                             </button>
@@ -2220,10 +2211,10 @@ export default function AdminSettingsPage() {
                         </div>
 
                         {/* System Info */}
-                        <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                             <div className="flex items-center gap-3 px-5 py-4 border-b border-[var(--color-border)] bg-gradient-to-r from-slate-500/8 to-transparent">
                                 <div className="w-9 h-9 rounded-xl bg-slate-500/10 flex items-center justify-center shrink-0">
-                                    <FontAwesomeIcon icon={faCode} className="text-slate-500 text-sm" />
+                                    <Code className="text-slate-500 text-sm" />
                                 </div>
                                 <div>
                                     <p className="font-black text-[13px] text-[var(--color-text)]">Info Sistem</p>
@@ -2246,10 +2237,10 @@ export default function AdminSettingsPage() {
                         </div>
 
                         {/* Reset Settings */}
-                        <div className="glass rounded-2xl border border-red-500/20 overflow-hidden">
+                        <div className="bg-surface rounded-2xl border border-red-500/20 overflow-hidden">
                             <div className="flex items-center gap-3 px-5 py-4 border-b border-red-500/20 bg-gradient-to-r from-red-500/8 to-transparent">
                                 <div className="w-9 h-9 rounded-xl bg-red-500/10 flex items-center justify-center shrink-0">
-                                    <FontAwesomeIcon icon={faTrash} className="text-red-500 text-sm" />
+                                    <Trash2 className="text-red-500 text-sm" />
                                 </div>
                                 <div className="flex-1">
                                     <p className="font-black text-[13px] text-red-600">Reset Konfigurasi Raport</p>
@@ -2268,7 +2259,7 @@ export default function AdminSettingsPage() {
                                         }
                                     }}
                                     className="shrink-0 h-9 px-4 rounded-xl border border-red-500/30 bg-red-500/10 text-red-600 text-[11px] font-black hover:bg-red-500 hover:text-white transition-all flex items-center gap-2">
-                                    <FontAwesomeIcon icon={faTrash} className="text-[10px]" />
+                                    <Trash2 className="text-[10px]" />
                                     Reset
                                 </button>
                             </div>
@@ -2287,8 +2278,8 @@ export default function AdminSettingsPage() {
                     : 'opacity-0 translate-y-4 pointer-events-none'
                 }`}
             >
-                <div className="flex items-center gap-2 sm:gap-3 px-4 py-2.5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]/95 backdrop-blur-xl shadow-2xl">
-                    <FontAwesomeIcon icon={faTriangleExclamation} className="text-amber-400 shrink-0" />
+                <div className="flex items-center gap-2 sm:gap-3 px-4 py-2.5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl">
+                    <TriangleAlert className="text-amber-400 shrink-0" />
                     <span className="text-[11px] text-[var(--color-text-muted)] font-medium flex-1 sm:flex-none">
                         <span className="hidden sm:inline">Ada perubahan belum disimpan</span>
                         <span className="sm:hidden">Belum disimpan</span>
@@ -2297,16 +2288,16 @@ export default function AdminSettingsPage() {
                         onClick={handleReset}
                         className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black hover:text-[var(--color-text)] transition-all flex items-center gap-1.5 shrink-0"
                     >
-                        <FontAwesomeIcon icon={faRotateLeft} className="text-[9px]" />
+                        <RotateCcw className="text-[9px]" />
                         <span className="hidden sm:inline">Reset</span>
                     </button>
                     <button
                         onClick={handleSaveRaport} disabled={saving}
-                        className="h-8 px-4 rounded-xl bg-[var(--color-primary)] hover:opacity-90 text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-[var(--color-primary)]/20 disabled:opacity-60 shrink-0"
+                        className="h-8 px-4 rounded-xl bg-[var(--color-primary)] hover:opacity-90 text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shadow-lg disabled:opacity-60 shrink-0"
                     >
                         {saving
-                            ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
-                            : <FontAwesomeIcon icon={faSave} />
+                            ? <LoaderCircle className="animate-spin" />
+                            : <Save />
                         }
                         Simpan
                     </button>

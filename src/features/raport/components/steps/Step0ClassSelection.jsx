@@ -153,7 +153,7 @@ export default function Step0ClassSelection({
                                 const ok = await loadStudents(lastSession.classId, lastSession.month, lastSession.year, lastSession.useLang)
                                 if (ok) setStep(3) // Go directly to input table
                             }}
-                            className="h-8 px-4 rounded-xl bg-indigo-600 text-white text-[9px] font-black hover:bg-indigo-700 transition-all shadow-md shadow-indigo-500/20"
+                            className="h-8 px-4 rounded-xl bg-indigo-600 text-white text-[9px] font-black hover:bg-indigo-700 transition-all shadow-md"
                         >
                             Buka →
                         </button>
@@ -199,7 +199,7 @@ export default function Step0ClassSelection({
                             placeholder="Cari nama kelas..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full h-11 pl-11 pr-10 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] outline-none text-[13px] font-bold transition-all focus:border-indigo-500/50 focus:shadow-xl focus:shadow-indigo-500/5 text-[var(--color-text)]"
+                            className="w-full h-11 pl-11 pr-10 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] outline-none text-[13px] font-bold transition-all focus:border-indigo-500/50 focus:shadow-xl text-[var(--color-text)]"
                         />
                         {searchQuery && (
                             <button
@@ -223,7 +223,7 @@ export default function Step0ClassSelection({
                                 onClick={() => setFilterType(opt.id)}
                                 className={`h-9 sm:px-5 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-1.5 sm:gap-2 ${
                                     filterType === opt.id
-                                        ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
+                                        ? 'bg-indigo-600 text-white shadow-lg'
                                         : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white dark:hover:bg-slate-800'
                                 }`}
                             >

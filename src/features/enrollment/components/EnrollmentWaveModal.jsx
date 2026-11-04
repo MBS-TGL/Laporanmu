@@ -1,10 +1,5 @@
 import React, { useState, memo, useCallback } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faWaveSquare, faPlus, faCalendarAlt, faUsers,
-    faToggleOn, faToggleOff, faPen, faCheckCircle, faSpinner, faSave, faTimes, faChevronRight,
-    faTrash, faMoneyBillWave
-} from '@fortawesome/free-solid-svg-icons'
+import { AudioWaveform, Banknote, Calendar, LoaderCircle, Pen, Plus, Save, ToggleLeft, ToggleRight, Trash2, X } from 'lucide-react'
 import { Modal } from '@shared/components'
 import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
@@ -194,7 +189,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
             onClose={onClose}
             title="Manajemen Gelombang"
             description="Atur periode pendaftaran, kuota, dan status gelombang masuk santri baru"
-            icon={faWaveSquare}
+            icon={AudioWaveform}
             iconBg="bg-emerald-500/10"
             iconColor="text-emerald-600"
             size="lg"
@@ -238,7 +233,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                             onClick={handleCloseForm}
                                             className="p-1 text-[var(--color-text-muted)] hover:text-rose-500 rounded-lg transition-colors"
                                         >
-                                            <FontAwesomeIcon icon={faTimes} className="text-xs" />
+                                            <X className="text-xs" />
                                         </button>
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -319,7 +314,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                         {/* Biaya Section */}
                                         <div className="sm:col-span-2 p-3.5 border border-dashed border-[var(--color-border)] rounded-2xl bg-[var(--color-surface-alt)]/30 space-y-3">
                                             <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-1.5">
-                                                <FontAwesomeIcon icon={faMoneyBillWave} className="opacity-60 text-[10px]" />
+                                                <Banknote className="opacity-60 text-[10px]" />
                                                 Biaya Gelombang (Opsional)
                                             </span>
                                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -380,16 +375,16 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                             type="button"
                                             onClick={handleAdd}
                                             disabled={submitting}
-                                            className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[var(--color-primary)]/20 border border-white/10"
+                                            className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg border border-white/10"
                                         >
                                             {submitting ? (
                                                 <>
-                                                    <FontAwesomeIcon icon={faSpinner} className="fa-spin" />
+                                                    <LoaderCircle className="animate-spin" />
                                                     <span>Menyimpan...</span>
                                                 </>
                                             ) : (
                                                 <>
-                                                    <FontAwesomeIcon icon={faSave} className="text-[10px]" />
+                                                    <Save className="text-[10px]" />
                                                     <span>Simpan Perubahan</span>
                                                 </>
                                             )}
@@ -414,7 +409,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                                 ? 'bg-emerald-500/10 text-emerald-600'
                                                 : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] opacity-60'}`}
                                         >
-                                            <FontAwesomeIcon icon={faWaveSquare} className="text-sm" />
+                                            <AudioWaveform className="text-sm" />
                                         </div>
                                         <div>
                                             <div className="flex items-center gap-2">
@@ -441,7 +436,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                             className="w-8 h-8 flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 rounded-xl transition-all"
                                             title="Edit Gelombang"
                                         >
-                                            <FontAwesomeIcon icon={faPen} className="text-xs" />
+                                            <Pen className="text-xs" />
                                         </button>
                                         <button
                                             type="button"
@@ -449,7 +444,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                             className="w-8 h-8 flex items-center justify-center text-[var(--color-text-muted)] hover:text-rose-500 hover:bg-rose-500/10 rounded-xl transition-all"
                                             title="Hapus Gelombang"
                                         >
-                                            <FontAwesomeIcon icon={faTrash} className="text-xs" />
+                                            <Trash2 className="text-xs" />
                                         </button>
                                         <button
                                             type="button"
@@ -457,14 +452,14 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                             className={`p-2 rounded-xl transition-all relative ${wave.is_active ? 'text-emerald-500 hover:bg-emerald-500/10' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
                                             title={wave.is_active ? 'Nonaktifkan' : 'Aktifkan'}
                                         >
-                                            <FontAwesomeIcon icon={wave.is_active ? faToggleOn : faToggleOff} className="text-xl" />
+                                            {wave.is_active ? <ToggleRight className="text-xl" /> : <ToggleLeft className="text-xl" />}
                                         </button>
                                     </div>
                                 </div>
                                 
                                 <div className="flex flex-col gap-2 mt-3.5 pt-3 border-t border-[var(--color-border)]/50">
                                     <div className="flex items-center gap-1.5 text-[10px] text-[var(--color-text-muted)]">
-                                        <FontAwesomeIcon icon={faCalendarAlt} className="opacity-40" />
+                                        <Calendar className="opacity-40" />
                                         <span>
                                             {new Date(wave.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
                                             {" – "}
@@ -513,7 +508,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                 onClick={handleCloseForm}
                                 className="p-1 text-[var(--color-text-muted)] hover:text-rose-500 rounded-lg transition-colors"
                             >
-                                <FontAwesomeIcon icon={faTimes} className="text-xs" />
+                                <X className="text-xs" />
                             </button>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -594,7 +589,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                             {/* Biaya Section */}
                             <div className="sm:col-span-2 p-3.5 border border-dashed border-[var(--color-border)] rounded-2xl bg-[var(--color-surface-alt)]/30 space-y-3">
                                 <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-1.5">
-                                    <FontAwesomeIcon icon={faMoneyBillWave} className="opacity-60 text-[10px]" />
+                                    <Banknote className="opacity-60 text-[10px]" />
                                     Biaya Gelombang (Opsional)
                                 </span>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -655,16 +650,16 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                                 type="button"
                                 onClick={handleAdd}
                                 disabled={submitting}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[var(--color-primary)]/20 border border-white/10"
+                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg border border-white/10"
                             >
                                 {submitting ? (
                                     <>
-                                        <FontAwesomeIcon icon={faSpinner} className="fa-spin" />
+                                        <LoaderCircle className="animate-spin" />
                                         <span>Menyimpan...</span>
                                     </>
                                 ) : (
                                     <>
-                                        <FontAwesomeIcon icon={faSave} className="text-[10px]" />
+                                        <Save className="text-[10px]" />
                                         <span>Simpan Gelombang</span>
                                     </>
                                 )}
@@ -679,7 +674,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                             onClick={() => setIsAdding(true)}
                             className="w-full py-4 rounded-2xl border-2 border-dashed border-[var(--color-border)] text-[11px] font-bold text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/40 hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/[0.02] transition-all flex items-center justify-center gap-2 group"
                         >
-                            <FontAwesomeIcon icon={faPlus} className="text-xs group-hover:scale-110 transition-transform" />
+                            <Plus className="text-xs group-hover:scale-110 transition-transform" />
                             <span>Tambah Gelombang</span>
                         </button>
                     )
@@ -692,7 +687,7 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                 onClose={() => setWaveToDelete(null)}
                 title="Konfirmasi Hapus"
                 description="Gelombang pendaftaran akan dihapus permanen"
-                icon={faTrash}
+                icon={Trash2}
                 iconBg="bg-rose-500/10"
                 iconColor="text-rose-600"
                 size="sm"
@@ -711,12 +706,12 @@ function EnrollmentWaveModal({ isOpen, onClose, waves = [], addToast, onRefresh 
                             type="button"
                             onClick={executeDelete}
                             disabled={submitting}
-                            className="h-10 px-6 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-rose-500/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                            className="h-10 px-6 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
                         >
                             {submitting ? (
-                                <FontAwesomeIcon icon={faSpinner} className="fa-spin text-[11px]" />
+                                <LoaderCircle className="animate-spin text-[11px]" />
                             ) : (
-                                <FontAwesomeIcon icon={faTrash} className="text-[11px] opacity-70" />
+                                <Trash2 className="text-[11px] opacity-70" />
                             )}
                             <span>Hapus</span>
                         </button>

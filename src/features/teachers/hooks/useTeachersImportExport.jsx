@@ -1,5 +1,4 @@
 import { useState, useCallback, useMemo } from 'react'
-import Papa from 'papaparse'
 import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
 import { STATUS_CONFIG } from '@features/teachers/components/TeacherRow'
@@ -92,7 +91,10 @@ export function useTeachersImportExport({
         setImportLoading(true)
         try {
             let rows = []
-            if (ext.endsWith('.csv')) rows = await new Promise(res => Papa.parse(file, { header: true, skipEmptyLines: true, complete: r => res(r.data) }))
+            if (ext.endsWith('.csv')) {
+                const { default: Papa } = await import('papaparse')
+                rows = await new Promise(res => Papa.parse(file, { header: true, skipEmptyLines: true, complete: r => res(r.data) }))
+            }
             else {
                 const XLSX = await import('xlsx')
                 rows = await new Promise(res => { const reader = new FileReader(); reader.onload = e => { const wb = XLSX.read(e.target.result, { type: 'array' }); res(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' })) }; reader.readAsArrayBuffer(file) })

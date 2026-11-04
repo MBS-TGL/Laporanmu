@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleCheck, faCircleExclamation, faDownload, faLink, faSpinner, faTable, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
+import { CircleAlert, CircleCheck, Download, Link, LoaderCircle, Table, TriangleAlert } from 'lucide-react'
 import Modal from '@shared/components/Modal'
 import { useLanguage } from '@context'
 
@@ -33,7 +32,7 @@ export default function StudentGSheetsModal({
             onClose={onClose}
             title="Import dari Google Sheets"
             description={<span className="block truncate">Sinkronisasi secara otomatis melalui tautan publik Google Sheets.</span>}
-            icon={faLink}
+            icon={Link}
             iconBg="bg-emerald-500/10"
             iconColor="text-emerald-600"
             size="md"
@@ -45,7 +44,7 @@ export default function StudentGSheetsModal({
                         title="Download Format Excel/CSV"
                         className="h-10 px-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 text-emerald-600 text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition-all flex items-center justify-center gap-1.5 shrink-0 group"
                     >
-                        <FontAwesomeIcon icon={faDownload} className="opacity-80 group-hover:animate-bounce text-[9px]" />
+                        <Download className="opacity-80 group-hover:animate-bounce text-[9px]" />
                         <span>Template</span>
                     </button>
 
@@ -61,12 +60,12 @@ export default function StudentGSheetsModal({
                     <button
                         onClick={handleFetchGSheets}
                         disabled={fetchingGSheets || urlStatus !== 'valid'}
-                        className="h-10 px-4 rounded-xl bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 border border-white/10 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="h-10 px-4 rounded-xl bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 border border-white/10 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {fetchingGSheets ? (
-                            <><FontAwesomeIcon icon={faSpinner} className="fa-spin text-[9px]" /> <span>Sinkron...</span></>
+                            <><LoaderCircle className="animate-spin text-[9px]" /> <span>Sinkron...</span></>
                         ) : (
-                            <><FontAwesomeIcon icon={faLink} className="opacity-80 text-[9px]" /> <span>Hubungkan</span></>
+                            <><Link className="opacity-80 text-[9px]" /> <span>Hubungkan</span></>
                         )}
                     </button>
                 </div>
@@ -77,7 +76,7 @@ export default function StudentGSheetsModal({
                 <div className="group rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface)] shadow-sm hover:border-emerald-500/30 transition-all">
                     <div className="bg-emerald-500/[0.03] px-4 py-3 flex items-center justify-between border-b border-[var(--color-border)]">
                         <span className="text-[10px] font-black uppercase tracking-widest text-emerald-700 dark:text-emerald-400 flex items-center gap-2">
-                            <FontAwesomeIcon icon={faTable} className="opacity-50" />
+                            <Table className="opacity-50" />
                             Struktur Kolom Wajib
                         </span>
                         <div className="flex gap-1">
@@ -123,10 +122,10 @@ export default function StudentGSheetsModal({
                 {/* 2. Important Access Guide */}
                 <div className="relative overflow-hidden p-4 rounded-2xl bg-emerald-500/[0.04] border border-emerald-500/10 flex gap-4 items-start shadow-sm group">
                     <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:scale-110 transition-transform">
-                        <FontAwesomeIcon icon={faCircleCheck} size="3x" className="text-emerald-500" />
+                        <CircleCheck size={48} className="text-emerald-500" />
                     </div>
                     <div className="w-10 h-10 rounded-xl bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center shrink-0 border border-emerald-500/20">
-                        <FontAwesomeIcon icon={faCircleExclamation} className="text-emerald-500 text-sm" />
+                        <CircleAlert className="text-emerald-500 text-sm" />
                     </div>
                     <div className="space-y-1">
                         <p className="text-[11px] font-black text-emerald-700 dark:text-emerald-400 uppercase tracking-widest">Wajib: Akses Publik</p>
@@ -140,16 +139,13 @@ export default function StudentGSheetsModal({
                 <div className="space-y-2">
                     <div className="flex items-center justify-between px-1">
                         <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">URL Google Sheets</label>
-                        {urlStatus === 'valid' && <span className="text-[9px] font-black text-emerald-500 uppercase flex items-center gap-1 animate-in fade-in slide-in-from-right-2"><FontAwesomeIcon icon={faCircleCheck} /> Link Terdeteksi</span>}
-                        {urlStatus === 'invalid' && gSheetsUrl && <span className="text-[9px] font-black text-red-500 uppercase flex items-center gap-1 animate-in fade-in slide-in-from-right-2"><FontAwesomeIcon icon={faTriangleExclamation} /> Bukan Link GSheets</span>}
-                        {urlStatus === 'incomplete' && <span className="text-[9px] font-black text-amber-500 uppercase flex items-center gap-1 animate-in fade-in slide-in-from-right-2"><FontAwesomeIcon icon={faSpinner} className="fa-spin" /> Menunggu Link Lengkap</span>}
+                        {urlStatus === 'valid' && <span className="text-[9px] font-black text-emerald-500 uppercase flex items-center gap-1 animate-in fade-in slide-in-from-right-2"><CircleCheck /> Link Terdeteksi</span>}
+                        {urlStatus === 'invalid' && gSheetsUrl && <span className="text-[9px] font-black text-red-500 uppercase flex items-center gap-1 animate-in fade-in slide-in-from-right-2"><TriangleAlert /> Bukan Link GSheets</span>}
+                        {urlStatus === 'incomplete' && <span className="text-[9px] font-black text-amber-500 uppercase flex items-center gap-1 animate-in fade-in slide-in-from-right-2"><LoaderCircle className="animate-spin" /> Menunggu Link Lengkap</span>}
                     </div>
                     <div className="relative group">
                         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <FontAwesomeIcon
-                                icon={faLink}
-                                className={`transition-colors duration-300 ${urlStatus === 'valid' ? 'text-emerald-500' : 'text-[var(--color-text-muted)] opacity-50'}`}
-                            />
+                            <Link className={`transition-colors duration-300 ${urlStatus === 'valid' ? 'text-emerald-500' : 'text-[var(--color-text-muted)] opacity-50'}`} />
                         </div>
                         <input
                             type="url"

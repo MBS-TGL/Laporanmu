@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faUser, faUsers, faCheckCircle, faInfoCircle, faArrowRight, faArrowLeft, faMapMarkerAlt, faMoon, faSun
-} from '@fortawesome/free-solid-svg-icons'
+import { ArrowLeft, ArrowRight, CircleCheck, Info, Moon, Sun } from 'lucide-react'
 import { supabase } from '@lib/supabase'
 import { useTheme } from '@context/Theme'
 
@@ -89,13 +86,11 @@ export default function PublicEnrollmentPage() {
     if (!activeWave) return (
         <div className="min-h-screen flex items-center justify-center bg-[var(--color-surface)] px-4 py-8 relative overflow-hidden transition-colors">
             <div className="absolute inset-0 pointer-events-none z-0">
-                <div className="absolute top-[10%] -left-[10%] w-[400px] h-[400px] rounded-full bg-[var(--color-primary)]/10 blur-[80px]" />
-                <div className="absolute bottom-[10%] -right-[10%] w-[500px] h-[500px] rounded-full bg-[var(--color-accent)]/10 blur-[100px]" />
             </div>
             
-            <div className="w-full max-w-[420px] relative z-10 glass rounded-[2rem] p-8 shadow-2xl text-center">
+                <div className="w-full max-w-[420px] relative z-10 bg-surface border border-border rounded-[2rem] p-8 shadow-sm text-center">
                 <div className="w-20 h-20 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
-                    <FontAwesomeIcon icon={faInfoCircle} />
+                    <Info />
                 </div>
                 <h2 className="text-2xl font-bold font-heading text-[var(--color-text)] mb-2">Pendaftaran Ditutup</h2>
                 <p className="text-[var(--color-text-muted)] mb-6">Mohon maaf, saat ini tidak ada gelombang pendaftaran yang aktif.</p>
@@ -112,15 +107,13 @@ export default function PublicEnrollmentPage() {
     if (step === 3) return (
         <div className="min-h-screen flex items-center justify-center bg-[var(--color-surface)] px-4 py-8 relative overflow-hidden transition-colors">
             <div className="absolute inset-0 pointer-events-none z-0">
-                <div className="absolute top-[20%] left-[20%] w-[400px] h-[400px] rounded-full bg-[var(--color-primary)]/20 blur-[100px]" />
-                <div className="absolute bottom-[20%] right-[20%] w-[400px] h-[400px] rounded-full bg-[var(--color-accent)]/20 blur-[100px]" />
             </div>
             
-            <div className="w-full max-w-[420px] relative z-10 glass rounded-[2rem] p-8 shadow-2xl text-center animate-in zoom-in-95 duration-500 overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-accent)] to-[var(--color-primary)] opacity-50" />
+                <div className="w-full max-w-[420px] relative z-10 bg-surface border border-border rounded-[2rem] p-8 shadow-sm text-center animate-in zoom-in-95 duration-500 overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1.5 bg-[var(--color-primary)] opacity-50" />
                 
-                <div className="w-24 h-24 bg-[var(--color-primary)] text-white rounded-full flex items-center justify-center mx-auto mb-6 text-4xl shadow-xl shadow-[var(--color-primary)]/30 ring-8 ring-[var(--color-primary)]/10">
-                    <FontAwesomeIcon icon={faCheckCircle} />
+                <div className="w-24 h-24 bg-[var(--color-primary)] text-white rounded-full flex items-center justify-center mx-auto mb-6 text-4xl shadow-xl ring-8 ring-[var(--color-primary)]/10">
+                    <CircleCheck />
                 </div>
                 <h2 className="text-3xl font-bold font-heading text-[var(--color-text)] mb-2 tracking-tight">Alhamdulillah!</h2>
                 <p className="text-[var(--color-text-muted)] mb-8 leading-relaxed">Pendaftaran atas nama <strong className="text-[var(--color-text)] font-black">{successData?.name}</strong> berhasil dikirim.</p>
@@ -131,7 +124,7 @@ export default function PublicEnrollmentPage() {
                 </div>
                 
                 <p className="text-[13px] font-medium text-[var(--color-text-muted)] mb-8 leading-relaxed px-2">Silakan simpan (screenshot) halaman ini untuk mengecek status secara berkala. Kami akan segera menghubungi Anda via WhatsApp.</p>
-                <Link to="/" className="btn btn-primary w-full py-4 text-sm font-bold shadow-lg shadow-[var(--color-primary)]/20">
+                    <Link to="/" className="btn btn-primary w-full py-4 text-sm font-bold shadow-lg">
                     Selesai
                 </Link>
             </div>
@@ -144,15 +137,13 @@ export default function PublicEnrollmentPage() {
         <div className="min-h-screen flex items-center justify-center bg-[var(--color-surface)] relative overflow-hidden px-4 py-8 transition-colors">
             {/* Ambient Background Glows */}
             <div className="absolute inset-0 pointer-events-none z-0">
-                <div className="absolute top-[10%] -left-[10%] w-[400px] h-[400px] rounded-full bg-[var(--color-primary)]/10 blur-[80px]" />
-                <div className="absolute bottom-[10%] -right-[10%] w-[500px] h-[500px] rounded-full bg-[var(--color-accent)]/10 blur-[100px]" />
             </div>
             
             <div className="w-full max-w-[420px] space-y-6 relative z-10">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <Link to="/" className="flex items-center gap-2.5 group">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+                        <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
                             <span className="text-white font-bold font-heading text-lg">L</span>
                         </div>
                         <span className="font-heading font-bold text-xl text-[var(--color-text)]">Laporan<span className="text-[var(--color-primary)]">mu</span></span>
@@ -162,7 +153,7 @@ export default function PublicEnrollmentPage() {
                         className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 transition-all"
                         aria-label="Toggle theme"
                     >
-                        <FontAwesomeIcon icon={isDark ? faSun : faMoon} className="text-sm" />
+                        {isDark ? <Sun className="text-sm" /> : <Moon className="text-sm" />}
                     </button>
                 </div>
 
@@ -172,7 +163,7 @@ export default function PublicEnrollmentPage() {
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 flex-wrap">
                         <p className="text-sm text-[var(--color-text-muted)]">Gelombang Aktif: <span className="font-bold text-[var(--color-primary)]">{activeWave?.name}</span></p>
                         <Link to="/psb/status" className="text-xs font-bold text-[var(--color-primary)] hover:underline flex items-center gap-1">
-                            Cek Status Kelulusan <FontAwesomeIcon icon={faArrowRight} className="text-[9px]" />
+                            Cek Status Kelulusan <ArrowRight className="text-[9px]" />
                         </Link>
                     </div>
                 </div>
@@ -187,8 +178,8 @@ export default function PublicEnrollmentPage() {
                 </div>
 
                 {/* Form Card */}
-                <div className="glass rounded-[2rem] p-5 sm:p-6 relative overflow-hidden shadow-2xl shadow-indigo-500/10 animate-in fade-in zoom-in duration-700">
-                    <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-accent)] to-[var(--color-primary)] opacity-30" />
+                <div className="bg-surface border border-border rounded-[2rem] p-5 sm:p-6 relative overflow-hidden shadow-sm animate-in fade-in zoom-in duration-700">
+                    <div className="absolute top-0 left-0 w-full h-1.5 bg-[var(--color-primary)] opacity-30" />
 
                     {step === 0 && (
                         <div className="space-y-3 animate-in fade-in slide-in-from-right-4 duration-500">
@@ -255,7 +246,7 @@ export default function PublicEnrollmentPage() {
                                 <textarea name="address" value={form.address} onChange={handleChange} placeholder="Jalan, RT/RW, Desa, Kecamatan..." className="w-full h-28 bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10 rounded-xl p-4 text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-50 transition-all outline-none font-bold resize-none" />
                             </div>
                             <div className="p-3.5 rounded-xl bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex gap-3 text-[var(--color-primary)] text-sm font-medium">
-                                <FontAwesomeIcon icon={faInfoCircle} className="mt-0.5 shrink-0" />
+                                <Info className="mt-0.5 shrink-0" />
                                 <p className="text-xs leading-relaxed text-[var(--color-text)]">Pastikan data sudah benar. Pihak pesantren akan menghubungi Anda via WhatsApp setelah data masuk.</p>
                             </div>
                         </div>
@@ -265,15 +256,15 @@ export default function PublicEnrollmentPage() {
                     <div className="flex items-center gap-3 mt-4 pt-4 border-t border-[var(--color-border)]/50">
                         {step > 0 && (
                             <button onClick={() => setStep(s => s - 1)} className="btn bg-[var(--color-surface-alt)] text-[var(--color-text)] border border-[var(--color-border)] hover:bg-[var(--color-border)] py-3 px-5 transition-all text-sm font-bold shadow-none">
-                                <FontAwesomeIcon icon={faArrowLeft} />
+                                <ArrowLeft />
                             </button>
                         )}
                         {step < 2 ? (
-                            <button disabled={!canNext()} onClick={() => setStep(s => s + 1)} className="btn btn-primary flex-1 w-full py-3 transition-all text-sm font-bold shadow-lg shadow-[var(--color-primary)]/20">
-                                Lanjut <FontAwesomeIcon icon={faArrowRight} className="ml-2" />
+                            <button disabled={!canNext()} onClick={() => setStep(s => s + 1)} className="btn btn-primary flex-1 w-full py-3 transition-all text-sm font-bold shadow-lg">
+                                Lanjut <ArrowRight className="ml-2" />
                             </button>
                         ) : (
-                            <button disabled={submitting || !canNext()} onClick={handleSubmit} className="btn btn-primary flex-1 w-full py-3 transition-all text-sm font-bold shadow-lg shadow-[var(--color-primary)]/20">
+                            <button disabled={submitting || !canNext()} onClick={handleSubmit} className="btn btn-primary flex-1 w-full py-3 transition-all text-sm font-bold shadow-lg">
                                 {submitting ? 'Memproses...' : 'Kirim Form'}
                             </button>
                         )}

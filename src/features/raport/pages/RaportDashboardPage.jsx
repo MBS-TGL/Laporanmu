@@ -83,7 +83,7 @@ const ClassRow = memo(function ClassRow({ cls, progress, onSelect, onArchive }) 
             {/* Actions */}
             <button
                 onClick={() => onSelect(cls.id)}
-                className="shrink-0 w-8 h-8 rounded-lg bg-indigo-500 text-white flex items-center justify-center hover:bg-indigo-600 active:scale-95 transition-all shadow-md shadow-indigo-500/20"
+                className="shrink-0 w-8 h-8 rounded-lg bg-indigo-500 text-white flex items-center justify-center hover:bg-indigo-600 active:scale-95 transition-all shadow-md"
                 title="Input Raport"
             >
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -227,7 +227,7 @@ export default function RaportDashboardPage({ isAcademic = false }) {
                             setSelectedClassId(lastSession.classId)
                             navigate(`${basePath}/input/${lastSession.classId}?month=${lastSession.month}&year=${lastSession.year}`)
                         }}
-                        className="h-7 px-3 rounded-lg bg-indigo-600 text-white text-[9px] font-black hover:bg-indigo-700 transition-all shrink-0 shadow-md shadow-indigo-500/20"
+                        className="h-7 px-3 rounded-lg bg-indigo-600 text-white text-[9px] font-black hover:bg-indigo-700 transition-all shrink-0 shadow-md"
                     >
                         Buka →
                     </button>
@@ -261,7 +261,7 @@ export default function RaportDashboardPage({ isAcademic = false }) {
                         <button
                             key={key}
                             onClick={() => setFilterType(key)}
-                            className={`h-9 px-3.5 rounded-xl text-[10px] font-black transition-all whitespace-nowrap ${filterType === key ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/20' : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                            className={`h-9 px-3.5 rounded-xl text-[10px] font-black transition-all whitespace-nowrap ${filterType === key ? 'bg-indigo-500 text-white shadow-md' : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                         >
                             {label}
                         </button>

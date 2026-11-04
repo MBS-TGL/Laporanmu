@@ -1,9 +1,5 @@
 import React, { useState, memo, useCallback } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faUsers, faSpinner, faCheck, faTimes, faUserGraduate,
-    faSchool, faCalendarAlt, faIdCard
-} from '@fortawesome/free-solid-svg-icons'
+import { Check, GraduationCap, IdCard, LoaderCircle } from 'lucide-react'
 import { Modal } from '@shared/components'
 
 const selectClass = "w-full px-3.5 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm font-medium text-[var(--color-text)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] transition-all outline-none cursor-pointer"
@@ -39,7 +35,7 @@ function EnrollmentConvertModal({
             onClose={onClose}
             title="Konversi ke Siswa Aktif"
             description="Aktifkan santri baru ini sebagai siswa aktif di sistem sekolah"
-            icon={faUserGraduate}
+            icon={GraduationCap}
             iconBg="bg-indigo-500/10"
             iconColor="text-indigo-600"
             size="md"
@@ -58,16 +54,16 @@ function EnrollmentConvertModal({
                         type="button"
                         onClick={handleSubmit}
                         disabled={converting || !selectedClassId}
-                        className="h-10 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-indigo-500/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                        className="h-10 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
                     >
                         {converting ? (
                             <>
-                                <FontAwesomeIcon icon={faSpinner} className="fa-spin" />
+                                <LoaderCircle className="animate-spin" />
                                 <span>Mengonversi...</span>
                             </>
                         ) : (
                             <>
-                                <FontAwesomeIcon icon={faCheck} className="text-[10px]" />
+                                <Check className="text-[10px]" />
                                 <span>Konversi Sekarang</span>
                             </>
                         )}
@@ -129,7 +125,7 @@ function EnrollmentConvertModal({
                 {/* Info Tambahan */}
                 <div className="p-3.5 border border-dashed border-indigo-500/20 bg-indigo-500/[0.01] rounded-2xl flex items-start gap-3">
                     <div className="w-8 h-8 rounded-xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center shrink-0">
-                        <FontAwesomeIcon icon={faIdCard} className="text-xs" />
+                        <IdCard className="text-xs" />
                     </div>
                     <div className="space-y-1">
                         <span className="text-[11px] font-bold text-[var(--color-text)] block">Penerbitan Kredensial Otomatis</span>

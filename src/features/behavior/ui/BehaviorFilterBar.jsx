@@ -42,7 +42,7 @@ export default function BehaviorFilterBar({
     }, [filterType, filterClass, sortBy, t])
 
     return (
-        <div className="glass rounded-[1.5rem] mb-4 border border-[var(--color-border)] overflow-hidden">
+        <div className="bg-surface rounded-[1.5rem] mb-4 border border-[var(--color-border)] overflow-hidden">
             {/* Visual Grouping: Search (Left), Filters (Center), Actions (Right) */}
             <div className="grid grid-cols-[minmax(0,_1fr)_auto] items-center gap-x-2 gap-y-2.5 p-2 xs:p-2.5 lg:flex lg:flex-row lg:items-center lg:gap-0 lg:p-3">
                 
@@ -151,7 +151,7 @@ export default function BehaviorFilterBar({
                     <button
                         onClick={() => setSelectedIds(allSelected ? [] : reports.map((r) => r.id))}
                         className={`h-9 px-2.5 lg:px-3 rounded-xl border text-xs font-bold uppercase tracking-wider transition-all active:scale-95 flex items-center justify-center gap-2 ${
-                            selectedIds.length > 0 ? 'bg-indigo-500 border-indigo-500 text-white shadow-md shadow-indigo-500/20' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
+                          selectedIds.length > 0 ? 'bg-indigo-500 border-indigo-500 text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
                         }`}
                         title={tp('selectAll')}
                         aria-label={tp('selectAll')}
@@ -170,7 +170,7 @@ export default function BehaviorFilterBar({
                         onClick={() => setShowAdvFilter((v) => !v)}
                         className={`h-9 px-2.5 lg:px-3 rounded-xl border text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
                             showAdvFilter || activeFilters.length > 0
-                                ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/30'
+                                ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md'
                                 : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
                         }`}
                         title={tp('advancedFilter')}
@@ -218,7 +218,7 @@ export default function BehaviorFilterBar({
 
             {/* Row 2: Advanced Filter Panel */}
             {showAdvFilter && (
-                <div className="border-t border-[var(--color-border)] p-3.5 bg-[var(--color-surface-alt)]/60 backdrop-blur-md animate-in fade-in slide-in-from-top-2">
+                <div className="border-t border-[var(--color-border)] p-3.5 bg-[var(--color-surface-alt)] animate-in fade-in slide-in-from-top-2">
                     <div className="flex items-center justify-between mb-3.5">
                         <div className="flex items-center gap-2.5">
                             <div className="w-1 h-3.5 bg-[var(--color-primary)] rounded-full" />

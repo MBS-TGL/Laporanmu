@@ -985,7 +985,7 @@ export default function HealthPage() {
                                             />
                                             <div
                                                 id="portal-health-header-menu"
-                                                className={`fixed z-[9991] w-56 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl p-2 transition-[opacity,transform] duration-200 ease-out origin-top-right ${
+                                                className={`fixed z-[9991] w-56 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 transition-[opacity,transform] duration-200 ease-out origin-top-right ${
                                                     isDataMenuOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2'
                                                 }`}
                                                 style={{ top: dataMenuRect.bottom + 8, left: Math.max(10, dataMenuRect.right - 224) }}
@@ -1056,7 +1056,7 @@ export default function HealthPage() {
                                         ])
                                         setIsRecordModalOpen(true)
                                     }}
-                                    className="h-9 px-4 sm:px-5 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-[var(--color-primary)] text-white hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 border border-white/10"
+                                    className="h-9 px-4 sm:px-5 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-[var(--color-primary)] text-white hover:scale-[1.02] active:scale-95 shadow-md border border-white/10"
                                 >
                                     <Plus className="w-3.5 h-3.5" />
                                     <span>{tp('btnRecordAdd')}</span>
@@ -1076,7 +1076,7 @@ export default function HealthPage() {
                                         })
                                         setIsMedModalOpen(true)
                                     }}
-                                    className="h-9 px-4 sm:px-5 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-emerald-600 text-white hover:scale-[1.02] active:scale-95 shadow-md shadow-emerald-600/20 border border-white/10"
+                                    className="h-9 px-4 sm:px-5 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-emerald-600 text-white hover:scale-[1.02] active:scale-95 shadow-md border border-white/10"
                                 >
                                     <Plus className="w-3.5 h-3.5" />
                                     <span>{tp('btnMedAdd')}</span>
@@ -1147,7 +1147,7 @@ export default function HealthPage() {
 
                 {/* ─── TAB: REKAM MEDIS (MEDICAL RECORDS) ─── */}
                 {activeTab === 'medical' && (
-                    <div className="glass rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden animate-in fade-in duration-200">
+                    <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden animate-in fade-in duration-200">
                         {/* Toolbar */}
                         <div className="p-4 border-b border-[var(--color-border)] flex flex-col md:flex-row md:items-center gap-3 bg-[var(--color-surface-alt)]/20">
                             {/* Search bar */}
@@ -1355,7 +1355,7 @@ export default function HealthPage() {
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {restingStudents.map(log => (
-                                    <div key={log.id} className="glass rounded-[1.5rem] border border-[var(--color-border)] hover:border-amber-500/30 p-5 transition-all relative overflow-hidden group">
+                                    <div key={log.id} className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] hover:border-amber-500/30 p-5 transition-all relative overflow-hidden group">
                                         {/* Status Tag */}
                                         <div className="absolute top-4 right-4">
                                             {log.status === 'UKS' ? (
@@ -1421,7 +1421,7 @@ export default function HealthPage() {
 
                 {/* ─── TAB: INVENTARIS OBAT (INVENTORY) ─── */}
                 {activeTab === 'inventory' && (
-                    <div className="glass rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden animate-in fade-in duration-200">
+                    <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden animate-in fade-in duration-200">
                         {/* Toolbar */}
                         <div className="p-4 border-b border-[var(--color-border)] flex flex-col md:flex-row md:items-center gap-3 bg-[var(--color-surface-alt)]/20">
                             {/* Search bar */}
@@ -1576,7 +1576,7 @@ export default function HealthPage() {
                                 type="submit"
                                 form="record-form"
                                 disabled={submitting}
-                                className="h-9.5 px-5 sm:px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-emerald-600/20 transition flex items-center justify-center gap-2 disabled:opacity-50"
+                                className="h-9.5 px-5 sm:px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider shadow-md transition flex items-center justify-center gap-2 disabled:opacity-50"
                             >
                                 <Check className="w-3.5 h-3.5" />
                                 <span>{submitting ? 'Menyimpan...' : 'Simpan Catatan'}</span>
@@ -1783,7 +1783,7 @@ export default function HealthPage() {
                             <button
                                 type="submit"
                                 form="med-form"
-                                className="h-9.5 px-5 sm:px-6 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-indigo-500/20 transition flex items-center justify-center gap-2"
+                                className="h-9.5 px-5 sm:px-6 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-bold uppercase tracking-wider shadow-md transition flex items-center justify-center gap-2"
                             >
                                 <Check className="w-3.5 h-3.5" />
                                 <span>Simpan Obat</span>
@@ -1899,7 +1899,7 @@ export default function HealthPage() {
                             <button
                                 onClick={handleDeleteRecord}
                                 disabled={submitting}
-                                className="h-9.5 px-5 sm:px-6 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-md shadow-rose-600/20 disabled:opacity-50"
+                                className="h-9.5 px-5 sm:px-6 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-md disabled:opacity-50"
                             >
                                 {submitting ? 'Menghapus...' : 'Ya, Hapus'}
                             </button>
@@ -1933,7 +1933,7 @@ export default function HealthPage() {
                             <button
                                 onClick={handleSembuh}
                                 disabled={submitting}
-                                className="h-9.5 px-5 sm:px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20 disabled:opacity-50"
+                                className="h-9.5 px-5 sm:px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-md disabled:opacity-50"
                             >
                                 {submitting ? 'Memproses...' : 'Ya, Santri Sembuh'}
                             </button>

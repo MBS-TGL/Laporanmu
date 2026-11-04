@@ -90,7 +90,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                 onClick={() => setExpandedCardId(isExpanded ? null : v.id)}
                                 className={`w-8 h-8 rounded-xl border flex items-center justify-center transition-all active:scale-95 ${
                                     isExpanded 
-                                        ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm shadow-[var(--color-primary)]/10' 
+                                        ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm'
                                         : 'bg-[var(--color-surface-alt)]/50 border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)]'
                                 }`}
                             >
@@ -530,10 +530,10 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
     // Points Badge Helper
     const getPointStyle = (val) => {
         const abs = Math.abs(val)
-        if (val > 0) return 'bg-emerald-500 shadow-emerald-500/30'
-        if (abs >= 20) return 'bg-red-600 shadow-red-600/30'
-        if (abs >= 10) return 'bg-orange-500 shadow-orange-500/30'
-        return 'bg-amber-500 shadow-amber-500/30'
+        if (val > 0) return 'bg-emerald-500'
+        if (abs >= 20) return 'bg-red-600'
+        if (abs >= 10) return 'bg-orange-500'
+        return 'bg-amber-500'
     }
 
     // Export Logic
@@ -966,7 +966,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
             )}
 
             {/* Sub-Header Actions */}
-            <div className="glass rounded-[1.5rem] border border-[var(--color-border)] p-4 flex flex-col sm:flex-row items-center justify-between gap-4 bg-[var(--color-surface-alt)]/10">
+            <div className="rounded-[1.5rem] border border-[var(--color-border)] p-4 flex flex-col sm:flex-row items-center justify-between gap-4 bg-[var(--color-surface-alt)]/10">
                 <div>
                     <h3 className="text-sm sm:text-base font-bold text-[var(--color-text)]">{tp('rulesTitleConfig')}</h3>
                     <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
@@ -1015,7 +1015,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                     {canEdit && (
                         <button
                             onClick={handleAdd}
-                            className="h-9 px-3 rounded-xl bg-[var(--color-primary)] text-white flex items-center justify-center gap-1.5 transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 border border-white/10 text-xs font-bold uppercase tracking-wider whitespace-nowrap flex-1 sm:flex-initial"
+                            className="h-9 px-3 rounded-xl bg-[var(--color-primary)] text-white flex items-center justify-center gap-1.5 transition-all hover:scale-[1.02] active:scale-95 shadow-md border border-white/10 text-xs font-bold uppercase tracking-wider whitespace-nowrap flex-1 sm:flex-initial"
                             title={tp('rulesAdd')}
                         >
                             <Plus className="w-4 h-4 shrink-0" />
@@ -1038,7 +1038,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
 
 
             {/* Filters & Actions */}
-            <div className="glass rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
+            <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
                 {/* Row 1: Search + Quick Filters + Filter Toggle */}
                 <div className="grid grid-cols-[minmax(0,_1fr)_auto] items-center gap-x-2 gap-y-2.5 p-2 xs:p-2.5 lg:flex lg:flex-row lg:items-center lg:gap-0 lg:p-3">
 
@@ -1101,7 +1101,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                             onClick={toggleSelectAll}
                             className={`h-9 px-2.5 lg:px-3 rounded-xl border text-xs font-bold uppercase tracking-wider transition-all active:scale-95 flex items-center justify-center gap-2 ${
                                 selectedIds.length > 0
-                                    ? 'bg-indigo-500 border-indigo-500 text-white shadow-md shadow-indigo-500/20'
+                                    ? 'bg-indigo-500 border-indigo-500 text-white shadow-md'
                                     : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
                             }`}
                             title={tp('selectAll')}
@@ -1121,7 +1121,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                             onClick={() => setIsFilterOpen(!isFilterOpen)}
                             className={`h-9 px-2.5 lg:px-3 rounded-xl border text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
                                 isFilterOpen || activeFilterCount > 0
-                                    ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/30'
+                                    ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md'
                                     : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'
                             }`}
                             title={tp('advancedFilter')}
@@ -1188,7 +1188,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
 
                 {/* Advanced Filter Panel */}
                 {isFilterOpen && (
-                    <div className="border-t border-[var(--color-border)] p-3.5 bg-[var(--color-surface-alt)]/60 backdrop-blur-md animate-in fade-in slide-in-from-top-2 duration-300">
+                    <div className="border-t border-[var(--color-border)] p-3.5 bg-[var(--color-surface-alt)] animate-in fade-in slide-in-from-top-2 duration-300">
                         <div className="flex items-center justify-between mb-3.5">
                             <div className="flex items-center gap-2.5">
                                 <div className="w-1 h-3.5 bg-[var(--color-primary)] rounded-full" />
@@ -1280,7 +1280,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
             )}
 
             {/* Main Content Area */}
-            <div className="glass rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden mt-4">
+            <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden mt-4">
                 {loading ? (
                     <div className="p-6 space-y-4">
                         <div className="animate-pulse space-y-3">
@@ -1323,7 +1323,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                                     <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><rect x="0" y="0" width="5" height="5" rx="1" /><rect x="7" y="0" width="5" height="5" rx="1" /><rect x="0" y="7" width="5" height="5" rx="1" /><rect x="7" y="7" width="5" height="5" rx="1" /></svg>
                                                 </button>
                                                 {isColMenuOpen && createPortal(
-                                                    <div ref={colMenuRef} className="absolute z-[9999] w-44 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl p-2 space-y-0.5 animate-in fade-in zoom-in-95"
+                                                    <div ref={colMenuRef} className="absolute z-[9999] w-44 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 space-y-0.5 animate-in fade-in zoom-in-95"
                                                         style={{
                                                             top: menuPos.top,
                                                             right: menuPos.right,
@@ -1526,7 +1526,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                 type="submit"
                                 form="point-rule-form"
                                 disabled={submitting}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-[var(--color-primary)]/20 transition-all flex items-center justify-center gap-2 shrink-0"
+                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
                             >
                                 {submitting ? (
                                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -1640,7 +1640,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                         <p className="text-[11px] text-[var(--color-text-muted)] font-bold uppercase tracking-wider leading-relaxed">{tp('rulesBulkDeleteWarning')}</p>
                         <div className="flex gap-3 pt-4">
                             <button onClick={() => setIsBulkDeleteOpen(false)} className="h-11 flex-1 rounded-xl bg-[var(--color-surface-alt)] text-[var(--color-text)] font-black text-[10px] uppercase tracking-widest">{tp('cancel')}</button>
-                            <button onClick={handleBulkDelete} disabled={submitting} className="h-11 flex-1 rounded-xl bg-red-500 text-white font-black text-[10px] uppercase tracking-widest shadow-lg shadow-red-500/20 transition-all flex items-center justify-center">
+                                <button onClick={handleBulkDelete} disabled={submitting} className="h-11 flex-1 rounded-xl bg-red-500 text-white font-black text-[10px] uppercase tracking-widest shadow-lg transition-all flex items-center justify-center">
                                 {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : tp('rulesBtnBulkDeleteConfirm')}
                             </button>
                         </div>
@@ -1695,7 +1695,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                     setIsResetModalOpen(false)
                                     setIsResetConfirmOpen(true)
                                 }}
-                                className="h-10 px-6 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
+                                className="h-10 px-6 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
                             >
                                 <RotateCcw className="w-3.5 h-3.5" />
                                 <span>{tp('resetPointsBtnConfirm')}</span>
@@ -1746,7 +1746,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                                 }
                                             }}
                                             className={`col-span-full p-2.5 rounded-xl border text-left flex items-center gap-3 transition-all hover:scale-[1.01] active:scale-95 group mb-1 ${resetPointsClassIds.length === classesList.length
-                                                ? 'bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-500/20'
+                                                ? 'bg-orange-500 border-orange-500 text-white shadow-lg'
                                                 : 'border-orange-500/30 bg-orange-500/5 text-orange-600 hover:bg-orange-500/10'
                                                 }`}
                                         >
@@ -1775,7 +1775,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                                                     )
                                                 }}
                                                 className={`p-2.5 rounded-xl border text-left flex items-center gap-3 transition-all hover:scale-[1.01] active:scale-95 group ${isSelected
-                                                    ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20'
+                                                    ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-lg'
                                                     : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[var(--color-primary)]/40 hover:bg-[var(--color-surface-alt)]'
                                                     }`}
                                             >
@@ -1824,7 +1824,7 @@ export default function PointRulesTab({ showStats = true, initialPoin = [], init
                     mobileVariant="bottom-sheet"
                     confirmText={language === 'ar' ? 'نعم، أعد التعيين الآن' : language === 'en' ? 'Yes, Reset Now' : 'Ya, Reset Sekarang'}
                     confirmIcon={RotateCcw}
-                    confirmClassName="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-red-500/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                    confirmClassName="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
                     confirmDisabled={confirmText.toUpperCase() !== 'RESET'}
                     cancelText={tp('cancel')}
                     submitting={resettingPoints}

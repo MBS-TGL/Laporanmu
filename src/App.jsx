@@ -8,8 +8,7 @@ import {
   FeatureFlagsProvider, useFeatureFlags
 } from '@context'
 import DashboardLayout from '@core/layouts/DashboardLayout'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLock, faSpinner, faTools, faTriangleExclamation, faDoorOpen, faChevronLeft, faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
+import { LoaderCircle, Lock, Wrench, TriangleAlert } from 'lucide-react'
 import { GlobalErrorBoundary } from '@shared/components'
 import { Component } from 'react'
 
@@ -83,6 +82,11 @@ const ClassesPage = lazyRetry(() => import('@features/classes/pages/ClassesPage.
 const AcademicYearsPage = lazyRetry(() => import('@features/academic-years/pages/AcademicYearsPage.jsx'))
 const EnrollmentPage = lazyRetry(() => import('@features/enrollment/pages/EnrollmentPage.jsx'))
 const InventoryPage = lazyRetry(() => import('@features/inventory/pages/InventoryPage.jsx'))
+// Skorsing & Pembinaan di Rumah
+const SuspensionsPage = lazyRetry(() => import('@features/suspension/pages/SuspensionsPage.jsx'))
+const SuspensionDetailPage = lazyRetry(() => import('@features/suspension/pages/SuspensionDetailPage.jsx'))
+const SuspensionTasksPage = lazyRetry(() => import('@features/suspension/pages/SuspensionTasksPage.jsx'))
+const PublicSuspensionPage = lazyRetry(() => import('@features/suspension/pages/PublicSuspensionPage.jsx'))
 const PublicEnrollmentPage = lazyRetry(() => import('@features/public/pages/PublicEnrollmentPage.jsx'))
 const PublicStatusCheckPage = lazyRetry(() => import('@features/public/pages/PublicStatusCheckPage.jsx'))
 
@@ -191,7 +195,7 @@ function FlagRoute({ children, flag, label }) {
   if (loading) return (
     <DashboardLayout>
       <div className="flex items-center justify-center min-h-[60vh]">
-        <FontAwesomeIcon icon={faSpinner} className="animate-spin text-2xl text-[var(--color-primary)]" />
+        <LoaderCircle className="animate-spin text-2xl text-[var(--color-primary)]" />
       </div>
     </DashboardLayout>
   )
@@ -200,14 +204,12 @@ function FlagRoute({ children, flag, label }) {
     <DashboardLayout>
       <div className="flex flex-col items-center justify-center min-h-[70vh] p-6 relative overflow-hidden">
         {/* Decorative Background Elements */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[var(--color-primary)]/5 rounded-full blur-[80px] pointer-events-none" />
 
         <div className="relative z-10 flex flex-col items-center max-w-sm w-full">
           {/* Animated Icon Container */}
           <div className="relative mb-8">
-            <div className="absolute inset-0 bg-amber-500/20 rounded-3xl blur-xl animate-pulse" />
-            <div className="relative w-20 h-20 rounded-[2.5rem] bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-2xl shadow-orange-500/20">
-              <FontAwesomeIcon icon={faLock} className="text-3xl text-white drop-shadow-md" />
+            <div className="relative w-20 h-20 rounded-[2.5rem] bg-amber-400 flex items-center justify-center shadow-sm">
+              <Lock className="text-3xl text-white drop-shadow-md" />
             </div>
           </div>
 
@@ -252,7 +254,7 @@ function RoleFlagRoute({ children, roles = [], flag, label }) {
   if (loading) return (
     <DashboardLayout>
       <div className="flex items-center justify-center min-h-[60vh]">
-        <FontAwesomeIcon icon={faSpinner} className="animate-spin text-2xl text-[var(--color-primary)]" />
+        <LoaderCircle className="animate-spin text-2xl text-[var(--color-primary)]" />
       </div>
     </DashboardLayout>
   )
@@ -261,13 +263,11 @@ function RoleFlagRoute({ children, roles = [], flag, label }) {
   if (!hasRole) return (
     <DashboardLayout>
       <div className="flex flex-col items-center justify-center min-h-[70vh] p-6 relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-rose-500/5 rounded-full blur-[80px] pointer-events-none" />
 
         <div className="relative z-10 flex flex-col items-center max-w-sm w-full">
           <div className="relative mb-8">
-            <div className="absolute inset-0 bg-rose-500/20 rounded-3xl blur-xl" />
-            <div className="relative w-20 h-20 rounded-[2.5rem] bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center shadow-2xl shadow-rose-500/20">
-              <FontAwesomeIcon icon={faLock} className="text-3xl text-white drop-shadow-md" />
+            <div className="relative w-20 h-20 rounded-[2.5rem] bg-rose-400 flex items-center justify-center shadow-sm">
+              <Lock className="text-3xl text-white drop-shadow-md" />
             </div>
           </div>
 
@@ -296,13 +296,11 @@ function RoleFlagRoute({ children, roles = [], flag, label }) {
   if (flag && flags[flag] === false) return (
     <DashboardLayout>
       <div className="flex flex-col items-center justify-center min-h-[70vh] p-6 relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-amber-500/5 rounded-full blur-[80px] pointer-events-none" />
 
         <div className="relative z-10 flex flex-col items-center max-w-sm w-full">
           <div className="relative mb-8">
-            <div className="absolute inset-0 bg-amber-500/20 rounded-3xl blur-xl animate-pulse" />
-            <div className="relative w-20 h-20 rounded-[2.5rem] bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-2xl shadow-orange-500/20">
-              <FontAwesomeIcon icon={faLock} className="text-3xl text-white drop-shadow-md" />
+            <div className="relative w-20 h-20 rounded-[2.5rem] bg-amber-400 flex items-center justify-center shadow-sm">
+              <Lock className="text-3xl text-white drop-shadow-md" />
             </div>
           </div>
 
@@ -338,15 +336,13 @@ function MaintenancePage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-[var(--color-app-bg)] px-4 relative overflow-hidden">
       {/* Ambient glows */}
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div className="absolute -top-24 -right-24 w-[520px] h-[520px] bg-amber-500/5 rounded-full blur-[120px]" />
-        <div className="absolute -bottom-24 -left-24 w-[520px] h-[520px] bg-orange-500/5 rounded-full blur-[120px]" />
       </div>
 
       <div className="relative z-10 text-center max-w-md w-full">
         {/* Icon */}
         <div className="flex items-center justify-center mb-6">
           <div className="w-24 h-24 rounded-3xl bg-amber-500/10 border-2 border-amber-500/20 flex items-center justify-center shadow-xl shadow-amber-500/10">
-            <FontAwesomeIcon icon={faTools} className="text-4xl text-amber-500" />
+            <Wrench className="text-4xl text-amber-500" />
           </div>
         </div>
 
@@ -362,9 +358,9 @@ function MaintenancePage() {
         </p>
 
         {/* Info card */}
-        <div className="glass rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 mb-8 text-left">
+        <div className="bg-surface rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 mb-8 text-left">
           <div className="flex items-start gap-3">
-            <FontAwesomeIcon icon={faTriangleExclamation} className="text-amber-500 mt-0.5 shrink-0" />
+            <TriangleAlert className="text-amber-500 mt-0.5 shrink-0" />
             <div>
               <p className="text-[12px] font-black text-amber-700 mb-1">Informasi</p>
               <p className="text-[11px] text-amber-600/80 leading-relaxed">
@@ -457,6 +453,7 @@ function AppRoutes() {
 
         {/* ── Public ── */}
         <Route path="/" element={<LandingPage />} />
+        <Route path="/skorsing/:token" element={<PublicSuspensionPage />} />
         <Route path="/psb" element={<PublicEnrollmentPage />} />
         <Route path="/psb/status" element={<PublicStatusCheckPage />} />
         <Route path="/check" element={<ParentCheckPage />} />
@@ -497,6 +494,21 @@ function AppRoutes() {
               <Route path="archive" element={<RaportArchivePage isAcademic={true} />} />
             </Route>
             <Route path="/boarding/behavior" element={<FlagRoute flag="module.poin" label="Kedisiplinan & Poin"><BehaviorPage /></FlagRoute>} />
+            <Route path="/suspensions" element={
+              <RoleFlagRoute roles={DEV_ADMIN} flag="module.suspension" label="Skorsing">
+                <SuspensionsPage />
+              </RoleFlagRoute>
+            } />
+            <Route path="/suspensions/:id" element={
+              <RoleFlagRoute roles={DEV_ADMIN}>
+                <SuspensionDetailPage />
+              </RoleFlagRoute>
+            } />
+            <Route path="/tugas-skorsing" element={
+              <RoleFlagRoute roles={DEV_ADMIN_TEACHER} flag="module.suspension" label="Tugas Skorsing">
+                <SuspensionTasksPage />
+              </RoleFlagRoute>
+            } />
             <Route path="/attendance" element={<FlagRoute flag="module.absensi" label="Absensi Bulanan"><AttendancePage /></FlagRoute>} />
             <Route path="/academic/halaqah" element={<FlagRoute flag="nav.halaqah" label="Presensi Halaqah"><HalaqahPage /></FlagRoute>} />
             <Route path="/settings" element={<SettingsPage />} />

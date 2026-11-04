@@ -1,20 +1,34 @@
-import React from 'react'
 import { STATUS_MAP } from '../utils/leavePermitConstants'
+import { Badge } from '@shared/components'
+
+// Status → varian token Badge (satu sumber warna, pola docs/ui.md).
+// issued=primary · departed=warning · returned=success · overdue=danger · cancelled=neutral
+const VARIANT_BY_STATUS = {
+  issued: 'primary',
+  departed: 'warning',
+  returned: 'success',
+  overdue: 'danger',
+  cancelled: 'neutral',
+}
+
+// Ukuran via override padding — base Badge: px-2.5 py-0.5 text-xs.
+const SIZE_CLASS = {
+  xs: '!px-1.5',
+  sm: '!px-2',
+  md: '',
+}
 
 export default function LeavePermitStatusBadge({ status, size = 'sm' }) {
   const meta = STATUS_MAP[status] || STATUS_MAP.issued
   const Icon = meta.icon
 
-  const sizeClasses = {
-    xs: 'px-1.5 py-0.5 text-[10px] gap-1',
-    sm: 'px-2 py-0.5 text-[11px] gap-1.5',
-    md: 'px-2.5 py-1 text-xs gap-1.5',
-  }
-
   return (
-    <span className={`inline-flex items-center font-bold rounded-full border ${meta.color} ${sizeClasses[size] || sizeClasses.sm}`}>
+    <Badge
+      variant={VARIANT_BY_STATUS[status] || VARIANT_BY_STATUS.issued}
+      className={SIZE_CLASS[size] || SIZE_CLASS.sm}
+    >
       <Icon className="w-3 h-3 shrink-0" />
       {meta.label}
-    </span>
+    </Badge>
   )
 }

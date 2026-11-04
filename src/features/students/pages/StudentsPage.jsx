@@ -3,97 +3,11 @@ import { useState, useRef, useEffect, useCallback, memo, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createPortal } from 'react-dom'
 import { createRoot } from 'react-dom/client'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faArrowRightArrowLeft,
-    faTimes,
-    faLink,
-    faCheck,
-    faRocket,
-    faLightbulb,
-    faRotateLeft,
-    faXmark,
-    faUserTie,
-    faInfoCircle,
-    faSquareCheck,
-    faTable,
-    faThumbtack,
-    faPlus,
-    faSearch,
-    faEdit,
-    faTrash,
-    faMars,
-    faVenus,
-    faDownload,
-    faPen,
-    faShieldHalved,
-    faPenNib,
-    faPaperPlane,
-    faUpload,
-    faUsers,
-    faTrophy,
-    faSpinner,
-    faHistory,
-    faQrcode,
-    faIdCard,
-    faArrowTrendUp,
-    faArrowTrendDown,
-    faCheckCircle,
-    faGraduationCap,
-    faCamera,
-    faChevronLeft,
-    faChevronRight,
-    faAnglesLeft,
-    faAnglesRight,
-    faTriangleExclamation,
-    faPrint,
-    faSliders,
-    faTableList,
-    faSchool,
-    faBullhorn,
-    faArchive,
-    faBoxArchive,
-    faCrown,
-    faCheckDouble,
-    faFileLines,
-    faImage,
-    faBolt,
-    faTags,
-    faEye,
-    faLayerGroup,
-    faEyeSlash,
-    faCircleExclamation,
-    faKeyboard,
-    faCircleInfo,
-    faArrowRight,
-    faArrowLeft,
-    faSync,
-    faRotate,
-    faArrowUpFromBracket,
-    faFileImport,
-    faFileExport,
-    faClipboardList,
-    faSortAlphaDown,
-    faArrowUp91,
-    faDoorOpen,
-    faLevelDownAlt,
-    faChartPie,
-    faClockRotateLeft
-} from '@fortawesome/free-solid-svg-icons'
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
+import { Archive, ArrowDownAZ, ArrowUpNarrowWide, Briefcase, Camera, ChartPie, Check, CircleAlert, CircleCheck, Crown, DoorOpen, Download, EyeOff, FileInput, FileOutput, FileText, GraduationCap, Image, Info, Keyboard, Link, LoaderCircle, PenTool, Plus, Printer, Rocket, RotateCcw, School, Search, Send, ShieldHalf, SlidersHorizontal, Table, TableProperties, Tags, Trash2, TriangleAlert, Trophy, Users, X, Zap } from 'lucide-react'
 import { LIST_KAMAR } from '@utils/reports/raportConstants'
 
 import DashboardLayout from '@core/layouts/DashboardLayout'
-import {
-    Breadcrumb,
-    PageHeader,
-    Modal,
-    RichSelect,
-    StatsCarousel,
-    StatCard,
-    EmptyState,
-    Pagination
-} from '@shared/components'
+import { Breadcrumb, PageHeader, Modal, RichSelect, StatsCarousel, StatCard, EmptyState, Pagination, MarsIcon, VenusIcon, WhatsAppIcon } from '@shared/components'
 import { useToast, useFlag, useLanguage } from '@context'
 import { supabase } from '@lib/supabase'
 import mbsLogo from '@assets/images/logos/logo-mbs.png'
@@ -175,9 +89,9 @@ const DebouncedSearchInput = memo(({ searchQuery, onSearch, inputRef, isLoading 
         <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--color-text-muted)] text-sm group-focus-within:text-[var(--color-primary)] transition-colors">
                 {isLoading ? (
-                    <FontAwesomeIcon icon={faSpinner} className="animate-spin text-xs text-[var(--color-primary)]" />
+                    <LoaderCircle className="animate-spin text-xs text-[var(--color-primary)]" />
                 ) : (
-                    <FontAwesomeIcon icon={faSearch} />
+                    <Search />
                 )}
             </div>
             <input
@@ -223,7 +137,7 @@ const SelectedStudentsCarousel = memo(({
         <div className="space-y-3">
             <div className="flex items-center justify-between px-1">
                 <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest flex items-center gap-2">
-                    <FontAwesomeIcon icon={faUsers} className="opacity-40" /> Siswa Terpilih
+                    <Users className="opacity-40" /> Siswa Terpilih
                 </label>
                 <span className="text-[10px] font-black text-[var(--color-primary)] bg-[var(--color-primary)]/10 px-2 py-0.5 rounded-full">{selectedStudents.length} Orang</span>
             </div>
@@ -237,7 +151,7 @@ const SelectedStudentsCarousel = memo(({
 
                     // Default styles
                     let statusColor = 'border-[var(--color-border)] bg-[var(--color-surface)]';
-                    let icon = faUserTie;
+                    let icon = Briefcase;
                     let iconColor = 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]';
 
                     // Promote specific logic
@@ -248,18 +162,20 @@ const SelectedStudentsCarousel = memo(({
 
                         if (targetLevel < originLevel) {
                             statusColor = 'bg-red-50 border-red-200';
-                            icon = faTriangleExclamation;
-                            iconColor = 'bg-red-500 text-white shadow-lg shadow-red-500/20';
+                            icon = TriangleAlert;
+                            iconColor = 'bg-red-500 text-white shadow-lg';
                         } else if (targetLevel === originLevel) {
                             statusColor = 'bg-amber-50 border-amber-200';
-                            icon = faRotateLeft;
-                            iconColor = 'bg-amber-500 text-white shadow-lg shadow-amber-500/20';
+                            icon = RotateCcw;
+                            iconColor = 'bg-amber-500 text-white shadow-lg';
                         } else if (targetLevel > originLevel) {
                             statusColor = 'bg-indigo-50 border-indigo-200';
-                            icon = faRocket;
-                            iconColor = 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/20';
+                            icon = Rocket;
+                            iconColor = 'bg-indigo-500 text-white shadow-lg';
                         }
                     }
+
+                    const Icon = icon;
 
                     return (
                         <button
@@ -276,19 +192,19 @@ const SelectedStudentsCarousel = memo(({
                         >
                             <div className="flex items-center gap-2.5 w-full transition-all duration-300 group-hover:blur-[2px] group-hover:opacity-30">
                                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-black overflow-hidden shrink-0 transition-all duration-500 group-hover:rotate-6 ${iconColor}`}>
-                                    {student.foto ? <img src={student.foto} alt="" className="w-full h-full object-cover" /> : (student.name?.charAt(0) || '?')}
+                                    {student.foto ? <img src={student.foto} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" /> : (student.name?.charAt(0) || '?')}
                                 </div>
                                 <div className="min-w-0 flex-1">
                                     <p className="text-[10px] font-black text-[var(--color-text)] truncate leading-tight tracking-tight">{student.name}</p>
                                     <p className="text-[8px] truncate font-bold uppercase tracking-wider mt-0.5 flex items-center gap-1 text-[var(--color-text-muted)] opacity-60">
-                                        <FontAwesomeIcon icon={isPromoteMode && bulkClassId ? icon : faUserTie} className="text-[7px]" />
+                                        {isPromoteMode && bulkClassId ? <Icon className="text-[7px]" /> : <Briefcase className="text-[7px]" />}
                                         {student.className || 'Tanpa Kelas'}
                                     </p>
                                 </div>
                             </div>
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-20">
-                                <div className="w-7 h-7 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg shadow-red-500/40 scale-75 group-hover:scale-110 transition-transform duration-300">
-                                    <FontAwesomeIcon icon={faXmark} className="text-[10px]" />
+                                <div className="w-7 h-7 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg scale-75 group-hover:scale-110 transition-transform duration-300">
+                                    <X className="text-[10px]" loading="lazy" decoding="async" />
                                 </div>
                             </div>
                         </button>
@@ -644,7 +560,7 @@ export default function StudentsPage() {
                 {/* Read-only Banner */}
                 {!canEdit && (
                     <div className="px-4 py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center gap-2">
-                        <FontAwesomeIcon icon={faEyeSlash} className="text-rose-500 shrink-0 text-xs" />
+                        <EyeOff className="text-rose-500 shrink-0 text-xs" />
                         <p className="text-[11px] font-bold text-rose-600">Mode Read-only —” Edit data siswa dinonaktifkan oleh administrator.</p>
                     </div>
                 )}
@@ -664,18 +580,18 @@ export default function StudentsPage() {
                             className={`h-9 w-9 rounded-lg border flex items-center justify-center text-sm transition-all active:scale-95 ${isHeaderMenuOpen ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
                             title="Aksi lainnya"
                         >
-                            <FontAwesomeIcon icon={faSliders} />
+                            <SlidersHorizontal />
                         </button>
 
                         {/* Portaled Header Menu Dropdown */}
                         {headerMenuMounted && headerMenuRect && createPortal(
                             <>
                                 <div
-                                    className={`fixed inset-0 z-[9990] bg-black/5 backdrop-blur-[1px] transition-opacity duration-200 ${isHeaderMenuOpen ? 'opacity-100' : 'opacity-0'}`}
+                                    className={`fixed inset-0 z-[9990] bg-black/5 transition-opacity duration-200 ${isHeaderMenuOpen ? 'opacity-100' : 'opacity-0'}`}
                                     onClick={() => setIsHeaderMenuOpen(false)}
                                 />
                                 <div
-                                    className={`fixed z-[9991] w-56 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl p-2 transition-all duration-200 ease-out origin-top-right
+                                    className={`fixed z-[9991] w-56 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 transition-all duration-200 ease-out origin-top-right
                                         ${isHeaderMenuOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2'}`}
                                     style={{
                                         top: headerMenuRect.bottom + 8,
@@ -687,7 +603,7 @@ export default function StudentsPage() {
                                         <button onClick={() => { setIsHeaderMenuOpen(false); handleImportClick() }}
                                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                             <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <FontAwesomeIcon icon={faFileImport} className="text-xs" />
+                                                <FileInput className="text-xs" />
                                             </div>
                                             <div className="text-left">
                                                 <p className="text-[11px] font-black leading-tight">Import CSV / Excel</p>
@@ -699,7 +615,7 @@ export default function StudentsPage() {
                                         <button onClick={() => { setIsHeaderMenuOpen(false); setActiveModal('gsheets') }}
                                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                             <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <FontAwesomeIcon icon={faLink} className="text-xs" />
+                                                <Link className="text-xs" />
                                             </div>
                                             <div className="text-left">
                                                 <p className="text-[11px] font-black leading-tight">Import GSheets</p>
@@ -711,7 +627,7 @@ export default function StudentsPage() {
                                         <button onClick={() => { setIsHeaderMenuOpen(false); setIsExportModalOpen(true) }}
                                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                             <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <FontAwesomeIcon icon={faFileExport} className="text-xs" />
+                                                <FileOutput className="text-xs" />
                                             </div>
                                             <div className="text-left">
                                                 <p className="text-[11px] font-black leading-tight">Export Data</p>
@@ -723,7 +639,7 @@ export default function StudentsPage() {
                                         <button onClick={() => { setIsHeaderMenuOpen(false); setActiveModal('bulkPhoto') }}
                                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--text-color)] transition-all group">
                                             <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <FontAwesomeIcon icon={faCamera} className="text-xs" />
+                                                <Camera className="text-xs" />
                                             </div>
                                             <div className="text-left">
                                                 <p className="text-[11px] font-black leading-tight">Bulk Foto</p>
@@ -739,7 +655,7 @@ export default function StudentsPage() {
                                         <button onClick={() => { setIsHeaderMenuOpen(false); fetchArchivedStudents(); setActiveModal('archived') }}
                                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                             <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <FontAwesomeIcon icon={faBoxArchive} className="text-xs" />
+                                                <Archive className="text-xs" />
                                             </div>
                                             <div className="text-left">
                                                 <p className="text-[11px] font-black leading-tight">Arsip Siswa</p>
@@ -754,7 +670,7 @@ export default function StudentsPage() {
                                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[var(--color-text)] transition-all group ${!canEdit ? 'opacity-40 cursor-not-allowed' : 'hover:bg-[var(--color-surface-alt)]'}`}
                                         >
                                             <div className="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <FontAwesomeIcon icon={faRotateLeft} className="text-xs" />
+                                                <RotateCcw className="text-xs" />
                                             </div>
                                             <div className="text-left">
                                                 <p className="text-[11px] font-black leading-tight">Reset Poin</p>
@@ -778,15 +694,15 @@ export default function StudentsPage() {
                                 }`}
                             title="Keyboard Shortcuts (?)"
                         >
-                            <FontAwesomeIcon icon={faKeyboard} className="text-sm" />
+                            <Keyboard className="text-sm" />
                         </button>
 
                         {/* Portaled Keyboard Shortcuts Dropdown */}
                         {isShortcutOpen && shortcutRect && createPortal(
                             <>
-                                <div className="fixed inset-0 z-[9990] bg-black/5 backdrop-blur-[1px]" onClick={() => setIsShortcutOpen(false)} />
+                                <div className="fixed inset-0 z-[9990] bg-black/5" onClick={() => setIsShortcutOpen(false)} />
                                 <div
-                                    className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl shadow-black/10 overflow-hidden text-left animate-in fade-in zoom-in-95 duration-200"
+                                    className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden text-left animate-in fade-in zoom-in-95 duration-200"
                                     style={{
                                         top: shortcutRect.bottom + 8,
                                         left: Math.max(10, shortcutRect.right - 288)
@@ -847,7 +763,7 @@ export default function StudentsPage() {
                                 className={`h-9 w-9 sm:w-auto sm:px-3 rounded-lg border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 ${isPrivacyMode ? 'bg-amber-500/10 border-amber-500/30 text-amber-600' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'} `}
                                 title={isPrivacyMode ? "Matikan Mode Privasi" : "Aktifkan Mode Privasi"}
                             >
-                                <FontAwesomeIcon icon={isPrivacyMode ? faEyeSlash : faEye} className="text-sm" />
+                                {isPrivacyMode ? <EyeOff className="text-sm" /> : <Eye className="text-sm" />}
                                 <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline">
                                     Privasi
                                 </span>
@@ -858,9 +774,9 @@ export default function StudentsPage() {
                             <button
                                 onClick={handleAdd}
                                 disabled={!canEdit}
-                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 disabled:opacity-40 disabled:cursor-not-allowed border border-white/10"
+                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10"
                             >
-                                <FontAwesomeIcon icon={faPlus} className="text-[10px]" />
+                                <Plus className="text-[10px]" />
                                 <span>{canEdit ? 'Tambah Siswa' : 'Read-only'}</span>
                             </button>
                         )}
@@ -873,7 +789,7 @@ export default function StudentsPage() {
                     <StatsCarousel count={4} cols={4}>
                         <StatCard
                             key="total"
-                            icon={faUsers}
+                            icon={Users}
                             label="Total Siswa"
                             value={globalStats.total}
                             subValue="Siswa aktif terdaftar"
@@ -881,7 +797,7 @@ export default function StudentsPage() {
                         />
                         <StatCard
                             key="boys"
-                            icon={faMars}
+                            icon={MarsIcon}
                             label="Putra"
                             value={globalStats.boys}
                             subValue={`${Math.round((globalStats.boys / (globalStats.total || 1)) * 100)}% dari total siswa`}
@@ -889,7 +805,7 @@ export default function StudentsPage() {
                         />
                         <StatCard
                             key="girls"
-                            icon={faVenus}
+                            icon={VenusIcon}
                             label="Putri"
                             value={globalStats.girls}
                             subValue={`${Math.round((globalStats.girls / (globalStats.total || 1)) * 100)}% dari total siswa`}
@@ -897,7 +813,7 @@ export default function StudentsPage() {
                         />
                         <StatCard
                             key="points"
-                            icon={faTrophy}
+                            icon={Trophy}
                             label="Rata-rata Poin"
                             value={globalStats.avgPoints}
                             trend={globalStats.avgPointsLastWeek !== null ? Math.abs(globalStats.avgPointsLastWeek) : null}
@@ -920,7 +836,7 @@ export default function StudentsPage() {
                                 className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all hover:scale-[1.02] active:scale-95 shrink-0 ${filterPointMode === 'risk' ? 'border-red-500 bg-red-500/5 ring-1 ring-red-500' : 'bg-red-500/[0.08] border-red-500/20 hover:bg-red-500/[0.15] text-red-600'}`}
                             >
                                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${filterPointMode === 'risk' ? 'bg-red-500 text-white' : 'bg-red-500/15'}`}>
-                                    <FontAwesomeIcon icon={faTriangleExclamation} className="text-[10px]" />
+                                    <TriangleAlert className="text-[10px]" />
                                 </div>
                                 <div className="text-left whitespace-nowrap">
                                     <p className="text-[10px] font-black leading-none">{globalStats.risk} Berisiko</p>
@@ -936,7 +852,7 @@ export default function StudentsPage() {
                                 className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all hover:scale-[1.02] active:scale-95 shrink-0 ${filterMissing === 'all' ? 'border-amber-500 bg-amber-500/5 ring-1 ring-amber-500' : 'bg-amber-500/[0.08] border-amber-500/20 hover:bg-amber-500/[0.15]'}`}
                             >
                                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${filterMissing === 'all' ? 'bg-amber-500 text-white' : 'bg-amber-500/15'}`}>
-                                    <FontAwesomeIcon icon={faCircleExclamation} className="text-amber-500 text-[10px]" />
+                                    <CircleAlert className="text-amber-500 text-[10px]" />
                                 </div>
                                 <div className="text-left whitespace-nowrap">
                                     <p className={`text-[10px] font-black leading-none ${filterMissing === 'photo' ? 'text-amber-600' : 'text-amber-600 dark:text-amber-400'}`}>{globalStats.incompleteCount} Tidak Lengkap</p>
@@ -949,7 +865,7 @@ export default function StudentsPage() {
                         {globalStats.avgPointsLastWeek !== null && (
                             <div className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all shrink-0 ${globalStats.avgPointsLastWeek >= 0 ? 'bg-emerald-500/[0.08] border-emerald-500/20' : 'bg-red-500/[0.08] border-red-500/20'}`}>
                                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${globalStats.avgPointsLastWeek >= 0 ? 'bg-emerald-500/15' : 'bg-red-500/15'}`}>
-                                    <FontAwesomeIcon icon={globalStats.avgPointsLastWeek >= 0 ? faArrowTrendUp : faArrowTrendDown} className={`text-[10px] ${globalStats.avgPointsLastWeek >= 0 ? 'text-emerald-500' : 'text-red-500'}`} />
+                                    {globalStats.avgPointsLastWeek >= 0 ? <TrendingUp className={`text-[10px] ${globalStats.avgPointsLastWeek >= 0 ? 'text-emerald-500' : 'text-red-500'}`} /> : <TrendingDown className={`text-[10px] ${globalStats.avgPointsLastWeek >= 0 ? 'text-emerald-500' : 'text-red-500'}`} />}
                                 </div>
                                 <div className="text-left whitespace-nowrap">
                                     <p className={`text-[10px] font-black leading-none ${globalStats.avgPointsLastWeek >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
@@ -964,7 +880,7 @@ export default function StudentsPage() {
                         {globalStats.topPerformer && (
                             <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-indigo-500/[0.08] border border-indigo-500/20 transition-all shrink-0">
                                 <div className="w-7 h-7 rounded-lg bg-indigo-500/15 flex items-center justify-center shrink-0">
-                                    <FontAwesomeIcon icon={faCrown} className="text-indigo-500 text-[10px]" />
+                                    <Crown className="text-indigo-500 text-[10px]" />
                                 </div>
                                 <div className="text-left whitespace-nowrap">
                                     <p className="text-[10px] font-black text-indigo-500 leading-none truncate max-w-[140px]">{globalStats.topPerformer.name}</p>
@@ -980,7 +896,7 @@ export default function StudentsPage() {
                                 className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all hover:scale-[1.02] active:scale-95 shrink-0 ${filterClass === globalStats.worstClass.id ? 'border-orange-500 bg-orange-500/5 ring-1 ring-orange-500' : 'bg-orange-500/[0.08] border-orange-500/20 hover:bg-orange-500/[0.15]'}`}
                             >
                                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${filterClass === globalStats.worstClass.id ? 'bg-orange-500 text-white' : 'bg-orange-500/15'}`}>
-                                    <FontAwesomeIcon icon={faSchool} className="text-orange-500 text-[10px]" />
+                                    <School className="text-orange-500 text-[10px]" />
                                 </div>
                                 <div className="text-left whitespace-nowrap">
                                     <p className={`text-[10px] font-black leading-none truncate max-w-[140px] ${filterClass === globalStats.worstClass.id ? 'text-orange-600' : 'text-orange-600 dark:text-orange-400'}`}>{globalStats.worstClass.name}</p>
@@ -994,7 +910,7 @@ export default function StudentsPage() {
                 {/* ———————————————————————————————————— END INSIGHT ROW ———————————————————————————————————— */}
 
                 {/* Filters & Sort */}
-                <div className="glass rounded-[1.5rem] mb-4 border border-[var(--color-border)] overflow-hidden">
+                <div className="bg-surface rounded-[1.5rem] mb-4 border border-[var(--color-border)] overflow-hidden">
 
                     {/* Row 1: Search + Quick Filters + Action Buttons */}
                     <div className="flex items-center gap-2 p-2.5 lg:p-3">
@@ -1015,9 +931,9 @@ export default function StudentsPage() {
                             {/* Group 1: Status */}
                             <div className="flex items-center gap-1.5 shrink-0">
                                 {[
-                                    { id: '', label: 'Semua', icon: faUsers },
-                                    { id: 'aktif', label: 'Aktif', icon: faCheckCircle },
-                                    { id: 'lulus', label: 'Lulus', icon: faGraduationCap },
+                                    { id: '', label: 'Semua', icon: Users },
+                                    { id: 'aktif', label: 'Aktif', icon: CircleCheck },
+                                    { id: 'lulus', label: 'Lulus', icon: GraduationCap },
                                 ].map((s) => (
                                     <button
                                         key={s.id}
@@ -1027,7 +943,7 @@ export default function StudentsPage() {
                                             : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5 hover:text-[var(--color-primary)]'
                                             }`}
                                     >
-                                        <FontAwesomeIcon icon={s.icon} className={`text-[10px] ${filterStatus === s.id ? 'opacity-100' : 'opacity-30'}`} />
+                                        <s.icon className={`text-[10px] ${filterStatus === s.id ? 'opacity-100' : 'opacity-30'}`} />
                                         {s.label}
                                     </button>
                                 ))}
@@ -1039,8 +955,8 @@ export default function StudentsPage() {
                             {/* Group 2: Gender */}
                             <div className="flex items-center gap-1.5 shrink-0">
                                 {[
-                                    { id: 'L', label: 'Putra', icon: faMars, activeCls: 'bg-blue-500 border-blue-500' },
-                                    { id: 'P', label: 'Putri', icon: faVenus, activeCls: 'bg-pink-500 border-pink-500' },
+                                    { id: 'L', label: 'Putra', icon: MarsIcon, activeCls: 'bg-blue-500 border-blue-500' },
+                                    { id: 'P', label: 'Putri', icon: VenusIcon, activeCls: 'bg-pink-500 border-pink-500' },
                                 ].map((g) => (
                                     <button
                                         key={g.id}
@@ -1050,7 +966,7 @@ export default function StudentsPage() {
                                             : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5 hover:text-[var(--color-primary)]'
                                             }`}
                                     >
-                                        <FontAwesomeIcon icon={g.icon} className={`text-[10px] ${filterGender === g.id ? 'opacity-100' : 'opacity-30'}`} />
+                                        <g.icon className={`text-[10px] ${filterGender === g.id ? 'opacity-100' : 'opacity-30'}`} />
                                         {g.label}
                                     </button>
                                 ))}
@@ -1064,7 +980,7 @@ export default function StudentsPage() {
                                         : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-amber-500/30 hover:bg-amber-500/5 hover:text-amber-600'
                                         }`}
                                 >
-                                    <FontAwesomeIcon icon={faSortAlphaDown} className={`text-[10px] ${sortBy.includes('name') ? 'opacity-100' : 'opacity-30'}`} />
+                                    <ArrowDownAZ className={`text-[10px] ${sortBy.includes('name') ? 'opacity-100' : 'opacity-30'}`} />
                                     Nama {sortBy === 'name' ? 'A-Z' : 'Z-A'}
                                 </button>
                                 <button
@@ -1074,7 +990,7 @@ export default function StudentsPage() {
                                         : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-emerald-500/30 hover:bg-emerald-500/5 hover:text-emerald-600'
                                         }`}
                                 >
-                                    <FontAwesomeIcon icon={faArrowUp91} className={`text-[10px] ${sortBy.includes('points') ? 'opacity-100' : 'opacity-30'}`} />
+                                    <ArrowUpNarrowWide className={`text-[10px] ${sortBy.includes('points') ? 'opacity-100' : 'opacity-30'}`} />
                                     {sortBy === '-points' ? 'Poin Tertinggi' : 'Poin Terendah'}
                                 </button>
                             </div>
@@ -1091,7 +1007,7 @@ export default function StudentsPage() {
                                 className={`h-9 px-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${selectedStudentIds.length > 0 ? 'bg-indigo-500 border-indigo-500 text-white' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
                                 title="Pilih Semua / Batal"
                             >
-                                <FontAwesomeIcon icon={selectedStudentIds.length > 0 ? faCheckDouble : faSquareCheck} />
+                                {selectedStudentIds.length > 0 ? <CheckCheck /> : <SquareCheck />}
                                 <span className="hidden xs:inline">{selectedStudentIds.length > 0 ? 'Terpilih' : 'Pilih'}</span>
                                 {selectedStudentIds.length > 0 && (
                                     <span className="w-4 h-4 rounded-full bg-white/20 text-white text-[9px] font-black flex items-center justify-center">
@@ -1103,9 +1019,9 @@ export default function StudentsPage() {
                             {canAdvancedFilter && (
                                 <button
                                     onClick={() => setShowAdvancedFilter(!showAdvancedFilter)}
-                                    className={`h-9 px-3 sm:px-4 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${showAdvancedFilter || activeFilterCount > 0 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/30' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
+                                    className={`h-9 px-3 sm:px-4 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${showAdvancedFilter || activeFilterCount > 0 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
                                 >
-                                    <FontAwesomeIcon icon={faSliders} />
+                                    <SlidersHorizontal />
                                     <span className="hidden xs:inline">Lainnya</span>
                                     {activeFilterCount > 0 && (
                                         <span className="w-4 h-4 rounded-full bg-white/30 text-white text-[9px] font-black flex items-center justify-center">
@@ -1125,30 +1041,30 @@ export default function StudentsPage() {
                                 {searchQuery && (
                                     <button type="button" onClick={() => setSearchQuery('')}
                                         className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-[10px] font-black text-[var(--color-text)]" title="Hapus pencarian">
-                                        <FontAwesomeIcon icon={faSearch} className="text-[10px] opacity-60" />
+                                        <Search className="text-[10px] opacity-60" />
                                         <span className="max-w-[180px] truncate">"{searchQuery}"</span>
                                         <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500 transition-colors">
-                                            <FontAwesomeIcon icon={faXmark} className="text-[10px]" />
+                                            <X className="text-[10px]" />
                                         </span>
                                     </button>
                                 )}
                                 {filterClass && (
                                     <button type="button" onClick={() => { setFilterClass(''); setFilterClasses([]) }}
                                         className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 text-[10px] font-black text-[var(--color-primary)]" title="Hapus filter kelas">
-                                        <FontAwesomeIcon icon={faSchool} className="text-[10px] opacity-70" />
+                                        <School className="text-[10px] opacity-70" />
                                         {classesList.find(c => c.id === filterClass)?.name || 'Kelas'}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-[var(--color-primary)]/20 flex items-center justify-center text-[var(--color-primary)] opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <FontAwesomeIcon icon={faXmark} className="text-[10px]" />
+                                            <X className="text-[10px]" />
                                         </span>
                                     </button>
                                 )}
                                 {filterGender && (
                                     <button type="button" onClick={() => setFilterGender('')}
                                         className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-[10px] font-black text-[var(--color-text)]" title="Hapus filter gender">
-                                        <FontAwesomeIcon icon={filterGender === 'L' ? faMars : faVenus} className="text-[10px] opacity-70" />
+                                        {filterGender === 'L' ? <MarsIcon className="text-[10px] opacity-70" /> : <VenusIcon className="text-[10px] opacity-70" />}
                                         Gender: {filterGender === 'L' ? 'Putra' : 'Putri'}
                                         <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500 transition-colors">
-                                            <FontAwesomeIcon icon={faXmark} className="text-[10px]" />
+                                            <X className="text-[10px]" />
                                         </span>
                                     </button>
                                 )}
@@ -1157,17 +1073,17 @@ export default function StudentsPage() {
                                         className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-[10px] font-black text-amber-600" title="Hapus filter status">
                                         Status: {(filterStatus?.charAt(0).toUpperCase() || '') + (filterStatus?.slice(1) || '')}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-amber-500/20 flex items-center justify-center text-amber-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <FontAwesomeIcon icon={faXmark} className="text-[10px]" />
+                                            <X className="text-[10px]" />
                                         </span>
                                     </button>
                                 )}
                                 {filterTag && (
                                     <button type="button" onClick={() => setFilterTag('')}
                                         className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-indigo-500/20 bg-indigo-500/10 text-[10px] font-black text-indigo-600" title="Hapus filter label">
-                                        <FontAwesomeIcon icon={faTags} className="text-[10px] opacity-70" />
+                                        <Tags className="text-[10px] opacity-70" />
                                         {filterTag}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-indigo-500/20 flex items-center justify-center text-indigo-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <FontAwesomeIcon icon={faXmark} className="text-[10px]" />
+                                            <X className="text-[10px]" />
                                         </span>
                                     </button>
                                 )}
@@ -1176,7 +1092,7 @@ export default function StudentsPage() {
                                         className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-orange-500/20 bg-orange-500/10 text-[10px] font-black text-orange-600" title="Hapus filter data hilang">
                                         {filterMissing === 'photo' ? 'Foto Kosong' : filterMissing === 'wa' ? 'Tanpa WA' : filterMissing === 'all' ? 'Data Tidak Lengkap' : filterMissing}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-orange-500/20 flex items-center justify-center text-orange-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <FontAwesomeIcon icon={faXmark} className="text-[10px]" />
+                                            <X className="text-[10px]" />
                                         </span>
                                     </button>
                                 )}
@@ -1185,13 +1101,13 @@ export default function StudentsPage() {
                                         className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-[10px] font-black text-emerald-600" title="Hapus filter poin">
                                         Poin: {filterPointMode === 'risk' ? 'Risiko' : filterPointMode === 'positive' ? 'Positif' : filterPointMode === 'custom' ? `${filterPointMin || '∞'}—${filterPointMax || '∞'}` : filterPointMode}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-emerald-500/20 flex items-center justify-center text-emerald-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <FontAwesomeIcon icon={faXmark} className="text-[10px]" />
+                                            <X className="text-[10px]" />
                                         </span>
                                     </button>
                                 )}
                                 <button type="button" onClick={resetAllFilters}
                                     className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-red-500/20 bg-red-500/5 text-[10px] font-black text-red-600" title="Reset semua filter">
-                                    <FontAwesomeIcon icon={faRotateLeft} className="text-[10px]" />
+                                    <RotateCcw className="text-[10px]" />
                                     Reset semua
                                 </button>
                             </div>
@@ -1200,13 +1116,13 @@ export default function StudentsPage() {
 
                     {/* Row 2: Expandable filter panel */}
                     {showAdvancedFilter && (
-                        <div className="border-t border-[var(--color-border)] p-3.5 bg-[var(--color-surface-alt)]/60 backdrop-blur-md animate-in fade-in slide-in-from-top-2">
+                        <div className="border-t border-[var(--color-border)] p-3.5 bg-[var(--color-surface-alt)] animate-in fade-in slide-in-from-top-2">
                             {/* Header Panel with Standardized "Vertical Bar" Pattern */}
                             <div className="flex items-center justify-between mb-3">
                                 <div className="flex items-center gap-2.5">
                                     <div className="w-1 h-3.5 bg-indigo-500 rounded-full" />
                                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-600 flex items-center gap-2">
-                                        <FontAwesomeIcon icon={faSliders} className="text-[9px] opacity-60" />
+                                        <SlidersHorizontal className="text-[9px] opacity-60" />
                                         Filter Lanjutan
                                     </span>
                                 </div>
@@ -1214,7 +1130,7 @@ export default function StudentsPage() {
                                     onClick={resetAllFilters}
                                     className="text-[9px] font-black uppercase tracking-widest text-red-500 hover:bg-red-50 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-100"
                                 >
-                                    <FontAwesomeIcon icon={faRotateLeft} className="text-[9px]" />
+                                    <RotateCcw className="text-[9px]" />
                                     Reset Semua Filter
                                 </button>
                             </div>
@@ -1319,14 +1235,14 @@ export default function StudentsPage() {
                                     <div className="flex items-center gap-1.5">
                                         {[
                                             { value: '', label: 'Semua', icon: null },
-                                            { value: 'risk', label: 'Risiko', icon: faTriangleExclamation },
-                                            { value: 'positive', label: 'Positif', icon: faCheck },
+                                            { value: 'risk', label: 'Risiko', icon: TriangleAlert },
+                                            { value: 'positive', label: 'Positif', icon: Check },
                                         ].map(opt => (
                                             <button key={opt.value} type="button"
                                                 onClick={() => { setFilterPointMode(opt.value); setFilterPointMin(''); setFilterPointMax(''); setPage(1) }}
                                                 className={`h-8 px-2.5 rounded-lg text-[9px] font-black uppercase border transition-all flex items-center justify-center gap-1.5 shrink-0 ${filterPointMode === opt.value && opt.value !== '' ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] bg-[var(--color-surface)]'}`}
                                             >
-                                                {opt.icon && <FontAwesomeIcon icon={opt.icon} className="text-[9px]" />}
+                                                {opt.icon && <opt.icon className="text-[9px]" />}
                                                 {opt.label}
                                             </button>
                                         ))}
@@ -1339,15 +1255,15 @@ export default function StudentsPage() {
                                     <div className="flex items-center justify-between">
                                         <div className="flex flex-wrap items-center gap-1.5">
                                             {[
-                                                { label: 'Semua', icon: faUsers, active: !filterMissing && sortBy !== 'created_at' && sortBy !== 'total_points_desc', onClick: () => { setFilterMissing(''); setSortBy('name_asc'); } },
-                                                { label: 'Foto Kosong', icon: faImage, active: filterMissing === 'photo', onClick: () => { setFilterMissing('photo'); setPage(1); } },
-                                                { label: 'Tanpa WA', icon: faWhatsapp, active: filterMissing === 'wa', onClick: () => { setFilterMissing('wa'); setPage(1); } },
-                                                { label: 'Top Performer', icon: faTrophy, active: sortBy === 'total_points_desc', onClick: () => { setSortBy('total_points_desc'); setPage(1); } },
-                                                { label: 'Siswa Baru', icon: faPlus, active: sortBy === 'created_at', onClick: () => { setSortBy('created_at'); setPage(1); } },
+                                                { label: 'Semua', icon: Users, active: !filterMissing && sortBy !== 'created_at' && sortBy !== 'total_points_desc', onClick: () => { setFilterMissing(''); setSortBy('name_asc'); } },
+                                                { label: 'Foto Kosong', icon: Image, active: filterMissing === 'photo', onClick: () => { setFilterMissing('photo'); setPage(1); } },
+                                                { label: 'Tanpa WA', icon: WhatsAppIcon, active: filterMissing === 'wa', onClick: () => { setFilterMissing('wa'); setPage(1); } },
+                                                { label: 'Top Performer', icon: Trophy, active: sortBy === 'total_points_desc', onClick: () => { setSortBy('total_points_desc'); setPage(1); } },
+                                                { label: 'Siswa Baru', icon: Plus, active: sortBy === 'created_at', onClick: () => { setSortBy('created_at'); setPage(1); } },
                                             ].map((s, i) => (
                                                 <button key={i} onClick={s.onClick}
                                                     className={`h-8 px-2.5 rounded-lg border flex items-center gap-2 transition-all ${s.active ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm' : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                                    <FontAwesomeIcon icon={s.icon} className="text-[9px]" />
+                                                    <s.icon className="text-[9px]" />
                                                     <span className="text-[9px] font-black uppercase tracking-widest whitespace-nowrap">{s.label}</span>
                                                 </button>
                                             ))}
@@ -1371,7 +1287,7 @@ export default function StudentsPage() {
                                                     }}
                                                     className="h-8 px-3 rounded-lg bg-teal-500/10 text-teal-600 hover:bg-teal-500 hover:text-white transition-all text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 border border-teal-500/20"
                                                 >
-                                                    <FontAwesomeIcon icon={faDownload} className="text-[8px]" />
+                                                    <Download className="text-[8px]" />
                                                     Export
                                                 </button>
                                             )}
@@ -1392,15 +1308,15 @@ export default function StudentsPage() {
                                     <div className="flex flex-wrap items-center gap-1.5">
                                         <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mr-2">Cepat:</span>
                                         {[
-                                            { label: 'Semua', icon: faUsers, active: !filterMissing && sortBy !== 'created_at' && sortBy !== 'total_points_desc', onClick: () => { setFilterMissing(''); setSortBy('name_asc'); } },
-                                            { label: 'Foto Kosong', icon: faImage, active: filterMissing === 'photo', onClick: () => { setFilterMissing('photo'); setPage(1); } },
-                                            { label: 'Tanpa WA', icon: faWhatsapp, active: filterMissing === 'wa', onClick: () => { setFilterMissing('wa'); setPage(1); } },
-                                            { label: 'Top Performer', icon: faTrophy, active: sortBy === 'total_points_desc', onClick: () => { setSortBy('total_points_desc'); setPage(1); } },
-                                            { label: 'Siswa Baru', icon: faPlus, active: sortBy === 'created_at', onClick: () => { setSortBy('created_at'); setPage(1); } },
+                                            { label: 'Semua', icon: Users, active: !filterMissing && sortBy !== 'created_at' && sortBy !== 'total_points_desc', onClick: () => { setFilterMissing(''); setSortBy('name_asc'); } },
+                                            { label: 'Foto Kosong', icon: Image, active: filterMissing === 'photo', onClick: () => { setFilterMissing('photo'); setPage(1); } },
+                                            { label: 'Tanpa WA', icon: WhatsAppIcon, active: filterMissing === 'wa', onClick: () => { setFilterMissing('wa'); setPage(1); } },
+                                            { label: 'Top Performer', icon: Trophy, active: sortBy === 'total_points_desc', onClick: () => { setSortBy('total_points_desc'); setPage(1); } },
+                                            { label: 'Siswa Baru', icon: Plus, active: sortBy === 'created_at', onClick: () => { setSortBy('created_at'); setPage(1); } },
                                         ].map((s, i) => (
                                             <button key={i} onClick={s.onClick}
                                                 className={`h-7 px-2.5 rounded-lg border flex items-center gap-2 transition-all ${s.active ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm' : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                                <FontAwesomeIcon icon={s.icon} className="text-[9px]" />
+                                                <s.icon className="text-[9px]" />
                                                 <span className="text-[9px] font-black uppercase tracking-widest whitespace-nowrap">{s.label}</span>
                                             </button>
                                         ))}
@@ -1424,7 +1340,7 @@ export default function StudentsPage() {
                                                 }}
                                                 className="h-7 px-3 rounded-lg bg-teal-500/10 text-teal-600 hover:bg-teal-500 hover:text-white transition-all text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 border border-teal-500/20"
                                             >
-                                                <FontAwesomeIcon icon={faDownload} className="text-[8px]" />
+                                                <Download className="text-[8px]" />
                                                 Export
                                             </button>
                                         )}
@@ -1443,7 +1359,7 @@ export default function StudentsPage() {
 
                 {/* Removed: Smart Presets - SaaS Navigation Style */}
                 {loading ? (
-                    <div className="glass rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
+                    <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead className="bg-[var(--color-surface-alt)]">
@@ -1483,7 +1399,7 @@ export default function StudentsPage() {
                     </div>
                 ) : (
                     <div>
-                        <div className="glass rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
+                        <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
                             {/* Desktop View */}
                             {!isMobile && (
                                 <div className="hidden md:block overflow-x-auto">
@@ -1563,7 +1479,7 @@ export default function StudentsPage() {
                                                             <div
                                                                 id="portal-column-menu"
                                                                 onMouseDown={(e) => e.stopPropagation()}
-                                                                className={`absolute z-[9999] w-44 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl shadow-black/10 p-2 space-y-0.5 animate-in fade-in zoom-in-95 ${colMenuPos.showUp ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'}`}
+                                                                className={`absolute z-[9999] w-44 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 space-y-0.5 animate-in fade-in zoom-in-95 ${colMenuPos.showUp ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'}`}
                                                                 style={{ top: colMenuPos.top, right: colMenuPos.right }}
                                                             >
                                                                 <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">
@@ -1607,7 +1523,7 @@ export default function StudentsPage() {
                                                     <td colSpan={9} className="px-6 py-20">
                                                         <EmptyState
                                                             variant="plain"
-                                                            icon={activeFilterCount > 0 || searchQuery ? faSearch : faUsers}
+                                                            icon={activeFilterCount > 0 || searchQuery ? Search : Users}
                                                             title={activeFilterCount > 0 || searchQuery ? "Pencarian Tidak Ditemukan" : "Belum Ada Data Siswa"}
                                                             description={activeFilterCount > 0 || searchQuery
                                                                 ? "Maaf, kami tidak menemukan data siswa dengan kriteria tersebut. Coba ubah kata kunci atau reset filter."
@@ -1625,9 +1541,9 @@ export default function StudentsPage() {
                                                                 ) : (
                                                                     <button
                                                                         onClick={() => { setIsModalOpen(true); setActiveModal('add'); }}
-                                                                        className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20 hover:scale-105 transition-all flex items-center gap-2"
+                                                                        className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest bg-[var(--color-primary)] text-white shadow-lg hover:scale-105 transition-all flex items-center gap-2"
                                                                     >
-                                                                        <FontAwesomeIcon icon={faPlus} />
+                                                                        <Plus />
                                                                         Tambah Siswa Pertama
                                                                     </button>
                                                                 )
@@ -1693,7 +1609,7 @@ export default function StudentsPage() {
                                         }}
                                         className="w-full py-3 flex items-center justify-center gap-2 text-[11px] font-black uppercase tracking-widest text-[var(--color-primary)] bg-[var(--color-primary)]/[0.04] hover:bg-[var(--color-primary)]/10 active:scale-[0.99] transition-all border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/40 border-dashed rounded-2xl"
                                     >
-                                        <FontAwesomeIcon icon={faPlus} className="text-[10px]" />
+                                        <Plus className="text-[10px]" />
                                         Quick Add Siswa
                                     </button>
                                 </div>
@@ -1701,7 +1617,7 @@ export default function StudentsPage() {
 
                             {/* Mobile View Selection Header */}
                             {isMobile && selectedStudentIds.length > 0 && (
-                                <div className="sticky top-0 z-40 -mx-3 mb-4 px-4 py-2 bg-[var(--color-surface)]/80 backdrop-blur-md border-b border-[var(--color-border)] flex items-center justify-between animate-in slide-in-from-top-4 duration-300">
+                                <div className="sticky top-0 z-40 -mx-3 mb-4 px-4 py-2 bg-[var(--color-surface)] border-b border-[var(--color-border)] flex items-center justify-between animate-in slide-in-from-top-4 duration-300">
                                     <div className="flex items-center gap-2">
                                         <div className="w-6 h-6 rounded-lg bg-[var(--color-primary)] text-white flex items-center justify-center text-[10px] font-black">
                                             {selectedStudentIds.length}
@@ -1719,7 +1635,7 @@ export default function StudentsPage() {
                                             onClick={() => setSelectedStudentIds([])}
                                             className="h-8 w-8 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"
                                         >
-                                            <FontAwesomeIcon icon={faXmark} />
+                                            <X />
                                         </button>
                                     </div>
                                 </div>
@@ -1761,7 +1677,7 @@ export default function StudentsPage() {
                                         <div className="py-12">
                                             <EmptyState
                                                 variant="plain"
-                                                icon={activeFilterCount > 0 || searchQuery ? faSearch : faUsers}
+                                                icon={activeFilterCount > 0 || searchQuery ? Search : Users}
                                                 title={activeFilterCount > 0 || searchQuery ? "Pencarian Tidak Ditemukan" : "Belum Ada Data Siswa"}
                                                 description={activeFilterCount > 0 || searchQuery
                                                     ? "Maaf, kami tidak menemukan siswa dengan kriteria tersebut. Coba ubah kata kunci atau reset filter."
@@ -1778,9 +1694,9 @@ export default function StudentsPage() {
                                                     ) : (
                                                         <button
                                                             onClick={() => { setIsModalOpen(true); setActiveModal('add'); }}
-                                                            className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20 active:scale-95 transition-all flex items-center gap-2"
+                                                            className="h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest bg-[var(--color-primary)] text-white shadow-lg active:scale-95 transition-all flex items-center gap-2"
                                                         >
-                                                            <FontAwesomeIcon icon={faPlus} />
+                                                            <Plus />
                                                             Tambah Siswa Pertama
                                                         </button>
                                                     )
@@ -1800,16 +1716,16 @@ export default function StudentsPage() {
                                                 <div className="flex items-center bg-[var(--color-surface)] shadow-inner p-1 rounded-[1.2rem] border border-[var(--color-border)]">
                                                     <button
                                                         onClick={() => switchMobileView('card')}
-                                                        className={`h-8 px-4 rounded-xl flex items-center gap-2 text-[10px] font-black transition-all duration-200 ${pendingView === 'card' ? 'bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/20' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
+                                                        className={`h-8 px-4 rounded-xl flex items-center gap-2 text-[10px] font-black transition-all duration-200 ${pendingView === 'card' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
                                                     >
-                                                        <FontAwesomeIcon icon={faTable} className="text-[11px]" />
+                                                        <Table className="text-[11px]" />
                                                         Card
                                                     </button>
                                                     <button
                                                         onClick={() => switchMobileView('list')}
-                                                        className={`h-8 px-4 rounded-xl flex items-center gap-2 text-[10px] font-black transition-all duration-200 ${pendingView === 'list' ? 'bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/20' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
+                                                        className={`h-8 px-4 rounded-xl flex items-center gap-2 text-[10px] font-black transition-all duration-200 ${pendingView === 'list' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
                                                     >
-                                                        <FontAwesomeIcon icon={faTableList} className="text-[11px]" />
+                                                        <TableProperties className="text-[11px]" />
                                                         List
                                                     </button>
                                                 </div>
@@ -1880,7 +1796,7 @@ export default function StudentsPage() {
                                                     >
                                                         {students.length > 0 && canEdit && (
                                                             <div className="text-[9px] font-black text-[var(--color-text-muted)] opacity-50 text-center uppercase tracking-widest flex items-center justify-center gap-2 pb-1 animate-pulse">
-                                                                <FontAwesomeIcon icon={faCircleInfo} />
+                                                                <Info />
                                                                 Ketuk baris siswa untuk menu cepat & poin
                                                             </div>
                                                         )}
@@ -1918,7 +1834,7 @@ export default function StudentsPage() {
                                                         }}
                                                         className="w-full py-3 flex items-center justify-center gap-2 text-[11px] font-black uppercase tracking-widest text-[var(--color-primary)] bg-[var(--color-primary)]/[0.04] hover:bg-[var(--color-primary)]/10 active:scale-[0.98] transition-all border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/40 border-dashed rounded-2xl mt-4 mb-2 shadow-sm"
                                                     >
-                                                        <FontAwesomeIcon icon={faPlus} className="text-[10px]" />
+                                                        <Plus className="text-[10px]" />
                                                         Quick Add Siswa
                                                     </button>
                                                 )}
@@ -1933,7 +1849,7 @@ export default function StudentsPage() {
                                                                 onClick={() => setIsInlineAddOpen(false)}
                                                                 className="h-8 w-8 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center"
                                                             >
-                                                                <FontAwesomeIcon icon={faXmark} />
+                                                                <X />
                                                             </button>
                                                         </div>
 
@@ -1970,7 +1886,7 @@ export default function StudentsPage() {
                                                                             type="button"
                                                                             onClick={() => setInlineForm(p => ({ ...p, gender: g }))}
                                                                             className={`h-11 flex-1 rounded-xl text-[10px] font-black border transition-all ${inlineForm.gender === g
-                                                                                ? (g === 'L' ? 'bg-blue-500 text-white border-blue-500 shadow-lg shadow-blue-500/15' : 'bg-pink-500 text-white border-pink-500 shadow-lg shadow-pink-500/15')
+                                                                                ? (g === 'L' ? 'bg-blue-500 text-white border-blue-500 shadow-lg' : 'bg-pink-500 text-white border-pink-500 shadow-lg')
                                                                                 : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] bg-[var(--color-surface)]'}`}
                                                                         >
                                                                             {g}
@@ -1990,9 +1906,9 @@ export default function StudentsPage() {
                                                             <button
                                                                 type="submit"
                                                                 disabled={submittingInline || !canEdit || !inlineForm.name.trim()}
-                                                                className="h-11 w-full rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg shadow-[var(--color-primary)]/20 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                                                                className="h-11 w-full rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                                                             >
-                                                                {submittingInline ? <FontAwesomeIcon icon={faSpinner} className="fa-spin" /> : <><FontAwesomeIcon icon={faCheck} /> Simpan</>}
+                                                                {submittingInline ? <LoaderCircle className="animate-spin" /> : <><Check /> Simpan</>}
                                                             </button>
                                                         </form>
                                                     </div>
@@ -2113,7 +2029,7 @@ export default function StudentsPage() {
                             onClose={() => closeModal()}
                             title="Guardian Broadcast Hub"
                             description="Kirim pesan massal ke wali murid menggunakan template otomatis."
-                            icon={faWhatsapp}
+                            icon={WhatsAppIcon}
                             iconBg="bg-emerald-500/10"
                             iconColor="text-emerald-600"
                             size="lg"
@@ -2148,9 +2064,9 @@ export default function StudentsPage() {
                                                     }, i * 1200);
                                                 });
                                             }}
-                                            className="h-11 px-6 rounded-xl bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
+                                            className="h-11 px-6 rounded-xl bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
                                         >
-                                            <FontAwesomeIcon icon={faPaperPlane} />
+                                            <Send />
                                             Mulai Siaran Massal
                                         </button>
                                     </div>
@@ -2163,10 +2079,10 @@ export default function StudentsPage() {
                                     <div className="p-4 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] space-y-3">
                                         <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Pilih Template Pesan</label>
                                         {[
-                                            { id: 'summary', label: 'Laporan Akademik Lengkap', icon: faFileLines },
-                                            { id: 'points', label: 'Ringkasan Poin Perilaku', icon: faTrophy },
-                                            { id: 'security', label: 'Akses Portal (ID & PIN)', icon: faShieldHalved },
-                                            { id: 'custom', label: 'Pesan Kustom Sekolah', icon: faPenNib },
+                                            { id: 'summary', label: 'Laporan Akademik Lengkap', icon: FileText },
+                                            { id: 'points', label: 'Ringkasan Poin Perilaku', icon: Trophy },
+                                            { id: 'security', label: 'Akses Portal (ID & PIN)', icon: ShieldHalf },
+                                            { id: 'custom', label: 'Pesan Kustom Sekolah', icon: PenTool },
                                         ].map(t => (
                                             <button
                                                 key={t.id}
@@ -2174,7 +2090,7 @@ export default function StudentsPage() {
                                                 className={`w-full p-3 rounded-xl border text-left flex items-center gap-3 transition-all ${broadcastTemplate === t.id ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-lg' : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
                                             >
                                                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${broadcastTemplate === t.id ? 'bg-white/20' : 'bg-[var(--color-surface-alt)]'}`}>
-                                                    <FontAwesomeIcon icon={t.icon} className="text-xs" />
+                                                    <t.icon className="text-xs" />
                                                 </div>
                                                 <span className="text-[11px] font-bold leading-tight">{t.label}</span>
                                             </button>
@@ -2213,7 +2129,7 @@ export default function StudentsPage() {
                                                             onClick={() => openWAForStudent(s, buildWAMessage(s, broadcastTemplate))}
                                                             className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all flex items-center justify-center text-[10px]"
                                                         >
-                                                            <FontAwesomeIcon icon={faWhatsapp} />
+                                                            <WhatsAppIcon />
                                                         </button>
                                                     </div>
                                                     <div className="p-2.5 rounded-lg bg-[var(--color-surface-alt)]/50 border border-black/5 text-[10px] font-medium leading-relaxed line-clamp-2">
@@ -2340,7 +2256,7 @@ export default function StudentsPage() {
                             onClose={() => { closeModal(); setClassSearchQuery('') }}
                             title="Kenaikan Kelas Massal"
                             description="Pindahkan rombongan siswa ke tingkat kelas berikutnya."
-                            icon={faGraduationCap}
+                            icon={GraduationCap}
                             iconBg="bg-[var(--color-primary)]/10"
                             iconColor="text-[var(--color-primary)]"
                             size="md"
@@ -2358,11 +2274,11 @@ export default function StudentsPage() {
                                         type="button"
                                         onClick={handleBulkPromote}
                                         disabled={submitting || !bulkClassId}
-                                        className="flex-[2] h-12 rounded-2xl bg-[var(--color-primary)] text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest hover:brightness-110 transition-all disabled:opacity-50 flex items-center justify-center gap-2 md:gap-3 shadow-xl shadow-[var(--color-primary)]/20 active:scale-[0.98] whitespace-nowrap px-2"
+                                        className="flex-[2] h-12 rounded-2xl bg-[var(--color-primary)] text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest hover:brightness-110 transition-all disabled:opacity-50 flex items-center justify-center gap-2 md:gap-3 shadow-xl active:scale-[0.98] whitespace-nowrap px-2"
                                     >
-                                        {submitting ? <FontAwesomeIcon icon={faSpinner} className="fa-spin" /> : (
+                                        {submitting ? <LoaderCircle className="animate-spin" /> : (
                                             <>
-                                                <FontAwesomeIcon icon={faGraduationCap} className="text-xs md:text-sm" />
+                                                <GraduationCap className="text-xs md:text-sm" />
                                                 <span>Proses Kenaikan <span className="hidden sm:inline">({selectedStudentIds.length} Siswa)</span></span>
                                             </>
                                         )}
@@ -2428,8 +2344,8 @@ export default function StudentsPage() {
                                             {hasDowngrade && (
                                                 <div className="p-2.5 rounded-xl bg-red-50 border border-red-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in slide-in-from-top-1 duration-300">
                                                     <div className="flex gap-2.5 items-center">
-                                                        <div className="w-8 h-8 rounded-lg bg-red-500 text-white flex items-center justify-center shrink-0 shadow-lg shadow-red-500/20">
-                                                            <FontAwesomeIcon icon={faTriangleExclamation} className="text-sm animate-pulse" />
+                                                        <div className="w-8 h-8 rounded-lg bg-red-500 text-white flex items-center justify-center shrink-0 shadow-lg">
+                                                            <TriangleAlert className="text-sm animate-pulse" />
                                                         </div>
                                                         <div className="min-w-0">
                                                             <p className="text-[10px] font-black text-red-700 uppercase tracking-widest leading-none">Kritis: Penurunan Kelas!</p>
@@ -2448,8 +2364,8 @@ export default function StudentsPage() {
                                             {hasStay && (
                                                 <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in slide-in-from-top-1 duration-300">
                                                     <div className="flex gap-2.5 items-center">
-                                                        <div className="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/20">
-                                                            <FontAwesomeIcon icon={faRotateLeft} className="text-sm" />
+                                                        <div className="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-lg">
+                                                            <RotateCcw className="text-sm" />
                                                         </div>
                                                         <div className="min-w-0">
                                                             <p className="text-[10px] font-black text-amber-700 uppercase tracking-widest leading-none">Peringatan: Tetap di Kelas</p>
@@ -2467,8 +2383,8 @@ export default function StudentsPage() {
                                             )}
                                             {hasSkip && (
                                                 <div className="p-2.5 rounded-xl bg-indigo-50 border border-indigo-200 flex gap-3 items-center animate-in fade-in slide-in-from-top-1 duration-300">
-                                                    <div className="w-8 h-8 rounded-lg bg-indigo-500 text-white flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/20">
-                                                        <FontAwesomeIcon icon={faRocket} className="text-sm" />
+                                                    <div className="w-8 h-8 rounded-lg bg-indigo-500 text-white flex items-center justify-center shrink-0 shadow-lg">
+                                                        <Rocket className="text-sm" />
                                                     </div>
                                                     <div className="min-w-0">
                                                         <p className="text-[10px] font-black text-indigo-700 uppercase tracking-widest leading-none">Info: Loncatan Kelas</p>
@@ -2484,12 +2400,12 @@ export default function StudentsPage() {
                                 <div className="space-y-4">
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-1">
                                         <label className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest flex items-center gap-2 shrink-0">
-                                            <FontAwesomeIcon icon={faGraduationCap} className="opacity-40" /> Pilih Kelas Tujuan
+                                            <GraduationCap className="opacity-40" /> Pilih Kelas Tujuan
                                         </label>
 
                                         {/* Quick Search Classes */}
                                         <div className="relative w-full sm:max-w-[200px]">
-                                            <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] opacity-30" />
+                                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] opacity-30" />
                                             <input
                                                 type="text"
                                                 placeholder="Cari kelas..."
@@ -2504,7 +2420,7 @@ export default function StudentsPage() {
                                         {classesList.filter(c => c.name.toLowerCase().includes(classSearchQuery.toLowerCase())).length === 0 ? (
                                             <div className="col-span-full py-12 text-center space-y-3 bg-[var(--color-surface-alt)] rounded-3xl border-2 border-dashed border-[var(--color-border)]">
                                                 <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/5 text-[var(--color-primary)] flex items-center justify-center mx-auto opacity-20">
-                                                    <FontAwesomeIcon icon={faSearch} className="text-xl" />
+                                                    <Search className="text-xl" />
                                                 </div>
                                                 <p className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-40">Kelas tidak ditemukan</p>
                                             </div>
@@ -2522,24 +2438,21 @@ export default function StudentsPage() {
                                                         type="button"
                                                         onClick={() => setBulkClassId(bulkClassId === c.id ? '' : c.id)}
                                                         className={`p-3 rounded-2xl border-2 text-left flex items-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] group relative overflow-hidden ${isSelected
-                                                            ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-2xl shadow-[var(--color-primary)]/30 z-10'
+                                                            ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-sm z-10'
                                                             : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[var(--color-primary)]/40 hover:bg-[var(--color-surface-alt)] shadow-sm'
                                                             }`}
                                                     >
                                                         <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all duration-500 ${isSelected ? 'bg-white/20 text-white rotate-[360deg]' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] group-hover:bg-[var(--color-primary)] group-hover:text-white'
                                                             }`}>
-                                                            <FontAwesomeIcon icon={faGraduationCap} className="text-xs" />
+                                                            <GraduationCap className="text-xs" />
                                                         </div>
                                                         <div className="flex-1 min-w-0 pr-10">
                                                             <div className="flex items-center gap-2">
                                                                 <p className="font-black text-[11px] uppercase tracking-wider truncate leading-tight">{c.name}</p>
                                                                 {/* Inline Gender Icon */}
-                                                                {(isPutra || isPutri) && (
-                                                                    <FontAwesomeIcon
-                                                                        icon={isPutra ? faMars : faVenus}
-                                                                        className={`text-[8px] ${isSelected ? 'text-white' : isPutra ? 'text-blue-500' : 'text-pink-500'} opacity-70`}
-                                                                    />
-                                                                )}
+                                                                {(isPutra || isPutri) && (isPutra
+                                                                    ? <MarsIcon className={`text-[8px] ${isSelected ? 'text-white' : 'text-blue-500'} opacity-70`} />
+                                                                    : <VenusIcon className={`text-[8px] ${isSelected ? 'text-white' : 'text-pink-500'} opacity-70`} />)}
                                                             </div>
                                                             <p className={`text-[9px] mt-0.5 font-medium ${isSelected ? 'text-white/60' : 'text-[var(--color-text-muted)]'}`}>Pilih sebagai tujuan</p>
                                                         </div>
@@ -2547,7 +2460,7 @@ export default function StudentsPage() {
                                                         {/* Selection Indicator */}
                                                         <div className={`absolute right-4 top-1/2 -translate-y-1/2 transition-all duration-300 ${isSelected ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
                                                             <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center border border-white/40">
-                                                                <FontAwesomeIcon icon={faCheck} className="text-[10px]" />
+                                                                <Check className="text-[10px]" />
                                                             </div>
                                                         </div>
 
@@ -2572,7 +2485,7 @@ export default function StudentsPage() {
                                 {/* Information Alert */}
                                 <div className="p-4 rounded-2xl bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/15 flex gap-4 items-start">
                                     <div className="w-8 h-8 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0">
-                                        <FontAwesomeIcon icon={faInfoCircle} className="text-sm" />
+                                        <Info className="text-sm" />
                                     </div>
                                     <div className="space-y-1">
                                         <p className="text-[11px] font-black text-[var(--color-primary)] uppercase tracking-widest">Informasi Sistem</p>
@@ -2594,7 +2507,7 @@ export default function StudentsPage() {
                             onClose={() => closeModal()}
                             title="Konfirmasi Arsip"
                             description="Siswa akan dipindahkan ke folder Arsip"
-                            icon={faBoxArchive}
+                            icon={Archive}
                             iconBg="bg-amber-500/10"
                             iconColor="text-amber-600"
                             size="sm"
@@ -2612,9 +2525,9 @@ export default function StudentsPage() {
                                     <button
                                         type="button"
                                         onClick={executeDelete}
-                                        className="h-10 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 shrink-0"
+                                        className="h-10 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
                                     >
-                                        <FontAwesomeIcon icon={faBoxArchive} className="text-[11px] opacity-70" />
+                                        <Archive className="text-[11px] opacity-70" />
                                         Arsipkan
                                     </button>
                                 </div>
@@ -2637,7 +2550,7 @@ export default function StudentsPage() {
                             onClose={() => closeModal()}
                             title="Konfirmasi Hapus"
                             description={`${selectedStudentIds.length} siswa akan dihapus secara permanen`}
-                            icon={faTrash}
+                            icon={Trash2}
                             iconBg="bg-red-500/10"
                             iconColor="text-red-500"
                             size="sm"
@@ -2656,11 +2569,11 @@ export default function StudentsPage() {
                                         type="button"
                                         onClick={handleBulkDelete}
                                         disabled={submitting}
-                                        className="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-red-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50 shrink-0"
+                                        className="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 shrink-0"
                                     >
-                                        {submitting ? <FontAwesomeIcon icon={faSpinner} className="fa-spin" /> : (
+                                        {submitting ? <LoaderCircle className="animate-spin" /> : (
                                             <>
-                                                <FontAwesomeIcon icon={faTrash} className="text-[11px] opacity-70" />
+                                                <Trash2 className="text-[11px] opacity-70" />
                                                 Hapus Permanen
                                             </>
                                         )}
@@ -2706,7 +2619,7 @@ export default function StudentsPage() {
                             onClose={() => closeModal()}
                             title={`Statistik Kelas — ${classBreakdownData?.className || ''}`}
                             description="Ringkasan data, demografi, dan performa poin per kelas."
-                            icon={faChartPie}
+                            icon={ChartPie}
                             iconBg="bg-indigo-500/10"
                             iconColor="text-indigo-600"
                             size="md"
@@ -2714,7 +2627,7 @@ export default function StudentsPage() {
                         >
                             {loadingBreakdown ? (
                                 <div className="text-center py-10 text-[var(--color-text-muted)]">
-                                    <FontAwesomeIcon icon={faSpinner} className="fa-spin text-2xl mb-2 block" />
+                                    <LoaderCircle className="animate-spin text-2xl mb-2 block" />
                                     <p className="text-sm">Memuat statistik...</p>
                                 </div>
                             ) : classBreakdownData && (
@@ -2733,7 +2646,7 @@ export default function StudentsPage() {
                                         ))}
                                     </div>
                                     <div className="p-3 rounded-xl border border-red-500/20 bg-red-500/5 flex items-center gap-3">
-                                        <FontAwesomeIcon icon={faTriangleExclamation} className="text-red-500 shrink-0" />
+                                        <TriangleAlert className="text-red-500 shrink-0" />
                                         <div>
                                             <p className="text-[10px] font-black text-red-600 dark:text-red-400 uppercase">Siswa Risiko (â‰¤ {RiskThreshold})</p>
                                             <p className="text-lg font-black text-red-500">{classBreakdownData.riskCount} siswa</p>
@@ -2741,7 +2654,7 @@ export default function StudentsPage() {
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mb-2 flex items-center gap-1.5">
-                                            <FontAwesomeIcon icon={faTrophy} className="text-amber-500" />
+                                            <Trophy className="text-amber-500" />
                                             Top 3 Poin Tertinggi
                                         </p>
                                         <div className="space-y-2">
@@ -2811,7 +2724,7 @@ export default function StudentsPage() {
                             onClose={() => setPhotoZoom(null)}
                             title="Foto Profil"
                             description="Preview foto profil siswa"
-                            icon={faImage}
+                            icon={Image}
                             iconBg="bg-[var(--color-primary)]/10"
                             iconColor="text-[var(--color-primary)]"
                             size="md"
@@ -2848,7 +2761,7 @@ export default function StudentsPage() {
                                             }}
                                             className="h-9 px-4 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black uppercase tracking-widest hover:bg-[var(--color-primary)] hover:text-white transition-all flex items-center gap-2 border border-[var(--color-primary)]/20"
                                         >
-                                            <FontAwesomeIcon icon={faDownload} className="text-[10px]" /> Download
+                                            <Download className="text-[10px]" /> Download
                                         </button>
                                     </div>
                                 </div>
@@ -2858,9 +2771,9 @@ export default function StudentsPage() {
                                 <img
                                     src={photoZoom.url}
                                     alt={photoZoom.name}
-                                    className="max-w-full max-h-full rounded-2xl object-contain shadow-2xl ring-1 ring-white/10"
+                                    className="max-w-full max-h-full rounded-2xl object-contain shadow-xl ring-1 ring-white/10"
                                     onError={(e) => { e.target.onerror = null; e.target.src = '' }}
-                                />
+                                    loading="lazy" decoding="async" />
                             </div>
                         </Modal>
                     )
@@ -2962,7 +2875,7 @@ export default function StudentsPage() {
                             }}
                         >
                             <div className="relative">
-                                <div className="relative glass-morphism bg-gray-900/90 dark:bg-gray-800/95 backdrop-blur-3xl border border-white/20 rounded-2xl px-3 py-2 flex items-center gap-4 text-white overflow-hidden shadow-2xl">
+                                <div className="relative bg-gray-900 dark:bg-gray-800 border border-white/20 rounded-2xl px-3 py-2 flex items-center gap-4 text-white overflow-hidden shadow-xl">
                                     {/* Animated scanline */}
                                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
 
@@ -2987,7 +2900,7 @@ export default function StudentsPage() {
                                             className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-[9px] font-black uppercase tracking-widest"
                                             title="Broadcast WA"
                                         >
-                                            <FontAwesomeIcon icon={faWhatsapp} className="text-sm" />
+                                            <WhatsAppIcon className="text-sm" />
                                             <span className="hidden md:inline">Whatsapp</span>
                                         </button>
 
@@ -2997,7 +2910,7 @@ export default function StudentsPage() {
                                                 className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-[9px] font-black uppercase tracking-widest"
                                                 title="Cetak Kartu"
                                             >
-                                                <FontAwesomeIcon icon={faPrint} className="text-sm" />
+                                                <Printer className="text-sm" />
                                                 <span className="hidden md:inline">Cetak</span>
                                             </button>
                                         )}
@@ -3008,7 +2921,7 @@ export default function StudentsPage() {
                                                 className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-violet-500/10 text-violet-400 border border-violet-500/20 hover:bg-violet-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-[9px] font-black uppercase tracking-widest"
                                                 title="Beri Label"
                                             >
-                                                <FontAwesomeIcon icon={faTags} className="text-sm" />
+                                                <Tags className="text-sm" />
                                                 <span className="hidden md:inline">Label</span>
                                             </button>
                                         )}
@@ -3019,7 +2932,7 @@ export default function StudentsPage() {
                                                 className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-[9px] font-black uppercase tracking-widest"
                                                 title="Naik Kelas"
                                             >
-                                                <FontAwesomeIcon icon={faGraduationCap} className="text-sm" />
+                                                <GraduationCap className="text-sm" />
                                                 <span className="hidden md:inline">Naik</span>
                                             </button>
                                         )}
@@ -3030,7 +2943,7 @@ export default function StudentsPage() {
                                                 className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-[9px] font-black uppercase tracking-widest"
                                                 title="Beri Poin"
                                             >
-                                                <FontAwesomeIcon icon={faBolt} className="text-sm" />
+                                                <Zap className="text-sm" />
                                                 <span className="hidden md:inline">Poin</span>
                                             </button>
                                         )}
@@ -3040,7 +2953,7 @@ export default function StudentsPage() {
                                                 className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20 hover:bg-teal-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-[9px] font-black uppercase tracking-widest"
                                                 title="Tetapkan Kamar"
                                             >
-                                                <FontAwesomeIcon icon={faDoorOpen} className="text-sm" />
+                                                <DoorOpen className="text-sm" />
                                                 <span className="hidden md:inline">Kamar</span>
                                             </button>
                                         )}
@@ -3053,7 +2966,7 @@ export default function StudentsPage() {
                                         className="h-9 w-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-red-500/20 hover:text-red-400 transition-all text-white/50 shrink-0"
                                         title="Batal Pilih"
                                     >
-                                        <FontAwesomeIcon icon={faXmark} />
+                                        <X />
                                     </button>
                                 </div>
                             </div>
@@ -3071,7 +2984,7 @@ export default function StudentsPage() {
                             onClose={() => closeModal()}
                             title={`Aksi Label Massal — ${selectedStudentIds.length} Siswa`}
                             description="Tambah atau hapus label untuk rombongan siswa terpilih."
-                            icon={faTags}
+                            icon={Tags}
                             iconBg="bg-indigo-500/10"
                             iconColor="text-indigo-600"
                             size="sm"
@@ -3080,7 +2993,7 @@ export default function StudentsPage() {
                                 <div className="flex justify-end">
                                     <button
                                         onClick={() => closeModal()}
-                                        className="h-11 px-8 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-indigo-700 transition-all active:scale-95 shadow-lg shadow-indigo-600/20"
+                                        className="h-11 px-8 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-indigo-700 transition-all active:scale-95 shadow-lg"
                                     >
                                         Selesai
                                     </button>
@@ -3130,10 +3043,7 @@ export default function StudentsPage() {
                                                     <div className={`w-2 h-2 rounded-full shrink-0 ${getTagColor(tag).split(' ')[0]}`} />
                                                     <span className="truncate">{tag}</span>
                                                 </span>
-                                                <FontAwesomeIcon
-                                                    icon={bulkTagAction === 'add' ? faPlus : faTrash}
-                                                    className={`text-[9px] opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ${bulkTagAction === 'add' ? 'text-indigo-500' : 'text-red-500'}`}
-                                                />
+                                                {bulkTagAction === 'add' ? <Plus className={`text-[9px] opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ${bulkTagAction === 'add' ? 'text-indigo-500' : 'text-red-500'}`} /> : <Trash2 className={`text-[9px] opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ${bulkTagAction === 'add' ? 'text-indigo-500' : 'text-red-500'}`} />}
                                             </button>
                                         ))}
                                     </div>
@@ -3160,7 +3070,7 @@ export default function StudentsPage() {
                             onClose={() => closeModal()}
                             title={`Aksi Poin Massal — ${selectedStudentIds.length} Siswa`}
                             description="Berikan poin positif atau negatif ke seluruh siswa terpilih."
-                            icon={faBolt}
+                            icon={Zap}
                             iconBg="bg-orange-500/10"
                             iconColor="text-orange-500"
                             size="sm"
@@ -3168,7 +3078,7 @@ export default function StudentsPage() {
                             footer={
                                 <div className="space-y-3">
                                     <div className="flex p-3 rounded-2xl bg-amber-500/5 border border-amber-500/10 gap-3 items-start">
-                                        <FontAwesomeIcon icon={faCircleExclamation} className="text-amber-500 mt-0.5" />
+                                        <CircleAlert className="text-amber-500 mt-0.5" />
                                         <p className="text-[10px] text-amber-700 dark:text-amber-400 font-bold leading-relaxed">
                                             Poin akan ditambahkan ke total poin masing-masing siswa. Pastikan jumlah dan alasan sudah benar sebelum memproses.
                                         </p>
@@ -3185,11 +3095,11 @@ export default function StudentsPage() {
                                             type="button"
                                             onClick={handleBulkPointUpdate}
                                             disabled={submitting || !bulkPointValue}
-                                            className="flex-[2] h-11 rounded-xl bg-orange-500 text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-all disabled:opacity-50 shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2"
+                                            className="flex-[2] h-11 rounded-xl bg-orange-500 text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-all disabled:opacity-50 shadow-lg flex items-center justify-center gap-2"
                                         >
-                                            {submitting ? <FontAwesomeIcon icon={faSpinner} className="fa-spin" /> : (
+                                            {submitting ? <LoaderCircle className="animate-spin" /> : (
                                                 <>
-                                                    <FontAwesomeIcon icon={faBolt} className="text-xs" />
+                                                    <Zap className="text-xs" />
                                                     Proses Poin Massal
                                                 </>
                                             )}
@@ -3251,7 +3161,7 @@ export default function StudentsPage() {
                             onClose={() => closeModal()}
                             title={`Penetapan Kamar Massal — ${selectedStudentIds.length} Siswa`}
                             description="Pindahkan santri terpilih ke kamar asrama secara sekaligus."
-                            icon={faDoorOpen}
+                            icon={DoorOpen}
                             iconBg="bg-teal-500/10"
                             iconColor="text-teal-600"
                             size="sm"
@@ -3260,7 +3170,7 @@ export default function StudentsPage() {
                                 <div className="space-y-3">
                                     {bulkRoomId && (
                                         <div className="flex p-3 rounded-2xl bg-teal-500/5 border border-teal-500/15 gap-3 items-start">
-                                            <FontAwesomeIcon icon={faCircleExclamation} className="text-teal-500 mt-0.5 shrink-0" />
+                                            <CircleAlert className="text-teal-500 mt-0.5 shrink-0" />
                                             <p className="text-[10px] text-teal-700 dark:text-teal-400 font-bold leading-relaxed">
                                                 {selectedStudentIds.length} siswa akan ditetapkan ke kamar
                                                 <span className="font-black mx-1">
@@ -3282,10 +3192,10 @@ export default function StudentsPage() {
                                             type="button"
                                             onClick={handleBulkRoomAssign}
                                             disabled={submitting || !bulkRoomId}
-                                            className="flex-[2] h-11 rounded-xl bg-teal-500 text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-teal-500/20"
+                                            className="flex-[2] h-11 rounded-xl bg-teal-500 text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg"
                                         >
-                                            {submitting ? <FontAwesomeIcon icon={faSpinner} className="fa-spin" /> : (
-                                                <><FontAwesomeIcon icon={faDoorOpen} className="text-xs" /> Tetapkan Kamar</>
+                                            {submitting ? <LoaderCircle className="animate-spin" /> : (
+                                                <><DoorOpen className="text-xs" /> Tetapkan Kamar</>
                                             )}
                                         </button>
                                     </div>
@@ -3313,13 +3223,13 @@ export default function StudentsPage() {
                                         }`}
                                 >
                                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${bulkRoomId === '-' ? 'bg-amber-500 text-white' : 'bg-amber-500/10 text-amber-500'}`}>
-                                        <FontAwesomeIcon icon={faDoorOpen} className="text-xs" />
+                                        <DoorOpen className="text-xs" />
                                     </div>
                                     <div className="flex-1">
                                         <p className="font-black text-[11px]">Lainnya / Kosongkan</p>
                                         <p className="text-[9px] opacity-60 mt-0.5">Hapus penugasan kamar untuk siswa terpilih</p>
                                     </div>
-                                    {bulkRoomId === '-' && <FontAwesomeIcon icon={faCheck} className="ml-auto text-amber-600 text-xs" />}
+                                    {bulkRoomId === '-' && <Check className="ml-auto text-amber-600 text-xs" />}
                                 </button>
 
                                 <div className="h-px bg-[var(--color-border)] my-1" />
@@ -3336,13 +3246,13 @@ export default function StudentsPage() {
                                             }`}
                                     >
                                         <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${bulkRoomId === kamar.id ? 'bg-teal-500 text-white' : 'bg-teal-500/10 text-teal-600'}`}>
-                                            <FontAwesomeIcon icon={faDoorOpen} className="text-xs" />
+                                            <DoorOpen className="text-xs" />
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <p className="font-black text-[11px]">{kamar.id}</p>
                                             <p className="text-[9px] opacity-50 mt-0.5 font-medium" dir="rtl">{kamar.ar}</p>
                                         </div>
-                                        {bulkRoomId === kamar.id && <FontAwesomeIcon icon={faCheck} className="ml-auto text-teal-600 text-xs shrink-0" />}
+                                        {bulkRoomId === kamar.id && <Check className="ml-auto text-teal-600 text-xs shrink-0" />}
                                     </button>
                                 ))}
                             </div>

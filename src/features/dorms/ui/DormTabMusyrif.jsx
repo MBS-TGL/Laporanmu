@@ -16,7 +16,7 @@ export default function DormTabMusyrif({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 animate-in fade-in duration-300">
             {/* Tasks Checklist */}
             <div className="lg:col-span-2 space-y-4">
-                <div className="glass rounded-[1.5rem] p-5">
+                <div className="bg-surface border border-border rounded-[1.5rem] p-5">
                     <div className="flex items-center justify-between mb-4">
                         <div>
                             <p className="text-[13px] font-black text-[var(--color-text)]">{t('dorms.musyrif.title')}</p>
@@ -44,7 +44,7 @@ export default function DormTabMusyrif({
                                 </div>
                                 <div className="w-full h-2 bg-[var(--color-border)]/50 rounded-full overflow-hidden">
                                     <div 
-                                        className="h-full bg-gradient-to-r from-[var(--color-primary)] to-indigo-500 rounded-full transition-all duration-300"
+                                        className="h-full bg-[var(--color-primary)] rounded-full transition-all duration-300"
                                         style={{ width: `${percent}%` }}
                                     />
                                 </div>
@@ -82,7 +82,7 @@ export default function DormTabMusyrif({
 
             {/* Shift Logs Jurnal Piket */}
             <div className="space-y-4">
-                <div className="glass rounded-[1.5rem] p-5">
+                <div className="bg-surface border border-border rounded-[1.5rem] p-5">
                     <div className="flex items-center justify-between mb-4">
                         <div>
                             <p className="text-[12.5px] font-black text-[var(--color-text)]">{t('dorms.musyrif.piketTitle')}</p>
@@ -90,7 +90,7 @@ export default function DormTabMusyrif({
                         </div>
                         <button
                             onClick={() => setIsLogModalOpen(true)}
-                            className="h-8 px-3 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-[9px] font-black uppercase tracking-widest shadow-lg shadow-indigo-500/10 transition flex items-center gap-1.5"
+                            className="h-8 px-3 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-[9px] font-black uppercase tracking-widest shadow-lg transition flex items-center gap-1.5"
                         >
                             <Plus className="w-3 h-3" />
                             {t('dorms.musyrif.fillJournal')}

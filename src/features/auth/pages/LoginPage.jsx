@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope, faLock, faArrowRight, faSpinner, faEye, faEyeSlash, faSun, faMoon, faTriangleExclamation, faKey, faXmark } from '@fortawesome/free-solid-svg-icons'
+
+
 import { useAuth, useToast, useTheme } from '@context'
 import { Modal } from '@shared/components'
-import { Laptop, Shield, GraduationCap, IdCard, Eye } from 'lucide-react'
+import { ArrowRight, Eye, EyeOff, GraduationCap, IdCard, Key, Laptop, LoaderCircle, Lock, Mail, Moon, Shield, Sun, TriangleAlert } from 'lucide-react'
 
 export default function LoginPage() {
     const [email, setEmail] = useState('')
@@ -152,15 +152,13 @@ export default function LoginPage() {
         <div className="min-h-screen flex items-center justify-center bg-[var(--color-surface)] relative overflow-hidden px-4 py-8 transition-colors">
             {/* Ambient Background Glows */}
             <div className="absolute inset-0 pointer-events-none z-0">
-                <div className="absolute top-[10%] -left-[10%] w-[400px] h-[400px] rounded-full bg-[var(--color-primary)]/10 blur-[80px]" />
-                <div className="absolute bottom-[10%] -right-[10%] w-[500px] h-[500px] rounded-full bg-[var(--color-accent)]/10 blur-[100px]" />
             </div>
 
             <div className="w-full max-w-[420px] space-y-6 relative z-10">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <Link to="/" className="flex items-center gap-2.5 group">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+                        <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
                             <span className="text-white font-bold font-heading text-lg">L</span>
                         </div>
                         <span className="font-heading font-bold text-xl text-[var(--color-text)]">Laporan<span className="text-[var(--color-primary)]">mu</span></span>
@@ -170,7 +168,7 @@ export default function LoginPage() {
                         className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 transition-all"
                         aria-label="Toggle theme"
                     >
-                        <FontAwesomeIcon icon={isDark ? faSun : faMoon} className="text-sm" />
+                        { isDark ? <Sun className="text-sm" /> : <Moon className="text-sm" /> }
                     </button>
                 </div>
 
@@ -217,7 +215,7 @@ export default function LoginPage() {
                 {sessionReason === 'session_expired' && (
                     <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-3">
                         <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-600 flex items-center justify-center shrink-0">
-                            <FontAwesomeIcon icon={faTriangleExclamation} />
+                            <TriangleAlert />
                         </div>
                         <div>
                             <p className="text-[13px] font-black text-amber-700">Sesi telah berakhir</p>
@@ -229,15 +227,15 @@ export default function LoginPage() {
                 )}
 
                 {/* Form Card */}
-                <div className={`glass rounded-[2rem] p-6 sm:p-8 animate-in fade-in zoom-in duration-700 overflow-hidden relative shadow-2xl shadow-indigo-500/10 ${isShaking ? 'animate-shake' : ''}`}>
+                <div className={`bg-surface border border-border rounded-[2rem] p-6 sm:p-8 animate-in fade-in zoom-in duration-700 overflow-hidden relative shadow-xl ${isShaking ? 'animate-shake' : ''}`}>
                     {/* Visual Accent */}
-                    <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-accent)] to-[var(--color-primary)] opacity-30" />
+                    <div className="absolute top-0 left-0 w-full h-1.5 bg-[var(--color-primary)] opacity-30" />
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider pl-1">Email</label>
                             <div className="relative">
-                                <FontAwesomeIcon icon={faEnvelope} className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[var(--color-text-muted)] opacity-70" />
+                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[var(--color-text-muted)] opacity-70" />
                                 <input
                                     type="email"
                                     value={email}
@@ -259,7 +257,7 @@ export default function LoginPage() {
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider pl-1">Password</label>
                             <div className="relative">
-                                <FontAwesomeIcon icon={faLock} className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[var(--color-text-muted)] opacity-70" />
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[var(--color-text-muted)] opacity-70" />
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
@@ -275,13 +273,13 @@ export default function LoginPage() {
                                     className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors p-2"
                                     aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
                                 >
-                                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} className="text-sm" />
+                                    { showPassword ? <EyeOff className="text-sm" /> : <Eye className="text-sm" /> }
                                 </button>
                             </div>
                             <div className="flex items-center justify-between px-1">
                                 {capsLockOn ? (
                                     <p className="text-[10px] text-amber-500 font-black uppercase tracking-widest flex items-center gap-1.5 animate-pulse">
-                                        <FontAwesomeIcon icon={faTriangleExclamation} className="text-[10px]" /> Caps Lock Aktif
+                                        <TriangleAlert className="text-[10px]" /> Caps Lock Aktif
                                     </p>
                                 ) : <div />}
                                 <button
@@ -319,14 +317,14 @@ export default function LoginPage() {
                         <button
                             type="submit"
                             disabled={loading || cooldownRemaining > 0}
-                            className={`btn btn-primary w-full py-3.5 mt-2 shadow-lg shadow-[var(--color-primary)]/20 ${(loading || cooldownRemaining > 0) ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            className={`btn btn-primary w-full py-3.5 mt-2 shadow-lg ${(loading || cooldownRemaining > 0) ? 'opacity-70 cursor-not-allowed' : ''}`}
                         >
                             {loading ? (
-                                <><FontAwesomeIcon icon={faSpinner} className="animate-spin text-sm" /> Memproses...</>
+                                <><LoaderCircle className="animate-spin text-sm" /> Memproses...</>
                             ) : cooldownRemaining > 0 ? (
                                 <>Coba lagi dalam {cooldownRemaining}s</>
                             ) : (
-                                <>Masuk <FontAwesomeIcon icon={faArrowRight} className="text-sm ml-1" /></>
+                                <>Masuk <ArrowRight className="text-sm ml-1" /></>
                             )}
                         </button>
                     </form>
@@ -353,7 +351,7 @@ export default function LoginPage() {
                 onClose={() => setShowHelpModal(false)}
                 title="Bantuan Login"
                 size="sm"
-                icon={faKey}
+                icon={Key}
                 iconBg="bg-indigo-500/10"
                 iconColor="text-indigo-500"
             >
@@ -380,7 +378,7 @@ export default function LoginPage() {
                         Gunakan password: demo123
                     </span>
                 }
-                icon={faKey}
+                icon={Key}
                 iconBg="bg-amber-500/10"
                 iconColor="text-amber-500"
                 size="md"

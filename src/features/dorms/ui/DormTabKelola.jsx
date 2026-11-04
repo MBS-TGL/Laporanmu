@@ -20,7 +20,7 @@ export default function DormTabKelola({
     return (
         <div className="space-y-5 animate-in fade-in duration-300">
             {/* Header toolbar */}
-            <div className="glass rounded-[1.5rem] border border-[var(--color-border)] p-4 flex flex-col sm:flex-row items-center justify-between gap-4 bg-[var(--color-surface-alt)]/10">
+            <div className="rounded-[1.5rem] border border-[var(--color-border)] p-4 flex flex-col sm:flex-row items-center justify-between gap-4 bg-[var(--color-surface-alt)]/10">
                 <div>
                     <h3 className="text-sm sm:text-base font-bold text-[var(--color-text)]">{t('dorms.manage.title')}</h3>
                     <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{t('dorms.manage.subtitle')}</p>
@@ -32,7 +32,7 @@ export default function DormTabKelola({
                             setNewDorm({ id: '', ar: '', capacity: 30, gender: '', building: '', status: 'active', musyrif_id: '' });
                             setIsDormModalOpen(true);
                         }}
-                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 border border-white/10 text-xs font-bold uppercase tracking-wider whitespace-nowrap flex-1 sm:flex-initial"
+                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md border border-white/10 text-xs font-bold uppercase tracking-wider whitespace-nowrap flex-1 sm:flex-initial"
                     >
                         <Plus className="w-3.5 h-3.5 shrink-0" />
                         <span className="sm:hidden">{t('dorms.manage.addDorm').split(' ')[0]}</span>
@@ -42,7 +42,7 @@ export default function DormTabKelola({
             </div>
 
             {/* List/Grid of Dorms */}
-            <div className="glass rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
+            <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
                 {loadingDorms ? (
                     <div className="py-20 flex flex-col items-center justify-center gap-3">
                         <div className="w-8 h-8 border-3 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin" />

@@ -1,13 +1,10 @@
 import { useState, useEffect, useCallback, useRef, memo } from 'react'
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faIdCard, faKey, faSearch, faSpinner, faArrowLeft, faPhone, faSun, faMoon,
-    faClipboardList, faChartBar, faStar, faMosque, faBroom, faBookOpen, faLanguage,
-    faCalendarAlt, faUser, faChevronDown, faChevronUp, faLink, faCheck,
-    faArrowUp, faArrowDown, faTrophy, faShieldHalved, faFilePdf
-} from '@fortawesome/free-solid-svg-icons'
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
+import { ArrowDown, ArrowLeft, ArrowUp, Calendar, ChartColumn, Check, ChevronDown, ChevronUp, ClipboardList, FileText, IdCard, Key, LinkIcon, LoaderCircle, Moon, Phone, Search, ShieldHalf, Sun, Trophy, User } from 'lucide-react'
+import { WhatsAppIcon } from '@shared/components'
+
+
+
 import { useToast, useTheme } from '@context'
 import { supabase } from '@lib/supabase'
 import mbsLogo from '@assets/images/logos/logo-mbs.png'
@@ -406,9 +403,9 @@ export default function ParentCheckPage() {
     if (autoChecking) {
         return (
             <div className="min-h-screen bg-[var(--color-surface)] flex items-center justify-center p-4">
-                <div className="text-center glass p-8 rounded-3xl">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center mx-auto mb-4 shadow-lg shadow-[var(--color-primary)]/30">
-                        <FontAwesomeIcon icon={faSpinner} className="animate-spin text-2xl text-white" />
+                <div className="text-center bg-surface border border-border p-8 rounded-3xl">
+                    <div className="w-16 h-16 rounded-2xl bg-[var(--color-primary)] flex items-center justify-center mx-auto mb-4 shadow-lg">
+                        <LoaderCircle className="animate-spin text-2xl text-white" />
                     </div>
                     <p className="font-heading font-bold text-lg text-[var(--color-text)]">Memuat Data Anak...</p>
                     <p className="text-sm text-[var(--color-text-muted)] mt-1">Sistem sedang memverifikasi</p>
@@ -428,30 +425,29 @@ export default function ParentCheckPage() {
             <div className="min-h-screen bg-[var(--color-surface)] py-8 px-4 relative overflow-x-hidden">
                 {/* Ambient Background Glows */}
                 <div className="fixed inset-0 pointer-events-none z-0">
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-[400px] bg-[var(--color-primary)]/5 rounded-full blur-[100px]" />
                 </div>
 
                 <div className="max-w-[480px] mx-auto space-y-6 relative z-10">
                     {/* Nav */}
-                    <div className="flex items-center justify-between glass px-5 py-3 rounded-2xl">
+                    <div className="flex items-center justify-between bg-surface border border-border px-5 py-3 rounded-2xl">
                         <button onClick={handleReset} className="text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors flex items-center gap-2 uppercase tracking-wide">
-                            <span className="w-7 h-7 rounded-full bg-[var(--color-surface-alt)] flex items-center justify-center border border-[var(--color-border)]"><FontAwesomeIcon icon={faArrowLeft} className="text-[10px]" /></span>
+                            <span className="w-7 h-7 rounded-full bg-[var(--color-surface-alt)] flex items-center justify-center border border-[var(--color-border)]"><ArrowLeft className="text-[10px]" /></span>
                             Kembali
                         </button>
                         <div className="flex items-center gap-3">
                             <Link to="/" className="text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors uppercase tracking-wide">Beranda</Link>
                             <button onClick={toggleTheme} className="w-8 h-8 flex items-center justify-center rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all">
-                                <FontAwesomeIcon icon={isDark ? faSun : faMoon} className="text-xs" />
+                                { isDark ? <Sun className="text-xs" /> : <Moon className="text-xs" /> }
                             </button>
                         </div>
                     </div>
 
                     {/* Profile Card */}
-                    <div className="glass rounded-[2rem] overflow-hidden border border-[var(--color-border)]">
+                    <div className="bg-surface rounded-[2rem] overflow-hidden border border-[var(--color-border)]">
                         <div className="p-6 pb-0 flex items-center gap-5">
-                            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center text-3xl font-bold text-white shrink-0 overflow-hidden shadow-lg shadow-[var(--color-primary)]/20 shadow-inner">
+                            <div className="w-20 h-20 rounded-2xl bg-[var(--color-primary)] flex items-center justify-center text-3xl font-bold text-white shrink-0 overflow-hidden shadow-lg shadow-inner">
                                 {student.photo_url ? (
-                                    <img src={student.photo_url} alt="" className="w-full h-full object-cover" />
+                                    <img src={student.photo_url} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
                                 ) : (
                                     student.name.charAt(0)
                                 )}
@@ -495,7 +491,7 @@ export default function ParentCheckPage() {
                                         : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30'
                                     }`}
                             >
-                                <FontAwesomeIcon icon={linkCopied ? faCheck : faLink} className="text-[10px]" />
+                                { linkCopied ? <Check className="text-[10px]" /> : <LinkIcon className="text-[10px]" /> }
                                 {linkCopied ? 'Link tersalin!' : 'Salin Link'}
                             </button>
                             {(() => {
@@ -518,7 +514,7 @@ export default function ParentCheckPage() {
                                         className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border text-[11px] font-black bg-emerald-500/10 border-emerald-500/25 text-emerald-600 hover:bg-emerald-500/20 transition-all"
                                         title={waPhone ? `Kirim ke ${student.phone}` : 'Nomor Whatsapp tidak tersedia, pilih kontak sendiri'}
                                     >
-                                        <FontAwesomeIcon icon={faWhatsapp} className="text-[11px]" />
+                                        <WhatsAppIcon className="text-[11px]" />
                                         {waPhone ? 'Kirim ke Whatsapp Saya' : 'Bagikan Whatsapp'}
                                     </a>
                                 )
@@ -526,22 +522,22 @@ export default function ParentCheckPage() {
                         </div>
                         {/* Catatan keamanan untuk wali santri */}
                         <p className="px-4 pb-3 text-[10px] text-amber-600 font-medium leading-relaxed flex items-start gap-1.5">
-                            <FontAwesomeIcon icon={faShieldHalved} className="mt-0.5 shrink-0" />
+                            <ShieldHalf className="mt-0.5 shrink-0" />
                             Link ini mengandung PIN pribadi Anda. Jangan bagikan ke orang lain selain anggota keluarga yang Anda percaya.
                         </p>
                     </div>
 
                     {/* Tabs */}
-                    <div className="glass rounded-2xl p-1.5 flex gap-1">
+                    <div className="bg-surface border border-border rounded-2xl p-1.5 flex gap-1">
                         <button onClick={() => setActiveTab('perilaku')}
                             className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5
-                                ${activeTab === 'perilaku' ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                            <FontAwesomeIcon icon={faChartBar} className="text-[10px]" /> Perilaku
+                            ${activeTab === 'perilaku' ? 'bg-[var(--color-primary)] text-white shadow-lg' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                            <ChartColumn className="text-[10px]" /> Perilaku
                         </button>
                         <button onClick={() => { setActiveTab('raport'); localStorage.setItem('raport_last_viewed_month', `${currentYear}-${currentMonth}`) }}
                             className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 relative
-                                ${activeTab === 'raport' ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                            <FontAwesomeIcon icon={faClipboardList} className="text-[10px]" /> Raport Bulanan
+                            ${activeTab === 'raport' ? 'bg-[var(--color-primary)] text-white shadow-lg' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                            <ClipboardList className="text-[10px]" /> Raport Bulanan
                             {raportHistory.length > 0 && (
                                 <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full border ${activeTab === 'raport' ? 'bg-white/20 border-white/30 text-white' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)]'}`}>
                                     {raportHistory.length}
@@ -569,7 +565,7 @@ export default function ParentCheckPage() {
                                 {student.reports.length > 0 ? (
                                     <div className="space-y-2">
                                         {student.reports.map((report) => (
-                                            <div key={report.id} className="glass rounded-2xl px-5 py-4 flex justify-between items-center gap-4 hover:border-red-500/30 transition-all group">
+                                            <div key={report.id} className="bg-surface border border-border rounded-2xl px-5 py-4 flex justify-between items-center gap-4 hover:border-red-500/30 transition-all group">
                                                 <div className="flex items-center gap-3 min-w-0">
                                                     <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0">
                                                         <span className="text-xs font-black text-red-500">{report.teacher[0]?.toUpperCase() || '?'}</span>
@@ -592,7 +588,7 @@ export default function ParentCheckPage() {
                                 ) : (
                                     <div className="py-12 bg-[var(--color-surface-alt)]/50 rounded-2xl border border-[var(--color-border)] text-center flex flex-col items-center justify-center gap-4 animate-in fade-in zoom-in duration-500">
                                         <div className="w-16 h-16 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                                            <FontAwesomeIcon icon={faShieldHalved} className="text-2xl text-emerald-500 opacity-20" />
+                                            <ShieldHalf className="text-2xl text-emerald-500 opacity-20" />
                                         </div>
                                         <div>
                                             <p className="text-sm font-black text-[var(--color-text)]">Nihil Pelanggaran</p>
@@ -614,7 +610,7 @@ export default function ParentCheckPage() {
                                 {student.achievements.length > 0 ? (
                                     <div className="space-y-2">
                                         {student.achievements.map((item) => (
-                                            <div key={item.id} className="glass rounded-2xl px-5 py-4 flex justify-between items-center gap-4 hover:border-emerald-500/30 transition-all group">
+                                            <div key={item.id} className="bg-surface border border-border rounded-2xl px-5 py-4 flex justify-between items-center gap-4 hover:border-emerald-500/30 transition-all group">
                                                 <div className="flex items-center gap-3 min-w-0">
                                                     <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
                                                         <span className="text-xs font-black text-emerald-500">{item.teacher[0]?.toUpperCase() || '?'}</span>
@@ -637,7 +633,7 @@ export default function ParentCheckPage() {
                                 ) : (
                                     <div className="py-12 bg-[var(--color-surface-alt)]/50 rounded-2xl border border-[var(--color-border)] text-center flex flex-col items-center justify-center gap-4 animate-in fade-in zoom-in duration-500">
                                         <div className="w-16 h-16 rounded-3xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-                                            <FontAwesomeIcon icon={faTrophy} className="text-2xl text-amber-500 opacity-20" />
+                                            <Trophy className="text-2xl text-amber-500 opacity-20" />
                                         </div>
                                         <div>
                                             <p className="text-sm font-black text-[var(--color-text)]">Belum Ada Prestasi</p>
@@ -661,7 +657,7 @@ export default function ParentCheckPage() {
                             ) : raportHistory.length === 0 ? (
                                 <div className="py-14 bg-[var(--color-surface-alt)]/50 rounded-2xl border border-[var(--color-border)] text-center flex flex-col items-center justify-center gap-4 animate-in fade-in zoom-in duration-500">
                                     <div className="w-16 h-16 rounded-3xl bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-center">
-                                        <FontAwesomeIcon icon={faCalendarAlt} className="text-2xl text-[var(--color-primary)] opacity-20" />
+                                        <Calendar className="text-2xl text-[var(--color-primary)] opacity-20" />
                                     </div>
                                     <div className="px-6">
                                         <p className="text-sm font-black text-[var(--color-text)]">Raport Belum Tersedia</p>
@@ -675,7 +671,7 @@ export default function ParentCheckPage() {
                                             target="_blank" rel="noopener noreferrer"
                                             className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-emerald-600 text-xs font-black hover:bg-emerald-500/20 transition-all"
                                         >
-                                            <FontAwesomeIcon icon={faWhatsapp} className="text-sm" />
+                                            <WhatsAppIcon className="text-sm" />
                                             Hubungi {student.homeroomTeacher.name || 'Wali Kelas'}
                                         </a>
                                     )}
@@ -744,14 +740,14 @@ export default function ParentCheckPage() {
 
                                         return (
                                             <div key={r.id}
-                                                className="glass rounded-2xl border overflow-hidden transition-all"
+                                                className="bg-surface rounded-2xl border overflow-hidden transition-all"
                                                 style={{ borderColor: isLatest ? 'rgba(16,185,129,0.3)' : 'var(--color-border)', background: isLatest ? 'rgba(16,185,129,0.03)' : undefined }}>
                                                 {/* Card Header — always visible */}
                                                 <button className="w-full px-5 py-4 flex items-center gap-3 text-left"
                                                     onClick={() => setExpandedRaport(isExpanded ? null : r.id)}>
                                                     <div className="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center border"
                                                         style={{ background: g ? g.bg : 'var(--color-surface-alt)', borderColor: g ? g.border : 'var(--color-border)' }}>
-                                                        <FontAwesomeIcon icon={faClipboardList} className="text-sm" style={{ color: g ? g.color : 'var(--color-text-muted)' }} />
+                                                        <ClipboardList className="text-sm" style={{ color: g ? g.color : 'var(--color-text-muted)' }} />
                                                     </div>
                                                     <div className="flex-1 min-w-0">
                                                         <div className="flex items-center gap-2 flex-wrap">
@@ -772,7 +768,7 @@ export default function ParentCheckPage() {
                                                         <div className="flex items-center gap-2 mt-0.5">
                                                             {r.musyrif && (
                                                                 <span className="text-[10px] text-[var(--color-text-muted)] flex items-center gap-1">
-                                                                    <FontAwesomeIcon icon={faUser} className="text-[8px]" /> {r.musyrif}
+                                                                    <User className="text-[8px]" /> {r.musyrif}
                                                                 </span>
                                                             )}
                                                             {avg && g && (
@@ -782,8 +778,7 @@ export default function ParentCheckPage() {
                                                             )}
                                                         </div>
                                                     </div>
-                                                    <FontAwesomeIcon icon={isExpanded ? faChevronUp : faChevronDown}
-                                                        className="text-[10px] text-[var(--color-text-muted)] shrink-0" />
+                                                    { isExpanded ? <ChevronUp className="text-[10px] text-[var(--color-text-muted)] shrink-0" /> : <ChevronDown className="text-[10px] text-[var(--color-text-muted)] shrink-0" /> }
                                                 </button>
 
                                                 {/* Expanded detail */}
@@ -800,7 +795,7 @@ export default function ParentCheckPage() {
                                                                 const delta = (vNum !== null && prevNum !== null) ? vNum - prevNum : null
                                                                 return (
                                                                     <div key={k.key} className="flex flex-col items-center gap-1">
-                                                                        <FontAwesomeIcon icon={k.icon} className="text-[10px]" style={{ color: k.color }} />
+                                                                        <k.icon className="text-[10px]" style={{ color: k.color }} />
                                                                         <span className="text-[8px] font-black text-center leading-tight" style={{ color: k.color }}>
                                                                             {k.label}
                                                                         </span>
@@ -814,7 +809,7 @@ export default function ParentCheckPage() {
                                                                         </div>
                                                                         {delta !== null && delta !== 0 && (
                                                                             <span className={`text-[8px] font-black flex items-center gap-0.5 ${delta > 0 ? 'text-emerald-500' : 'text-red-400'}`}>
-                                                                                <FontAwesomeIcon icon={delta > 0 ? faArrowUp : faArrowDown} className="text-[7px]" />
+                                                                                { delta > 0 ? <ArrowUp className="text-[7px]" /> : <ArrowDown className="text-[7px]" /> }
                                                                                 {Math.abs(delta)}
                                                                             </span>
                                                                         )}
@@ -876,10 +871,7 @@ export default function ParentCheckPage() {
                                                                         : 'bg-indigo-500/10 border-indigo-500/30 text-indigo-500 hover:bg-indigo-500/20'
                                                                     }`}
                                                             >
-                                                                <FontAwesomeIcon
-                                                                    icon={pdfLoading === r.id ? faSpinner : faFilePdf}
-                                                                    className={`text-[10px] ${pdfLoading === r.id ? 'animate-spin' : ''}`}
-                                                                />
+                                                                { pdfLoading === r.id ? <LoaderCircle className={`text-[10px] ${pdfLoading === r.id ? 'animate-spin' : ''}`} /> : <FileText className={`text-[10px] ${pdfLoading === r.id ? 'animate-spin' : ''}`} /> }
                                                                 {pdfLoading === r.id ? 'Membuat PDF...' : `Unduh PDF — ${BULAN_STR[r.month]} ${r.year}`}
                                                             </button>
                                                         )}
@@ -935,7 +927,7 @@ export default function ParentCheckPage() {
                             : null
                         const htName = student.homeroomTeacher?.name
                         return (
-                            <div className="bg-gradient-to-r from-gray-900 to-slate-800 rounded-2xl p-5 flex items-center justify-between gap-4 mt-2 shadow-xl">
+                            <div className="bg-gray-900 rounded-2xl p-5 flex items-center justify-between gap-4 mt-2 shadow-xl">
                                 <div className="min-w-0">
                                     <p className="font-bold text-white mb-1">Perlu Bantuan?</p>
                                     <p className="text-xs text-slate-300 truncate">
@@ -953,24 +945,24 @@ export default function ParentCheckPage() {
                                                 title={`Whatsapp ${htName || 'Wali Kelas'}`}
                                                 className="w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-lg hover:bg-emerald-500 hover:text-white transition-all"
                                             >
-                                                <FontAwesomeIcon icon={faWhatsapp} />
+                                                <WhatsAppIcon />
                                             </a>
                                             <a
                                                 href={`tel:+${htPhone}`}
                                                 title={`Telepon ${htName || 'Wali Kelas'}`}
                                                 className="w-11 h-11 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white text-sm hover:bg-white/20 transition-all"
                                             >
-                                                <FontAwesomeIcon icon={faPhone} />
+                                                <Phone />
                                             </a>
                                         </>
                                     ) : (
                                         // Nomor wali kelas belum diisi di database — tombol dinonaktifkan
                                         <>
                                             <span className="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400/40 text-lg cursor-not-allowed" title="Nomor wali kelas belum tersedia">
-                                                <FontAwesomeIcon icon={faWhatsapp} />
+                                                <WhatsAppIcon />
                                             </span>
                                             <span className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/30 text-sm cursor-not-allowed" title="Nomor wali kelas belum tersedia">
-                                                <FontAwesomeIcon icon={faPhone} />
+                                                <Phone />
                                             </span>
                                         </>
                                     )}
@@ -992,15 +984,13 @@ export default function ParentCheckPage() {
         <div className="min-h-screen flex items-center justify-center bg-[var(--color-surface)] relative overflow-hidden px-4 py-8 transition-colors">
             {/* Ambient Background Glows */}
             <div className="absolute inset-0 pointer-events-none z-0">
-                <div className="absolute top-[10%] -left-[10%] w-[400px] h-[400px] rounded-full bg-[var(--color-primary)]/10 blur-[80px]" />
-                <div className="absolute bottom-[10%] -right-[10%] w-[500px] h-[500px] rounded-full bg-[var(--color-accent)]/10 blur-[100px]" />
             </div>
 
             <div className="w-full max-w-[420px] space-y-6 relative z-10">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <Link to="/" className="flex items-center gap-2.5 group">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+                        <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
                             <span className="text-white font-bold font-heading text-lg">L</span>
                         </div>
                         <span className="font-heading font-bold text-xl text-[var(--color-text)]">Laporan<span className="text-[var(--color-primary)]">mu</span></span>
@@ -1010,7 +1000,7 @@ export default function ParentCheckPage() {
                         className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 transition-all"
                         aria-label="Toggle theme"
                     >
-                        <FontAwesomeIcon icon={isDark ? faSun : faMoon} className="text-sm" />
+                        { isDark ? <Sun className="text-sm" /> : <Moon className="text-sm" /> }
                     </button>
                 </div>
 
@@ -1021,14 +1011,14 @@ export default function ParentCheckPage() {
                 </div>
 
                 {/* Form Card */}
-                <div className={`glass rounded-[2rem] p-6 sm:p-8 animate-in fade-in zoom-in duration-700 overflow-hidden relative shadow-2xl shadow-indigo-500/10 ${isShaking ? 'animate-shake' : ''}`}>
+                <div className={`bg-surface border border-border rounded-[2rem] p-6 sm:p-8 animate-in fade-in zoom-in duration-700 overflow-hidden relative shadow-xl ${isShaking ? 'animate-shake' : ''}`}>
                     {/* Visual Accent */}
-                    <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-accent)] to-[var(--color-primary)] opacity-30" />
+                    <div className="absolute top-0 left-0 w-full h-1.5 bg-[var(--color-primary)] opacity-30" />
                     <form onSubmit={handleCheck} className="space-y-5">
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider pl-1">Kode Registrasi</label>
                             <div className="relative">
-                                <FontAwesomeIcon icon={faIdCard} className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[var(--color-text-muted)] opacity-70" />
+                                <IdCard className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[var(--color-text-muted)] opacity-70" />
                                 <input
                                     type="text"
                                     value={code}
@@ -1042,7 +1032,7 @@ export default function ParentCheckPage() {
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider pl-1">PIN Rahasia</label>
                             <div className="relative">
-                                <FontAwesomeIcon icon={faKey} className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[var(--color-text-muted)] opacity-70" />
+                                <Key className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[var(--color-text-muted)] opacity-70" />
                                 <input
                                     type="password"
                                     inputMode="numeric"
@@ -1068,14 +1058,14 @@ export default function ParentCheckPage() {
                         <button
                             type="submit"
                             disabled={loading || loginCooldown > 0}
-                            className={`btn btn-primary w-full py-3.5 mt-2 shadow-lg shadow-[var(--color-primary)]/20 ${(loading || loginCooldown > 0) ? 'opacity-70' : ''}`}
+                            className={`btn btn-primary w-full py-3.5 mt-2 shadow-lg ${(loading || loginCooldown > 0) ? 'opacity-70' : ''}`}
                         >
                             {loading ? (
-                                <><FontAwesomeIcon icon={faSpinner} className="animate-spin text-sm" /> Memeriksa...</>
+                                <><LoaderCircle className="animate-spin text-sm" /> Memeriksa...</>
                             ) : loginCooldown > 0 ? (
-                                <><FontAwesomeIcon icon={faSpinner} className="animate-spin text-sm" /> Tunggu {loginCooldown}d...</>
+                                <><LoaderCircle className="animate-spin text-sm" /> Tunggu {loginCooldown}d...</>
                             ) : (
-                                <><FontAwesomeIcon icon={faSearch} className="text-sm mr-1" /> Cek Data</>
+                                <><Search className="text-sm mr-1" /> Cek Data</>
                             )}
                         </button>
                     </form>

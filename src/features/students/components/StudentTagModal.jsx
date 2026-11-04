@@ -1,14 +1,5 @@
 import React, { useRef, useEffect, memo, useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faTags,
-    faCheckCircle,
-    faXmark,
-    faCheck,
-    faPen,
-    faTrash,
-    faCircleInfo,
-} from '@fortawesome/free-solid-svg-icons'
+import { Check, CircleCheck, Info, Pen, Tags, Trash2, X } from 'lucide-react'
 import Modal from '@shared/components/Modal'
 import { AvailableTags } from '@features/students/utils/studentsConstants'
 
@@ -68,7 +59,7 @@ const StudentTagModal = ({
                 onClose={onClose}
                 title={`Kelola Label — ${student?.name || ''}`}
                 description="Atur pengelompokan siswa dengan sistem label dinamis."
-                icon={faTags}
+                icon={Tags}
                 iconBg="bg-violet-500/10"
                 iconColor="text-violet-600"
                 size="md"
@@ -84,9 +75,9 @@ const StudentTagModal = ({
                         <div className="flex-1" />
                         <button
                             onClick={onClose}
-                            className="h-10 px-8 rounded-xl bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-indigo-600/20 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 border border-white/10 shrink-0"
+                            className="h-10 px-8 rounded-xl bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 border border-white/10 shrink-0"
                         >
-                            <FontAwesomeIcon icon={faCheckCircle} className="text-xs opacity-80" />
+                            <CircleCheck className="text-xs opacity-80" />
                             Selesai & Simpan
                         </button>
                     </div>
@@ -104,7 +95,7 @@ const StudentTagModal = ({
                                 </div>
                                 <div className="relative group">
                                     <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-40 group-focus-within:text-indigo-500 group-focus-within:opacity-100 transition-all">
-                                        <FontAwesomeIcon icon={faTags} className="text-sm" />
+                                        <Tags className="text-sm" />
                                     </div>
                                     <input
                                         type="text"
@@ -126,7 +117,7 @@ const StudentTagModal = ({
                                                     tagInputRef.current.value = '';
                                                 }
                                             }}
-                                            className="h-8 px-4 rounded-xl bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-indigo-600/20"
+                                            className="h-8 px-4 rounded-xl bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-lg"
                                         >
                                             Tambah
                                         </button>
@@ -149,7 +140,7 @@ const StudentTagModal = ({
                                     </div>
                                     {studentTags.length === 0 ? (
                                         <div className="w-full py-2 flex flex-col items-center justify-center opacity-30">
-                                            <FontAwesomeIcon icon={faTags} className="mb-1 text-sm text-[var(--color-text-muted)]" />
+                                            <Tags className="mb-1 text-sm text-[var(--color-text-muted)]" />
                                             <span className="text-[8px] font-bold uppercase tracking-widest">Belum ada label</span>
                                         </div>
                                     ) : (
@@ -162,7 +153,7 @@ const StudentTagModal = ({
                                                 <span className="opacity-70 group-hover:hidden text-emerald-500">#</span>
                                                 {tag}
                                                 <div className="w-4 h-4 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-red-500/10 transition-colors">
-                                                    <FontAwesomeIcon icon={faXmark} className="text-[8px]" />
+                                                    <X className="text-[8px]" />
                                                 </div>
                                             </button>
                                         ))
@@ -185,7 +176,7 @@ const StudentTagModal = ({
 
                                         if (isEditing) {
                                             return (
-                                                <div key={tag} className="flex items-center rounded-full border-2 border-violet-500 bg-white shadow-xl shadow-violet-500/10 animate-in zoom-in-95 duration-200 overflow-hidden">
+                                                <div key={tag} className="flex items-center rounded-full border-2 border-violet-500 bg-white shadow-xl animate-in zoom-in-95 duration-200 overflow-hidden">
                                                     <input
                                                         autoFocus
                                                         type="text"
@@ -203,14 +194,14 @@ const StudentTagModal = ({
                                                             className="w-8 h-8 flex items-center justify-center text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all"
                                                             title="Simpan"
                                                         >
-                                                            <FontAwesomeIcon icon={faCheck} className="text-[8px]" />
+                                                            <Check className="text-[8px]" />
                                                         </button>
                                                         <button
                                                             onClick={() => setTagToEdit(null)}
                                                             className="w-8 h-8 flex items-center justify-center text-red-400 hover:bg-red-500 hover:text-white transition-all"
                                                             title="Batal"
                                                         >
-                                                            <FontAwesomeIcon icon={faXmark} className="text-[9px]" />
+                                                            <X className="text-[9px]" />
                                                         </button>
                                                     </div>
                                                 </div>
@@ -220,7 +211,7 @@ const StudentTagModal = ({
                                         return (
                                             <div key={tag} className="group relative">
                                                 <div className={`flex items-center gap-0 rounded-full border transition-all duration-300 shadow-sm overflow-hidden ${isActive
-                                                    ? 'bg-[var(--color-primary)] border-[var(--color-primary)] shadow-lg shadow-[var(--color-primary)]/20'
+                                                    ? 'bg-[var(--color-primary)] border-[var(--color-primary)] shadow-lg'
                                                     : 'bg-white border-[var(--color-border)] hover:border-[var(--color-primary)]/50'
                                                     }`}>
                                                     <button
@@ -231,7 +222,7 @@ const StudentTagModal = ({
                                                     >
                                                         <div className="shrink-0 flex items-center justify-center">
                                                             {isActive ? (
-                                                                <FontAwesomeIcon icon={faCheck} className="text-[8px]" />
+                                                                <Check className="text-[8px]" />
                                                             ) : (
                                                                 <div className="w-1.5 h-1.5 rounded-full bg-slate-200 group-hover:bg-[var(--color-primary)]/40 transition-colors" />
                                                             )}
@@ -246,7 +237,7 @@ const StudentTagModal = ({
                                                             className={`w-8 h-8 flex items-center justify-center transition-colors ${isActive ? 'text-white/70 hover:text-white' : 'text-blue-500 hover:bg-blue-50'}`}
                                                             title="Ubah Nama"
                                                         >
-                                                            <FontAwesomeIcon icon={faPen} className="text-[7px]" />
+                                                            <Pen className="text-[7px]" />
                                                         </button>
                                                         <button
                                                             type="button"
@@ -254,7 +245,7 @@ const StudentTagModal = ({
                                                             className={`w-8 h-8 flex items-center justify-center transition-colors ${isActive ? 'text-white/70 hover:text-white' : 'text-red-500 hover:bg-red-50'}`}
                                                             title="Hapus Global"
                                                         >
-                                                            <FontAwesomeIcon icon={faXmark} className="text-[8px]" />
+                                                            <X className="text-[8px]" />
                                                         </button>
                                                     </div>
                                                 </div>
@@ -264,9 +255,9 @@ const StudentTagModal = ({
                                 </div>
 
                                 <div className="p-3 rounded-xl bg-blue-50/50 border border-blue-100 flex items-start gap-3 mt-2">
-                                    <FontAwesomeIcon icon={faCircleInfo} className="text-blue-500 text-[11px] mt-0.5 opacity-60" />
+                                    <Info className="text-blue-500 text-[11px] mt-0.5 opacity-60" />
                                     <p className="text-[11px] text-blue-700 font-medium leading-relaxed">
-                                        Klik label untuk menyematkan ke siswa. Gunakan ikon <FontAwesomeIcon icon={faPen} className="text-blue-500 mx-0.5" /> untuk ubah nama atau <FontAwesomeIcon icon={faXmark} className="text-red-500 mx-0.5" /> untuk hapus global.
+                                        Klik label untuk menyematkan ke siswa. Gunakan ikon <Pen className="text-blue-500 mx-0.5" /> untuk ubah nama atau <X className="text-red-500 mx-0.5" /> untuk hapus global.
                                     </p>
                                 </div>
                             </div>
@@ -281,7 +272,7 @@ const StudentTagModal = ({
                 onClose={() => setConfirmDeleteTag(null)}
                 title="Konfirmasi Hapus Label"
                 description="Label akan dihapus secara permanen dari database sistem."
-                icon={faTrash}
+                icon={Trash2}
                 iconBg="bg-red-50"
                 iconColor="text-red-500"
                 size="sm"
@@ -300,9 +291,9 @@ const StudentTagModal = ({
                                 setConfirmDeleteTag(null);
                                 await handleGlobalDeleteTag(tag, true);
                             }}
-                            className="h-10 px-6 rounded-xl bg-red-500 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-red-500/20 hover:bg-red-600 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
+                            className="h-10 px-6 rounded-xl bg-red-500 text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-red-600 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
                         >
-                            <FontAwesomeIcon icon={faTrash} className="text-[10px] opacity-80" />
+                            <Trash2 className="text-[10px] opacity-80" />
                             Hapus Global
                         </button>
                     </div>

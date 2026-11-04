@@ -2,8 +2,6 @@ import { useState, useMemo, useEffect, useCallback, useRef, useDeferredValue } f
 import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faThumbtack } from '@fortawesome/free-solid-svg-icons'
 import { RiskThreshold, calculateCompleteness } from '@features/students/utils/studentsConstants'
 import { generateStudentPDF as _generateStudentPDF, handlePrintThermal as _handlePrintThermal, handleSavePNG as _handleSavePNG } from '@features/students/utils/studentPdfUtils'
 import { useAuth } from '@context/Auth'

@@ -68,7 +68,7 @@ export default function PrintOptionsModal({
           <div className="flex-1" />
           <button
             onClick={handlePrint}
-            className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-wider shadow-lg shadow-[var(--color-primary)]/20 hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
+            className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-wider shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
           >
             <Printer className="w-3.5 h-3.5" />
             <span>{tp('btnCetak').toUpperCase()}</span>

@@ -1,20 +1,12 @@
 import { useState, useEffect, useCallback, useMemo, memo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-    faPlus, faSearch, faNewspaper, faCalendar,
-    faUser, faChevronDown, faPen,
-    faTrash, faEye, faEyeSlash, faSpinner,
-    faXmark, faCheck, faTriangleExclamation,
-    faClock, faGlobe, faCloudArrowUp, faCopy,
-    faStar, faFilter, faChevronLeft,
-    faChevronRight, faCheckSquare, faSquare,
-    faBookOpen, faHashtag, faAlignLeft, faImage,
-    faArrowUpRightFromSquare, faArchive, faRotateLeft, faRocket,
-    faTags, faUserPen, faMagicWandSparkles, faSliders,
-    faList, faGrip, faTableList
-} from '@fortawesome/free-solid-svg-icons'
+    Archive, Calendar, ChevronDown, ChevronLeft, ChevronRight, Clock, Copy, Eye,
+    Globe, GripHorizontal, LoaderCircle, Newspaper, Pen, Plus, Rocket, RotateCcw,
+    Search, SlidersHorizontal, Square, SquareCheck, Star, TableProperties, Trash2,
+    TriangleAlert, User, X
+} from 'lucide-react'
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import Breadcrumb from '@shared/components/Breadcrumb'
 import { useToast } from '@context/Toast'
@@ -71,11 +63,11 @@ const ConfirmDeleteModal = memo(({ isOpen, onClose, onConfirm, title, isDeleting
     if (!isOpen) return null
     return createPortal(
         <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-            <div className="relative w-full max-w-sm bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2rem] shadow-2xl p-6 animate-in zoom-in-95 duration-200">
+            <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+            <div className="relative w-full max-w-sm bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2rem] shadow-xl p-6 animate-in zoom-in-95 duration-200">
                 <div className="flex flex-col items-center text-center space-y-4">
                     <div className="w-16 h-16 rounded-full bg-rose-500/10 flex items-center justify-center text-rose-500 text-2xl">
-                        <FontAwesomeIcon icon={faTriangleExclamation} />
+                        <TriangleAlert />
                     </div>
                     <div>
                         <h3 className="text-lg font-black text-[var(--color-text)]">Hapus Informasi?</h3>
@@ -88,7 +80,7 @@ const ConfirmDeleteModal = memo(({ isOpen, onClose, onConfirm, title, isDeleting
                             Batal
                         </button>
                         <button onClick={onConfirm} disabled={isDeleting} className="flex-1 h-11 rounded-xl bg-rose-500 text-white text-[10px] font-black uppercase tracking-widest hover:bg-rose-600 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-60">
-                            {isDeleting ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" /> : <FontAwesomeIcon icon={faTrash} />}
+                            {isDeleting ? <LoaderCircle className="animate-spin" /> : <Trash2 />}
                             Hapus Permanen
                         </button>
                     </div>
@@ -104,11 +96,11 @@ const ConfirmDuplicateModal = memo(({ isOpen, onClose, onConfirm, title, isDupli
     if (!isOpen) return null
     return createPortal(
         <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-            <div className="relative w-full max-w-sm bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2rem] shadow-2xl p-6 animate-in zoom-in-95 duration-200">
+            <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+            <div className="relative w-full max-w-sm bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2rem] shadow-xl p-6 animate-in zoom-in-95 duration-200">
                 <div className="flex flex-col items-center text-center space-y-4">
                     <div className="w-16 h-16 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-500 text-2xl">
-                        <FontAwesomeIcon icon={faCopy} />
+                        <Copy />
                     </div>
                     <div>
                         <h3 className="text-lg font-black text-[var(--color-text)]">Duplikat Informasi?</h3>
@@ -121,7 +113,7 @@ const ConfirmDuplicateModal = memo(({ isOpen, onClose, onConfirm, title, isDupli
                             Batal
                         </button>
                         <button onClick={onConfirm} disabled={isDuplicating} className="flex-1 h-11 rounded-xl bg-indigo-500 text-white text-[10px] font-black uppercase tracking-widest hover:bg-indigo-600 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-60">
-                            {isDuplicating ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" /> : <FontAwesomeIcon icon={faCopy} />}
+                            {isDuplicating ? <LoaderCircle className="animate-spin" /> : <Copy />}
                             Duplikat
                         </button>
                     </div>
@@ -185,30 +177,31 @@ const NewsCard = memo(({ news, isSelected, onSelect, onEdit, onDelete, onToggleS
     }
 
     return (
-        <div className={`group relative bg-[var(--color-surface)] border rounded-[2rem] overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-black/5 hover:-translate-y-1 ${isSelected ? 'border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/20' : 'border-[var(--color-border)] hover:border-[var(--color-primary)]/30'}`}>
+        <div className={`group relative bg-[var(--color-surface)] border rounded-[2rem] overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${isSelected ? 'border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/20' : 'border-[var(--color-border)] hover:border-[var(--color-primary)]/30'}`}>
             {/* Select checkbox */}
             <button onClick={() => onSelect(news.id)}
-                className="absolute top-4 left-4 z-10 w-8 h-8 rounded-xl flex items-center justify-center transition-all bg-white/90 backdrop-blur-md shadow-sm border border-[var(--color-border)] opacity-0 group-hover:opacity-100 data-[selected=true]:opacity-100"
+                className="absolute top-4 left-4 z-10 w-8 h-8 rounded-xl flex items-center justify-center transition-all bg-white shadow-sm border border-[var(--color-border)] opacity-0 group-hover:opacity-100 data-[selected=true]:opacity-100"
                 data-selected={isSelected}>
-                <FontAwesomeIcon icon={isSelected ? faCheckSquare : faSquare}
-                    className={`text-sm ${isSelected ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
+                {isSelected
+                    ? <SquareCheck className={`text-sm ${isSelected ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
+                    : <Square className={`text-sm ${isSelected ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />}
             </button>
 
             {/* Thumbnail */}
             <div className="h-44 bg-[var(--color-surface-alt)] relative overflow-hidden">
                 {news.image_url ? (
                     <img src={news.image_url} alt={news.image_alt || news.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" decoding="async" />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center opacity-15">
-                        <FontAwesomeIcon icon={faNewspaper} className="text-5xl" />
+                        <Newspaper className="text-5xl" />
                     </div>
                 )}
 
                 {/* View count overlay */}
                 <div className="absolute top-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <span className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-white text-[9px] font-black tracking-widest flex items-center gap-1.5 border border-white/10 uppercase">
-                        <FontAwesomeIcon icon={faEye} className="text-[8px]" />
+                    <span className="px-3 py-1 rounded-full bg-black/40 text-white text-[9px] font-black tracking-widest flex items-center gap-1.5 border border-white/10 uppercase">
+                        <Eye className="text-[8px]" />
                         {news.view_count || 0} Views
                     </span>
                 </div>
@@ -216,20 +209,20 @@ const NewsCard = memo(({ news, isSelected, onSelect, onEdit, onDelete, onToggleS
                 {/* Badges */}
                 <div className="absolute top-4 right-4 flex flex-col items-center gap-2">
                     {news.is_featured && (
-                        <span className="w-8 h-8 rounded-xl bg-amber-400 backdrop-blur-sm flex items-center justify-center shadow-lg shadow-amber-500/20" title="Featured">
-                            <FontAwesomeIcon icon={faStar} className="text-white text-[10px]" />
+                        <span className="w-8 h-8 rounded-xl bg-amber-400 flex items-center justify-center shadow-lg" title="Featured">
+                            <Star className="text-white text-[10px]" />
                         </span>
                     )}
                     <button onClick={() => onToggleStatus(news)}
-                        className={`w-8 h-8 rounded-xl flex items-center justify-center backdrop-blur-md shadow-lg transition-all border ${news.is_published
-                            ? 'bg-[var(--color-primary)] border-[var(--color-primary)]/20 text-white shadow-[var(--color-primary)]/20'
-                            : 'bg-white border-[var(--color-border)] text-[var(--color-text-muted)] shadow-black/5'}`}
+                        className={`w-8 h-8 rounded-xl flex items-center justify-center shadow-lg transition-all border ${news.is_published
+                            ? 'bg-[var(--color-primary)] border-[var(--color-primary)]/20 text-white'
+                            : 'bg-white border-[var(--color-border)] text-[var(--color-text-muted)]'}`}
                         title={news.is_published ? 'Arsipkan' : 'Publikasikan'}>
-                        <FontAwesomeIcon icon={faRocket} className="text-[10px]" />
+                        <Rocket className="text-[10px]" />
                     </button>
                 </div>
                 <div className="absolute bottom-4 left-4">
-                    <span className="px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur-md text-[9px] font-black uppercase tracking-widest text-[var(--color-primary)] shadow-sm border border-[var(--color-border)]">
+                    <span className="px-3 py-1.5 rounded-xl bg-white text-[9px] font-black uppercase tracking-widest text-[var(--color-primary)] shadow-sm border border-[var(--color-border)]">
                         {news.tag}
                     </span>
                 </div>
@@ -239,11 +232,11 @@ const NewsCard = memo(({ news, isSelected, onSelect, onEdit, onDelete, onToggleS
             <div className="p-6">
                 <div className="flex items-center gap-3 text-[9px] text-[var(--color-text-muted)] font-black uppercase tracking-widest mb-3 opacity-60">
                     <span className="flex items-center gap-1.5">
-                        <FontAwesomeIcon icon={faCalendar} className="text-[8px]" />
+                        <Calendar className="text-[8px]" />
                         {getRelativeTime(news.created_at)}
                     </span>
                     <span className="flex items-center gap-1.5 border-l border-[var(--color-border)] pl-3">
-                        <FontAwesomeIcon icon={faClock} className="text-[8px]" />
+                        <Clock className="text-[8px]" />
                         {readTime} mnt
                     </span>
                 </div>
@@ -255,7 +248,7 @@ const NewsCard = memo(({ news, isSelected, onSelect, onEdit, onDelete, onToggleS
                 <div className="flex items-center justify-between mb-5">
                     <div className="flex items-center gap-2">
                         <div className="w-6 h-6 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] border border-[var(--color-border)]">
-                            <FontAwesomeIcon icon={faUser} className="text-[8px]" />
+                            <User className="text-[8px]" />
                         </div>
                         <span className="text-[10px] font-bold text-[var(--color-text-muted)] opacity-60 capitalize">
                             {news.display_name || news.author?.split('@')[0] || 'Admin'}
@@ -264,7 +257,7 @@ const NewsCard = memo(({ news, isSelected, onSelect, onEdit, onDelete, onToggleS
 
                     {/* View count (Desktop constant visibility) */}
                     <div className="flex items-center gap-1.5 text-[9px] font-black text-[var(--color-text-muted)] opacity-40 uppercase tracking-widest">
-                        <FontAwesomeIcon icon={faEye} />
+                        <Eye />
                         {news.view_count || 0}
                     </div>
                 </div>
@@ -272,7 +265,7 @@ const NewsCard = memo(({ news, isSelected, onSelect, onEdit, onDelete, onToggleS
                 {/* Status badge */}
                 {news.scheduled_at && !news.is_published && (
                     <div className="flex items-center gap-2 mb-4 text-amber-600 bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-xl w-fit">
-                        <FontAwesomeIcon icon={faClock} className="text-[10px] animate-pulse" />
+                        <Clock className="text-[10px] animate-pulse" />
                         <span className="text-[10px] font-black uppercase tracking-widest">Terjadwal: {new Date(news.scheduled_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}</span>
                     </div>
                 )}
@@ -281,15 +274,15 @@ const NewsCard = memo(({ news, isSelected, onSelect, onEdit, onDelete, onToggleS
                 <div className="flex items-center gap-2 pt-4 border-t border-[var(--color-border)]">
                     <button onClick={() => onEdit(news)}
                         className="flex-1 h-10 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-primary)] hover:text-white hover:border-[var(--color-primary)] transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm">
-                        <FontAwesomeIcon icon={faPen} className="text-[9px]" /> Edit
+                        <Pen className="text-[9px]" /> Edit
                     </button>
                     <button onClick={() => onDuplicate(news)} title="Duplikat sebagai draft"
                         className="w-10 h-10 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-sky-500/10 hover:text-sky-500 hover:border-sky-500/30 transition-all flex items-center justify-center active:scale-95">
-                        <FontAwesomeIcon icon={faCopy} className="text-[10px]" />
+                        <Copy className="text-[10px]" />
                     </button>
                     <button onClick={() => onDelete(news)}
-                        className="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-500 border border-rose-500/20 hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center active:scale-95 shadow-sm shadow-rose-500/5">
-                        <FontAwesomeIcon icon={faTrash} className="text-[10px]" />
+                        className="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-500 border border-rose-500/20 hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center active:scale-95 shadow-sm">
+                        <Trash2 className="text-[10px]" />
                     </button>
                 </div>
             </div>
@@ -303,24 +296,24 @@ NewsCard.displayName = 'NewsCard'
 const BulkActionBar = memo(({ count, onPublish, onArchive, onSetFeatured, onRemoveFeatured, onDelete, onClear, tags, onBulkChangeTag }) => {
     if (count === 0) return null
     return (
-        <div className="flex items-center gap-3 px-4 py-3 bg-[var(--color-primary)] rounded-2xl shadow-lg shadow-[var(--color-primary)]/30 animate-in slide-in-from-bottom-4 duration-200 overflow-x-auto scrollbar-hide relative max-w-full">
+        <div className="flex items-center gap-3 px-4 py-3 bg-[var(--color-primary)] rounded-2xl shadow-lg animate-in slide-in-from-bottom-4 duration-200 overflow-x-auto scrollbar-hide relative max-w-full">
             <span className="text-white text-[11px] font-black shrink-0 whitespace-nowrap">{count} dipilih</span>
             <div className="h-4 w-px bg-white/20 shrink-0" />
             <button onClick={onPublish} className="shrink-0 text-white text-[10px] font-black uppercase tracking-widest hover:opacity-80 transition-opacity flex items-center gap-1.5 px-2">
-                <FontAwesomeIcon icon={faRocket} className="text-[9px]" /> Publikasikan
+                <Rocket className="text-[9px]" /> Publikasikan
             </button>
             <button onClick={onArchive} className="shrink-0 text-white text-[10px] font-black uppercase tracking-widest hover:opacity-80 transition-opacity flex items-center gap-1.5 px-2">
-                <FontAwesomeIcon icon={faArchive} className="text-[9px]" /> Arsipkan
+                <Archive className="text-[9px]" /> Arsipkan
             </button>
             <button onClick={onSetFeatured} className="shrink-0 text-white text-[10px] font-black uppercase tracking-widest hover:opacity-80 transition-opacity flex items-center gap-1.5 px-2">
-                <FontAwesomeIcon icon={faStar} className="text-[9px]" /> Highlight
+                <Star className="text-[9px]" /> Highlight
             </button>
             <button onClick={onRemoveFeatured} className="shrink-0 text-white text-[10px] font-black uppercase tracking-widest hover:opacity-80 transition-opacity flex items-center gap-1.5 px-2">
-                <FontAwesomeIcon icon={faStar} className="text-[9px] opacity-40" /> Unhighlight
+                <Star className="text-[9px] opacity-40" /> Unhighlight
             </button>
             <div className="h-4 w-px bg-white/20 shrink-0 mx-1" />
             <button onClick={onDelete} className="shrink-0 text-rose-200 text-[10px] font-black uppercase tracking-widest hover:text-white transition-colors flex items-center gap-1.5 px-2">
-                <FontAwesomeIcon icon={faTrash} className="text-[9px]" /> Hapus
+                <Trash2 className="text-[9px]" /> Hapus
             </button>
             <div className="h-4 w-px bg-white/20 shrink-0 mx-1" />
             
@@ -337,12 +330,12 @@ const BulkActionBar = memo(({ count, onPublish, onArchive, onSetFeatured, onRemo
                     <option value="" className="text-slate-900">Ubah Kategori...</option>
                     {tags.map(t => <option key={t} value={t} className="text-slate-900">{t}</option>)}
                 </select>
-                <FontAwesomeIcon icon={faChevronDown} className="absolute right-3 top-1/2 -translate-y-1/2 text-[8px] text-white/50 pointer-events-none" />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-[8px] text-white/50 pointer-events-none" />
             </div>
 
             <div className="ml-auto flex items-center shrink-0">
                 <button onClick={onClear} className="w-8 h-8 flex items-center justify-center rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors">
-                    <FontAwesomeIcon icon={faXmark} className="text-sm" />
+                    <X className="text-sm" />
                 </button>
             </div>
         </div>
@@ -689,8 +682,8 @@ export default function NewsListPage() {
                     </div>
                     <div className="flex items-center gap-2">
                         <button onClick={() => navigate('/admin/news/create')}
-                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black flex items-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-[var(--color-primary)]/20">
-                            <FontAwesomeIcon icon={faPlus} className="text-[10px]" />Buat Informasi
+                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black flex items-center gap-2 hover:opacity-90 transition-all shadow-lg">
+                            <Plus className="text-[10px]" />Buat Informasi
                         </button>
                     </div>
                 </div>
@@ -712,14 +705,14 @@ export default function NewsListPage() {
                             className="flex overflow-x-auto scrollbar-hide gap-3 pb-2 snap-x snap-mandatory px-3 sm:px-0 sm:grid sm:grid-cols-2 lg:grid lg:grid-cols-4 lg:overflow-visible lg:pb-0 lg:snap-none"
                         >
                             {[
-                                { label: 'Total Artikel', val: statusCounts.all || 0, color: 'text-blue-500', bg: 'bg-blue-500/10', icon: faNewspaper },
-                                { label: 'Total Pembaca', val: (statusCounts.total_views || 0).toLocaleString('id-ID'), color: 'text-emerald-500', bg: 'bg-emerald-500/10', icon: faEye },
-                                { label: 'Terpublikasi', val: statusCounts.published || 0, color: 'text-indigo-500', bg: 'bg-indigo-500/10', icon: faGlobe },
-                                { label: 'Rata-rata Baca', val: `${statusCounts.avg_read_time || 0} Menit`, color: 'text-amber-500', bg: 'bg-amber-500/10', icon: faClock },
+                                { label: 'Total Artikel', val: statusCounts.all || 0, color: 'text-blue-500', bg: 'bg-blue-500/10', icon: Newspaper },
+                                { label: 'Total Pembaca', val: (statusCounts.total_views || 0).toLocaleString('id-ID'), color: 'text-emerald-500', bg: 'bg-emerald-500/10', icon: Eye },
+                                { label: 'Terpublikasi', val: statusCounts.published || 0, color: 'text-indigo-500', bg: 'bg-indigo-500/10', icon: Globe },
+                                { label: 'Rata-rata Baca', val: `${statusCounts.avg_read_time || 0} Menit`, color: 'text-amber-500', bg: 'bg-amber-500/10', icon: Clock },
                             ].map((s, i) => (
-                                <div key={i} className="w-[200px] xs:w-[220px] sm:w-auto shrink-0 snap-center glass rounded-[1.5rem] p-4 border border-[var(--color-border)] flex items-center gap-3 hover:shadow-lg transition-all cursor-default group">
+                                <div key={i} className="w-[200px] xs:w-[220px] sm:w-auto shrink-0 snap-center bg-surface rounded-[1.5rem] p-4 border border-[var(--color-border)] flex items-center gap-3 hover:shadow-lg transition-all cursor-default group">
                                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm shrink-0 ${s.bg} group-hover:scale-110 transition-transform`}>
-                                        <FontAwesomeIcon icon={s.icon} className={s.color} />
+                                        <s.icon className={s.color} />
                                     </div>
                                     <div className="min-w-0">
                                         <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 leading-none mb-1">{s.label}</p>
@@ -754,7 +747,7 @@ export default function NewsListPage() {
                     <div className="flex flex-row items-center gap-2 p-3">
                         {/* Search */}
                         <div className="relative flex-1 min-w-0">
-                            <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
                             <input
                                 value={searchInput}
                                 onChange={e => setSearchInput(e.target.value)}
@@ -763,7 +756,7 @@ export default function NewsListPage() {
                             />
                             {searchInput && (
                                 <button onClick={() => { setSearchInput(''); setSearch('') }} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-                                    <FontAwesomeIcon icon={faXmark} className="text-[9px]" />
+                                    <X className="text-[9px]" />
                                 </button>
                             )}
                         </div>
@@ -774,7 +767,7 @@ export default function NewsListPage() {
                             {newsList.length > 0 && (
                                 <button onClick={() => selectedIds.size === paginatedNews.length ? clearSelection() : selectAll()}
                                     className={`h-9 px-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${selectedIds.size > 0 ? 'bg-indigo-500 border-indigo-500 text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                    <FontAwesomeIcon icon={selectedIds.size > 0 ? faCheckSquare : faSquare} className="text-[9px]" />
+                                    {selectedIds.size > 0 ? <SquareCheck className="text-[9px]" /> : <Square className="text-[9px]" />}
                                     <span className="hidden xs:inline">{selectedIds.size > 0 ? 'Terpilih' : 'Pilih'}</span>
                                     {selectedIds.size > 0 && (
                                         <span className="w-4 h-4 rounded-full bg-white/20 text-white text-[9px] font-black flex items-center justify-center">
@@ -787,9 +780,9 @@ export default function NewsListPage() {
                             {/* Filter toggle */}
                             <button
                                 onClick={() => setShowFilter(!showFilter)}
-                                className={`h-9 px-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${showFilter || filterStatus !== 'all' || sortBy !== 'newest' ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/30' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
+                                className={`h-9 px-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 ${showFilter || filterStatus !== 'all' || sortBy !== 'newest' ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
                             >
-                                <FontAwesomeIcon icon={faSliders} />
+                                <SlidersHorizontal />
                                 <span className="hidden xs:inline">Filter</span>
                                 {(filterStatus !== 'all' || sortBy !== 'newest') && (
                                     <span className="w-4 h-4 rounded-full bg-white/30 text-white text-[9px] font-black flex items-center justify-center">
@@ -803,12 +796,12 @@ export default function NewsListPage() {
                                 <button onClick={() => setViewMode('grid')}
                                     className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${viewMode === 'grid' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm border border-[var(--color-border)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                                     title="Tampilan Grid">
-                                    <FontAwesomeIcon icon={faGrip} className="text-[10px]" />
+                                    <GripHorizontal className="text-[10px]" />
                                 </button>
                                 <button onClick={() => setViewMode('list')}
                                     className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${viewMode === 'list' ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm border border-[var(--color-border)]' : 'text-[var(--color-text-muted)] hover:text(--color-text)'}`}
                                     title="Tampilan List">
-                                    <FontAwesomeIcon icon={faTableList} className="text-[10px]" />
+                                    <TableProperties className="text-[10px]" />
                                 </button>
                             </div>
 
@@ -822,7 +815,7 @@ export default function NewsListPage() {
                                     }}
                                     className="h-9 px-3 rounded-xl border border-red-500/20 bg-red-500/5 text-red-500 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-red-500/10 active:scale-95 flex items-center gap-1.5"
                                 >
-                                    <FontAwesomeIcon icon={faXmark} />
+                                    <X />
                                     <span className="hidden sm:inline">Reset</span>
                                 </button>
                             )}
@@ -893,10 +886,10 @@ export default function NewsListPage() {
                                 {search && (
                                     <button type="button" onClick={() => { setSearchInput(''); setSearch('') }}
                                         className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-[10px] font-black text-[var(--color-text)]" title="Hapus pencarian">
-                                        <FontAwesomeIcon icon={faSearch} className="text-[10px] opacity-60" />
+                                        <Search className="text-[10px] opacity-60" />
                                         <span className="max-w-[140px] truncate">"{search}"</span>
                                         <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500 transition-colors">
-                                            <FontAwesomeIcon icon={faXmark} className="text-[10px]" />
+                                            <X className="text-[10px]" />
                                         </span>
                                     </button>
                                 )}
@@ -905,7 +898,7 @@ export default function NewsListPage() {
                                         className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-indigo-500/20 bg-indigo-500/5 text-[10px] font-black text-indigo-600" title="Hapus filter status">
                                         Status: {{published:'Terpublikasi',draft:'Draf',scheduled:'Terjadwal',featured:'Unggulan'}[filterStatus] || filterStatus}
                                         <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-indigo-500/20 flex items-center justify-center text-indigo-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                            <FontAwesomeIcon icon={faXmark} className="text-[10px]" />
+                                            <X className="text-[10px]" />
                                         </span>
                                     </button>
                                 )}
@@ -940,13 +933,13 @@ export default function NewsListPage() {
                         {Array.from({ length: PAGE_SIZE }).map((_, i) => <NewsSkeleton key={i} />)}
                     </div>
                 ) : newsList.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-20 px-6 glass rounded-[3rem] border border-dashed border-[var(--color-border)] animate-in fade-in zoom-in-95 duration-500">
+                    <div className="flex flex-col items-center justify-center py-20 px-6 bg-surface rounded-[3rem] border border-dashed border-[var(--color-border)] animate-in fade-in zoom-in-95 duration-500">
                         <div className="relative mb-6">
                             <div className="w-24 h-24 rounded-full bg-blue-500/5 flex items-center justify-center text-blue-500/20 text-5xl">
-                                <FontAwesomeIcon icon={faSearch} />
+                                <Search />
                             </div>
                             <div className="absolute -top-1 -right-1 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center text-rose-500 border border-[var(--color-border)]">
-                                <FontAwesomeIcon icon={faXmark} className="text-sm" />
+                                <X className="text-sm" />
                             </div>
                         </div>
                         <h3 className="text-xl font-black text-[var(--color-text)] mb-2">Informasi Tidak Ditemukan</h3>
@@ -957,13 +950,13 @@ export default function NewsListPage() {
                             {(search || filterStatus !== 'all') ? (
                                 <button onClick={() => { setSearchInput(''); setSearch(''); setFilterStatus('all') }}
                                     className="h-11 px-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-surface-alt)] transition-all flex items-center gap-2">
-                                    <FontAwesomeIcon icon={faRotateLeft} className="text-[8px]" />
+                                    <RotateCcw className="text-[8px]" />
                                     Reset semua filter
                                 </button>
                             ) : (
                                 <button onClick={() => navigate('/admin/news/create')}
-                                    className="h-11 px-8 rounded-2xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all flex items-center gap-2 shadow-lg shadow-[var(--color-primary)]/20">
-                                    <FontAwesomeIcon icon={faPlus} className="text-[9px]" />
+                                    className="h-11 px-8 rounded-2xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all flex items-center gap-2 shadow-lg">
+                                    <Plus className="text-[9px]" />
                                     Buat Informasi Pertama
                                 </button>
                             )}
@@ -994,7 +987,7 @@ export default function NewsListPage() {
                                             <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/50">
                                                 <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] w-12 text-center">
                                                     <button onClick={() => selectedIds.size === paginatedNews.length ? clearSelection() : selectAll()}>
-                                                        <FontAwesomeIcon icon={selectedIds.size > 0 ? faCheckSquare : faSquare} className={selectedIds.size > 0 ? 'text-[var(--color-primary)]' : ''} />
+                                                        {selectedIds.size > 0 ? <SquareCheck className={selectedIds.size > 0 ? 'text-[var(--color-primary)]' : ''} /> : <Square className={selectedIds.size > 0 ? 'text-[var(--color-primary)]' : ''} />}
                                                     </button>
                                                 </th>
                                                 <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Informasi</th>
@@ -1020,19 +1013,19 @@ export default function NewsListPage() {
                                                 <tr key={news.id} className={`hover:bg-[var(--color-surface-alt)]/30 transition-colors ${selectedIds.has(news.id) ? 'bg-[var(--color-primary)]/5' : ''}`}>
                                                     <td className="px-6 py-4 text-center">
                                                         <button onClick={() => toggleSelect(news.id)}>
-                                                            <FontAwesomeIcon icon={selectedIds.has(news.id) ? faCheckSquare : faSquare} className={selectedIds.has(news.id) ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-30'} />
+                                                            {selectedIds.has(news.id) ? <SquareCheck className={selectedIds.has(news.id) ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-30'} /> : <Square className={selectedIds.has(news.id) ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-30'} />}
                                                         </button>
                                                     </td>
                                                     <td className="px-6 py-4 min-w-[300px]">
                                                         <div className="flex items-center gap-4">
                                                             <div className="w-12 h-12 rounded-xl bg-[var(--color-surface-alt)] overflow-hidden shrink-0 border border-[var(--color-border)]">
-                                                                {news.image_url ? <img src={news.image_url} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center opacity-20"><FontAwesomeIcon icon={faNewspaper} /></div>}
+                                                                {news.image_url ? <img src={news.image_url} className="w-full h-full object-cover" loading="lazy" decoding="async" /> : <div className="w-full h-full flex items-center justify-center opacity-20"><Newspaper /></div>}
                                                             </div>
                                                             <div>
                                                                 <h4 className="text-[13px] font-black text-[var(--color-text)] line-clamp-1 mb-0.5">{news.title}</h4>
                                                                 <div className="flex items-center gap-3 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider">
                                                                     <span>{new Date(news.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}</span>
-                                                                    <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
+                                                                    <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" loading="lazy" decoding="async" />
                                                                     <span>{news.display_name || news.author?.split('@')[0] || 'Admin'}</span>
                                                                 </div>
                                                             </div>
@@ -1062,17 +1055,17 @@ export default function NewsListPage() {
                                                     </td>
                                                     <td className="px-6 py-4 hidden xl:table-cell text-center">
                                                         <div className="flex items-center justify-center gap-1.5 text-[10px] font-black text-[var(--color-text-muted)]">
-                                                            <FontAwesomeIcon icon={faEye} className="opacity-40" />
+                                                            <Eye className="opacity-40" />
                                                             {news.view_count || 0}
                                                         </div>
                                                     </td>
                                                     <td className="px-6 py-4 text-center">
                                                         <div className="flex items-center justify-center gap-1">
                                                             <button onClick={() => navigate(`/admin/news/edit/${news.id}`)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 transition-all text-sm" title="Edit">
-                                                                <FontAwesomeIcon icon={faPen} className="text-xs" />
+                                                                <Pen className="text-xs" />
                                                             </button>
                                                             <button onClick={() => setDeleteModal({ isOpen: true, data: news, isDeleting: false })} className="w-8 h-8 rounded-lg flex items-center justify-center text-rose-500 hover:bg-rose-500/10 transition-all text-sm" title="Hapus">
-                                                                <FontAwesomeIcon icon={faTrash} className="text-xs" />
+                                                                <Trash2 className="text-xs" />
                                                             </button>
                                                         </div>
                                                     </td>
@@ -1089,7 +1082,7 @@ export default function NewsListPage() {
                             <div className="flex items-center justify-center gap-2 pt-8">
                                 <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}
                                     className="w-10 h-10 rounded-xl border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] disabled:opacity-30 disabled:cursor-not-allowed transition-all bg-[var(--color-surface)]">
-                                    <FontAwesomeIcon icon={faChevronLeft} className="text-xs" />
+                                    <ChevronLeft className="text-xs" />
                                 </button>
                                 {Array.from({ length: totalPages }, (_, i) => i).filter(i => {
                                     if (totalPages <= 7) return true
@@ -1106,14 +1099,14 @@ export default function NewsListPage() {
                                     )
                                     return (
                                         <button key={item} onClick={() => setPage(item)}
-                                            className={`w-10 h-10 rounded-xl text-[11px] font-black transition-all ${item === page ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20' : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'}`}>
+                                            className={`w-10 h-10 rounded-xl text-[11px] font-black transition-all ${item === page ? 'bg-[var(--color-primary)] text-white shadow-lg' : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'}`}>
                                             {item + 1}
                                         </button>
                                     )
                                 })}
                                 <button onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={page === totalPages - 1}
                                     className="w-10 h-10 rounded-xl border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] disabled:opacity-30 disabled:cursor-not-allowed transition-all bg-[var(--color-surface)]">
-                                    <FontAwesomeIcon icon={faChevronRight} className="text-xs" />
+                                    <ChevronRight className="text-xs" />
                                 </button>
                                 <span className="text-[10px] text-[var(--color-text-muted)] font-black uppercase tracking-widest ml-4 opacity-40">
                                     Hal {page + 1} dari {totalPages}

@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Modal } from '@shared/components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faMoneyBillWave, faCheckCircle, faXmarkCircle, faClock,
-    faExternalLinkAlt, faUpload, faSpinner, faCalendarAlt, faUserCheck, faUndo
-} from '@fortawesome/free-solid-svg-icons'
+import { Banknote, Calendar, CircleCheck, ExternalLink, LoaderCircle, Undo2, Upload, UserCheck } from 'lucide-react'
 import { supabase } from '@lib/supabase'
 
 function PaymentRow({ type, label, amount, paymentInfo, onUpdateStatus, enrollment, submitting }) {
@@ -101,22 +97,22 @@ function PaymentRow({ type, label, amount, paymentInfo, onUpdateStatus, enrollme
                 {proofUrl ? (
                     <div className="flex flex-col items-center gap-1.5 w-full">
                         <div className="relative group w-11 h-11 rounded-lg overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)] shadow-md">
-                            <img src={proofUrl} alt="Bukti transfer" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                            <img src={proofUrl} alt="Bukti transfer" className="w-full h-full object-cover transition-transform group-hover:scale-105" loading="lazy" decoding="async" />
                             <a href={proofUrl} target="_blank" rel="noreferrer" className="absolute inset-0 bg-black/55 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-[10px]" title="Lihat Bukti">
-                                <FontAwesomeIcon icon={faExternalLinkAlt} />
+                                <ExternalLink />
                             </a>
                         </div>
                         <div>
                             <p className="font-bold text-[11px] text-[var(--color-text)] leading-tight">Bukti Terlampir</p>
                             <a href={proofUrl} target="_blank" rel="noreferrer" className="text-[9px] font-extrabold text-[var(--color-primary)] hover:underline inline-flex items-center gap-0.5 mt-0.5">
-                                Lihat Bukti <FontAwesomeIcon icon={faExternalLinkAlt} className="text-[7px]" />
+                                Lihat Bukti <ExternalLink className="text-[7px]" />
                             </a>
                         </div>
                     </div>
                 ) : (
                     <div className="flex flex-col items-center gap-1.5 text-center py-0.5">
                         <div className="w-7 h-7 rounded-full bg-[var(--color-primary)]/5 flex items-center justify-center text-[var(--color-primary)]">
-                            <FontAwesomeIcon icon={faUpload} className="text-[10px] opacity-75" />
+                            <Upload className="text-[10px] opacity-75" />
                         </div>
                         <div>
                             <p className="font-bold text-[var(--color-text-muted)] text-[10px] leading-tight">Belum Ada Bukti</p>
@@ -133,9 +129,9 @@ function PaymentRow({ type, label, amount, paymentInfo, onUpdateStatus, enrollme
                         className="w-full h-7.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] text-[9px] font-black uppercase tracking-wider transition-all disabled:opacity-50 flex items-center justify-center gap-1 shadow-sm"
                     >
                         {uploading ? (
-                            <><FontAwesomeIcon icon={faSpinner} className="fa-spin text-[var(--color-primary)] text-[8px]" /> Mengunggah</>
+                            <><LoaderCircle className="animate-spin text-[var(--color-primary)] text-[8px]" /> Mengunggah</>
                         ) : (
-                            <><FontAwesomeIcon icon={faUpload} className="text-[8px]" /> {proofUrl ? 'Ganti File' : 'Unggah File'}</>
+                            <><Upload className="text-[8px]" /> {proofUrl ? 'Ganti File' : 'Unggah File'}</>
                         )}
                     </button>
                 </div>
@@ -145,8 +141,8 @@ function PaymentRow({ type, label, amount, paymentInfo, onUpdateStatus, enrollme
             <div className="flex flex-col gap-2.5 pt-2.5 border-t border-[var(--color-border)]/40 w-full">
                 {status === 'lunas' && (
                     <div className="flex flex-col gap-0.5 text-[8px] text-[var(--color-text-muted)] opacity-85 bg-[var(--color-surface-alt)]/40 p-1.5 rounded-lg border border-[var(--color-border)]/30 leading-normal text-left">
-                        <span className="flex items-center gap-1"><FontAwesomeIcon icon={faCalendarAlt} className="opacity-60 text-[7px]" /> <b>Waktu:</b> {formatDate(confirmedAt)}</span>
-                        <span className="flex items-center gap-1"><FontAwesomeIcon icon={faUserCheck} className="opacity-60 text-[7px]" /> <b>Oleh:</b> {confirmedBy || 'Panitia'}</span>
+                        <span className="flex items-center gap-1"><Calendar className="opacity-60 text-[7px]" /> <b>Waktu:</b> {formatDate(confirmedAt)}</span>
+                        <span className="flex items-center gap-1"><UserCheck className="opacity-60 text-[7px]" /> <b>Oleh:</b> {confirmedBy || 'Panitia'}</span>
                     </div>
                 )}
 
@@ -157,16 +153,16 @@ function PaymentRow({ type, label, amount, paymentInfo, onUpdateStatus, enrollme
                             disabled={submitting}
                             className="flex-1 h-7.5 rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-600 hover:bg-rose-500/10 text-[9px] font-black uppercase tracking-widest transition-all disabled:opacity-50 flex items-center justify-center gap-1"
                         >
-                            <FontAwesomeIcon icon={faUndo} /> Reset
+                            <Undo2 /> Reset
                         </button>
                     )}
                     {status !== 'lunas' && (
                         <button
                             onClick={() => onUpdateStatus(type, 'lunas', proofUrl)}
                             disabled={submitting}
-                            className="flex-1 h-7.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-[9px] font-black uppercase tracking-widest transition-all shadow-md shadow-emerald-500/10 disabled:opacity-50 flex items-center justify-center gap-1"
+                            className="flex-1 h-7.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-[9px] font-black uppercase tracking-widest transition-all shadow-md disabled:opacity-50 flex items-center justify-center gap-1"
                         >
-                            <FontAwesomeIcon icon={faCheckCircle} /> Lunas
+                            <CircleCheck /> Lunas
                         </button>
                     )}
                 </div>
@@ -203,7 +199,7 @@ export default function EnrollmentPaymentModal({ isOpen, onClose, enrollment, on
             onClose={onClose}
             title="Kelola Keuangan & Pembayaran"
             description={`Data transaksi pembayaran pendaftaran calon santri: ${enrollment.name}`}
-            icon={faMoneyBillWave}
+            icon={Banknote}
             size="lg"
             footer={
                 <div className="flex justify-end">

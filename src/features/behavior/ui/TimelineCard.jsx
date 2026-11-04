@@ -97,10 +97,10 @@ export default function TimelineCard({
                     if (window.innerWidth < 640) e.preventDefault()
                 }}
                 className={`rounded-2xl border px-4 py-3.5 transition-all duration-200 select-none sm:select-text ${
-                    pressingId === r.id ? 'scale-[0.98]' : 'hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/[0.015]'
+                pressingId === r.id ? 'scale-[0.98]' : 'hover:-translate-y-0.5 hover:shadow-lg/[0.015]'
                 } ${
                     selectedIds.includes(r.id)
-                        ? 'bg-[var(--color-primary)]/[0.03] border-[var(--color-primary)]/40 ring-2 ring-[var(--color-primary)]/10 shadow-sm shadow-[var(--color-primary)]/5'
+                        ? 'bg-[var(--color-primary)]/[0.03] border-[var(--color-primary)]/40 ring-2 ring-[var(--color-primary)]/10 shadow-sm'
                         : isPos
                         ? 'bg-[var(--color-surface)] border-[var(--color-border)] hover:border-emerald-500/30 hover:bg-emerald-500/[0.01]'
                         : 'bg-[var(--color-surface)] border-[var(--color-border)] hover:border-rose-500/30 hover:bg-rose-500/[0.01]'
@@ -109,7 +109,7 @@ export default function TimelineCard({
                 {pressingId === r.id && (
                     <div className="absolute top-0 left-0 right-0 h-1 bg-[var(--color-primary)]/10 overflow-hidden rounded-t-2xl z-[10]">
                         <div
-                            className="h-full bg-gradient-to-r from-[var(--color-primary)]/60 to-[var(--color-primary)]"
+                            className="h-full bg-[var(--color-primary)]/60"
                             style={{
                                 animation: 'longpress-progress 800ms linear forwards',
                             }}
@@ -161,8 +161,8 @@ export default function TimelineCard({
                         <div
                             className={`flex items-center justify-center min-w-[46px] h-6 rounded-full text-[11px] font-bold tracking-tight border ${
                                 isPos
-                                    ? 'bg-gradient-to-r from-emerald-500/10 to-emerald-500/20 text-emerald-600 border-emerald-500/30 shadow-sm shadow-emerald-500/5'
-                                    : 'bg-gradient-to-r from-rose-500/10 to-rose-500/20 text-rose-600 border-rose-500/30 shadow-sm shadow-rose-500/5'
+                                    ? 'bg-success/10 text-emerald-600 border-emerald-500/30 shadow-sm'
+                                    : 'bg-danger/10 text-rose-600 border-rose-500/30 shadow-sm'
                             }`}
                         >
                             {isPos ? '+' : ''}{tNum(r.points)}
@@ -205,7 +205,7 @@ export default function TimelineCard({
                             <div
                                 className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-xs transition-all duration-200 ${
                                     selectedIds.includes(r.id)
-                                        ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20 rotate-0 scale-100'
+                                        ? 'bg-[var(--color-primary)] text-white shadow-lg rotate-0 scale-100'
                                         : `${getAvatarColorByName(stud?.name).bg} ring-2 ${getAvatarColorByName(stud?.name).ring}`
                                 }`}
                             >

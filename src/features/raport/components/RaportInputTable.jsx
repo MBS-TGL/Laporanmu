@@ -251,7 +251,7 @@ const CopyDataModal = ({ isOpen, onClose, students, scores, extras, currentMonth
                         </button>
                     </div>
                     <button onClick={handleConfirm} disabled={!selectedCount || executing}
-                        className="h-10 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-amber-500/20 transition-all flex items-center gap-2 disabled:opacity-50">
+                        className="h-10 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center gap-2 disabled:opacity-50">
                         {executing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Zap className="w-3.5 h-3.5" />}
                         Salin {selectedCount > 0 ? `(${selectedCount})` : ''}
                     </button>
@@ -647,7 +647,7 @@ export default function RaportInputTable({
                         <button
                             onClick={() => { setShowIncompleteOnly(v => !v); setShowNoPhoneOnly(false) }}
                             className={`h-8 px-3 rounded-xl border text-[10px] font-black flex items-center justify-center gap-1.5 transition-all shrink-0 ${showIncompleteOnly
-                                ? 'bg-amber-500 text-white border-amber-500 shadow-sm shadow-amber-500/10'
+                                ? 'bg-amber-500 text-white border-amber-500 shadow-sm'
                                 : 'bg-amber-500/10 border-amber-500/20 text-amber-600'
                                 }`}
                             title="Belum Lengkap"
@@ -661,7 +661,7 @@ export default function RaportInputTable({
                         <button
                             onClick={() => { setShowNoPhoneOnly(v => !v); setShowIncompleteOnly(false) }}
                             className={`h-8 px-3 rounded-xl border text-[10px] font-black flex items-center justify-center gap-1.5 transition-all shrink-0 ${showNoPhoneOnly
-                                ? 'bg-rose-500 text-white border-rose-500 shadow-sm shadow-rose-500/10'
+                                ? 'bg-rose-500 text-white border-rose-500 shadow-sm'
                                 : 'bg-rose-500/10 border-rose-500/20 text-rose-600'
                                 }`}
                             title="Tanpa WA"
@@ -896,7 +896,7 @@ export default function RaportInputTable({
                                     <button
                                         onClick={() => { setShowIncompleteOnly(v => !v); setShowNoPhoneOnly(false) }}
                                         className={`h-9 px-2.5 rounded-xl border text-[9px] font-black flex items-center gap-1 transition-all shrink-0 ${showIncompleteOnly
-                                            ? 'bg-amber-500 text-white border-amber-500 shadow-sm shadow-amber-500/10'
+                                            ? 'bg-amber-500 text-white border-amber-500 shadow-sm'
                                             : 'bg-amber-500/10 border-amber-500/20 text-amber-600 hover:bg-amber-500/20'
                                             }`}
                                         title="Tampilkan santri yang nilainya belum lengkap"
@@ -910,7 +910,7 @@ export default function RaportInputTable({
                                     <button
                                         onClick={() => { setShowNoPhoneOnly(v => !v); setShowIncompleteOnly(false) }}
                                         className={`h-9 px-2.5 rounded-xl border text-[9px] font-black flex items-center gap-1 transition-all shrink-0 ${showNoPhoneOnly
-                                            ? 'bg-rose-500 text-white border-rose-500 shadow-sm shadow-rose-500/10'
+                                            ? 'bg-rose-500 text-white border-rose-500 shadow-sm'
                                             : 'bg-rose-500/10 border-rose-500/20 text-rose-600 hover:bg-rose-500/20'
                                             }`}
                                         title="Tampilkan santri tanpa nomor WA"
@@ -1244,7 +1244,7 @@ export default function RaportInputTable({
                                     addToast(`Berhasil diterapkan ke ${changedIds.length} santri`, 'success')
                                     setIsBulkModalOpen(false)
                                 }}
-                                className="h-9 px-5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white text-[10px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md shadow-[var(--color-primary)]/10"
+                                className="h-9 px-5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white text-[10px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md"
                             >
                                 <Check className="w-3.5 h-3.5" />
                                 Terapkan Data

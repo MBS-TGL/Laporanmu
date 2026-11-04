@@ -2,11 +2,10 @@ import React, { useState, useMemo } from 'react'
 import {
     PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, AreaChart, Area
 } from 'recharts'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-    faChartPie, faUsers, faVenusMars, faGraduationCap, faSchool, faWaveSquare, faCheckCircle, faFilter, faCalendarDays, faPercent,
-    faChevronRight, faPrint, faInbox, faFileExcel, faMapMarkerAlt
-} from '@fortawesome/free-solid-svg-icons'
+    AudioWaveform, CalendarDays, ChartPie, ChevronRight, CircleCheck, FileSpreadsheet, Funnel,
+    GraduationCap, Inbox, MapPin, Printer, School
+} from 'lucide-react'
 import { Modal, RichSelect } from '@shared/components'
 
 export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, waves }) {
@@ -281,7 +280,7 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
             onClose={onClose}
             title="Analisis & Statistik PSB"
             description="Laporan grafik dan analisis distribusi pendaftaran santri baru secara real-time."
-            icon={faChartPie}
+            icon={ChartPie}
             iconBg="bg-indigo-500/10"
             iconColor="text-indigo-600"
             size="xl"
@@ -293,14 +292,14 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                             onClick={handlePrint}
                             className="h-10 px-4 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-200 text-[10px] font-black uppercase tracking-widest hover:bg-indigo-100 transition-all flex items-center gap-2"
                         >
-                            <FontAwesomeIcon icon={faPrint} />
+                            <Printer />
                             Cetak Laporan
                         </button>
                         <button
                             onClick={handleExportExcel}
                             className="h-10 px-4 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 text-[10px] font-black uppercase tracking-widest hover:bg-emerald-100 transition-all flex items-center gap-2"
                         >
-                            <FontAwesomeIcon icon={faFileExcel} />
+                            <FileSpreadsheet />
                             Ekspor Excel
                         </button>
                     </div>
@@ -326,7 +325,7 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                     body {
                         background: white !important;
                         color: #0f172a !important;
-                        font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+                        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
                     }
                     
                     /* Hide EVERYTHING in body except our modal portal container */
@@ -522,7 +521,7 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
             {!hasData ? (
                 <div className="flex flex-col items-center justify-center py-20 text-center">
                     <div className="w-16 h-16 rounded-2xl bg-slate-100 text-slate-400 border border-slate-200/60 flex items-center justify-center text-2xl mb-4 animate-bounce">
-                        <FontAwesomeIcon icon={faInbox} />
+                        <Inbox />
                     </div>
                     <h3 className="text-sm font-black text-[var(--color-text)]">Tidak Ada Data Ditemukan</h3>
                     <p className="text-[11px] text-[var(--color-text-muted)] mt-1 max-w-sm">
@@ -555,7 +554,7 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                     <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm">
                         <div className="flex items-center justify-between mb-4">
                             <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Corong Seleksi (Funnel Pendaftaran)</span>
-                            <FontAwesomeIcon icon={faFilter} className="text-violet-500 text-xs" />
+                            <Funnel className="text-violet-500 text-xs" />
                         </div>
 
                         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2">
@@ -568,7 +567,7 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                                 <React.Fragment key={idx}>
                                     {idx > 0 && (
                                         <div className="hidden md:flex items-center justify-center text-slate-300">
-                                            <FontAwesomeIcon icon={faChevronRight} className="text-lg animate-pulse" />
+                                            <ChevronRight className="text-lg animate-pulse" />
                                         </div>
                                     )}
                                     <div className={`flex-1 p-3 rounded-2xl border ${step.bg} flex flex-col items-center shadow-sm relative overflow-hidden group hover:scale-[1.02] transition-transform`}>
@@ -591,7 +590,7 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm flex flex-col">
                             <div className="flex items-center justify-between mb-4">
                                 <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Minat Program Studi + Gender</span>
-                                <FontAwesomeIcon icon={faGraduationCap} className="text-emerald-500 text-xs" />
+                                <GraduationCap className="text-emerald-500 text-xs" />
                             </div>
                             <div className="h-44 relative">
                                 {stats.programGenderData.length === 0 ? (
@@ -616,7 +615,7 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm flex flex-col">
                             <div className="flex items-center justify-between mb-4">
                                 <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Status Kelulusan / Seleksi</span>
-                                <FontAwesomeIcon icon={faCheckCircle} className="text-indigo-500 text-xs" />
+                                <CircleCheck className="text-indigo-500 text-xs" />
                             </div>
                             <div className="h-44 relative">
                                 {stats.statusData.length === 0 ? (
@@ -658,7 +657,7 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm flex flex-col">
                             <div className="flex items-center justify-between mb-3">
                                 <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Keterisian Kuota Gelombang (Mutlak)</span>
-                                <FontAwesomeIcon icon={faWaveSquare} className="text-violet-500 text-xs" />
+                                <AudioWaveform className="text-violet-500 text-xs" />
                             </div>
                             <div className="flex-1 space-y-3.5 max-h-[180px] overflow-y-auto pr-1 custom-scrollbar">
                                 {stats.waveQuotaData.length === 0 ? (
@@ -679,10 +678,10 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                                                 )}
                                                 <div
                                                     className={`h-full rounded-full transition-all duration-700 ease-out ${w.quota
-                                                            ? (w.percentage >= 90 ? 'bg-gradient-to-r from-rose-500 to-red-600'
-                                                                : w.percentage >= 70 ? 'bg-gradient-to-r from-amber-500 to-orange-600'
-                                                                    : 'bg-gradient-to-r from-emerald-400 to-emerald-600')
-                                                            : 'bg-gradient-to-r from-indigo-500 to-violet-600'
+                                                            ? (w.percentage >= 90 ? 'bg-danger'
+                                                                : w.percentage >= 70 ? 'bg-warning'
+                                                                    : 'bg-emerald-400')
+                                                            : 'bg-indigo-500'
                                                         }`}
                                                     style={{ width: `${w.percentage}%` }}
                                                 />
@@ -699,7 +698,7 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                                 <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
                                     Top 5 Asal Sekolah SD/MI <span className="text-[9px] text-amber-600 font-extrabold normal-case ml-1.5">(Dari Total {stats.uniqueSchoolsCount} Sekolah)</span>
                                 </span>
-                                <FontAwesomeIcon icon={faSchool} className="text-amber-500 text-xs" />
+                                <School className="text-amber-500 text-xs" />
                             </div>
                             <div className="h-44 relative">
                                 {stats.schoolData.length === 0 ? (
@@ -736,7 +735,7 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                                 <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
                                     Sebaran Wilayah (Top Kota/Kab) <span className="text-[9px] text-indigo-600 font-extrabold normal-case ml-1.5">(Dari Total {stats.uniqueCitiesCount || 0} Daerah)</span>
                                 </span>
-                                <FontAwesomeIcon icon={faMapMarkerAlt} className="text-rose-500 text-xs" />
+                                <MapPin className="text-rose-500 text-xs" />
                             </div>
                             <div className="h-44 relative">
                                 {!stats.cityData || stats.cityData.length === 0 ? (
@@ -764,7 +763,7 @@ export default function EnrollmentStatsModal({ isOpen, onClose, enrollments, wav
                     <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm">
                         <div className="flex items-center justify-between mb-4">
                             <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Trend Volume Pendaftaran Harian</span>
-                            <FontAwesomeIcon icon={faCalendarDays} className="text-indigo-500 text-xs" />
+                            <CalendarDays className="text-indigo-500 text-xs" />
                         </div>
                         <div className="h-48 relative">
                             {stats.dailyData.length === 0 ? (

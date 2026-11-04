@@ -1,22 +1,18 @@
 import { createContext, useContext, useState, useCallback, useRef, useEffect, useMemo } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faCheckCircle, faExclamationTriangle, faXmarkCircle,
-    faXmark, faRotateLeft, faCircleInfo, faFilePdf, faCloudArrowUp
-} from '@fortawesome/free-solid-svg-icons'
+import { CircleCheck, CircleX, Info, TriangleAlert, FileText, CloudUpload, RotateCcw, X } from 'lucide-react'
 import { useLanguage } from './Language'
 
 const ToastContext = createContext({})
 
 // ─── Konfigurasi Tampilan Per Tipe Toast (Ikon, Warna Background, Warna Border) ───
 const TOAST_TYPES = {
-    success: { icon: faCheckCircle, bg: 'bg-emerald-600', border: 'border-emerald-400/30' },
-    error: { icon: faXmarkCircle, bg: 'bg-red-600', border: 'border-red-400/30' },
-    info: { icon: faCircleInfo, bg: 'bg-indigo-600', border: 'border-indigo-400/30' },
-    warning: { icon: faExclamationTriangle, bg: 'bg-amber-500', border: 'border-amber-300/30' },
-    undo: { icon: faCheckCircle, bg: 'bg-[#3730a3]', border: 'border-indigo-400/30' },
-    pdf: { icon: faFilePdf, bg: 'bg-rose-600', border: 'border-rose-400/30' },
-    upload: { icon: faCloudArrowUp, bg: 'bg-sky-600', border: 'border-sky-400/30' },
+    success: { icon: CircleCheck, bg: 'bg-emerald-600', border: 'border-emerald-400/30' },
+    error: { icon: CircleX, bg: 'bg-red-600', border: 'border-red-400/30' },
+    info: { icon: Info, bg: 'bg-indigo-600', border: 'border-indigo-400/30' },
+    warning: { icon: TriangleAlert, bg: 'bg-amber-500', border: 'border-amber-300/30' },
+    undo: { icon: CircleCheck, bg: 'bg-[#3730a3]', border: 'border-indigo-400/30' },
+    pdf: { icon: FileText, bg: 'bg-rose-600', border: 'border-rose-400/30' },
+    upload: { icon: CloudUpload, bg: 'bg-sky-600', border: 'border-sky-400/30' },
 }
 
 export function ToastProvider({ children }) {
@@ -126,6 +122,7 @@ export function ToastProvider({ children }) {
             <div className="fixed top-4 right-4 left-4 sm:left-auto z-[99999] flex flex-col gap-2 sm:max-w-sm">
                 {toasts.map(toast => {
                     const config = TOAST_TYPES[toast.type] || TOAST_TYPES.info
+                    const IconComp = config.icon
                     const isUndo = toast.type === 'undo'
 
                     return (
@@ -145,7 +142,7 @@ export function ToastProvider({ children }) {
                                 />
                             )}
 
-                            <FontAwesomeIcon icon={config.icon} className="text-base sm:text-lg shrink-0" />
+                            <IconComp className="text-base sm:text-lg shrink-0" />
                             <span className="flex-1 text-[11px] sm:text-sm font-semibold">{toast.message}</span>
 
                             {/* Tombol Batalkan — Hanya Tampil Untuk Toast Bertipe Undo */}
@@ -154,7 +151,7 @@ export function ToastProvider({ children }) {
                                     onClick={() => handleUndo(toast)}
                                     className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/20 hover:bg-white/30 transition-colors text-[10px] font-black uppercase tracking-widest shrink-0"
                                 >
-                                    <FontAwesomeIcon icon={faRotateLeft} className="text-[9px]" />
+                                    <RotateCcw className="text-[9px]" />
                                     {t('toastUndoMsg') || 'Batalkan'}
                                 </button>
                             )}
@@ -163,7 +160,7 @@ export function ToastProvider({ children }) {
                                 onClick={() => removeToast(toast.id)}
                                 className="w-6 h-6 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors shrink-0"
                             >
-                                <FontAwesomeIcon icon={faXmark} className="text-xs" />
+                                <X className="text-xs" />
                             </button>
                         </div>
                     )

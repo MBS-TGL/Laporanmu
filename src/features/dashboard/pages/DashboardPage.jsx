@@ -1,16 +1,6 @@
 import { useEffect, useMemo, useState, useCallback, memo, lazy, Suspense, useRef } from 'react'
 import StatsCarousel from '@shared/components/StatsCarousel'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faUsers,
-    faClipboardList,
-    faExclamationTriangle,
-    faTrophy,
-    faRotate,
-    faDownload,
-    faFilePdf,
-    faSearch
-} from '@fortawesome/free-solid-svg-icons'
+import { ClipboardList, FileText, RotateCw, TriangleAlert, Trophy, Users } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import Breadcrumb from '@shared/components/Breadcrumb'
@@ -280,7 +270,7 @@ export default function DashboardPage() {
 
     const STATS = useMemo(() => ([
         {
-            icon: faUsers,
+            icon: Users,
             label: 'Total Siswa',
             value: loading ? '…' : String(stats.totalStudents),
             subValue: stats.trendStudents,
@@ -288,7 +278,7 @@ export default function DashboardPage() {
             onClick: () => navigate('/students')
         },
         {
-            icon: faClipboardList,
+            icon: ClipboardList,
             label: 'Laporan Hari Ini',
             value: loading ? '…' : String(stats.todayReports),
             subValue: stats.trendReports,
@@ -296,7 +286,7 @@ export default function DashboardPage() {
             onClick: () => navigate('/reports')
         },
         {
-            icon: faExclamationTriangle,
+            icon: TriangleAlert,
             label: 'Pelanggaran',
             value: loading ? '…' : String(stats.weekPoin),
             trend: stats.trendPoin,
@@ -305,7 +295,7 @@ export default function DashboardPage() {
             onClick: () => navigate('/reports?type=pelanggaran')
         },
         {
-            icon: faTrophy,
+            icon: Trophy,
             label: 'Prestasi',
             value: loading ? '…' : String(stats.weekAchievements),
             trend: stats.trendAchievements,
@@ -348,7 +338,7 @@ export default function DashboardPage() {
                                 className="h-9.5 sm:h-10 w-9 sm:w-auto sm:px-3.5 rounded-xl border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
                                 title="Download Laporan PDF"
                             >
-                                <FontAwesomeIcon icon={faFilePdf} className="text-sm" />
+                                <FileText className="text-sm" />
                                 <span className="text-xs font-bold uppercase tracking-wider hidden md:inline">
                                     Export Summary
                                 </span>
@@ -362,7 +352,7 @@ export default function DashboardPage() {
                                 className={`h-9.5 sm:h-10 w-9 sm:w-auto sm:px-3.5 rounded-xl border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] ${isRefreshing ? 'opacity-50 cursor-not-allowed scale-95' : ''}`}
                                 title="Refresh Data"
                             >
-                                <FontAwesomeIcon icon={faRotate} className={`text-sm ${isRefreshing ? 'animate-spin' : ''}`} />
+                                <RotateCw className={`text-sm ${isRefreshing ? 'animate-spin' : ''}`} />
                                 <span className="text-xs font-bold uppercase tracking-wider hidden md:inline">
                                     Refresh
                                 </span>
@@ -395,7 +385,7 @@ export default function DashboardPage() {
                     {/* ── LEFT MAIN COLUMN ── */}
                     <div className="flex-1 min-w-0 flex flex-col gap-5">
                         <Suspense fallback={
-                            <div className="glass rounded-[1.5rem] p-6 h-[400px] animate-pulse bg-[var(--color-surface-alt)] flex flex-col gap-4">
+                            <div className="rounded-[1.5rem] p-6 h-[400px] animate-pulse bg-[var(--color-surface-alt)] border border-border flex flex-col gap-4">
                                 <div className="flex justify-between items-center"><div className="h-4 w-32 bg-gray-400/20 rounded" /><div className="h-4 w-24 bg-gray-400/20 rounded" /></div>
                                 <div className="flex-1 bg-gray-400/10 rounded-2xl" />
                             </div>
@@ -403,7 +393,7 @@ export default function DashboardPage() {
                             <WeeklyTrendChart chartData={chartData} loading={loading} />
                         </Suspense>
                         <Suspense fallback={
-                            <div className="glass rounded-[1.5rem] p-6 h-[380px] animate-pulse bg-[var(--color-surface-alt)] flex flex-col gap-4">
+                            <div className="rounded-[1.5rem] p-6 h-[380px] animate-pulse bg-[var(--color-surface-alt)] border border-border flex flex-col gap-4">
                                 <div className="h-4 w-40 bg-gray-400/20 rounded mb-2" />
                                 {[1, 2, 3, 4].map(idx => (
                                     <div key={idx} className="flex gap-4 items-center"><div className="w-10 h-10 bg-gray-400/20 rounded-xl" /><div className="flex-1 h-3 bg-gray-400/10 rounded" /></div>
@@ -417,23 +407,23 @@ export default function DashboardPage() {
                     {/* ── RIGHT STICKY SIDEBAR ── */}
                     <div className="w-full lg:w-[340px] xl:w-[380px] shrink-0 flex flex-col gap-5 sticky top-6 self-start">
                         <Suspense fallback={
-                            <div className="glass rounded-[1.5rem] p-5 h-[200px] animate-pulse bg-[var(--color-surface-alt)]" />
+                            <div className="rounded-[1.5rem] p-5 h-[200px] animate-pulse bg-[var(--color-surface-alt)] border border-border" />
                         }>
                             <TaskCenterWidget />
                         </Suspense>
                         <Suspense fallback={
-                            <div className="glass rounded-[1.5rem] p-6 h-[280px] animate-pulse bg-[var(--color-surface-alt)] flex flex-col items-center justify-center gap-4">
+                            <div className="rounded-[1.5rem] p-6 h-[280px] animate-pulse bg-[var(--color-surface-alt)] border border-border flex flex-col items-center justify-center gap-4">
                                 <div className="w-40 h-40 rounded-full border-8 border-gray-400/10" />
                                 <div className="h-3 w-32 bg-gray-400/20 rounded" />
                             </div>
                         }>
                             <PointsConfigPie pieData={pieData} loading={loading} />
                         </Suspense>
-                        <Suspense fallback={<div className="glass rounded-[1.5rem] p-5 h-[240px] animate-pulse bg-[var(--color-surface-alt)]" />}>
+                            <Suspense fallback={<div className="rounded-[1.5rem] p-5 h-[240px] animate-pulse bg-[var(--color-surface-alt)] border border-border" />}>
                             <QuickActions />
                         </Suspense>
                         <Suspense fallback={
-                            <div className="glass rounded-[1.5rem] p-5 h-[300px] animate-pulse bg-[var(--color-surface-alt)] flex flex-col gap-3">
+                            <div className="rounded-[1.5rem] p-5 h-[300px] animate-pulse bg-[var(--color-surface-alt)] border border-border flex flex-col gap-3">
                                 <div className="h-4 w-32 bg-gray-400/20 rounded mb-2" />
                                 {[1, 2, 3].map(i => <div key={i} className="h-12 bg-gray-400/10 rounded-xl" />)}
                             </div>
@@ -444,7 +434,7 @@ export default function DashboardPage() {
                 </div>
 
                 {/* ── BOTTOM ROW: Analytics ── */}
-                <Suspense fallback={<div className="grid lg:grid-cols-2 gap-4"><div className="glass rounded-[1.5rem] p-5 h-[220px] animate-pulse bg-[var(--color-surface-alt)]" /><div className="glass rounded-[1.5rem] p-5 h-[220px] animate-pulse bg-[var(--color-surface-alt)]" /></div>}>
+                <Suspense fallback={<div className="grid lg:grid-cols-2 gap-4"><div className="rounded-[1.5rem] p-5 h-[220px] animate-pulse bg-[var(--color-surface-alt)] border border-border" /><div className=" rounded-[1.5rem] p-5 h-[220px] animate-pulse bg-[var(--color-surface-alt)]" /></div>}>
                     <AnalyticsRow raportProgress={raportProgress} riskStudents={riskStudents} classRanking={classRanking} loading={loading} />
                 </Suspense>
             </div>

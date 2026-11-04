@@ -29,7 +29,7 @@ export default function BulkDeleteModal({ logs = [], onConfirm, onCancel }) {
           <div className="flex-1" />
           <button
             onClick={onConfirm}
-            className="h-10 px-6 rounded-xl bg-red-500 text-white text-[10px] font-black uppercase tracking-wider shadow-lg shadow-red-500/20 hover:bg-red-600 transition-all flex items-center justify-center gap-2 shrink-0"
+            className="h-10 px-6 rounded-xl bg-red-500 text-white text-[10px] font-black uppercase tracking-wider shadow-lg hover:bg-red-600 transition-all flex items-center justify-center gap-2 shrink-0"
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span>{language === 'en' ? `DELETE ${count}` : language === 'ar' ? `حذف ${count}` : `HAPUS ${count} ENTRI`}</span>

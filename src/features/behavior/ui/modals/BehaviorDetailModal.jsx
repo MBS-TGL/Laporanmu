@@ -117,8 +117,8 @@ const BehaviorDetailModal = memo(function BehaviorDetailModal({
                                 <div className="flex items-center gap-2.5 mt-1.5">
                                     <span className={`inline-flex items-center justify-center min-w-[52px] px-3 py-1 rounded-xl text-base font-black border shadow-sm
                                         ${isPos
-                                            ? 'bg-emerald-500/15 text-emerald-600 border-emerald-500/30 shadow-emerald-500/10'
-                                            : 'bg-red-500/15 text-red-600 border-red-500/30 shadow-red-500/10'
+                                            ? 'bg-emerald-500/15 text-emerald-600 border-emerald-500/30'
+                                            : 'bg-red-500/15 text-red-600 border-red-500/30'
                                         }`}
                                     >
                                         {detailItem.points > 0 ? '+' : ''}{detailItem.points}

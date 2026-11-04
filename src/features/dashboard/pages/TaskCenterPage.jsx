@@ -320,9 +320,8 @@ export default function TaskCenterPage() {
         />
 
         {/* TOP OVERVIEW CARD */}
-        <div className="glass rounded-[2rem] border border-[var(--color-border)] p-6 bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-surface-alt)]/30 relative overflow-hidden shadow-sm">
+        <div className="rounded-[2rem] border border-[var(--color-border)] p-6 bg-[var(--color-surface)] relative overflow-hidden shadow-sm">
           {/* Ambient Glow */}
-          <div className="absolute top-1/2 right-12 -translate-y-1/2 w-72 h-72 bg-[var(--color-primary)]/5 rounded-full blur-[80px] pointer-events-none" />
 
           <div className="flex flex-col md:flex-row items-center gap-6 relative z-10">
             {/* Circle Progress */}
@@ -439,7 +438,7 @@ export default function TaskCenterPage() {
 
         {/* TASK GRID */}
         {filteredTasks.length === 0 ? (
-          <div className="glass rounded-[2rem] border border-[var(--color-border)] p-12 text-center">
+          <div className="bg-surface rounded-[2rem] border border-[var(--color-border)] p-12 text-center">
             <div className="w-12 h-12 rounded-2xl bg-[var(--color-surface-alt)] flex items-center justify-center mx-auto mb-4 text-[var(--color-text-muted)]">
               <Sparkles className="w-5 h-5" />
             </div>
@@ -465,7 +464,7 @@ export default function TaskCenterPage() {
                 return (
                   <div
                     key={group.id}
-                    className="glass rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm hover:border-[var(--color-primary)]/20 transition-all duration-300"
+                    className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm hover:border-[var(--color-primary)]/20 transition-all duration-300"
                   >
                     {/* Card Header */}
                     <div className="p-4 sm:p-5 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/20 flex items-center justify-between">

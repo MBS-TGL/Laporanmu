@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useCallback, memo, useRef } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faSpinner, faTriangleExclamation, faUser, faIdCard,
-    faBook, faPhone, faEnvelope, faCalendarAlt, faMapMarkerAlt,
-    faInfoCircle, faIdBadge, faGraduationCap, faCheckCircle,
-    faSave, faPlus, faEdit, faCamera, faFingerprint,
-    faBriefcase
-} from '@fortawesome/free-solid-svg-icons'
+import { Book, Briefcase, Camera, FingerprintPattern, GraduationCap, IdCard, LoaderCircle, Mail, Plus, Save, SquarePen, TriangleAlert } from 'lucide-react'
 import { Modal, RichSelect } from '@shared/components'
 
 const DAYS = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
@@ -199,7 +192,7 @@ const TeacherFormModal = memo(function TeacherFormModal({
                     <span className="text-[10px] font-black text-emerald-600">{overallProgress}% Lengkap</span>
                 </div>
             }
-            icon={selectedItem ? faEdit : faPlus}
+            icon={selectedItem ? SquarePen : Plus}
             iconBg={selectedItem ? 'bg-indigo-500/10' : 'bg-emerald-500/10'}
             iconColor={selectedItem ? 'text-indigo-500' : 'text-emerald-600'}
             size="lg"
@@ -218,22 +211,22 @@ const TeacherFormModal = memo(function TeacherFormModal({
                         type="submit"
                         form="teacher-form-modal"
                         disabled={submitting || uploadingPhoto}
-                        className="h-10 px-6 sm:px-8 rounded-xl bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 shrink-0"
+                        className="h-10 px-6 sm:px-8 rounded-xl bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 shrink-0"
                     >
                         {submitting ? (
                             <>
-                                <FontAwesomeIcon icon={faSpinner} className="fa-spin" />
+                                <LoaderCircle className="animate-spin" />
                                 <span>Menyimpan...</span>
                             </>
                         ) : uploadingPhoto ? (
                             <>
-                                <FontAwesomeIcon icon={faSpinner} className="fa-spin" />
+                                <LoaderCircle className="animate-spin" />
                                 <span className="hidden sm:inline">Mengunggah Foto...</span>
                                 <span className="sm:hidden">Mengunggah...</span>
                             </>
                         ) : (
                             <>
-                                <FontAwesomeIcon icon={faSave} className="text-xs opacity-80 shrink-0" />
+                                <Save className="text-xs opacity-80 shrink-0" />
                                 <span className="truncate hidden sm:inline">{selectedItem ? 'Simpan Perubahan' : 'Simpan Data'}</span>
                                 <span className="truncate sm:hidden">Simpan</span>
                             </>
@@ -247,7 +240,7 @@ const TeacherFormModal = memo(function TeacherFormModal({
                 <div className="space-y-4">
                     <div className="flex items-center gap-2.5 pt-2">
                         <div className="w-1 h-4 bg-indigo-500 rounded-full" />
-                        <FontAwesomeIcon icon={faIdBadge} className="text-indigo-500 text-[10px] opacity-70" />
+                        <IdCard className="text-indigo-500 text-[10px] opacity-70" />
                         <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Identitas</span>
                         <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                     </div>
@@ -260,16 +253,16 @@ const TeacherFormModal = memo(function TeacherFormModal({
                                     onClick={() => fileInputRef.current?.click()}
                                 >
                                     {(avatarPreview || form.avatar_url) ? (
-                                        <img src={avatarPreview || form.avatar_url} alt="Preview" className="w-full h-full object-cover animate-in fade-in zoom-in duration-300" />
+                                        <img src={avatarPreview || form.avatar_url} alt="Preview" className="w-full h-full object-cover animate-in fade-in zoom-in duration-300" loading="lazy" decoding="async" />
                                     ) : (
                                         <div className="flex flex-col items-center justify-center gap-1.5 opacity-40 group-hover:opacity-100 group-hover:text-[var(--color-primary)] transition-all">
-                                            <FontAwesomeIcon icon={faCamera} className="text-xl" />
+                                            <Camera className="text-xl" />
                                             <span className="text-[8px] font-bold uppercase tracking-wider">Foto</span>
                                         </div>
                                     )}
                                     {uploadingPhoto && (
-                                        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center">
-                                            <FontAwesomeIcon icon={faSpinner} className="fa-spin text-white" />
+                                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                            <LoaderCircle className="animate-spin text-white" />
                                         </div>
                                     )}
                                 </div>
@@ -342,7 +335,7 @@ const TeacherFormModal = memo(function TeacherFormModal({
                 <div className="space-y-4">
                     <div className="flex items-center gap-2.5 pt-2">
                         <div className="w-1 h-4 bg-emerald-500 rounded-full" />
-                        <FontAwesomeIcon icon={faBriefcase} className="text-emerald-500 text-[10px] opacity-70" />
+                        <Briefcase className="text-emerald-500 text-[10px] opacity-70" />
                         <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Kepegawaian</span>
                         <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                     </div>
@@ -361,7 +354,7 @@ const TeacherFormModal = memo(function TeacherFormModal({
                                     { id: 'ASNP3K', name: 'ASN P3K' },
                                 ]}
                                 placeholder="Pilih status..."
-                                icon={faIdBadge}
+                                icon={IdCard}
                             />
                         </div>
                         <div className="relative group">
@@ -371,7 +364,7 @@ const TeacherFormModal = memo(function TeacherFormModal({
                                 onChange={val => setField('subject', val)}
                                 options={(subjectsList || []).map(s => ({ id: s, name: s }))}
                                 placeholder="e.g. Matematika"
-                                icon={faBook}
+                                icon={Book}
                                 searchable
                                 allowCustom
                             />
@@ -412,8 +405,8 @@ const TeacherFormModal = memo(function TeacherFormModal({
                             <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Status Aktif</label>
                             <div className="flex p-1 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl h-11">
                                 {[
-                                    { key: 'active', label: 'Aktif', activeCls: 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' },
-                                    { key: 'inactive', label: 'Nonaktif', activeCls: 'bg-slate-700 text-white shadow-lg shadow-slate-700/20' },
+                                  { key: 'active', label: 'Aktif', activeCls: 'bg-emerald-500 text-white shadow-lg' },
+                                  { key: 'inactive', label: 'Nonaktif', activeCls: 'bg-slate-700 text-white shadow-lg' },
                                 ].map((opt) => (
                                     <button key={opt.key} type="button" onClick={() => setField('status', opt.key)} className={`flex-1 rounded-lg text-[10px] font-bold transition-all duration-200 ${form.status === opt.key ? opt.activeCls : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>{opt.label}</button>
                                 ))}
@@ -426,7 +419,7 @@ const TeacherFormModal = memo(function TeacherFormModal({
                 <div className="space-y-4">
                     <div className="flex items-center gap-2.5 pt-2">
                         <div className="w-1 h-4 bg-blue-500 rounded-full" />
-                        <FontAwesomeIcon icon={faGraduationCap} className="text-blue-500 text-[10px] opacity-70" />
+                        <GraduationCap className="text-blue-500 text-[10px] opacity-70" />
                         <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Pendidikan Terakhir</span>
                         <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                     </div>
@@ -447,7 +440,7 @@ const TeacherFormModal = memo(function TeacherFormModal({
                                     { id: 'S3', name: 'S3' },
                                 ]}
                                 placeholder="Pilih tingkat..."
-                                icon={faGraduationCap}
+                                icon={GraduationCap}
                             />
                         </div>
                         <div className="relative group">
@@ -462,8 +455,8 @@ const TeacherFormModal = memo(function TeacherFormModal({
                             <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Jenis Kelamin</label>
                             <div className="flex p-1 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl h-11">
                                 {[
-                                    { key: 'L', label: 'Laki-laki', activeCls: 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20' },
-                                    { key: 'P', label: 'Perempuan', activeCls: 'bg-rose-500 text-white shadow-lg shadow-rose-500/20' }
+                                  { key: 'L', label: 'Laki-laki', activeCls: 'bg-[var(--color-primary)] text-white shadow-lg' },
+                                  { key: 'P', label: 'Perempuan', activeCls: 'bg-rose-500 text-white shadow-lg' }
                                 ].map(o => (
                                     <button key={o.key} type="button" onClick={() => setField('gender', o.key)} className={`flex-1 rounded-lg text-[10px] font-bold transition-all duration-200 ${form.gender === o.key ? o.activeCls : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>{o.label}</button>
                                 ))}
@@ -476,7 +469,7 @@ const TeacherFormModal = memo(function TeacherFormModal({
                 <div className="space-y-4">
                     <div className="flex items-center gap-2.5 pt-2">
                         <div className="w-1 h-4 bg-amber-500 rounded-full" />
-                        <FontAwesomeIcon icon={faEnvelope} className="text-amber-500 text-[10px] opacity-70" />
+                        <Mail className="text-amber-500 text-[10px] opacity-70" />
                         <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Kontak & Lokasi</span>
                         <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                     </div>
@@ -505,7 +498,7 @@ const TeacherFormModal = memo(function TeacherFormModal({
                 <div className="space-y-4 pb-4">
                     <div className="flex items-center gap-2.5 pt-2">
                         <div className="w-1 h-4 bg-slate-500 rounded-full" />
-                        <FontAwesomeIcon icon={faFingerprint} className="text-slate-500 text-[10px] opacity-70" />
+                        <FingerprintPattern className="text-slate-500 text-[10px] opacity-70" />
                         <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Presensi & Lainnya</span>
                         <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                     </div>
@@ -521,9 +514,9 @@ const TeacherFormModal = memo(function TeacherFormModal({
                             <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Tipe Tugas</label>
                             <div className="flex p-1 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl h-11">
                                 {[
-                                    { key: 'guru', label: 'Guru', activeCls: 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20' },
-                                    { key: 'pengabdian', label: 'Pengabdian', activeCls: 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20' },
-                                    { key: 'karyawan', label: 'Karyawan', activeCls: 'bg-slate-700 text-white shadow-lg shadow-slate-700/20' }
+                                  { key: 'guru', label: 'Guru', activeCls: 'bg-[var(--color-primary)] text-white shadow-lg' },
+                                  { key: 'pengabdian', label: 'Pengabdian', activeCls: 'bg-emerald-600 text-white shadow-lg' },
+                                  { key: 'karyawan', label: 'Karyawan', activeCls: 'bg-slate-700 text-white shadow-lg' }
                                 ].map(o => (
                                     <button key={o.key} type="button" onClick={() => setField('type', o.key)} className={`flex-1 rounded-lg text-[10px] font-bold transition-all duration-200 ${form.type === o.key ? o.activeCls : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>{o.label}</button>
                                 ))}
@@ -533,7 +526,7 @@ const TeacherFormModal = memo(function TeacherFormModal({
                             <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Hari Kerja Aktif</label>
                             <div className="flex flex-wrap gap-2">
                                 {DAYS.map(day => (
-                                    <button key={day} type="button" onClick={() => toggleWorkDay(day)} className={`px-4 py-2 rounded-xl text-[10px] font-bold transition-all duration-200 border ${form.work_days.includes(day) ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-lg shadow-[var(--color-primary)]/20' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]'}`}>{day}</button>
+                                    <button key={day} type="button" onClick={() => toggleWorkDay(day)} className={`px-4 py-2 rounded-xl text-[10px] font-bold transition-all duration-200 border ${form.work_days.includes(day) ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-lg' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]'}`}>{day}</button>
                                 ))}
                             </div>
                         </div>
@@ -546,7 +539,7 @@ const TeacherFormModal = memo(function TeacherFormModal({
 
                 {formError && (
                     <div className="flex items-center gap-3 p-3 rounded-xl bg-red-500/10 border border-red-500/20 animate-in fade-in">
-                        <FontAwesomeIcon icon={faTriangleExclamation} className="text-red-500 shrink-0" />
+                        <TriangleAlert className="text-red-500 shrink-0" />
                         <p className="text-xs font-bold text-red-600">{formError}</p>
                     </div>
                 )}

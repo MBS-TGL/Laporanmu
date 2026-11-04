@@ -34,7 +34,7 @@ export default function DormsAuditModal({
                     <button
                         type="submit"
                         form="audit-form"
-                        className="h-10 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 transition flex items-center justify-center gap-2"
+                        className="h-10 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition flex items-center justify-center gap-2"
                     >
                         <Check className="w-3.5 h-3.5" />
                         {t('dorms.audit.save')}

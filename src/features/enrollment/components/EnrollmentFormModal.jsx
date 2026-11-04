@@ -1,12 +1,10 @@
 import React, { useState, useCallback, memo, useEffect, useRef } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-    faArrowRight, faArrowLeft, faSave, faSpinner, faCheckCircle,
-    faUser, faUsers, faFileAlt, faClipboardCheck, faMars, faVenus,
-    faSchool, faBookQuran, faHeart, faGraduationCap, faMapMarkerAlt,
-    faCalendarAlt, faIdCard, faPhone, faCamera, faSuitcase, faCheck, faCalendarDay
-} from '@fortawesome/free-solid-svg-icons'
-import { Modal, RichSelect } from '@shared/components'
+    ArrowLeft, ArrowRight, BookOpenText, Briefcase, Calendar, Camera, Check, CircleCheck,
+    ClipboardCheck, FileText, GraduationCap, Heart, IdCard, LoaderCircle, MapPin, Phone,
+    Save, School, User, Users
+} from 'lucide-react'
+import { Modal, RichSelect, VenusIcon } from '@shared/components'
 import {
     PROGRAM_OPTIONS, QURAN_LEVELS, UNIFORM_SIZES, TEST_SCORES, REQUIRED_DOCUMENTS
 } from '@features/enrollment/utils/enrollmentConstants'
@@ -15,10 +13,10 @@ import {
 } from '@utils/students/studentsConstants'
 
 const STEPS = [
-    { id: 0, label: 'Identitas', icon: faUser, desc: 'Data calon santri' },
-    { id: 1, label: 'Keluarga', icon: faUsers, desc: 'Data orang tua/wali' },
-    { id: 2, label: 'Tambahan', icon: faFileAlt, desc: 'Alamat, kesehatan, dokumen' },
-    { id: 3, label: 'Review', icon: faClipboardCheck, desc: 'Cek & kirim pendaftaran' },
+    { id: 0, label: 'Identitas', icon: User, desc: 'Data calon santri' },
+    { id: 1, label: 'Keluarga', icon: Users, desc: 'Data orang tua/wali' },
+    { id: 2, label: 'Tambahan', icon: FileText, desc: 'Alamat, kesehatan, dokumen' },
+    { id: 3, label: 'Review', icon: ClipboardCheck, desc: 'Cek & kirim pendaftaran' },
 ]
 
 const INITIAL_FORM = {
@@ -180,7 +178,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                     <span className="text-[10px] font-black text-[var(--color-primary)]">{progress}% Lengkap</span>
                 </div>
             }
-            icon={isEditing ? faFileAlt : faUser}
+            icon={isEditing ? FileText : User}
             iconBg="bg-[var(--color-primary)]/10"
             iconColor="text-[var(--color-primary)]"
             size="lg"
@@ -197,7 +195,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                 onClick={handlePrev}
                                 className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-[10px] font-black uppercase tracking-widest transition-all shrink-0 flex items-center justify-center gap-2"
                             >
-                                <FontAwesomeIcon icon={faArrowLeft} className="text-[10px] opacity-50" />
+                                <ArrowLeft className="text-[10px] opacity-50" />
                                 Kembali
                             </button>
                         ) : (
@@ -214,26 +212,26 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                             <button
                                 type="button"
                                 onClick={handleNext}
-                                className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[var(--color-primary)]/20 border border-white/10 shrink-0"
+                                className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg border border-white/10 shrink-0"
                             >
                                 Lanjut
-                                <FontAwesomeIcon icon={faArrowRight} className="text-[10px] opacity-80" />
+                                <ArrowRight className="text-[10px] opacity-80" />
                             </button>
                         ) : (
                             <button
                                 type="button"
                                 onClick={handleSubmitForm}
                                 disabled={submitting}
-                                className="h-10 px-6 sm:px-8 rounded-xl bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 shrink-0"
+                                className="h-10 px-6 sm:px-8 rounded-xl bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 shrink-0"
                             >
                                 {submitting ? (
                                     <>
-                                        <FontAwesomeIcon icon={faSpinner} className="fa-spin" />
+                                        <LoaderCircle className="animate-spin" />
                                         <span>Menyimpan...</span>
                                     </>
                                 ) : (
                                     <>
-                                        <FontAwesomeIcon icon={faSave} className="text-xs opacity-80 shrink-0" />
+                                        <Save className="text-xs opacity-80 shrink-0" />
                                         <span>{isEditing ? 'Simpan Perubahan' : 'Daftarkan Santri'}</span>
                                     </>
                                 )}
@@ -253,9 +251,9 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                     type="button"
                                     onClick={() => i < step && setStep(i)}
                                     disabled={i > step}
-                                    className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all relative ${step === i ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20 scale-110' : i < step ? 'bg-emerald-500 text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}
+                                    className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all relative ${step === i ? 'bg-[var(--color-primary)] text-white shadow-lg scale-110' : i < step ? 'bg-emerald-500 text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}
                                 >
-                                    {i < step ? <FontAwesomeIcon icon={faCheckCircle} className="text-[10px]" /> : <span className="text-[10px] font-black">{i + 1}</span>}
+                                    {i < step ? <CircleCheck className="text-[10px]" /> : <span className="text-[10px] font-black">{i + 1}</span>}
                                     <span className={`absolute -bottom-5 left-1/2 -translate-x-1/2 text-[7px] font-black uppercase tracking-tighter whitespace-nowrap transition-opacity ${step === i ? 'opacity-100' : 'opacity-0'}`}>
                                         {s.label}
                                     </span>
@@ -279,7 +277,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                 >
                                     {uploadingPhoto ? (
                                         <div className="flex flex-col items-center justify-center gap-1.5 text-[var(--color-primary)]">
-                                            <FontAwesomeIcon icon={faSpinner} className="fa-spin text-lg" />
+                                            <LoaderCircle className="animate-spin text-lg" />
                                             <span className="text-[7px] font-black uppercase tracking-wider">Mengunggah...</span>
                                         </div>
                                     ) : form.photo_url ? (
@@ -287,10 +285,10 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                             src={form.photo_url}
                                             alt="Preview"
                                             className="w-full h-full object-cover animate-in fade-in zoom-in duration-300"
-                                        />
+                                            loading="lazy" decoding="async" />
                                     ) : (
                                         <div className="flex flex-col items-center justify-center gap-1.5 opacity-40 group-hover:opacity-100 group-hover:text-[var(--color-primary)] transition-all">
-                                            <FontAwesomeIcon icon={faCamera} className="text-xl" />
+                                            <Camera className="text-xl" />
                                             <span className="text-[8px] font-bold uppercase tracking-wider">Foto</span>
                                         </div>
                                     )}
@@ -335,7 +333,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                                         'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]'}`}
                                             autoFocus
                                         />
-                                        <FontAwesomeIcon icon={faUser} className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-xs transition-colors 
+                                        <User className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-xs transition-colors
                                         ${getStatus('name', true) === 'error' ? 'text-rose-500' :
                                                 getStatus('name', true) === 'success' ? 'text-emerald-500' :
                                                     'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)]'}`} />
@@ -349,8 +347,8 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                         </label>
                                         <div className="flex p-1 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl h-11">
                                             {[
-                                                ['L', 'Putra', 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20'],
-                                                ['P', 'Putri', 'bg-rose-500 text-white shadow-lg shadow-rose-500/20']
+                                              ['L', 'Putra', 'bg-[var(--color-primary)] text-white shadow-lg'],
+                                              ['P', 'Putri', 'bg-rose-500 text-white shadow-lg']
                                             ].map(([val, labelStr, activeCls]) => (
                                                 <button
                                                     key={val}
@@ -372,7 +370,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                             onChange={val => setField('program', val)}
                                             options={PROGRAM_OPTIONS}
                                             placeholder="Pilih Program"
-                                            icon={faGraduationCap}
+                                            icon={GraduationCap}
                                             status={getStatus('program', true)}
                                         />
                                     </div>
@@ -382,7 +380,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
 
                         <div className="flex items-center gap-2.5 pt-2">
                             <div className="w-1 h-4 bg-[var(--color-primary)] rounded-full" />
-                            <FontAwesomeIcon icon={faSchool} className="text-[var(--color-primary)] text-[10px] opacity-70" />
+                            <School className="text-[var(--color-primary)] text-[10px] opacity-70" />
                             <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Detail Personal & Akademik</span>
                             <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                         </div>
@@ -398,7 +396,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                         placeholder="Kota kelahiran"
                                         className="w-full pl-9 pr-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all text-[13px] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40"
                                     />
-                                    <FontAwesomeIcon icon={faMapMarkerAlt} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs transition-colors group-focus-within:text-[var(--color-primary)]" />
+                                    <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs transition-colors group-focus-within:text-[var(--color-primary)]" />
                                 </div>
                             </div>
                             <div className="relative group">
@@ -420,7 +418,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                         onChange={e => setField('birth_date', e.target.value)}
                                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer outline-none bg-transparent date-input-hidden z-10"
                                     />
-                                    <FontAwesomeIcon icon={faCalendarAlt} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs transition-colors group-focus-within:text-[var(--color-primary)] pointer-events-none" />
+                                    <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs transition-colors group-focus-within:text-[var(--color-primary)] pointer-events-none" />
                                 </div>
                             </div>
                         </div>
@@ -436,7 +434,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                         placeholder="10 digit NISN"
                                         className="w-full pl-9 pr-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all text-[13px] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40"
                                     />
-                                    <FontAwesomeIcon icon={faIdCard} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs transition-colors group-focus-within:text-[var(--color-primary)]" />
+                                    <IdCard className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs transition-colors group-focus-within:text-[var(--color-primary)]" />
                                 </div>
                             </div>
                             <div className="relative group">
@@ -455,7 +453,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                                 getStatus('school_origin', true) === 'success' ? 'border-emerald-500/50 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-emerald-50/5' :
                                                     'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]'}`}
                                     />
-                                    <FontAwesomeIcon icon={faSchool} className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-xs transition-colors 
+                                    <School className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-xs transition-colors
                                     ${getStatus('school_origin', true) === 'error' ? 'text-rose-500' :
                                             getStatus('school_origin', true) === 'success' ? 'text-emerald-500' :
                                                 'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)]'}`} />
@@ -467,7 +465,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                         <div className="p-4 border border-[var(--color-border)] rounded-2xl bg-[var(--color-surface)] space-y-4">
                             <div className="flex items-center gap-2.5">
                                 <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
-                                    <FontAwesomeIcon icon={faBookQuran} className="text-sm" />
+                                    <BookOpenText className="text-sm" />
                                 </div>
                                 <div>
                                     <p className="text-[12px] font-bold text-[var(--color-text)]">Data Akademik & Seleksi</p>
@@ -482,7 +480,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                         onChange={v => setField('quran_level', v)}
                                         options={QURAN_LEVELS}
                                         placeholder="Pilih tingkat bacaan..."
-                                        icon={faBookQuran}
+                                        icon={BookOpenText}
                                     />
                                 </div>
                                 <div className="space-y-1.5">
@@ -508,7 +506,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                         options={TEST_SCORES}
                                         placeholder="Belum Dites"
                                         extraOption={{ id: '', name: 'Belum Dites' }}
-                                        icon={faClipboardCheck}
+                                        icon={ClipboardCheck}
                                     />
                                 </div>
                             </div>
@@ -522,7 +520,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                         <div className="p-4 border border-[var(--color-border)] rounded-2xl bg-[var(--color-surface)] space-y-4">
                             <div className="flex items-center gap-2.5">
                                 <div className="w-1 h-4 bg-[var(--color-primary)] rounded-full" />
-                                <FontAwesomeIcon icon={faUser} className="text-[var(--color-primary)] text-[10px] opacity-70" />
+                                <User className="text-[var(--color-primary)] text-[10px] opacity-70" />
                                 <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Data Ayah</span>
                                 <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                             </div>
@@ -544,7 +542,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                                     getStatus('father_name', true) === 'success' ? 'border-emerald-500/50 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-emerald-50/5' :
                                                         'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]'}`}
                                         />
-                                        <FontAwesomeIcon icon={faUser} className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-xs transition-colors 
+                                        <User className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-xs transition-colors
                                         ${getStatus('father_name', true) === 'error' ? 'text-rose-500' :
                                                 getStatus('father_name', true) === 'success' ? 'text-emerald-500' :
                                                     'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)]'}`} />
@@ -560,7 +558,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                             placeholder="08xxxxxxxxxx"
                                             className="w-full pl-9 pr-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all text-[13px] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40"
                                         />
-                                        <FontAwesomeIcon icon={faPhone} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs transition-colors group-focus-within:text-[var(--color-primary)]" />
+                                        <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs transition-colors group-focus-within:text-[var(--color-primary)]" />
                                     </div>
                                 </div>
                             </div>
@@ -573,7 +571,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                         onChange={val => setField('father_occupation', val)}
                                         options={OCCUPATION_LIST.map(o => ({ id: o, name: o }))}
                                         placeholder="Pilih Pekerjaan"
-                                        icon={faSuitcase}
+                                        icon={Briefcase}
                                         searchable
                                     />
                                 </div>
@@ -584,7 +582,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                         onChange={val => setField('father_education', val)}
                                         options={EDUCATION_LEVELS.map(el => ({ id: el, name: el }))}
                                         placeholder="Pilih Pendidikan"
-                                        icon={faGraduationCap}
+                                        icon={GraduationCap}
                                     />
                                 </div>
                             </div>
@@ -594,7 +592,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                         <div className="p-4 border border-[var(--color-border)] rounded-2xl bg-[var(--color-surface)] space-y-4">
                             <div className="flex items-center gap-2.5">
                                 <div className="w-1 h-4 bg-[var(--color-primary)] rounded-full" />
-                                <FontAwesomeIcon icon={faVenus} className="text-[var(--color-primary)] text-[10px] opacity-70" />
+                                <VenusIcon className="text-[var(--color-primary)] text-[10px] opacity-70" />
                                 <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Data Ibu</span>
                                 <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                             </div>
@@ -616,7 +614,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                                     getStatus('mother_name', true) === 'success' ? 'border-emerald-500/50 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-emerald-50/5' :
                                                         'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]'}`}
                                         />
-                                        <FontAwesomeIcon icon={faUser} className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-xs transition-colors 
+                                        <User className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-xs transition-colors
                                         ${getStatus('mother_name', true) === 'error' ? 'text-rose-500' :
                                                 getStatus('mother_name', true) === 'success' ? 'text-emerald-500' :
                                                     'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)]'}`} />
@@ -632,7 +630,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                             placeholder="08xxxxxxxxxx"
                                             className="w-full pl-9 pr-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all text-[13px] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40"
                                         />
-                                        <FontAwesomeIcon icon={faPhone} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs transition-colors group-focus-within:text-[var(--color-primary)]" />
+                                        <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs transition-colors group-focus-within:text-[var(--color-primary)]" />
                                     </div>
                                 </div>
                             </div>
@@ -645,7 +643,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                         onChange={val => setField('mother_occupation', val)}
                                         options={OCCUPATION_LIST.map(o => ({ id: o, name: o }))}
                                         placeholder="Pilih Pekerjaan"
-                                        icon={faSuitcase}
+                                        icon={Briefcase}
                                         searchable
                                     />
                                 </div>
@@ -656,7 +654,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                         onChange={val => setField('mother_education', val)}
                                         options={EDUCATION_LEVELS.map(el => ({ id: el, name: el }))}
                                         placeholder="Pilih Pendidikan"
-                                        icon={faGraduationCap}
+                                        icon={GraduationCap}
                                     />
                                 </div>
                             </div>
@@ -726,7 +724,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                         <div className="p-4 border border-[var(--color-border)] rounded-2xl bg-[var(--color-surface)] space-y-4">
                             <div className="flex items-center gap-2.5">
                                 <div className="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center">
-                                    <FontAwesomeIcon icon={faHeart} className="text-sm" />
+                                    <Heart className="text-sm" />
                                 </div>
                                 <div>
                                     <p className="text-[12px] font-bold text-[var(--color-text)]">Kesehatan & Perlengkapan</p>
@@ -776,7 +774,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                         <div className="p-4 border border-[var(--color-border)] rounded-2xl bg-[var(--color-surface)] space-y-4">
                             <div className="flex items-center gap-2.5">
                                 <div className="w-8 h-8 rounded-xl bg-sky-500/10 text-sky-500 flex items-center justify-center">
-                                    <FontAwesomeIcon icon={faFileAlt} className="text-sm" />
+                                    <FileText className="text-sm" />
                                 </div>
                                 <div>
                                     <p className="text-[12px] font-bold text-[var(--color-text)]">Kelengkapan Dokumen Fisik</p>
@@ -794,7 +792,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                             className={`flex items-center gap-3 p-3 rounded-xl border text-left transition-all ${isChecked ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 ring-1 ring-emerald-500/20' : 'border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
                                         >
                                             <div className={`w-5 h-5 rounded flex items-center justify-center shrink-0 border transition-colors ${isChecked ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-[var(--color-border)] text-transparent bg-[var(--color-surface-alt)]'}`}>
-                                                <FontAwesomeIcon icon={faCheck} className="text-[10px]" />
+                                                <Check className="text-[10px]" />
                                             </div>
                                             <span className="text-[11px] font-bold">{doc.name}</span>
                                         </button>
@@ -813,7 +811,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                     placeholder="08xxxxxxxxxx"
                                     className="w-full pl-9 pr-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all text-[13px] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40"
                                 />
-                                <FontAwesomeIcon icon={faPhone} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs transition-colors group-focus-within:text-[var(--color-primary)]" />
+                                <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-50 text-xs transition-colors group-focus-within:text-[var(--color-primary)]" />
                             </div>
                         </div>
                     </div>
@@ -823,7 +821,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                         <div className="p-4 border border-emerald-500/20 bg-emerald-500/[0.03] rounded-2xl">
                             <div className="flex items-center gap-2 mb-2">
-                                <FontAwesomeIcon icon={faCheckCircle} className="text-emerald-500" />
+                                <CircleCheck className="text-emerald-500" />
                                 <p className="text-[12px] font-bold text-emerald-600">Periksa kembali data pendaftaran</p>
                             </div>
                             <p className="text-[10px] text-[var(--color-text-muted)]">Pastikan semua kolom penting sudah terisi dengan benar sebelum mengirim data pendaftaran.</p>
@@ -867,7 +865,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                         {REQUIRED_DOCUMENTS.filter(doc => form.documents?.[doc.id]).length > 0 ? (
                                             REQUIRED_DOCUMENTS.filter(doc => form.documents?.[doc.id]).map(doc => (
                                                 <span key={doc.id} className="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 font-bold border border-emerald-500/20">
-                                                    <FontAwesomeIcon icon={faCheck} className="mr-1" /> {doc.name}
+                                                    <Check className="mr-1" /> {doc.name}
                                                 </span>
                                             ))
                                         ) : (
@@ -881,8 +879,8 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                 )}
             </form>
             {isCropperOpen && (
-                <div className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-                    <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-3xl w-full max-w-md p-6 space-y-6 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                <div className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4">
+                    <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-3xl w-full max-w-md p-6 space-y-6 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
                         <div className="text-center space-y-1">
                             <h3 className="text-sm font-black uppercase tracking-wider text-[var(--color-text)]">Sesuaikan Pas Foto</h3>
                             <p className="text-[10px] text-[var(--color-text-muted)] font-medium">Geser dan perbesar foto untuk posisi terbaik</p>
@@ -984,7 +982,7 @@ function EnrollmentFormModal({ isOpen, onClose, onSubmit, enrollment, submitting
                                     setIsCropperOpen(false)
                                     setCropSrc(null)
                                 }}
-                                className="flex-1 h-10 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[var(--color-primary)]/20"
+                                className="flex-1 h-10 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg"
                             >
                                 Selesai
                             </button>

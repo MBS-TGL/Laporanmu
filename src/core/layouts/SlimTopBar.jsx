@@ -60,14 +60,14 @@ function Avatar({ url, name, size = "w-9 h-9", textSize = "text-xs", rounded = "
     const showImg = url && !imgError
 
     return (
-        <div className={`${size} ${rounded} bg-[var(--color-primary)] flex items-center justify-center text-white font-extrabold shadow-sm overflow-hidden shrink-0`}>
+        <div className={`${size} ${rounded} bg-primary flex items-center justify-center text-white font-semibold shadow-sm overflow-hidden shrink-0`}>
             {showImg ? (
                 <img
                     src={url}
                     alt={name || "Avatar"}
                     onError={() => setImgError(true)}
                     className="w-full h-full object-cover"
-                />
+                    loading="lazy" decoding="async" />
             ) : (
                 <span className={textSize}>{letter}</span>
             )}
@@ -82,19 +82,19 @@ function SearchResultItem({ item, isHighlighted, onClick }) {
             onClick={() => onClick(item.to)}
             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition text-left
                 ${isHighlighted
-                    ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-semibold'
-                    : 'text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
+                    ? 'bg-primary/10 text-primary font-semibold'
+                    : 'text-text hover:bg-surface-alt'}`}
             type="button"
         >
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${item.color || 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${item.color || 'bg-surface-alt text-text-muted'}`}>
                 <NavIcon icon={item.icon} className="w-4.5 h-4.5" />
             </div>
             <div className="min-w-0 flex-1">
-                <p className="text-[12px] font-bold text-[var(--color-text)] leading-tight truncate">{item.label}</p>
-                <p className="text-[10px] text-[var(--color-text-muted)] leading-tight mt-0.5 truncate">{item.desc}</p>
+                <p className="text-xs font-bold text-text leading-tight truncate">{item.label}</p>
+                <p className="text-xs text-text-muted leading-tight mt-0.5 truncate">{item.desc}</p>
             </div>
             {item._groupLabel && (
-                <span className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider shrink-0 px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)]">
+                <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider shrink-0 px-1.5 py-0.5 rounded-md bg-surface-alt">
                     {item._groupLabel}
                 </span>
             )}
@@ -254,7 +254,7 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
             `}</style>
 
             <header
-                className={`sticky top-0 z-40 bg-[var(--color-surface)]/85 backdrop-blur-xl border-b border-[var(--color-border)] h-[60px] flex items-center
+                className={`sticky top-0 z-40 bg-surface border-b border-border h-14 flex items-center
                     ${dir === 'rtl'
                         ? (sidebarCollapsed ? 'lg:pr-[56px]' : 'lg:pr-[250px]')
                         : (sidebarCollapsed ? 'lg:pl-[56px]' : 'lg:pl-[250px]')}`}
@@ -270,7 +270,7 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                                 onClick={onToggleSidebar}
                                 type="button"
                                 aria-label="Toggle sidebar"
-                                className="hidden lg:flex w-9 h-9 items-center justify-center rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+                                className="hidden lg:flex w-9 h-9 items-center justify-center rounded-lg hover:bg-surface-alt text-text-muted hover:text-text"
                             >
                                 {dir === 'rtl' ? (
                                     sidebarCollapsed ? (
@@ -292,7 +292,7 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                                 onClick={() => navigate(-1)}
                                 type="button"
                                 aria-label="Kembali"
-                                className="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+                                className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-surface-alt text-text-muted hover:text-text"
                             >
                                 <ChevronLeft className="w-5 h-5" strokeWidth={2} />
                             </button>
@@ -308,19 +308,19 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                                     type="button"
                                     aria-label="Cari halaman"
                                     onClick={() => setSearchFocused(true)}
-                                    className="sm:hidden w-9 h-9 flex items-center justify-center rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition"
+                                    className="sm:hidden w-9 h-9 flex items-center justify-center rounded-lg hover:bg-surface-alt text-text-muted hover:text-primary transition"
                                 >
                                     <Search className="w-4.5 h-4.5" strokeWidth={2} />
                                 </button>
                             )}
 
                             {/* Full search bar: always visible on sm+, expands on mobile when focused */}
-                            <div className={`w-full ${searchFocused ? 'flex' : 'hidden sm:flex'} items-center gap-2.5 h-9 px-3.5 rounded-xl border transition-all
+                            <div className={`w-full ${searchFocused ? 'flex' : 'hidden sm:flex'} items-center gap-2.5 h-9 px-3.5 rounded-xl border transition-colors
                                 ${searchFocused
-                                    ? 'border-[var(--color-primary)] bg-[var(--color-surface)] shadow-sm ring-2 ring-[var(--color-primary)]/20'
-                                    : 'border-[var(--color-border)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-surface)]'}`}
+                                    ? 'border-primary bg-surface shadow-sm ring-2 ring-primary/20'
+                                    : 'border-border bg-surface-alt hover:bg-surface'}`}
                             >
-                                <Search className="w-4.5 h-4.5 text-[var(--color-text-muted)] shrink-0" strokeWidth={2} />
+                                <Search className="w-4.5 h-4.5 text-text-muted shrink-0" strokeWidth={2} />
                                 <input
                                     type="text"
                                     placeholder={t("ui.search_placeholder")}
@@ -329,11 +329,11 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                                     onFocus={() => setSearchFocused(true)}
                                     onKeyDown={handleSearchKeyDown}
                                     autoFocus={searchFocused}
-                                    className="flex-1 min-w-0 bg-transparent outline-none text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)]"
+                                    className="flex-1 min-w-0 bg-transparent outline-none text-sm text-text placeholder:text-text-muted"
                                 />
                                 {/* Keyboard shortcut badge — sm+ only */}
                                 {!searchFocused && (
-                                    <span className="hidden sm:flex items-center gap-0.5 text-[10px] font-bold text-[var(--color-text-muted)] bg-[var(--color-surface)] px-1.5 py-0.5 rounded-md border border-[var(--color-border)]">
+                                    <span className="hidden sm:flex items-center gap-0.5 text-xs font-bold text-text-muted bg-surface px-1.5 py-0.5 rounded-md border border-border">
                                         <span>⌘</span><span>K</span>
                                     </span>
                                 )}
@@ -341,7 +341,7 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                                 <button
                                     type="button"
                                     onClick={() => { setSearchQuery(''); setSearchFocused(false) }}
-                                    className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] text-xs shrink-0"
+                                    className="text-text-muted hover:text-text text-xs shrink-0"
                                 >
                                     <X className="w-4.5 h-4.5" strokeWidth={2} />
                                 </button>
@@ -351,12 +351,12 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                             {showSearchDropdown && (
                                 <div
                                     ref={searchDropdownRef}
-                                    className="absolute top-full left-0 right-0 mt-2 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl overflow-hidden z-50"
+                                    className="absolute top-full left-0 right-0 mt-2 rounded-xl border border-border bg-surface shadow-xl overflow-hidden z-50"
                                 >
                                     {searchResults.length === 0 ? (
-                                        <div className="px-4 py-6 text-center text-[var(--color-text-muted)]">
-                                            <p className="text-[12px] font-bold">{t('ui.search_no_result')}</p>
-                                            <p className="text-[10px] mt-1">{t('ui.search_no_result_hint')}</p>
+                                        <div className="px-4 py-6 text-center text-text-muted">
+                                            <p className="text-xs font-bold">{t('ui.search_no_result')}</p>
+                                            <p className="text-xs mt-1">{t('ui.search_no_result_hint')}</p>
                                         </div>
                                     ) : (
                                         <div className="p-1.5">
@@ -370,10 +370,10 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                                             ))}
                                         </div>
                                     )}
-                                    <div className="px-4 py-2 border-t border-[var(--color-border)] flex items-center justify-between text-[var(--color-text-muted)]">
-                                        <span className="text-[9px] font-bold">{t('ui.search_hint_navigate')}</span>
-                                        <span className="text-[9px] font-bold">{t('ui.search_hint_open')}</span>
-                                        <span className="text-[9px] font-bold">{t('ui.search_hint_close')}</span>
+                                    <div className="px-4 py-2 border-t border-border flex items-center justify-between text-text-muted">
+                                        <span className="text-xs font-bold">{t('ui.search_hint_navigate')}</span>
+                                        <span className="text-xs font-bold">{t('ui.search_hint_open')}</span>
+                                        <span className="text-xs font-bold">{t('ui.search_hint_close')}</span>
                                     </div>
                                 </div>
                             )}
@@ -386,20 +386,20 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                         <div className={`relative ${searchFocused ? 'hidden' : 'block'}`} ref={langRef}>
                             <button
                                 onClick={() => setLangOpen(v => !v)}
-                                className={`w-9 h-9 sm:h-9 sm:w-auto flex items-center justify-center sm:gap-1.5 sm:px-3 rounded-xl hover:bg-[var(--color-surface-alt)] transition text-[var(--color-text-muted)] hover:text-[var(--color-text)] border border-transparent sm:border-[var(--color-border)]/80
+                                className={`w-9 h-9 sm:h-9 sm:w-auto flex items-center justify-center sm:gap-1.5 sm:px-3 rounded-lg hover:bg-surface-alt transition text-text-muted hover:text-text border border-transparent sm:border-border/80
                                     ${langOpen
-                                        ? 'bg-[var(--color-surface-alt)] text-[var(--color-primary)] border-[var(--color-primary)]/30'
-                                        : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                                        ? 'bg-surface-alt text-primary border-primary/30'
+                                        : 'text-text-muted hover:text-text'}`}
                                 aria-label="Pilih Bahasa / Language Selection"
                                 type="button"
                             >
                                 <Globe className="w-4.5 h-4.5 shrink-0" strokeWidth={2} />
-                                <span className="hidden sm:inline text-xs font-extrabold uppercase tracking-tight">{language}</span>
-                                <ChevronDown className={`hidden sm:block w-3.5 h-3.5 text-[var(--color-text-muted)] transition-transform duration-200 ${langOpen ? 'rotate-180 text-[var(--color-primary)]' : ''}`} />
+                                <span className="hidden sm:inline text-xs font-semibold uppercase tracking-tight">{language}</span>
+                                <ChevronDown className={`hidden sm:block w-3.5 h-3.5 text-text-muted transition-transform duration-200 ${langOpen ? 'rotate-180 text-primary' : ''}`} />
                             </button>
 
                             {langOpen && (
-                                <div className={`absolute mt-2 w-48 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl overflow-hidden z-50 p-1
+                                <div className={`absolute mt-2 w-48 rounded-xl border border-border bg-surface shadow-xl overflow-hidden z-50 p-1
                                     ${dir === 'rtl' ? 'left-0' : 'right-0'}`}
                                 >
                                     {[
@@ -410,22 +410,22 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                                         <button
                                             key={item.code}
                                             onClick={() => { setLanguage(item.code); setLangOpen(false); }}
-                                            className={`w-full px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-between gap-3
+                                            className={`w-full px-3 h-9 rounded-xl text-xs font-bold transition-colors flex items-center justify-between gap-3
                                                 ${language === item.code
-                                                    ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
-                                                    : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)]'}`}
+                                                    ? 'bg-primary/10 text-primary'
+                                                    : 'text-text-muted hover:bg-surface-alt hover:text-text'}`}
                                             type="button"
                                         >
                                             <div className="flex items-center gap-2.5">
-                                                <span className={`w-6 h-4.5 flex items-center justify-center rounded text-[10px] font-black leading-none select-none shrink-0 transition-colors
+                                                <span className={`w-6 h-4.5 flex items-center justify-center rounded text-[10px] font-bold leading-none select-none shrink-0 transition-colors
                                                     ${language === item.code
-                                                        ? 'bg-[var(--color-primary)] text-white'
-                                                        : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)]'}`}>
+                                                        ? 'bg-primary text-white'
+                                                        : 'bg-surface-alt border border-border text-text-muted'}`}>
                                                     {item.codeLabel}
                                                 </span>
                                                 <span className="truncate">{item.label}</span>
                                             </div>
-                                            {language === item.code && <Check className="w-3.5 h-3.5 shrink-0 text-[var(--color-primary)]" strokeWidth={3} />}
+                                            {language === item.code && <Check className="w-3.5 h-3.5 shrink-0 text-primary" strokeWidth={3} />}
                                         </button>
                                     ))}
                                 </div>
@@ -436,7 +436,7 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                         <button
                             onClick={toggleTheme}
                             aria-label={isDark ? "Aktifkan Mode Terang" : "Aktifkan Mode Gelap"}
-                            className={`w-9 h-9 items-center justify-center rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition ${searchFocused ? 'hidden' : 'flex'}`}
+                            className={`w-9 h-9 items-center justify-center rounded-lg hover:bg-surface-alt text-text-muted hover:text-primary transition ${searchFocused ? 'hidden' : 'flex'}`}
                             type="button"
                         >
                             {isDark ? (
@@ -449,7 +449,7 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                         {/* Asisten button */}
                         <button
                             onClick={onOpenChatAssistant}
-                            className={`w-9 h-9 sm:w-auto sm:h-9 flex items-center justify-center sm:gap-2 sm:px-3.5 rounded-xl border border-transparent sm:border-[var(--color-border)]/80 hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-primary)] transition text-xs font-extrabold text-[var(--color-text-muted)] ${searchFocused ? 'hidden' : 'flex'}`}
+                            className={`w-9 h-9 sm:w-auto sm:h-9 flex items-center justify-center sm:gap-2 sm:px-3.5 rounded-lg border border-transparent sm:border-border/80 hover:bg-surface-alt hover:text-primary transition text-xs font-semibold text-text-muted ${searchFocused ? 'hidden' : 'flex'}`}
                             type="button"
                         >
                             <Sparkles className="w-4.5 h-4.5 shrink-0" strokeWidth={2} />
@@ -460,10 +460,10 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                         <div className={`relative ${searchFocused ? 'hidden' : 'block'}`} ref={notifBtnRef}>
                             <button
                                 onClick={() => setNotifOpen(v => !v)}
-                                className={`relative w-9 h-9 flex items-center justify-center rounded-xl transition
+                                className={`relative w-9 h-9 flex items-center justify-center rounded-lg transition
                                     ${notifOpen
-                                        ? 'bg-[var(--color-surface-alt)] text-[var(--color-primary)]'
-                                        : 'hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)]'}
+                                        ? 'bg-surface-alt text-primary'
+                                        : 'hover:bg-surface-alt text-text-muted hover:text-primary'}
                                     ${urgentCount > 0 ? 'animate-[bellShake_2s_ease-in-out_infinite]' : ''}`}
                                 aria-label={t('notif.header')}
                                 type="button"
@@ -474,52 +474,52 @@ export default function SlimTopBar({ onToggleSidebar, sidebarCollapsed, onOpenCh
                         </div>
 
                         {/* Divider */}
-                        <div className="w-px h-6 bg-[var(--color-border)] mx-1 opacity-50" />
+                        <div className="w-px h-6 bg-border mx-1 opacity-50" />
 
                         {/* Profile — visible on all screen sizes */}
                         <div className="relative" ref={profileRef}>
                             <button
                                 onClick={() => setProfileOpen(v => !v)}
                                 aria-label="Menu Profil"
-                                className={`flex items-center gap-2.5 pl-1.5 pr-2.5 py-1 rounded-xl hover:bg-[var(--color-surface-alt)] transition border border-transparent hover:border-[var(--color-border)]
-                                    ${profileOpen ? 'bg-[var(--color-surface-alt)] border-[var(--color-border)]' : ''}`}
+                                className={`flex items-center gap-2.5 pl-1.5 pr-2.5 py-1 rounded-xl hover:bg-surface-alt transition border border-transparent hover:border-border
+                                    ${profileOpen ? 'bg-surface-alt border-border' : ''}`}
                                 type="button"
                             >
                                 <Avatar url={profile?.avatar_url} name={profile?.name} />
                                 {/* Name + role — visible on lg+ */}
                                 <div className="hidden lg:flex flex-col min-w-0 max-w-[130px]">
-                                    <span className="text-xs font-extrabold text-[var(--color-text)] leading-tight truncate">{profile?.name || 'User'}</span>
-                                    <span className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider leading-normal mt-0.5 truncate">{profile?.role || 'Staff'}</span>
+                                    <span className="text-xs font-semibold text-text leading-tight truncate">{profile?.name || 'User'}</span>
+                                    <span className="text-xs font-bold text-text-muted uppercase tracking-wider leading-normal mt-0.5 truncate">{profile?.role || 'Staff'}</span>
                                 </div>
                                 <ChevronDown
-                                    className={`w-3.5 h-3.5 text-[var(--color-text-muted)] transition-transform hidden sm:block ${profileOpen ? "rotate-180" : ""}`}
+                                    className={`w-3.5 h-3.5 text-text-muted transition-transform hidden sm:block ${profileOpen ? "rotate-180" : ""}`}
                                     strokeWidth={2}
                                 />
                             </button>
 
                             {profileOpen && (
-                                <div className={`absolute mt-2 w-52 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden z-50
+                                <div className={`absolute mt-2 w-52 rounded-xl border border-border bg-surface shadow-xl overflow-hidden z-50
                                     ${dir === 'rtl' ? 'left-0' : 'right-0'}`}>
                                     {/* User info header */}
-                                    <div className="px-4 py-3 border-b border-[var(--color-border)]">
-                                        <p className="text-[12.5px] font-black text-[var(--color-text)] truncate">{profile?.name || 'User'}</p>
-                                        <p className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider mt-0.5">{profile?.role || 'Staff'}</p>
+                                    <div className="px-4 py-3 border-b border-border">
+                                        <p className="text-sm font-semibold text-text truncate">{profile?.name || 'User'}</p>
+                                        <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mt-0.5">{profile?.role || 'Staff'}</p>
                                     </div>
 
 
                                     <button
                                         onClick={() => { setProfileOpen(false); navigate("/settings") }}
-                                        className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-[var(--color-surface-alt)] transition font-semibold text-[13px] text-[var(--color-text)] ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                        className={`w-full flex items-center gap-3 px-4 h-9 hover:bg-surface-alt transition font-semibold text-sm text-text ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                         type="button"
                                     >
                                         <Settings className="w-4 h-4 shrink-0" strokeWidth={2} /> <span>{t("nav.settings")}</span>
                                     </button>
                                     <button
                                         onClick={async () => { setProfileOpen(false); await signOut(); navigate("/login") }}
-                                        className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-[var(--color-surface-alt)] transition font-semibold text-[13px] text-red-600 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                                        className={`w-full flex items-center gap-3 px-4 h-9 hover:bg-surface-alt transition font-semibold text-sm text-danger ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
                                         type="button"
                                     >
-                                        <LogOut className="w-4 h-4 text-red-600 shrink-0" strokeWidth={2} /> <span>{t("ui.logout")}</span>
+                                        <LogOut className="w-4 h-4 text-danger shrink-0" strokeWidth={2} /> <span>{t("ui.logout")}</span>
                                     </button>
                                 </div>
                             )}
@@ -549,7 +549,7 @@ function NotifBadge({ count }) {
     const { tNum } = useLanguage()
     if (!count || count <= 0) return null
     return (
-        <span className="absolute -top-0.5 -end-0.5 w-4 h-4 bg-red-500 rounded-full text-[9px] font-black text-white flex items-center justify-center border border-[var(--color-surface)]">
+        <span className="absolute -top-0.5 -end-0.5 w-4 h-4 bg-danger rounded-full text-[10px] font-bold text-white flex items-center justify-center border border-surface">
             {count > 9 ? tNum("9+") : tNum(count)}
         </span>
     )
@@ -562,25 +562,25 @@ function NotifItem({ item, onDismiss, onNavigate }) {
     const Icon = s.icon
 
     return (
-        <div className={`group relative p-3 rounded-xl border ${s.bg} ${s.border} transition-all hover:scale-[1.01] flex gap-2.5 min-w-0`}>
+        <div className={`group relative p-3 rounded-xl border ${s.bg} ${s.border} transition-colors flex gap-2.5 min-w-0`}>
             {/* Type badge icon */}
-            <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 bg-[var(--color-surface)] shadow-sm ${s.text}`}>
+            <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 bg-surface shadow-sm ${s.text}`}>
                 <Icon className="w-3.5 h-3.5" />
             </div>
 
             <div className="flex-1 min-w-0 pe-6">
-                <p className="text-[12px] font-bold text-[var(--color-text)] leading-tight">{item.title}</p>
-                <p className="text-[10.5px] text-[var(--color-text-muted)] leading-relaxed mt-0.5">{item.body || item.message}</p>
+                <p className="text-xs font-bold text-text leading-tight">{item.title}</p>
+                <p className="text-xs text-text-muted leading-relaxed mt-0.5">{item.body || item.message}</p>
                 <div className="flex items-center gap-2 mt-1.5">
                     {item.created_at && (
-                        <span className="text-[9px] font-bold tracking-wider text-[var(--color-text-muted)]/75 bg-black/5 dark:bg-white/5 px-1.5 py-0.5 rounded-md">
+                        <span className="text-xs font-bold tracking-wider text-text-muted/75 bg-surface-alt px-1.5 py-0.5 rounded-md">
                             {new Date(item.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                     )}
                     {item.action && (
                         <button
                             onClick={() => onNavigate(item.action.route)}
-                            className={`text-[9px] font-extrabold uppercase tracking-widest flex items-center gap-1 hover:underline ${s.text}`}
+                            className={`text-xs font-semibold uppercase tracking-widest flex items-center gap-1 hover:underline ${s.text}`}
                         >
                             {item.action.label} <ArrowRight className="w-3 h-3" strokeWidth={2} />
                         </button>
@@ -588,7 +588,7 @@ function NotifItem({ item, onDismiss, onNavigate }) {
                     {!item.action && item.action_url && (
                         <button
                             onClick={() => onNavigate(item.action_url)}
-                            className={`text-[9px] font-extrabold uppercase tracking-widest flex items-center gap-1 hover:underline ${s.text}`}
+                            className={`text-xs font-semibold uppercase tracking-widest flex items-center gap-1 hover:underline ${s.text}`}
                         >
                             {t('ui.detail')} <ArrowRight className="w-3 h-3" strokeWidth={2} />
                         </button>
@@ -599,7 +599,7 @@ function NotifItem({ item, onDismiss, onNavigate }) {
             {/* Dismiss button */}
             <button
                 onClick={() => onDismiss(item.id)}
-                className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-[var(--color-text-muted)] opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center rounded-lg hover:bg-surface-alt text-text-muted opacity-0 group-hover:opacity-100 transition-opacity"
                 type="button"
                 aria-label={t('notif.close')}
             >
@@ -617,17 +617,17 @@ function NotifPanel({ isOpen, notifications, loading, refreshing, onDismiss, onR
     return (
         <div
             ref={panelRef}
-            className={`absolute top-[52px] w-full max-w-[340px] rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl overflow-hidden z-[99999] flex flex-col ${dir === 'rtl' ? 'left-3 sm:left-4' : 'right-3 sm:right-4'}`}
+            className={`absolute top-[60px] w-full max-w-[340px] rounded-xl border border-border bg-surface shadow-xl overflow-hidden z-[99999] flex flex-col ${dir === 'rtl' ? 'left-3 sm:left-4' : 'right-3 sm:right-4'}`}
         >
             {/* Header */}
-            <div className="px-3.5 py-2.5 border-b border-[var(--color-border)] flex items-center justify-between">
+            <div className="px-3.5 py-2.5 border-b border-border flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
-                    <Bell className="w-3.5 h-3.5 text-[var(--color-primary)]" strokeWidth={2} />
-                    <span className="text-[12px] font-extrabold text-[var(--color-text)]">{t('notif.header')}</span>
+                    <Bell className="w-3.5 h-3.5 text-primary" strokeWidth={2} />
+                    <span className="text-xs font-semibold text-text">{t('notif.header')}</span>
                 </div>
                 <button
                     onClick={onRefresh}
-                    className="w-6 h-6 flex items-center justify-center rounded-lg hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] transition"
+                    className="w-6 h-6 flex items-center justify-center rounded-lg hover:bg-surface-alt text-text-muted transition"
                     disabled={refreshing}
                     type="button"
                 >
@@ -638,15 +638,15 @@ function NotifPanel({ isOpen, notifications, loading, refreshing, onDismiss, onR
             {/* List */}
             <div className="max-h-[350px] overflow-y-auto p-2 space-y-2 no-scrollbar">
                 {loading ? (
-                    <div className="py-8 text-center text-[var(--color-text-muted)] flex flex-col items-center gap-2">
-                        <div className="w-5 h-5 border-2 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin" />
-                        <span className="text-[11px] font-bold">{t('notif.loading')}</span>
+                    <div className="py-8 text-center text-text-muted flex flex-col items-center gap-2">
+                        <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                        <span className="text-xs font-bold">{t('notif.loading')}</span>
                     </div>
                 ) : notifications.length === 0 ? (
-                    <div className="py-12 text-center text-[var(--color-text-muted)] flex flex-col items-center justify-center">
+                    <div className="py-12 text-center text-text-muted flex flex-col items-center justify-center">
                         <Bell className="w-8 h-8 opacity-15 mb-2.5" strokeWidth={1.5} />
-                        <p className="text-[11.5px] font-bold">{t('notif.empty_title')}</p>
-                        <p className="text-[10px] mt-0.5">{t('notif.empty_desc')}</p>
+                        <p className="text-xs font-bold">{t('notif.empty_title')}</p>
+                        <p className="text-xs mt-0.5">{t('notif.empty_desc')}</p>
                     </div>
                 ) : (
                     notifications.map(item => (
@@ -661,7 +661,7 @@ function NotifPanel({ isOpen, notifications, loading, refreshing, onDismiss, onR
             </div>
 
             {/* Footer */}
-            <div className="px-3.5 py-2 bg-black/5 dark:bg-white/5 border-t border-[var(--color-border)] flex items-center justify-between text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-wider">
+            <div className="px-3.5 py-2 bg-surface-alt border-t border-border flex items-center justify-between text-xs font-bold text-text-muted uppercase tracking-wider">
                 <span>{t('notif.realtime')}</span>
                 <span>LaporanMu</span>
             </div>

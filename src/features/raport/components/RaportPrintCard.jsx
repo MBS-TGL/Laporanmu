@@ -474,7 +474,7 @@ const RaportPrintCard = memo(({
                     }
                     .school-address {
                         font-size: ${isTanggul ? '8.1pt' : '8.5pt'} !important;
-                        font-family: ${isTanggul ? "Inter, 'Segoe Print', 'Segoe Script', 'Monotype Corsiva', cursive, sans-serif" : 'inherit'} !important;
+                        font-family: ${isTanggul ? "'Plus Jakarta Sans', 'Segoe Print', 'Segoe Script', 'Monotype Corsiva', cursive, sans-serif" : 'inherit'} !important;
                         color: #333 !important;
                         line-height: 1.35 !important;
                         font-weight: 500 !important;
@@ -528,7 +528,7 @@ const RaportPrintCard = memo(({
                                             marginTop: 4,
                                             lineHeight: 1.35,
                                             fontWeight: 500,
-                                            fontFamily: "Inter, 'Segoe UI', Roboto, system-ui, sans-serif"
+                                            fontFamily: "'Plus Jakarta Sans', 'Segoe UI', Roboto, system-ui, sans-serif"
                                         }}>
                                             <div>Jl. Pemandian No. 88 Dusun Krajan II Patemon Tanggul Jember 68155</div>
                                             <div>Asrama Tahfidz Al-Qur'an Bambu Kuning Jl. Teratai No. 11 Tanggul Jember 68155</div>

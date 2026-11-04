@@ -150,7 +150,7 @@ function TableSkeleton({ cols = 5, rows = 6 }) {
 
 // ─── UI tokens & small shared pieces (konsistensi tipografi) ────────────────
 const UI = {
-  card: 'glass rounded-2xl p-4 sm:p-5',
+  card: 'bg-surface border border-border rounded-2xl p-4 sm:p-5',
   cardTitle: 'text-sm font-semibold text-[var(--color-text)] leading-tight',
   hint: 'text-xs text-[var(--color-text-muted)]',
   control: 'h-10 rounded-lg',
@@ -676,7 +676,7 @@ export default function GatePage() {
 
         {/* ── TAB: LOG HARI INI ── */}
         {activeTab === 'log' && (
-          <div className="glass rounded-[1.5rem] overflow-hidden animate-in fade-in duration-200">
+          <div className="bg-surface border border-border rounded-[1.5rem] overflow-hidden animate-in fade-in duration-200">
             <GateFilterBar
               searchLog={searchLog}
               setSearchLog={setSearchLog}
@@ -838,7 +838,7 @@ export default function GatePage() {
         {/* ── TAB: REKAP ── */}
         {activeTab === 'rekap' && (
           <div className="space-y-4 animate-in fade-in duration-200">
-            <div className="glass rounded-[1.5rem] overflow-hidden">
+            <div className="bg-surface border border-border rounded-[1.5rem] overflow-hidden">
               {/* === DESKTOP TOOLBAR (1 Baris Top, 1 Baris Bottom) === */}
               <div className="hidden sm:block border-b border-[var(--color-border)]">
                 {/* Baris 1: Mode + View Toggle + Date Navigation + Actions */}
@@ -1330,7 +1330,7 @@ export default function GatePage() {
         {/* ── TAB: IZIN SANTRI ── */}
         {activeTab === 'izin' && (
           <div className="space-y-4 animate-in fade-in duration-200">
-            <div className="glass rounded-[1.5rem] p-5">
+            <div className="bg-surface border border-border rounded-[1.5rem] p-5">
               <div className="flex items-center gap-2 mb-4">
                 <ClipboardList className="w-4 h-4 text-[var(--color-primary)]" />
                 <h3 className="text-[13px] font-black text-[var(--color-text)]">Rekoncile Izin Santri</h3>
@@ -1348,7 +1348,7 @@ export default function GatePage() {
 
       {/* Overtime alert banner */}
       {dailySummary.overTimeList.length > 0 && !dismissedOvertime && (
-        <div className={`fixed bottom-24 sm:bottom-6 z-[100] w-auto max-w-[calc(100vw-2rem)] sm:w-72 bg-red-600/95 backdrop-blur-md rounded-2xl shadow-2xl p-4 border border-red-400/20 animate-in duration-500 ${dir === 'rtl'
+        <div className={`fixed bottom-24 sm:bottom-6 z-[100] w-auto max-w-[calc(100vw-2rem)] sm:w-72 bg-red-600/95 rounded-2xl shadow-xl p-4 border border-red-400/20 animate-in duration-500 ${dir === 'rtl'
           ? 'left-4 sm:left-6 right-auto slide-in-from-left-8'
           : 'right-4 sm:right-6 left-auto slide-in-from-right-8'
           }`}>
@@ -1447,7 +1447,7 @@ export default function GatePage() {
         <button
           onClick={() => setShowBulkCheckoutModal(true)}
           disabled={submitting}
-          className="h-10 sm:h-9 px-3 sm:px-4 rounded-xl bg-indigo-500 text-white hover:bg-indigo-600 transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest whitespace-nowrap shadow-lg shadow-indigo-500/20 disabled:opacity-50 justify-center"
+          className="h-10 sm:h-9 px-3 sm:px-4 rounded-xl bg-indigo-500 text-white hover:bg-indigo-600 transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest whitespace-nowrap shadow-lg disabled:opacity-50 justify-center"
         >
           {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle2 className="w-3.5 h-3.5" />}
           <span className="hidden xs:inline">{tp('bulkCheckout') || 'Check-out Massal'}</span>

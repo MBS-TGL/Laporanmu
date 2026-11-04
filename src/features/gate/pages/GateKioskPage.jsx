@@ -58,10 +58,10 @@ function playSynthBeep(type = 'success') {
 }
 
 const KIOSK_PURPOSES = [
-  { key: 'Makan Siang', label: { id: 'Makan Siang', en: 'Lunch', ar: 'الغداء' }, icon: Coffee, bg: 'from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 text-orange-500 border-orange-500/30' },
-  { key: 'Keperluan Keluarga', label: { id: 'Izin Keluarga', en: 'Family Matters', ar: 'أمر عائلي' }, icon: Home, bg: 'from-sky-500/10 to-blue-500/10 hover:from-sky-500/20 hover:to-blue-500/20 text-blue-500 border-blue-500/30' },
-  { key: 'Dinas / Tugas', label: { id: 'Tugas Dinas', en: 'Duty', ar: 'مهمة رسمية' }, icon: Briefcase, bg: 'from-emerald-500/10 to-teal-500/10 hover:from-emerald-500/20 hover:to-teal-500/20 text-teal-500 border-teal-500/30' },
-  { key: 'Izin Medis', label: { id: 'Izin Medis', en: 'Medical', ar: 'عذر طبي' }, icon: HeartPulse, bg: 'from-rose-500/10 to-pink-500/10 hover:from-rose-500/20 hover:to-pink-500/20 text-rose-500 border-rose-500/30' },
+  { key: 'Makan Siang', label: { id: 'Makan Siang', en: 'Lunch', ar: 'الغداء' }, icon: Coffee, bg: 'bg-amber-500/10 hover:bg-amber-500/20 text-orange-500 border-orange-500/30' },
+  { key: 'Keperluan Keluarga', label: { id: 'Izin Keluarga', en: 'Family Matters', ar: 'أمر عائلي' }, icon: Home, bg: 'bg-sky-500/10 hover:bg-sky-500/20 text-blue-500 border-blue-500/30' },
+  { key: 'Dinas / Tugas', label: { id: 'Tugas Dinas', en: 'Duty', ar: 'مهمة رسمية' }, icon: Briefcase, bg: 'bg-emerald-500/10 hover:bg-emerald-500/20 text-teal-500 border-teal-500/30' },
+  { key: 'Izin Medis', label: { id: 'Izin Medis', en: 'Medical', ar: 'عذر طبي' }, icon: HeartPulse, bg: 'bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 border-rose-500/30' },
 ]
 
 export default function GateKioskPage() {
@@ -318,15 +318,13 @@ export default function GateKioskPage() {
     >
       {/* Decorative premium floating ambient glows */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute -top-[10%] left-[20%] w-[600px] h-[600px] rounded-full bg-[var(--color-primary)]/10 blur-[120px] animate-pulse" />
-        <div className="absolute -bottom-[10%] right-[20%] w-[500px] h-[500px] rounded-full bg-emerald-500/5 blur-[100px] animate-pulse" />
       </div>
 
       {/* HEADER SECTION */}
       <div className="w-full max-w-6xl flex items-center justify-between z-10 gap-3">
         <button 
           onClick={(e) => { e.stopPropagation(); navigate('/boarding/gate') }}
-          className="h-11 px-3 sm:px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/60 backdrop-blur-md text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all flex items-center gap-2 active:scale-95 shadow-sm shrink-0"
+          className="h-11 px-3 sm:px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all flex items-center gap-2 active:scale-95 shadow-sm shrink-0"
         >
           <ArrowLeft className="w-4 h-4" />
           <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest hidden xs:inline">
@@ -355,7 +353,7 @@ export default function GateKioskPage() {
           {/* Sound Toggle */}
           <button 
             onClick={toggleMute}
-            className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all border active:scale-95 shadow-sm backdrop-blur-md ${isMuted 
+            className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all border active:scale-95 shadow-sm ${isMuted
               ? 'border-red-500/20 bg-red-500/10 text-red-500' 
               : 'border-[var(--color-border)] bg-[var(--color-surface)]/60 text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
             title={isMuted 
@@ -368,7 +366,7 @@ export default function GateKioskPage() {
           {/* Manual Input Toggle */}
           <button 
             onClick={(e) => { e.stopPropagation(); setShowManualModal(true) }}
-            className="w-11 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/60 backdrop-blur-md text-[var(--color-text-muted)] hover:text-[var(--color-text)] flex items-center justify-center transition-all active:scale-95 shadow-sm"
+            className="w-11 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] flex items-center justify-center transition-all active:scale-95 shadow-sm"
             title={language === 'en' ? 'Type ID Manually' : language === 'ar' ? 'إدخال المعرف يدوياً' : 'Ketik ID Manual'}
           >
             <Keyboard className="w-4 h-4" />
@@ -377,7 +375,7 @@ export default function GateKioskPage() {
       </div>
 
       {/* MOBILE HERO CLOCK (Visible only on small screens) */}
-      <div className="md:hidden w-full max-w-sm flex flex-col items-center justify-center mt-4 mb-2 z-10 glass py-3 px-5 rounded-2xl border border-[var(--color-border)]/60 shadow-sm relative overflow-hidden shrink-0">
+      <div className="md:hidden w-full max-w-sm flex flex-col items-center justify-center mt-4 mb-2 z-10 bg-surface py-3 px-5 rounded-2xl border border-[var(--color-border)]/60 shadow-sm relative overflow-hidden shrink-0">
         <div className="flex items-center gap-2">
           <Clock className="w-3.5 h-3.5 text-[var(--color-primary)] animate-pulse" />
           <span className="text-[18px] font-black text-[var(--color-text)] font-mono tracking-wider leading-none">
@@ -394,7 +392,7 @@ export default function GateKioskPage() {
         
         {/* STANDBY STATE */}
         {kioskState === 'standby' && (
-          <div className="glass rounded-[2rem] border border-[var(--color-border)]/80 p-8 sm:p-12 text-center flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
+          <div className="bg-surface rounded-[2rem] border border-[var(--color-border)]/80 p-8 sm:p-12 text-center flex flex-col items-center justify-center relative overflow-hidden shadow-sm">
             {/* Pulsing Scanner Visual Ray */}
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent animate-pulse shadow-[0_0_15px_var(--color-primary)]" />
             
@@ -403,7 +401,7 @@ export default function GateKioskPage() {
               <div className="absolute w-36 h-36 rounded-full border-2 border-[var(--color-primary)]/20 animate-ping opacity-15" />
               <div className="absolute w-28 h-28 rounded-full border-2 border-[var(--color-primary)]/30 animate-pulse opacity-25" />
               
-              <div className="w-24 h-24 rounded-[2rem] bg-gradient-to-br from-[var(--color-primary)]/10 to-[var(--color-primary)]/5 border-2 border-[var(--color-primary)]/30 flex items-center justify-center shadow-xl shadow-[var(--color-primary)]/5 relative z-10">
+              <div className="w-24 h-24 rounded-[2rem] bg-[var(--color-primary)]/10 border-2 border-[var(--color-primary)]/30 flex items-center justify-center shadow-xl relative z-10">
                 <div className="relative flex items-center justify-center">
                   <IdCard className="w-10 h-10 text-[var(--color-primary)] opacity-90" />
                   <Nfc className="w-5 h-5 text-emerald-500 absolute -bottom-1 -right-1 bg-[var(--color-surface)] rounded-lg p-0.5 border border-emerald-500/20 animate-pulse" />
@@ -440,8 +438,8 @@ export default function GateKioskPage() {
                     <button
                       key={p.key}
                       onClick={(e) => { e.stopPropagation(); setSelectedPurpose(p.key) }}
-                      className={`h-14 rounded-2xl border text-left p-3.5 flex items-center gap-3 transition-all active:scale-95 bg-gradient-to-r ${p.bg} ${isSelected 
-                        ? 'border-[var(--color-primary)] shadow-lg shadow-[var(--color-primary)]/10 scale-[1.02] bg-[var(--color-primary)]/10' 
+                      className={`h-14 rounded-2xl border text-left p-3.5 flex items-center gap-3 transition-all active:scale-95 ${p.bg} ${isSelected 
+                        ? 'border-[var(--color-primary)] shadow-lg scale-[1.02] bg-[var(--color-primary)]/10'
                         : 'opacity-70 hover:opacity-100'}`}
                     >
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-[var(--color-surface)] shadow-sm`}>
@@ -458,7 +456,7 @@ export default function GateKioskPage() {
 
         {/* LOADING PROCESSING STATE */}
         {kioskState === 'loading' && (
-          <div className="glass rounded-[2rem] border border-[var(--color-border)] p-12 text-center flex flex-col items-center justify-center shadow-2xl">
+          <div className="bg-surface rounded-[2rem] border border-[var(--color-border)] p-12 text-center flex flex-col items-center justify-center shadow-sm">
             <RefreshCw className="animate-spin w-12 h-12 text-[var(--color-primary)] mb-6" />
             <h3 className="text-[18px] font-black text-[var(--color-text)] tracking-tight">
               {language === 'en' ? 'PROCESSING CARD...' : language === 'ar' ? 'جاري معالجة البطاقة...' : 'SEDANG MEMPROSES KARTU...'}
@@ -471,7 +469,7 @@ export default function GateKioskPage() {
 
         {/* SUCCESS STATE */}
         {kioskState === 'success' && statusDetails && (
-          <div className="glass rounded-[2rem] border border-emerald-500/20 bg-emerald-500/5 p-10 sm:p-12 text-center flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
+          <div className="rounded-[2rem] border border-emerald-500/20 bg-emerald-500/5 p-10 sm:p-12 text-center flex flex-col items-center justify-center relative overflow-hidden shadow-sm">
             
             {/* Green Ambient Light bar */}
             <div className="absolute inset-x-0 top-0 h-1.5 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]" />
@@ -514,7 +512,7 @@ export default function GateKioskPage() {
 
         {/* ERROR STATE */}
         {kioskState === 'error' && (
-          <div className="glass rounded-[2rem] border border-red-500/20 bg-red-500/5 p-10 sm:p-12 text-center flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
+          <div className="rounded-[2rem] border border-red-500/20 bg-red-500/5 p-10 sm:p-12 text-center flex flex-col items-center justify-center relative overflow-hidden shadow-sm">
             
             {/* Red Ambient Light bar */}
             <div className="absolute inset-x-0 top-0 h-1.5 bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]" />
@@ -551,7 +549,7 @@ export default function GateKioskPage() {
       <div className="w-full max-w-5xl flex flex-col md:flex-row items-center justify-between gap-4 border-t border-[var(--color-border)]/50 pt-6 z-10 shrink-0">
         <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 w-full md:w-auto">
           {/* Active Out Card */}
-          <div className="flex items-center justify-between sm:justify-start gap-3 bg-[var(--color-surface)]/60 backdrop-blur-md border border-[var(--color-border)]/60 px-4 py-2 rounded-2xl shadow-sm w-full sm:w-auto">
+          <div className="flex items-center justify-between sm:justify-start gap-3 bg-[var(--color-surface)] border border-[var(--color-border)]/60 px-4 py-2 rounded-2xl shadow-sm w-full sm:w-auto">
             <div className="flex items-center gap-2">
               <div className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
               <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">
@@ -564,7 +562,7 @@ export default function GateKioskPage() {
           </div>
 
           {/* Returned Today Card */}
-          <div className="flex items-center justify-between sm:justify-start gap-3 bg-[var(--color-surface)]/60 backdrop-blur-md border border-[var(--color-border)]/60 px-4 py-2 rounded-2xl shadow-sm w-full sm:w-auto">
+          <div className="flex items-center justify-between sm:justify-start gap-3 bg-[var(--color-surface)] border border-[var(--color-border)]/60 px-4 py-2 rounded-2xl shadow-sm w-full sm:w-auto">
             <div className="flex items-center gap-2">
               <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
               <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-[var(--color-text-muted)]">

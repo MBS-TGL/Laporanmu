@@ -1,23 +1,9 @@
 import { useState, useEffect, useRef, useMemo, useCallback, memo, createContext, useContext } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faPalette, faCheck, faTriangleExclamation, faCircleInfo,
-    faXmark, faChevronDown, faPlus, faTrash, faArrowRight,
-    faMoon, faSun, faCopy, faEye, faCode, faFont,
-    faLayerGroup, faExpand, faGrip, faBell, faCheckCircle,
-    faExclamationCircle, faXmarkCircle, faChevronRight, faSearch,
-    faCalendar, faUser, faShieldHalved, faEllipsisVertical,
-    faFileLines, faChartLine, faArrowUpRightFromSquare,
-    faCheckDouble, faSpinner, faClock, faFilter, faDownload,
-    faEnvelope, faLock, faPhone, faMapMarkerAlt, faGlobe,
-    faCamera, faUserGroup, faLightbulb, faHeart, faFlag,
-    faBoxOpen, faCreditCard, faGear, faSignOutAlt, faKey,
-    faFaceSadTear, faFaceFrown, faFaceMeh, faFaceSmile, faFaceGrinHearts,
-    faFilePdf, faTable, faLink, faUsers, faClipboardList, faGaugeHigh,
-    faArrowUpFromBracket
-} from '@fortawesome/free-solid-svg-icons'
+import { ArrowRight, Bell, Calendar, Camera, ChartLine, Check, CheckCheck, ChevronDown, ChevronRight, CircleCheck, CircleX, ClipboardList, Code, Copy, Download, EllipsisVertical, Eye, FileText, Flag, Frown, Funnel, Gauge, Globe, GripHorizontal, Info, Key, Layers, Lightbulb, Link, LoaderCircle, Lock, LogOut, Mail, Maximize2, Meh, PackageOpen, Palette, Plus, Search, Settings, ShieldHalf, Smile, SmilePlus, Table, Trash2, TriangleAlert, Type, Upload, User, Users, X } from 'lucide-react'
+
+
 import DashboardLayout from '@core/layouts/DashboardLayout'
-import { Breadcrumb, Modal, Pagination, Skeleton } from '@shared/components'
+import { Badge, Breadcrumb, Button, Card, FieldLabel, Input, Modal, Pagination, Select, Skeleton, Textarea } from '@shared/components'
 import { useToast } from '@context'
 
 // ─── VS Code Syntax Highlighter ────────────────────────────────────────────────
@@ -77,7 +63,7 @@ const TagChipsPreview = memo(() => {
                     <span key={tag} className="px-2.5 py-1 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black flex items-center gap-1.5 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all cursor-pointer">
                         {tag}
                         <button onClick={() => remove(tag)} className="hover:opacity-100 opacity-50 transition-opacity">
-                            <FontAwesomeIcon icon={faXmark} className="text-[8px]" />
+                            <X className="text-[8px]" />
                         </button>
                     </span>
                 ))}
@@ -85,7 +71,7 @@ const TagChipsPreview = memo(() => {
             <div className="flex flex-wrap gap-2 items-center">
                 <span className="px-2.5 py-1 rounded-lg bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary)] text-[10px] font-black">{tags.length} selected</span>
                 <button onClick={add} className="px-2.5 py-1 rounded-lg border-2 border-dashed border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black flex items-center gap-1 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all">
-                    <FontAwesomeIcon icon={faPlus} className="text-[8px]" /> Add tag
+                    <Plus className="text-[8px]" /> Add tag
                 </button>
                 {tags.length > 0 && (
                     <button onClick={() => setTags([])} className="text-[9px] font-black text-rose-400 hover:text-rose-600 transition-colors">clear all</button>
@@ -146,7 +132,7 @@ const CheckboxStatesPreview = memo(() => {
                         : 'bg-transparent border-[var(--color-border)] group-hover:border-[var(--color-primary)]'
                         }`}>
                         {indeterminate && <div className="w-2 h-0.5 bg-white rounded-full" />}
-                        {checked && !indeterminate && <FontAwesomeIcon icon={faCheck} className="text-white text-[7px]" />}
+                        {checked && !indeterminate && <Check className="text-white text-[7px]" />}
                     </div>
                     <span className="text-[11px] font-medium text-[var(--color-text)]">{label}</span>
                 </label>
@@ -175,7 +161,7 @@ const RadioGroupPreview = memo(() => {
                             <span className={`text-[11px] font-black ${selected === value ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}`}>{label}</span>
                             <p className="text-[10px] text-[var(--color-text-muted)] opacity-60">{desc}</p>
                         </div>
-                        {selected === value && <FontAwesomeIcon icon={faCheckCircle} className="text-[var(--color-primary)] text-sm" />}
+                        {selected === value && <CircleCheck className="text-[var(--color-primary)] text-sm" />}
                     </label>
                 ))}
             </div>
@@ -202,12 +188,12 @@ const InputStatesPreview = memo(() => {
             <div className="space-y-1">
                 <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Error</label>
                 <input value={vals.error} onChange={e => set('error', e.target.value)} className={`w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border text-sm font-medium text-[var(--color-text)] outline-none transition-all ${errorMsg ? 'border-rose-400 ring-2 ring-rose-400/10' : 'border-[var(--color-border)]'}`} />
-                {errorMsg && <p className="text-[9px] font-black text-rose-500 flex items-center gap-1"><FontAwesomeIcon icon={faTriangleExclamation} className="text-[8px]" />{errorMsg}</p>}
+                {errorMsg && <p className="text-[9px] font-black text-rose-500 flex items-center gap-1"><TriangleAlert className="text-[8px]" />{errorMsg}</p>}
             </div>
             <div className="space-y-1">
                 <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Success</label>
                 <input value={vals.success} onChange={e => set('success', e.target.value)} className={`w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border text-sm font-medium text-[var(--color-text)] outline-none transition-all ${successMsg ? 'border-emerald-400 ring-2 ring-emerald-400/10' : 'border-[var(--color-border)]'}`} />
-                {successMsg && <p className="text-[9px] font-black text-emerald-600 flex items-center gap-1"><FontAwesomeIcon icon={faCheck} className="text-[8px]" />{successMsg}</p>}
+                {successMsg && <p className="text-[9px] font-black text-emerald-600 flex items-center gap-1"><Check className="text-[8px]" />{successMsg}</p>}
             </div>
             <div className="space-y-1">
                 <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Disabled</label>
@@ -228,9 +214,9 @@ const InputAddonsPreview = memo(() => {
             <div className="space-y-1">
                 <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Search</label>
                 <div className="relative">
-                    <FontAwesomeIcon icon={faSearch} className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-xs transition-colors ${search ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
+                    <Search className={`absolute left-3.5 top-1/2 -translate-y-1/2 text-xs transition-colors ${search ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
                     <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Cari siswa..." className="w-full h-10 pl-10 pr-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10 text-sm font-medium text-[var(--color-text)] outline-none transition-all" />
-                    {search && <button onClick={() => setSearch('')} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"><FontAwesomeIcon icon={faXmark} className="text-xs" /></button>}
+                    {search && <button onClick={() => setSearch('')} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"><X className="text-xs" /></button>}
                 </div>
             </div>
             <div className="space-y-1">
@@ -245,7 +231,7 @@ const InputAddonsPreview = memo(() => {
                 <div className="flex gap-0">
                     <input readOnly value={apiKey} className="flex-1 h-10 px-3.5 rounded-l-xl bg-[var(--color-surface)] border border-r-0 border-[var(--color-border)] text-sm font-mono text-[var(--color-text-muted)] outline-none" />
                     <button onClick={copyKey} className={`h-10 px-4 rounded-r-xl border text-[10px] font-black transition-colors flex items-center gap-1.5 ${copied ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]'}`}>
-                        <FontAwesomeIcon icon={copied ? faCheck : faCopy} className="text-[9px]" /> {copied ? 'Copied!' : 'Copy'}
+                        { copied ? <Check className="text-[9px]" /> : <Copy className="text-[9px]" /> } {copied ? 'Copied!' : 'Copy'}
                     </button>
                 </div>
             </div>
@@ -269,7 +255,7 @@ const AccordionPreview = memo(() => {
                 <div key={i} className={`rounded-xl border overflow-hidden transition-all ${open === i ? 'border-[var(--color-primary)]' : 'border-[var(--color-border)]'}`}>
                     <button onClick={() => setOpen(open === i ? -1 : i)} className="w-full flex items-center justify-between px-4 py-3 text-left">
                         <span className={`text-[11px] font-black ${open === i ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}`}>{item.q}</span>
-                        <FontAwesomeIcon icon={faChevronDown} className={`text-[9px] transition-transform shrink-0 ml-3 ${open === i ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
+                        <ChevronDown className={`text-[9px] transition-transform shrink-0 ml-3 ${open === i ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
                     </button>
                     {open === i && <div className="px-4 pb-3 text-[11px] text-[var(--color-text-muted)] leading-relaxed border-t border-[var(--color-primary)]/20 pt-2">{item.a}</div>}
                 </div>
@@ -312,7 +298,7 @@ const DataTablePreview = memo(() => {
                 <table className="w-full text-[10px]">
                     <thead>
                         <tr className="bg-[var(--color-surface-alt)] border-b border-[var(--color-border)]">
-                            <th className="w-10 p-3"><div onClick={toggleAll} className={`w-4 h-4 rounded border cursor-pointer flex items-center justify-center ${selected.size === data.length ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)]'}`}>{selected.size === data.length && <FontAwesomeIcon icon={faCheck} className="text-white text-[7px]" />}</div></th>
+                            <th className="w-10 p-3"><div onClick={toggleAll} className={`w-4 h-4 rounded border cursor-pointer flex items-center justify-center ${selected.size === data.length ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)]'}`}>{selected.size === data.length && <Check className="text-white text-[7px]" />}</div></th>
                             {[['name', 'Nama'], ['kelas', 'Kelas'], ['status', 'Status'], ['nilai', 'Nilai']].map(([f, label]) => (
                                 <th key={f} onClick={() => sortBy(f)} className="p-3 text-left font-black text-[var(--color-text-muted)] uppercase tracking-widest cursor-pointer hover:text-[var(--color-primary)] transition-colors">
                                     {label} {sortField === f ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}
@@ -324,7 +310,7 @@ const DataTablePreview = memo(() => {
                     <tbody>
                         {sorted.map((row) => (
                             <tr key={row.id} className={`border-b border-[var(--color-border)] last:border-0 transition-colors ${selected.has(row.id) ? 'bg-[var(--color-primary)]/5' : 'hover:bg-[var(--color-surface-alt)]'}`}>
-                                <td className="p-3"><div onClick={() => toggleRow(row.id)} className={`w-4 h-4 rounded border cursor-pointer flex items-center justify-center ${selected.has(row.id) ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)] hover:border-[var(--color-primary)]'}`}>{selected.has(row.id) && <FontAwesomeIcon icon={faCheck} className="text-white text-[7px]" />}</div></td>
+                                <td className="p-3"><div onClick={() => toggleRow(row.id)} className={`w-4 h-4 rounded border cursor-pointer flex items-center justify-center ${selected.has(row.id) ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)] hover:border-[var(--color-primary)]'}`}>{selected.has(row.id) && <Check className="text-white text-[7px]" />}</div></td>
                                 <td className="p-3 font-black text-[var(--color-text)]">{row.name}</td>
                                 <td className="p-3 font-mono text-[var(--color-text-muted)]">{row.kelas}</td>
                                 <td className="p-3"><span className={`px-2 py-0.5 rounded-full border text-[9px] font-black ${statusColor(row.status)}`}>{row.status}</span></td>
@@ -352,17 +338,17 @@ const FilterBarPreview = memo(() => {
         <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
                 <div className="relative">
-                    <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 -translate-y-1/2 text-[9px] text-[var(--color-text-muted)]" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[9px] text-[var(--color-text-muted)]" />
                     <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Cari siswa…" className="h-8 pl-8 pr-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[10px] outline-none transition-all" />
                 </div>
                 {filters.map(f => (
                     <div key={f.id} className={`flex items-center gap-1.5 h-8 px-3 rounded-lg border text-[10px] font-black ${colorMap[f.id]}`}>
                         {f.label}: {f.value}
-                        <button onClick={() => remove(f.id)} className="opacity-60 hover:opacity-100 transition-opacity ml-1"><FontAwesomeIcon icon={faXmark} className="text-[8px]" /></button>
+                        <button onClick={() => remove(f.id)} className="opacity-60 hover:opacity-100 transition-opacity ml-1"><X className="text-[8px]" /></button>
                     </div>
                 ))}
                 <button className="h-8 px-3 rounded-lg border border-dashed border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all flex items-center gap-1.5">
-                    <FontAwesomeIcon icon={faPlus} className="text-[8px]" /> Filter
+                    <Plus className="text-[8px]" /> Filter
                 </button>
                 {filters.length > 0 && <button onClick={() => setFilters([])} className="text-[9px] font-black text-rose-400 hover:text-rose-600 ml-auto transition-colors">Reset semua</button>}
             </div>
@@ -406,19 +392,19 @@ const DropdownPreview = memo(() => {
         <div className="flex gap-6 items-start">
             <div className="relative">
                 <button onClick={() => setOpen(p => !p)} className={`flex items-center gap-2 px-4 h-9 rounded-xl border text-[11px] font-black transition-colors ${open ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]' : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-primary)]'}`}>
-                    Aksi <FontAwesomeIcon icon={faChevronDown} className={`text-[8px] transition-transform ${open ? 'rotate-180' : ''}`} />
+                    Aksi <ChevronDown className={`text-[8px] transition-transform ${open ? 'rotate-180' : ''}`} />
                 </button>
                 {open && (
                     <div className="absolute top-full left-0 mt-1.5 w-44 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-xl overflow-hidden z-10">
                         <div className="p-1">
-                            {[{ icon: faFileLines, label: 'Lihat Detail', color: 'text-[var(--color-text)]' }, { icon: faCopy, label: 'Duplikat', color: 'text-[var(--color-text)]' }, { icon: faDownload, label: 'Export PDF', color: 'text-[var(--color-text)]' }].map(({ icon, label, color }) => (
+                            {[{ icon: FileText, label: 'Lihat Detail', color: 'text-[var(--color-text)]' }, { icon: Copy, label: 'Duplikat', color: 'text-[var(--color-text)]' }, { icon: Download, label: 'Export PDF', color: 'text-[var(--color-text)]' }].map(({ icon: Icon, label, color }) => (
                                 <button key={label} className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[11px] font-black ${color} hover:bg-[var(--color-surface-alt)] transition-colors text-left`}>
-                                    <FontAwesomeIcon icon={icon} className="text-[10px] opacity-60 w-3" /> {label}
+                                    {Icon && <Icon className="text-[10px] opacity-60 w-3" />} {label}
                                 </button>
                             ))}
                             <div className="h-px bg-[var(--color-border)] my-1" />
                             <button className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[11px] font-black text-rose-500 hover:bg-rose-500/5 transition-colors text-left">
-                                <FontAwesomeIcon icon={faTrash} className="text-[10px] w-3" /> Hapus
+                                <Trash2 className="text-[10px] w-3" /> Hapus
                             </button>
                         </div>
                     </div>
@@ -431,16 +417,16 @@ const DropdownPreview = memo(() => {
 const CommandPalettePreview = memo(() => {
     const [q, setQ] = useState('')
     const pages = [
-        { icon: faGaugeHigh, label: 'Dashboard', shortcut: '⌘1' },
-        { icon: faUsers, label: 'Data Siswa', shortcut: '⌘2' },
-        { icon: faClipboardList, label: 'Laporan', shortcut: '⌘3' },
-        { icon: faGear, label: 'Pengaturan', shortcut: '⌘,' },
+        { icon: Gauge, label: 'Dashboard', shortcut: '⌘1' },
+        { icon: Users, label: 'Data Siswa', shortcut: '⌘2' },
+        { icon: ClipboardList, label: 'Laporan', shortcut: '⌘3' },
+        { icon: Settings, label: 'Pengaturan', shortcut: '⌘,' },
     ]
     const filtered = pages.filter(p => p.label.toLowerCase().includes(q.toLowerCase()))
     return (
-        <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-2xl overflow-hidden">
+        <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-sm overflow-hidden">
             <div className="flex items-center gap-3 px-4 py-3 border-b border-[var(--color-border)]">
-                <FontAwesomeIcon icon={faSearch} className="text-[var(--color-text-muted)] text-sm" />
+                <Search className="text-[var(--color-text-muted)] text-sm" />
                 <input value={q} onChange={e => setQ(e.target.value)} placeholder="Cari halaman atau ketik perintah…" className="flex-1 text-[11px] font-medium bg-transparent outline-none text-[var(--color-text)] placeholder-[var(--color-text-muted)]" />
                 <kbd className="px-1.5 py-0.5 rounded border border-[var(--color-border)] text-[8px] font-mono text-[var(--color-text-muted)]">Esc</kbd>
             </div>
@@ -453,7 +439,7 @@ const CommandPalettePreview = memo(() => {
                         {filtered.map((p, i) => (
                             <div key={p.label} className={`flex items-center gap-3 px-4 py-2.5 cursor-pointer transition-colors ${i === 0 ? 'bg-[var(--color-primary)]/8' : 'hover:bg-[var(--color-surface-alt)]'}`}>
                                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${i === 0 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
-                                    <FontAwesomeIcon icon={p.icon} className="text-xs" />
+                                    <p.icon className="text-xs" />
                                 </div>
                                 <span className={`flex-1 text-[11px] font-black ${i === 0 ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}`}>{p.label}</span>
                                 <kbd className="px-1.5 py-0.5 rounded border border-[var(--color-border)] text-[8px] font-mono text-[var(--color-text-muted)]">{p.shortcut}</kbd>
@@ -489,7 +475,7 @@ const OnboardingPreview = memo(() => {
                 {steps.map(s => (
                     <div key={s.id} className={`flex items-center gap-3 p-2.5 rounded-xl transition-colors ${!s.done ? 'cursor-pointer hover:bg-[var(--color-surface-alt)]' : ''}`} onClick={() => !s.done && complete(s.id)}>
                         <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all ${s.done ? 'bg-[var(--color-primary)]' : 'border-2 border-[var(--color-primary)]'}`}>
-                            {s.done && <FontAwesomeIcon icon={faCheck} className="text-white text-[7px]" />}
+                            {s.done && <Check className="text-white text-[7px]" />}
                         </div>
                         <span className={`text-[11px] font-black transition-all ${s.done ? 'line-through text-[var(--color-text-muted)] opacity-50' : 'text-[var(--color-primary)]'}`}>{s.label}</span>
                         {!s.done && <span className="ml-auto text-[9px] text-[var(--color-text-muted)] opacity-50">Klik →</span>}
@@ -511,7 +497,7 @@ const WizardPreview = memo(() => {
                     <div key={i} className="flex items-center flex-1 last:flex-none">
                         <div className="flex flex-col items-center gap-1">
                             <div onClick={() => setStep(i)} className={`w-8 h-8 rounded-full text-[9px] font-black flex items-center justify-center cursor-pointer transition-all ${i < step ? 'bg-[var(--color-primary)] text-white' : i === step ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-2 border-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}>
-                                {i < step ? <FontAwesomeIcon icon={faCheck} className="text-[8px]" /> : i + 1}
+                                {i < step ? <Check className="text-[8px]" /> : i + 1}
                             </div>
                             <span className="text-[7px] font-black uppercase tracking-wide text-[var(--color-text-muted)] whitespace-nowrap">{s}</span>
                         </div>
@@ -546,7 +532,7 @@ const ConfirmDialogPreview = memo(() => {
     )
     return (
         <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl p-5 shadow-xl space-y-4">
-            <div className="w-10 h-10 rounded-2xl bg-rose-500/10 flex items-center justify-center"><FontAwesomeIcon icon={faTrash} className="text-rose-500 text-sm" /></div>
+            <div className="w-10 h-10 rounded-2xl bg-rose-500/10 flex items-center justify-center"><Trash2 className="text-rose-500 text-sm" /></div>
             <div><h4 className="text-[13px] font-black text-[var(--color-text)]">Hapus Data Siswa?</h4><p className="text-[10px] text-[var(--color-text-muted)] leading-relaxed mt-1">Aksi ini permanen. Semua nilai dan absensi akan ikut terhapus.</p></div>
             <div className="p-3 rounded-xl bg-rose-500/5 border border-rose-500/20">
                 <p className="text-[9px] font-black text-rose-500 mb-1.5">Ketik <strong>HAPUS</strong> untuk konfirmasi</p>
@@ -565,11 +551,11 @@ const RatingPreview = memo(() => {
     const [hover, setHover] = useState(null)
     const [mood, setMood] = useState(3)
     const moods = [
-        { icon: faFaceSadTear, label: 'Sangat Buruk', color: 'text-rose-400' },
-        { icon: faFaceFrown, label: 'Kurang Baik', color: 'text-orange-400' },
-        { icon: faFaceMeh, label: 'Biasa Saja', color: 'text-amber-400' },
-        { icon: faFaceSmile, label: 'Baik', color: 'text-lime-500' },
-        { icon: faFaceGrinHearts, label: 'Luar Biasa!', color: 'text-emerald-500' },
+        { icon: Frown, label: 'Sangat Buruk', color: 'text-rose-400' },
+        { icon: Frown, label: 'Kurang Baik', color: 'text-orange-400' },
+        { icon: Meh, label: 'Biasa Saja', color: 'text-amber-400' },
+        { icon: Smile, label: 'Baik', color: 'text-lime-500' },
+        { icon: SmilePlus, label: 'Luar Biasa!', color: 'text-emerald-500' },
     ]
     return (
         <div className="space-y-5">
@@ -596,7 +582,7 @@ const RatingPreview = memo(() => {
                                 : 'text-[var(--color-text-muted)] opacity-30 hover:opacity-60 hover:scale-105'
                                 }`}
                         >
-                            <FontAwesomeIcon icon={m.icon} className="text-xl" />
+                            <m.icon className="text-xl" />
                         </button>
                     ))}
                 </div>
@@ -625,14 +611,14 @@ const InlineEditPreview = memo(() => {
                     {f.editing ? (
                         <>
                             <input autoFocus value={f.value} onChange={e => update(f.key, e.target.value)} className="flex-1 h-8 px-2.5 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/10 text-[11px] font-black text-[var(--color-text)] outline-none" />
-                            <button onClick={() => save(f.key)} className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all"><FontAwesomeIcon icon={faCheck} className="text-[9px]" /></button>
-                            <button onClick={cancel} className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-rose-500 transition-all"><FontAwesomeIcon icon={faXmark} className="text-[9px]" /></button>
+                            <button onClick={() => save(f.key)} className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all"><Check className="text-[9px]" /></button>
+                            <button onClick={cancel} className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-rose-500 transition-all"><X className="text-[9px]" /></button>
                         </>
                     ) : (
                         <>
                             <span className="flex-1 text-[11px] font-black text-[var(--color-text)]">{f.value}</span>
                             <button onClick={() => startEdit(f.key)} className="opacity-0 group-hover:opacity-100 w-7 h-7 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all">
-                                <FontAwesomeIcon icon={faGear} className="text-[9px]" />
+                                <Settings className="text-[9px]" />
                             </button>
                         </>
                     )}
@@ -660,7 +646,7 @@ const SelectTextareaPreview = memo(() => {
                             <optgroup label="Kelas 6"><option value="kelas-6a">Kelas 6A</option><option value="kelas-6b">Kelas 6B</option></optgroup>
                             <optgroup label="Kelas 5"><option value="kelas-5a">Kelas 5A</option><option value="kelas-5b">Kelas 5B</option></optgroup>
                         </select>
-                        <FontAwesomeIcon icon={faChevronDown} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[9px] text-[var(--color-text-muted)] pointer-events-none" />
+                        <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[9px] text-[var(--color-text-muted)] pointer-events-none" />
                     </div>
                     <p className="text-[9px] text-[var(--color-text-muted)] opacity-60">Dipilih: <span className="text-[var(--color-primary)] font-black">{sel}</span></p>
                 </div>
@@ -669,7 +655,7 @@ const SelectTextareaPreview = memo(() => {
                     <div className="rounded-xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface)]">
                         {['admin', 'guru', 'siswa', 'ortu', 'tu'].map(v => (
                             <div key={v} onClick={() => toggleMulti(v)} className={`flex items-center gap-2 px-3 py-2 cursor-pointer transition-colors ${multi.has(v) ? 'bg-[var(--color-primary)]/5' : ' hover:bg-[var(--color-surface-alt)]'} border-b border-[var(--color-border)] last:border-0`}>
-                                <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border transition-all ${multi.has(v) ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)]'}`}>{multi.has(v) && <FontAwesomeIcon icon={faCheck} className="text-white text-[7px]" />}</div>
+                                <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border transition-all ${multi.has(v) ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)]'}`}>{multi.has(v) && <Check className="text-white text-[7px]" />}</div>
                                 <span className={`text-[10px] font-black capitalize ${multi.has(v) ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}`}>{v}</span>
                             </div>
                         ))}
@@ -764,7 +750,7 @@ const OTPInputPreview = memo(() => {
             </div>
             {done ? (
                 <div className="flex items-center justify-center gap-2 text-emerald-600">
-                    <FontAwesomeIcon icon={faCheckCircle} className="text-sm" />
+                    <CircleCheck className="text-sm" />
                     <span className="text-[10px] font-black">Verifikasi berhasil!</span>
                 </div>
             ) : (
@@ -785,7 +771,7 @@ const TagInputPreview = memo(() => {
                 {tags.map(t => (
                     <span key={t} className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black border border-[var(--color-primary)]/20">
                         {t}
-                        <button onClick={() => setTags(p => p.filter(x => x !== t))} className="hover:opacity-70 transition-opacity"><FontAwesomeIcon icon={faXmark} className="text-[7px]" /></button>
+                        <button onClick={() => setTags(p => p.filter(x => x !== t))} className="hover:opacity-70 transition-opacity"><X className="text-[7px]" /></button>
                     </span>
                 ))}
                 {tags.length < 8 && <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addTag() } if (e.key === 'Backspace' && !input) setTags(p => p.slice(0, -1)) }} placeholder={tags.length === 0 ? "Tambah tag…" : ""} className="flex-1 min-w-20 text-[10px] font-medium text-[var(--color-text)] bg-transparent outline-none" />}
@@ -807,7 +793,7 @@ const ComboboxPreview = memo(() => {
             <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50">Pilih Siswa Berprestasi</p>
             <div className="relative">
                 <div className={`min-h-10 px-3 py-1.5 rounded-xl border bg-[var(--color-surface)] flex flex-wrap gap-1.5 items-center cursor-text transition-all ${open ? 'border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/10' : 'border-[var(--color-border)]'}`} onClick={() => setOpen(true)}>
-                    {selected.map(s => <span key={s} className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black">{s.split(' ')[0]}<button onClick={e => { e.stopPropagation(); toggle(s) }}><FontAwesomeIcon icon={faXmark} className="text-[7px]" /></button></span>)}
+                    {selected.map(s => <span key={s} className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black">{s.split(' ')[0]}<button onClick={e => { e.stopPropagation(); toggle(s) }}><X className="text-[7px]" /></button></span>)}
                     <input value={q} onChange={e => { setQ(e.target.value); setOpen(true) }} placeholder={selected.length === 0 ? "Cari siswa..." : ""} className="flex-1 min-w-16 text-[10px] font-medium text-[var(--color-text)] bg-transparent outline-none" />
                 </div>
                 {open && filtered.length > 0 && (
@@ -837,17 +823,17 @@ const LoginFormPreview = memo(() => {
     const [success, setSuccess] = useState(false)
     const valid = email.includes('@') && pass.length >= 6
     const submit = () => { if (!valid) return; setLoading(true); setTimeout(() => { setLoading(false); setSuccess(true) }, 1500) }
-    if (success) return <div className="flex flex-col items-center gap-3 py-8"><FontAwesomeIcon icon={faCheckCircle} className="text-emerald-500 text-4xl" /><p className="text-[12px] font-black text-[var(--color-text)]">Login berhasil!</p><button onClick={() => setSuccess(false)} className="text-[9px] font-black text-[var(--color-text-muted)] underline">Reset demo</button></div>
+    if (success) return <div className="flex flex-col items-center gap-3 py-8"><CircleCheck className="text-emerald-500 text-4xl" /><p className="text-[12px] font-black text-[var(--color-text)]">Login berhasil!</p><button onClick={() => setSuccess(false)} className="text-[9px] font-black text-[var(--color-text-muted)] underline">Reset demo</button></div>
     return (
         <div className="space-y-4">
             <div><h3 className="text-[14px] font-black text-[var(--color-text)]">Masuk ke Akun</h3><p className="text-[9px] text-[var(--color-text-muted)]">Laporanmu · Ekosistem Sekolah</p></div>
             <div className="space-y-3">
-                <div className="space-y-1"><label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Email</label><input value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="admin@sekolah.sch.id" className={`w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border text-[11px] font-medium text-[var(--color-text)] outline-none transition-all ${email && !email.includes('@') ? 'border-rose-400 ring-2 ring-rose-400/10' : 'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10'}`} />{email && !email.includes('@') && <p className="text-[9px] font-black text-rose-500 flex items-center gap-1"><FontAwesomeIcon icon={faTriangleExclamation} className="text-[8px]" />Format email tidak valid</p>}</div>
-                <div className="space-y-1"><label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Password</label><div className="relative"><input value={pass} onChange={e => setPass(e.target.value)} type={showPass ? 'text' : 'password'} placeholder="Min. 6 karakter" className="w-full h-10 pl-3.5 pr-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10 text-[11px] font-medium text-[var(--color-text)] outline-none transition-all" /><button onClick={() => setShowPass(p => !p)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"><FontAwesomeIcon icon={showPass ? faEye : faLock} className="text-xs" /></button></div></div>
+                <div className="space-y-1"><label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Email</label><input value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="admin@sekolah.sch.id" className={`w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border text-[11px] font-medium text-[var(--color-text)] outline-none transition-all ${email && !email.includes('@') ? 'border-rose-400 ring-2 ring-rose-400/10' : 'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10'}`} />{email && !email.includes('@') && <p className="text-[9px] font-black text-rose-500 flex items-center gap-1"><TriangleAlert className="text-[8px]" />Format email tidak valid</p>}</div>
+                <div className="space-y-1"><label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Password</label><div className="relative"><input value={pass} onChange={e => setPass(e.target.value)} type={showPass ? 'text' : 'password'} placeholder="Min. 6 karakter" className="w-full h-10 pl-3.5 pr-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10 text-[11px] font-medium text-[var(--color-text)] outline-none transition-all" /><button onClick={() => setShowPass(p => !p)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">{ showPass ? <Eye className="text-xs" /> : <Lock className="text-xs" /> }</button></div></div>
             </div>
             <div className="flex items-center justify-between"><label className="flex items-center gap-2 cursor-pointer"><div className="w-3.5 h-3.5 rounded border-2 border-[var(--color-border)] bg-[var(--color-surface)]" /><span className="text-[9px] text-[var(--color-text-muted)]">Ingat saya</span></label><span className="text-[9px] font-black text-[var(--color-primary)] cursor-pointer hover:underline">Lupa password?</span></div>
             <button onClick={submit} disabled={!valid || loading} className={`w-full h-10 rounded-xl text-[11px] font-black transition-all flex items-center justify-center gap-2 ${valid && !loading ? 'bg-[var(--color-primary)] text-white hover:opacity-90 active:scale-95' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] cursor-not-allowed'}`}>
-                {loading ? <><FontAwesomeIcon icon={faSpinner} className="animate-spin" />Memverifikasi…</> : 'Masuk →'}
+                {loading ? <><LoaderCircle className="animate-spin" />Memverifikasi…</> : 'Masuk →'}
             </button>
         </div>
     )
@@ -863,9 +849,9 @@ const SearchFilterFormPreview = memo(() => {
     return (
         <div className="space-y-3">
             <div className="flex flex-wrap gap-2">
-                <div className="relative flex-1 min-w-32"><FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 -translate-y-1/2 text-[9px] text-[var(--color-text-muted)]" /><input value={q} onChange={e => setQ(e.target.value)} placeholder="Cari nama…" className="w-full h-9 pl-8 pr-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[10px] font-medium text-[var(--color-text)] outline-none transition-all" /></div>
-                <div className="relative"><select value={kelas} onChange={e => setKelas(e.target.value)} className="h-9 pl-3 pr-8 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text)] outline-none appearance-none cursor-pointer"><option value="semua">Semua Kelas</option>{['4C', '5A', '5B', '6A', '6B'].map(k => <option key={k}>{k}</option>)}</select><FontAwesomeIcon icon={faChevronDown} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[8px] text-[var(--color-text-muted)] pointer-events-none" /></div>
-                <div className="relative"><select value={status} onChange={e => setStatus(e.target.value)} className="h-9 pl-3 pr-8 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text)] outline-none appearance-none cursor-pointer"><option value="semua">Semua Status</option>{['Aktif', 'Pending', 'Nonaktif'].map(s => <option key={s}>{s}</option>)}</select><FontAwesomeIcon icon={faChevronDown} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[8px] text-[var(--color-text-muted)] pointer-events-none" /></div>
+                <div className="relative flex-1 min-w-32"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[9px] text-[var(--color-text-muted)]" /><input value={q} onChange={e => setQ(e.target.value)} placeholder="Cari nama…" className="w-full h-9 pl-8 pr-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[10px] font-medium text-[var(--color-text)] outline-none transition-all" /></div>
+                <div className="relative"><select value={kelas} onChange={e => setKelas(e.target.value)} className="h-9 pl-3 pr-8 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text)] outline-none appearance-none cursor-pointer"><option value="semua">Semua Kelas</option>{['4C', '5A', '5B', '6A', '6B'].map(k => <option key={k}>{k}</option>)}</select><ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[8px] text-[var(--color-text-muted)] pointer-events-none" /></div>
+                <div className="relative"><select value={status} onChange={e => setStatus(e.target.value)} className="h-9 pl-3 pr-8 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text)] outline-none appearance-none cursor-pointer"><option value="semua">Semua Status</option>{['Aktif', 'Pending', 'Nonaktif'].map(s => <option key={s}>{s}</option>)}</select><ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[8px] text-[var(--color-text-muted)] pointer-events-none" /></div>
             </div>
             <div className="flex items-center justify-between"><p className="text-[9px] text-[var(--color-text-muted)]"><span className="font-black text-[var(--color-text)]">{filtered.length}</span> hasil</p><div className="flex items-center gap-1"><span className="text-[8px] text-[var(--color-text-muted)] opacity-60">Urut:</span><button onClick={() => setSortBy(p => p === 'nama' ? 'nilai' : 'nama')} className="text-[8px] font-black text-[var(--color-primary)] hover:underline capitalize">{sortBy}</button></div></div>
             <div className="space-y-1">
@@ -1025,16 +1011,16 @@ const SidebarNavPreview = memo(() => {
     const groups = [
         {
             label: 'Menu Utama', items: [
-                { key: 'dashboard', icon: faGaugeHigh, label: 'Dashboard', badge: null },
-                { key: 'siswa', icon: faUsers, label: 'Data Siswa', badge: 3 },
-                { key: 'laporan', icon: faClipboardList, label: 'Laporan', badge: null },
-                { key: 'jadwal', icon: faCalendar, label: 'Jadwal', badge: null },
+                { key: 'dashboard', icon: Gauge, label: 'Dashboard', badge: null },
+                { key: 'siswa', icon: Users, label: 'Data Siswa', badge: 3 },
+                { key: 'laporan', icon: ClipboardList, label: 'Laporan', badge: null },
+                { key: 'jadwal', icon: Calendar, label: 'Jadwal', badge: null },
             ]
         },
         {
             label: 'Pengaturan', items: [
-                { key: 'profil', icon: faUser, label: 'Profil Saya', badge: null },
-                { key: 'sistem', icon: faGear, label: 'Sistem', badge: null },
+                { key: 'profil', icon: User, label: 'Profil Saya', badge: null },
+                { key: 'sistem', icon: Settings, label: 'Sistem', badge: null },
             ]
         },
     ]
@@ -1042,9 +1028,9 @@ const SidebarNavPreview = memo(() => {
         <div className="flex h-72 border border-[var(--color-border)] rounded-2xl overflow-hidden">
             <div className={`${collapsed ? 'w-14' : 'w-52'} bg-[var(--color-surface)] border-r border-[var(--color-border)] flex flex-col transition-all duration-300 shrink-0`}>
                 <div className="flex items-center justify-between px-3 py-3 border-b border-[var(--color-border)]">
-                    {!collapsed && <div className="flex items-center gap-2"><div className="w-6 h-6 rounded-lg bg-[var(--color-primary)] flex items-center justify-center"><FontAwesomeIcon icon={faGaugeHigh} className="text-white text-[9px]" /></div><span className="text-[11px] font-black text-[var(--color-text)]">Laporanmu</span></div>}
+                    {!collapsed && <div className="flex items-center gap-2"><div className="w-6 h-6 rounded-lg bg-[var(--color-primary)] flex items-center justify-center"><Gauge className="text-white text-[9px]" /></div><span className="text-[11px] font-black text-[var(--color-text)]">Laporanmu</span></div>}
                     <button onClick={() => setCollapsed(p => !p)} className={`w-6 h-6 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] transition-all ${collapsed ? 'mx-auto' : ''}`}>
-                        <FontAwesomeIcon icon={faChevronRight} className={`text-[8px] transition-transform ${collapsed ? '' : 'rotate-180'}`} />
+                        <ChevronRight className={`text-[8px] transition-transform ${collapsed ? '' : 'rotate-180'}`} />
                     </button>
                 </div>
                 <div className="flex-1 overflow-y-auto p-2 space-y-4">
@@ -1054,7 +1040,7 @@ const SidebarNavPreview = memo(() => {
                             <div className="space-y-0.5">
                                 {g.items.map(item => (
                                     <button key={item.key} onClick={() => setActive(item.key)} className={`w-full flex items-center gap-2.5 px-2 py-2 rounded-xl transition-colors text-left ${active === item.key ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)]'}`}>
-                                        <FontAwesomeIcon icon={item.icon} className={`text-xs shrink-0 ${active === item.key ? 'text-[var(--color-primary)]' : ''}`} />
+                                        <item.icon className={`text-xs shrink-0 ${active === item.key ? 'text-[var(--color-primary)]' : ''}`} />
                                         {!collapsed && <><span className="text-[10px] font-black flex-1">{item.label}</span>{item.badge && <span className="px-1.5 py-0.5 rounded-full bg-rose-500 text-white text-[7px] font-black">{item.badge}</span>}</>}
                                         {collapsed && item.badge && <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-rose-500" />}
                                     </button>
@@ -1065,14 +1051,14 @@ const SidebarNavPreview = memo(() => {
                 </div>
                 <div className={`p-2 border-t border-[var(--color-border)]`}>
                     <button className={`w-full flex items-center gap-2.5 px-2 py-2 rounded-xl text-rose-500 hover:bg-rose-500/10 transition-all ${collapsed ? 'justify-center' : ''}`}>
-                        <FontAwesomeIcon icon={faSignOutAlt} className="text-xs shrink-0" />
+                        <LogOut className="text-xs shrink-0" />
                         {!collapsed && <span className="text-[10px] font-black">Keluar</span>}
                     </button>
                 </div>
             </div>
             <div className="flex-1 bg-[var(--color-surface-alt)] flex items-center justify-center">
                 <div className="text-center space-y-1">
-                    <FontAwesomeIcon icon={faGaugeHigh} className="text-[var(--color-text-muted)] text-2xl opacity-20" />
+                    <Gauge className="text-[var(--color-text-muted)] text-2xl opacity-20" />
                     <p className="text-[9px] font-black text-[var(--color-text-muted)] opacity-40 uppercase tracking-widest">{active}</p>
                 </div>
             </div>
@@ -1110,9 +1096,9 @@ const ChatPreview = memo(() => {
                 ))}
             </div>
             <div className="flex items-center gap-2 px-3 py-2.5 border-t border-[var(--color-border)] bg-[var(--color-surface)]">
-                <button className="w-7 h-7 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"><FontAwesomeIcon icon={faPlus} className="text-[9px]" /></button>
+                <button className="w-7 h-7 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"><Plus className="text-[9px]" /></button>
                 <input value={msg} onChange={e => setMsg(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="Ketik pesan…" className="flex-1 h-8 px-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-medium text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] transition-colors" />
-                <button onClick={send} className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${msg.trim() ? 'bg-[var(--color-primary)] text-white hover:opacity-90' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}><FontAwesomeIcon icon={faArrowRight} className="text-[10px]" /></button>
+                <button onClick={send} className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${msg.trim() ? 'bg-[var(--color-primary)] text-white hover:opacity-90' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}><ArrowRight className="text-[10px]" /></button>
             </div>
         </div>
     )
@@ -1121,9 +1107,9 @@ const ChatPreview = memo(() => {
 const FABPreview = memo(() => {
     const [open, setOpen] = useState(false)
     const actions = [
-        { icon: faArrowUpFromBracket, label: 'Import', color: 'bg-sky-500/10 text-sky-600 border-sky-500/20' },
-        { icon: faDownload, label: 'Export', color: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' },
-        { icon: faFileLines, label: 'Laporan', color: 'bg-amber-500/10 text-amber-600 border-amber-500/20' },
+        { icon: Upload, label: 'Import', color: 'bg-sky-500/10 text-sky-600 border-sky-500/20' },
+        { icon: Download, label: 'Export', color: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' },
+        { icon: FileText, label: 'Laporan', color: 'bg-amber-500/10 text-amber-600 border-amber-500/20' },
     ]
     return (
         <div className="relative h-48 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-2xl overflow-hidden">
@@ -1135,11 +1121,11 @@ const FABPreview = memo(() => {
                 {open && actions.map((a, i) => (
                     <div key={i} className="flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2 duration-200" style={{ animationDelay: `${i * 50}ms` }}>
                         <span className="px-2.5 py-1 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl text-[9px] font-black text-[var(--color-text)] shadow-sm">{a.label}</span>
-                        <button className={`w-9 h-9 rounded-full border flex items-center justify-center shadow-md transition-all hover:scale-110 active:scale-95 ${a.color}`}><FontAwesomeIcon icon={a.icon} className="text-xs" /></button>
+                        <button className={`w-9 h-9 rounded-full border flex items-center justify-center shadow-md transition-all hover:scale-110 active:scale-95 ${a.color}`}><a.icon className="text-xs" /></button>
                     </div>
                 ))}
                 <button onClick={() => setOpen(p => !p)} className={`w-12 h-12 rounded-full shadow-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 ${open ? 'bg-slate-700 text-white rotate-45' : 'bg-[var(--color-primary)] text-white'}`}>
-                    <FontAwesomeIcon icon={faPlus} className={`text-lg transition-transform duration-300 ${open ? 'rotate-45' : ''}`} />
+                    <Plus className={`text-lg transition-transform duration-300 ${open ? 'rotate-45' : ''}`} />
                 </button>
             </div>
         </div>
@@ -1149,10 +1135,10 @@ const FABPreview = memo(() => {
 const MobileBottomNavPreview = memo(() => {
     const [active, setActive] = useState('home')
     const tabs = [
-        { key: 'home', icon: faGaugeHigh, label: 'Home', badge: null },
-        { key: 'siswa', icon: faUsers, label: 'Siswa', badge: 3 },
-        { key: 'laporan', icon: faClipboardList, label: 'Laporan', badge: null },
-        { key: 'setting', icon: faGear, label: 'Setting', badge: null },
+        { key: 'home', icon: Gauge, label: 'Home', badge: null },
+        { key: 'siswa', icon: Users, label: 'Siswa', badge: 3 },
+        { key: 'laporan', icon: ClipboardList, label: 'Laporan', badge: null },
+        { key: 'setting', icon: Settings, label: 'Setting', badge: null },
     ]
     return (
         <div className="w-52 mx-auto border border-[var(--color-border)] rounded-2xl overflow-hidden bg-[var(--color-surface)]">
@@ -1163,7 +1149,7 @@ const MobileBottomNavPreview = memo(() => {
                 {tabs.map(tab => (
                     <button key={tab.key} onClick={() => setActive(tab.key)} className="flex-1 flex flex-col items-center py-2 gap-0.5 relative transition-all">
                         <div className={`w-8 h-6 rounded-lg flex items-center justify-center transition-all ${active === tab.key ? 'bg-[var(--color-primary)]/10' : ''}`}>
-                            <FontAwesomeIcon icon={tab.icon} className={`text-xs transition-all ${active === tab.key ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}`} />
+                            <tab.icon className={`text-xs transition-all ${active === tab.key ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}`} />
                         </div>
                         <span className={`text-[7px] font-black transition-all ${active === tab.key ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}`}>{tab.label}</span>
                         {tab.badge && <div className="absolute top-1 right-[18%] w-4 h-4 rounded-full bg-rose-500 text-white text-[7px] font-black flex items-center justify-center border-2 border-[var(--color-surface)]">{tab.badge}</div>}
@@ -1211,17 +1197,17 @@ const TopbarPreview = memo(() => {
             <div>
                 <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-2">Full Topbar</p>
                 <div className="flex items-center gap-3 px-4 py-2.5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl">
-                    <div className="w-7 h-7 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shrink-0"><FontAwesomeIcon icon={faGaugeHigh} className="text-white text-[9px]" /></div>
+                    <div className="w-7 h-7 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shrink-0"><Gauge className="text-white text-[9px]" /></div>
                     <span className="text-[11px] font-black text-[var(--color-text)]">Laporanmu</span>
                     <div className="flex-1 relative">
-                        <FontAwesomeIcon icon={faSearch} className={`absolute left-3 top-1/2 -translate-y-1/2 text-[9px] transition-colors ${search ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
+                        <Search className={`absolute left-3 top-1/2 -translate-y-1/2 text-[9px] transition-colors ${search ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
                         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Cari siswa, laporan…" className="w-full h-8 pl-8 pr-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[10px] font-medium text-[var(--color-text)] outline-none transition-all" />
-                        {search && <button onClick={() => setSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)]"><FontAwesomeIcon icon={faXmark} className="text-[9px]" /></button>}
+                        {search && <button onClick={() => setSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)]"><X className="text-[9px]" /></button>}
                     </div>
                     <div className="flex items-center gap-2">
                         <div className="relative">
                             <button onClick={() => setNotifOpen(p => !p)} className="w-8 h-8 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
-                                <FontAwesomeIcon icon={faBell} className="text-xs" />
+                                <Bell className="text-xs" />
                             </button>
                             <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[7px] font-black flex items-center justify-center border-2 border-[var(--color-surface)]">3</div>
                         </div>
@@ -1293,7 +1279,7 @@ const LazySection = memo(({ children }) => {
 const PlaygroundCtx = createContext({ onCopy: () => { } })
 
 // ─── SectionHeader (memo) ────────────────────────────────────────────────────────
-const SectionHeader = memo(({ icon, number, title }) => {
+const SectionHeader = memo(({ icon: Icon, number, title }) => {
     const id = `sec-${title.toLowerCase().replace(/[&·]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')}`
     return (
         <div id={id} className="flex items-center gap-4 mb-8 group">
@@ -1303,7 +1289,7 @@ const SectionHeader = memo(({ icon, number, title }) => {
             <div className="flex flex-col">
                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-primary)] opacity-60 mb-0.5">Section</span>
                 <div className="flex items-center gap-2">
-                    <FontAwesomeIcon icon={icon} className="text-[var(--color-text-muted)] text-[11px]" />
+                    {Icon && <Icon className="text-[var(--color-text-muted)] text-[11px]" />}
                     <h2 className="text-sm font-black text-[var(--color-text)] uppercase tracking-widest">{title}</h2>
                 </div>
             </div>
@@ -1320,7 +1306,7 @@ const ColorBlock = memo(({ name, variable, description }) => {
             <div className="flex items-center justify-between px-1">
                 <span className="text-[10px] font-black tracking-widest text-[var(--color-text)] uppercase">{name}</span>
                 <button onClick={() => onCopy(variable)} className="opacity-0 group-hover:opacity-100 transition-opacity">
-                    <FontAwesomeIcon icon={faCopy} className="text-[10px] text-[var(--color-primary)]" />
+                    <Copy className="text-[10px] text-[var(--color-primary)]" />
                 </button>
             </div>
             <div className="h-20 rounded-2xl border border-[var(--color-border)] overflow-hidden shadow-sm cursor-pointer hover:-translate-y-0.5 transition-transform active:scale-95" onClick={() => onCopy(variable)}>
@@ -1400,24 +1386,24 @@ const UIBlock = memo(({ title, children, code, fullWidth = false, dos = null, do
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2.5">
                                 <div className="flex items-center gap-2 mb-3">
-                                    <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center shrink-0"><FontAwesomeIcon icon={faCheck} className="text-white text-[8px]" /></div>
+                                    <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center shrink-0"><Check className="text-white text-[8px]" /></div>
                                     <span className="text-[9px] font-black text-emerald-600 uppercase tracking-widest">Do — Lakukan Ini</span>
                                 </div>
                                 {dos.map((d, i) => (
                                     <div key={i} className="flex items-start gap-2.5 p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/15">
-                                        <FontAwesomeIcon icon={faCheck} className="text-emerald-500 text-[9px] mt-0.5 shrink-0" />
+                                        <Check className="text-emerald-500 text-[9px] mt-0.5 shrink-0" />
                                         <span className="text-[10px] text-[var(--color-text)] leading-relaxed font-medium">{d}</span>
                                     </div>
                                 ))}
                             </div>
                             <div className="space-y-2.5">
                                 <div className="flex items-center gap-2 mb-3">
-                                    <div className="w-5 h-5 rounded-full bg-rose-500 flex items-center justify-center shrink-0"><FontAwesomeIcon icon={faXmark} className="text-white text-[8px]" /></div>
+                                    <div className="w-5 h-5 rounded-full bg-rose-500 flex items-center justify-center shrink-0"><X className="text-white text-[8px]" /></div>
                                     <span className="text-[9px] font-black text-rose-600 uppercase tracking-widest">Don't — Hindari Ini</span>
                                 </div>
                                 {donts.map((d, i) => (
                                     <div key={i} className="flex items-start gap-2.5 p-3 rounded-xl bg-rose-500/5 border border-rose-500/15">
-                                        <FontAwesomeIcon icon={faXmark} className="text-rose-500 text-[9px] mt-0.5 shrink-0" />
+                                        <X className="text-rose-500 text-[9px] mt-0.5 shrink-0" />
                                         <span className="text-[10px] text-[var(--color-text)] leading-relaxed font-medium">{d}</span>
                                     </div>
                                 ))}
@@ -1463,7 +1449,7 @@ const UIBlock = memo(({ title, children, code, fullWidth = false, dos = null, do
                         </div>
                         <div className="relative group" style={{ background: '#0d1117', maxHeight: 380, overflowY: 'auto', overflowX: 'auto' }}>
                             <button onClick={() => onCopy(code)} className="absolute top-3 right-3 z-10 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity active:scale-90" style={{ background: 'rgba(255,255,255,0.07)', border: '0.5px solid rgba(255,255,255,0.14)', color: '#8b949e', fontSize: 9, fontFamily: 'monospace', padding: '3px 10px', borderRadius: 6, cursor: 'pointer' }}>
-                                <FontAwesomeIcon icon={faCopy} style={{ fontSize: 9 }} /> copy
+                                <Copy style={{ fontSize: 9 }} /> copy
                             </button>
                             <div style={{ padding: '18px 0', fontSize: 11, lineHeight: 1.85, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, monospace' }}>
                                 {lines.map((line, idx) => (
@@ -1541,6 +1527,7 @@ export default function PlaygroundPage() {
             { id: 'sec-focus-ring-a11y', label: 'Focus & A11Y' },
         ],
         library: [
+            { id: 'sec-design-system-primitives', label: 'Primitives' },
             { id: 'sec-data-tables', label: 'Data & Tables' },
             { id: 'sec-navigation-discovery', label: 'Navigation' },
             { id: 'sec-cards-profiles', label: 'Cards & Profiles' },
@@ -1574,11 +1561,11 @@ export default function PlaygroundPage() {
     }), [])
 
     const iconGroups = useMemo(() => [
-        { label: 'Navigation', icons: [faChevronRight, faChevronDown, faArrowRight, faSearch, faFilter] },
-        { label: 'Actions', icons: [faPlus, faTrash, faCopy, faDownload, faGear] },
-        { label: 'Status', icons: [faCheck, faXmark, faTriangleExclamation, faCircleInfo, faBell] },
-        { label: 'Users', icons: [faUser, faUserGroup, faShieldHalved, faKey, faLock] },
-        { label: 'Content', icons: [faFileLines, faChartLine, faCalendar, faGlobe, faCamera] },
+        { label: 'Navigation', icons: [ChevronRight, ChevronDown, ArrowRight, Search, Funnel] },
+        { label: 'Actions', icons: [Plus, Trash2, Copy, Download, Settings] },
+        { label: 'Status', icons: [Check, X, TriangleAlert, Info, Bell] },
+        { label: 'Users', icons: [User, Users, ShieldHalf, Key, Lock] },
+        { label: 'Content', icons: [FileText, ChartLine, Calendar, Globe, Camera] },
     ], [])
 
     useEffect(() => {
@@ -1623,7 +1610,7 @@ export default function PlaygroundPage() {
                                 ))}
                                 <div className="w-px h-4 bg-[var(--color-border)] mx-0.5" />
                                 <button onClick={() => setShowSearch(p => !p)} className={`w-7 h-7 flex items-center justify-center rounded-lg transition-colors ${showSearch ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-primary)]'}`}>
-                                    <FontAwesomeIcon icon={faSearch} className="text-[10px]" />
+                                    <Search className="text-[10px]" />
                                 </button>
                             </div>
                         </div>
@@ -1641,7 +1628,7 @@ export default function PlaygroundPage() {
                                         ))}
                                         <div className="w-px h-4 bg-[var(--color-border)] mx-0.5" />
                                         <button onClick={() => setShowSearch(p => !p)} className={`w-7 h-7 flex items-center justify-center rounded-lg transition-colors ${showSearch ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-primary)]'}`}>
-                                            <FontAwesomeIcon icon={faSearch} className="text-[10px]" />
+                                            <Search className="text-[10px]" />
                                         </button>
                                     </div>
                                 </div>
@@ -1664,9 +1651,9 @@ export default function PlaygroundPage() {
                     {/* Search Bar */}
                     {showSearch && (
                         <div className="relative animate-in fade-in slide-in-from-top-2 duration-200">
-                            <FontAwesomeIcon icon={faSearch} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-sm" />
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-sm" />
                             <input autoFocus value={searchQ} onChange={e => setSearchQ(e.target.value)} placeholder="Cari komponen… (button, input, chart, modal…)" className="w-full h-12 pl-12 pr-12 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/10 text-[12px] font-medium text-[var(--color-text)] outline-none" />
-                            <button onClick={() => { setSearchQ(''); setShowSearch(false) }} className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"><FontAwesomeIcon icon={faXmark} /></button>
+                            <button onClick={() => { setSearchQ(''); setShowSearch(false) }} className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"><X /></button>
                             {searchQ && (
                                 <div className="absolute top-full left-0 right-0 mt-2 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-xl z-50 overflow-hidden">
                                     {[
@@ -1680,7 +1667,7 @@ export default function PlaygroundPage() {
                                         <button key={i} onClick={() => { setActiveTab(tab); setSearchQ(''); setShowSearch(false) }} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-[var(--color-surface-alt)] transition-colors text-left border-b border-[var(--color-border)] last:border-0">
                                             <span className="text-[7px] font-black uppercase px-1.5 py-0.5 rounded bg-[var(--color-primary)]/10 text-[var(--color-primary)] shrink-0 w-14 text-center">{tab}</span>
                                             <span className="text-[11px] font-black text-[var(--color-text)]">{item}</span>
-                                            <FontAwesomeIcon icon={faArrowRight} className="ml-auto text-[var(--color-text-muted)] text-[9px] opacity-50" />
+                                            <ArrowRight className="ml-auto text-[var(--color-text-muted)] text-[9px] opacity-50" />
                                         </button>
                                     ))}
                                     {searchQ && [].length === 0 && <div className="px-4 py-4 text-center text-[10px] font-black text-[var(--color-text-muted)] opacity-50">Ketik untuk mencari komponen…</div>}
@@ -1698,7 +1685,7 @@ export default function PlaygroundPage() {
 
                             {/* 01 · Typography */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faFont} number="01" title="Typography & Text" />
+                                <SectionHeader icon={Type} number="01" title="Typography & Text" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock
                                         title="Heading Styles"
@@ -1739,7 +1726,7 @@ export default function PlaygroundPage() {
 
                             {/* 02 · Color System */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faPalette} number="02" title="Color System" />
+                                <SectionHeader icon={Palette} number="02" title="Color System" />
                                 <div className="rounded-[2rem] border border-[var(--color-border)] p-6 md:p-8 bg-[var(--color-surface)]">
                                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-6 gap-y-8">
                                         <ColorBlock name="Primary Brand" variable="--color-primary" description="Main actions & highlights" />
@@ -1759,7 +1746,7 @@ export default function PlaygroundPage() {
 
                             {/* 03 · Badge & Status Pills */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faFlag} number="03" title="Badge & Status Pills" />
+                                <SectionHeader icon={Flag} number="03" title="Badge & Status Pills" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock
                                         title="Semantic Badges"
@@ -1787,14 +1774,14 @@ export default function PlaygroundPage() {
                                     <UIBlock
                                         title="Tag Chips"
                                         children={<TagChipsPreview />}
-                                        code={`<div className="flex flex-wrap gap-2">\n  {tags.map(tag => (\n    <span key={tag} className="px-2.5 py-1 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black flex items-center gap-1.5 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all cursor-pointer">\n      {tag}\n      <FontAwesomeIcon icon={faXmark} className="text-[8px] opacity-50" />\n    </span>\n  ))}\n  <button className="px-2.5 py-1 rounded-lg border-2 border-dashed border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black flex items-center gap-1 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all">\n    <FontAwesomeIcon icon={faPlus} className="text-[8px]" /> Add tag\n  </button>\n</div>`}
+                                        code={`<div className="flex flex-wrap gap-2">\n  {tags.map(tag => (\n    <span key={tag} className="px-2.5 py-1 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black flex items-center gap-1.5 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all cursor-pointer">\n      {tag}\n      <X className="text-[8px] opacity-50" />\n    </span>\n  ))}\n  <button className="px-2.5 py-1 rounded-lg border-2 border-dashed border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black flex items-center gap-1 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all">\n    <Plus className="text-[8px]" /> Add tag\n  </button>\n</div>`}
                                     />
                                 </div>
                             </section></LazySection>
 
                             {/* 04 · Avatar */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faUser} number="04" title="Avatar & User Identity" />
+                                <SectionHeader icon={User} number="04" title="Avatar & User Identity" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock
                                         title="Avatar Sizes & States"
@@ -1864,7 +1851,7 @@ export default function PlaygroundPage() {
 
                             {/* 05 · Spacing Scale */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faExpand} number="05" title="Spacing Scale" />
+                                <SectionHeader icon={Maximize2} number="05" title="Spacing Scale" />
                                 <UIBlock
                                     fullWidth
                                     title="Spacing Tokens"
@@ -1906,7 +1893,7 @@ export default function PlaygroundPage() {
 
                             {/* 06 · Border Radius */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faGrip} number="06" title="Border Radius Scale" />
+                                <SectionHeader icon={GripHorizontal} number="06" title="Border Radius Scale" />
                                 <UIBlock
                                     fullWidth
                                     title="Radius Tokens"
@@ -1936,7 +1923,7 @@ export default function PlaygroundPage() {
 
                             {/* 07 · Dividers */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faCode} number="07" title="Dividers & Separators" />
+                                <SectionHeader icon={Code} number="07" title="Dividers & Separators" />
                                 <UIBlock
                                     fullWidth
                                     title="Divider Variants"
@@ -1976,7 +1963,7 @@ export default function PlaygroundPage() {
                                                     <div className="flex items-center gap-3">
                                                         <div className="h-px bg-[var(--color-border)] flex-1" />
                                                         <div className="w-6 h-6 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center">
-                                                            <FontAwesomeIcon icon={faPlus} className="text-[8px] text-[var(--color-text-muted)]" />
+                                                            <Plus className="text-[8px] text-[var(--color-text-muted)]" />
                                                         </div>
                                                         <div className="h-px bg-[var(--color-border)] flex-1" />
                                                     </div>
@@ -2004,14 +1991,14 @@ export default function PlaygroundPage() {
 
                             {/* 08 · Loading & Progress */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faSpinner} number="08" title="Loading & Progress States" />
+                                <SectionHeader icon={LoaderCircle} number="08" title="Loading & Progress States" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock
                                         title="Spinners & Loaders"
                                         children={
                                             <div className="space-y-6">
                                                 <div className="flex items-center gap-6">
-                                                    <FontAwesomeIcon icon={faSpinner} className="animate-spin text-[var(--color-primary)] text-xl" />
+                                                    <LoaderCircle className="animate-spin text-[var(--color-primary)] text-xl" />
                                                     <div className="w-6 h-6 rounded-full border-2 border-[var(--color-border)] border-t-[var(--color-primary)] animate-spin" />
                                                     <div className="w-6 h-6 rounded-full border-2 border-[var(--color-primary)]/20 border-t-[var(--color-primary)] border-r-[var(--color-primary)] animate-spin" />
                                                     <div className="flex gap-1">
@@ -2052,7 +2039,7 @@ export default function PlaygroundPage() {
                                                         <div key={i} className="flex items-center">
                                                             <div className="flex flex-col items-center gap-1">
                                                                 <div className={`w-8 h-8 rounded-full text-[9px] font-black flex items-center justify-center ${i < 2 ? 'bg-[var(--color-primary)] text-white' : i === 2 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-2 border-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}>
-                                                                    {i < 2 ? <FontAwesomeIcon icon={faCheck} className="text-[8px]" /> : i + 1}
+                                                                    {i < 2 ? <Check className="text-[8px]" /> : i + 1}
                                                                 </div>
                                                                 <span className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-wide whitespace-nowrap">{step}</span>
                                                             </div>
@@ -2067,14 +2054,14 @@ export default function PlaygroundPage() {
                                                 </div>
                                             </div>
                                         }
-                                        code={`<div className="flex items-center">\n  {['Config', 'Review', 'Deploy', 'Done'].map((step, i) => (\n    <div key={i} className="flex items-center">\n      <div className="flex flex-col items-center gap-1">\n        <div className={\`w-8 h-8 rounded-full text-[9px] font-black flex items-center justify-center\n          \${i < 2 ? 'bg-[var(--color-primary)] text-white'\n            : i === 2 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-2 border-[var(--color-primary)]'\n            : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}\`}>\n          {i < 2 ? <FontAwesomeIcon icon={faCheck} className="text-[8px]" /> : i + 1}\n        </div>\n        <span className="text-[8px] font-black text-[var(--color-text-muted)] uppercase whitespace-nowrap">{step}</span>\n      </div>\n      {i < 3 && <div className={\`h-0.5 w-8 mb-4 mx-1 \${i < 2 ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}\`} />}\n    </div>\n  ))}\n</div>`}
+                                        code={`<div className="flex items-center">\n  {['Config', 'Review', 'Deploy', 'Done'].map((step, i) => (\n    <div key={i} className="flex items-center">\n      <div className="flex flex-col items-center gap-1">\n        <div className={\`w-8 h-8 rounded-full text-[9px] font-black flex items-center justify-center\n          \${i < 2 ? 'bg-[var(--color-primary)] text-white'\n            : i === 2 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-2 border-[var(--color-primary)]'\n            : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}\`}>\n          {i < 2 ? <Check className="text-[8px]" /> : i + 1}\n        </div>\n        <span className="text-[8px] font-black text-[var(--color-text-muted)] uppercase whitespace-nowrap">{step}</span>\n      </div>\n      {i < 3 && <div className={\`h-0.5 w-8 mb-4 mx-1 \${i < 2 ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}\`} />}\n    </div>\n  ))}\n</div>`}
                                     />
                                 </div>
                             </section></LazySection>
 
                             {/* 09 · Tooltip & Keyboard */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faLightbulb} number="09" title="Tooltip & Keyboard Hints" />
+                                <SectionHeader icon={Lightbulb} number="09" title="Tooltip & Keyboard Hints" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock
                                         title="Tooltips"
@@ -2133,7 +2120,7 @@ export default function PlaygroundPage() {
 
                             {/* 10 · Iconography */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faGrip} number="10" title="Iconography Reference" />
+                                <SectionHeader icon={GripHorizontal} number="10" title="Iconography Reference" />
                                 <UIBlock
                                     fullWidth
                                     title="Icon System"
@@ -2143,9 +2130,9 @@ export default function PlaygroundPage() {
                                                 <div key={label} className="flex items-center gap-3">
                                                     <span className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-40 w-16 shrink-0">{label}</span>
                                                     <div className="flex gap-2">
-                                                        {icons.map((icon, i) => (
-                                                            <div key={i} onClick={() => copyToClipboard(`fa${label}Icon`)} className="w-8 h-8 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/20 active:scale-90 transition-all cursor-pointer">
-                                                                <FontAwesomeIcon icon={icon} className="text-xs" />
+                                                        {icons.map((Icon, i) => (
+                                                            <div key={i} onClick={() => copyToClipboard(`${label}Icon`)} className="w-8 h-8 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/20 active:scale-90 transition-all cursor-pointer">
+                                                                {Icon && <Icon className="text-xs" />}
                                                             </div>
                                                         ))}
                                                     </div>
@@ -2153,13 +2140,13 @@ export default function PlaygroundPage() {
                                             ))}
                                         </div>
                                     }
-                                    code={`const iconGroups = [\n  { label: 'Navigation', icons: [faChevronRight, faChevronDown, faArrowRight, faSearch, faFilter] },\n  { label: 'Actions',    icons: [faPlus, faTrash, faCopy, faDownload, faGear] },\n  { label: 'Status',     icons: [faCheck, faXmark, faTriangleExclamation, faCircleInfo, faBell] },\n  { label: 'Users',      icons: [faUser, faUserGroup, faShieldHalved, faKey, faLock] },\n  { label: 'Content',    icons: [faFileLines, faChartLine, faCalendar, faGlobe, faCamera] },\n]\n\n{iconGroups.map(({ label, icons }) => (\n  <div key={label}>\n    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50 mb-3">{label}</p>\n    <div className="flex flex-wrap gap-3">\n      {icons.map((icon, i) => (\n        <div key={i} className="w-10 h-10 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/20 active:scale-90 transition-all cursor-pointer">\n          <FontAwesomeIcon icon={icon} className="text-sm" />\n        </div>\n      ))}\n    </div>\n  </div>\n))}`}
+                                    code={`const iconGroups = [\n  { label: 'Navigation', icons: [ChevronRight, ChevronDown, ArrowRight, Search, Funnel] },\n  { label: 'Actions',    icons: [Plus, Trash2, Copy, Download, Settings] },\n  { label: 'Status',     icons: [Check, X, TriangleAlert, Info, Bell] },\n  { label: 'Users',      icons: [User, Users, ShieldHalf, Key, Lock] },\n  { label: 'Content',    icons: [FileText, ChartLine, Calendar, Globe, Camera] },\n]\n\n{iconGroups.map(({ label, icons }) => (\n  <div key={label}>\n    <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50 mb-3">{label}</p>\n    <div className="flex flex-wrap gap-3">\n      {icons.map((Icon, i) => (\n        <div key={i} className="w-10 h-10 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/20 active:scale-90 transition-all cursor-pointer">\n          <Icon className="text-sm" />\n        </div>\n      ))}\n    </div>\n  </div>\n))}`}
                                 />
                             </section></LazySection>
 
                             {/* 11 · Toggle & Switch */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faCheck} number="11" title="Toggle & Switch" />
+                                <SectionHeader icon={Check} number="11" title="Toggle & Switch" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock
                                         title="Toggle Variants"
@@ -2208,12 +2195,12 @@ export default function PlaygroundPage() {
 
                             {/* 12 · Checkbox & Radio */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faCheckDouble} number="12" title="Checkbox & Radio" />
+                                <SectionHeader icon={CheckCheck} number="12" title="Checkbox & Radio" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock
                                         title="Checkbox States"
                                         children={<CheckboxStatesPreview />}
-                                        code={`{/* Checked */}\n<label className="flex items-center gap-3 cursor-pointer group">\n  <div className="w-4 h-4 rounded flex items-center justify-center shrink-0 bg-[var(--color-primary)] border border-[var(--color-primary)] transition-all">\n    <FontAwesomeIcon icon={faCheck} className="text-white text-[7px]" />\n  </div>\n  <span className="text-[11px] font-medium text-[var(--color-text)]">Accept terms</span>\n</label>\n\n{/* Indeterminate */}\n<label className="flex items-center gap-3 cursor-pointer group">\n  <div className="w-4 h-4 rounded flex items-center justify-center shrink-0 bg-[var(--color-primary)] border border-[var(--color-primary)]">\n    <div className="w-2 h-0.5 bg-white rounded-full" />\n  </div>\n  <span className="text-[11px] font-medium text-[var(--color-text)]">Select all (3 of 7)</span>\n</label>`}
+                                        code={`{/* Checked */}\n<label className="flex items-center gap-3 cursor-pointer group">\n  <div className="w-4 h-4 rounded flex items-center justify-center shrink-0 bg-[var(--color-primary)] border border-[var(--color-primary)] transition-all">\n    <Check className="text-white text-[7px]" />\n  </div>\n  <span className="text-[11px] font-medium text-[var(--color-text)]">Accept terms</span>\n</label>\n\n{/* Indeterminate */}\n<label className="flex items-center gap-3 cursor-pointer group">\n  <div className="w-4 h-4 rounded flex items-center justify-center shrink-0 bg-[var(--color-primary)] border border-[var(--color-primary)]">\n    <div className="w-2 h-0.5 bg-white rounded-full" />\n  </div>\n  <span className="text-[11px] font-medium text-[var(--color-text)]">Select all (3 of 7)</span>\n</label>`}
                                     />
                                     <UIBlock
                                         title="Radio Group"
@@ -2225,24 +2212,24 @@ export default function PlaygroundPage() {
 
                             {/* 13 · Input States */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faSearch} number="13" title="Input States" />
+                                <SectionHeader icon={Search} number="13" title="Input States" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock
                                         title="Text Input Variants"
                                         children={<InputStatesPreview />}
-                                        code={`{/* Error state */}\n<div className="space-y-1">\n  <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Email</label>\n  <input\n    className="w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border border-rose-400 ring-2 ring-rose-400/10 text-sm font-medium text-[var(--color-text)] outline-none transition-all"\n    value={email}\n    onChange={e => setEmail(e.target.value)}\n  />\n  <p className="text-[9px] font-black text-rose-500 flex items-center gap-1">\n    <FontAwesomeIcon icon={faTriangleExclamation} className="text-[8px]" />\n    Format email tidak valid\n  </p>\n</div>`}
+                                        code={`{/* Error state */}\n<div className="space-y-1">\n  <label className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Email</label>\n  <input\n    className="w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border border-rose-400 ring-2 ring-rose-400/10 text-sm font-medium text-[var(--color-text)] outline-none transition-all"\n    value={email}\n    onChange={e => setEmail(e.target.value)}\n  />\n  <p className="text-[9px] font-black text-rose-500 flex items-center gap-1">\n    <TriangleAlert className="text-[8px]" />\n    Format email tidak valid\n  </p>\n</div>`}
                                     />
                                     <UIBlock
                                         title="Input with Addons"
                                         children={<InputAddonsPreview />}
-                                        code={`{/* Input with icon */}\n<div className="relative">\n  <FontAwesomeIcon icon={faSearch} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-xs" />\n  <input placeholder="Cari siswa..." className="w-full h-10 pl-10 pr-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-sm font-medium text-[var(--color-text)] outline-none" />\n</div>\n\n{/* Input with prefix */}\n<div className="flex">\n  <span className="h-10 px-3.5 flex items-center rounded-l-xl bg-[var(--color-surface-alt)] border border-r-0 border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)]">https://</span>\n  <input className="flex-1 h-10 px-3 rounded-r-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-sm font-medium outline-none" />\n</div>`}
+                                        code={`{/* Input with icon */}\n<div className="relative">\n  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-xs" />\n  <input placeholder="Cari siswa..." className="w-full h-10 pl-10 pr-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-sm font-medium text-[var(--color-text)] outline-none" />\n</div>\n\n{/* Input with prefix */}\n<div className="flex">\n  <span className="h-10 px-3.5 flex items-center rounded-l-xl bg-[var(--color-surface-alt)] border border-r-0 border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)]">https://</span>\n  <input className="flex-1 h-10 px-3 rounded-r-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-sm font-medium outline-none" />\n</div>`}
                                     />
                                 </div>
                             </section></LazySection>
 
                             {/* 14 · Elevation & Shadow */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faLayerGroup} number="14" title="Elevation & Shadow Scale" />
+                                <SectionHeader icon={Layers} number="14" title="Elevation & Shadow Scale" />
                                 <UIBlock
                                     fullWidth
                                     title="Shadow Tokens"
@@ -2255,7 +2242,6 @@ export default function PlaygroundPage() {
                                                     { label: 'md', shadow: 'shadow-md', border: false },
                                                     { label: 'lg', shadow: 'shadow-lg', border: false },
                                                     { label: 'xl', shadow: 'shadow-xl', border: false },
-                                                    { label: '2xl', shadow: 'shadow-2xl', border: false },
                                                     { label: 'inner', shadow: 'shadow-inner', border: true },
                                                 ].map(({ label, shadow, border }) => (
                                                     <div key={label} className="flex flex-col items-center gap-3">
@@ -2270,7 +2256,7 @@ export default function PlaygroundPage() {
                                                 {[
                                                     { label: 'Card', cls: 'shadow-sm hover:shadow-md', desc: 'bg + hover transition' },
                                                     { label: 'Dropdown', cls: 'shadow-lg', desc: 'floating menu/popover' },
-                                                    { label: 'Modal', cls: 'shadow-2xl', desc: 'overlay dialogs' },
+                                                    { label: 'Modal', cls: 'shadow-xl', desc: 'overlay dialogs' },
                                                 ].map(({ label, cls, desc }) => (
                                                     <div key={label} className="p-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] space-y-1">
                                                         <p className="text-[10px] font-black text-[var(--color-text)] uppercase tracking-widest">{label}</p>
@@ -2281,13 +2267,13 @@ export default function PlaygroundPage() {
                                             </div>
                                         </div>
                                     }
-                                    code={`{/* Usage guide */}\n<div className="shadow-sm hover:shadow-md transition-shadow rounded-2xl bg-[var(--color-surface)] p-4">\n  Card — hover to elevate\n</div>\n\n<div className="shadow-lg rounded-xl bg-[var(--color-surface)] p-2">\n  Dropdown menu\n</div>\n\n<div className="shadow-2xl rounded-2xl bg-[var(--color-surface)] p-6">\n  Modal dialog\n</div>`}
+                                    code={`{/* Usage guide */}\n<div className="shadow-sm hover:shadow-md transition-shadow rounded-2xl bg-[var(--color-surface)] p-4">\n  Card — hover to elevate\n</div>\n\n<div className="shadow-lg rounded-xl bg-[var(--color-surface)] p-2">\n  Dropdown menu\n</div>\n\n<div className="shadow-xl rounded-2xl bg-[var(--color-surface)] p-6">\n  Modal dialog\n</div>`}
                                 />
                             </section></LazySection>
 
                             {/* 15 · Opacity Scale */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faEye} number="15" title="Opacity Scale" />
+                                <SectionHeader icon={Eye} number="15" title="Opacity Scale" />
                                 <UIBlock
                                     fullWidth
                                     title="Opacity Tokens"
@@ -2322,7 +2308,7 @@ export default function PlaygroundPage() {
 
                             {/* 16 · Motion & Animation Tokens */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faSpinner} number="16" title="Motion & Animation Tokens" />
+                                <SectionHeader icon={LoaderCircle} number="16" title="Motion & Animation Tokens" />
                                 <UIBlock
                                     fullWidth
                                     title="Duration & Easing"
@@ -2380,7 +2366,7 @@ export default function PlaygroundPage() {
 
                             {/* 17 · Empty States */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faBoxOpen} number="17" title="Empty States" />
+                                <SectionHeader icon={PackageOpen} number="17" title="Empty States" />
                                 <UIBlock
                                     fullWidth
                                     title="Empty State Patterns"
@@ -2388,7 +2374,7 @@ export default function PlaygroundPage() {
                                         <div className="grid md:grid-cols-3 gap-6">
                                             {[
                                                 {
-                                                    icon: faFileLines,
+                                                    icon: FileText,
                                                     iconBg: 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]',
                                                     title: 'Belum ada data',
                                                     desc: 'Tambahkan entri pertama untuk memulai menggunakan fitur ini.',
@@ -2396,7 +2382,7 @@ export default function PlaygroundPage() {
                                                     type: 'no-data',
                                                 },
                                                 {
-                                                    icon: faSearch,
+                                                    icon: Search,
                                                     iconBg: 'bg-amber-500/10 text-amber-600',
                                                     title: 'Hasil tidak ditemukan',
                                                     desc: 'Tidak ada yang cocok dengan "guru kelas 6". Coba kata kunci lain.',
@@ -2404,17 +2390,17 @@ export default function PlaygroundPage() {
                                                     type: 'no-results',
                                                 },
                                                 {
-                                                    icon: faTriangleExclamation,
+                                                    icon: TriangleAlert,
                                                     iconBg: 'bg-rose-500/10 text-rose-600',
                                                     title: 'Terjadi kesalahan',
                                                     desc: 'Gagal memuat data. Periksa koneksi internet lalu coba lagi.',
                                                     cta: { label: 'Coba Lagi', color: 'bg-rose-500 text-white' },
                                                     type: 'error',
                                                 },
-                                            ].map(({ icon, iconBg, title, desc, cta, type }) => (
+                                            ].map(({ icon: Icon, iconBg, title, desc, cta, type }) => (
                                                 <div key={type} className="flex flex-col items-center text-center p-6 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] gap-3">
                                                     <div className={`w-12 h-12 rounded-2xl ${iconBg} flex items-center justify-center`}>
-                                                        <FontAwesomeIcon icon={icon} className="text-lg" />
+                                                        {Icon && <Icon className="text-lg" />}
                                                     </div>
                                                     <div>
                                                         <h4 className="text-[12px] font-black text-[var(--color-text)] mb-1">{title}</h4>
@@ -2425,13 +2411,13 @@ export default function PlaygroundPage() {
                                             ))}
                                         </div>
                                     }
-                                    code={`<div className="flex flex-col items-center text-center p-6 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] gap-3">\n  <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center">\n    <FontAwesomeIcon icon={faFileLines} className="text-lg" />\n  </div>\n  <div>\n    <h4 className="text-[12px] font-black text-[var(--color-text)] mb-1">Belum ada data</h4>\n    <p className="text-[10px] text-[var(--color-text-muted)] leading-relaxed opacity-70">Tambahkan entri pertama untuk memulai.</p>\n  </div>\n  <button className="mt-1 px-4 py-2 rounded-xl text-[10px] font-black bg-[var(--color-primary)] text-white hover:opacity-90 active:scale-95">\n    + Tambah Baru\n  </button>\n</div>`}
+                                    code={`<div className="flex flex-col items-center text-center p-6 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] gap-3">\n  <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center">\n    <FileText className="text-lg" />\n  </div>\n  <div>\n    <h4 className="text-[12px] font-black text-[var(--color-text)] mb-1">Belum ada data</h4>\n    <p className="text-[10px] text-[var(--color-text-muted)] leading-relaxed opacity-70">Tambahkan entri pertama untuk memulai.</p>\n  </div>\n  <button className="mt-1 px-4 py-2 rounded-xl text-[10px] font-black bg-[var(--color-primary)] text-white hover:opacity-90 active:scale-95">\n    + Tambah Baru\n  </button>\n</div>`}
                                 />
                             </section></LazySection>
 
                             {/* 18 · Z-Index Scale */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faLayerGroup} number="18" title="Z-Index Scale" />
+                                <SectionHeader icon={Layers} number="18" title="Z-Index Scale" />
                                 <UIBlock
                                     fullWidth
                                     title="Layering Hierarchy"
@@ -2480,14 +2466,14 @@ export default function PlaygroundPage() {
                                             </div>
                                         </div>
                                     }
-                                    code={`{/* Z-index convention */}\n\n{/* Sticky navbar */}\n<header className="sticky top-0 z-20 bg-[var(--color-surface)] border-b border-[var(--color-border)]" />\n\n{/* Modal backdrop */}\n<div className="fixed inset-0 z-40 bg-black/50" />\n\n{/* Modal dialog */}\n<div className="fixed inset-0 z-50 flex items-center justify-center">\n  <div className="bg-[var(--color-surface)] rounded-2xl shadow-2xl p-6">\n    Modal content\n  </div>\n</div>\n\n{/* Toast notification */}\n<div className="fixed bottom-4 right-4 z-[999]">\n  <ToastMessage />\n</div>`}
+                                    code={`{/* Z-index convention */}\n\n{/* Sticky navbar */}\n<header className="sticky top-0 z-20 bg-[var(--color-surface)] border-b border-[var(--color-border)]" />\n\n{/* Modal backdrop */}\n<div className="fixed inset-0 z-40 bg-black/50" />\n\n{/* Modal dialog */}\n<div className="fixed inset-0 z-50 flex items-center justify-center">\n  <div className="bg-[var(--color-surface)] rounded-2xl shadow-xl p-6">\n    Modal content\n  </div>\n</div>\n\n{/* Toast notification */}\n<div className="fixed bottom-4 right-4 z-[999]">\n  <ToastMessage />\n</div>`}
                                 />
                             </section></LazySection>
 
                             {/* 19 · Select & Textarea */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faFileLines} number="19" title="Select & Textarea" />
-                                <UIBlock fullWidth title="Select & Textarea Variants" children={<SelectTextareaPreview />} code={`{/* Single select dengan grouped options */}\n<div className="relative">\n  <select className="w-full h-10 pl-3.5 pr-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[11px] font-black text-[var(--color-text)] outline-none appearance-none cursor-pointer">\n    <optgroup label="Kelas 6">\n      <option value="kelas-6a">Kelas 6A</option>\n    </optgroup>\n  </select>\n  <FontAwesomeIcon icon={faChevronDown} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[9px] pointer-events-none" />\n</div>\n\n{/* Textarea dengan char counter */}\n<textarea\n  value={text}\n  onChange={e => setText(e.target.value.slice(0, 200))}\n  rows={3}\n  className="w-full px-3.5 py-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[11px] outline-none resize-none"\n />`}
+                                <SectionHeader icon={FileText} number="19" title="Select & Textarea" />
+                                <UIBlock fullWidth title="Select & Textarea Variants" children={<SelectTextareaPreview />} code={`{/* Single select dengan grouped options */}\n<div className="relative">\n  <select className="w-full h-10 pl-3.5 pr-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[11px] font-black text-[var(--color-text)] outline-none appearance-none cursor-pointer">\n    <optgroup label="Kelas 6">\n      <option value="kelas-6a">Kelas 6A</option>\n    </optgroup>\n  </select>\n  <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[9px] pointer-events-none" />\n</div>\n\n{/* Textarea dengan char counter */}\n<textarea\n  value={text}\n  onChange={e => setText(e.target.value.slice(0, 200))}\n  rows={3}\n  className="w-full px-3.5 py-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[11px] outline-none resize-none"\n />`}
                                     dos={['Selalu sertakan label yang jelas di atas select', 'Gunakan optgroup untuk mengelompokkan opsi yang banyak', 'Sertakan counter karakter di sudut kanan bawah textarea']}
                                     donts={['Jangan biarkan select tanpa placeholder atau opsi default', 'Hindari textarea tanpa batas maxLength yang bisa overflow database', "Jangan set resize: 'both' pada textarea yang bisa mengacak layout"]}
                                     apiProps={[
@@ -2503,13 +2489,13 @@ export default function PlaygroundPage() {
 
                             {/* 20 · Range Slider */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faExpand} number="20" title="Range Slider" />
+                                <SectionHeader icon={Maximize2} number="20" title="Range Slider" />
                                 <UIBlock fullWidth title="Slider Variants" children={<RangeSliderPreview />} code={`const [val, setVal] = useState(65)\n\n{/* Custom range slider */}\n<div className="relative h-4 flex items-center">\n  <div className="absolute w-full h-2 rounded-full bg-[var(--color-surface-alt)]" />\n  <div className="absolute h-2 rounded-full bg-[var(--color-primary)]" style={{ width: \`\${val}%\` }} />\n  <input type="range" min="0" max="100" value={val}\n    onChange={e => setVal(+e.target.value)}\n    className="absolute w-full opacity-0 cursor-pointer h-4" />\n  <div className="absolute h-4 w-4 rounded-full bg-white border-2 border-[var(--color-primary)] shadow-md pointer-events-none"\n    style={{ left: \`calc(\${val}% - 8px)\` }} />\n</div>`} />
                             </section></LazySection>
 
                             {/* 21 · Color Tokens Grid */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faPalette} number="21" title="Color Tokens Grid" />
+                                <SectionHeader icon={Palette} number="21" title="Color Tokens Grid" />
                                 <UIBlock fullWidth title="Full Token Reference"
                                     children={
                                         <div className="space-y-6">
@@ -2555,7 +2541,7 @@ export default function PlaygroundPage() {
                                                                     <p className="text-[8px] font-mono text-[var(--color-text-muted)] opacity-50 truncate">{v}</p>
                                                                     <p className="text-[8px] text-[var(--color-text-muted)] opacity-40 truncate">{desc}</p>
                                                                 </div>
-                                                                <FontAwesomeIcon icon={faCopy} className="text-[8px] text-[var(--color-text-muted)] opacity-0 group-hover:opacity-60 ml-auto shrink-0" />
+                                                                <Copy className="text-[8px] text-[var(--color-text-muted)] opacity-0 group-hover:opacity-60 ml-auto shrink-0" />
                                                             </div>
                                                         ))}
                                                     </div>
@@ -2569,7 +2555,7 @@ export default function PlaygroundPage() {
 
                             {/* 22 · Breadcrumb Variants */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faChevronRight} number="22" title="Breadcrumb Variants" />
+                                <SectionHeader icon={ChevronRight} number="22" title="Breadcrumb Variants" />
                                 <UIBlock fullWidth title="Breadcrumb Patterns"
                                     children={
                                         <div className="space-y-6">
@@ -2580,7 +2566,7 @@ export default function PlaygroundPage() {
                                                     {['Dashboard', 'Master Data', 'Data Siswa'].map((item, i, arr) => (
                                                         <span key={item} className="flex items-center gap-1.5">
                                                             <span className={`text-[10px] font-black ${i === arr.length - 1 ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-50 hover:opacity-100 cursor-pointer hover:text-[var(--color-primary)] transition-colors'}`}>{item}</span>
-                                                            {i < arr.length - 1 && <FontAwesomeIcon icon={faChevronRight} className="text-[7px] text-[var(--color-text-muted)] opacity-30" />}
+                                                            {i < arr.length - 1 && <ChevronRight className="text-[7px] text-[var(--color-text-muted)] opacity-30" />}
                                                         </span>
                                                     ))}
                                                 </div>
@@ -2592,7 +2578,7 @@ export default function PlaygroundPage() {
                                                     <span className="px-2 py-0.5 rounded-md bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary)] text-[8px] font-black uppercase tracking-widest">Admin</span>
                                                     {['Laporan', 'Raport Bulanan'].map((item, i, arr) => (
                                                         <span key={item} className="flex items-center gap-2">
-                                                            <FontAwesomeIcon icon={faChevronRight} className="text-[7px] text-[var(--color-text-muted)] opacity-30" />
+                                                            <ChevronRight className="text-[7px] text-[var(--color-text-muted)] opacity-30" />
                                                             <span className={`text-[10px] font-black ${i === arr.length - 1 ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-50'}`}>{item}</span>
                                                         </span>
                                                     ))}
@@ -2603,15 +2589,15 @@ export default function PlaygroundPage() {
                                                 <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Collapsed (long path)</p>
                                                 <div className="flex items-center gap-1.5 flex-wrap">
                                                     <span className="text-[10px] font-black text-[var(--color-text-muted)] opacity-50 hover:opacity-100 cursor-pointer hover:text-[var(--color-primary)] transition-colors">Dashboard</span>
-                                                    <FontAwesomeIcon icon={faChevronRight} className="text-[7px] text-[var(--color-text-muted)] opacity-30" />
+                                                    <ChevronRight className="text-[7px] text-[var(--color-text-muted)] opacity-30" />
                                                     <span className="px-2 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black cursor-pointer hover:border-[var(--color-primary)] transition-all">···</span>
-                                                    <FontAwesomeIcon icon={faChevronRight} className="text-[7px] text-[var(--color-text-muted)] opacity-30" />
+                                                    <ChevronRight className="text-[7px] text-[var(--color-text-muted)] opacity-30" />
                                                     <span className="text-[10px] font-black text-[var(--color-text)]">Detail Siswa</span>
                                                 </div>
                                             </div>
                                         </div>
                                     }
-                                    code={`// Breadcrumb component\n<Breadcrumb badge="Admin" items={['Master Data', 'Data Siswa']} />\n\n// Manual:\n<div className="flex items-center gap-1.5">\n  {items.map((item, i) => (\n    <span key={item} className="flex items-center gap-1.5">\n      <span className={\`text-[10px] font-black\n        \${i === items.length - 1\n          ? 'text-[var(--color-text)]'\n          : 'text-[var(--color-text-muted)] opacity-50 cursor-pointer hover:text-[var(--color-primary)]'\n        }\`}>\n        {item}\n      </span>\n      {i < items.length - 1 &&\n        <FontAwesomeIcon icon={faChevronRight} className="text-[7px] opacity-30" />}\n    </span>\n  ))}\n</div>`}
+                                    code={`// Breadcrumb component\n<Breadcrumb badge="Admin" items={['Master Data', 'Data Siswa']} />\n\n// Manual:\n<div className="flex items-center gap-1.5">\n  {items.map((item, i) => (\n    <span key={item} className="flex items-center gap-1.5">\n      <span className={\`text-[10px] font-black\n        \${i === items.length - 1\n          ? 'text-[var(--color-text)]'\n          : 'text-[var(--color-text-muted)] opacity-50 cursor-pointer hover:text-[var(--color-primary)]'\n        }\`}>\n        {item}\n      </span>\n      {i < items.length - 1 &&\n        <ChevronRight className="text-[7px] opacity-30" />}\n    </span>\n  ))}\n</div>`}
                                     dos={['Tampilkan max 4 level — collapse tengah kalau lebih dari itu', 'Buat semua item kecuali terakhir bisa diklik', 'Gunakan role badge di kiri untuk konteks halaman']}
                                     donts={['Jangan ulangi halaman aktif di breadcrumb dan page title', 'Hindari breadcrumb di halaman top-level (Dashboard, Home)', 'Jangan gunakan slash (/) sebagai separator — pakai chevron >']}
                                 />
@@ -2619,7 +2605,7 @@ export default function PlaygroundPage() {
 
                             {/* 23 · Micro-interactions */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faSpinner} number="23" title="Micro-interactions" />
+                                <SectionHeader icon={LoaderCircle} number="23" title="Micro-interactions" />
                                 <UIBlock fullWidth title="Interaction Patterns"
                                     children={
                                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -2652,7 +2638,7 @@ export default function PlaygroundPage() {
                                             <div className="space-y-2">
                                                 <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Spin Loader</p>
                                                 <div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center gap-3">
-                                                    <FontAwesomeIcon icon={faSpinner} className="text-[var(--color-primary)] animate-spin text-lg" />
+                                                    <LoaderCircle className="text-[var(--color-primary)] animate-spin text-lg" />
                                                     <span className="text-[10px] font-black text-[var(--color-text-muted)]">Memuat data…</span>
                                                 </div>
                                             </div>
@@ -2676,13 +2662,13 @@ export default function PlaygroundPage() {
                                             </div>
                                         </div>
                                     }
-                                    code={`// Hover lift card\n<div className="hover:-translate-y-1 hover:shadow-lg hover:border-[var(--color-primary)]/30 transition-all duration-200">\n\n// Press scale button\n<button className="active:scale-95 hover:opacity-90 transition-all duration-150">\n\n// Skeleton pulse\n<div className="h-4 rounded-full bg-[var(--color-surface-alt)] animate-pulse" />\n\n// Spin loader\n<FontAwesomeIcon icon={faSpinner} className="animate-spin" />\n\n// Animate in (tailwindcss-animate)\n<div className="animate-in fade-in slide-in-from-bottom-4 duration-500">\n\n// Bounce dots (typing indicator)\n{[0,150,300].map(d => (\n  <div key={d} className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-bounce"\n    style={{ animationDelay: \`\${d}ms\` }} />\n))}`}
+                                    code={`// Hover lift card\n<div className="hover:-translate-y-1 hover:shadow-lg hover:border-[var(--color-primary)]/30 transition-all duration-200">\n\n// Press scale button\n<button className="active:scale-95 hover:opacity-90 transition-all duration-150">\n\n// Skeleton pulse\n<div className="h-4 rounded-full bg-[var(--color-surface-alt)] animate-pulse" />\n\n// Spin loader\n<LoaderCircle className="animate-spin" />\n\n// Animate in (tailwindcss-animate)\n<div className="animate-in fade-in slide-in-from-bottom-4 duration-500">\n\n// Bounce dots (typing indicator)\n{[0,150,300].map(d => (\n  <div key={d} className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-bounce"\n    style={{ animationDelay: \`\${d}ms\` }} />\n))}`}
                                 />
                             </section></LazySection>
 
                             {/* 24 · Scrollbar Styling */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faExpand} number="24" title="Scrollbar Styling" />
+                                <SectionHeader icon={Maximize2} number="24" title="Scrollbar Styling" />
                                 <UIBlock fullWidth title="Custom Scrollbar Variants"
                                     children={
                                         <div className="grid md:grid-cols-3 gap-6">
@@ -2715,7 +2701,7 @@ export default function PlaygroundPage() {
 
                             {/* 25 · Focus Ring / A11Y */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faEye} number="25" title="Focus Ring & A11Y" />
+                                <SectionHeader icon={Eye} number="25" title="Focus Ring & A11Y" />
                                 <UIBlock fullWidth title="Accessibility Patterns"
                                     children={
                                         <div className="space-y-8">
@@ -2740,7 +2726,7 @@ export default function PlaygroundPage() {
                                                 <p className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50 mb-4">ARIA & Semantic Patterns</p>
                                                 <div className="grid md:grid-cols-2 gap-4">
                                                     {[
-                                                        { label: 'aria-label', example: '<button aria-label="Tutup dialog"><FontAwesomeIcon icon={faXmark} /></button>', desc: 'Wajib untuk tombol icon-only tanpa teks' },
+                                                        { label: 'aria-label', example: '<button aria-label="Tutup dialog"><X /></button>', desc: 'Wajib untuk tombol icon-only tanpa teks' },
                                                         { label: 'aria-live', example: '<div aria-live="polite">{statusMessage}</div>', desc: 'Announce perubahan dinamis ke screen reader' },
                                                         { label: 'aria-disabled', example: '<button aria-disabled={!valid} onClick={...}>', desc: 'Tetap focusable tapi announce sebagai disabled' },
                                                         { label: 'role="alert"', example: '<div role="alert" className="...">{errorMsg}</div>', desc: 'Error message langsung dibaca screen reader' },
@@ -2772,7 +2758,7 @@ export default function PlaygroundPage() {
                                             </div>
                                         </div>
                                     }
-                                    code={`// Focus ring — selalu gunakan focus-visible, bukan focus\n// focus-visible hanya aktif saat keyboard navigation\n<button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2">\n\n// Skip navigation link (untuk keyboard users)\n<a href="#main-content"\n  className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-[var(--color-primary)] focus:text-white focus:rounded-xl">\n  Langsung ke konten\n</a>\n\n// Accessible icon button\n<button aria-label="Hapus item" className="...">\n  <FontAwesomeIcon icon={faTrash} />\n</button>\n\n// Live region untuk dynamic content\n<div aria-live="polite" aria-atomic="true" className="sr-only">\n  {announcement}\n</div>`}
+                                    code={`// Focus ring — selalu gunakan focus-visible, bukan focus\n// focus-visible hanya aktif saat keyboard navigation\n<button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2">\n\n// Skip navigation link (untuk keyboard users)\n<a href="#main-content"\n  className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-[var(--color-primary)] focus:text-white focus:rounded-xl">\n  Langsung ke konten\n</a>\n\n// Accessible icon button\n<button aria-label="Hapus item" className="...">\n  <Trash2 />\n</button>\n\n// Live region untuk dynamic content\n<div aria-live="polite" aria-atomic="true" className="sr-only">\n  {announcement}\n</div>`}
                                     dos={['Selalu test navigasi keyboard — Tab, Enter, Escape, Arrow keys', 'Gunakan focus-visible bukan focus untuk ring — hanya muncul saat keyboard', 'Pastikan semua icon-only button punya aria-label']}
                                     donts={['Jangan hilangkan focus outline dengan outline-none tanpa gantinya', 'Hindari warna teks yang kontrasnya di bawah 4.5:1 (WCAG AA)', 'Jangan andalkan warna saja untuk menyampaikan informasi']}
                                 />
@@ -2783,9 +2769,84 @@ export default function PlaygroundPage() {
                     {activeTab === 'library' && (
                         <div className="space-y-10">
 
+                            {/* 0 · Design System Primitives */}
+                            <LazySection><section className="space-y-10">
+                                <SectionHeader icon={Layers} number="0" title="Design System Primitives" />
+                                <div className="space-y-8">
+                                    <UIBlock fullWidth title="01 · Button" children={
+                                        <div className="flex flex-wrap items-center gap-3">
+                                            <Button>Simpan</Button>
+                                            <Button variant="secondary">Batal</Button>
+                                            <Button variant="danger"><Trash2 className="w-4 h-4" /> Hapus</Button>
+                                            <Button variant="outline"><Download className="w-4 h-4" /> Ekspor</Button>
+                                            <Button variant="ghost"><Plus className="w-4 h-4" /> Tambah</Button>
+                                            <Button loading>Loading…</Button>
+                                            <Button disabled>Nonaktif</Button>
+                                            <Button size="sm">Kecil</Button>
+                                            <Button size="lg">Besar</Button>
+                                            <Button size="icon"><Settings className="w-4 h-4" /></Button>
+                                        </div>
+                                    } code={`import { Button } from '@shared/components'
+
+<Button onClick={save}>Simpan</Button>
+<Button variant="secondary|danger|outline|ghost">…</Button>
+<Button size="sm|md|lg|icon">…</Button>
+<Button loading={saving}>Simpan</Button>   // spinner otomatis + disabled`}
+                                        dos={['Primary hanya untuk satu aksi terpenting per tampilan', 'Loading otomatis men-disable tombol — tak perlu guard manual']}
+                                        donts={['Jangan hardcode bg-indigo-600 — pakai variant atau token bg-primary', 'Jangan tambah gradient/shadow — desain flat, kuah sedikit']} />
+                                    <UIBlock fullWidth title="02 · Badge" children={
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            <Badge variant="primary">Baru</Badge>
+                                            <Badge variant="success">Aktif</Badge>
+                                            <Badge variant="warning">Pending</Badge>
+                                            <Badge variant="danger">Terlambat</Badge>
+                                            <Badge>Arsip</Badge>
+                                        </div>
+                                    } code={`import { Badge } from '@shared/components'
+
+<Badge variant="success">Aktif</Badge>
+<Badge variant="primary|warning|danger">…</Badge>   // default: neutral`}
+                                        dos={['Warna dari token (@theme) — dark mode & rebranding otomatis']}
+                                        donts={['Jangan bikin map STATUS_BADGE warna hardcoded per fitur']} />
+                                    <UIBlock fullWidth title="03 · Form Controls & Card" children={
+                                        <div className="grid md:grid-cols-2 gap-6 max-w-2xl">
+                                            <div>
+                                                <FieldLabel htmlFor="pg-nis">NIS</FieldLabel>
+                                                <Input id="pg-nis" placeholder="Contoh: 2024-001" />
+                                            </div>
+                                            <div>
+                                                <FieldLabel htmlFor="pg-kelas">Kelas</FieldLabel>
+                                                <Select id="pg-kelas"><option>7A</option><option>7B</option></Select>
+                                            </div>
+                                            <div className="md:col-span-2">
+                                                <FieldLabel htmlFor="pg-catatan">Catatan</FieldLabel>
+                                                <Textarea id="pg-catatan" rows={2} placeholder="Catatan wali kelas…" />
+                                            </div>
+                                            <div className="md:col-span-2">
+                                                <Input error placeholder="State error (border merah)" />
+                                            </div>
+                                            <div className="md:col-span-2">
+                                                <Card>
+                                                    <p className="text-sm font-bold">Judul Kartu</p>
+                                                    <p className="text-xs text-text-muted mt-1">Kartu flat — surface + border dari token.</p>
+                                                </Card>
+                                            </div>
+                                        </div>
+                                    } code={`import { Input, Textarea, Select, FieldLabel, Card } from '@shared/components'
+
+<FieldLabel htmlFor="x">Label</FieldLabel>
+<Input error={!!errors.nis} />
+<Textarea rows={3} />
+<Select>…</Select>
+<Card className="p-4">…</Card>   // class .card dari index.css (token-based)`}
+                                        dos={['Selalu pasangkan FieldLabel dengan input lewat htmlFor/id', 'Prop error untuk state validasi']}
+                                        donts={['Jangan roll input sendiri dengan class arbitrer — pakai primitif ini']} />
+                                </div>
+                            </section></LazySection>
+
                             {/* A · Data & Tables */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faFileLines} number="A" title="Data & Tables" />
+                                <SectionHeader icon={FileText} number="A" title="Data & Tables" />
                                 <div className="space-y-8">
                                     <UIBlock fullWidth title="01 · Data Table" children={<DataTablePreview />} code={`const [selected, setSelected] = useState(new Set())\nconst [sortField, setSortField] = useState('name')\nconst [sortDir, setSortDir] = useState('asc')\n\nconst toggleRow = id => {\n  const s = new Set(selected)\n  s.has(id) ? s.delete(id) : s.add(id)\n  setSelected(s)\n}\n\n// Sort logic\nconst sorted = [...data].sort((a, b) => {\n  const v = sortDir === 'asc' ? 1 : -1\n  return a[sortField] > b[sortField] ? v : -v\n})`}
                                         dos={['Tampilkan kolom yang relevan saja, jangan overload tabel', 'Berikan visual feedback yang jelas saat row diselect', 'Sertakan empty state yang informatif saat data kosong', 'Tambahkan sort indicator (arrow) di header kolom']}
@@ -2799,7 +2860,7 @@ export default function PlaygroundPage() {
                                             { prop: 'loading', type: 'boolean', defaultVal: 'false', desc: 'Tampilkan skeleton rows saat data sedang dimuat' },
                                         ]}
                                     />
-                                    <UIBlock fullWidth title="02 · Filter Bar" children={<FilterBarPreview />} code={`const [filters, setFilters] = useState([\n  { id: 'kelas', label: 'Kelas', value: '6A' },\n  { id: 'status', label: 'Status', value: 'Aktif' },\n])\n\nconst removeFilter = id =>\n  setFilters(prev => prev.filter(f => f.id !== id))\n\n<div className="flex flex-wrap items-center gap-2">\n  {filters.map(f => (\n    <div key={f.id} className="flex items-center gap-1.5 h-8 px-3 rounded-lg border text-[10px] font-black bg-sky-500/10 border-sky-500/20 text-sky-700">\n      {f.label}: {f.value}\n      <button onClick={() => removeFilter(f.id)}>\n        <FontAwesomeIcon icon={faXmark} className="text-[8px]" />\n      </button>\n    </div>\n  ))}\n</div>`} />
+                                    <UIBlock fullWidth title="02 · Filter Bar" children={<FilterBarPreview />} code={`const [filters, setFilters] = useState([\n  { id: 'kelas', label: 'Kelas', value: '6A' },\n  { id: 'status', label: 'Status', value: 'Aktif' },\n])\n\nconst removeFilter = id =>\n  setFilters(prev => prev.filter(f => f.id !== id))\n\n<div className="flex flex-wrap items-center gap-2">\n  {filters.map(f => (\n    <div key={f.id} className="flex items-center gap-1.5 h-8 px-3 rounded-lg border text-[10px] font-black bg-sky-500/10 border-sky-500/20 text-sky-700">\n      {f.label}: {f.value}\n      <button onClick={() => removeFilter(f.id)}>\n        <X className="text-[8px]" />\n      </button>\n    </div>\n  ))}\n</div>`} />
                                     <div className="grid lg:grid-cols-2 gap-8">
                                         <UIBlock title="03 · Export Panel" children={
                                             <div className="space-y-4">
@@ -2807,8 +2868,8 @@ export default function PlaygroundPage() {
                                                 <div>
                                                     <p className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-50 mb-2">Format</p>
                                                     <div className="flex gap-2">
-                                                        {[{ f: 'PDF', icon: faFilePdf, active: true }, { f: 'Excel', icon: faTable, active: false }, { f: 'CSV', icon: faFileLines, active: false }].map(({ f, icon, active }) => (
-                                                            <div key={f} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border cursor-pointer text-[10px] font-black transition-colors ${active ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)] text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]'}`}><FontAwesomeIcon icon={icon} className="text-[9px]" />{f}</div>
+                                                        {[{ f: 'PDF', icon: FileText, active: true }, { f: 'Excel', icon: Table, active: false }, { f: 'CSV', icon: FileText, active: false }].map(({ f, icon: Icon, active }) => (
+                                                            <div key={f} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border cursor-pointer text-[10px] font-black transition-colors ${active ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)] text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]'}`}>{Icon && <Icon className="text-[9px]" />}{f}</div>
                                                         ))}
                                                     </div>
                                                 </div>
@@ -2817,10 +2878,10 @@ export default function PlaygroundPage() {
                                                     <div className="flex flex-wrap gap-2">{['Nama', 'NIS', 'Kelas', 'Nilai'].map((c, i) => <span key={c} className={`px-2 py-0.5 rounded-lg text-[9px] font-black ${i < 3 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}>{c}{i < 3 ? ' ✓' : ''}</span>)}</div>
                                                 </div>
                                                 <button className="w-full h-9 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black flex items-center justify-center gap-2 hover:opacity-90 transition-all">
-                                                    <FontAwesomeIcon icon={faDownload} className="text-[9px]" /> Download PDF
+                                                    <Download className="text-[9px]" /> Download PDF
                                                 </button>
                                             </div>
-                                        } code={`const [format, setFormat] = useState('PDF')\nconst [cols, setCols] = useState(['Nama','NIS','Kelas'])\n\n<button onClick={handleExport}\n  className="w-full h-9 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black flex items-center justify-center gap-2">\n  <FontAwesomeIcon icon={faDownload} className="text-[9px]" />\n  Download {format}\n</button>`} />
+                                        } code={`const [format, setFormat] = useState('PDF')\nconst [cols, setCols] = useState(['Nama','NIS','Kelas'])\n\n<button onClick={handleExport}\n  className="w-full h-9 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black flex items-center justify-center gap-2">\n  <Download className="text-[9px]" />\n  Download {format}\n</button>`} />
                                         <UIBlock title="04 · Pagination" children={
                                             <div className="space-y-4">
                                                 <div className="flex items-center justify-center gap-1">
@@ -2837,7 +2898,7 @@ export default function PlaygroundPage() {
 
                             {/* B · Navigation & Discovery */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faSearch} number="B" title="Navigation & Discovery" />
+                                <SectionHeader icon={Search} number="B" title="Navigation & Discovery" />
                                 <div className="space-y-8">
                                     <UIBlock fullWidth title="05 · Command Palette" children={<CommandPalettePreview />} code={`const [q, setQ] = useState('')\nconst [open, setOpen] = useState(false)\n\n// Open with ⌘K\nuseEffect(() => {\n  const handler = e => {\n    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {\n      e.preventDefault()\n      setOpen(p => !p)\n    }\n  }\n  window.addEventListener('keydown', handler)\n  return () => window.removeEventListener('keydown', handler)\n}, [])`} />
                                     <div className="grid lg:grid-cols-2 gap-8">
@@ -2851,7 +2912,7 @@ export default function PlaygroundPage() {
                                                 { prop: 'variant', type: "'underline'|'pill'|'segment'", defaultVal: "'underline'", desc: 'Gaya visual tab' },
                                             ]}
                                         />
-                                        <UIBlock title="07 · Dropdown Menu" children={<DropdownPreview />} code={`const [open, setOpen] = useState(false)\n\n<div className="relative">\n  <button onClick={() => setOpen(p => !p)}\n    className="flex items-center gap-2 px-4 h-9 rounded-xl border">\n    Aksi <FontAwesomeIcon icon={faChevronDown}\n      className={\`text-[8px] transition-transform \${open ? 'rotate-180' : ''}\`} />\n  </button>\n  {open && (\n    <div className="absolute top-full mt-1.5 w-44 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-xl">\n      {/* menu items */}\n    </div>\n  )}\n</div>`}
+                                        <UIBlock title="07 · Dropdown Menu" children={<DropdownPreview />} code={`const [open, setOpen] = useState(false)\n\n<div className="relative">\n  <button onClick={() => setOpen(p => !p)}\n    className="flex items-center gap-2 px-4 h-9 rounded-xl border">\n    Aksi <ChevronDown \n className={\`text-[8px] transition-transform \${open ? 'rotate-180' : ''}\`} />\n  </button>\n  {open && (\n    <div className="absolute top-full mt-1.5 w-44 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-xl">\n      {/* menu items */}\n    </div>\n  )}\n</div>`}
                                             dos={['Tutup dropdown saat klik di luar area (overlay transparent)', 'Berikan visual hover yang jelas pada setiap item', 'Gunakan divider untuk memisahkan grup aksi yang berbeda', 'Tandai destructive action (hapus) dengan warna merah']}
                                             donts={['Jangan lupa handle keyboard Esc untuk menutup dropdown', 'Hindari lebih dari 10 item tanpa grouping atau search', 'Jangan posisikan dropdown hingga keluar viewport']}
                                             apiProps={[
@@ -2867,25 +2928,25 @@ export default function PlaygroundPage() {
 
                             {/* C · Cards & Profiles */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faUser} number="C" title="Cards & Profiles" />
+                                <SectionHeader icon={User} number="C" title="Cards & Profiles" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock title="08 · Stat Cards" children={
                                         <div className="grid grid-cols-2 gap-3">
                                             {[
-                                                { label: 'Total Siswa', value: '2,840', trend: '+12.5%', up: true, icon: faUser, color: 'indigo' },
-                                                { label: 'Kehadiran', value: '94.2%', trend: '-2.1%', up: false, icon: faCheckCircle, color: 'emerald' },
-                                                { label: 'Laporan Baru', value: '18', trend: '+5', up: true, icon: faFileLines, color: 'amber' },
-                                                { label: 'Skor Sistem', value: '98.2%', trend: 'Stabil', up: true, icon: faShieldHalved, color: 'sky' },
-                                            ].map(({ label, value, trend, up, icon, color }) => (
+                                                { label: 'Total Siswa', value: '2,840', trend: '+12.5%', up: true, icon: User, color: 'indigo' },
+                                                { label: 'Kehadiran', value: '94.2%', trend: '-2.1%', up: false, icon: CircleCheck, color: 'emerald' },
+                                                { label: 'Laporan Baru', value: '18', trend: '+5', up: true, icon: FileText, color: 'amber' },
+                                                { label: 'Skor Sistem', value: '98.2%', trend: 'Stabil', up: true, icon: ShieldHalf, color: 'sky' },
+                                            ].map(({ label, value, trend, up, icon: Icon, color }) => (
                                                 <div key={label} className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] hover:shadow-lg transition-all cursor-pointer group">
-                                                    <div className={`w-8 h-8 rounded-xl bg-${color}-500/10 text-${color}-600 flex items-center justify-center mb-2`}><FontAwesomeIcon icon={icon} className="text-xs" /></div>
+                                                    <div className={`w-8 h-8 rounded-xl bg-${color}-500/10 text-${color}-600 flex items-center justify-center mb-2`}>{Icon && <Icon className="text-xs" />}</div>
                                                     <div className="text-xl font-black font-heading tracking-tight text-[var(--color-text)]">{value}</div>
                                                     <div className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mt-0.5">{label}</div>
                                                     <div className={`text-[9px] font-black mt-1 ${up ? 'text-emerald-500' : 'text-rose-500'}`}>{up ? '↑' : '↓'} {trend}</div>
                                                 </div>
                                             ))}
                                         </div>
-                                    } code={`<div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] hover:shadow-lg transition-all">\n  <div className="w-8 h-8 rounded-xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center mb-2">\n    <FontAwesomeIcon icon={faUser} className="text-xs" />\n  </div>\n  <div className="text-xl font-black font-heading tracking-tight text-[var(--color-text)]">2,840</div>\n  <div className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mt-0.5">Total Siswa</div>\n  <div className="text-[9px] font-black text-emerald-500 mt-1">↑ +12.5%</div>\n</div>`}
+                                    } code={`<div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] hover:shadow-lg transition-all">\n  <div className="w-8 h-8 rounded-xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center mb-2">\n    <User className="text-xs" />\n  </div>\n  <div className="text-xl font-black font-heading tracking-tight text-[var(--color-text)]">2,840</div>\n  <div className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest mt-0.5">Total Siswa</div>\n  <div className="text-[9px] font-black text-emerald-500 mt-1">↑ +12.5%</div>\n</div>`}
                                         dos={['Tampilkan perubahan % dengan warna hijau (naik) dan merah (turun)', 'Gunakan angka besar + label kecil untuk hierarki visual', 'Sertakan ikon kecil sebagai visual anchor per metric']}
                                         donts={['Jangan tampilkan lebih dari 4 stat card dalam satu baris', 'Hindari angka tanpa satuan atau konteks waktu', 'Jangan gunakan warna yang sama untuk semua card']}
                                         apiProps={[
@@ -2909,8 +2970,8 @@ export default function PlaygroundPage() {
                                                     </div>
                                                 </div>
                                                 <div className="flex flex-col gap-1.5">
-                                                    <button className="w-8 h-8 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-600 flex items-center justify-center hover:bg-sky-500 hover:text-white transition-all"><FontAwesomeIcon icon={faEnvelope} className="text-xs" /></button>
-                                                    <button className="w-8 h-8 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] flex items-center justify-center hover:text-[var(--color-primary)] transition-all"><FontAwesomeIcon icon={faEllipsisVertical} className="text-xs" /></button>
+                                                    <button className="w-8 h-8 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-600 flex items-center justify-center hover:bg-sky-500 hover:text-white transition-all"><Mail className="text-xs" /></button>
+                                                    <button className="w-8 h-8 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] flex items-center justify-center hover:text-[var(--color-primary)] transition-all"><EllipsisVertical className="text-xs" /></button>
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-3 gap-2">
@@ -2930,22 +2991,22 @@ export default function PlaygroundPage() {
 
                             {/* D · Overlays & Feedback */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faBell} number="D" title="Overlays & Feedback" />
+                                <SectionHeader icon={Bell} number="D" title="Overlays & Feedback" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock title="12 · Toast & Snackbar" children={
                                         <div className="space-y-3">
                                             {[
-                                                { type: 'success', icon: faCheckCircle, bg: 'bg-emerald-500/5 border-emerald-500/20 border-l-4 border-l-emerald-500', title: 'Berhasil disimpan!', desc: 'Data siswa berhasil diperbarui', titleColor: 'text-emerald-700', descColor: 'text-emerald-600/70' },
-                                                { type: 'error', icon: faXmarkCircle, bg: 'bg-rose-500/5 border-rose-500/20 border-l-4 border-l-rose-500', title: 'Gagal mengunggah', desc: 'Ukuran file melebihi 10MB', titleColor: 'text-rose-700', descColor: 'text-rose-600/70' },
-                                                { type: 'warning', icon: faTriangleExclamation, bg: 'bg-amber-500/5 border-amber-500/20 border-l-4 border-l-amber-500', title: 'Sesi akan habis', desc: 'Auto logout dalam 5 menit', titleColor: 'text-amber-700', descColor: 'text-amber-600/70' },
-                                            ].map(({ type, icon, bg, title, desc, titleColor, descColor }) => (
+                                                { type: 'success', icon: CircleCheck, bg: 'bg-emerald-500/5 border-emerald-500/20 border-l-4 border-l-emerald-500', title: 'Berhasil disimpan!', desc: 'Data siswa berhasil diperbarui', titleColor: 'text-emerald-700', descColor: 'text-emerald-600/70' },
+                                                { type: 'error', icon: CircleX, bg: 'bg-rose-500/5 border-rose-500/20 border-l-4 border-l-rose-500', title: 'Gagal mengunggah', desc: 'Ukuran file melebihi 10MB', titleColor: 'text-rose-700', descColor: 'text-rose-600/70' },
+                                                { type: 'warning', icon: TriangleAlert, bg: 'bg-amber-500/5 border-amber-500/20 border-l-4 border-l-amber-500', title: 'Sesi akan habis', desc: 'Auto logout dalam 5 menit', titleColor: 'text-amber-700', descColor: 'text-amber-600/70' },
+                                            ].map(({ type, icon: Icon, bg, title, desc, titleColor, descColor }) => (
                                                 <div key={type} className={`flex items-center gap-3 p-3 rounded-xl border ${bg}`}>
-                                                    <FontAwesomeIcon icon={icon} className={`${titleColor} text-sm shrink-0`} />
+                                                    {Icon && <Icon className={`${titleColor} text-sm shrink-0`} />}
                                                     <div className="flex-1">
                                                         <p className={`text-[10px] font-black ${titleColor}`}>{title}</p>
                                                         <p className={`text-[9px] ${descColor}`}>{desc}</p>
                                                     </div>
-                                                    <FontAwesomeIcon icon={faXmark} className="text-[var(--color-text-muted)] text-[9px] opacity-50 cursor-pointer hover:opacity-100 shrink-0" />
+                                                    <X className="text-[var(--color-text-muted)] text-[9px] opacity-50 cursor-pointer hover:opacity-100 shrink-0" />
                                                 </div>
                                             ))}
                                         </div>
@@ -2991,10 +3052,10 @@ export default function PlaygroundPage() {
                                                     <div className="text-[9px] text-[var(--color-text-muted)]">dimmed overlay</div>
                                                 </div>
                                             </div>
-                                            <div className="w-48 bg-[var(--color-surface)] border-l border-[var(--color-border)] p-4 shadow-2xl">
+                                            <div className="w-48 bg-[var(--color-surface)] border-l border-[var(--color-border)] p-4 shadow-xl">
                                                 <div className="flex justify-between items-center mb-3">
                                                     <span className="text-[10px] font-black text-[var(--color-text)]">Detail Siswa</span>
-                                                    <FontAwesomeIcon icon={faXmark} className="text-[var(--color-text-muted)] text-xs cursor-pointer" />
+                                                    <X className="text-[var(--color-text-muted)] text-xs cursor-pointer" />
                                                 </div>
                                                 <div className="w-10 h-10 rounded-full bg-indigo-500/10 text-indigo-600 text-sm font-black flex items-center justify-center mb-2">AS</div>
                                                 <p className="text-[11px] font-black text-[var(--color-text)]">Andi Setiawan</p>
@@ -3006,15 +3067,15 @@ export default function PlaygroundPage() {
                                                 </div>
                                             </div>
                                         </div>
-                                    } code={`const [isOpen, setIsOpen] = useState(false)\n\n{isOpen && (\n  <>\n    <div className="fixed inset-0 z-40 bg-black/20" onClick={() => setIsOpen(false)} />\n    <div className="fixed right-0 top-0 h-full w-80 z-50 bg-[var(--color-surface)] border-l border-[var(--color-border)] shadow-2xl overflow-y-auto animate-in slide-in-from-right">\n      <div className="p-4 border-b border-[var(--color-border)] flex justify-between items-center">\n        <h3 className="text-[12px] font-black text-[var(--color-text)]">Detail Siswa</h3>\n        <button onClick={() => setIsOpen(false)}>\n          <FontAwesomeIcon icon={faXmark} />\n        </button>\n      </div>\n      {/* content */}\n    </div>\n  </>\n)}`} />
+                                    } code={`const [isOpen, setIsOpen] = useState(false)\n\n{isOpen && (\n  <>\n    <div className="fixed inset-0 z-40 bg-black/20" onClick={() => setIsOpen(false)} />\n    <div className="fixed right-0 top-0 h-full w-80 z-50 bg-[var(--color-surface)] border-l border-[var(--color-border)] shadow-xl overflow-y-auto animate-in slide-in-from-right">\n      <div className="p-4 border-b border-[var(--color-border)] flex justify-between items-center">\n        <h3 className="text-[12px] font-black text-[var(--color-text)]">Detail Siswa</h3>\n        <button onClick={() => setIsOpen(false)}>\n          <X />\n        </button>\n      </div>\n      {/* content */}\n    </div>\n  </>\n)}`} />
                                 </div>
                             </section></LazySection>
 
                             {/* E · Content Components */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faLayerGroup} number="E" title="Content Components" />
+                                <SectionHeader icon={Layers} number="E" title="Content Components" />
                                 <div className="grid lg:grid-cols-2 gap-8">
-                                    <UIBlock title="16 · Accordion" children={<AccordionPreview />} code={`const [open, setOpen] = useState(0)\n\n{items.map((item, i) => (\n  <div key={i} className={\`rounded-xl border overflow-hidden transition-all\n    \${open===i ? 'border-[var(--color-primary)]' : 'border-[var(--color-border)]'}\`}>\n    <button onClick={() => setOpen(open===i ? -1 : i)}\n      className="w-full flex items-center justify-between px-4 py-3">\n      <span className={\`text-[11px] font-black \${open===i ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}\`}>\n        {item.q}\n      </span>\n      <FontAwesomeIcon icon={faChevronDown}\n        className={\`text-[9px] transition-transform \${open===i ? 'rotate-180' : ''}\`} />\n    </button>\n    {open===i && <div className="px-4 pb-3 text-[11px] text-[var(--color-text-muted)]">{item.a}</div>}\n  </div>\n))}`}
+                                    <UIBlock title="16 · Accordion" children={<AccordionPreview />} code={`const [open, setOpen] = useState(0)\n\n{items.map((item, i) => (\n  <div key={i} className={\`rounded-xl border overflow-hidden transition-all\n    \${open===i ? 'border-[var(--color-primary)]' : 'border-[var(--color-border)]'}\`}>\n    <button onClick={() => setOpen(open===i ? -1 : i)}\n      className="w-full flex items-center justify-between px-4 py-3">\n      <span className={\`text-[11px] font-black \${open===i ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}\`}>\n        {item.q}\n      </span>\n      <ChevronDown \n className={\`text-[9px] transition-transform \${open===i ? 'rotate-180' : ''}\`} />\n    </button>\n    {open===i && <div className="px-4 pb-3 text-[11px] text-[var(--color-text-muted)]">{item.a}</div>}\n  </div>\n))}`}
                                         dos={['Animasikan rotate chevron 180° saat accordion terbuka', 'Highlight border dengan warna primary pada accordion yang aktif', 'Gunakan accordion untuk FAQ atau konten yang jarang dibuka semua sekaligus']}
                                         donts={['Hindari nested accordion lebih dari 2 level — membingungkan pengguna', 'Jangan sembunyikan informasi kritis di dalam accordion', 'Jangan buka semua accordion secara default tanpa alasan']}
                                         apiProps={[
@@ -3027,14 +3088,14 @@ export default function PlaygroundPage() {
                                     <UIBlock title="17 · Timeline" children={
                                         <div className="space-y-0">
                                             {[
-                                                { color: 'bg-[var(--color-primary)]', label: 'Data siswa diperbarui', time: 'Hari ini 09:41', user: 'Admin', icon: faFileLines },
-                                                { color: 'bg-emerald-500', label: 'Laporan disetujui', time: 'Kemarin 14:22', user: 'Kepala Sekolah', icon: faCheck },
-                                                { color: 'bg-amber-500', label: 'Dokumen diunggah', time: '2 hari lalu', user: 'Tata Usaha', icon: faDownload },
-                                                { color: 'bg-sky-500', label: 'Akun dibuat', time: '1 minggu lalu', user: 'System', icon: faUser },
-                                            ].map(({ color, label, time, user, icon }, i, arr) => (
+                                                { color: 'bg-[var(--color-primary)]', label: 'Data siswa diperbarui', time: 'Hari ini 09:41', user: 'Admin', icon: FileText },
+                                                { color: 'bg-emerald-500', label: 'Laporan disetujui', time: 'Kemarin 14:22', user: 'Kepala Sekolah', icon: Check },
+                                                { color: 'bg-amber-500', label: 'Dokumen diunggah', time: '2 hari lalu', user: 'Tata Usaha', icon: Download },
+                                                { color: 'bg-sky-500', label: 'Akun dibuat', time: '1 minggu lalu', user: 'System', icon: User },
+                                            ].map(({ color, label, time, user, icon: Icon }, i, arr) => (
                                                 <div key={i} className="flex gap-3 items-start">
                                                     <div className="flex flex-col items-center w-7 shrink-0">
-                                                        <div className={`w-7 h-7 rounded-full ${color} flex items-center justify-center shrink-0`}><FontAwesomeIcon icon={icon} className="text-white text-[9px]" /></div>
+                                                        <div className={`w-7 h-7 rounded-full ${color} flex items-center justify-center shrink-0`}>{Icon && <Icon className="text-white text-[9px]" />}</div>
                                                         {i < arr.length - 1 && <div className="w-px flex-1 bg-[var(--color-border)] min-h-4 mt-1" />}
                                                     </div>
                                                     <div className={`pb-4 ${i === arr.length - 1 ? '' : 'min-h-10'}`}>
@@ -3044,23 +3105,23 @@ export default function PlaygroundPage() {
                                                 </div>
                                             ))}
                                         </div>
-                                    } code={`{events.map(({ color, label, time, user, icon }, i) => (\n  <div key={i} className="flex gap-3 items-start">\n    <div className="flex flex-col items-center w-7 shrink-0">\n      <div className={\`w-7 h-7 rounded-full \${color} flex items-center justify-center\`}>\n        <FontAwesomeIcon icon={icon} className="text-white text-[9px]" />\n      </div>\n      {i < events.length - 1 && (\n        <div className="w-px flex-1 bg-[var(--color-border)] min-h-4 mt-1" />\n      )}\n    </div>\n    <div className="pb-4">\n      <p className="text-[10px] font-black text-[var(--color-text)]">{label}</p>\n      <p className="text-[9px] text-[var(--color-text-muted)] opacity-60">{user} · {time}</p>\n    </div>\n  </div>\n))}`} />
+                                    } code={`{events.map(({ color, label, time, user, icon: Icon }, i) => (\n  <div key={i} className="flex gap-3 items-start">\n    <div className="flex flex-col items-center w-7 shrink-0">\n      <div className={\`w-7 h-7 rounded-full \${color} flex items-center justify-center\`}>\n        <Icon className="text-white text-[9px]" />\n      </div>\n      {i < events.length - 1 && (\n        <div className="w-px flex-1 bg-[var(--color-border)] min-h-4 mt-1" />\n      )}\n    </div>\n    <div className="pb-4">\n      <p className="text-[10px] font-black text-[var(--color-text)]">{label}</p>\n      <p className="text-[9px] text-[var(--color-text-muted)] opacity-60">{user} · {time}</p>\n    </div>\n  </div>\n))}`} />
                                     <UIBlock title="18 · File Upload" children={
                                         <div className="space-y-3">
                                             <div className="border-2 border-dashed border-[var(--color-border)] rounded-2xl p-6 text-center hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 transition-all cursor-pointer group">
-                                                <div className="w-10 h-10 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform"><FontAwesomeIcon icon={faArrowUpFromBracket} className="text-sm" /></div>
+                                                <div className="w-10 h-10 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform"><Upload className="text-sm" /></div>
                                                 <p className="text-[11px] font-black text-[var(--color-text)]">Drop file di sini atau klik</p>
                                                 <p className="text-[9px] text-[var(--color-text-muted)] opacity-60">PDF, DOC, XLS · max 10MB</p>
                                             </div>
                                             {[{ name: 'laporan_semester1.pdf', size: '2.4 MB', pct: 72, done: false }, { name: 'data_siswa.xlsx', size: '1.1 MB', pct: 100, done: true }].map(f => (
                                                 <div key={f.name} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]">
-                                                    <div className="w-8 h-8 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0"><FontAwesomeIcon icon={faFileLines} className="text-xs" /></div>
+                                                    <div className="w-8 h-8 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0"><FileText className="text-xs" /></div>
                                                     <div className="flex-1 min-w-0">
                                                         <p className="text-[10px] font-black text-[var(--color-text)] truncate">{f.name}</p>
-                                                        {f.done ? <p className="text-[9px] text-emerald-600 font-black flex items-center gap-1"><FontAwesomeIcon icon={faCheck} className="text-[7px]" /> {f.size} · Selesai</p> : <div className="mt-1 h-1.5 rounded-full bg-[var(--color-surface-alt)] overflow-hidden"><div className="h-full bg-[var(--color-primary)] rounded-full transition-all" style={{ width: `${f.pct}%` }} /></div>}
+                                                        {f.done ? <p className="text-[9px] text-emerald-600 font-black flex items-center gap-1"><Check className="text-[7px]" /> {f.size} · Selesai</p> : <div className="mt-1 h-1.5 rounded-full bg-[var(--color-surface-alt)] overflow-hidden"><div className="h-full bg-[var(--color-primary)] rounded-full transition-all" style={{ width: `${f.pct}%` }} /></div>}
                                                     </div>
                                                     {!f.done && <span className="text-[9px] font-black text-[var(--color-primary)]">{f.pct}%</span>}
-                                                    <button className="text-[var(--color-text-muted)] hover:text-rose-500 transition-colors"><FontAwesomeIcon icon={faXmark} className="text-xs" /></button>
+                                                    <button className="text-[var(--color-text-muted)] hover:text-rose-500 transition-colors"><X className="text-xs" /></button>
                                                 </div>
                                             ))}
                                         </div>
@@ -3072,7 +3133,7 @@ export default function PlaygroundPage() {
                                                 <div className="w-px h-5 bg-[var(--color-border)] mx-0.5" />
                                                 {[['H1', ''], ['H2', '']].map(t => <button key={t} className="w-8 h-7 rounded-lg border border-[var(--color-border)] text-[9px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-all">{t}</button>)}
                                                 <div className="w-px h-5 bg-[var(--color-border)] mx-0.5" />
-                                                {[faLink, faCamera, faFileLines].map((icon, i) => <button key={i} className="w-7 h-7 rounded-lg border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-all"><FontAwesomeIcon icon={icon} className="text-[9px]" /></button>)}
+                                                {[Link, Camera, FileText].map((Icon, i) => <button key={i} className="w-7 h-7 rounded-lg border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-all"><Icon className="text-[9px]" /></button>)}
                                             </div>
                                             <div contentEditable suppressContentEditableWarning className="p-4 min-h-20 text-[11px] text-[var(--color-text)] leading-relaxed outline-none focus:ring-0" data-placeholder="Mulai mengetik...">
                                                 <strong>Catatan Wali Kelas 6A</strong><br />
@@ -3085,7 +3146,7 @@ export default function PlaygroundPage() {
 
                             {/* F · Advanced Patterns */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faGear} number="F" title="Advanced Patterns" />
+                                <SectionHeader icon={Settings} number="F" title="Advanced Patterns" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock title="20 · Date Picker" children={
                                         <div className="space-y-3">
@@ -3150,7 +3211,7 @@ export default function PlaygroundPage() {
                                                             <td className="p-2 font-black text-[var(--color-text)]">{f}</td>
                                                             {perms.map((p, i) => (
                                                                 <td key={i} className="p-2 text-center">
-                                                                    {p ? <FontAwesomeIcon icon={faCheck} className="text-emerald-500 text-sm" /> : <FontAwesomeIcon icon={faXmark} className="text-[var(--color-border)] text-sm" />}
+                                                                    {p ? <Check className="text-emerald-500 text-sm" /> : <X className="text-[var(--color-border)] text-sm" />}
                                                                 </td>
                                                             ))}
                                                         </tr>
@@ -3166,7 +3227,7 @@ export default function PlaygroundPage() {
 
                             {/* G · Input Extras */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faSearch} number="G" title="Input Extras" />
+                                <SectionHeader icon={Search} number="G" title="Input Extras" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock title="OTP / PIN Input" children={<OTPInputPreview />} code={`const [otp, setOtp] = useState(['','','','','',''])\n\nconst handleChange = (i, v) => {\n  const d = v.replace(/\\D/g,'').slice(-1)\n  const next = [...otp]; next[i] = d; setOtp(next)\n  // auto-advance\n  if (d && i < 5) document.getElementById(\`otp-\${i+1}\`).focus()\n}\n\n<div className="flex gap-2">\n  {otp.map((v, i) => (\n    <input key={i} id={\`otp-\${i}\`}\n      maxLength={1} value={v}\n      onChange={e => handleChange(i, e.target.value)}\n      className="w-11 h-13 text-center text-[20px] font-black rounded-xl border-2 outline-none"\n    />\n  ))}\n</div>`} />
                                     <UIBlock title="Tag Input (Tokenizer)" children={<TagInputPreview />} code={`const [tags, setTags] = useState(['React','TypeScript'])\nconst [input, setInput] = useState('')\n\nconst addTag = () => {\n  const t = input.trim()\n  if (t && !tags.includes(t) && tags.length < 8) {\n    setTags(p => [...p, t])\n    setInput('')\n  }\n}\n\n<input\n  value={input}\n  onChange={e => setInput(e.target.value)}\n  onKeyDown={e => {\n    if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addTag() }\n    if (e.key === 'Backspace' && !input) setTags(p => p.slice(0,-1))\n  }}\n  placeholder="Tambah tag…"\n/>`} />
@@ -3181,7 +3242,7 @@ export default function PlaygroundPage() {
                     {activeTab === 'forms' && (
                         <div className="space-y-10">
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faFileLines} number="A" title="Authentication Forms" />
+                                <SectionHeader icon={FileText} number="A" title="Authentication Forms" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock title="01 · Login Form" children={<LoginFormPreview />} code={`const [email, setEmail] = useState('')\nconst [pass, setPass] = useState('')\nconst [showPass, setShowPass] = useState(false)\nconst valid = email.includes('@') && pass.length >= 6\n\n<button onClick={submit} disabled={!valid}\n  className={\`w-full h-10 rounded-xl text-[11px] font-black transition-all\n    \${valid ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-surface-alt)] cursor-not-allowed'}\`}>\n  Masuk →\n</button>`}
                                         dos={['Tombol submit harus disabled jika email/password belum valid', 'Sertakan toggle show/hide password pada field password', 'Validasi real-time boleh, tapi tampilkan error setelah user blur dari field']}
@@ -3208,17 +3269,17 @@ export default function PlaygroundPage() {
                                 </div>
                             </section></LazySection>
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faSearch} number="B" title="Data Forms" />
+                                <SectionHeader icon={Search} number="B" title="Data Forms" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock fullWidth title="03 · Search & Filter Form" children={<SearchFilterFormPreview />} code={`const [q, setQ] = useState('')\nconst [kelas, setKelas] = useState('semua')\nconst [status, setStatus] = useState('semua')\n\nconst filtered = data\n  .filter(d =>\n    (q === '' || d.nama.toLowerCase().includes(q.toLowerCase())) &&\n    (kelas === 'semua' || d.kelas === kelas) &&\n    (status === 'semua' || d.status === status)\n  )`} />
                                     <UIBlock title="04 · Forgot Password" children={
                                         <div className="space-y-4">
-                                            <div className="text-center space-y-2"><div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center mx-auto"><FontAwesomeIcon icon={faEnvelope} className="text-lg" /></div><h3 className="text-[13px] font-black text-[var(--color-text)]">Lupa Password?</h3><p className="text-[9px] text-[var(--color-text-muted)] leading-relaxed">Masukkan email terdaftar, kami akan kirim link reset password.</p></div>
+                                            <div className="text-center space-y-2"><div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center mx-auto"><Mail className="text-lg" /></div><h3 className="text-[13px] font-black text-[var(--color-text)]">Lupa Password?</h3><p className="text-[9px] text-[var(--color-text-muted)] leading-relaxed">Masukkan email terdaftar, kami akan kirim link reset password.</p></div>
                                             <div className="space-y-1"><label className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Email</label><input placeholder="admin@sekolah.sch.id" className="w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[11px] font-medium text-[var(--color-text)] outline-none transition-all" /></div>
                                             <button className="w-full h-10 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black hover:opacity-90 transition-all">Kirim Link Reset →</button>
                                             <p className="text-[9px] text-center text-[var(--color-text-muted)]"><span className="text-[var(--color-primary)] font-black cursor-pointer">← Kembali ke Login</span></p>
                                         </div>
-                                    } code={`<div className="text-center space-y-2">\n  <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center mx-auto">\n    <FontAwesomeIcon icon={faEnvelope} className="text-lg" />\n  </div>\n  <h3 className="text-[13px] font-black text-[var(--color-text)]">Lupa Password?</h3>\n  <p className="text-[9px] text-[var(--color-text-muted)] leading-relaxed">Masukkan email terdaftar…</p>\n</div>\n<input placeholder="admin@sekolah.sch.id"\n  className="w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none" />\n<button className="w-full h-10 rounded-xl bg-[var(--color-primary)] text-white font-black">Kirim Link Reset →</button>`} />
+                                    } code={`<div className="text-center space-y-2">\n  <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center mx-auto">\n    <Mail className="text-lg" />\n  </div>\n  <h3 className="text-[13px] font-black text-[var(--color-text)]">Lupa Password?</h3>\n  <p className="text-[9px] text-[var(--color-text-muted)] leading-relaxed">Masukkan email terdaftar…</p>\n</div>\n<input placeholder="admin@sekolah.sch.id"\n  className="w-full h-10 px-3.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none" />\n<button className="w-full h-10 rounded-xl bg-[var(--color-primary)] text-white font-black">Kirim Link Reset →</button>`} />
                                     <UIBlock title="05 · OTP Verification" children={<OTPInputPreview />} code={`const [otp, setOtp] = useState(['','','','','',''])\nconst valid = otp.every(c => c)\n\nconst handleChange = (i, v) => {\n  const d = v.replace(/\\D/g, '').slice(-1)\n  const next = [...otp]; next[i] = d; setOtp(next)\n  if (d && i < 5) document.getElementById(\`otp-\${i+1}\`).focus()\n}`} />
                                     <UIBlock title="06 · Dynamic Multi-field" children={
                                         <div className="space-y-3">
@@ -3232,7 +3293,7 @@ export default function PlaygroundPage() {
                                                     </div>
                                                 </div>
                                             ))}
-                                            <button className="w-full py-2 rounded-xl border-2 border-dashed border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all flex items-center justify-center gap-1.5"><FontAwesomeIcon icon={faPlus} className="text-[9px]" />Tambah Kontak</button>
+                                            <button className="w-full py-2 rounded-xl border-2 border-dashed border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-all flex items-center justify-center gap-1.5"><Plus className="text-[9px]" />Tambah Kontak</button>
                                         </div>
                                     } code={`const [contacts, setContacts] = useState([{ nama:'', telepon:'' }])\n\nconst addContact = () =>\n  setContacts(p => [...p, { nama:'', telepon:'' }])\n\nconst removeContact = i =>\n  setContacts(p => p.filter((_, idx) => idx !== i))\n\nconst update = (i, field, val) =>\n  setContacts(p => p.map((c, idx) => idx===i ? {...c, [field]:val} : c))`} />
                                     <UIBlock title="07 · Tag Input" children={<TagInputPreview />} code={`const [tags, setTags] = useState(['React'])\nconst [input, setInput] = useState('')\n\nconst addTag = () => {\n  const t = input.trim()\n  if (t && !tags.includes(t) && tags.length < 8) {\n    setTags(p => [...p, t])\n    setInput('')\n  }\n}`} />
@@ -3246,7 +3307,7 @@ export default function PlaygroundPage() {
                     {activeTab === 'dataviz' && (
                         <div className="space-y-10">
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faChartLine} number="A" title="Trend & Comparison" />
+                                <SectionHeader icon={ChartLine} number="A" title="Trend & Comparison" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock title="01 · Bar Chart" children={<BarChartPreview />} code={`const data = [\n  { l:'Jan', v:82 }, { l:'Feb', v:91 },\n  { l:'Mar', v:75 }, { l:'Apr', v:88 },\n]\nconst max = Math.max(...data.map(d => d.v))\n\n{data.map(({ l, v }) => (\n  <div key={l} className="flex-1 flex flex-col items-center gap-1 group">\n    <div\n      className="w-full rounded-t-lg bg-[var(--color-primary)]/20 group-hover:bg-[var(--color-primary)] transition-all"\n      style={{ height: \`\${(v/max)*80}px\` }}\n    />\n    <span className="text-[8px] font-black text-[var(--color-text-muted)] opacity-60">{l}</span>\n  </div>\n))}`}
                                         dos={['Tampilkan nilai di atas bar saat hover untuk readability', 'Gunakan warna primary konsisten, aksen berbeda untuk highlight', 'Sertakan label sumbu Y dan satuan yang jelas']}
@@ -3264,7 +3325,7 @@ export default function PlaygroundPage() {
                                 </div>
                             </section></LazySection>
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faGrip} number="B" title="Distribution & Patterns" />
+                                <SectionHeader icon={GripHorizontal} number="B" title="Distribution & Patterns" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock title="05 · Heatmap" children={<HeatmapPreview />} code={`const days = ['Sen','Sel','Rab','Kam','Jum']\nconst hours = ['07','08','09','10','11','12','13','14']\n\nconst getColor = v =>\n  v === 0 ? 'var(--color-border)' :\n  v <= 25 ? '#c7d2fe' :\n  v <= 50 ? '#818cf8' :\n  v <= 75 ? '#6366f1' : '#4338ca'\n\n{hours.map(h => (\n  <div key={h} className="flex gap-1 items-center">\n    <span className="w-8 text-[7px] font-mono opacity-50">{h}:00</span>\n    {days.map((_, di) => (\n      <div key={di}\n        className="flex-1 aspect-square rounded cursor-pointer hover:ring-2 hover:ring-[var(--color-primary)]"\n        style={{ background: getColor(getValue(di, hours.indexOf(h))) }}\n      />\n    ))}\n  </div>\n))}`} />
                                     <UIBlock title="06 · Progress Bars" children={
@@ -3287,7 +3348,7 @@ export default function PlaygroundPage() {
                     {activeTab === 'tokens' && (
                         <div className="space-y-10">
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faPalette} number="A" title="Color Tokens" />
+                                <SectionHeader icon={Palette} number="A" title="Color Tokens" />
                                 <UIBlock fullWidth title="CSS Variable Colors" children={
                                     <div className="space-y-4">
                                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -3303,7 +3364,7 @@ export default function PlaygroundPage() {
                                                         <div key={n} className="flex items-center gap-2 p-2 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] cursor-pointer hover:border-[var(--color-primary)] transition-all group" onClick={() => navigator.clipboard.writeText(`var(${v})`)}>
                                                             <div className="w-8 h-8 rounded-lg border border-[var(--color-border)] shrink-0" style={{ background: `var(${v})` }} />
                                                             <div className="min-w-0"><p className="text-[9px] font-black text-[var(--color-text)] truncate">{n}</p><p className="text-[7px] font-mono text-[var(--color-text-muted)] opacity-50 truncate">{v}</p></div>
-                                                            <FontAwesomeIcon icon={faCopy} className="text-[8px] text-[var(--color-text-muted)] opacity-0 group-hover:opacity-100 shrink-0 transition-opacity" />
+                                                            <Copy className="text-[8px] text-[var(--color-text-muted)] opacity-0 group-hover:opacity-100 shrink-0 transition-opacity" />
                                                         </div>
                                                     ))}
                                                 </div>
@@ -3313,7 +3374,7 @@ export default function PlaygroundPage() {
                                 } code={`{/* Gunakan CSS variables di Tailwind */}\n\n{/* Di tailwind.config.js: */}\ntheme: {\n  extend: {\n    colors: {\n      primary: 'var(--color-primary)',\n      surface: 'var(--color-surface)',\n    }\n  }\n}\n\n{/* Penggunaan: */}\n<div className="bg-[var(--color-surface)] text-[var(--color-text)]">\n  <button className="bg-[var(--color-primary)] text-white">\n    Primary Action\n  </button>\n</div>`} />
                             </section></LazySection>
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faExpand} number="B" title="Spacing & Sizing Tokens" />
+                                <SectionHeader icon={Maximize2} number="B" title="Spacing & Sizing Tokens" />
                                 <UIBlock fullWidth title="Tailwind Spacing Scale" children={
                                     <div className="space-y-6">
                                         <div>
@@ -3357,18 +3418,18 @@ export default function PlaygroundPage() {
                                 } code={`{/* Semua token tersedia di className Tailwind */}\n\n{/* Spacing: p-1=4px, p-2=8px, p-4=16px, p-8=32px */}\n<div className="p-4 gap-6 m-2">\n\n{/* Typography: */}\n<h1 className="text-3xl font-black tracking-tight">\n<p className="text-sm font-medium leading-relaxed">\n<span className="text-[9px] uppercase tracking-widest">\n\n{/* Border radius: */}\n<div className="rounded-xl"> {/* 12px */}\n<div className="rounded-2xl"> {/* 16px */}\n<div className="rounded-full"> {/* 9999px */}`} />
                             </section></LazySection>
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faLayerGroup} number="C" title="Shadow & Motion Tokens" />
+                                <SectionHeader icon={Layers} number="C" title="Shadow & Motion Tokens" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock title="Shadow Scale" children={
                                         <div className="flex flex-wrap gap-6 items-end py-4">
-                                            {[{ l: 'none', s: 'shadow-none', b: true }, { l: 'sm', s: 'shadow-sm' }, { l: 'md', s: 'shadow-md' }, { l: 'lg', s: 'shadow-lg' }, { l: 'xl', s: 'shadow-xl' }, { l: '2xl', s: 'shadow-2xl' }].map(({ l, s, b }) => (
+                                            {[{ l: 'none', s: 'shadow-none', b: true }, { l: 'sm', s: 'shadow-sm' }, { l: 'md', s: 'shadow-md' }, { l: 'lg', s: 'shadow-lg' }, { l: 'xl', s: 'shadow-xl' }].map(({ l, s, b }) => (
                                                 <div key={l} className="flex flex-col items-center gap-2 cursor-pointer" onClick={() => navigator.clipboard.writeText(s)}>
                                                     <div className={`w-14 h-14 rounded-2xl bg-[var(--color-surface)] ${s} ${b ? 'border border-[var(--color-border)]' : ''} flex items-center justify-center hover:scale-105 transition-all`}><span className="text-[7px] font-mono text-[var(--color-text-muted)] opacity-50">{l}</span></div>
                                                     <span className="text-[8px] font-mono font-black text-[var(--color-text-muted)] opacity-60">{l}</span>
                                                 </div>
                                             ))}
                                         </div>
-                                    } code={`{/* Shadow usage guide */}\n.card   → shadow-sm hover:shadow-md\n.dropdown → shadow-lg\n.modal  → shadow-2xl\n.fab    → shadow-xl\n\n{/* In Tailwind: */}\n<div className="shadow-sm hover:shadow-md transition-shadow">\n<div className="shadow-lg"> {/* dropdown */}\n<div className="shadow-2xl"> {/* modal */}`} />
+                                    } code={`{/* Shadow usage guide */}\n.card   → shadow-sm hover:shadow-md\n.dropdown → shadow-lg\n.modal  → shadow-xl\n.fab    → shadow-xl\n\n{/* In Tailwind: */}\n<div className="shadow-sm hover:shadow-md transition-shadow">\n<div className="shadow-lg"> {/* dropdown */}\n<div className="shadow-xl"> {/* modal */}`} />
                                     <UIBlock title="Motion Tokens" children={
                                         <div className="space-y-3">
                                             {[{ name: 'instant', ms: 75, cls: 'duration-75', use: 'toggle, checkbox' }, { name: 'fast', ms: 150, cls: 'duration-150', use: 'hover, tooltip' }, { name: 'normal', ms: 300, cls: 'duration-300', use: 'slide, expand' }, { name: 'slow', ms: 500, cls: 'duration-500', use: 'page enter' }, { name: 'cinematic', ms: 700, cls: 'duration-700', use: 'intro, hero' }].map(({ name, ms, cls, use }) => (
@@ -3393,9 +3454,9 @@ export default function PlaygroundPage() {
 
                             {/* A · Navigation */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faGrip} number="A" title="Navigation" />
+                                <SectionHeader icon={GripHorizontal} number="A" title="Navigation" />
                                 <div className="space-y-8">
-                                    <UIBlock fullWidth title="01 · Sidebar Navigation" children={<SidebarNavPreview />} code={`const [active, setActive] = useState('dashboard')\nconst [collapsed, setCollapsed] = useState(false)\n\n<div className={\`\${collapsed ? 'w-14' : 'w-52'} transition-all duration-300\`}>\n  {groups.map(g => (\n    <div key={g.label}>\n      {!collapsed && <p className="text-[7px] font-black uppercase tracking-widest opacity-50 px-2 mb-1">{g.label}</p>}\n      {g.items.map(item => (\n        <button key={item.key} onClick={() => setActive(item.key)}\n          className={\`w-full flex items-center gap-2.5 px-2 py-2 rounded-xl\n            \${active===item.key ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'\n            : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}\`}>\n          <FontAwesomeIcon icon={item.icon} className="text-xs" />\n          {!collapsed && <span className="text-[10px] font-black">{item.label}</span>}\n        </button>\n      ))}\n    </div>\n  ))}\n</div>`}
+                                    <UIBlock fullWidth title="01 · Sidebar Navigation" children={<SidebarNavPreview />} code={`const [active, setActive] = useState('dashboard')\nconst [collapsed, setCollapsed] = useState(false)\n\n<div className={\`\${collapsed ? 'w-14' : 'w-52'} transition-all duration-300\`}>\n  {groups.map(g => (\n    <div key={g.label}>\n      {!collapsed && <p className="text-[7px] font-black uppercase tracking-widest opacity-50 px-2 mb-1">{g.label}</p>}\n      {g.items.map(item => (\n        <button key={item.key} onClick={() => setActive(item.key)}\n          className={\`w-full flex items-center gap-2.5 px-2 py-2 rounded-xl\n            \${active===item.key ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'\n            : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}\`}>\n          <item.icon className="text-xs" />\n          {!collapsed && <span className="text-[10px] font-black">{item.label}</span>}\n        </button>\n      ))}\n    </div>\n  ))}\n</div>`}
                                         dos={['Highlight item aktif dengan bg primary/10 dan teks primary yang jelas', 'Grouping item dengan label kategori untuk navigasi yang banyak', 'Dukung collapsed mode — hanya ikon — untuk layar kecil']}
                                         donts={['Jangan ubah urutan navigasi antar halaman — membingungkan user', 'Hindari nesting navigasi lebih dari 2 level di sidebar', 'Jangan sembunyikan sidebar tanpa tombol toggle yang mudah ditemukan']}
                                         apiProps={[
@@ -3406,32 +3467,32 @@ export default function PlaygroundPage() {
                                             { prop: 'onCollapse', type: 'function', defaultVal: 'undefined', desc: 'Toggle collapsed state dari luar komponen' },
                                         ]}
                                     />
-                                    <UIBlock fullWidth title="02 · Topbar & Navbar Variants" children={<TopbarPreview />} code={`const [search, setSearch] = useState('')\n\n{/* Full topbar */}\n<div className="flex items-center gap-3 px-4 py-2.5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl">\n  <div className="flex-1 relative">\n    <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 -translate-y-1/2 text-[9px]" />\n    <input value={search} onChange={e => setSearch(e.target.value)}\n      className="w-full h-8 pl-8 pr-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[10px] outline-none" />\n  </div>\n  <div className="relative">\n    <button className="w-8 h-8 rounded-xl flex items-center justify-center"><FontAwesomeIcon icon={faBell} /></button>\n    <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[7px] font-black flex items-center justify-center border-2 border-[var(--color-surface)]">3</div>\n  </div>\n</div>`} />
+                                    <UIBlock fullWidth title="02 · Topbar & Navbar Variants" children={<TopbarPreview />} code={`const [search, setSearch] = useState('')\n\n{/* Full topbar */}\n<div className="flex items-center gap-3 px-4 py-2.5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl">\n  <div className="flex-1 relative">\n    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[9px]" />\n    <input value={search} onChange={e => setSearch(e.target.value)}\n      className="w-full h-8 pl-8 pr-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-[10px] outline-none" />\n  </div>\n  <div className="relative">\n    <button className="w-8 h-8 rounded-xl flex items-center justify-center"><Bell /></button>\n    <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[7px] font-black flex items-center justify-center border-2 border-[var(--color-surface)]">3</div>\n  </div>\n</div>`} />
                                     <div className="grid lg:grid-cols-2 gap-8">
-                                        <UIBlock title="03 · Mobile Bottom Nav" children={<MobileBottomNavPreview />} code={`const [active, setActive] = useState('home')\nconst tabs = [\n  { key:'home',    icon:faGaugeHigh,    label:'Home',  badge:null },\n  { key:'siswa',   icon:faUsers,         label:'Siswa', badge:3 },\n  { key:'laporan', icon:faClipboardList, label:'Lap.',  badge:null },\n  { key:'setting', icon:faGear,          label:'Set.',  badge:null },\n]\n\n<div className="border-t border-[var(--color-border)] flex">\n  {tabs.map(tab => (\n    <button key={tab.key} onClick={() => setActive(tab.key)}\n      className="flex-1 flex flex-col items-center py-2 gap-0.5 relative">\n      <FontAwesomeIcon icon={tab.icon}\n        className={\`text-xs \${active===tab.key ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}\`} />\n      <span className={\`text-[7px] font-black \${active===tab.key ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}\`}>{tab.label}</span>\n      {tab.badge && <div className="absolute top-1 right-1/4 w-4 h-4 rounded-full bg-rose-500 text-white text-[7px] font-black flex items-center justify-center">{tab.badge}</div>}\n    </button>\n  ))}\n</div>`} />
-                                        <UIBlock title="04 · Floating Action Button" children={<FABPreview />} code={`const [open, setOpen] = useState(false)\nconst actions = [\n  { icon:faArrowUpFromBracket, label:'Import' },\n  { icon:faDownload,           label:'Export' },\n  { icon:faFileLines,          label:'Laporan' },\n]\n\n<div className="absolute bottom-4 right-4 flex flex-col items-end gap-2.5">\n  {open && actions.map((a, i) => (\n    <div key={i} className="flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2">\n      <span className="px-2.5 py-1 bg-[var(--color-surface)] rounded-xl text-[9px] font-black shadow-sm">{a.label}</span>\n      <button className="w-9 h-9 rounded-full border flex items-center justify-center">\n        <FontAwesomeIcon icon={a.icon} className="text-xs" />\n      </button>\n    </div>\n  ))}\n  <button onClick={() => setOpen(p => !p)}\n    className={\`w-12 h-12 rounded-full shadow-xl flex items-center justify-center\n      \${open ? 'bg-slate-700 text-white' : 'bg-[var(--color-primary)] text-white'}\`}>\n    <FontAwesomeIcon icon={faPlus} className={\`text-lg transition-transform \${open ? 'rotate-45' : ''}\`} />\n  </button>\n</div>`} />
+                                        <UIBlock title="03 · Mobile Bottom Nav" children={<MobileBottomNavPreview />} code={`const [active, setActive] = useState('home')\nconst tabs = [\n  { key:'home',    icon:Gauge,    label:'Home',  badge:null },\n  { key:'siswa',   icon:Users,         label:'Siswa', badge:3 },\n  { key:'laporan', icon:ClipboardList, label:'Lap.',  badge:null },\n  { key:'setting', icon:Settings,          label:'Set.',  badge:null },\n]\n\n<div className="border-t border-[var(--color-border)] flex">\n  {tabs.map(tab => (\n    <button key={tab.key} onClick={() => setActive(tab.key)}\n      className="flex-1 flex flex-col items-center py-2 gap-0.5 relative">\n      <tab.icon \n className={\`text-xs \${active===tab.key ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}\`} />\n      <span className={\`text-[7px] font-black \${active===tab.key ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-50'}\`}>{tab.label}</span>\n      {tab.badge && <div className="absolute top-1 right-1/4 w-4 h-4 rounded-full bg-rose-500 text-white text-[7px] font-black flex items-center justify-center">{tab.badge}</div>}\n    </button>\n  ))}\n</div>`} />
+                                        <UIBlock title="04 · Floating Action Button" children={<FABPreview />} code={`const [open, setOpen] = useState(false)\nconst actions = [\n  { icon:Upload, label:'Import' },\n  { icon:Download,           label:'Export' },\n  { icon:FileText,          label:'Laporan' },\n]\n\n<div className="absolute bottom-4 right-4 flex flex-col items-end gap-2.5">\n  {open && actions.map((a, i) => (\n    <div key={i} className="flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2">\n      <span className="px-2.5 py-1 bg-[var(--color-surface)] rounded-xl text-[9px] font-black shadow-sm">{a.label}</span>\n      <button className="w-9 h-9 rounded-full border flex items-center justify-center">\n        <a.icon className="text-xs" />\n      </button>\n    </div>\n  ))}\n  <button onClick={() => setOpen(p => !p)}\n    className={\`w-12 h-12 rounded-full shadow-xl flex items-center justify-center\n      \${open ? 'bg-slate-700 text-white' : 'bg-[var(--color-primary)] text-white'}\`}>\n    <Plus className={\`text-lg transition-transform \${open ? 'rotate-45' : ''}\`} />\n  </button>\n</div>`} />
                                     </div>
                                 </div>
                             </section></LazySection>
 
                             {/* B · Page Templates */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faLayerGroup} number="B" title="Page Templates" />
+                                <SectionHeader icon={Layers} number="B" title="Page Templates" />
                                 <div className="space-y-8">
                                     <UIBlock fullWidth title="05 · Dashboard Shell" children={
                                         <div className="border border-[var(--color-border)] rounded-2xl overflow-hidden">
                                             <div className="flex items-center gap-3 px-4 py-2.5 bg-[var(--color-surface)] border-b border-[var(--color-border)]">
-                                                <div className="w-6 h-6 rounded-lg bg-[var(--color-primary)] flex items-center justify-center shrink-0"><FontAwesomeIcon icon={faGaugeHigh} className="text-white text-[9px]" /></div>
+                                                <div className="w-6 h-6 rounded-lg bg-[var(--color-primary)] flex items-center justify-center shrink-0"><Gauge className="text-white text-[9px]" /></div>
                                                 <span className="text-[11px] font-black text-[var(--color-text)]">Laporanmu</span>
                                                 <div className="flex-1" />
-                                                <FontAwesomeIcon icon={faBell} className="text-[var(--color-text-muted)] text-sm" />
+                                                <Bell className="text-[var(--color-text-muted)] text-sm" />
                                                 <div className="w-7 h-7 rounded-full bg-indigo-500/10 text-indigo-600 text-[9px] font-black flex items-center justify-center">AS</div>
                                             </div>
                                             <div className="flex" style={{ height: 180 }}>
                                                 <div className="w-44 bg-[var(--color-surface)] border-r border-[var(--color-border)] p-3 space-y-1 shrink-0">
-                                                    {[{ icon: faGaugeHigh, label: 'Dashboard', active: true }, { icon: faUsers, label: 'Data Siswa' }, { icon: faClipboardList, label: 'Laporan' }, { icon: faCalendar, label: 'Jadwal' }, { icon: faGear, label: 'Pengaturan' }].map(item => (
+                                                    {[{ icon: Gauge, label: 'Dashboard', active: true }, { icon: Users, label: 'Data Siswa' }, { icon: ClipboardList, label: 'Laporan' }, { icon: Calendar, label: 'Jadwal' }, { icon: Settings, label: 'Pengaturan' }].map(item => (
                                                         <div key={item.label} className={`flex items-center gap-2 px-2 py-1.5 rounded-lg ${item.active ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}>
-                                                            <FontAwesomeIcon icon={item.icon} className="text-[9px] shrink-0" />
+                                                            <item.icon className="text-[9px] shrink-0" />
                                                             <span className="text-[9px] font-black">{item.label}</span>
                                                         </div>
                                                     ))}
@@ -3459,7 +3520,7 @@ export default function PlaygroundPage() {
                                         <UIBlock title="06 · Auth Page Layout" children={
                                             <div className="flex border border-[var(--color-border)] rounded-2xl overflow-hidden h-64">
                                                 <div className="w-40 bg-[var(--color-primary)] p-6 flex flex-col items-center justify-center gap-3 shrink-0">
-                                                    <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center"><FontAwesomeIcon icon={faGaugeHigh} className="text-white text-lg" /></div>
+                                                    <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center"><Gauge className="text-white text-lg" /></div>
                                                     <div className="text-center"><p className="text-[12px] font-black text-white">Laporanmu</p><p className="text-[9px] text-white/60">Ekosistem Sekolah Indonesia</p></div>
                                                     <div className="space-y-1 w-full">
                                                         {['✓ Multi-role akses', '✓ Data terenkripsi', '✓ Real-time sync'].map(f => <p key={f} className="text-[8px] text-white/70 font-medium">{f}</p>)}
@@ -3500,7 +3561,7 @@ export default function PlaygroundPage() {
                                         <UIBlock title="08 · Split Panel (Master-Detail)" children={
                                             <div className="flex border border-[var(--color-border)] rounded-2xl overflow-hidden h-64">
                                                 <div className="w-44 bg-[var(--color-surface)] border-r border-[var(--color-border)] overflow-y-auto shrink-0">
-                                                    <div className="p-2 border-b border-[var(--color-border)]"><div className="h-7 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-2 flex items-center gap-1.5"><FontAwesomeIcon icon={faSearch} className="text-[8px] text-[var(--color-text-muted)]" /><span className="text-[9px] text-[var(--color-text-muted)]">Cari siswa…</span></div></div>
+                                                    <div className="p-2 border-b border-[var(--color-border)]"><div className="h-7 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] px-2 flex items-center gap-1.5"><Search className="text-[8px] text-[var(--color-text-muted)]" /><span className="text-[9px] text-[var(--color-text-muted)]">Cari siswa…</span></div></div>
                                                     {[{ init: 'AS', name: 'Andi Setiawan', kelas: '6A', active: true }, { init: 'BP', name: 'Budi Pratama', kelas: '5B' }, { init: 'CD', name: 'Citra Dewi', kelas: '6A' }, { init: 'DK', name: 'Dian Kusuma', kelas: '4C' }, { init: 'ER', name: 'Eka Rahmawati', kelas: '5A' }].map(s => (
                                                         <div key={s.init} className={`flex items-center gap-2 px-3 py-2.5 cursor-pointer border-l-2 transition-colors ${s.active ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5' : 'border-transparent hover:bg-[var(--color-surface-alt)]'}`}>
                                                             <div className={`w-7 h-7 rounded-full text-[8px] font-black flex items-center justify-center shrink-0 ${s.active ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>{s.init}</div>
@@ -3513,7 +3574,7 @@ export default function PlaygroundPage() {
                                                     <div className="grid grid-cols-3 gap-2">
                                                         {[{ l: 'Nilai', v: '92.4' }, { l: 'Hadir', v: '98%' }, { l: 'Tugas', v: '45/48' }].map(({ l, v }) => <div key={l} className="p-2.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-center"><p className="text-[13px] font-black text-[var(--color-text)]">{v}</p><p className="text-[7px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">{l}</p></div>)}
                                                     </div>
-                                                    <div className="flex gap-2"><button className="flex-1 h-8 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black border border-[var(--color-primary)]/20">Edit Data</button><button className="h-8 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[9px] font-black"><FontAwesomeIcon icon={faEllipsisVertical} className="text-xs" /></button></div>
+                                                    <div className="flex gap-2"><button className="flex-1 h-8 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black border border-[var(--color-primary)]/20">Edit Data</button><button className="h-8 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[9px] font-black"><EllipsisVertical className="text-xs" /></button></div>
                                                 </div>
                                             </div>
                                         } code={`// Master-detail split\n<div className="flex h-full">\n  {/* Master list */}\n  <aside className="w-44 border-r border-[var(--color-border)] overflow-y-auto">\n    {items.map(item => (\n      <div key={item.id} onClick={() => setSelected(item.id)}\n        className={\`flex items-center gap-2 px-3 py-2.5 cursor-pointer border-l-2\n          \${selected===item.id ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5'\n          : 'border-transparent hover:bg-[var(--color-surface-alt)]'}\`}>\n        {/* item content */}\n      </div>\n    ))}\n  </aside>\n  {/* Detail panel */}\n  <main className="flex-1 p-4">{/* selected item detail */}</main>\n</div>`} />
@@ -3524,7 +3585,7 @@ export default function PlaygroundPage() {
 
                             {/* C · Content Layouts */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faGrip} number="C" title="Content Layouts" />
+                                <SectionHeader icon={GripHorizontal} number="C" title="Content Layouts" />
                                 <div className="space-y-8">
                                     <UIBlock fullWidth title="10 · Breakpoint Visualizer" children={<BreakpointPreview />} code={`// Tailwind breakpoints\n// xs:  0px   — 1 col\n// sm:  640px — 1 col\n// md:  768px — 2 col  (md:grid-cols-2)\n// lg:  1024px — 3 col (lg:grid-cols-3)\n// xl:  1280px — 4 col (xl:grid-cols-4)\n// 2xl: 1536px — 4+ col\n\n<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">\n  {items.map(item => <Card key={item.id} {...item} />)}\n</div>`} />
                                     <div className="grid lg:grid-cols-2 gap-8">
@@ -3550,22 +3611,22 @@ export default function PlaygroundPage() {
                                                         <div key={t} className={`p-3 rounded-xl ${c} border border-[var(--color-border)]`}><p className="text-[9px] font-black text-[var(--color-text)]">{v}</p><p className="text-[7px] font-black text-[var(--color-text-muted)] opacity-70">{t}</p></div>
                                                     ))}
                                                     <div className="col-span-2 p-3 rounded-xl bg-[var(--color-primary)] flex items-center gap-3">
-                                                        <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center"><FontAwesomeIcon icon={faChartLine} className="text-white text-xs" /></div>
+                                                        <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center"><ChartLine className="text-white text-xs" /></div>
                                                         <div><p className="text-[11px] font-black text-white">Rata-rata: 88.3</p><p className="text-[8px] text-white/60">↑ 3.2% dari semester lalu</p></div>
                                                     </div>
                                                     <div className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-[var(--color-primary)] transition-all">
-                                                        <FontAwesomeIcon icon={faPlus} className="text-[var(--color-text-muted)] text-sm" />
+                                                        <Plus className="text-[var(--color-text-muted)] text-sm" />
                                                         <span className="text-[7px] font-black text-[var(--color-text-muted)]">Tambah</span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        } code={`<div className="grid grid-cols-3 gap-3">\n  {cards.map(card => (\n    <div key={card.id} className="p-3 rounded-xl border">{/* card */}</div>\n  ))}\n  {/* Featured/spanning card */}\n  <div className="col-span-2 p-3 rounded-xl bg-[var(--color-primary)]">\n    {/* highlighted content */}\n  </div>\n  {/* Add card */}\n  <button className="p-3 rounded-xl border border-dashed hover:border-[var(--color-primary)]">\n    <FontAwesomeIcon icon={faPlus} />\n  </button>\n</div>`} />
+                                        } code={`<div className="grid grid-cols-3 gap-3">\n  {cards.map(card => (\n    <div key={card.id} className="p-3 rounded-xl border">{/* card */}</div>\n  ))}\n  {/* Featured/spanning card */}\n  <div className="col-span-2 p-3 rounded-xl bg-[var(--color-primary)]">\n    {/* highlighted content */}\n  </div>\n  {/* Add card */}\n  <button className="p-3 rounded-xl border border-dashed hover:border-[var(--color-primary)]">\n    <Plus />\n  </button>\n</div>`} />
                                         <UIBlock title="13 · Calendar & Schedule" children={
                                             <div className="space-y-3">
                                                 <div className="flex items-center justify-between">
-                                                    <button className="w-7 h-7 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] transition-colors"><FontAwesomeIcon icon={faChevronRight} className="text-[9px] rotate-180" /></button>
+                                                    <button className="w-7 h-7 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] transition-colors"><ChevronRight className="text-[9px] rotate-180" /></button>
                                                     <span className="text-[11px] font-black text-[var(--color-text)]">Januari 2025</span>
-                                                    <button className="w-7 h-7 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] transition-colors"><FontAwesomeIcon icon={faChevronRight} className="text-[9px]" /></button>
+                                                    <button className="w-7 h-7 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] transition-colors"><ChevronRight className="text-[9px]" /></button>
                                                 </div>
                                                 <div className="border border-[var(--color-border)] rounded-2xl overflow-hidden">
                                                     <div className="grid grid-cols-6 border-b border-[var(--color-border)]">
@@ -3591,19 +3652,19 @@ export default function PlaygroundPage() {
                                             <div className="space-y-2">
                                                 <div className="grid grid-cols-4 gap-1.5">
                                                     {[
-                                                        { cls: 'col-span-2 row-span-2', bg: 'bg-indigo-200', icon: faUsers },
-                                                        { cls: '', bg: 'bg-emerald-200', icon: faCalendar },
-                                                        { cls: '', bg: 'bg-amber-200', icon: faFileLines },
-                                                        { cls: '', bg: 'bg-rose-200', icon: faCamera },
-                                                        { cls: '', bg: 'bg-sky-200', icon: faGlobe },
-                                                    ].map(({ cls, bg, icon }, i) => (
+                                                        { cls: 'col-span-2 row-span-2', bg: 'bg-indigo-200', icon: Users },
+                                                        { cls: '', bg: 'bg-emerald-200', icon: Calendar },
+                                                        { cls: '', bg: 'bg-amber-200', icon: FileText },
+                                                        { cls: '', bg: 'bg-rose-200', icon: Camera },
+                                                        { cls: '', bg: 'bg-sky-200', icon: Globe },
+                                                    ].map(({ cls, bg, icon: Icon }, i) => (
                                                         <div key={i} className={`${cls} ${bg} rounded-xl aspect-square flex items-center justify-center cursor-pointer hover:opacity-90 transition-all relative group overflow-hidden`}>
-                                                            <FontAwesomeIcon icon={icon} className="text-white text-xl opacity-60" />
-                                                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center"><FontAwesomeIcon icon={faSearch} className="text-white opacity-0 group-hover:opacity-100 transition-all" /></div>
+                                                            {Icon && <Icon className="text-white text-xl opacity-60" />}
+                                                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center"><Search className="text-white opacity-0 group-hover:opacity-100 transition-all" /></div>
                                                         </div>
                                                     ))}
                                                     <div className="bg-[var(--color-surface-alt)] border-2 border-dashed border-[var(--color-border)] rounded-xl aspect-square flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-[var(--color-primary)] transition-all">
-                                                        <FontAwesomeIcon icon={faPlus} className="text-[var(--color-text-muted)] text-sm" />
+                                                        <Plus className="text-[var(--color-text-muted)] text-sm" />
                                                         <span className="text-[7px] font-black text-[var(--color-text-muted)]">+12</span>
                                                     </div>
                                                 </div>
@@ -3615,7 +3676,7 @@ export default function PlaygroundPage() {
 
                             {/* D · Overlay & State */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faLayerGroup} number="D" title="Overlays & States" />
+                                <SectionHeader icon={Layers} number="D" title="Overlays & States" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock title="15 · Modal Variants" children={
                                         <div className="space-y-4">
@@ -3626,7 +3687,7 @@ export default function PlaygroundPage() {
                                                         <span className="text-[9px] font-mono text-[var(--color-text-muted)] w-20 shrink-0">size={size}</span>
                                                         <div className={`${w} bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-2 flex items-center justify-between shadow-sm`}>
                                                             <div className="flex gap-1"><div className="h-1.5 rounded bg-[var(--color-border)] w-12" /><div className="h-1.5 rounded bg-[var(--color-border)] w-8" /></div>
-                                                            <FontAwesomeIcon icon={faXmark} className="text-[var(--color-text-muted)] text-[9px]" />
+                                                            <X className="text-[var(--color-text-muted)] text-[9px]" />
                                                         </div>
                                                     </div>
                                                 ))}
@@ -3637,8 +3698,8 @@ export default function PlaygroundPage() {
                                         <div className="relative border border-[var(--color-border)] rounded-2xl overflow-hidden h-52">
                                             <div className="absolute inset-0 bg-[var(--color-surface-alt)] p-3 flex items-start"><span className="text-[8px] font-black text-[var(--color-text-muted)] opacity-30">z-0 · Main content</span></div>
                                             <div className="absolute inset-0 bg-black/20" />
-                                            <div className="absolute inset-4 bg-[var(--color-surface)] rounded-xl shadow-2xl border border-[var(--color-border)] flex flex-col">
-                                                <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)]"><span className="text-[10px] font-black text-[var(--color-text)]">Modal z-50</span><FontAwesomeIcon icon={faXmark} className="text-[var(--color-text-muted)] text-xs cursor-pointer" /></div>
+                                            <div className="absolute inset-4 bg-[var(--color-surface)] rounded-xl shadow-sm border border-[var(--color-border)] flex flex-col">
+                                                <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)]"><span className="text-[10px] font-black text-[var(--color-text)]">Modal z-50</span><X className="text-[var(--color-text-muted)] text-xs cursor-pointer" /></div>
                                                 <div className="flex-1 p-4 relative">
                                                     <div className="h-2 rounded bg-[var(--color-border)] w-3/4 mb-2" />
                                                     <div className="h-2 rounded bg-[var(--color-border)] w-1/2" />
@@ -3695,7 +3756,7 @@ export default function PlaygroundPage() {
                                                     <div key={s.i} className="flex items-center gap-3 px-4 py-2.5 border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-alt)] transition-colors cursor-pointer">
                                                         <div className={`w-7 h-7 rounded-full ${s.c} text-[8px] font-black flex items-center justify-center shrink-0`}>{s.i}</div>
                                                         <div className="flex-1"><p className="text-[10px] font-black text-[var(--color-text)]">{s.n}</p><p className="text-[8px] text-[var(--color-text-muted)] opacity-60">{s.k}</p></div>
-                                                        <FontAwesomeIcon icon={faChevronRight} className="text-[var(--color-text-muted)] text-[9px] opacity-40" />
+                                                        <ChevronRight className="text-[var(--color-text-muted)] text-[9px] opacity-40" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -3706,7 +3767,7 @@ export default function PlaygroundPage() {
 
                             {/* E · Utility Layouts */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faCode} number="E" title="Utility & Structural" />
+                                <SectionHeader icon={Code} number="E" title="Utility & Structural" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock title="19 · Page Header & Hero" children={
                                         <div className="space-y-4">
@@ -3723,8 +3784,8 @@ export default function PlaygroundPage() {
                                                             <p className="text-[9px] text-[var(--color-text-muted)] mt-0.5">320 siswa aktif · TA 2024/2025</p>
                                                         </div>
                                                         <div className="flex gap-2 shrink-0">
-                                                            <button className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[9px] font-black text-[var(--color-text-muted)] flex items-center gap-1.5"><FontAwesomeIcon icon={faDownload} className="text-[8px]" />Export</button>
-                                                            <button className="h-8 px-3 rounded-xl bg-[var(--color-primary)] text-white text-[9px] font-black flex items-center gap-1.5"><FontAwesomeIcon icon={faPlus} className="text-[8px]" />Tambah</button>
+                                                            <button className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[9px] font-black text-[var(--color-text-muted)] flex items-center gap-1.5"><Download className="text-[8px]" />Export</button>
+                                                            <button className="h-8 px-3 rounded-xl bg-[var(--color-primary)] text-white text-[9px] font-black flex items-center gap-1.5"><Plus className="text-[8px]" />Tambah</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -3738,7 +3799,7 @@ export default function PlaygroundPage() {
                                                     <div key={step} className="flex items-center flex-1 last:flex-none">
                                                         <div className="flex flex-col items-center gap-1">
                                                             <div className={`w-8 h-8 rounded-full text-[9px] font-black flex items-center justify-center transition-all ${i < 2 ? 'bg-[var(--color-primary)] text-white' : i === 2 ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-2 border-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}>
-                                                                {i < 2 ? <FontAwesomeIcon icon={faCheck} className="text-[8px]" /> : i + 1}
+                                                                {i < 2 ? <Check className="text-[8px]" /> : i + 1}
                                                             </div>
                                                             <span className={`text-[7px] font-black uppercase tracking-wide whitespace-nowrap ${i === 2 ? 'text-[var(--color-primary)]' : i < 2 ? 'text-[var(--color-text-muted)] line-through' : 'text-[var(--color-text-muted)] opacity-50'}`}>{step}</span>
                                                         </div>
@@ -3752,7 +3813,7 @@ export default function PlaygroundPage() {
                                                 <div className="flex justify-between pt-1"><button className="px-4 h-9 rounded-xl border border-[var(--color-border)] text-[9px] font-black text-[var(--color-text-muted)]">← Kembali</button><button className="px-4 h-9 rounded-xl bg-[var(--color-primary)] text-white text-[9px] font-black">Lanjut →</button></div>
                                             </div>
                                         </div>
-                                    } code={`const [step, setStep] = useState(0)\nconst steps = ['Data Diri', 'Sekolah', 'Akademik', 'Review']\n\n{steps.map((label, i) => (\n  <div key={label} className="flex items-center flex-1 last:flex-none">\n    <div className="flex flex-col items-center gap-1">\n      <div className={\`w-8 h-8 rounded-full text-[9px] font-black flex items-center justify-center\n        \${i < step ? 'bg-[var(--color-primary)] text-white'\n        : i === step ? 'border-2 border-[var(--color-primary)] text-[var(--color-primary)]'\n        : 'border border-[var(--color-border)] text-[var(--color-text-muted)]'}\`}>\n        {i < step ? <FontAwesomeIcon icon={faCheck} /> : i + 1}\n      </div>\n      <span className="text-[7px] font-black uppercase">{label}</span>\n    </div>\n    {i < steps.length - 1 && (\n      <div className={\`h-0.5 flex-1 mx-2 mb-4 \${i < step ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}\`} />\n    )}\n  </div>\n))}`} />
+                                    } code={`const [step, setStep] = useState(0)\nconst steps = ['Data Diri', 'Sekolah', 'Akademik', 'Review']\n\n{steps.map((label, i) => (\n  <div key={label} className="flex items-center flex-1 last:flex-none">\n    <div className="flex flex-col items-center gap-1">\n      <div className={\`w-8 h-8 rounded-full text-[9px] font-black flex items-center justify-center\n        \${i < step ? 'bg-[var(--color-primary)] text-white'\n        : i === step ? 'border-2 border-[var(--color-primary)] text-[var(--color-primary)]'\n        : 'border border-[var(--color-border)] text-[var(--color-text-muted)]'}\`}>\n        {i < step ? <Check /> : i + 1}\n      </div>\n      <span className="text-[7px] font-black uppercase">{label}</span>\n    </div>\n    {i < steps.length - 1 && (\n      <div className={\`h-0.5 flex-1 mx-2 mb-4 \${i < step ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}\`} />\n    )}\n  </div>\n))}`} />
                                     <UIBlock title="21 · Responsive Table" children={
                                         <div className="space-y-4">
                                             <div>
@@ -3784,7 +3845,7 @@ export default function PlaygroundPage() {
                                                             <div className={`w-8 h-8 rounded-full ${r.c} text-[9px] font-black flex items-center justify-center shrink-0`}>{r.i}</div>
                                                             <div className="flex-1 min-w-0"><p className="text-[10px] font-black text-[var(--color-text)]">{r.n}</p><p className="text-[8px] text-[var(--color-text-muted)] opacity-60">{r.k} · Nilai {r.v}</p></div>
                                                             <span className={`px-2 py-0.5 rounded-full text-[8px] font-black shrink-0 ${r.s === 'Aktif' ? 'bg-emerald-500/10 text-emerald-700' : 'bg-amber-500/10 text-amber-700'}`}>{r.s}</span>
-                                                            <FontAwesomeIcon icon={faChevronRight} className="text-[var(--color-text-muted)] text-[9px] opacity-40 shrink-0" />
+                                                            <ChevronRight className="text-[var(--color-text-muted)] text-[9px] opacity-40 shrink-0" />
                                                         </div>
                                                     ))}
                                                 </div>
@@ -3816,22 +3877,22 @@ export default function PlaygroundPage() {
 
                             {/* F · Special States */}
                             <LazySection><section className="space-y-10">
-                                <SectionHeader icon={faFileLines} number="F" title="Special Page States" />
+                                <SectionHeader icon={FileText} number="F" title="Special Page States" />
                                 <div className="grid lg:grid-cols-2 gap-8">
                                     <UIBlock title="23 · Full Page Empty State" children={
                                         <div className="space-y-4">
                                             {[
-                                                { icon: faClipboardList, bg: 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]', title: 'Belum ada laporan', desc: 'Buat laporan pertama untuk mulai melacak perkembangan siswa.', cta: '+ Buat Laporan', ctaColor: 'bg-[var(--color-primary)] text-white' },
-                                                { icon: faSearch, bg: 'bg-amber-500/10 text-amber-600', title: 'Tidak ditemukan', desc: 'Tidak ada siswa yang cocok dengan "kelas 99". Coba kata lain.', cta: 'Reset Filter', ctaColor: 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)]' },
-                                            ].map(({ icon, bg, title, desc, cta, ctaColor }) => (
+                                                { icon: ClipboardList, bg: 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]', title: 'Belum ada laporan', desc: 'Buat laporan pertama untuk mulai melacak perkembangan siswa.', cta: '+ Buat Laporan', ctaColor: 'bg-[var(--color-primary)] text-white' },
+                                                { icon: Search, bg: 'bg-amber-500/10 text-amber-600', title: 'Tidak ditemukan', desc: 'Tidak ada siswa yang cocok dengan "kelas 99". Coba kata lain.', cta: 'Reset Filter', ctaColor: 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)]' },
+                                            ].map(({ icon: Icon, bg, title, desc, cta, ctaColor }) => (
                                                 <div key={title} className="flex flex-col items-center text-center p-6 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] gap-3">
-                                                    <div className={`w-12 h-12 rounded-2xl ${bg} flex items-center justify-center`}><FontAwesomeIcon icon={icon} className="text-lg" /></div>
+                                                    <div className={`w-12 h-12 rounded-2xl ${bg} flex items-center justify-center`}>{Icon && <Icon className="text-lg" />}</div>
                                                     <div><h4 className="text-[12px] font-black text-[var(--color-text)] mb-1">{title}</h4><p className="text-[9px] text-[var(--color-text-muted)] leading-relaxed opacity-70">{desc}</p></div>
                                                     <button className={`px-4 py-2 rounded-xl text-[9px] font-black ${ctaColor} hover:opacity-90 active:scale-95 transition-all`}>{cta}</button>
                                                 </div>
                                             ))}
                                         </div>
-                                    } code={`<div className="flex flex-col items-center text-center p-12 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] gap-4">\n  <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center">\n    <FontAwesomeIcon icon={faClipboardList} className="text-2xl" />\n  </div>\n  <div>\n    <h3 className="text-[16px] font-black text-[var(--color-text)] mb-2">Belum ada laporan</h3>\n    <p className="text-[11px] text-[var(--color-text-muted)] max-w-xs leading-relaxed">Buat laporan pertama untuk mulai melacak perkembangan siswa.</p>\n  </div>\n  <button className="px-6 h-10 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black">+ Buat Laporan</button>\n</div>`} />
+                                    } code={`<div className="flex flex-col items-center text-center p-12 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] gap-4">\n  <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center">\n    <ClipboardList className="text-2xl" />\n  </div>\n  <div>\n    <h3 className="text-[16px] font-black text-[var(--color-text)] mb-2">Belum ada laporan</h3>\n    <p className="text-[11px] text-[var(--color-text-muted)] max-w-xs leading-relaxed">Buat laporan pertama untuk mulai melacak perkembangan siswa.</p>\n  </div>\n  <button className="px-6 h-10 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black">+ Buat Laporan</button>\n</div>`} />
                                     <UIBlock title="24 · Error Pages" children={
                                         <div className="grid grid-cols-3 gap-3">
                                             {[{ code: '404', msg: 'Halaman tidak ditemukan', color: 'text-[var(--color-primary)]' }, { code: '403', msg: 'Akses ditolak', color: 'text-amber-500' }, { code: '500', msg: 'Server error', color: 'text-rose-500' }].map(({ code, msg, color }) => (
@@ -3847,7 +3908,7 @@ export default function PlaygroundPage() {
                                         <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4">
                                             <div className="flex items-start justify-between border-b border-gray-200 pb-3">
                                                 <div className="space-y-0.5"><p className="text-[10px] font-black text-gray-800">SD NEGERI 01 BANYUWANGI</p><p className="text-[8px] text-gray-500">Jl. Veteran No.1 · (0333) 123456 · sdn01bwi@disdik.go.id</p><p className="text-[8px] text-gray-400">Akreditasi A · NPSN: 20540001</p></div>
-                                                <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shrink-0"><FontAwesomeIcon icon={faGaugeHigh} className="text-white text-sm" /></div>
+                                                <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shrink-0"><Gauge className="text-white text-sm" /></div>
                                             </div>
                                             <p className="text-[9px] font-black text-gray-700 text-center uppercase tracking-widest">LAPORAN NILAI SEMESTER 1 · TA 2024/2025</p>
                                             <table className="w-full text-[8px] border-collapse">
@@ -3868,16 +3929,16 @@ export default function PlaygroundPage() {
 
                             {/* Developer Notes */}
                             <LazySection><section className="space-y-4">
-                                <SectionHeader icon={faCode} number="G" title="Developer Cheat Sheet" />
+                                <SectionHeader icon={Code} number="G" title="Developer Cheat Sheet" />
                                 <div className="grid md:grid-cols-3 gap-4">
                                     {[
-                                        { color: 'text-amber-400', icon: faPalette, title: 'Theme Utils', lines: ['.glass — backdrop blur', '.gradient-text — primary clip', '.scrollbar-hide — clean UI', 'animate-in slide-in-from-bottom-6'] },
-                                        { color: 'text-emerald-400', icon: faExpand, title: 'Layout Tokens', lines: ['--sidebar-w: 260px', '--content-max: 1280px', '--header-h: 56px', '--card-radius: 1.5rem'] },
-                                        { color: 'text-indigo-400', icon: faShieldHalved, title: 'Z-Index Scale', lines: ['dropdown: z-10', 'sticky header: z-20', 'drawer: z-30', 'modal: z-50 / toast: z-[999]'] },
-                                    ].map(({ color, icon, title, lines }) => (
+                                        { color: 'text-amber-400', icon: Palette, title: 'Theme Utils', lines: ['.glass — backdrop blur', '.gradient-text — primary clip', '.scrollbar-hide — clean UI', 'animate-in slide-in-from-bottom-6'] },
+                                        { color: 'text-emerald-400', icon: Maximize2, title: 'Layout Tokens', lines: ['--sidebar-w: 260px', '--content-max: 1280px', '--header-h: 56px', '--card-radius: 1.5rem'] },
+                                        { color: 'text-indigo-400', icon: ShieldHalf, title: 'Z-Index Scale', lines: ['dropdown: z-10', 'sticky header: z-20', 'drawer: z-30', 'modal: z-50 / toast: z-[999]'] },
+                                    ].map(({ color, icon: Icon, title, lines }) => (
                                         <div key={title} className="p-5 rounded-2xl bg-slate-900 border border-white/5 space-y-3">
                                             <div className={`flex items-center gap-2 ${color}`}>
-                                                <FontAwesomeIcon icon={icon} className="text-xs" />
+                                                {Icon && <Icon className="text-xs" />}
                                                 <span className="text-[10px] font-black uppercase tracking-widest">{title}</span>
                                             </div>
                                             <div className="space-y-1">
@@ -3914,7 +3975,7 @@ export default function PlaygroundPage() {
                                 disabled={activeIdx === 0}
                                 className="w-7 h-7 rounded-xl flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-primary)] disabled:opacity-25 disabled:cursor-not-allowed transition-all"
                             >
-                                <FontAwesomeIcon icon={faChevronDown} className="text-[8px] rotate-180" />
+                                <ChevronDown className="text-[8px] rotate-180" />
                             </button>
 
                             {/* Label + counter */}
@@ -3929,7 +3990,7 @@ export default function PlaygroundPage() {
                                 disabled={activeIdx === sections.length - 1}
                                 className="w-7 h-7 rounded-xl flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-primary)] disabled:opacity-25 disabled:cursor-not-allowed transition-all"
                             >
-                                <FontAwesomeIcon icon={faChevronDown} className="text-[8px]" />
+                                <ChevronDown className="text-[8px]" />
                             </button>
                         </div>
                     )
@@ -3940,7 +4001,7 @@ export default function PlaygroundPage() {
                     <div className="space-y-6">
                         <div className="p-4 bg-amber-500/5 rounded-2xl border border-amber-500/10 flex gap-4">
                             <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-600 shrink-0">
-                                <FontAwesomeIcon icon={faTriangleExclamation} />
+                                <TriangleAlert />
                             </div>
                             <div className="space-y-1">
                                 <h5 className="text-xs font-black text-amber-700 uppercase tracking-widest">Unsaved Changes Detected</h5>

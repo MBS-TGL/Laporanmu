@@ -1,8 +1,5 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faChevronLeft, faChevronRight, faAnglesLeft, faAnglesRight
-} from '@fortawesome/free-solid-svg-icons'
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
 import RichSelect from './RichSelect'
 import { useLanguage } from '@context'
 
@@ -89,14 +86,14 @@ export default function Pagination({
                             onClick={() => setPage(1)}
                             className="w-9 h-9 flex items-center justify-center rounded-[0.8rem] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 disabled:hover:bg-transparent disabled:active:scale-100 active:scale-90"
                         >
-                            <FontAwesomeIcon icon={faAnglesLeft} className="text-xs" />
+                            <ChevronsLeft className="text-xs" />
                         </button>
                         <button
                             disabled={page <= 1}
                             onClick={() => setPage(p => Math.max(1, p - 1))}
                             className="w-9 h-9 flex items-center justify-center rounded-[0.8rem] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 disabled:hover:bg-transparent disabled:active:scale-100 active:scale-90"
                         >
-                            <FontAwesomeIcon icon={faChevronLeft} className="text-xs" />
+                            <ChevronLeft className="text-xs" />
                         </button>
                     </div>
 
@@ -114,14 +111,14 @@ export default function Pagination({
                             onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                             className="w-9 h-9 flex items-center justify-center rounded-[0.8rem] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 disabled:hover:bg-transparent disabled:active:scale-100 active:scale-90"
                         >
-                            <FontAwesomeIcon icon={faChevronRight} className="text-xs" />
+                            <ChevronRight className="text-xs" />
                         </button>
                         <button
                             disabled={page >= totalPages}
                             onClick={() => setPage(totalPages)}
                             className="w-9 h-9 flex items-center justify-center rounded-[0.8rem] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 disabled:hover:bg-transparent disabled:active:scale-100 active:scale-90"
                         >
-                            <FontAwesomeIcon icon={faAnglesRight} className="text-xs" />
+                            <ChevronsRight className="text-xs" />
                         </button>
                     </div>
                 </div>
@@ -156,12 +153,12 @@ export default function Pagination({
                         <button disabled={page <= 1} onClick={() => setPage(1)}
                             className="h-9 w-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 active:scale-90"
                         >
-                            <FontAwesomeIcon icon={faAnglesLeft} className="text-xs" />
+                            <ChevronsLeft className="text-xs" />
                         </button>
                         <button disabled={page <= 1} onClick={() => setPage(p => Math.max(1, p - 1))}
                             className="h-9 w-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 active:scale-90"
                         >
-                            <FontAwesomeIcon icon={faChevronLeft} className="text-xs" />
+                            <ChevronLeft className="text-xs" />
                         </button>
                     </div>
 
@@ -173,7 +170,7 @@ export default function Pagination({
                                 <button key={`pg-${it}`} onClick={() => setPage(it)}
                                     className={`h-9 min-w-[36px] px-2.5 rounded-xl font-semibold text-xs transition-all active:scale-95
                                     ${it === page
-                                            ? 'bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/20'
+                                        ? 'bg-[var(--color-primary)] text-white shadow-md'
                                             : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
                                 >
                                     {it}
@@ -186,12 +183,12 @@ export default function Pagination({
                         <button disabled={page >= totalPages} onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                             className="h-9 w-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 active:scale-90"
                         >
-                            <FontAwesomeIcon icon={faChevronRight} className="text-xs" />
+                            <ChevronRight className="text-xs" />
                         </button>
                         <button disabled={page >= totalPages} onClick={() => setPage(totalPages)}
                             className="h-9 w-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all disabled:opacity-20 active:scale-90"
                         >
-                            <FontAwesomeIcon icon={faAnglesRight} className="text-xs" />
+                            <ChevronsRight className="text-xs" />
                         </button>
                     </div>
 

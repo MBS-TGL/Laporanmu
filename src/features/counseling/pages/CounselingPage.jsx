@@ -858,7 +858,7 @@ export default function CounselingPage() {
                             </button>
                             <button
                                 onClick={openAddModal}
-                                className="h-9 px-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-xl text-xs font-black flex items-center gap-2 shadow-lg shadow-purple-600/15 hover:scale-[1.02] active:scale-95 transition-all"
+                                className="h-9 px-3.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-black flex items-center gap-2 shadow-lg hover:scale-[1.02] active:scale-95 transition-all"
                             >
                                 <Plus className="w-4 h-4" />
                                 <span>Catat Konseling</span>
@@ -896,7 +896,7 @@ export default function CounselingPage() {
                 </StatsCarousel>
 
                 {/* Search & Filter Toolbar */}
-                <div className="glass p-4 rounded-2xl border border-[var(--color-border)] flex flex-col md:flex-row gap-4 items-center justify-between">
+                <div className="bg-surface p-4 rounded-2xl border border-[var(--color-border)] flex flex-col md:flex-row gap-4 items-center justify-between">
 
                     {/* Left: Search input */}
                     <div className="relative w-full md:max-w-xs shrink-0">
@@ -985,7 +985,7 @@ export default function CounselingPage() {
 
                 {/* Main Content Area */}
                 {loading ? (
-                    <div className="glass rounded-2xl border border-[var(--color-border)] p-12 text-center">
+                    <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-12 text-center">
                         <div className="animate-spin inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-purple-600 rounded-full mb-3" role="status" aria-label="loading">
                             <span className="sr-only">Loading...</span>
                         </div>
@@ -1029,7 +1029,7 @@ export default function CounselingPage() {
                     )
                 ) : viewMode === 'list' ? (
                     /* --- TABLE VIEW --- */
-                    <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                    <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                         <div className="overflow-x-auto">
                             <table className="w-full text-left border-collapse">
                                 <thead>
@@ -1141,8 +1141,8 @@ export default function CounselingPage() {
                             <div key={dateString} className="relative pl-6 sm:pl-8 space-y-4">
 
                                 {/* Absolute Timeline Dot & vertical track line */}
-                                <div className="absolute left-0 top-1.5 bottom-0 w-0.5 bg-gradient-to-b from-purple-500 to-indigo-500/10">
-                                    <div className="absolute top-0 -left-1.5 w-3.5 h-3.5 rounded-full border-2 border-[var(--color-surface)] bg-purple-500 shadow-md shadow-purple-600/30" />
+                                <div className="absolute left-0 top-1.5 bottom-0 w-0.5 bg-purple-500">
+                                    <div className="absolute top-0 -left-1.5 w-3.5 h-3.5 rounded-full border-2 border-[var(--color-surface)] bg-purple-500 shadow-md" />
                                 </div>
 
                                 {/* Date Header Label */}
@@ -1153,10 +1153,9 @@ export default function CounselingPage() {
                                 {/* Cards in this date */}
                                 <div className="space-y-3.5">
                                     {groupLogs.map(log => (
-                                        <div key={log.id} className="glass p-5 rounded-2xl border border-[var(--color-border)] hover:border-purple-500/30 transition-all duration-300 relative group overflow-hidden">
+                                        <div key={log.id} className="bg-surface p-5 rounded-2xl border border-[var(--color-border)] hover:border-purple-500/30 transition-all duration-300 relative group overflow-hidden">
 
                                             {/* Glow Accent */}
-                                            <div className="absolute -right-16 -top-16 w-36 h-36 bg-purple-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-purple-500/10 transition-all" />
 
                                             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
 
@@ -1461,7 +1460,7 @@ export default function CounselingPage() {
                             <button
                                 type="submit"
                                 disabled={submitting}
-                                className="h-10 px-6 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-xl text-xs font-black flex items-center gap-2 active:scale-95 transition-all shadow-md shadow-purple-600/10 disabled:opacity-50"
+                                className="h-10 px-6 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-black flex items-center gap-2 active:scale-95 transition-all shadow-md disabled:opacity-50"
                             >
                                 {submitting ? 'Menyimpan...' : 'Simpan Sesi'}
                             </button>
@@ -1527,7 +1526,7 @@ export default function CounselingPage() {
                                 <button
                                     type="button"
                                     onClick={executePrintWindow}
-                                    className="h-10 px-5 bg-purple-600 hover:bg-purple-50 text-white rounded-xl text-xs font-black flex items-center gap-2 transition-all active:scale-95 shadow-md shadow-purple-600/10 hover:from-purple-500 hover:to-indigo-500"
+                                    className="h-10 px-5 bg-purple-600 hover:bg-purple-50 text-white rounded-xl text-xs font-black flex items-center gap-2 transition-all active:scale-95 shadow-md"
                                 >
                                     <Printer className="w-4 h-4" />
                                     <span>Cetak Sekarang</span>

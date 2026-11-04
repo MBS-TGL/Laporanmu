@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCamera, faCheck, faSpinner, faTrash, faCompress, faUser } from '@fortawesome/free-solid-svg-icons'
+import { Camera, Check, LoaderCircle, Minimize2, Trash2, User } from 'lucide-react'
 import Modal from '@shared/components/Modal'
 import RichSelect from '@shared/components/RichSelect'
 
@@ -51,7 +50,7 @@ export default function StudentBulkPhotoModal({
                 const matchedWords = fileWords.filter(fw => stdWords.some(sw => sw.startsWith(fw) || fw.startsWith(sw)))
                 score = fileWords.length > 0 ? Math.round((matchedWords.length / fileWords.length) * 60) : 0
             }
-            return { id: s.id, name: s.name, icon: faUser, score }
+            return { id: s.id, name: s.name, icon: User, score }
         })
 
         // Sort: high-score (recommendations) first, then alphabetical
@@ -80,7 +79,7 @@ export default function StudentBulkPhotoModal({
             onClose={() => { if (!uploadingBulkPhotos) onClose() }}
             title="Bulk Match Foto Siswa"
             description="Unggah banyak foto sekaligus. Sistem akan mencocokkan nama file dengan data siswa secara otomatis."
-            icon={faCamera}
+            icon={Camera}
             iconBg="bg-indigo-500/10"
             iconColor="text-indigo-600"
             size="lg"
@@ -105,9 +104,9 @@ export default function StudentBulkPhotoModal({
                             <button
                                 onClick={handleBulkPhotoUpload}
                                 disabled={uploadingBulkPhotos || matchedCount === 0}
-                                className="h-10 px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-[var(--color-primary)]/20 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10"
+                                className="h-10 px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10"
                             >
-                                {uploadingBulkPhotos ? <><FontAwesomeIcon icon={faSpinner} className="fa-spin" /> Mengupload...</> : <><FontAwesomeIcon icon={faCheck} /> Simpan Foto</>}
+                                {uploadingBulkPhotos ? <><LoaderCircle className="animate-spin" /> Mengupload...</> : <><Check /> Simpan Foto</>}
                             </button>
                         </div>
                     )}
@@ -140,7 +139,7 @@ export default function StudentBulkPhotoModal({
                     </div>
                     <div className="flex-1 min-w-0">
                         <div className="text-[10px] font-black uppercase tracking-wider text-[var(--color-text)]">
-                            <FontAwesomeIcon icon={faCompress} className="mr-1.5 text-[var(--color-primary)]" />
+                            <Minimize2 className="mr-1.5 text-[var(--color-primary)]" />
                             Auto Kompres Gambar
                         </div>
                         <div className="text-[9px] text-[var(--color-text-muted)] mt-0.5">Kompres ke max 800×800px, kualitas 70% (hemat storage)</div>
@@ -159,13 +158,13 @@ export default function StudentBulkPhotoModal({
                     />
                     {matchingPhotos ? (
                         <div className="flex items-center gap-3 py-1">
-                            <FontAwesomeIcon icon={faSpinner} className="fa-spin text-lg text-[var(--color-primary)]" />
+                            <LoaderCircle className="animate-spin text-lg text-[var(--color-primary)]" />
                             <span className="text-xs font-bold text-[var(--color-text-muted)]">Mencocokkan foto...</span>
                         </div>
                     ) : bulkPhotoMatches.length > 0 ? (
                         <div className="flex items-center gap-3">
                             <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] group-hover:scale-110 transition-transform shrink-0">
-                                <FontAwesomeIcon icon={faCamera} className="text-sm" />
+                                <Camera className="text-sm" />
                             </div>
                             <div className="text-left">
                                 <div className="text-xs font-black text-[var(--color-text)]">Tambah File Foto Lain</div>
@@ -175,7 +174,7 @@ export default function StudentBulkPhotoModal({
                     ) : (
                         <>
                             <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] mb-4 group-hover:scale-110 transition-transform">
-                                <FontAwesomeIcon icon={faCamera} className="text-2xl" />
+                                <Camera className="text-2xl" />
                             </div>
                             <h4 className="text-sm font-black text-[var(--color-text)] mb-1">
                                 Drag & Drop atau Pilih Foto Massal
@@ -263,7 +262,7 @@ export default function StudentBulkPhotoModal({
                                                         className="w-7 h-7 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors opacity-50 group-hover:opacity-100 disabled:opacity-20 flex items-center justify-center mx-auto"
                                                         title="Hapus"
                                                     >
-                                                        <FontAwesomeIcon icon={faTrash} className="text-[10px]" />
+                                                        <Trash2 className="text-[10px]" />
                                                     </button>
                                                 </td>
                                             </tr>

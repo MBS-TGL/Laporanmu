@@ -1,13 +1,5 @@
 import { Component } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faTriangleExclamation,
-    faCircleExclamation,
-    faRotateRight,
-    faHouse,
-    faCopy,
-    faBug,
-} from '@fortawesome/free-solid-svg-icons'
+import { TriangleAlert, CircleAlert, RotateCw, Home, Copy, Bug } from 'lucide-react'
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -92,9 +84,9 @@ function ErrorFallback({
     const handleHome = () => { window.location.href = '/' }
 
     const secondaryBtns = [
-        { icon: faHouse, label: 'Beranda', fn: handleHome, aria: 'Kembali ke beranda' },
-        { icon: faCopy, label: 'Salin', fn: handleCopy, aria: 'Salin detail error ke clipboard' },
-        { icon: faBug, label: 'Laporkan', fn: handleReport, aria: 'Laporkan bug via WhatsApp' },
+        { icon: Home, label: 'Beranda', fn: handleHome, aria: 'Kembali ke beranda' },
+        { icon: Copy, label: 'Salin', fn: handleCopy, aria: 'Salin detail error ke clipboard' },
+        { icon: Bug, label: 'Laporkan', fn: handleReport, aria: 'Laporkan bug via WhatsApp' },
     ]
 
     return (
@@ -118,7 +110,7 @@ function ErrorFallback({
             <div className={`
                 relative w-full max-w-md
                 bg-[var(--color-surface)] border border-[var(--color-border)]
-                rounded-2xl shadow-2xl
+                rounded-2xl shadow-sm
                 flex flex-col items-center gap-4
                 px-6 pt-8 pb-6
                 ${isAmber ? 'border-t-[3px] border-t-amber-500' : 'border-t-[3px] border-t-red-500'}
@@ -144,10 +136,9 @@ function ErrorFallback({
                         ? 'bg-amber-500/10 border-amber-500/20'
                         : 'bg-red-500/10 border-red-500/20'}
                 `}>
-                    <FontAwesomeIcon
-                        icon={isOffline ? faCircleExclamation : faTriangleExclamation}
-                        className={`text-xl ${isAmber ? 'text-amber-500' : 'text-red-500'}`}
-                    />
+                    {isOffline
+                        ? <CircleAlert className={`text-xl ${isAmber ? 'text-amber-500' : 'text-red-500'}`} />
+                        : <TriangleAlert className={`text-xl ${isAmber ? 'text-amber-500' : 'text-red-500'}`} />}
                 </div>
 
                 {/* Heading + subtext */}
@@ -235,35 +226,38 @@ function ErrorFallback({
                             hover:scale-[1.02] active:scale-[0.98] transition-all duration-200
                             disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100
                             ${isAmber
-                                ? 'bg-gradient-to-r from-amber-500 to-amber-600 shadow-lg shadow-amber-500/20'
-                                : 'bg-gradient-to-r from-red-500 to-red-600 shadow-lg shadow-red-500/20'
+                                ? 'bg-warning shadow-lg'
+                                : 'bg-danger shadow-lg'
                             }
                         `}
                     >
-                        <FontAwesomeIcon icon={isModuleError ? faRotateRight : faRotateRight} />
+                        <RotateCw />
                         {isModuleError ? 'Muat Ulang Halaman' : canRetry ? 'Coba Lagi' : 'Batas Tercapai'}
                     </button>
 
                     {/* Baris 2: tiga ghost button sejajar — identik dengan secondary button di page */}
                     <div className="flex gap-2 w-full">
-                        {secondaryBtns.map(({ icon, label, fn, aria }) => (
-                            <button
-                                key={label}
-                                onClick={fn}
-                                aria-label={aria}
-                                className="
-                                    flex-1 h-10 rounded-xl
-                                    bg-[var(--color-surface-alt)] border border-[var(--color-border)]
-                                    text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest
-                                    flex items-center justify-center gap-1.5
-                                    hover:bg-[var(--color-border)] hover:text-[var(--color-text)]
-                                    active:scale-95 transition-all duration-150
-                                "
-                            >
-                                <FontAwesomeIcon icon={icon} />
-                                {label}
-                            </button>
-                        ))}
+                        {secondaryBtns.map(({ icon, label, fn, aria }) => {
+                            const IconComp = icon
+                            return (
+                                <button
+                                    key={label}
+                                    onClick={fn}
+                                    aria-label={aria}
+                                    className="
+                                        flex-1 h-10 rounded-xl
+                                        bg-[var(--color-surface-alt)] border border-[var(--color-border)]
+                                        text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest
+                                        flex items-center justify-center gap-1.5
+                                        hover:bg-[var(--color-border)] hover:text-[var(--color-text)]
+                                        active:scale-95 transition-all duration-150
+                                    "
+                                >
+                                    <IconComp />
+                                    {label}
+                                </button>
+                            )
+                        })}
                     </div>
                 </div>
             </div>

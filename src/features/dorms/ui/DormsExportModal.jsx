@@ -1,38 +1,32 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-    faCheckCircle,
-    faFileLines,
-    faSliders,
-    faSpinner,
-    faTableList,
-    faTriangleExclamation,
-    faUsers,
-    faIdCard,
-    faFileExport,
-    faHashtag,
-    faUser,
-    faVenusMars,
-    faSchool,
-    faStar,
-    faTags,
-    faFileExcel,
-    faFileCsv,
-    faFilePdf,
-    faGear,
-    faHeading,
-    faArrowsLeftRight,
-    faArrowsUpDown,
-    faCalendarAlt,
-    faHome,
-    faClipboardList,
-    faBed,
-    faBroom,
-    faWarehouse,
-    faBoxOpen,
-    faCheckSquare
-} from '@fortawesome/free-solid-svg-icons'
+    ArrowLeftRight,
+    ArrowUpDown,
+    Bed,
+    Brush,
+    Calendar,
+    CircleCheck,
+    ClipboardList,
+    FileOutput,
+    FileSpreadsheet,
+    FileText,
+    Hash,
+    Heading,
+    House,
+    PackageOpen,
+    School,
+    Settings,
+    SlidersHorizontal,
+    SquareCheck,
+    Star,
+    Tags,
+    TriangleAlert,
+    User,
+    Users,
+    Warehouse
+} from 'lucide-react'
 import Modal from '@shared/components/Modal'
+import { VenusMarsIcon } from '@shared/components'
 import { useLanguage } from '@context'
 import { buildPrintHTML, openPrintWindow } from '@shared/utils/printTemplate'
 
@@ -40,15 +34,15 @@ import { buildPrintHTML, openPrintWindow } from '@shared/utils/printTemplate'
 const DATASETS = {
     plotting: {
         labelKey: 'dorms.tabPlotting',
-        icon: faBed,
+        icon: Bed,
         colorClass: 'text-amber-500 bg-amber-500/10 border-amber-500/30',
         columns: [
-            { key: 'name', labelKey: 'dorms.plotting.thSantri', icon: faUser },
-            { key: 'class', labelKey: 'dorms.plotting.class', icon: faSchool },
-            { key: 'gender', labelKey: 'dorms.plotting.gender', icon: faVenusMars },
-            { key: 'room', labelKey: 'dorms.plotting.dorm', icon: faHome },
-            { key: 'building', labelKey: 'dorms.plotting.building', icon: faWarehouse },
-            { key: 'status', labelKey: 'dorms.plotting.thStatus', icon: faCheckSquare }
+            { key: 'name', labelKey: 'dorms.plotting.thSantri', icon: User },
+            { key: 'class', labelKey: 'dorms.plotting.class', icon: School },
+            { key: 'gender', labelKey: 'dorms.plotting.gender', icon: VenusMarsIcon },
+            { key: 'room', labelKey: 'dorms.plotting.dorm', icon: House },
+            { key: 'building', labelKey: 'dorms.plotting.building', icon: Warehouse },
+            { key: 'status', labelKey: 'dorms.plotting.thStatus', icon: SquareCheck }
         ],
         presets: [
             { id: 'all', labelKey: 'dorms.export.presetComplete', cols: ['name', 'class', 'gender', 'room', 'building', 'status'] },
@@ -57,17 +51,17 @@ const DATASETS = {
     },
     cleanliness: {
         labelKey: 'dorms.export.datasetCleanliness',
-        icon: faBroom,
+        icon: Brush,
         colorClass: 'text-emerald-500 bg-emerald-500/10 border-emerald-500/30',
         columns: [
-            { key: 'room', labelKey: 'dorms.plotting.dorm', icon: faHome },
-            { key: 'score', labelKey: 'dorms.export.scoreAverage', icon: faStar },
-            { key: 'rating', labelKey: 'dorms.export.predicate', icon: faSliders },
-            { key: 'aspect_kerapian', labelKey: 'dorms.export.aspectKerapian', icon: faCheckCircle },
-            { key: 'aspect_kebersihan', labelKey: 'dorms.export.aspectKebersihan', icon: faCheckCircle },
-            { key: 'aspect_keharuman', labelKey: 'dorms.export.aspectKeharuman', icon: faCheckCircle },
-            { key: 'date', labelKey: 'dorms.cleanliness.dateLabel', icon: faCalendarAlt },
-            { key: 'notes', labelKey: 'dorms.musyrif.notes', icon: faFileLines }
+            { key: 'room', labelKey: 'dorms.plotting.dorm', icon: House },
+            { key: 'score', labelKey: 'dorms.export.scoreAverage', icon: Star },
+            { key: 'rating', labelKey: 'dorms.export.predicate', icon: SlidersHorizontal },
+            { key: 'aspect_kerapian', labelKey: 'dorms.export.aspectKerapian', icon: CircleCheck },
+            { key: 'aspect_kebersihan', labelKey: 'dorms.export.aspectKebersihan', icon: CircleCheck },
+            { key: 'aspect_keharuman', labelKey: 'dorms.export.aspectKeharuman', icon: CircleCheck },
+            { key: 'date', labelKey: 'dorms.cleanliness.dateLabel', icon: Calendar },
+            { key: 'notes', labelKey: 'dorms.musyrif.notes', icon: FileText }
         ],
         presets: [
             { id: 'all', labelKey: 'dorms.export.presetComplete', cols: ['room', 'score', 'rating', 'aspect_kerapian', 'aspect_kebersihan', 'aspect_keharuman', 'date', 'notes'] },
@@ -76,16 +70,16 @@ const DATASETS = {
     },
     inventory: {
         labelKey: 'dorms.export.datasetInventory',
-        icon: faBoxOpen,
+        icon: PackageOpen,
         colorClass: 'text-indigo-500 bg-indigo-500/10 border-indigo-500/30',
         columns: [
-            { key: 'dorm', labelKey: 'dorms.plotting.dorm', icon: faHome },
-            { key: 'item', labelKey: 'dorms.export.itemName', icon: faClipboardList },
-            { key: 'total', labelKey: 'dorms.export.totalItem', icon: faHashtag },
-            { key: 'good', labelKey: 'dorms.export.conditionGood', icon: faCheckCircle },
-            { key: 'damaged', labelKey: 'dorms.export.conditionDamaged', icon: faTriangleExclamation },
-            { key: 'notes', labelKey: 'dorms.musyrif.notes', icon: faFileLines },
-            { key: 'last_checked', labelKey: 'dorms.export.lastChecked', icon: faCalendarAlt }
+            { key: 'dorm', labelKey: 'dorms.plotting.dorm', icon: House },
+            { key: 'item', labelKey: 'dorms.export.itemName', icon: ClipboardList },
+            { key: 'total', labelKey: 'dorms.export.totalItem', icon: Hash },
+            { key: 'good', labelKey: 'dorms.export.conditionGood', icon: CircleCheck },
+            { key: 'damaged', labelKey: 'dorms.export.conditionDamaged', icon: TriangleAlert },
+            { key: 'notes', labelKey: 'dorms.musyrif.notes', icon: FileText },
+            { key: 'last_checked', labelKey: 'dorms.export.lastChecked', icon: Calendar }
         ],
         presets: [
             { id: 'all', labelKey: 'dorms.export.presetComplete', cols: ['dorm', 'item', 'total', 'good', 'damaged', 'notes', 'last_checked'] },
@@ -402,6 +396,7 @@ export default function DormsExportModal({
     }, [getExportData, addToast, dataset, exportScope, students, audits, inventories, t, tNum, language])
 
     const columnButtons = useMemo(() => currentDatasetDef.columns.map(({ key, labelKey, icon }) => {
+        const IconComp = icon
         const orderIdx = exportColumns.indexOf(key) + 1
         const isSelected = orderIdx > 0
         const label = t(labelKey)
@@ -417,7 +412,7 @@ export default function DormsExportModal({
             >
                 <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 transition-all
                      ${isSelected ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] group-hover:text-[var(--color-primary)]'}`}>
-                    <FontAwesomeIcon icon={icon} className="text-[9px]" />
+                    <IconComp className="text-[9px]" />
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className={`text-[9px] font-black uppercase tracking-tight truncate ${isSelected ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}>{label}</div>
@@ -439,7 +434,7 @@ export default function DormsExportModal({
             onClose={onClose}
             title={t('dorms.export.title')}
             description={t('dorms.export.description')}
-            icon={faFileExport}
+            icon={FileOutput}
             iconBg="bg-amber-500/10"
             iconColor="text-amber-600"
             size="lg"
@@ -461,8 +456,8 @@ export default function DormsExportModal({
             <div ref={containerRef}>
                 {/* Premium Loading Overlay */}
                 {exporting && (
-                    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[var(--color-surface)]/60 backdrop-blur-md animate-in fade-in duration-300">
-                        <div className="bg-gradient-to-b from-[var(--color-surface)] to-[var(--color-surface-alt)]/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12)] border border-[var(--color-border)]/60 rounded-3xl p-8 flex flex-col items-center gap-5 scale-110 animate-in zoom-in-95 duration-300">
+                    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[var(--color-surface)] animate-in fade-in duration-300">
+                        <div className="bg-[var(--color-surface)] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12)] border border-[var(--color-border)]/60 rounded-3xl p-8 flex flex-col items-center gap-5 scale-110 animate-in zoom-in-95 duration-300">
                             <div className="relative w-16 h-16">
                                 <div className="absolute inset-0 rounded-full bg-[var(--color-primary)]/10 animate-ping opacity-75"></div>
                                 <div className="absolute inset-0 rounded-full border-2 border-[var(--color-primary)]/10"></div>
@@ -471,7 +466,7 @@ export default function DormsExportModal({
                                     style={{ filter: 'drop-shadow(0 0 4px var(--color-primary))' }}
                                 ></div>
                                 <div className="absolute inset-0 m-auto w-10 h-10 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)]/60 flex items-center justify-center shadow-sm z-10">
-                                    <FontAwesomeIcon icon={faFileExport} className="text-[var(--color-primary)] text-sm animate-pulse" />
+                                    <FileOutput className="text-[var(--color-primary)] text-sm animate-pulse" />
                                 </div>
                             </div>
                             <div className="flex flex-col items-center">
@@ -509,7 +504,7 @@ export default function DormsExportModal({
                                     >
                                         <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all 
                                             ${isActive ? 'bg-[var(--color-primary)] text-white shadow-lg' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] group-hover:bg-[var(--color-primary)]/10'}`}>
-                                            <FontAwesomeIcon icon={def.icon} className="text-xs" />
+                                            <def.icon className="text-xs" />
                                         </div>
                                         <div>
                                             <div className="text-[10px] font-black text-[var(--color-text)] leading-tight">{t(def.labelKey)}</div>
@@ -533,11 +528,12 @@ export default function DormsExportModal({
                             <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] opacity-70">{t('dorms.export.stepScope')}</p>
                             <div className="grid grid-cols-4 gap-2.5">
                                 {[
-                                    { val: 'all', label: t('dorms.export.scopeAll'), desc: `${tNum(students.length)}${t('dorms.suffixSantri')}`, icon: faUsers },
-                                    { val: 'assigned', label: t('dorms.export.scopeAssigned'), desc: `${tNum(students.filter(s => s.metadata?.kamar).length)}${t('dorms.suffixSantri')}`, icon: faHome },
-                                    { val: 'unassigned', label: t('dorms.export.scopeUnassigned'), desc: `${tNum(students.filter(s => !s.metadata?.kamar).length)}${t('dorms.suffixSantri')}`, icon: faSliders },
-                                    { val: 'selected', label: t('dorms.export.scopeSelected'), desc: `${tNum(selectedIds.length)}${t('dorms.suffixSantri')}`, icon: faCheckCircle, disabled: selectedIds.length === 0 }
+                                    { val: 'all', label: t('dorms.export.scopeAll'), desc: `${tNum(students.length)}${t('dorms.suffixSantri')}`, icon: Users },
+                                    { val: 'assigned', label: t('dorms.export.scopeAssigned'), desc: `${tNum(students.filter(s => s.metadata?.kamar).length)}${t('dorms.suffixSantri')}`, icon: House },
+                                    { val: 'unassigned', label: t('dorms.export.scopeUnassigned'), desc: `${tNum(students.filter(s => !s.metadata?.kamar).length)}${t('dorms.suffixSantri')}`, icon: SlidersHorizontal },
+                                    { val: 'selected', label: t('dorms.export.scopeSelected'), desc: `${tNum(selectedIds.length)}${t('dorms.suffixSantri')}`, icon: CircleCheck, disabled: selectedIds.length === 0 }
                                 ].map(({ val, label, desc, icon, disabled }) => {
+                                    const IconComp = icon
                                     const isActive = exportScope === val
                                     return (
                                         <button
@@ -554,7 +550,7 @@ export default function DormsExportModal({
                                         >
                                             <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all 
                                                 ${isActive ? 'bg-[var(--color-primary)] text-white shadow-lg' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] group-hover:bg-[var(--color-primary)]/10'}`}>
-                                                <FontAwesomeIcon icon={icon} className="text-xs" />
+                                                <IconComp className="text-xs" />
                                             </div>
                                             <div>
                                                 <div className="text-[10px] font-black text-[var(--color-text)] leading-tight">{label}</div>
@@ -580,7 +576,7 @@ export default function DormsExportModal({
                         {/* Presets Sub-section with label and horizontal scroll */}
                         <div className="flex flex-col gap-2 p-3 bg-[var(--color-surface-alt)]/40 rounded-2xl border border-[var(--color-border)]/50">
                             <div className="flex items-center gap-1.5 text-[8px] font-black uppercase tracking-wider text-[var(--color-text-muted)] opacity-60">
-                                <FontAwesomeIcon icon={faTags} className="text-[9px]" />
+                                <Tags className="text-[9px]" />
                                 <span>{t('dorms.export.quickPreset')}</span>
                             </div>
                             <div className="flex flex-wrap gap-2">
@@ -593,7 +589,7 @@ export default function DormsExportModal({
                                             onClick={() => handlePresetClick(preset.cols)}
                                             className={`px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-wider transition-all active:scale-95 shrink-0
                                                 ${isActive
-                                                    ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm shadow-[var(--color-primary)]/20'
+                                                    ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm'
                                                     : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/40 hover:text-[var(--color-primary)]'}`}
                                         >
                                             {t(preset.labelKey)}
@@ -640,7 +636,7 @@ export default function DormsExportModal({
                                 className={`px-4 py-3 rounded-xl border transition-all flex items-center gap-2 text-xs font-black
                                     ${advancedOpen ? 'border-[var(--color-primary)] bg-[var(--color-primary)] text-white' : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/40'}`}
                             >
-                                <FontAwesomeIcon icon={faGear} className={advancedOpen ? 'animate-spin-slow' : ''} />
+                                <Settings className={advancedOpen ? 'animate-spin-slow' : ''} />
                                 {t('dorms.export.advanced')}
                             </button>
                         </div>
@@ -649,7 +645,7 @@ export default function DormsExportModal({
                             <div className="p-4 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2 duration-200">
                                 <div className="space-y-2">
                                     <label className="text-[9px] font-black uppercase tracking-wider text-[var(--color-text-muted)] flex items-center gap-1.5">
-                                        <FontAwesomeIcon icon={faHeading} />
+                                        <Heading />
                                         {t('dorms.export.includeHeader')}
                                     </label>
                                     <div className="flex gap-1 bg-[var(--color-surface)] p-1 rounded-lg border border-[var(--color-border)]">
@@ -667,13 +663,13 @@ export default function DormsExportModal({
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-[9px] font-black uppercase tracking-wider text-[var(--color-text-muted)] flex items-center gap-1.5">
-                                        <FontAwesomeIcon icon={faArrowsLeftRight} />
+                                        <ArrowLeftRight />
                                         {t('dorms.export.pdfOrientation')}
                                     </label>
                                     <div className="flex gap-1 bg-[var(--color-surface)] p-1 rounded-lg border border-[var(--color-border)]">
                                         {[
-                                            { v: 'landscape', l: t('dorms.export.landscape'), icon: faArrowsLeftRight },
-                                            { v: 'portrait', l: t('dorms.export.portrait'), icon: faArrowsUpDown }
+                                            { v: 'landscape', l: t('dorms.export.landscape'), icon: ArrowLeftRight },
+                                            { v: 'portrait', l: t('dorms.export.portrait'), icon: ArrowUpDown }
                                         ].map(opt => (
                                             <button
                                                 key={opt.v}
@@ -681,7 +677,7 @@ export default function DormsExportModal({
                                                 onClick={() => setPdfOrientation(opt.v)}
                                                 className={`flex-1 py-1 rounded-md text-[9px] font-black uppercase transition-all flex items-center justify-center gap-1.5 ${pdfOrientation === opt.v ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
                                             >
-                                                <FontAwesomeIcon icon={opt.icon} className="text-[8px]" />
+                                                <opt.icon className="text-[8px]" />
                                                 {opt.l}
                                             </button>
                                         ))}
@@ -696,22 +692,22 @@ export default function DormsExportModal({
                         <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] opacity-70">{t('dorms.export.stepExport')}</p>
                         <div className="grid grid-cols-3 gap-2.5">
                             {[
-                                { label: 'CSV', icon: faFileCsv, desc: 'Universal', onClick: () => handleExportCSV(fileName, exportOptions), color: 'hover:border-slate-400 hover:bg-slate-50', iconColor: 'text-slate-500' },
-                                { label: 'Excel', icon: faFileExcel, desc: '.xlsx', onClick: () => handleExportExcel(fileName), color: 'hover:border-emerald-400 hover:bg-emerald-50 text-emerald-700', iconColor: 'text-emerald-500' },
-                                { label: 'PDF Tabel', icon: faFilePdf, desc: 'Tabel', onClick: () => handleExportPDF(fileName, exportOptions), color: 'hover:border-rose-400 hover:bg-rose-50 text-rose-700', iconColor: 'text-rose-500' },
-                            ].map(({ label, icon, desc, onClick, color, iconColor }) => (
+                                { label: 'CSV', icon: FileSpreadsheet, desc: 'Universal', onClick: () => handleExportCSV(fileName, exportOptions), color: 'hover:border-slate-400 hover:bg-slate-50', iconColor: 'text-slate-500' },
+                                { label: 'Excel', icon: FileSpreadsheet, desc: '.xlsx', onClick: () => handleExportExcel(fileName), color: 'hover:border-emerald-400 hover:bg-emerald-50 text-emerald-700', iconColor: 'text-emerald-500' },
+                                { label: 'PDF Tabel', icon: FileText, desc: 'Tabel', onClick: () => handleExportPDF(fileName, exportOptions), color: 'hover:border-rose-400 hover:bg-rose-50 text-rose-700', iconColor: 'text-rose-500' },
+                            ].map(fmt => (
                                 <button
-                                    key={label}
+                                    key={fmt.label}
                                     type="button"
-                                    onClick={onClick}
+                                    onClick={fmt.onClick}
                                     disabled={exporting || exportColumns.length === 0 || estimatedCount === 0}
-                                    className={`relative group h-24 rounded-2xl border-2 border-[var(--color-border)] bg-[var(--color-surface)] flex flex-col items-center justify-center gap-1 transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 ${color}`}
+                                    className={`relative group h-24 rounded-2xl border-2 border-[var(--color-border)] bg-[var(--color-surface)] flex flex-col items-center justify-center gap-1 transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 ${fmt.color}`}
                                 >
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-1 transition-transform group-hover:scale-110 ${iconColor} bg-[var(--color-surface-alt)]`}>
-                                        <FontAwesomeIcon icon={icon} className="text-xl" />
+                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-1 transition-transform group-hover:scale-110 ${fmt.iconColor} bg-[var(--color-surface-alt)]`}>
+                                        <fmt.icon className="text-xl" />
                                     </div>
-                                    <span className="text-[10px] font-black uppercase tracking-widest">{label}</span>
-                                    <span className="text-[8px] font-bold opacity-60 uppercase">{desc}</span>
+                                    <span className="text-[10px] font-black uppercase tracking-widest">{fmt.label}</span>
+                                    <span className="text-[8px] font-bold opacity-60 uppercase">{fmt.desc}</span>
                                 </button>
                             ))}
                         </div>
@@ -719,14 +715,14 @@ export default function DormsExportModal({
 
                     {exportColumns.length === 0 && (
                         <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-red-500/5 border border-red-500/10 text-red-600 text-xs font-black uppercase tracking-tight animate-pulse">
-                            <FontAwesomeIcon icon={faTriangleExclamation} />
+                            <TriangleAlert />
                             {t('dorms.export.errNoColumns')}
                         </div>
                     )}
 
                     {estimatedCount === 0 && (
                         <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-amber-500/5 border border-amber-500/10 text-amber-600 text-[10px] font-black uppercase tracking-tight">
-                            <FontAwesomeIcon icon={faTriangleExclamation} />
+                            <TriangleAlert />
                             {t('dorms.export.errNoData')}
                         </div>
                     )}

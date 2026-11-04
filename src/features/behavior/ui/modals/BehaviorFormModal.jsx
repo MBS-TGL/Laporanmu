@@ -7,7 +7,6 @@ import Modal from '@shared/components/Modal'
 import RichSelect from '@shared/components/RichSelect'
 import RichDatePicker from '@shared/components/RichDatePicker'
 import RichTimePicker from '@shared/components/RichTimePicker'
-import { faBook } from '@fortawesome/free-solid-svg-icons'
 import { useToast } from '@context'
 import { useLanguage } from '@context'
 
@@ -372,7 +371,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                             type="button"
                             onClick={() => nextStep()}
                             disabled={!formData.student_id}
-                            className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[var(--color-primary)]/10 disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+                            className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
                         >
                             <span>{tp('next')}</span>
                             <NextIcon className="w-3.5 h-3.5 text-white" />
@@ -384,7 +383,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                             type="button"
                             onClick={() => nextStep()}
                             disabled={!formData.violation_type_id}
-                            className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[var(--color-primary)]/10 disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+                            className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
                         >
                             <span>{tp('next')}</span>
                             <NextIcon className="w-3.5 h-3.5 text-white" />
@@ -396,7 +395,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                             type="button"
                             onClick={handleSubmit}
                             disabled={submitting || !formData.violation_type_id}
-                            className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[var(--color-primary)]/10 disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+                            className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
                         >
                             {submitting ? (
                                 <>
@@ -514,7 +513,7 @@ const BehaviorFormModal = memo(function BehaviorFormModal({
                                                 key={s.id}
                                                 onClick={() => nextStep(s.id)}
                                                 className={`w-full px-2.5 py-1.5 rounded-xl border transition-all text-left flex items-center justify-between group active:scale-[0.99] ${formData.student_id === s.id
-                                                    ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20'
+                                                    ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-lg'
                                                     : 'bg-[var(--color-surface)] border-[var(--color-border)]/50 hover:border-[var(--color-primary)]/40 hover:bg-[var(--color-surface-alt)]'
                                                     }`}
                                             >

@@ -58,15 +58,9 @@ export default function DashboardLayout({ children, title }) {
                 <ChatAssistant isOpen={isChatOpen} onOpenChange={setIsChatOpen} />
             </Suspense>
 
-            {/* Ambient glows — desktop only, lightweight */}
-            <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden hidden lg:block">
-                <div className="absolute -top-24 -right-24 w-[400px] h-[400px] bg-[var(--color-primary)]/4 rounded-full blur-[80px]" />
-                <div className="absolute -bottom-24 -left-24 w-[400px] h-[400px] bg-[var(--color-primary)]/3 rounded-full blur-[80px]" />
-            </div>
-
             {/* Page Content — shifts right on desktop to make room for sidebar */}
             <main
-                className="relative z-10 w-full px-4 sm:px-5 lg:px-6 py-4 lg:py-6 pb-24 lg:pb-6"
+                className="relative z-10 w-full px-3 sm:px-4 lg:px-5 py-4 lg:py-6 pb-24 lg:pb-6"
                 style={{ 
                     marginLeft: `0px`,
                     '--sidebar-width': '0px'

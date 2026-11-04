@@ -172,7 +172,7 @@ export const ExtraInput = memo(({ value, studentId, fieldKey, onCommit, ...input
             />
             {focused && presets && (
                 <div
-                    className="absolute left-0 z-[100] w-[260px] bg-white/95 dark:bg-slate-900/98 backdrop-blur-md border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-2.5 shadow-2xl flex flex-col gap-1.5 animate-in fade-in zoom-in-95 duration-150"
+                    className="absolute left-0 z-[100] w-[260px] bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-2.5 shadow-xl flex flex-col gap-1.5 animate-in fade-in zoom-in-95 duration-150"
                     style={{
                         top: 'calc(100% + 6px)'
                     }}
@@ -191,8 +191,8 @@ export const ExtraInput = memo(({ value, studentId, fieldKey, onCommit, ...input
                                     handleSelectPreset(p)
                                 }}
                                 className={`px-2.5 py-1 rounded-xl text-[9px] font-black tracking-tight border transition-all duration-200 hover:scale-105 active:scale-95 ${fieldKey === 'ziyadah'
-                                    ? 'bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500 hover:text-white dark:hover:text-white hover:border-emerald-500 hover:shadow-lg hover:shadow-emerald-500/20'
-                                    : 'bg-violet-500/10 dark:bg-violet-500/20 border-violet-500/20 text-violet-600 dark:text-violet-400 hover:bg-violet-500 hover:text-white dark:hover:text-white hover:border-violet-500 hover:shadow-lg hover:shadow-violet-500/20'
+                                    ? 'bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500 hover:text-white dark:hover:text-white hover:border-emerald-500 hover:shadow-lg'
+                                    : 'bg-violet-500/10 dark:bg-violet-500/20 border-violet-500/20 text-violet-600 dark:text-violet-400 hover:bg-violet-500 hover:text-white dark:hover:text-white hover:border-violet-500 hover:shadow-lg'
                                     }`}
                             >
                                 {p}
@@ -377,7 +377,7 @@ export const ExtraExpandingTextarea = memo(({ value, studentId, fieldKey, onComm
             {/* Portaled Dropdown Preset Chips */}
             {focused && presets && presets.length > 0 && dropdownPos && createPortal(
                 <div
-                    className="fixed z-[99999] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl p-2.5 shadow-2xl flex flex-col gap-1.5 animate-in fade-in zoom-in-95 duration-150"
+                    className="fixed z-[99999] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl p-2.5 shadow-xl flex flex-col gap-1.5 animate-in fade-in zoom-in-95 duration-150"
                     style={{
                         top: dropdownPos.top,
                         left: dropdownPos.left,
@@ -816,7 +816,7 @@ const StudentRow = memo(({
                             <button
                                 type="button"
                                 onClick={() => { onSave(student.id); setShowModal(false) }}
-                                className="h-10 px-6 rounded-2xl bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-black text-xs uppercase tracking-wider transition-all shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 cursor-pointer"
+                                className="h-10 px-6 rounded-2xl bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-black text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                             >
                                 <Save className="w-4 h-4" />
                                 <span>Simpan &amp; Selesai</span>
@@ -828,7 +828,7 @@ const StudentRow = memo(({
                         {/* Header Student Info Bar */}
                         <div className="p-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] flex items-center justify-between gap-3">
                             <div className="flex items-center gap-3 min-w-0">
-                                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-md shadow-indigo-500/20">
+                                <div className="w-9 h-9 rounded-full bg-indigo-500 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-md">
                                     {student.name.charAt(0)}
                                 </div>
                                 <div className="min-w-0">
@@ -1035,7 +1035,7 @@ const StudentRow = memo(({
                                                 />
                                                 {/* Floating Dropdown inside Document Body */}
                                                 <div
-                                                    className={`fixed z-[99999] w-72 p-2.5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-2xl space-y-1 animate-in fade-in ${dropdownCoords.placement === 'top' ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'
+                                                    className={`fixed z-[99999] w-72 p-2.5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-xl space-y-1 animate-in fade-in ${dropdownCoords.placement === 'top' ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'
                                                         } duration-150`}
                                                     style={{
                                                         right: Math.max(12, dropdownCoords.right),

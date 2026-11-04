@@ -88,7 +88,7 @@ function RaportLayoutContent({ isAcademic = false }) {
         <DashboardLayout title={isAcademic ? 'Rapor & Penilaian' : 'Raport Pondok'}>
             {/* Global auto-save indicator */}
             {activeStepIndex === 2 && globalSaveIndicator && (
-                <div className={`fixed bottom-6 right-6 z-[9999] flex items-center gap-2 px-3.5 py-2.5 rounded-xl border shadow-2xl text-[10px] font-black transition-all duration-300 backdrop-blur-md ${globalSaveIndicator === 'saving' ? 'bg-amber-500/10 dark:bg-amber-500/20 border-amber-500/20 text-amber-600 dark:text-amber-400' : 'bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500/20 text-emerald-600 dark:text-emerald-400'}`}>
+                <div className={`fixed bottom-6 right-6 z-[9999] flex items-center gap-2 px-3.5 py-2.5 rounded-xl border shadow-xl text-[10px] font-black transition-all duration-300 ${globalSaveIndicator === 'saving' ? 'bg-amber-500/10 dark:bg-amber-500/20 border-amber-500/20 text-amber-600 dark:text-amber-400' : 'bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500/20 text-emerald-600 dark:text-emerald-400'}`}>
                     {globalSaveIndicator === 'saving' ? <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500" /> : <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />}
                     {globalSaveIndicator === 'saving' ? 'Menyimpan...' : 'Tersimpan ✓'}
                 </div>
@@ -126,7 +126,7 @@ function RaportLayoutContent({ isAcademic = false }) {
                                                 <button
                                                     disabled={i > activeStepIndex && !classId}
                                                     onClick={() => navigate(stepRoutes[i])}
-                                                    className={`w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-black transition-all ${activeStepIndex === i ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/20' : activeStepIndex > i ? 'bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/30' : 'bg-[var(--color-surface)] text-[var(--color-text-muted)]'}`}
+                                                    className={`w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-black transition-all ${activeStepIndex === i ? 'bg-indigo-500 text-white shadow-md' : activeStepIndex > i ? 'bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/30' : 'bg-[var(--color-surface)] text-[var(--color-text-muted)]'}`}
                                                 >
                                                     {activeStepIndex > i ? <Check className="w-2 h-2" /> : i + 1}
                                                 </button>
@@ -162,16 +162,16 @@ function RaportLayoutContent({ isAcademic = false }) {
                 />
 
                 {/* ── SUB-ROUTE CONTENT ── */}
-                <div className="glass rounded-[1.5rem] border border-[var(--color-border)] p-4 sm:p-6">
+                <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] p-4 sm:p-6">
                     <Outlet />
                 </div>
 
                 {/* Portaled Keyboard Shortcuts Dropdown */}
                 {showShortcutModal && shortcutRect && createPortal(
                     <>
-                        <div className="fixed inset-0 z-[9990] bg-black/5 backdrop-blur-[1px]" onClick={() => setShowShortcutModal(false)} />
+                        <div className="fixed inset-0 z-[9990] bg-black/5" onClick={() => setShowShortcutModal(false)} />
                         <div
-                            className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl shadow-black/10 overflow-hidden text-left animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200"
+                            className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden text-left animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200"
                             style={{
                                 top: shortcutRect.bottom + 8,
                                 left: Math.max(10, shortcutRect.right - 288)

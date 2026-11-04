@@ -3,6 +3,7 @@ import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
 import { STATUS_CONFIG } from '@features/teachers/components/TeacherRow'
 import { useDebounce } from '@hooks'
+import { Pin } from 'lucide-react'
 
 const LS_FILTERS = 'teachers_filters'
 const LS_COLS = 'teachers_columns'
@@ -344,7 +345,7 @@ export function useTeachersCore({ addToast, profile }) {
             addToast(
                 newPinned ? (
                     <span className="flex items-center gap-1.5">
-                        <FontAwesomeIcon icon={faThumbtack} className="text-amber-400 rotate-[-45deg] text-[10px]" />
+                        <Pin className="text-amber-400 rotate-[-45deg] w-3 h-3" />
                         "{teacher.name}" disematkan ke atas
                     </span>
                 ) : (

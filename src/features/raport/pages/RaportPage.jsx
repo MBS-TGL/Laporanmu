@@ -1769,7 +1769,7 @@ await Promise.all([
                                 const ok = await loadStudents(lastSession.classId, lastSession.month, lastSession.year, lastSession.useLang, lastSession.reportType, lastSession.selectedSemester, lastSession.academicYear)
                                 if (ok) setStep(2)
                             }}
-                            className="h-8 px-4 rounded-xl bg-indigo-600 text-white text-[9px] font-black hover:bg-indigo-700 transition-all shadow-md shadow-indigo-500/20"
+                            className="h-8 px-4 rounded-xl bg-indigo-600 text-white text-[9px] font-black hover:bg-indigo-700 transition-all shadow-md"
                         >
                             Buka →
                         </button>
@@ -1804,7 +1804,7 @@ await Promise.all([
                             placeholder="Cari nama kelas..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full h-11 pl-11 pr-10 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] outline-none text-[13px] font-bold transition-all focus:border-indigo-500/50 focus:shadow-xl focus:shadow-indigo-500/5 text-[var(--color-text)]"
+                            className="w-full h-11 pl-11 pr-10 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] outline-none text-[13px] font-bold transition-all focus:border-indigo-500/50 focus:shadow-xl text-[var(--color-text)]"
                         />
                         {searchQuery && (
                             <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg hover:bg-red-50 flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 transition-all">
@@ -1823,7 +1823,7 @@ await Promise.all([
                             <button
                                 key={opt.id}
                                 onClick={() => setFilterType(opt.id)}
-                                className={`h-9 sm:px-5 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-1.5 sm:gap-2 ${filterType === opt.id ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white dark:hover:bg-slate-800'}`}
+                                className={`h-9 sm:px-5 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-1.5 sm:gap-2 ${filterType === opt.id ? 'bg-indigo-600 text-white shadow-lg' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white dark:hover:bg-slate-800'}`}
                             >
                                 {(() => { const Icon = opt.icon; return <Icon className="w-2.5 h-2.5 shrink-0" /> })()}
                                 <span className="whitespace-nowrap">{opt.label}</span>
@@ -1949,7 +1949,7 @@ await Promise.all([
 
         return (
             <div className="space-y-6 animate-fade-in">
-                <div className="p-5 rounded-3xl bg-gradient-to-br from-emerald-500/10 to-indigo-500/10 border border-emerald-500/20">
+                <div className="p-5 rounded-3xl bg-success/10 border border-emerald-500/20">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center shrink-0">
                             <ClipboardList className="text-emerald-500 w-5 h-5" />
@@ -1969,7 +1969,7 @@ await Promise.all([
                             </label>
                             <div className="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 flex items-center justify-between gap-4">
                                 <div className="flex items-center gap-3 min-w-0 flex-1">
-                                    <div className="w-10 h-10 rounded-[1.2rem] bg-emerald-500 flex items-center justify-center text-white text-xs font-black shadow-lg shadow-emerald-500/20 shrink-0">
+                                    <div className="w-10 h-10 rounded-[1.2rem] bg-emerald-500 flex items-center justify-center text-white text-xs font-black shadow-lg shrink-0">
                                         {selectedClass?.name?.charAt(0) || 'K'}
                                     </div>
                                     <div className="min-w-0 flex-1">
@@ -2086,7 +2086,7 @@ await Promise.all([
                     <button onClick={() => { setSelectedClassId(''); setMusyrif(''); setStep(0) }} className="h-12 px-4 rounded-2xl border border-[var(--color-border)] text-xs sm:text-sm font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-2 shrink-0">
                         <ArrowLeft className="w-3.5 h-3.5 mr-1.5" /> <span className="hidden sm:inline">Kembali</span>
                     </button>
-                    <button onClick={async () => { if (!selectedClassId) return; const ok = await loadStudents(); if (ok) setStep(2) }} disabled={!selectedClassId || loading} className="flex-1 h-12 rounded-2xl bg-emerald-500 text-white text-xs sm:text-sm font-black shadow-lg shadow-emerald-500/20 hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 overflow-hidden px-2">
+                        <button onClick={async () => { if (!selectedClassId) return; const ok = await loadStudents(); if (ok) setStep(2) }} disabled={!selectedClassId || loading} className="flex-1 h-12 rounded-2xl bg-emerald-500 text-white text-xs sm:text-sm font-black shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 overflow-hidden px-2">
                         {loading ? (
                             <Loader2 className="w-3.5 h-3.5 animate-spin" />
                         ) : (
@@ -2304,7 +2304,7 @@ await Promise.all([
                                         <button
                                             key={s.id}
                                             onClick={() => setPreviewStudentId(s.id)}
-                                            className={`w-full p-2.5 rounded-xl border text-left transition-all ${active ? 'bg-indigo-500 border-indigo-500 text-white shadow-lg shadow-indigo-500/15' : 'bg-[var(--color-surface)] border-[var(--color-border)] hover:border-indigo-500/30'}`}
+                                            className={`w-full p-2.5 rounded-xl border text-left transition-all ${active ? 'bg-indigo-500 border-indigo-500 text-white shadow-lg' : 'bg-[var(--color-surface)] border-[var(--color-border)] hover:border-indigo-500/30'}`}
                                         >
                                             <div className="flex items-center gap-2.5">
                                                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${active ? 'bg-white/20' : 'bg-[var(--color-surface-alt)]'}`}>
@@ -2320,7 +2320,7 @@ await Promise.all([
                         </div>
 
                         <div className="space-y-2">
-                            <button onClick={() => openPrintWindow(students)} className="w-full h-11 rounded-2xl bg-indigo-500 text-white text-xs font-black shadow-lg shadow-indigo-500/20 hover:bg-indigo-600 transition-all flex items-center justify-center gap-2">
+                            <button onClick={() => openPrintWindow(students)} className="w-full h-11 rounded-2xl bg-indigo-500 text-white text-xs font-black shadow-lg hover:bg-indigo-600 transition-all flex items-center justify-center gap-2">
                                 <Printer className="w-3.5 h-3.5 mr-1.5" /> Cetak Semua ({totalCount})
                             </button>
                             <button onClick={() => setStep(2)} className="w-full h-11 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-xs font-black hover:text-[var(--color-text)] transition-all flex items-center justify-center gap-2">
@@ -2445,7 +2445,7 @@ await Promise.all([
                                 <div className="relative flex items-center w-full sm:w-auto col-span-2 sm:col-span-1 shrink-0" data-action-dropdown-anchor>
                                     <button
                                         onClick={() => setShowActionDropdown(p => !p)}
-                                        className="w-full sm:w-auto h-10 px-3.5 rounded-xl bg-indigo-500 text-white text-[10px] font-black flex items-center justify-center gap-1.5 hover:bg-indigo-600 active:scale-95 transition-all select-none shadow-lg shadow-indigo-500/20"
+                                        className="w-full sm:w-auto h-10 px-3.5 rounded-xl bg-indigo-500 text-white text-[10px] font-black flex items-center justify-center gap-1.5 hover:bg-indigo-600 active:scale-95 transition-all select-none shadow-lg"
                                     >
                                         <Sliders className="w-3.5 h-3.5" />
                                         <span>Aksi Raport</span>
@@ -2539,7 +2539,7 @@ await Promise.all([
                             onTouchEnd={e => { e.currentTarget._pinchStartDist = null }}
                         >
                             {/* #2: Animated eye-catching hint badge — hanya di mobile */}
-                            <div className="lg:hidden flex items-center gap-1.5 mb-3 px-3 py-1.5 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-indigo-500/20 shadow-sm animate-pulse">
+                            <div className="lg:hidden flex items-center gap-1.5 mb-3 px-3 py-1.5 rounded-full bg-white dark:bg-slate-800 border border-indigo-500/20 shadow-sm animate-pulse">
                                 <Maximize2 className="w-3 h-3 text-indigo-500" />
                                 <span className="text-[9px] font-black text-indigo-500 uppercase tracking-widest">Klik raport untuk memperbesar</span>
                             </div>
@@ -2559,7 +2559,7 @@ await Promise.all([
                                     >
                                         {/* #4: Pulse ring animation untuk hint tap-to-fullscreen */}
                                         <div
-                                            className="relative shadow-2xl rounded-none overflow-hidden cursor-pointer transition-all group"
+                                            className="relative shadow-sm rounded-none overflow-hidden cursor-pointer transition-all group"
                                             style={{
                                                 width: pageSize === 'f4' ? '215mm' : '210mm',
                                                 transform: `scale(${previewZoom})`,
@@ -2675,7 +2675,7 @@ await Promise.all([
                             </div>
                         </div>
                         <div className="flex items-center gap-2 flex-wrap">
-                            <button onClick={() => setArchiveEditMode(!archiveEditMode)} className={`h-9 px-4 rounded-xl border text-xs font-black transition-all ${archiveEditMode ? 'bg-violet-500 border-violet-500 text-white shadow-lg shadow-violet-500/20' : 'bg-violet-500/10 border-violet-500/20 text-violet-600 hover:bg-violet-500/20'}`}>
+                            <button onClick={() => setArchiveEditMode(!archiveEditMode)} className={`h-9 px-4 rounded-xl border text-xs font-black transition-all ${archiveEditMode ? 'bg-violet-500 border-violet-500 text-white shadow-lg' : 'bg-violet-500/10 border-violet-500/20 text-violet-600 hover:bg-violet-500/20'}`}>
                                 <Sliders className="w-3.5 h-3.5 mr-2" /> {archiveEditMode ? 'Selesai Edit' : 'Edit Arsip'}
                             </button>
                             <button onClick={() => runZipBlast(pStu, entry)} className="h-9 px-4 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-600 text-xs font-black hover:bg-teal-500/20 transition-all">
@@ -2703,7 +2703,7 @@ await Promise.all([
                                         <button
                                             key={s.id}
                                             onClick={() => setPreviewStudentId(s.id)}
-                                            className={`w-full p-2.5 rounded-xl border text-left transition-all ${active ? 'bg-indigo-500 border-indigo-500 text-white shadow-lg shadow-indigo-500/15' : 'bg-[var(--color-surface)] border-[var(--color-border)] hover:border-indigo-500/30'}`}
+                                            className={`w-full p-2.5 rounded-xl border text-left transition-all ${active ? 'bg-indigo-500 border-indigo-500 text-white shadow-lg' : 'bg-[var(--color-surface)] border-[var(--color-border)] hover:border-indigo-500/30'}`}
                                         >
                                             <div className="flex items-center gap-2.5">
                                                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${active ? 'bg-white/20' : 'bg-[var(--color-surface-alt)]'}`}>
@@ -2725,7 +2725,7 @@ await Promise.all([
                                     {archiveEditMode ? (
                                         <div className="p-6 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-md animate-fade-in space-y-6">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded-xl bg-violet-500 text-white flex items-center justify-center shadow-lg shadow-violet-500/20 shrink-0">
+                                                <div className="w-10 h-10 rounded-xl bg-violet-500 text-white flex items-center justify-center shadow-lg shrink-0">
                                                     <Sliders className="w-3.5 h-3.5" />
                                                 </div>
                                                 <div>
@@ -2877,7 +2877,7 @@ await Promise.all([
                                             )}
 
                                             <div className="flex gap-3 pt-2">
-                                                <button onClick={saveArchiveEdit} disabled={archiveEditSaving} className="flex-1 h-10 rounded-xl bg-emerald-500 text-white text-xs font-black shadow-lg shadow-emerald-500/10 hover:bg-emerald-600 disabled:opacity-60 transition-all active:scale-95 flex items-center justify-center gap-2">
+                                                <button onClick={saveArchiveEdit} disabled={archiveEditSaving} className="flex-1 h-10 rounded-xl bg-emerald-500 text-white text-xs font-black shadow-lg hover:bg-emerald-600 disabled:opacity-60 transition-all active:scale-95 flex items-center justify-center gap-2">
                                                     {archiveEditSaving ? 'Menyimpan...' : 'Simpan Semua Perubahan'}
                                                 </button>
                                             </div>
@@ -2942,7 +2942,7 @@ await Promise.all([
                                                             </button>
                                                         )}
 
-                                                        <button onClick={() => openPrintWindow([pStudent].filter(Boolean))} className="h-10 px-5 rounded-xl bg-emerald-500 text-white text-[10px] font-black flex items-center justify-center gap-2 flex-1 sm:flex-initial shadow-lg shadow-emerald-500/20">
+                                                        <button onClick={() => openPrintWindow([pStudent].filter(Boolean))} className="h-10 px-5 rounded-xl bg-emerald-500 text-white text-[10px] font-black flex items-center justify-center gap-2 flex-1 sm:flex-initial shadow-lg">
                                                             <Printer className="w-3.5 h-3.5 mr-1" /> <span className="hidden xs:inline">Cetak</span>
                                                         </button>
 
@@ -2960,7 +2960,7 @@ await Promise.all([
                                             <div className="flex-1 overflow-y-auto overflow-x-hidden bg-gray-50 dark:bg-slate-900/50 flex flex-col items-center custom-scrollbar p-6 min-h-[500px]">
                                                 <div
                                                     style={{ transform: `scale(${previewZoom})`, transformOrigin: 'top center' }}
-                                                    className="shadow-2xl h-fit cursor-pointer relative"
+                                                    className="shadow-sm h-fit cursor-pointer relative"
                                                     onClick={() => setIsFullScreenPreview(true)}
                                                 >
                                                     {/* Mobile pulse ring */}
@@ -3145,7 +3145,7 @@ await Promise.all([
                 {/* Stats skeleton */}
                 <StatsCarousel count={4}>
                     {[1, 2, 3, 4].map(i => (
-                        <div key={i} className="glass rounded-[1.5rem] p-4 flex items-center gap-3 animate-pulse min-h-[90px]">
+                        <div key={i} className="bg-surface border border-border rounded-[1.5rem] p-4 flex items-center gap-3 animate-pulse min-h-[90px]">
                             <div className="w-12 h-12 rounded-xl bg-[var(--color-border)] shrink-0" />
                             <div className="flex-1">
                                 <div className="h-2.5 w-16 bg-[var(--color-border)] rounded mb-2" />
@@ -3167,7 +3167,7 @@ await Promise.all([
         <DashboardLayout title={isAcademicRaport ? 'Rapor & Penilaian' : 'Raport Pondok'}>
             {/* Global auto-save indicator */}
             {step === 2 && globalSaveIndicator && (
-                <div className={`fixed bottom-6 right-6 z-[9999] flex items-center gap-2 px-3.5 py-2.5 rounded-xl border shadow-2xl text-[10px] font-black transition-all duration-300 backdrop-blur-md ${globalSaveIndicator === 'saving' ? 'bg-amber-500/10 dark:bg-amber-500/20 border-amber-500/20 text-amber-600 dark:text-amber-400' : 'bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500/20 text-emerald-600 dark:text-emerald-400'}`}>
+                <div className={`fixed bottom-6 right-6 z-[9999] flex items-center gap-2 px-3.5 py-2.5 rounded-xl border shadow-xl text-[10px] font-black transition-all duration-300 ${globalSaveIndicator === 'saving' ? 'bg-amber-500/10 dark:bg-amber-500/20 border-amber-500/20 text-amber-600 dark:text-amber-400' : 'bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500/20 text-emerald-600 dark:text-emerald-400'}`}>
                     {globalSaveIndicator === 'saving' ? <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-500" /> : <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />}
                     {globalSaveIndicator === 'saving' ? 'Menyimpan...' : 'Tersimpan ✓'}
                 </div>
@@ -3195,7 +3195,7 @@ await Promise.all([
                                 <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] mr-2 shadow-sm">
                                     {stepLabels.map((label, i) => (
                                         <div key={i} className="flex items-center gap-1.5">
-                                            <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-black transition-all ${activeStepIndex === i ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/20' : activeStepIndex > i ? 'bg-emerald-500/20 text-emerald-500' : 'bg-[var(--color-surface)] text-[var(--color-text-muted)]'}`}>
+                                            <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-black transition-all ${activeStepIndex === i ? 'bg-indigo-500 text-white shadow-md' : activeStepIndex > i ? 'bg-emerald-500/20 text-emerald-500' : 'bg-[var(--color-surface)] text-[var(--color-text-muted)]'}`}>
                                                 {activeStepIndex > i ? <Check className="w-2 h-2" /> : i + 1}
                                             </div>
                                             <span className={`text-[9px] font-bold transition-all ${activeStepIndex === i ? 'text-indigo-600 font-extrabold' : activeStepIndex > i ? 'text-emerald-600' : 'text-[var(--color-text-muted)]'}`}>{label}</span>
@@ -3268,7 +3268,7 @@ await Promise.all([
 
 
                 {/* ── CONTENT — dengan animasi fade+slide antar step ── */}
-                <div className="glass rounded-[1.5rem] border border-[var(--color-border)] p-4 sm:p-6">
+                <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] p-4 sm:p-6">
                     <div key={step}
                         style={{
                             animation: 'stepFadeIn 0.22s cubic-bezier(0.16,1,0.3,1) both',
@@ -3292,9 +3292,9 @@ await Promise.all([
                 {/* Portaled Header Menu Dropdown */}
                 {isHeaderMenuOpen && headerMenuRect && createPortal(
                     <>
-                        <div className="fixed inset-0 z-[9990] bg-black/5 backdrop-blur-[1px]" onClick={() => setIsHeaderMenuOpen(false)} />
+                        <div className="fixed inset-0 z-[9990] bg-black/5" onClick={() => setIsHeaderMenuOpen(false)} />
                         <div
-                            className="fixed z-[9991] w-56 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl p-0 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200 overflow-hidden"
+                            className="fixed z-[9991] w-56 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-0 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200 overflow-hidden"
                             style={{
                                 top: headerMenuRect.bottom + 8,
                                 left: Math.max(10, headerMenuRect.right - 224)
@@ -3419,9 +3419,9 @@ await Promise.all([
                 {/* Portaled Keyboard Shortcuts Dropdown */}
                 {showShortcutModal && shortcutRect && createPortal(
                     <>
-                        <div className="fixed inset-0 z-[9990] bg-black/5 backdrop-blur-[1px]" onClick={() => setShowShortcutModal(false)} />
+                        <div className="fixed inset-0 z-[9990] bg-black/5" onClick={() => setShowShortcutModal(false)} />
                         <div
-                            className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl shadow-black/10 overflow-hidden text-left animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200"
+                            className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden text-left animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200"
                             style={{
                                 top: shortcutRect.bottom + 8,
                                 left: Math.max(10, shortcutRect.right - 288)
@@ -3554,7 +3554,7 @@ await Promise.all([
                                 </button>
                                 <button
                                     onClick={() => executeDeleteArchive(confirmDelete)}
-                                    className="flex-1 h-10 rounded-xl bg-red-500 text-white text-[11px] font-black shadow-md shadow-red-500/10 hover:bg-red-600 active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                                    className="flex-1 h-10 rounded-xl bg-red-500 text-white text-[11px] font-black shadow-md hover:bg-red-600 active:scale-95 transition-all flex items-center justify-center gap-1.5"
                                 >
                                     Ya, Hapus Permanen
                                 </button>
@@ -3579,14 +3579,14 @@ await Promise.all([
                 {/* ── FLOATING UNSAVED BAR ── */}
                 {
                     step === 2 && hasUnsavedMemo && !unsavedBarDismissed && (
-                        <div className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 rounded-2xl shadow-2xl border border-amber-500/30 bg-[var(--color-surface)] backdrop-blur-sm animate-bounce-subtle w-max max-w-[95vw]"
+                        <div className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 rounded-2xl shadow-xl border border-amber-500/30 bg-[var(--color-surface)] animate-bounce-subtle w-max max-w-[95vw]"
                             style={{ boxShadow: '0 8px 32px rgba(245,158,11,0.18)' }}>
                             <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0" />
                             <span className="text-[10px] md:text-[11px] font-black text-[var(--color-text)] whitespace-nowrap">
                                 Ada perubahan yang belum disimpan
                             </span>
                             <button onClick={saveAll} disabled={savingAll}
-                                className="h-8 px-4 rounded-xl bg-amber-500 text-white text-[10px] font-black hover:bg-amber-600 transition-all flex items-center gap-1.5 disabled:opacity-60 shadow-md shadow-amber-500/20">
+                                className="h-8 px-4 rounded-xl bg-amber-500 text-white text-[10px] font-black hover:bg-amber-600 transition-all flex items-center gap-1.5 disabled:opacity-60 shadow-md">
                                 {savingAll ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3" />}
                                 {savingAll ? 'Menyimpan...' : 'Simpan'}
                             </button>
@@ -3618,7 +3618,7 @@ await Promise.all([
                         <div className="flex flex-col gap-2">
                             <button
                                 onClick={async () => { await saveAll(); const action = pendingNav.action; setPendingNav(null); action() }}
-                                className="h-11 rounded-xl bg-emerald-500 text-white text-sm font-black shadow-lg shadow-emerald-500/20"
+                                className="h-11 rounded-xl bg-emerald-500 text-white text-sm font-black shadow-lg"
                             >
                                 Simpan & Lanjut
                             </button>
@@ -3746,7 +3746,7 @@ await Promise.all([
                             <button
                                 type="button"
                                 onClick={_doSaveAll}
-                                className="h-10 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-600/20 transition-all flex items-center justify-center gap-2 shrink-0"
+                                className="h-10 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
                             >
                                 <Save className="w-3.5 h-3.5 opacity-70" />
                                 Simpan yang Terisi
@@ -3794,7 +3794,7 @@ await Promise.all([
                         onTouchStart={bumpFullScreenHud}
                     >
                         <div
-                            className="relative h-full w-full rounded-[24px] overflow-hidden border border-slate-200/80 bg-[#e9edf5] shadow-2xl"
+                            className="relative h-full w-full rounded-[24px] overflow-hidden border border-slate-200/80 bg-[#e9edf5] shadow-sm"
                             onClick={e => e.stopPropagation()}
                         >
                             <div
@@ -3843,7 +3843,7 @@ await Promise.all([
                                     )}
                                     <button
                                         onClick={() => openPrintWindow([fsStudent].filter(Boolean))}
-                                        className="w-9 h-9 sm:w-8 sm:h-8 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white shadow-md shadow-indigo-500/30 flex items-center justify-center transition-all"
+                                        className="w-9 h-9 sm:w-8 sm:h-8 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white shadow-md flex items-center justify-center transition-all"
                                         title="Cetak Raport"
                                     >
                                         <Printer className="w-3.5 h-3.5" />
@@ -3970,7 +3970,7 @@ await Promise.all([
                                 style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 12px)' }}
                             >
                                 <div className="max-w-full overflow-x-auto no-scrollbar">
-                                    <div className="flex items-center gap-0.5 sm:gap-1 p-0.5 sm:p-1 rounded-2xl bg-white/92 backdrop-blur border border-slate-200 shadow-sm w-max mx-auto">
+                                    <div className="flex items-center gap-0.5 sm:gap-1 p-0.5 sm:p-1 rounded-2xl bg-white border border-slate-200 shadow-sm w-max mx-auto">
                                         <button
                                             onClick={() => setFullScreenZoom(p => Math.round(Math.max(0.3, p - 0.1) * 100) / 100)}
                                             className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl text-slate-500 hover:text-slate-700 hover:bg-white transition-all flex items-center justify-center"
@@ -4048,7 +4048,7 @@ await Promise.all([
                                 <button
                                     type="button"
                                     onClick={() => setShowTemplatePreviewModal(false)}
-                                    className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-xs font-black hover:opacity-90 transition-all shadow-md shadow-indigo-500/10"
+                                    className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-xs font-black hover:opacity-90 transition-all shadow-md"
                                 >
                                     Pahami Perbedaan
                                 </button>
@@ -4061,7 +4061,7 @@ await Promise.all([
                                 {/* Boarding Arab */}
                                 <div className="p-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 space-y-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                                        <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-lg">
                                             <MoonStar className="w-4 h-4" />
                                         </div>
                                         <div>
@@ -4089,7 +4089,7 @@ await Promise.all([
                                 {/* Reguler Indonesia */}
                                 <div className="p-5 rounded-2xl border border-indigo-500/20 bg-indigo-500/5 space-y-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-xl bg-indigo-500 text-white flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                                        <div className="w-10 h-10 rounded-xl bg-indigo-500 text-white flex items-center justify-center shadow-lg">
                                             <School className="w-4 h-4" />
                                         </div>
                                         <div>

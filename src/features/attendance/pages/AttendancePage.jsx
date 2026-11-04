@@ -3,24 +3,9 @@ import {
     useMemo, memo, useDeferredValue, useTransition,
 } from 'react'
 import { createPortal } from 'react-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faChevronLeft, faChevronRight, faSave, faSpinner, faExclamationTriangle,
-    faUserCheck, faHeartPulse, faFileCircleCheck, faCircleXmark,
-    faDoorOpen, faRotateLeft, faFileExport, faCircleCheck, faCloudArrowUp,
-    faTriangleExclamation, faMagnifyingGlass, faChalkboardTeacher,
-    faCalendarDays, faChartSimple, faBolt, faChevronDown,
-    faXmark, faLightbulb, faCheck, faTableList, faArrowPointer,
-    faFloppyDisk, faArrowsRotate, faListCheck,
-    faRotateRight, faBullseye, faUsers,
-    faCopy, faEye, faEyeSlash, faFilter, faFileImport,
-    faPrint, faBell, faStickyNote, faArrowDown, faCrosshairs,
-    faArrowTrendUp, faArrowTrendDown, faGear, faUpload,
-    faBorderAll, faList, faTableCells,
-    faKeyboard, faMagnifyingGlassPlus, faWandMagicSparkles,
-    faSearch, faPerson, faArrowRight, faLinkSlash,
-    faClockRotateLeft, faLink, faClock, faMoneyBillWave
-} from '@fortawesome/free-solid-svg-icons'
+import { ArrowRight, Banknote, Bell, CalendarDays, ChartColumn, Check, ChevronDown, ChevronLeft, ChevronRight, CircleCheck, CircleX, Clock, CloudUpload, Copy, Crosshair, DoorOpen, Eye, EyeOff, FileCheck, FileInput, FileOutput, Funnel, HeartPulse, History, Keyboard, LayoutGrid, Lightbulb, Link, List, ListChecks, LoaderCircle, MousePointer2, Presentation, Printer, RefreshCw, RotateCcw, RotateCw, Save, Search, Settings, StickyNote, TableProperties, TrendingDown, TrendingUp, TriangleAlert, Unlink, Upload, UserCheck, Users, WandSparkles, X } from 'lucide-react'
+
+
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import Breadcrumb from '@shared/components/Breadcrumb'
 import { EmptyState } from '@shared/components/DataDisplay'
@@ -41,11 +26,11 @@ const BULAN_NAMA = [
 const STATUS_CYCLE = ['', 'H', 'S', 'I', 'A', 'P']
 
 const STATUS_META = {
-    H: { label: 'Hadir', color: 'text-emerald-600', cellBg: 'bg-emerald-500/15', cellBorder: 'border-emerald-500/30', textColor: '#059669', icon: faUserCheck },
-    S: { label: 'Sakit', color: 'text-amber-600', cellBg: 'bg-amber-500/15', cellBorder: 'border-amber-500/30', textColor: '#d97706', icon: faHeartPulse },
-    I: { label: 'Izin', color: 'text-blue-600', cellBg: 'bg-blue-500/15', cellBorder: 'border-blue-500/30', textColor: '#2563eb', icon: faFileCircleCheck },
-    A: { label: 'Alpa', color: 'text-red-600', cellBg: 'bg-red-500/15', cellBorder: 'border-red-500/30', textColor: '#dc2626', icon: faCircleXmark },
-    P: { label: 'Pulang Awal', color: 'text-purple-600', cellBg: 'bg-purple-500/15', cellBorder: 'border-purple-500/30', textColor: '#7c3aed', icon: faDoorOpen },
+    H: { label: 'Hadir', color: 'text-emerald-600', cellBg: 'bg-emerald-500/15', cellBorder: 'border-emerald-500/30', textColor: '#059669', icon: UserCheck },
+    S: { label: 'Sakit', color: 'text-amber-600', cellBg: 'bg-amber-500/15', cellBorder: 'border-amber-500/30', textColor: '#d97706', icon: HeartPulse },
+    I: { label: 'Izin', color: 'text-blue-600', cellBg: 'bg-blue-500/15', cellBorder: 'border-blue-500/30', textColor: '#2563eb', icon: FileCheck },
+    A: { label: 'Alpa', color: 'text-red-600', cellBg: 'bg-red-500/15', cellBorder: 'border-red-500/30', textColor: '#dc2626', icon: CircleX },
+    P: { label: 'Pulang Awal', color: 'text-purple-600', cellBg: 'bg-purple-500/15', cellBorder: 'border-purple-500/30', textColor: '#7c3aed', icon: DoorOpen },
 }
 
 const STATUS_LIST = ['H', 'S', 'I', 'A', 'P']
@@ -180,11 +165,11 @@ const StudentRow = memo(({ student, idx, days, tahun, bulan, daysInMonth, todayD
                         <p className="text-[12px] font-bold text-[var(--color-text)] truncate group-hover:text-[var(--color-primary)] transition-colors">{student.name}</p>
                         {alertAlpa
                             ? <p className="text-[9px] font-black text-red-500 flex items-center gap-1 mt-0.5">
-                                <FontAwesomeIcon icon={faTriangleExclamation} className="text-[8px]" />Alpa {sum.A}×
+                                <TriangleAlert className="text-[8px]" />Alpa {sum.A}×
                             </p>
                             : alertHadir
                                 ? <p className="text-[9px] font-black text-amber-500 flex items-center gap-1 mt-0.5">
-                                    <FontAwesomeIcon icon={faBell} className="text-[8px]" />Hadir {pct}%
+                                    <Bell className="text-[8px]" />Hadir {pct}%
                                 </p>
                                 : student.nisn
                                     ? <p className="text-[9px] text-[var(--color-text-muted)] truncate">{student.nisn}</p>
@@ -198,7 +183,7 @@ const StudentRow = memo(({ student, idx, days, tahun, bulan, daysInMonth, todayD
                             className={`w-5 h-5 rounded flex items-center justify-center transition-all ${hasNote ? 'text-amber-500' : 'opacity-0 group-hover:opacity-40 text-[var(--color-text-muted)]'}`}
                             title={hasNote ? `Catatan: ${note}` : 'Tambah catatan'}
                         >
-                            <FontAwesomeIcon icon={faStickyNote} className="text-[8px]" />
+                            <StickyNote className="text-[8px]" />
                         </button>
                     </div>
                 </div>
@@ -391,9 +376,9 @@ function MassActionDropdown({ studentList, dataMap, setDataMap, tahun, bulan, da
                 onClick={handleToggle}
                 className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all flex items-center gap-1.5 shrink-0"
             >
-                <FontAwesomeIcon icon={faListCheck} className="text-[9px]" />
+                <ListChecks className="text-[9px]" />
                 Aksi Massal
-                <FontAwesomeIcon icon={faChevronDown} className={`text-[8px] transition-transform ${open ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`text-[8px] transition-transform ${open ? 'rotate-180' : ''}`} />
             </button>
 
             {open && createPortal(
@@ -406,7 +391,7 @@ function MassActionDropdown({ studentList, dataMap, setDataMap, tahun, bulan, da
                         zIndex: 9999,
                         width: 208,
                     }}
-                    className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl overflow-hidden py-1"
+                    className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden py-1"
                 >
                     <p className="px-3 pt-1.5 pb-1 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
                         Isi semua hari kerja dengan:
@@ -424,7 +409,7 @@ function MassActionDropdown({ studentList, dataMap, setDataMap, tahun, bulan, da
                     <button onClick={handleReset}
                         className="w-full flex items-center gap-2.5 px-3 py-2 text-[11px] font-bold hover:bg-red-500/5 transition-colors text-left text-red-500">
                         <span className="w-6 h-6 rounded-lg flex items-center justify-center text-[10px] bg-red-500/10 border border-red-500/20">
-                            <FontAwesomeIcon icon={faArrowsRotate} className="text-[9px]" />
+                            <RefreshCw className="text-[9px]" />
                         </span>
                         Reset Semua
                     </button>
@@ -452,12 +437,12 @@ function NotePopup({ student, note, x, y, onSave, onClose }) {
             borderRadius: 14, boxShadow: '0 8px 32px rgba(0,0,0,0.14)', overflow: 'hidden',
         }}>
             <div style={{ padding: '8px 12px 6px', borderBottom: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', gap: 8 }}>
-                <FontAwesomeIcon icon={faStickyNote} style={{ fontSize: 10, color: '#f59e0b' }} />
+                <StickyNote style={{ fontSize: 10, color: '#f59e0b' }} />
                 <p style={{ fontSize: 11, fontWeight: 900, color: 'var(--color-text)', margin: 0, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     Catatan — {student.name.split(' ')[0]}
                 </p>
                 <button onClick={() => { onSave(val); onClose() }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2 }}>
-                    <FontAwesomeIcon icon={faXmark} style={{ fontSize: 10, color: 'var(--color-text-muted)' }} />
+                    <X style={{ fontSize: 10, color: 'var(--color-text-muted)' }} />
                 </button>
             </div>
             <div style={{ padding: 12 }}>
@@ -548,13 +533,13 @@ function ImportModal({ studentList, tahun, bulan, daysInMonth, onImport, onClose
     }
 
     return createPortal(
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
             onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-            <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[85vh]">
+                <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl w-full max-w-md overflow-hidden flex flex-col max-h-[85vh]">
                 <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
                     <div className="flex items-center gap-2.5">
                         <div className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                            <FontAwesomeIcon icon={faFileImport} className="text-blue-500 text-sm" />
+                            <FileInput className="text-blue-500 text-sm" />
                         </div>
                         <div>
                             <p className="text-[13px] font-black text-[var(--color-text)]">Import Absensi</p>
@@ -562,7 +547,7 @@ function ImportModal({ studentList, tahun, bulan, daysInMonth, onImport, onClose
                         </div>
                     </div>
                     <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center">
-                        <FontAwesomeIcon icon={faXmark} className="text-[var(--color-text-muted)]" />
+                        <X className="text-[var(--color-text-muted)]" />
                     </button>
                 </div>
                 <div className="p-5 overflow-y-auto flex-1 space-y-4">
@@ -576,7 +561,7 @@ function ImportModal({ studentList, tahun, bulan, daysInMonth, onImport, onClose
                     </div>
                     {/* Drop zone */}
                     <label className="flex flex-col items-center justify-center gap-2 p-6 rounded-xl border-2 border-dashed border-[var(--color-border)] hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/3 transition-all cursor-pointer">
-                        <FontAwesomeIcon icon={faUpload} className="text-2xl text-[var(--color-text-muted)]" />
+                        <Upload className="text-2xl text-[var(--color-text-muted)]" />
                         <p className="text-[12px] font-bold text-[var(--color-text-muted)]">
                             {file ? file.name : 'Klik atau seret file di sini'}
                         </p>
@@ -584,7 +569,7 @@ function ImportModal({ studentList, tahun, bulan, daysInMonth, onImport, onClose
                         <input type="file" accept=".xlsx,.xls,.csv" className="hidden"
                             onChange={e => handleFile(e.target.files[0])} />
                     </label>
-                    {loading && <div className="flex items-center justify-center gap-2 py-4"><FontAwesomeIcon icon={faSpinner} className="animate-spin text-[var(--color-primary)]" /><span className="text-[11px] text-[var(--color-text-muted)]">Membaca file...</span></div>}
+                    {loading && <div className="flex items-center justify-center gap-2 py-4"><LoaderCircle className="animate-spin text-[var(--color-primary)]" /><span className="text-[11px] text-[var(--color-text-muted)]">Membaca file...</span></div>}
                     {error && <div className="p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-[11px] font-bold text-red-600">{error}</div>}
                     {preview && (
                         <div className="space-y-3">
@@ -608,7 +593,7 @@ function ImportModal({ studentList, tahun, bulan, daysInMonth, onImport, onClose
                         disabled={!preview || preview.matched.length === 0}
                         onClick={() => { onImport(preview.matched); onClose() }}
                         className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black disabled:opacity-40 hover:opacity-90 transition-all flex items-center gap-2">
-                        <FontAwesomeIcon icon={faCheck} className="text-[9px]" />
+                        <Check className="text-[9px]" />
                         Terapkan ({preview?.matched.length || 0} siswa)
                     </button>
                 </div>
@@ -624,13 +609,13 @@ function AlertThresholdModal({ threshold, onSave, onClose }) {
     const [alpa, setAlpa] = useState(threshold.alpa)
     const [hadirPct, setHadirPct] = useState(threshold.hadirPct)
     return createPortal(
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
             onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-            <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-2xl w-full max-w-xs overflow-hidden">
+                <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl w-full max-w-xs overflow-hidden">
                 <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
                     <div className="flex items-center gap-2.5">
                         <div className="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center">
-                            <FontAwesomeIcon icon={faBell} className="text-amber-500 text-sm" />
+                            <Bell className="text-amber-500 text-sm" />
                         </div>
                         <div>
                             <p className="text-[13px] font-black text-[var(--color-text)]">Ambang Batas Alert</p>
@@ -638,7 +623,7 @@ function AlertThresholdModal({ threshold, onSave, onClose }) {
                         </div>
                     </div>
                     <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center">
-                        <FontAwesomeIcon icon={faXmark} className="text-[var(--color-text-muted)]" />
+                        <X className="text-[var(--color-text-muted)]" />
                     </button>
                 </div>
                 <div className="p-5 space-y-4">
@@ -667,7 +652,7 @@ function AlertThresholdModal({ threshold, onSave, onClose }) {
                     <button onClick={onClose} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">Batal</button>
                     <button onClick={() => { onSave({ alpa, hadirPct }); onClose() }}
                         className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black hover:opacity-90 transition-all flex items-center gap-2">
-                        <FontAwesomeIcon icon={faCheck} className="text-[9px]" />
+                        <Check className="text-[9px]" />
                         Simpan
                     </button>
                 </div>
@@ -705,7 +690,7 @@ function MobileCardView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
     )
     if (filteredStudents.length === 0) return (
         <div className="py-16 flex flex-col items-center gap-2 text-[var(--color-text-muted)]">
-            <FontAwesomeIcon icon={faMagnifyingGlass} className="text-2xl opacity-20" />
+            <Search className="text-2xl opacity-20" />
             <p className="text-[12px] font-bold">Tidak ada siswa</p>
         </div>
     )
@@ -730,8 +715,8 @@ function MobileCardView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
                                 </div>
                                 <div className="min-w-0">
                                     <p className="text-[13px] font-bold text-[var(--color-text)] truncate">{s.name}</p>
-                                    {alertAlpa && <p className="text-[9px] font-black text-red-500 flex items-center gap-1"><FontAwesomeIcon icon={faTriangleExclamation} className="text-[8px]" />Alpa {sum.A}×</p>}
-                                    {!alertAlpa && alertHadir && <p className="text-[9px] font-black text-amber-500 flex items-center gap-1"><FontAwesomeIcon icon={faBell} className="text-[8px]" />Hadir {pct}%</p>}
+                                    {alertAlpa && <p className="text-[9px] font-black text-red-500 flex items-center gap-1"><TriangleAlert className="text-[8px]" />Alpa {sum.A}×</p>}
+                                    {!alertAlpa && alertHadir && <p className="text-[9px] font-black text-amber-500 flex items-center gap-1"><Bell className="text-[8px]" />Hadir {pct}%</p>}
                                 </div>
                             </div>
                             <div className="flex items-center gap-1 shrink-0">
@@ -745,7 +730,7 @@ function MobileCardView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
                                 {/* Note btn */}
                                 <button onClick={(e) => { const r = e.currentTarget.getBoundingClientRect(); onNoteClick({ student: s, x: r.left, y: r.bottom }) }}
                                     className={`w-6 h-6 rounded-md flex items-center justify-center ml-1 transition-all ${hasNote ? 'text-amber-500 bg-amber-500/10' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                    <FontAwesomeIcon icon={faStickyNote} className="text-[9px]" />
+                                    <StickyNote className="text-[9px]" />
                                 </button>
                             </div>
                         </div>
@@ -845,7 +830,7 @@ function MobileListView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
 
     if (filteredStudents.length === 0) return (
         <div className="py-16 flex flex-col items-center gap-2 text-[var(--color-text-muted)]">
-            <FontAwesomeIcon icon={faMagnifyingGlass} className="text-2xl opacity-20" />
+            <Search className="text-2xl opacity-20" />
             <p className="text-[12px] font-bold">Tidak ada siswa</p>
         </div>
     )
@@ -872,7 +857,7 @@ function MobileListView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-1">
                                     <p className="text-[12px] font-bold text-[var(--color-text)] truncate">{s.name}</p>
-                                    {hasNote && <FontAwesomeIcon icon={faStickyNote} className="text-[8px] text-amber-500 shrink-0" />}
+                                    {hasNote && <StickyNote className="text-[8px] text-amber-500 shrink-0" />}
                                 </div>
                                 <div className="flex items-center gap-1.5 mt-0.5">
                                     <div className="w-12 h-1 rounded-full bg-[var(--color-border)] overflow-hidden">
@@ -907,8 +892,8 @@ function MobileListView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
 
                             {/* Expand button */}
                             <button onClick={() => setExpandedId(s.id)}
-                                className="w-8 h-8 rounded-xl bg-[var(--color-primary)] flex items-center justify-center text-white transition-all hover:opacity-85 active:scale-90 shrink-0 shadow-sm shadow-[var(--color-primary)]/20">
-                                <FontAwesomeIcon icon={faChevronRight} className="text-[9px]" />
+                                className="w-8 h-8 rounded-xl bg-[var(--color-primary)] flex items-center justify-center text-white transition-all hover:opacity-85 active:scale-90 shrink-0 shadow-sm">
+                                <ChevronRight className="text-[9px]" />
                             </button>
                         </div>
                     )
@@ -922,9 +907,9 @@ function MobileListView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
                     style={{ paddingBottom: 'max(90px, calc(74px + env(safe-area-inset-bottom)))' }}
                     onClick={handleBackdrop}
                 >
-                    <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setExpandedId(null)} />
+                    <div className="absolute inset-0 bg-black/40" onClick={() => setExpandedId(null)} />
                     <div
-                        className="relative bg-[var(--color-surface)] rounded-t-3xl border-t border-[var(--color-border)] shadow-2xl flex flex-col"
+                        className="relative bg-[var(--color-surface)] rounded-t-3xl border-t border-[var(--color-border)] shadow-xl flex flex-col"
                         style={{ maxHeight: 'calc(100dvh - 140px)' }}
                     >
                         {/* Handle */}
@@ -944,13 +929,13 @@ function MobileListView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
                                     className={`h-8 px-3 rounded-xl text-[10px] font-black flex items-center gap-1.5 transition-all ${notesMap[expanded.id]
                                         ? 'text-amber-600 bg-amber-500/10 border border-amber-500/20'
                                         : 'text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] border border-[var(--color-border)]'}`}>
-                                    <FontAwesomeIcon icon={faStickyNote} className="text-[9px]" />
+                                    <StickyNote className="text-[9px]" />
                                     Catatan
                                 </button>
                                 <button
                                     onClick={() => setExpandedId(null)}
                                     className="w-8 h-8 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">
-                                    <FontAwesomeIcon icon={faXmark} className="text-[11px]" />
+                                    <X className="text-[11px]" />
                                 </button>
                             </div>
                         </div>
@@ -1057,30 +1042,30 @@ function CommandPalette({ open, onClose, onAction, studentCount, bulan, tahun, c
         {
             group: 'Data',
             items: [
-                { id: 'fill-hadir', label: 'Isi semua: Hadir', desc: 'Set semua hari kerja = H', icon: faUserCheck, color: '#059669', action: () => onAction('fill', 'H') },
-                { id: 'fill-alpa', label: 'Isi semua: Alpa', desc: 'Set semua hari kerja = A', icon: faCircleXmark, color: '#dc2626', action: () => onAction('fill', 'A') },
-                { id: 'copy-last', label: 'Copy bulan lalu', desc: `Salin data ${BULAN_NAMA[prevBulan]} ${prevTahun}`, icon: faCopy, color: '#6366f1', action: () => onAction('copyLastMonth') },
-                { id: 'reset', label: 'Reset semua data', desc: 'Kosongkan seluruh absensi bulan ini', icon: faArrowsRotate, color: '#dc2626', action: () => onAction('reset') },
-                { id: 'save', label: 'Simpan perubahan', desc: isDirty ? 'Ada perubahan belum tersimpan' : 'Sudah tersimpan', icon: faSave, color: '#059669', action: () => onAction('save'), disabled: !isDirty },
-                { id: 'undo', label: 'Batalkan (Undo)', desc: 'Ctrl+Z', icon: faRotateLeft, color: '#888', action: () => onAction('undo') },
+                { id: 'fill-hadir', label: 'Isi semua: Hadir', desc: 'Set semua hari kerja = H', icon: UserCheck, color: '#059669', action: () => onAction('fill', 'H') },
+                { id: 'fill-alpa', label: 'Isi semua: Alpa', desc: 'Set semua hari kerja = A', icon: CircleX, color: '#dc2626', action: () => onAction('fill', 'A') },
+                { id: 'copy-last', label: 'Copy bulan lalu', desc: `Salin data ${BULAN_NAMA[prevBulan]} ${prevTahun}`, icon: Copy, color: '#6366f1', action: () => onAction('copyLastMonth') },
+                { id: 'reset', label: 'Reset semua data', desc: 'Kosongkan seluruh absensi bulan ini', icon: RefreshCw, color: '#dc2626', action: () => onAction('reset') },
+                { id: 'save', label: 'Simpan perubahan', desc: isDirty ? 'Ada perubahan belum tersimpan' : 'Sudah tersimpan', icon: Save, color: '#059669', action: () => onAction('save'), disabled: !isDirty },
+                { id: 'undo', label: 'Batalkan (Undo)', desc: 'Ctrl+Z', icon: RotateCcw, color: '#888', action: () => onAction('undo') },
             ]
         },
         {
             group: 'Tampilan',
             items: [
-                { id: 'hide-weekend', label: hideWeekend ? 'Tampilkan weekend' : 'Sembunyikan weekend', desc: 'Toggle kolom Sabtu & Minggu', icon: hideWeekend ? faEye : faEyeSlash, color: '#6366f1', action: () => onAction('toggleWeekend') },
-                { id: 'filter-alpa', label: 'Filter: siswa alpa', desc: 'Tampilkan hanya yang sering alpa', icon: faFilter, color: '#dc2626', action: () => onAction('filterAlpa') },
-                { id: 'filter-all', label: 'Reset filter', desc: 'Tampilkan semua siswa', icon: faArrowsRotate, color: '#888', action: () => onAction('filterAll'), disabled: filterMode === 'all' },
-                { id: 'today', label: 'Scroll ke hari ini', desc: 'Auto-focus kolom aktif', icon: faCrosshairs, color: '#6366f1', action: () => onAction('scrollToToday') },
-                { id: 'view-card', label: 'View: Card', desc: 'Tampilan dot grid per siswa (mobile)', icon: faBorderAll, color: '#6366f1', action: () => onAction('setMobileView', 'card') },
-                { id: 'view-list', label: 'View: List', desc: 'Tampilan ringkas + expand (mobile)', icon: faList, color: '#6366f1', action: () => onAction('setMobileView', 'list') },
-                { id: 'view-table', label: 'View: Tabel', desc: 'Tampilan tabel klasik', icon: faTableCells, color: '#6366f1', action: () => onAction('setMobileView', 'table') },
+                { id: 'hide-weekend', label: hideWeekend ? 'Tampilkan weekend' : 'Sembunyikan weekend', desc: 'Toggle kolom Sabtu & Minggu', icon: hideWeekend ? Eye : EyeOff, color: '#6366f1', action: () => onAction('toggleWeekend') },
+                { id: 'filter-alpa', label: 'Filter: siswa alpa', desc: 'Tampilkan hanya yang sering alpa', icon: Funnel, color: '#dc2626', action: () => onAction('filterAlpa') },
+                { id: 'filter-all', label: 'Reset filter', desc: 'Tampilkan semua siswa', icon: RefreshCw, color: '#888', action: () => onAction('filterAll'), disabled: filterMode === 'all' },
+                { id: 'today', label: 'Scroll ke hari ini', desc: 'Auto-focus kolom aktif', icon: Crosshair, color: '#6366f1', action: () => onAction('scrollToToday') },
+                { id: 'view-card', label: 'View: Card', desc: 'Tampilan dot grid per siswa (mobile)', icon: LayoutGrid, color: '#6366f1', action: () => onAction('setMobileView', 'card') },
+                { id: 'view-list', label: 'View: List', desc: 'Tampilan ringkas + expand (mobile)', icon: List, color: '#6366f1', action: () => onAction('setMobileView', 'list') },
+                { id: 'view-table', label: 'View: Tabel', desc: 'Tampilan tabel klasik', icon: LayoutGrid, color: '#6366f1', action: () => onAction('setMobileView', 'table') },
             ]
         },
         {
             group: 'Info',
             items: [
-                { id: 'info', label: `${studentCount} siswa · ${completionPct}% terisi`, desc: `${BULAN_NAMA[bulan]} ${tahun}`, icon: faChartSimple, color: '#888', action: () => { }, disabled: true },
+                { id: 'info', label: `${studentCount} siswa · ${completionPct}% terisi`, desc: `${BULAN_NAMA[bulan]} ${tahun}`, icon: ChartColumn, color: '#888', action: () => { }, disabled: true },
             ]
         },
     ], [isDirty, filterMode, hideWeekend, mobileView, bulan, tahun, prevBulan, prevTahun, studentCount, completionPct])
@@ -1096,12 +1081,12 @@ function CommandPalette({ open, onClose, onAction, studentCount, bulan, tahun, c
 
     if (!open) return null
     return createPortal(
-        <div className="fixed inset-0 z-[200] flex flex-col items-center pt-[10vh] px-4 pb-4 bg-black/50 backdrop-blur-sm"
+        <div className="fixed inset-0 z-[200] flex flex-col items-center pt-[10vh] px-4 pb-4 bg-black/50"
             onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-            <div className="w-full max-w-lg bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-2xl overflow-hidden flex flex-col max-h-[75vh]">
+                <div className="w-full max-w-lg bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl overflow-hidden flex flex-col max-h-[75vh]">
                 {/* Search input */}
                 <div className="flex items-center gap-3 px-4 py-3 border-b border-[var(--color-border)]">
-                    <FontAwesomeIcon icon={faMagnifyingGlass} className="text-[var(--color-text-muted)] text-[13px] shrink-0" />
+                    <Search className="text-[var(--color-text-muted)] text-[13px] shrink-0" />
                     <input
                         ref={inputRef}
                         type="text"
@@ -1122,7 +1107,7 @@ function CommandPalette({ open, onClose, onAction, studentCount, bulan, tahun, c
                 <div className="overflow-y-auto flex-1">
                     {filtered.length === 0 ? (
                         <div className="py-10 flex flex-col items-center gap-2 text-[var(--color-text-muted)]">
-                            <FontAwesomeIcon icon={faMagnifyingGlass} className="text-xl opacity-20" />
+                            <Search className="text-xl opacity-20" />
                             <p className="text-[12px] font-bold">Tidak ada perintah ditemukan</p>
                         </div>
                     ) : filtered.map(group => (
@@ -1136,7 +1121,7 @@ function CommandPalette({ open, onClose, onAction, studentCount, bulan, tahun, c
                                 >
                                     <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
                                         style={{ background: item.color + '18', border: `1px solid ${item.color}30` }}>
-                                        <FontAwesomeIcon icon={item.icon} style={{ color: item.color, fontSize: 11 }} />
+                                        <item.icon style={{ color: item.color, fontSize: 11 }} />
                                     </div>
                                     <div className="min-w-0 flex-1">
                                         <p className="text-[12px] font-bold text-[var(--color-text)] leading-tight">{item.label}</p>
@@ -1174,9 +1159,9 @@ function MobileToolbarSheet({ open, onClose, children }) {
     return createPortal(
         <div className="fixed inset-0 z-50 flex flex-col justify-end">
             {/* Backdrop */}
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+            <div className="absolute inset-0 bg-black/40" onClick={onClose} />
             {/* Sheet */}
-            <div className="relative bg-[var(--color-surface)] rounded-t-2xl border-t border-[var(--color-border)] shadow-2xl overflow-hidden">
+            <div className="relative bg-[var(--color-surface)] rounded-t-2xl border-t border-[var(--color-border)] shadow-xl overflow-hidden">
                 {/* Handle */}
                 <div className="flex justify-center pt-3 pb-1">
                     <div className="w-8 h-1 rounded-full bg-[var(--color-border)]" />
@@ -1184,7 +1169,7 @@ function MobileToolbarSheet({ open, onClose, children }) {
                 <div className="px-4 pb-2 pt-1 flex items-center justify-between">
                     <p className="text-[11px] font-black text-[var(--color-text-muted)] uppercase tracking-widest">Pengaturan Tampilan</p>
                     <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]">
-                        <FontAwesomeIcon icon={faXmark} className="text-[11px]" />
+                        <X className="text-[11px]" />
                     </button>
                 </div>
                 <div className="px-4 pb-6 space-y-1">
@@ -1236,7 +1221,7 @@ function ColFillPopup({ day, dow, x, y, onFill, onClear, onClose, studentCount }
                     className="w-full flex items-center gap-2.5 px-3 py-1.5 hover:bg-red-500/5 transition-colors text-left"
                     style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
                     <span className="w-6 h-6 rounded-md flex items-center justify-center bg-[var(--color-surface-alt)] border border-[var(--color-border)]" style={{ flexShrink: 0 }}>
-                        <FontAwesomeIcon icon={faArrowsRotate} style={{ fontSize: 9, color: 'var(--color-text-muted)' }} />
+                        <RefreshCw style={{ fontSize: 9, color: 'var(--color-text-muted)' }} />
                     </span>
                     <span style={{ fontSize: 11, fontWeight: 700, color: '#dc2626' }}>Kosongkan hari ini</span>
                 </button>
@@ -1286,7 +1271,7 @@ function RowFillPopup({ student, x, y, onFill, onClear, onClose, weekdays }) {
                     className="w-full flex items-center gap-2.5 px-3 py-1.5 hover:bg-red-500/5 transition-colors text-left"
                     style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
                     <span className="w-6 h-6 rounded-md flex items-center justify-center bg-[var(--color-surface-alt)] border border-[var(--color-border)]" style={{ flexShrink: 0 }}>
-                        <FontAwesomeIcon icon={faArrowsRotate} style={{ fontSize: 9, color: 'var(--color-text-muted)' }} />
+                        <RefreshCw style={{ fontSize: 9, color: 'var(--color-text-muted)' }} />
                     </span>
                     <span style={{ fontSize: 11, fontWeight: 700, color: '#dc2626' }}>Reset siswa ini</span>
                 </button>
@@ -1486,17 +1471,17 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                     <div className="flex items-center gap-2">
                         <button onClick={handleExport}
                             className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)] transition-all flex items-center gap-1.5">
-                            <FontAwesomeIcon icon={faFileExport} className="text-[9px]" /> Export Excel
+                            <FileOutput className="text-[9px]" /> Export Excel
                         </button>
                         <button onClick={handlePrint}
                             className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)] transition-all flex items-center gap-1.5">
-                            <FontAwesomeIcon icon={faPrint} className="text-[9px]" /> Cetak
+                            <Printer className="text-[9px]" /> Cetak
                         </button>
                         <button onClick={handleSync} disabled={syncing}
                             className={`h-8 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all ${syncDone
                                 ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-600'
-                                : 'bg-[var(--color-primary)] hover:opacity-90 text-white shadow-sm shadow-[var(--color-primary)]/20 disabled:opacity-60'}`}>
-                            <FontAwesomeIcon icon={syncing ? faSpinner : syncDone ? faCircleCheck : faCloudArrowUp} className={syncing ? 'animate-spin' : ''} />
+                                : 'bg-[var(--color-primary)] hover:opacity-90 text-white shadow-sm disabled:opacity-60'}`}>
+                            { syncing ? <LoaderCircle className={syncing ? 'animate-spin' : ''} /> : syncDone ? <CircleCheck className={syncing ? 'animate-spin' : ''} /> : <CloudUpload className={syncing ? 'animate-spin' : ''} /> }
                             {syncing ? 'Menyinkronkan...' : syncDone ? 'Tersinkronkan' : 'Sync ke Raport'}
                             <span className={`text-[8px] font-black px-1 py-0.5 rounded ${syncDone ? 'bg-emerald-500/20 text-emerald-600' : 'bg-white/20 text-white'}`}>AUTO</span>
                         </button>
@@ -1514,8 +1499,8 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                         <button onClick={handleSync} disabled={syncing}
                             className={`shrink-0 h-8 px-3 rounded-xl text-[10px] font-black flex items-center gap-1.5 transition-all ${syncDone
                                 ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-600'
-                                : 'bg-[var(--color-primary)] hover:opacity-90 text-white shadow-sm shadow-[var(--color-primary)]/20 disabled:opacity-60'}`}>
-                            <FontAwesomeIcon icon={syncing ? faSpinner : syncDone ? faCircleCheck : faCloudArrowUp} className={`text-[10px] ${syncing ? 'animate-spin' : ''}`} />
+                                : 'bg-[var(--color-primary)] hover:opacity-90 text-white shadow-sm disabled:opacity-60'}`}>
+                            { syncing ? <LoaderCircle className={`text-[10px] ${syncing ? 'animate-spin' : ''}`} /> : syncDone ? <CircleCheck className={`text-[10px] ${syncing ? 'animate-spin' : ''}`} /> : <CloudUpload className={`text-[10px] ${syncing ? 'animate-spin' : ''}`} /> }
                             {syncing ? '' : syncDone ? 'Sinkron' : 'Sync'}
                             <span className={`text-[7px] font-black px-1 py-0.5 rounded ${syncDone ? 'bg-emerald-500/20 text-emerald-600' : 'bg-white/20 text-white'}`}>AUTO</span>
                         </button>
@@ -1524,26 +1509,26 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-0.5 bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5">
                             {[
-                                { key: 'a', label: 'Kompak', icon: faList },
-                                { key: 'c', label: 'Grid', icon: faTableCells },
-                                { key: 'd', label: 'Heatmap', icon: faBorderAll },
+                                { key: 'a', label: 'Kompak', icon: List },
+                                { key: 'c', label: 'Grid', icon: LayoutGrid },
+                                { key: 'd', label: 'Heatmap', icon: LayoutGrid },
                             ].map(v => (
                                 <button key={v.key}
                                     onClick={() => { setRekapMobileView(v.key); try { localStorage.setItem('rekap_mobile_view', v.key) } catch { } }}
                                     title={v.label}
                                     className={`w-8 h-7 rounded-lg flex items-center justify-center text-[10px] transition-all ${rekapMobileView === v.key ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)]'}`}>
-                                    <FontAwesomeIcon icon={v.icon} />
+                                    <v.icon />
                                 </button>
                             ))}
                         </div>
                         <div className="flex items-center gap-1.5">
                             <button onClick={handleExport}
                                 className="h-7 px-2.5 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all flex items-center gap-1.5">
-                                <FontAwesomeIcon icon={faFileExport} className="text-[9px]" /> Export
+                                <FileOutput className="text-[9px]" /> Export
                             </button>
                             <button onClick={handlePrint}
                                 className="h-7 px-2.5 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all flex items-center gap-1.5">
-                                <FontAwesomeIcon icon={faPrint} className="text-[9px]" /> Cetak
+                                <Printer className="text-[9px]" /> Cetak
                             </button>
                         </div>
                     </div>
@@ -1592,7 +1577,7 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                                     <p className="text-[12px] font-bold text-[var(--color-text)] flex-1 min-w-0 truncate">{s.name}</p>
                                     {delta !== null && delta !== 0 && (
                                         <span className={`text-[9px] font-black flex items-center gap-0.5 shrink-0 ${delta > 0 ? 'text-emerald-600' : 'text-red-500'}`}>
-                                            <FontAwesomeIcon icon={delta > 0 ? faArrowTrendUp : faArrowTrendDown} className="text-[8px]" />
+                                            { delta > 0 ? <TrendingUp className="text-[8px]" /> : <TrendingDown className="text-[8px]" /> }
                                             {delta > 0 ? `+${delta}` : delta}
                                         </span>
                                     )}
@@ -1741,7 +1726,7 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                             {STATUS_LIST.map(s => (
                                 <th key={s} className="px-3 py-3 text-center">
                                     <span className={`text-[9px] font-black uppercase tracking-widest ${STATUS_META[s].color}`}>
-                                        <FontAwesomeIcon icon={STATUS_META[s].icon} className="mr-1" />{STATUS_META[s].label}
+                                        {(() => { const Ic = STATUS_META[s].icon; return <Ic className="mr-1" /> })()}{STATUS_META[s].label}
                                     </span>
                                 </th>
                             ))}
@@ -1764,7 +1749,7 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                                     </td>
                                     <td className="px-4 py-2.5 min-w-[160px]">
                                         <p className="text-[13px] font-bold text-[var(--color-text)]">{s.name}</p>
-                                        {alertAlpa && <p className="text-[9px] font-black text-red-600 flex items-center gap-1 mt-0.5"><FontAwesomeIcon icon={faTriangleExclamation} className="text-[8px]" />Alpa {r.A} hari</p>}
+                                        {alertAlpa && <p className="text-[9px] font-black text-red-600 flex items-center gap-1 mt-0.5"><TriangleAlert className="text-[8px]" />Alpa {r.A} hari</p>}
                                     </td>
                                     <td className="px-3 py-2.5 text-center"><span className="text-[13px] font-black text-emerald-600">{r.H || 0}</span></td>
                                     <td className="px-3 py-2.5 text-center"><span className="text-[13px] font-black text-amber-600">{r.S || 0}</span></td>
@@ -1786,8 +1771,8 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                                             const delta = (r.H || 0) - (lm.H || 0)
                                             return (
                                                 <span className={`text-[11px] font-black flex items-center justify-center gap-1 ${delta > 0 ? 'text-emerald-600' : delta < 0 ? 'text-red-600' : 'text-[var(--color-text-muted)]'}`}>
-                                                    {delta > 0 && <FontAwesomeIcon icon={faArrowTrendUp} className="text-[9px]" />}
-                                                    {delta < 0 && <FontAwesomeIcon icon={faArrowTrendDown} className="text-[9px]" />}
+                                                    {delta > 0 && <TrendingUp className="text-[9px]" />}
+                                                    {delta < 0 && <TrendingDown className="text-[9px]" />}
                                                     {delta > 0 ? `+${delta}` : delta}
                                                 </span>
                                             )
@@ -1796,8 +1781,8 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                                     <td className="px-3 py-2.5 text-center">
                                         {rap
                                             ? synced
-                                                ? <span className="inline-flex items-center gap-1 text-[9px] font-black text-emerald-600 bg-emerald-500/10 px-1.5 py-0.5 rounded-md"><FontAwesomeIcon icon={faCircleCheck} className="text-[8px]" /> Sinkron</span>
-                                                : <span className="inline-flex items-center gap-1 text-[9px] font-black text-amber-600 bg-amber-500/10 px-1.5 py-0.5 rounded-md"><FontAwesomeIcon icon={faTriangleExclamation} className="text-[8px]" /> Beda</span>
+                                                ? <span className="inline-flex items-center gap-1 text-[9px] font-black text-emerald-600 bg-emerald-500/10 px-1.5 py-0.5 rounded-md"><CircleCheck className="text-[8px]" /> Sinkron</span>
+                                                : <span className="inline-flex items-center gap-1 text-[9px] font-black text-amber-600 bg-amber-500/10 px-1.5 py-0.5 rounded-md"><TriangleAlert className="text-[8px]" /> Beda</span>
                                             : <span className="text-[9px] text-[var(--color-text-muted)] font-bold">Belum ada</span>
                                         }
                                     </td>
@@ -1815,12 +1800,12 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
 
 function ConfirmModal({ message, confirmLabel = 'Lanjutkan', onConfirm, onCancel }) {
     return (
-        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/40"
             onClick={e => { if (e.target === e.currentTarget) onCancel() }}>
-            <div className="w-full max-w-xs bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-2xl overflow-hidden">
+                <div className="w-full max-w-xs bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl overflow-hidden">
                 <div className="flex items-start gap-3 px-5 pt-5 pb-4">
                     <div className="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center shrink-0 mt-0.5">
-                        <FontAwesomeIcon icon={faTriangleExclamation} className="text-amber-500 text-[13px]" />
+                        <TriangleAlert className="text-amber-500 text-[13px]" />
                     </div>
                     <div>
                         <p className="text-[13px] font-black text-[var(--color-text)]">Ada perubahan belum disimpan</p>
@@ -1849,7 +1834,7 @@ function TutorialModal({ onClose }) {
 
     const SLIDES = [
         {
-            icon: faCalendarDays,
+            icon: CalendarDays,
             iconColor: 'text-emerald-500',
             iconBg: 'bg-emerald-500/15',
             title: 'Selamat Datang di Absensi Bulanan',
@@ -1882,7 +1867,7 @@ function TutorialModal({ onClose }) {
             tips: 'Tabel ini menggantikan format mingguan lama. Semua data tersimpan per hari sehingga detail kehadiran bisa dilacak kapan saja.',
         },
         {
-            icon: faArrowPointer,
+            icon: MousePointer2,
             iconColor: 'text-indigo-500',
             iconBg: 'bg-indigo-500/15',
             title: 'Cara Mengisi Sel Absensi',
@@ -1898,7 +1883,7 @@ function TutorialModal({ onClose }) {
                                     ? <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-[12px] font-black border ${STATUS_META[s].cellBg} ${STATUS_META[s].color}`}>{s}</span>
                                     : <span className="w-8 h-8 rounded-lg flex items-center justify-center text-[11px] font-black border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]">—</span>
                                 }
-                                {i < 5 && <FontAwesomeIcon icon={faChevronRight} className="text-[var(--color-text-muted)] opacity-25 text-[8px] shrink-0" />}
+                                {i < 5 && <ChevronRight className="text-[var(--color-text-muted)] opacity-25 text-[8px] shrink-0" />}
                             </div>
                         ))}
                     </div>
@@ -1922,13 +1907,13 @@ function TutorialModal({ onClose }) {
                         <div className="space-y-1.5">
                             <div className="flex items-start gap-2">
                                 <span className="w-5 h-5 rounded-full bg-red-400/20 border border-red-400/30 flex items-center justify-center shrink-0 mt-0.5">
-                                    <FontAwesomeIcon icon={faCalendarDays} className="text-red-400 text-[7px]" />
+                                    <CalendarDays className="text-red-400 text-[7px]" />
                                 </span>
                                 <span className="text-[10px] text-[var(--color-text-muted)]">Kolom <b>Sabtu &amp; Minggu</b> — angka merah &amp; redup, tetap bisa diisi jika sekolah masuk</span>
                             </div>
                             <div className="flex items-start gap-2">
                                 <span className="w-5 h-5 rounded-lg bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center shrink-0 mt-0.5">
-                                    <FontAwesomeIcon icon={faCircleXmark} className="text-[var(--color-text-muted)]/30 text-[8px]" />
+                                    <CircleX className="text-[var(--color-text-muted)]/30 text-[8px]" />
                                 </span>
                                 <span className="text-[10px] text-[var(--color-text-muted)]">Kolom <b>tanggal tidak valid</b> (misal Feb 30–31) — disabled otomatis, tidak bisa diklik</span>
                             </div>
@@ -1939,7 +1924,7 @@ function TutorialModal({ onClose }) {
             tips: 'Klik lagi saat sudah Pulang Awal (P) akan balik ke kosong. Siklus: kosong → H → S → I → A → P → kosong.',
         },
         {
-            icon: faListCheck,
+            icon: ListChecks,
             iconColor: 'text-rose-500',
             iconBg: 'bg-rose-500/15',
             title: 'Aksi Massal',
@@ -1959,7 +1944,7 @@ function TutorialModal({ onClose }) {
                         ))}
                     </div>
                     <div className="p-2.5 rounded-xl border border-red-500/20 bg-red-500/5 flex items-center gap-2">
-                        <FontAwesomeIcon icon={faArrowsRotate} className="text-red-500 text-[11px] shrink-0" />
+                        <RefreshCw className="text-red-500 text-[11px] shrink-0" />
                         <p className="text-[10px] text-red-600"><strong>Reset Semua</strong> — hapus seluruh isian bulan ini dan mulai dari kosong.</p>
                     </div>
                 </div>
@@ -1967,7 +1952,7 @@ function TutorialModal({ onClose }) {
             tips: 'Aksi massal berguna untuk awal bulan — isi semua Hadir dulu, lalu koreksi siswa yang tidak hadir satu per satu.',
         },
         {
-            icon: faFloppyDisk,
+            icon: Save,
             iconColor: 'text-sky-500',
             iconBg: 'bg-sky-500/15',
             title: 'Simpan, Draft & Ctrl+S',
@@ -1977,7 +1962,7 @@ function TutorialModal({ onClose }) {
                     <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]">
                         <p className="font-black mb-1 flex items-center gap-1.5">
                             <span className="w-5 h-5 rounded-lg bg-sky-500/15 border border-sky-500/20 flex items-center justify-center shrink-0">
-                                <FontAwesomeIcon icon={faFloppyDisk} className="text-sky-500 text-[8px]" />
+                                <Save className="text-sky-500 text-[8px]" />
                             </span>
                             Simpan ke Server
                         </p>
@@ -1986,7 +1971,7 @@ function TutorialModal({ onClose }) {
                     <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]">
                         <p className="font-black mb-1 flex items-center gap-1.5">
                             <span className="w-5 h-5 rounded-lg bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center shrink-0">
-                                <FontAwesomeIcon icon={faTableList} className="text-indigo-500 text-[8px]" />
+                                <TableProperties className="text-indigo-500 text-[8px]" />
                             </span>
                             Auto-Draft Lokal
                         </p>
@@ -1994,7 +1979,7 @@ function TutorialModal({ onClose }) {
                     </div>
                     <div className="p-3 rounded-xl border border-amber-500/20 bg-amber-500/5">
                         <p className="font-black text-amber-600 mb-1 flex items-center gap-1.5">
-                            <FontAwesomeIcon icon={faTriangleExclamation} className="text-amber-500 text-[10px]" />
+                            <TriangleAlert className="text-amber-500 text-[10px]" />
                             Floating Save Bar
                         </p>
                         <p className="text-amber-700/70">Bar oranye di bagian bawah layar muncul jika ada perubahan belum disimpan. Klik <strong>Reset</strong> untuk membatalkan atau <strong>Simpan</strong> untuk menyimpan.</p>
@@ -2004,7 +1989,7 @@ function TutorialModal({ onClose }) {
             tips: 'Draft lokal hanya tersimpan di browser yang sama. Jika membuka dari perangkat lain, data hanya tersedia setelah disimpan ke server.',
         },
         {
-            icon: faChartSimple,
+            icon: ChartColumn,
             iconColor: 'text-violet-500',
             iconBg: 'bg-violet-500/15',
             title: 'Tab Rekap & Sync ke Raport',
@@ -2015,7 +2000,7 @@ function TutorialModal({ onClose }) {
                     <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]">
                         <p className="font-black mb-1 text-violet-600 flex items-center gap-1.5">
                             <span className="w-5 h-5 rounded-lg bg-violet-500/15 border border-violet-500/20 flex items-center justify-center shrink-0">
-                                <FontAwesomeIcon icon={faArrowsRotate} className="text-violet-500 text-[8px]" />
+                                <RefreshCw className="text-violet-500 text-[8px]" />
                             </span>
                             Sync ke Raport
                         </p>
@@ -2024,14 +2009,14 @@ function TutorialModal({ onClose }) {
                     <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]">
                         <p className="font-black mb-1 flex items-center gap-1.5">
                             <span className="w-5 h-5 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center shrink-0">
-                                <FontAwesomeIcon icon={faFileExport} className="text-emerald-500 text-[8px]" />
+                                <FileOutput className="text-emerald-500 text-[8px]" />
                             </span>
                             Export Excel
                         </p>
                         <p className="text-[var(--color-text-muted)]">Download data absensi lengkap (per hari + rekap) dalam format .xlsx. Kolom tanggal menampilkan kode H/S/I/A/P.</p>
                     </div>
                     <div className="flex items-center gap-2 p-2 rounded-xl border border-red-500/20 bg-red-500/5">
-                        <FontAwesomeIcon icon={faTriangleExclamation} className="text-red-500 shrink-0" />
+                        <TriangleAlert className="text-red-500 shrink-0" />
                         <p className="text-[10px] text-red-600">Siswa alpa <strong>≥ 3 hari</strong> ditandai merah di rekap sebagai peringatan perhatian khusus.</p>
                     </div>
                 </div>
@@ -2046,18 +2031,18 @@ function TutorialModal({ onClose }) {
 
     return createPortal(
         <div
-            className="fixed inset-0 z-[203] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-[203] flex items-center justify-center bg-black/60 p-4"
             onClick={e => { if (e.target === e.currentTarget) onClose() }}
         >
             <div
-                className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]"
+                className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]"
                 role="dialog" aria-modal="true" aria-label="Tutorial Absensi"
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-[var(--color-border)]">
                     <div className="flex items-center gap-3">
                         <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${slide.iconBg}`}>
-                            <FontAwesomeIcon icon={slide.icon} className={`text-base ${slide.iconColor}`} />
+                            <slide.icon className={`text-base ${slide.iconColor}`} />
                         </div>
                         <div>
                             <p className="text-[13px] font-black text-[var(--color-text)] leading-tight">{slide.title}</p>
@@ -2066,7 +2051,7 @@ function TutorialModal({ onClose }) {
                     </div>
                     <button onClick={onClose} aria-label="Tutup tutorial"
                         className="w-8 h-8 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] transition-all shrink-0">
-                        <FontAwesomeIcon icon={faXmark} />
+                        <X />
                     </button>
                 </div>
 
@@ -2091,7 +2076,7 @@ function TutorialModal({ onClose }) {
                 {/* Tips */}
                 <div className="px-6 pb-2">
                     <div className="p-3 rounded-xl bg-emerald-500/8 border border-emerald-500/20 flex items-start gap-2">
-                        <FontAwesomeIcon icon={faLightbulb} className="text-emerald-500 text-[11px] mt-0.5 shrink-0" />
+                        <Lightbulb className="text-emerald-500 text-[11px] mt-0.5 shrink-0" />
                         <p className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 leading-snug">{slide.tips}</p>
                     </div>
                 </div>
@@ -2100,18 +2085,18 @@ function TutorialModal({ onClose }) {
                 <div className="flex items-center gap-3 px-6 py-4">
                     <button onClick={() => setStep(v => Math.max(0, v - 1))} disabled={isFirst}
                         className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all disabled:opacity-30 flex items-center gap-1.5">
-                        <FontAwesomeIcon icon={faChevronLeft} className="text-[9px]" /> Sebelumnya
+                        <ChevronLeft className="text-[9px]" /> Sebelumnya
                     </button>
                     <div className="flex-1" />
                     {isLast ? (
                         <button onClick={onClose}
-                            className="h-9 px-5 rounded-xl bg-emerald-500 text-white text-[10px] font-black hover:bg-emerald-600 transition-all flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
-                            <FontAwesomeIcon icon={faCheck} className="text-[9px]" /> Selesai
+                            className="h-9 px-5 rounded-xl bg-emerald-500 text-white text-[10px] font-black hover:bg-emerald-600 transition-all flex items-center gap-1.5 shadow-lg">
+                            <Check className="text-[9px]" /> Selesai
                         </button>
                     ) : (
                         <button onClick={() => setStep(v => Math.min(SLIDES.length - 1, v + 1))}
-                            className="h-9 px-5 rounded-xl bg-emerald-500 text-white text-[10px] font-black hover:bg-emerald-600 transition-all flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
-                            Berikutnya <FontAwesomeIcon icon={faChevronRight} className="text-[9px]" />
+                            className="h-9 px-5 rounded-xl bg-emerald-500 text-white text-[10px] font-black hover:bg-emerald-600 transition-all flex items-center gap-1.5 shadow-lg">
+                            Berikutnya <ChevronRight className="text-[9px]" />
                         </button>
                     )}
                 </div>
@@ -2356,14 +2341,14 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
     }
 
     return createPortal(
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50"
             onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-            <div className="w-full max-w-3xl bg-[var(--color-surface)] rounded-[32px] border border-[var(--color-border)] shadow-2xl flex flex-col overflow-hidden">
+                <div className="w-full max-w-3xl bg-[var(--color-surface)] rounded-[32px] border border-[var(--color-border)] shadow-xl flex flex-col overflow-hidden">
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-border)]">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center">
-                            <FontAwesomeIcon icon={faGear} className="text-[var(--color-primary)] text-lg" />
+                            <Settings className="text-[var(--color-primary)] text-lg" />
                         </div>
                         <div>
                             <p className="text-[15px] font-black text-[var(--color-text)]">Pengaturan Absensi Guru</p>
@@ -2371,7 +2356,7 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
                         </div>
                     </div>
                     <button onClick={onClose} className="w-10 h-10 rounded-2xl border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all">
-                        <FontAwesomeIcon icon={faXmark} className="text-sm" />
+                        <X className="text-sm" />
                     </button>
                 </div>
 
@@ -2380,7 +2365,7 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
                         {/* Kolom Kiri: Jam Kerja */}
                         <div className="space-y-4">
                             <div className="flex items-center gap-2 px-1">
-                                <FontAwesomeIcon icon={faClock} className="text-[10px] text-[var(--color-primary)]" />
+                                <Clock className="text-[10px] text-[var(--color-primary)]" />
                                 <p className="text-[10px] font-black uppercase tracking-[0.1em] text-[var(--color-text-muted)]">Jadwal Jam Kerja</p>
                             </div>
                             <div className="bg-[var(--color-surface)] rounded-[24px] border border-[var(--color-border)] px-5 py-1 shadow-sm">
@@ -2389,7 +2374,7 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
                                         <input type="text" value={form.jam_masuk} placeholder="07:00"
                                             onChange={e => handleTimeChangeStatic(form, set, 'jam_masuk', e.target.value)}
                                             className="h-11 px-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[14px] font-black text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] transition-all w-32 text-center shadow-sm" />
-                                        <FontAwesomeIcon icon={faClock} className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors pointer-events-none" />
+                                        <Clock className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors pointer-events-none" />
                                     </div>
                                 </InputRow>
                                 <InputRow label="Jam Keluar" sub="Waktu minimal pulang agar tidak dihitung pulang awal.">
@@ -2397,7 +2382,7 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
                                         <input type="text" value={form.jam_keluar} placeholder="15:30"
                                             onChange={e => handleTimeChangeStatic(form, set, 'jam_keluar', e.target.value)}
                                             className="h-11 px-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[14px] font-black text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] transition-all w-32 text-center shadow-sm" />
-                                        <FontAwesomeIcon icon={faClock} className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors pointer-events-none" />
+                                        <Clock className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors pointer-events-none" />
                                     </div>
                                 </InputRow>
                                 <InputRow label="Standar Kerja" sub="Durasi minimal kerja harian agar tidak dihitung pulang awal/lembur.">
@@ -2426,7 +2411,7 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
                             {/* Potongan */}
                             <div className="space-y-2">
                                 <div className="flex items-center gap-2 px-1">
-                                    <FontAwesomeIcon icon={faMoneyBillWave} className="text-[10px] text-amber-500" />
+                                    <Banknote className="text-[10px] text-amber-500" />
                                     <p className="text-[10px] font-black uppercase tracking-[0.1em] text-[var(--color-text-muted)]">Kebijakan Potongan</p>
                                 </div>
                                 <div className="bg-[var(--color-surface)] rounded-[24px] border border-[var(--color-border)] px-5 py-1 shadow-sm">
@@ -2451,7 +2436,7 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
                             {/* Lembur */}
                             <div className="space-y-2">
                                 <div className="flex items-center gap-2 px-1">
-                                    <FontAwesomeIcon icon={faArrowTrendUp} className="text-[10px] text-purple-500" />
+                                    <TrendingUp className="text-[10px] text-purple-500" />
                                     <p className="text-[10px] font-black uppercase tracking-[0.1em] text-[var(--color-text-muted)]">Lembur & Ekstra</p>
                                 </div>
                                 <div className="bg-[var(--color-surface)] rounded-[24px] border border-[var(--color-border)] px-5 py-1 shadow-sm">
@@ -2490,7 +2475,7 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
                     {/* Info Note Full Width */}
                     <div className="mt-8 flex items-start gap-4 p-4 rounded-[20px] bg-blue-500/5 border border-blue-500/10">
                         <div className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
-                            <FontAwesomeIcon icon={faTriangleExclamation} className="text-blue-500 text-sm" />
+                            <TriangleAlert className="text-blue-500 text-sm" />
                         </div>
                         <div className="min-w-0">
                             <p className="text-[11px] font-black text-blue-700">Informasi Penting</p>
@@ -2506,7 +2491,7 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
                     <button onClick={onClose} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">Batal</button>
                     <button onClick={handleSave} disabled={saving}
                         className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black hover:opacity-90 transition-all flex items-center gap-2 disabled:opacity-60">
-                        {saving ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" /> : <FontAwesomeIcon icon={faSave} />}
+                        {saving ? <LoaderCircle className="animate-spin" /> : <Save />}
                         Simpan Pengaturan
                     </button>
                 </div>
@@ -2620,13 +2605,13 @@ function HistoryDrawer({ teacher, onClose, settings = DEFAULT_ATTENDANCE_SETTING
     if (!teacher) return null
 
     return createPortal(
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50"
             onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-            <div className="w-full max-w-lg bg-[var(--color-surface)] rounded-3xl border border-[var(--color-border)] shadow-2xl flex flex-col max-h-[88vh] overflow-hidden">
+                <div className="w-full max-w-lg bg-[var(--color-surface)] rounded-3xl border border-[var(--color-border)] shadow-xl flex flex-col max-h-[88vh] overflow-hidden">
 
                 {/* Header */}
                 <div className="sticky top-0 bg-[var(--color-surface)] border-b border-[var(--color-border)] px-5 py-4 flex items-center gap-3 z-10 rounded-t-3xl shrink-0">
-                    <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center text-white font-black text-base shrink-0">
+                    <div className="w-10 h-10 rounded-2xl bg-[var(--color-primary)] flex items-center justify-center text-white font-black text-base shrink-0">
                         {teacher.name.charAt(0).toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -2634,7 +2619,7 @@ function HistoryDrawer({ teacher, onClose, settings = DEFAULT_ATTENDANCE_SETTING
                         <p className="text-[10px] text-[var(--color-text-muted)]">{teacher.type ? teacher.type.charAt(0).toUpperCase() + teacher.type.slice(1) : 'Guru'} · Riwayat Kehadiran</p>
                     </div>
                     <button onClick={onClose} className="w-8 h-8 rounded-xl border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
-                        <FontAwesomeIcon icon={faXmark} className="text-xs" />
+                        <X className="text-xs" />
                     </button>
                 </div>
 
@@ -2656,9 +2641,9 @@ function HistoryDrawer({ teacher, onClose, settings = DEFAULT_ATTENDANCE_SETTING
                     {/* Stats jam kerja & lembur */}
                     <div className="grid grid-cols-3 gap-2">
                         {[
-                            { label: 'Total Jam', val: fmtDuration(stats.totalWorkMin), color: 'text-blue-600', bg: 'bg-blue-500/8', border: 'border-blue-500/20', icon: faClockRotateLeft },
-                            { label: 'Rata-rata', val: fmtDuration(stats.avgWorkMin), color: 'text-indigo-600', bg: 'bg-indigo-500/8', border: 'border-indigo-500/20', icon: faChartSimple },
-                            { label: 'Total Lembur', val: settings.lembur_enabled !== false ? fmtDuration(stats.totalLemburMin) : '—', color: stats.totalLemburMin > 0 && settings.lembur_enabled !== false ? 'text-purple-600' : 'text-[var(--color-text-muted)]', bg: stats.totalLemburMin > 0 && settings.lembur_enabled !== false ? 'bg-purple-500/8' : 'bg-[var(--color-surface-alt)]', border: stats.totalLemburMin > 0 && settings.lembur_enabled !== false ? 'border-purple-500/20' : 'border-[var(--color-border)]', icon: faArrowTrendUp },
+                            { label: 'Total Jam', val: fmtDuration(stats.totalWorkMin), color: 'text-blue-600', bg: 'bg-blue-500/8', border: 'border-blue-500/20', icon: History },
+                            { label: 'Rata-rata', val: fmtDuration(stats.avgWorkMin), color: 'text-indigo-600', bg: 'bg-indigo-500/8', border: 'border-indigo-500/20', icon: ChartColumn },
+                            { label: 'Total Lembur', val: settings.lembur_enabled !== false ? fmtDuration(stats.totalLemburMin) : '—', color: stats.totalLemburMin > 0 && settings.lembur_enabled !== false ? 'text-purple-600' : 'text-[var(--color-text-muted)]', bg: stats.totalLemburMin > 0 && settings.lembur_enabled !== false ? 'bg-purple-500/8' : 'bg-[var(--color-surface-alt)]', border: stats.totalLemburMin > 0 && settings.lembur_enabled !== false ? 'border-purple-500/20' : 'border-[var(--color-border)]', icon: TrendingUp },
                         ].map(s => (
                             <div key={s.label} className={`rounded-2xl border ${s.border} ${s.bg} p-3 text-center`}>
                                 <p className={`text-[15px] font-black tabular-nums ${s.color}`}>{s.val}</p>
@@ -2683,7 +2668,7 @@ function HistoryDrawer({ teacher, onClose, settings = DEFAULT_ATTENDANCE_SETTING
 
                     {stats.totalLemburMin > 0 && settings.lembur_enabled !== false && (
                         <div className="px-3 py-2 rounded-xl bg-purple-500/5 border border-purple-500/15 flex items-center gap-2">
-                            <FontAwesomeIcon icon={faArrowTrendUp} className="text-purple-500 text-xs shrink-0" />
+                            <TrendingUp className="text-purple-500 text-xs shrink-0" />
                             <p className="text-[10px] text-purple-700 font-bold">
                                 Lembur dihitung dari kelebihan di atas <strong>{settings.standar_jam ?? 8} jam/hari</strong> standar kerja.
                             </p>
@@ -2703,7 +2688,7 @@ function HistoryDrawer({ teacher, onClose, settings = DEFAULT_ATTENDANCE_SETTING
                     {/* Records */}
                     {loading ? (
                         <div className="flex items-center justify-center py-12">
-                            <FontAwesomeIcon icon={faSpinner} className="animate-spin text-xl text-[var(--color-primary)]" />
+                            <LoaderCircle className="animate-spin text-xl text-[var(--color-primary)]" />
                         </div>
                     ) : filtered.length === 0 ? (
                         <div className="text-center py-12 text-[var(--color-text-muted)]">
@@ -2978,8 +2963,8 @@ function FingerspotImportModal({ teachers, onClose, onImported }) {
 
     return createPortal(
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-            <div className="relative w-full max-w-2xl max-h-[90vh] bg-[var(--color-surface)] rounded-3xl border border-[var(--color-border)] shadow-2xl flex flex-col overflow-hidden">
+            <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+            <div className="relative w-full max-w-2xl max-h-[90vh] bg-[var(--color-surface)] rounded-3xl border border-[var(--color-border)] shadow-xl flex flex-col overflow-hidden">
                 {/* Header */}
                 <div className="px-6 py-4 border-b border-[var(--color-border)] flex items-center justify-between shrink-0">
                     <div>
@@ -2991,7 +2976,7 @@ function FingerspotImportModal({ teachers, onClose, onImported }) {
                         </p>
                     </div>
                     <button onClick={onClose} className="w-8 h-8 rounded-xl border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-                        <FontAwesomeIcon icon={faXmark} className="text-xs" />
+                        <X className="text-xs" />
                     </button>
                 </div>
 
@@ -3003,10 +2988,10 @@ function FingerspotImportModal({ teachers, onClose, onImported }) {
                                 ${step > i + 1 ? 'bg-emerald-500 border-emerald-500 text-white' :
                                     step === i + 1 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white' :
                                         'border-[var(--color-border)] text-[var(--color-text-muted)]'}`}>
-                                {step > i + 1 ? <FontAwesomeIcon icon={faCheck} /> : i + 1}
+                                {step > i + 1 ? <Check /> : i + 1}
                             </div>
                             <span className={`text-[10px] font-black ${step === i + 1 ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)]'}`}>{s}</span>
-                            {i < 2 && <FontAwesomeIcon icon={faArrowRight} className="text-[8px] text-[var(--color-border)]" />}
+                            {i < 2 && <ArrowRight className="text-[8px] text-[var(--color-border)]" />}
                         </div>
                     ))}
                 </div>
@@ -3024,9 +3009,9 @@ function FingerspotImportModal({ teachers, onClose, onImported }) {
                             <input ref={fileRef} type="file" accept=".xls,.xlsx" className="hidden"
                                 onChange={e => handleFile(e.target.files[0])} />
                             {parsing ? (
-                                <FontAwesomeIcon icon={faSpinner} className="animate-spin text-3xl text-[var(--color-primary)] mb-4" />
+                                <LoaderCircle className="animate-spin text-3xl text-[var(--color-primary)] mb-4" />
                             ) : (
-                                <FontAwesomeIcon icon={faUpload} className="text-3xl text-[var(--color-text-muted)] mb-4" />
+                                <Upload className="text-3xl text-[var(--color-text-muted)] mb-4" />
                             )}
                             <p className="text-[13px] font-black text-[var(--color-text)]">{parsing ? 'Membaca file...' : 'Drag & drop atau klik untuk pilih file'}</p>
                             <p className="text-[10px] text-[var(--color-text-muted)] mt-1">Format: .xls atau .xlsx dari Fingerspot Personnel</p>
@@ -3045,13 +3030,12 @@ function FingerspotImportModal({ teachers, onClose, onImported }) {
                             {fingerspotNames.map(fn => {
                                 const mapped = nameMap[fn]
                                 return (
-                                    <div key={fn} className="glass rounded-2xl border border-[var(--color-border)] p-3 flex items-center gap-3">
+                                    <div key={fn} className="bg-surface rounded-2xl border border-[var(--color-border)] p-3 flex items-center gap-3">
                                         <div className="flex-1 min-w-0">
                                             <p className="text-[11px] font-black text-[var(--color-text)] truncate">{fn}</p>
                                             <p className="text-[9px] text-[var(--color-text-muted)]">Fingerspot</p>
                                         </div>
-                                        <FontAwesomeIcon icon={mapped ? faLink : faLinkSlash}
-                                            className={`text-xs shrink-0 ${mapped ? 'text-emerald-500' : 'text-[var(--color-text-muted)]'}`} />
+                                        { mapped ? <Link className={`text-xs shrink-0 ${mapped ? 'text-emerald-500' : 'text-[var(--color-text-muted)]'}`} /> : <Unlink className={`text-xs shrink-0 ${mapped ? 'text-emerald-500' : 'text-[var(--color-text-muted)]'}`} /> }
                                         <select
                                             value={nameMap[fn] || ''}
                                             onChange={e => setNameMap(prev => ({ ...prev, [fn]: e.target.value || null }))}
@@ -3076,7 +3060,7 @@ function FingerspotImportModal({ teachers, onClose, onImported }) {
                                 {Object.entries(
                                     previewRows.reduce((acc, r) => { acc[r.status] = (acc[r.status] || 0) + 1; return acc }, {})
                                 ).map(([status, count]) => (
-                                    <div key={status} className="glass rounded-2xl border border-[var(--color-border)] p-2 text-center">
+                                    <div key={status} className="bg-surface rounded-2xl border border-[var(--color-border)] p-2 text-center">
                                         <p className="text-lg font-black text-[var(--color-text)]">{count}</p>
                                         <StatusBadge status={status} size="xs" />
                                     </div>
@@ -3124,8 +3108,8 @@ function FingerspotImportModal({ teachers, onClose, onImported }) {
                         <button onClick={handleImport} disabled={importing || !previewRows.length}
                             className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black hover:brightness-110 transition-all flex items-center gap-2 disabled:opacity-50">
                             {importing
-                                ? <><FontAwesomeIcon icon={faSpinner} className="animate-spin text-xs" /> {progress.done}/{progress.total}</>
-                                : <><FontAwesomeIcon icon={faFileImport} className="text-xs" /> Import {previewRows.length} Record</>}
+                                ? <><LoaderCircle className="animate-spin text-xs" /> {progress.done}/{progress.total}</>
+                                : <><FileInput className="text-xs" /> Import {previewRows.length} Record</>}
                         </button>
                     )}
                 </div>
@@ -3377,13 +3361,13 @@ function GuruTab() {
                 {/* View mode tabs */}
                 <div className="flex items-center bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5">
                     {[
-                        { key: 'harian', label: 'Harian', icon: faCalendarDays },
-                        { key: 'mingguan', label: 'Mingguan', icon: faCalendarDays },
-                        { key: 'bulanan', label: 'Bulanan', icon: faChartSimple },
+                        { key: 'harian', label: 'Harian', icon: CalendarDays },
+                        { key: 'mingguan', label: 'Mingguan', icon: CalendarDays },
+                        { key: 'bulanan', label: 'Bulanan', icon: ChartColumn },
                     ].map(v => (
                         <button key={v.key} onClick={() => setViewMode(v.key)}
                             className={`h-8 px-4 rounded-xl text-[11px] font-black flex items-center gap-1.5 transition-all ${viewMode === v.key ? 'bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                            <FontAwesomeIcon icon={v.icon} className="text-[9px]" />
+                            <v.icon className="text-[9px]" />
                             {v.label}
                         </button>
                     ))}
@@ -3392,11 +3376,11 @@ function GuruTab() {
                 {/* Period nav */}
                 <div className="flex items-center gap-0.5 bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5">
                     <button onClick={prevPeriod} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all">
-                        <FontAwesomeIcon icon={faChevronLeft} className="text-[10px]" />
+                        <ChevronLeft className="text-[10px]" />
                     </button>
                     <span className="px-3 text-[12px] font-black text-[var(--color-text)] min-w-[160px] text-center tabular-nums">{periodLabel}</span>
                     <button onClick={nextPeriod} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all">
-                        <FontAwesomeIcon icon={faChevronRight} className="text-[10px]" />
+                        <ChevronRight className="text-[10px]" />
                     </button>
                 </div>
             </div>
@@ -3407,18 +3391,18 @@ function GuruTab() {
                 {/* Toolbar di dalam card: search + import + settings */}
                 <div className="px-3 md:px-4 py-2.5 border-b border-[var(--color-border)] flex items-center gap-2">
                     <div className="relative flex-1 max-w-xs">
-                        <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
                         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Cari nama guru..."
                             className="w-full h-8 pl-8 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[11px] font-medium text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] outline-none focus:border-[var(--color-primary)] transition-all" />
                     </div>
                     <button onClick={() => setShowSettings(true)}
                         className="h-8 w-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] flex items-center justify-center hover:text-[var(--color-text)] hover:border-[var(--color-primary)]/40 transition-all shrink-0 ml-auto"
                         title="Pengaturan absensi guru">
-                        <FontAwesomeIcon icon={faGear} className="text-[11px]" />
+                        <Settings className="text-[11px]" />
                     </button>
                     <button onClick={() => setShowImport(true)}
                         className="h-8 px-3 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black flex items-center gap-1.5 hover:brightness-110 transition-all shrink-0">
-                        <FontAwesomeIcon icon={faFileImport} className="text-[9px]" />
+                        <FileInput className="text-[9px]" />
                         <span className="hidden sm:inline">Import Fingerspot</span>
                         <span className="sm:hidden">Import</span>
                     </button>
@@ -3428,11 +3412,11 @@ function GuruTab() {
                 {/* Main table content (inside card) */}
                 {loading ? (
                     <div className="flex items-center justify-center py-20">
-                        <FontAwesomeIcon icon={faSpinner} className="animate-spin text-2xl text-[var(--color-primary)]" />
+                        <LoaderCircle className="animate-spin text-2xl text-[var(--color-primary)]" />
                     </div>
                 ) : filtered.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-20 gap-3">
-                        <FontAwesomeIcon icon={faCalendarDays} className="text-3xl text-[var(--color-text-muted)] opacity-30" />
+                        <CalendarDays className="text-3xl text-[var(--color-text-muted)] opacity-30" />
                         <p className="text-[12px] font-black text-[var(--color-text)]">Belum ada data</p>
                         <p className="text-[10px] text-[var(--color-text-muted)]">Import data dari Fingerspot untuk mulai</p>
                         <button onClick={() => setShowImport(true)}
@@ -3450,7 +3434,7 @@ function GuruTab() {
                             {filtered.map(t => (
                                 <div key={t.id} className="grid grid-cols-1 md:grid-cols-[1fr_120px_90px_90px_110px_80px] gap-3 px-5 py-3 items-center hover:bg-[var(--color-surface-alt)]/40 transition-colors">
                                     <div className="flex items-center gap-2">
-                                        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-accent)]/20 flex items-center justify-center text-[var(--color-primary)] font-black text-sm shrink-0">
+                                        <div className="w-8 h-8 rounded-xl bg-[var(--color-primary)]/20 flex items-center justify-center text-[var(--color-primary)] font-black text-sm shrink-0">
                                             {t.name.charAt(0).toUpperCase()}
                                         </div>
                                         <p className="text-[12px] font-black text-[var(--color-text)]">{t.name}</p>
@@ -3463,7 +3447,7 @@ function GuruTab() {
                                     <div>{t.record ? <StatusBadge status={t.record.status} /> : <span className="text-[9px] text-[var(--color-text-muted)]">—</span>}</div>
                                     <button onClick={() => setHistoryTeacher(t)}
                                         className="h-7 px-2.5 rounded-lg border border-[var(--color-border)] text-[9px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] flex items-center gap-1 transition-colors">
-                                        <FontAwesomeIcon icon={faClockRotateLeft} className="text-[8px]" /> Riwayat
+                                        <History className="text-[8px]" /> Riwayat
                                     </button>
                                 </div>
                             ))}
@@ -3595,7 +3579,7 @@ function GuruTab() {
                                             <td style={{ textAlign: 'center', borderLeft: '1px solid var(--color-border)' }}>
                                                 <button onClick={() => setHistoryTeacher(t)}
                                                     className="w-7 h-7 rounded-lg border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors mx-auto">
-                                                    <FontAwesomeIcon icon={faEye} className="text-[9px]" />
+                                                    <Eye className="text-[9px]" />
                                                 </button>
                                             </td>
                                         </tr>
@@ -3627,7 +3611,7 @@ function GuruTab() {
                                 </div>
                                 <button onClick={() => setHistoryTeacher(t)}
                                     className="h-8 w-8 rounded-xl border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors shrink-0">
-                                    <FontAwesomeIcon icon={faEye} className="text-xs" />
+                                    <Eye className="text-xs" />
                                 </button>
                             </div>
                         ))}
@@ -4337,7 +4321,7 @@ export default function AttendancePage() {
                                     className="h-8 px-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-[10px] font-black flex items-center gap-1.5 hover:bg-[var(--color-border)] hover:text-[var(--color-text)] active:scale-95 transition-all"
                                     title="Command Palette (Ctrl+K)"
                                 >
-                                    <FontAwesomeIcon icon={faKeyboard} className="text-[9px]" />
+                                    <Keyboard className="text-[9px]" />
                                     <span>⌘ K</span>
                                 </button>
                                 <button
@@ -4345,7 +4329,7 @@ export default function AttendancePage() {
                                     className="h-8 px-3 rounded-lg border border-amber-500/30 bg-amber-500/8 text-amber-500 text-[10px] font-black flex items-center gap-1.5 hover:bg-amber-500/15 active:scale-95 transition-all"
                                     title="Panduan & Tutorial"
                                 >
-                                    <FontAwesomeIcon icon={faLightbulb} className="text-[9px]" />
+                                    <Lightbulb className="text-[9px]" />
                                     <span>Tutorial</span>
                                 </button>
                             </>
@@ -4363,14 +4347,14 @@ export default function AttendancePage() {
                 {/* ── Main Tab: Siswa / Guru ── */}
                 <div className="flex items-center bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5 w-fit mb-5">
                     {[
-                        { key: 'siswa', label: 'Absensi Siswa', icon: faChalkboardTeacher },
-                        { key: 'guru', label: 'Absensi Guru', icon: faUsers },
+                        { key: 'siswa', label: 'Absensi Siswa', icon: Presentation },
+                        { key: 'guru', label: 'Absensi Guru', icon: Users },
                     ].map(t => (
                         <button key={t.key} onClick={() => setMainTab(t.key)}
                             className={`h-8 px-4 rounded-xl text-[11px] font-black flex items-center gap-1.5 transition-all ${mainTab === t.key
                                 ? 'bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm'
                                 : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                            <FontAwesomeIcon icon={t.icon} className="text-[10px]" />
+                            <t.icon className="text-[10px]" />
                             {t.label}
                         </button>
                     ))}
@@ -4390,7 +4374,7 @@ export default function AttendancePage() {
                                 <div className="h-9 flex-1 sm:flex-none sm:w-40 rounded-xl bg-[var(--color-border)] animate-pulse" />
                             ) : (
                                 <div className="relative flex-1 sm:flex-none">
-                                    <FontAwesomeIcon icon={faChalkboardTeacher} className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
+                                    <Presentation className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
                                     <select value={classId} onChange={e => handleChangeClass(e.target.value)}
                                         className="w-full h-9 pl-8 pr-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] transition-colors appearance-none cursor-pointer">
                                         {classList.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -4401,14 +4385,14 @@ export default function AttendancePage() {
                             {/* Tabs — muncul di kanan kelas pada mobile */}
                             <div className="flex items-center bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5 sm:hidden ml-auto">
                                 {[
-                                    { key: 'input', icon: faCalendarDays },
-                                    { key: 'rekap', icon: faChartSimple },
+                                    { key: 'input', icon: CalendarDays },
+                                    { key: 'rekap', icon: ChartColumn },
                                 ].map(t => (
                                     <button key={t.key} onClick={() => setActiveTab(t.key)}
                                         className={`h-8 px-3 rounded-xl text-[11px] font-black flex items-center gap-1.5 transition-all ${activeTab === t.key
                                             ? 'bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm'
                                             : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                                        <FontAwesomeIcon icon={t.icon} className="text-[10px]" />
+                                        <t.icon className="text-[10px]" />
                                     </button>
                                 ))}
                             </div>
@@ -4419,27 +4403,27 @@ export default function AttendancePage() {
                             {/* Month nav */}
                             <div className="flex items-center gap-0.5 bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5 flex-1 sm:flex-none justify-between sm:justify-start">
                                 <button onClick={prevBulan} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all">
-                                    <FontAwesomeIcon icon={faChevronLeft} className="text-[10px]" />
+                                    <ChevronLeft className="text-[10px]" />
                                 </button>
                                 <span className="px-2 text-[12px] font-black text-[var(--color-text)] min-w-[110px] text-center tabular-nums">
                                     {BULAN_NAMA[bulan]} {tahun}
                                 </span>
                                 <button onClick={nextBulan} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all">
-                                    <FontAwesomeIcon icon={faChevronRight} className="text-[10px]" />
+                                    <ChevronRight className="text-[10px]" />
                                 </button>
                             </div>
 
                             {/* Tabs — hanya di desktop */}
                             <div className="hidden sm:flex items-center bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5 ml-auto">
                                 {[
-                                    { key: 'input', label: 'Input', icon: faCalendarDays },
-                                    { key: 'rekap', label: 'Rekap', icon: faChartSimple },
+                                    { key: 'input', label: 'Input', icon: CalendarDays },
+                                    { key: 'rekap', label: 'Rekap', icon: ChartColumn },
                                 ].map(t => (
                                     <button key={t.key} onClick={() => setActiveTab(t.key)}
                                         className={`h-8 px-4 rounded-xl text-[11px] font-black flex items-center gap-1.5 transition-all ${activeTab === t.key
                                             ? 'bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm'
                                             : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                                        <FontAwesomeIcon icon={t.icon} className="text-[10px]" />
+                                        <t.icon className="text-[10px]" />
                                         {t.label}
                                     </button>
                                 ))}
@@ -4450,7 +4434,7 @@ export default function AttendancePage() {
                     {/* Draft banner */}
                     {draftAvail && !isDirty && (
                         <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-amber-500/20 bg-amber-500/5 mb-4">
-                            <FontAwesomeIcon icon={faExclamationTriangle} className="text-amber-500 shrink-0" />
+                            <TriangleAlert className="text-amber-500 shrink-0" />
                             <p className="text-[11px] text-amber-600 font-medium flex-1">Ada draft dari sesi sebelumnya</p>
                             <button onClick={() => {
                                 try {
@@ -4495,14 +4479,14 @@ export default function AttendancePage() {
                                                 <button onClick={handleCopyLastMonth} disabled={copyingLastMonth || loadingData}
                                                     className="h-8 px-2.5 rounded-lg text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all flex items-center gap-1.5 disabled:opacity-40"
                                                     title="Salin data dari bulan lalu">
-                                                    {copyingLastMonth ? <FontAwesomeIcon icon={faSpinner} className="animate-spin text-[9px]" /> : <FontAwesomeIcon icon={faCopy} className="text-[9px]" />}
+                                                    {copyingLastMonth ? <LoaderCircle className="animate-spin text-[9px]" /> : <Copy className="text-[9px]" />}
                                                     <span className="hidden lg:inline">Salin Bulan Lalu</span>
                                                     <span className="lg:hidden sm:inline">Salin</span>
                                                 </button>
                                                 <button onClick={() => setShowImport(true)}
                                                     className="h-8 px-2.5 rounded-lg text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all flex items-center gap-1.5"
                                                     title="Import data">
-                                                    <FontAwesomeIcon icon={faFileImport} className="text-[9px]" />
+                                                    <FileInput className="text-[9px]" />
                                                     <span className="hidden sm:inline">Import</span>
                                                 </button>
                                             </div>
@@ -4511,17 +4495,17 @@ export default function AttendancePage() {
                                             <div className="flex items-center bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5 shadow-sm">
                                                 <button onClick={applyUndo} disabled={!canUndo} title="Batalkan (Ctrl+Z)"
                                                     className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all disabled:opacity-30">
-                                                    <FontAwesomeIcon icon={faRotateLeft} className="text-[10px]" />
+                                                    <RotateCcw className="text-[10px]" />
                                                 </button>
                                                 <button onClick={applyRedo} disabled={!canRedo} title="Ulangi (Ctrl+Y)"
                                                     className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all disabled:opacity-30">
-                                                    <FontAwesomeIcon icon={faRotateRight} className="text-[10px]" />
+                                                    <RotateCw className="text-[10px]" />
                                                 </button>
                                                 <div className="w-px h-4 bg-[var(--color-border)] mx-0.5" />
                                                 <button onClick={handleScrollToToday} disabled={!todayDate}
                                                     className="h-8 px-3 rounded-lg text-[10px] font-black text-indigo-600 hover:bg-indigo-500/10 transition-all flex items-center gap-1.5 disabled:opacity-40"
                                                     title="Scroll ke kolom hari ini">
-                                                    <FontAwesomeIcon icon={faCrosshairs} className="text-[9px]" />
+                                                    <Crosshair className="text-[9px]" />
                                                     <span className="hidden sm:inline text-indigo-700">HARI INI</span>
                                                 </button>
                                             </div>
@@ -4534,7 +4518,7 @@ export default function AttendancePage() {
                                                 <button onClick={() => setHideWeekend(v => !v)}
                                                     className={`h-8 px-3 rounded-lg text-[10px] font-black transition-all flex items-center gap-1.5 ${hideWeekend ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]'}`}
                                                     title="Toggle akhir pekan">
-                                                    <FontAwesomeIcon icon={hideWeekend ? faEyeSlash : faEye} className="text-[9px]" />
+                                                    { hideWeekend ? <EyeOff className="text-[9px]" /> : <Eye className="text-[9px]" /> }
                                                     <span className="hidden lg:inline">{hideWeekend ? 'Tampilkan Weekend' : 'Sembunyikan Weekend'}</span>
                                                 </button>
                                                 <div className="w-px h-4 bg-[var(--color-border)] mx-0.5" />
@@ -4547,7 +4531,7 @@ export default function AttendancePage() {
                                                 <button onClick={() => setShowAlertConfig(true)}
                                                     className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all"
                                                     title="Konfigurasi alert">
-                                                    <FontAwesomeIcon icon={faBell} className="text-[10px]" />
+                                                    <Bell className="text-[10px]" />
                                                 </button>
                                             </div>
 
@@ -4589,14 +4573,14 @@ export default function AttendancePage() {
                                             {/* View switcher */}
                                             <div className="flex items-center gap-0.5 bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5">
                                                 {[
-                                                    { key: 'table', icon: faTableCells, label: 'Tabel' },
-                                                    { key: 'card', icon: faBorderAll, label: 'Card' },
-                                                    { key: 'list', icon: faList, label: 'List' },
+                                                    { key: 'table', icon: LayoutGrid, label: 'Tabel' },
+                                                    { key: 'card', icon: LayoutGrid, label: 'Card' },
+                                                    { key: 'list', icon: List, label: 'List' },
                                                 ].map(v => (
                                                     <button key={v.key}
                                                         onClick={() => { setMobileView(v.key); try { localStorage.setItem('absensi_mobile_view', v.key) } catch { } }}
                                                         className={`w-8 h-7 rounded-lg flex items-center justify-center text-[10px] transition-all ${mobileView === v.key ? 'bg-white shadow-sm text-indigo-600' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-                                                        <FontAwesomeIcon icon={v.icon} />
+                                                        <v.icon />
                                                     </button>
                                                 ))}
                                             </div>
@@ -4617,7 +4601,7 @@ export default function AttendancePage() {
 
                                         {/* Search Input — Flex-1 to stretch & fill the remaining space without max-width */}
                                         <div className="relative group flex-1 w-full">
-                                            <FontAwesomeIcon icon={faMagnifyingGlass} className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] group-focus-within:text-indigo-500 transition-colors pointer-events-none" />
+                                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] group-focus-within:text-indigo-500 transition-colors pointer-events-none" />
                                             <input value={searchRaw} onChange={e => setSearchRaw(e.target.value)} placeholder="Cari nama / NISN..."
                                                 className="w-full h-8 sm:h-9 pl-9 pr-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 text-[11px] font-medium text-[var(--color-text)] outline-none focus:border-indigo-500 focus:bg-[var(--color-surface)] focus:shadow-md transition-all placeholder:opacity-50" />
                                             {searchRaw && (
@@ -4627,7 +4611,7 @@ export default function AttendancePage() {
 
                                         <button onClick={() => setShowMobileSheet(true)}
                                             className="sm:hidden shrink-0 w-8 h-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] shadow-sm text-indigo-600 flex items-center justify-center active:scale-95 transition-transform">
-                                            <FontAwesomeIcon icon={faGear} className="text-xs" />
+                                            <Settings className="text-xs" />
                                         </button>
                                     </div>
                                 </div>
@@ -4642,7 +4626,7 @@ export default function AttendancePage() {
                                             : 'border-[var(--color-border)] text-[var(--color-text)]'}`}
                                     >
                                         <div className="flex items-center gap-3">
-                                            <FontAwesomeIcon icon={hideWeekend ? faEyeSlash : faEye} className="text-[13px] w-4" />
+                                            { hideWeekend ? <EyeOff className="text-[13px] w-4" /> : <Eye className="text-[13px] w-4" /> }
                                             <div className="text-left">
                                                 <p className="text-[12px] font-black">Sembunyikan Weekend</p>
                                                 <p className="text-[10px] text-[var(--color-text-muted)]">Sembunyikan kolom Sabtu & Minggu</p>
@@ -4656,7 +4640,7 @@ export default function AttendancePage() {
                                     {/* Filter siswa */}
                                     <div className="px-4 py-3 rounded-xl border border-[var(--color-border)]">
                                         <p className="text-[11px] font-black text-[var(--color-text)] mb-2 flex items-center gap-2">
-                                            <FontAwesomeIcon icon={faFilter} className="text-[11px]" />
+                                            <Funnel className="text-[11px]" />
                                             Filter Siswa
                                         </p>
                                         <div className="flex flex-col gap-1.5">
@@ -4674,7 +4658,7 @@ export default function AttendancePage() {
                                                         <p className="text-[11px] font-black">{opt.label}</p>
                                                         <p className="text-[9px] opacity-70">{opt.sub}</p>
                                                     </div>
-                                                    {filterMode === opt.val && <FontAwesomeIcon icon={faCheck} className="text-amber-600 text-[11px]" />}
+                                                    {filterMode === opt.val && <Check className="text-amber-600 text-[11px]" />}
                                                 </button>
                                             ))}
                                         </div>
@@ -4685,12 +4669,12 @@ export default function AttendancePage() {
                                         onClick={() => { setShowMobileSheet(false); setTimeout(() => setShowAlertConfig(true), 200) }}
                                         className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text)] transition-all hover:bg-[var(--color-surface-alt)]"
                                     >
-                                        <FontAwesomeIcon icon={faBell} className="text-[13px] w-4 text-amber-500" />
+                                        <Bell className="text-[13px] w-4 text-amber-500" />
                                         <div className="text-left">
                                             <p className="text-[12px] font-black">Konfigurasi Alert</p>
                                             <p className="text-[10px] text-[var(--color-text-muted)]">Alpa ≥ {alertThreshold.alpa} hari · Hadir &lt; {alertThreshold.hadirPct}%</p>
                                         </div>
-                                        <FontAwesomeIcon icon={faChevronRight} className="ml-auto text-[10px] text-[var(--color-text-muted)]" />
+                                        <ChevronRight className="ml-auto text-[10px] text-[var(--color-text-muted)]" />
                                     </button>
                                 </MobileToolbarSheet>
 
@@ -4862,7 +4846,7 @@ export default function AttendancePage() {
                                                                     {searchRaw ? (
                                                                         // Empty: search no results
                                                                         <EmptyState 
-                                                                            icon={faMagnifyingGlass}
+                                                                            icon={Search}
                                                                             title="Tidak ada hasil"
                                                                             description={`Tidak ada siswa yang cocok dengan "${searchRaw}"`}
                                                                             variant="plain"
@@ -4877,7 +4861,7 @@ export default function AttendancePage() {
                                                                     ) : filterMode !== 'all' ? (
                                                                         // Empty: filter active
                                                                         <EmptyState 
-                                                                            icon={faFilter}
+                                                                            icon={Funnel}
                                                                             title="Tidak ada siswa yang cocok"
                                                                             description="Filter aktif tidak menemukan siswa"
                                                                             variant="plain"
@@ -4885,14 +4869,14 @@ export default function AttendancePage() {
                                                                             action={
                                                                                 <button onClick={() => setFilterMode('all')}
                                                                                     className="h-8 px-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[11px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-1.5">
-                                                                                    <FontAwesomeIcon icon={faArrowsRotate} className="text-[9px]" /> Reset filter
+                                                                                    <RefreshCw className="text-[9px]" /> Reset filter
                                                                                 </button>
                                                                             }
                                                                         />
                                                                     ) : completionPct === 0 && studentList.length > 0 ? (
                                                                         // Empty: no data yet this month — engaging CTA
                                                                         <EmptyState 
-                                                                            icon={faCalendarDays}
+                                                                            icon={CalendarDays}
                                                                             title={`Belum ada absensi ${BULAN_NAMA[bulan]}`}
                                                                             description="Mulai isi sekarang, atau salin dari bulan sebelumnya jika polanya sama."
                                                                             variant="plain"
@@ -4902,14 +4886,14 @@ export default function AttendancePage() {
                                                                                     <button
                                                                                         onClick={handleCopyLastMonth}
                                                                                         disabled={copyingLastMonth}
-                                                                                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 shadow-sm shadow-[var(--color-primary)]/20">
-                                                                                        {copyingLastMonth ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" /> : <FontAwesomeIcon icon={faCopy} />}
+                                                                                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 shadow-sm">
+                                                                                        {copyingLastMonth ? <LoaderCircle className="animate-spin" /> : <Copy />}
                                                                                         Copy dari {BULAN_NAMA[bulan === 1 ? 12 : bulan - 1]}
                                                                                     </button>
                                                                                     <button
                                                                                         onClick={() => { setShowCommandPalette(true); haptic('light') }}
                                                                                         className="h-9 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[11px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all flex items-center gap-2">
-                                                                                        <FontAwesomeIcon icon={faWandMagicSparkles} className="text-[9px]" />
+                                                                                        <WandSparkles className="text-[9px]" />
                                                                                         Isi cepat ⌘K
                                                                                     </button>
                                                                                 </div>
@@ -4918,7 +4902,7 @@ export default function AttendancePage() {
                                                                     ) : (
                                                                         // Generic empty
                                                                         <EmptyState 
-                                                                            icon={faUsers}
+                                                                            icon={Users}
                                                                             title="Tidak ada siswa aktif"
                                                                             description="Siswa kelas ini belum ditambahkan atau tidak ada siswa aktif."
                                                                             variant="plain"
@@ -5025,10 +5009,10 @@ export default function AttendancePage() {
                                         </p>
                                         <button onClick={handleSave} disabled={saving || !isDirty}
                                             className={`h-9 px-5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${isDirty
-                                                ? 'bg-[var(--color-primary)] hover:opacity-90 text-white shadow-lg shadow-[var(--color-primary)]/20'
+                                                ? 'bg-[var(--color-primary)] hover:opacity-90 text-white shadow-lg'
                                                 : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] cursor-not-allowed opacity-60'
                                                 }`}>
-                                            {saving ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" /> : <FontAwesomeIcon icon={faSave} />}
+                                            {saving ? <LoaderCircle className="animate-spin" /> : <Save />}
                                             {isDirty ? 'Simpan Perubahan' : 'Tersimpan'}
                                         </button>
                                     </div>
@@ -5057,20 +5041,20 @@ export default function AttendancePage() {
                                 : 'calc(50vw + (var(--sidebar-width, 0px) / 2))'
                         }}
                     >
-                        <div className="flex items-center gap-2 sm:gap-3 px-4 py-2.5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]/95 backdrop-blur-xl shadow-2xl">
-                            <FontAwesomeIcon icon={faExclamationTriangle} className="text-amber-400 shrink-0" />
+                        <div className="flex items-center gap-2 sm:gap-3 px-4 py-2.5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl">
+                            <TriangleAlert className="text-amber-400 shrink-0" />
                             <span className="text-[11px] text-[var(--color-text-muted)] font-medium flex-1 sm:flex-none">
                                 <span className="hidden sm:inline">Ada perubahan belum disimpan</span>
                                 <span className="sm:hidden">Belum disimpan</span>
                             </span>
                             <button onClick={handleReset}
                                 className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black hover:text-[var(--color-text)] transition-all flex items-center gap-1.5 shrink-0">
-                                <FontAwesomeIcon icon={faRotateLeft} className="text-[9px]" />
+                                <RotateCcw className="text-[9px]" />
                                 <span className="hidden sm:inline">Reset</span>
                             </button>
                             <button onClick={handleSave} disabled={saving}
-                                className="h-8 px-4 rounded-xl bg-[var(--color-primary)] hover:opacity-90 text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-[var(--color-primary)]/20 disabled:opacity-60 shrink-0">
-                                {saving ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" /> : <FontAwesomeIcon icon={faSave} />}
+                                className="h-8 px-4 rounded-xl bg-[var(--color-primary)] hover:opacity-90 text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shadow-lg disabled:opacity-60 shrink-0">
+                                {saving ? <LoaderCircle className="animate-spin" /> : <Save />}
                                 Simpan
                             </button>
                         </div>

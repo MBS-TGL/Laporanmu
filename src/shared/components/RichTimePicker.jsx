@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react'
 import { createPortal } from 'react-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClock, faChevronDown, faChevronUp, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { Clock, ChevronDown, ChevronUp, Check } from 'lucide-react'
 import { useLanguage } from '@context'
 
 const TIME_LOCALES = {
@@ -334,7 +333,7 @@ const RichTimePicker = memo(({
                             onClick={() => adjustHour(1)}
                             className="w-8 h-6.5 flex items-center justify-center text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 rounded transition-colors active:scale-75"
                         >
-                            <FontAwesomeIcon icon={faChevronUp} />
+                            <ChevronUp />
                         </button>
                         <span className="text-2xl font-bold tracking-wider text-[var(--color-text)] select-none">
                             {tNum(timeDisplay.hour)}
@@ -344,7 +343,7 @@ const RichTimePicker = memo(({
                             onClick={() => adjustHour(-1)}
                             className="w-8 h-6.5 flex items-center justify-center text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 rounded transition-colors active:scale-75"
                         >
-                            <FontAwesomeIcon icon={faChevronDown} />
+                            <ChevronDown />
                         </button>
                     </div>
 
@@ -357,7 +356,7 @@ const RichTimePicker = memo(({
                             onClick={() => adjustMinute(1)}
                             className="w-8 h-6.5 flex items-center justify-center text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 rounded transition-colors active:scale-75"
                         >
-                            <FontAwesomeIcon icon={faChevronUp} />
+                            <ChevronUp />
                         </button>
                         <span className="text-2xl font-bold tracking-wider text-[var(--color-text)] select-none">
                             {tNum(timeDisplay.minute)}
@@ -367,7 +366,7 @@ const RichTimePicker = memo(({
                             onClick={() => adjustMinute(-1)}
                             className="w-8 h-6.5 flex items-center justify-center text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 rounded transition-colors active:scale-75"
                         >
-                            <FontAwesomeIcon icon={faChevronDown} />
+                            <ChevronDown />
                         </button>
                     </div>
 
@@ -407,7 +406,7 @@ const RichTimePicker = memo(({
                     onClick={handleDone}
                     className="flex-1 h-8.5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 shadow-sm"
                 >
-                    <FontAwesomeIcon icon={faCheck} className="text-xs text-white" />
+                    <Check className="text-xs text-white" />
                     <span>{currentLocale.done}</span>
                 </button>
             </div>
@@ -429,14 +428,12 @@ const RichTimePicker = memo(({
                 className={`w-full pl-9 pr-8 h-[40px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] outline-none transition-all text-xs sm:text-sm font-medium shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
             />
             
-            <FontAwesomeIcon 
-                icon={faClock} 
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-[var(--color-text-muted)] opacity-50 pointer-events-none" 
+            <Clock
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-[var(--color-text-muted)] opacity-50 pointer-events-none"
             />
-            
-            <FontAwesomeIcon 
-                icon={faChevronDown} 
-                className={`absolute right-3.5 top-1/2 -translate-y-1/2 text-xs opacity-40 transition-transform duration-300 pointer-events-none ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} 
+
+            <ChevronDown
+                className={`absolute right-3.5 top-1/2 -translate-y-1/2 text-xs opacity-40 transition-transform duration-300 pointer-events-none ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
             />
 
             {/* Premium Headerless Highly-Readable Dropdown */}
@@ -451,7 +448,7 @@ const RichTimePicker = memo(({
                             }}
                         />
                         <div
-                            className="fixed bottom-0 left-0 right-0 z-[99999] bg-[var(--color-surface)] border-t border-[var(--color-border)] rounded-t-2xl shadow-2xl animate-in slide-in-from-bottom duration-200 flex flex-col select-none"
+                            className="fixed bottom-0 left-0 right-0 z-[99999] bg-[var(--color-surface)] border-t border-[var(--color-border)] rounded-t-2xl shadow-xl animate-in slide-in-from-bottom duration-200 flex flex-col select-none"
                             onMouseDown={(e) => {
                                 e.stopPropagation()
                                 e.preventDefault()
@@ -468,7 +465,7 @@ const RichTimePicker = memo(({
                     </>
                 ) : (
                     <div
-                        className={`fixed z-[99999] w-[200px] h-[150px] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-2xl overflow-hidden animate-in fade-in ${coords.placement === 'top' ? 'slide-in-from-bottom-3' : 'slide-in-from-top-3'} select-none flex flex-col justify-between`}
+                        className={`fixed z-[99999] w-[200px] h-[150px] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-xl overflow-hidden animate-in fade-in ${coords.placement === 'top' ? 'slide-in-from-bottom-3' : 'slide-in-from-top-3'} select-none flex flex-col justify-between`}
                         onMouseDown={(e) => {
                             e.stopPropagation()
                             e.preventDefault()

@@ -1,11 +1,6 @@
 import { useState, useEffect, useCallback, useRef, memo } from 'react'
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faSearch, faNewspaper, faCalendar, faClock,
-    faUser, faArrowRight, faXmark, faTimes,
-    faMoon, faSun, faBars, faChevronLeft, faChevronRight, faPrint
-} from '@fortawesome/free-solid-svg-icons'
+import { ArrowRight, ChevronLeft, ChevronRight, Clock, Menu, Moon, Newspaper, Printer, Search, Sun, User, X } from 'lucide-react'
 import { supabase } from '@lib/supabase'
 import { useTheme } from '@context/Theme'
 import { useAuth } from '@context/Auth'
@@ -34,19 +29,19 @@ const Navbar = memo(() => {
         return () => window.removeEventListener('scroll', fn)
     }, [])
     return (
-        <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'glass py-3' : 'bg-transparent py-5'}`}>
+        <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-surface border border-border py-3' : 'bg-transparent py-5'}`}>
             <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between relative">
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-3 group relative z-50">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform duration-300">
+                        <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
                             <span className="text-white font-bold text-xl font-heading">L</span>
                         </div>
                         <span className="font-heading font-bold text-2xl text-[var(--color-text)] tracking-tight">Laporan<span className="text-[var(--color-primary)]">mu</span></span>
                     </Link>
 
                     {/* Desktop Nav - centered */}
-                    <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8 bg-[var(--color-surface)]/50 dark:bg-[var(--color-surface-alt)]/50 backdrop-blur-md px-6 py-2.5 rounded-full border border-[var(--color-border)]">
+                    <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8 bg-[var(--color-surface)] dark:bg-[var(--color-surface-alt)] px-6 py-2.5 rounded-full border border-[var(--color-border)]">
                         <Link to="/" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] font-medium text-sm transition-all hover:scale-105 active:scale-95">Beranda</Link>
                         <Link to="/informasi" className="text-[var(--color-primary)] font-black text-sm">Informasi</Link>
                         <Link to="/check" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] font-medium text-sm transition-all hover:scale-105 active:scale-95">Cek Poin</Link>
@@ -55,9 +50,9 @@ const Navbar = memo(() => {
                     {/* Desktop Actions */}
                     <div className="hidden md:flex items-center gap-4 z-50">
                         <button onClick={toggleTheme} className="w-10 h-10 rounded-full flex items-center justify-center bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 transition-all">
-                            <FontAwesomeIcon icon={isDark ? faSun : faMoon} />
+                            {isDark ? <Sun /> : <Moon />}
                         </button>
-                        <Link to={user ? "/dashboard" : "/login"} className="inline-flex items-center px-5 py-2 text-[13px] font-black rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white shadow-lg shadow-indigo-500/20 hover:scale-105 active:scale-95 transition-all">
+                            <Link to={user ? "/dashboard" : "/login"} className="inline-flex items-center px-5 py-2 text-[13px] font-black rounded-xl bg-[var(--color-primary)] text-white shadow-lg hover:scale-105 active:scale-95 transition-all">
                             {user ? 'Ke Dashboard' : 'Login Staff'}
                         </Link>
                     </div>
@@ -65,10 +60,10 @@ const Navbar = memo(() => {
                     {/* Mobile Actions */}
                     <div className="flex items-center gap-3 md:hidden z-50">
                         <button onClick={toggleTheme} className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text)]">
-                            <FontAwesomeIcon icon={isDark ? faSun : faMoon} />
+                            {isDark ? <Sun /> : <Moon />}
                         </button>
-                        <button onClick={() => setMenuOpen(p => !p)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white shadow-lg shadow-[var(--color-primary)]/30">
-                            <FontAwesomeIcon icon={menuOpen ? faTimes : faBars} />
+                            <button onClick={() => setMenuOpen(p => !p)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--color-primary)] text-white shadow-lg">
+                            {menuOpen ? <X /> : <Menu />}
                         </button>
                     </div>
                 </div>
@@ -76,7 +71,7 @@ const Navbar = memo(() => {
 
             {/* Mobile Menu */}
             {menuOpen && (
-                <div className="md:hidden absolute top-full left-4 right-4 mt-2 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-2xl p-3 space-y-1 animate-in fade-in duration-200">
+                <div className="md:hidden absolute top-full left-4 right-4 mt-2 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-xl p-3 space-y-1 animate-in fade-in duration-200">
                     {[['/', 'Beranda'], ['/informasi', 'Informasi'], ['/check', 'Cek Poin'], [user ? '/dashboard' : '/login', user ? 'Ke Dashboard' : 'Login Staff']].map(([to, label]) => (
                         <Link key={to} to={to} onClick={() => setMenuOpen(false)} className="flex items-center px-4 py-3 rounded-xl text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-colors">{label}</Link>
                     ))}
@@ -123,15 +118,15 @@ const DetailModal = memo(({ item, onClose }) => {
     }
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-md animate-in fade-in duration-200" onClick={onClose} />
-            <div className="relative w-full max-w-2xl bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
+            <div className="absolute inset-0 bg-black/60 animate-in fade-in duration-200" onClick={onClose} />
+            <div className="relative w-full max-w-2xl bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2.5rem] shadow-xl overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
                 {/* Thumbnail */}
                 {item.image_url && (
                     <div className="h-56 sm:h-64 w-full shrink-0 relative">
-                        <img src={item.image_url} alt={item.image_alt || item.title} className="w-full h-full object-cover" />
+                        <img src={item.image_url} alt={item.image_alt || item.title} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                         <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-surface)] via-transparent to-transparent" />
-                        <button onClick={onClose} className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/20 hover:bg-black/40 backdrop-blur-sm text-white flex items-center justify-center border border-white/10 transition-colors">
-                            <FontAwesomeIcon icon={faTimes} />
+                        <button onClick={onClose} className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center border border-white/10 transition-colors">
+                            <X />
                         </button>
                     </div>
                 )}
@@ -144,7 +139,7 @@ const DetailModal = memo(({ item, onClose }) => {
                             <span className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">{formatDate(item.created_at)}</span>
                             {item.read_time && (
                                 <span className="text-[10px] font-bold text-[var(--color-text-muted)] opacity-60 flex items-center gap-1">
-                                    <FontAwesomeIcon icon={faClock} className="text-[8px]" />{item.read_time} mnt baca
+                                    <Clock className="text-[8px]" />{item.read_time} mnt baca
                                 </span>
                             )}
                         </div>
@@ -161,7 +156,7 @@ const DetailModal = memo(({ item, onClose }) => {
                             </div>
                             {/* Close button — next to font toggle, never overlaps */}
                             <button onClick={onClose} className="w-8 h-8 rounded-full bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] border border-[var(--color-border)] text-[var(--color-text-muted)] flex items-center justify-center transition-colors">
-                                <FontAwesomeIcon icon={faTimes} className="text-xs" />
+                                <X className="text-xs" />
                             </button>
                         </div>
                     </div>
@@ -183,8 +178,8 @@ const DetailModal = memo(({ item, onClose }) => {
                         dangerouslySetInnerHTML={{ __html: item.content }} />
                 </div>
                 {/* Footer */}
-                <div className="shrink-0 px-6 sm:px-10 py-4 border-t border-[var(--color-border)] bg-[var(--color-surface)]/80 backdrop-blur-sm flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center text-white font-black text-base shadow-md shrink-0">
+                <div className="shrink-0 px-6 sm:px-10 py-4 border-t border-[var(--color-border)] bg-[var(--color-surface)] flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white font-black text-base shadow-md shrink-0">
                         {(item.display_name || item.author || 'A').charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -193,7 +188,7 @@ const DetailModal = memo(({ item, onClose }) => {
                     </div>
                     <div className="ml-auto flex items-center gap-2">
                         <button onClick={handlePrint} className="px-4 py-2 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors flex items-center gap-1.5">
-                            <FontAwesomeIcon icon={faPrint} className="text-[9px]" /> Print
+                            <Printer className="text-[9px]" /> Print
                         </button>
                         <button onClick={onClose} className="px-4 py-2 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors">Tutup</button>
                     </div>
@@ -223,22 +218,22 @@ const NewsCard = memo(({ item, onClick }) => {
             <div className="h-44 overflow-hidden shrink-0 bg-[var(--color-surface-alt)]">
                 {item.image_url
                     ? <img src={item.image_url} alt={item.image_alt || item.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                    : <div className="w-full h-full flex items-center justify-center opacity-15"><FontAwesomeIcon icon={faNewspaper} className="text-4xl" /></div>
+                    : <div className="w-full h-full flex items-center justify-center opacity-15"><Newspaper className="text-4xl" /></div>
                 }
             </div>
             <div className="p-6 flex flex-col flex-1">
                 <div className="flex items-center gap-2 mb-3 flex-wrap">
                     <span className="px-2.5 py-1 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black uppercase tracking-wider border border-[var(--color-primary)]/10">{item.tag}</span>
                     <span className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest opacity-50">{formatDate(item.created_at)}</span>
-                    {item.read_time && <span className="text-[9px] text-[var(--color-text-muted)] opacity-50 flex items-center gap-1"><FontAwesomeIcon icon={faClock} className="text-[8px]" />{item.read_time} mnt</span>}
+                    {item.read_time && <span className="text-[9px] text-[var(--color-text-muted)] opacity-50 flex items-center gap-1"><Clock className="text-[8px]" />{item.read_time} mnt</span>}
                 </div>
                 <h3 className="text-base font-black text-[var(--color-text)] leading-tight mb-2 group-hover:text-[var(--color-primary)] transition-colors line-clamp-2">{item.title}</h3>
                 <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed line-clamp-3 opacity-75 flex-1">{excerpt}</p>
                 <div className="flex items-center justify-between pt-4 mt-3 border-t border-[var(--color-border)]/50">
                     <span className="text-[9px] font-bold text-[var(--color-text-muted)] opacity-50 flex items-center gap-1">
-                        <FontAwesomeIcon icon={faUser} className="text-[8px]" />{item.display_name || item.author?.split('@')[0] || 'Admin'}
+                        <User className="text-[8px]" />{item.display_name || item.author?.split('@')[0] || 'Admin'}
                     </span>
-                    <span className="text-[10px] font-black text-[var(--color-primary)] flex items-center gap-1.5">Baca <FontAwesomeIcon icon={faArrowRight} className="text-[9px]" /></span>
+                    <span className="text-[10px] font-black text-[var(--color-primary)] flex items-center gap-1.5">Baca <ArrowRight className="text-[9px]" /></span>
                 </div>
             </div>
         </div>
@@ -316,7 +311,7 @@ export default function InformationPage() {
             {/* New news banner */}
             {newsBadge > 0 && (
                 <div className="fixed top-20 left-1/2 -translate-x-1/2 z-40 w-full max-w-xl px-4 animate-in slide-in-from-top-2 duration-300">
-                    <div className="flex items-center gap-3 px-4 py-3 bg-[var(--color-surface)] border border-[var(--color-primary)]/30 rounded-2xl shadow-xl shadow-black/10">
+                    <div className="flex items-center gap-3 px-4 py-3 bg-[var(--color-surface)] border border-[var(--color-primary)]/30 rounded-2xl shadow-xl">
                         <span className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-pulse shrink-0" />
                         <p className="text-sm font-bold text-[var(--color-primary)] flex-1">
                             {newsBadge} berita baru tersedia
@@ -326,7 +321,7 @@ export default function InformationPage() {
                             Muat Ulang
                         </button>
                         <button onClick={() => setNewsBadge(0)} className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
-                            <FontAwesomeIcon icon={faXmark} className="text-xs" />
+                            <X className="text-xs" />
                         </button>
                     </div>
                 </div>
@@ -335,8 +330,6 @@ export default function InformationPage() {
             {/* Hero header */}
             <div className="pt-28 pb-12 px-6 text-center relative overflow-hidden">
                 <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute -top-20 left-1/3 w-96 h-96 bg-[var(--color-primary)]/5 rounded-full blur-[100px]" />
-                    <div className="absolute bottom-0 right-1/3 w-80 h-80 bg-[var(--color-accent)]/5 rounded-full blur-[100px]" />
                 </div>
                 <div className="relative max-w-2xl mx-auto">
                     <span className="text-[var(--color-primary)] font-bold uppercase tracking-[0.3em] text-[10px] mb-3 block">Portal Informasi</span>
@@ -347,13 +340,13 @@ export default function InformationPage() {
                         Update terkini seputar Laporanmu, jadwal, dan pengumuman penting sekolah.
                     </p>
                     <div className="relative max-w-lg mx-auto">
-                        <FontAwesomeIcon icon={faSearch} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-sm pointer-events-none" />
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-sm pointer-events-none" />
                         <input type="text" value={inputVal} onChange={e => handleSearch(e.target.value)}
                             placeholder="Cari informasi atau pengumuman..."
                             className="w-full pl-12 pr-12 h-14 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10 text-sm font-medium outline-none transition-all shadow-lg" />
                         {inputVal && (
                             <button onClick={() => { setInputVal(''); setSearch(''); setPage(1) }} className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
-                                <FontAwesomeIcon icon={faXmark} />
+                                <X />
                             </button>
                         )}
                     </div>
@@ -366,7 +359,7 @@ export default function InformationPage() {
                     {CATEGORIES.map(cat => (
                         <button key={cat} onClick={() => { setActiveCategory(cat); setPage(1) }}
                             className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-colors border ${activeCategory === cat
-                                ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-md shadow-[var(--color-primary)]/20'
+                                ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-md'
                                 : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30'}`}>
                             {cat}
                         </button>
@@ -388,7 +381,7 @@ export default function InformationPage() {
                 ) : news.length === 0 ? (
                     <div className="flex flex-col items-center py-32 text-center">
                         <div className="w-20 h-20 rounded-full bg-[var(--color-surface-alt)] flex items-center justify-center mb-6">
-                            <FontAwesomeIcon icon={faNewspaper} className="text-3xl text-[var(--color-text-muted)] opacity-30" />
+                            <Newspaper className="text-3xl text-[var(--color-text-muted)] opacity-30" />
                         </div>
                         <h3 className="text-xl font-black text-[var(--color-text)] mb-2">Tidak ada informasi</h3>
                         <p className="text-sm text-[var(--color-text-muted)]">{search ? `Tidak ada yang cocok dengan "${search}".` : 'Belum ada informasi dipublikasikan.'}</p>
@@ -408,7 +401,7 @@ export default function InformationPage() {
                             <div className="flex items-center justify-center gap-2 mt-14">
                                 <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}
                                     className="w-10 h-10 rounded-xl border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:border-[var(--color-primary)] disabled:opacity-30 transition-colors">
-                                    <FontAwesomeIcon icon={faChevronLeft} className="text-xs" />
+                                    <ChevronLeft className="text-xs" />
                                 </button>
                                 {Array.from({ length: totalPages }, (_, i) => i + 1)
                                     .filter(p => p === 1 || p === totalPages || Math.abs(p - page) <= 1)
@@ -422,7 +415,7 @@ export default function InformationPage() {
                                     )}
                                 <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page >= totalPages}
                                     className="w-10 h-10 rounded-xl border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:border-[var(--color-primary)] disabled:opacity-30 transition-colors">
-                                    <FontAwesomeIcon icon={faChevronRight} className="text-xs" />
+                                    <ChevronRight className="text-xs" />
                                 </button>
                             </div>
                         )}

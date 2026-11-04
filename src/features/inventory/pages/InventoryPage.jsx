@@ -1,16 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback, memo, useMemo } from 'react'
 import { createPortal } from 'react-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-    faPlus, faSearch, faEdit, faTrash, faBoxes, faBoxOpen, faTriangleExclamation,
-    faCheckCircle, faSpinner, faSave, faTimes, faTable, faGripVertical, faDownload,
-    faKeyboard, faFilter, faSort, faChevronDown, faCheck, faSquare, faSquareCheck,
-    faArrowRight, faHeartPulse, faClipboardList, faTag, faCalendar, faInfoCircle,
-    faEllipsisV, faExpand, faCompress, faPrint, faCopy
-} from '@fortawesome/free-solid-svg-icons'
-import {
-    faChair, faPlug, faPen, faMosque, faBroom, faUtensils, faBox, faLayerGroup
-} from '@fortawesome/free-solid-svg-icons'
+    Armchair, Box, Boxes, Brush, Calendar, Check, ClipboardList, Download, GripVertical,
+    HeartPulse, Info, Keyboard, Landmark, Layers, LoaderCircle, PackageOpen, Pen, Plug,
+    Plus, Save, Search, SquareCheck, SquarePen, Table, Tag, Trash2, TriangleAlert,
+    Utensils, X
+} from 'lucide-react'
 
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import { PageHeader, Modal, RichSelect, StatsCarousel, StatCard, EmptyState } from '@shared/components'
@@ -21,7 +16,7 @@ import {
     formatDate, formatRelativeDate
 } from '@features/inventory/hooks/useInventory'
 
-const CATEGORY_ICONS = { furniture: faChair, elektronik: faPlug, atk: faPen, ibadah: faMosque, kebersihan: faBroom, dapur: faUtensils, lainnya: faBox, all: faLayerGroup }
+const CATEGORY_ICONS = { furniture: Armchair, elektronik: Plug, atk: Pen, ibadah: Landmark, kebersihan: Brush, dapur: Utensils, lainnya: Box, all: Layers }
 
 function getPortalContainer(id) {
     let el = document.getElementById(id)
@@ -39,7 +34,7 @@ const DebouncedSearchInput = memo(({ value, onSearch, placeholder }) => {
     return (
         <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors">
-                <FontAwesomeIcon icon={faSearch} className="text-xs" />
+                <Search className="text-xs" />
             </div>
             <input ref={null} type="text" value={local} onChange={e => setLocal(e.target.value)} placeholder={placeholder}
                 className="w-full h-9 pl-10 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[11px] font-bold focus:outline-none focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10 transition-all placeholder:font-normal placeholder:opacity-40" />
@@ -74,7 +69,7 @@ function ConditionBadge({ item, size = 'sm' }) {
 // ── CategoryChip ──────────────────────────────────────────────────────────────
 // ═══════════════════════════════════════════════════════════════════════════════
 function CategoryChip({ cat, active, count, onClick }) {
-    const Icon = CATEGORY_ICONS[cat.id] || faBox
+    const Icon = CATEGORY_ICONS[cat.id] || Box
     const colorMap = {
         slate: active ? 'bg-slate-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200',
         blue: active ? 'bg-blue-500 text-white' : 'bg-blue-50 text-blue-600 hover:bg-blue-100',
@@ -87,7 +82,7 @@ function CategoryChip({ cat, active, count, onClick }) {
     return (
         <button onClick={onClick}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-black transition-all shrink-0 border ${active ? `${colorMap[cat.color]} border-transparent shadow-sm` : `${colorMap[cat.color]} border-transparent`}`}>
-            <FontAwesomeIcon icon={Icon} className="text-[9px]" />
+            <Icon className="text-[9px]" />
             <span>{cat.label}</span>
             {count !== undefined && (
                 <span className={`ml-0.5 px-1.5 py-0.5 rounded-md text-[8px] font-black ${active ? 'bg-white/20' : 'bg-black/5'}`}>{count}</span>
@@ -103,24 +98,24 @@ function BulkActionBar({ count, onDelete, onExport, onClear, canEdit }) {
     if (count === 0) return null
     return (
         <div className="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300">
-            <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-[var(--color-text)] text-white shadow-2xl shadow-black/20 border border-white/10">
+            <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-[var(--color-text)] text-white shadow-xl border border-white/10">
                 <div className="flex items-center gap-2">
                     <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center">
-                        <FontAwesomeIcon icon={faSquareCheck} className="text-xs" />
+                        <SquareCheck className="text-xs" />
                     </div>
                     <span className="text-[11px] font-black">{count} dipilih</span>
                 </div>
                 <div className="w-px h-5 bg-white/20" />
                 <button onClick={onExport} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] font-bold transition-all">
-                    <FontAwesomeIcon icon={faDownload} className="text-[9px]" /> Export
+                    <Download className="text-[9px]" /> Export
                 </button>
                 {canEdit && (
                     <button onClick={onDelete} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/80 hover:bg-red-500 text-[10px] font-bold transition-all">
-                        <FontAwesomeIcon icon={faTrash} className="text-[9px]" /> Hapus
+                        <Trash2 className="text-[9px]" /> Hapus
                     </button>
                 )}
                 <button onClick={onClear} className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-white/10 text-[10px] font-bold transition-all">
-                    <FontAwesomeIcon icon={faTimes} className="text-[9px]" />
+                    <X className="text-[9px]" />
                 </button>
             </div>
         </div>
@@ -153,15 +148,15 @@ function ItemFormModal({ isOpen, onClose, onSave, editingItem, submitting, formD
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} title={editingItem ? 'Edit Item Inventaris' : 'Tambah Item Baru'}
-            icon={editingItem ? faEdit : faPlus} iconBg="bg-[var(--color-primary)]/10" iconColor="text-[var(--color-primary)]"
+            icon={editingItem ? SquarePen : Plus} iconBg="bg-[var(--color-primary)]/10" iconColor="text-[var(--color-primary)]"
             size="md" mobileVariant="bottom-sheet"
             footer={
                 <div className="flex items-center w-full gap-3">
                     <button onClick={onClose} className="h-10 px-5 rounded-xl border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
                     <div className="flex-1" />
                     <button onClick={handleSubmit} disabled={submitting || !form.item_name?.trim()}
-                        className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-[var(--color-primary)]/20 transition-all flex items-center gap-2 disabled:opacity-50">
-                        {submitting ? <FontAwesomeIcon icon={faSpinner} className="animate-spin text-xs" /> : <FontAwesomeIcon icon={faSave} className="text-xs" />}
+                        className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center gap-2 disabled:opacity-50">
+                        {submitting ? <LoaderCircle className="animate-spin text-xs" /> : <Save className="text-xs" />}
                         {editingItem ? 'Perbarui' : 'Simpan'}
                     </button>
                 </div>
@@ -175,7 +170,7 @@ function ItemFormModal({ isOpen, onClose, onSave, editingItem, submitting, formD
                         className="w-full h-10 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[12px] font-bold focus:outline-none focus:border-[var(--color-primary)] transition" required />
                     {form.item_name && (
                         <div className="flex items-center gap-1.5 mt-1.5">
-                            <FontAwesomeIcon icon={faTag} className="text-[8px] text-[var(--color-text-muted)]" />
+                            <Tag className="text-[8px] text-[var(--color-text-muted)]" />
                             <span className="text-[9px] text-[var(--color-text-muted)]">Kategori: <span className="font-black">{CATEGORIES.find(c => c.id === categorizeItem(form.item_name))?.label || 'Lainnya'}</span></span>
                         </div>
                     )}
@@ -206,7 +201,7 @@ function ItemFormModal({ isOpen, onClose, onSave, editingItem, submitting, formD
                         <div className="mt-3 p-3 rounded-xl bg-[var(--color-surface-alt)]/50 border border-[var(--color-border)]/50">
                             <div className="flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-1.5">
-                                    <FontAwesomeIcon icon={faHeartPulse} className="text-[9px] text-[var(--color-text-muted)]" />
+                                    <HeartPulse className="text-[9px] text-[var(--color-text-muted)]" />
                                     <span className="text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-wider">Kondisi</span>
                                 </div>
                                 <span className="text-[11px] font-black">{pct}%</span>
@@ -243,6 +238,7 @@ function DetailDrawer({ item, isOpen, onClose, onEdit, canEdit }) {
     const pct = item ? getConditionPct(item) : null
     const level = item ? getConditionLevel(pct) : null
     const cat = item ? CATEGORIES.find(c => c.id === categorizeItem(item?.item_name)) : null
+    const CatIcon = CATEGORY_ICONS[cat?.id] || Box
 
     useEffect(() => {
         if (isOpen) document.body.style.overflow = 'hidden'
@@ -254,13 +250,13 @@ function DetailDrawer({ item, isOpen, onClose, onEdit, canEdit }) {
 
     return (
         <>
-            <div className="fixed inset-0 bg-black/30 backdrop-blur-[2px] z-[60] transition-opacity" onClick={onClose} />
-            <div className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-[var(--color-surface)] z-[61] shadow-2xl border-l border-[var(--color-border)] animate-in slide-in-from-right duration-300 flex flex-col">
+            <div className="fixed inset-0 bg-black/30 z-[60] transition-opacity" onClick={onClose} />
+            <div className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-[var(--color-surface)] z-[61] shadow-xl border-l border-[var(--color-border)] animate-in slide-in-from-right duration-300 flex flex-col">
                 {/* Header */}
                 <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
                     <div className="flex items-center gap-3 min-w-0">
                         <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 flex items-center justify-center shrink-0">
-                            <FontAwesomeIcon icon={CATEGORY_ICONS[cat?.id] || faBox} className="text-[var(--color-primary)]" />
+                            <CatIcon className="text-[var(--color-primary)]" />
                         </div>
                         <div className="min-w-0">
                             <h2 className="text-[13px] font-black text-[var(--color-text)] truncate">{item.item_name}</h2>
@@ -268,7 +264,7 @@ function DetailDrawer({ item, isOpen, onClose, onEdit, canEdit }) {
                         </div>
                     </div>
                     <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center transition-all">
-                        <FontAwesomeIcon icon={faTimes} className="text-sm text-[var(--color-text-muted)]" />
+                        <X className="text-sm text-[var(--color-text-muted)]" />
                     </button>
                 </div>
 
@@ -309,20 +305,20 @@ function DetailDrawer({ item, isOpen, onClose, onEdit, canEdit }) {
                     {/* Info List */}
                     <div className="space-y-2">
                         <div className="flex items-center justify-between py-2 border-b border-[var(--color-border)]/50">
-                            <span className="text-[10px] font-bold text-[var(--color-text-muted)] flex items-center gap-2"><FontAwesomeIcon icon={faCalendar} className="text-[9px]" /> Terakhir Dicek</span>
+                            <span className="text-[10px] font-bold text-[var(--color-text-muted)] flex items-center gap-2"><Calendar className="text-[9px]" /> Terakhir Dicek</span>
                             <span className="text-[10px] font-black text-[var(--color-text)]">{formatDate(item.last_checked_at)}</span>
                         </div>
                         <div className="flex items-center justify-between py-2 border-b border-[var(--color-border)]/50">
-                            <span className="text-[10px] font-bold text-[var(--color-text-muted)] flex items-center gap-2"><FontAwesomeIcon icon={faClipboardList} className="text-[9px]" /> Waktu Relatif</span>
+                            <span className="text-[10px] font-bold text-[var(--color-text-muted)] flex items-center gap-2"><ClipboardList className="text-[9px]" /> Waktu Relatif</span>
                             <span className="text-[10px] font-black text-[var(--color-text)]">{formatRelativeDate(item.last_checked_at)}</span>
                         </div>
                         <div className="flex items-center justify-between py-2 border-b border-[var(--color-border)]/50">
-                            <span className="text-[10px] font-bold text-[var(--color-text-muted)] flex items-center gap-2"><FontAwesomeIcon icon={faTag} className="text-[9px]" /> Kategori</span>
+                            <span className="text-[10px] font-bold text-[var(--color-text-muted)] flex items-center gap-2"><Tag className="text-[9px]" /> Kategori</span>
                             <span className="text-[10px] font-black text-[var(--color-text)]">{cat?.label || 'Lainnya'}</span>
                         </div>
                         {item.dorm_id && (
                             <div className="flex items-center justify-between py-2 border-b border-[var(--color-border)]/50">
-                                <span className="text-[10px] font-bold text-[var(--color-text-muted)] flex items-center gap-2"><FontAwesomeIcon icon={faBoxOpen} className="text-[9px]" /> Lokasi</span>
+                                <span className="text-[10px] font-bold text-[var(--color-text-muted)] flex items-center gap-2"><PackageOpen className="text-[9px]" /> Lokasi</span>
                                 <span className="text-[10px] font-black text-[var(--color-text)]">{item.dorm_id}</span>
                             </div>
                         )}
@@ -332,7 +328,7 @@ function DetailDrawer({ item, isOpen, onClose, onEdit, canEdit }) {
                     {item.notes && (
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]">
                             <div className="flex items-center gap-2 mb-2">
-                                <FontAwesomeIcon icon={faInfoCircle} className="text-[9px] text-[var(--color-text-muted)]" />
+                                <Info className="text-[9px] text-[var(--color-text-muted)]" />
                                 <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Catatan</span>
                             </div>
                             <p className="text-[11px] text-[var(--color-text)] leading-relaxed whitespace-pre-wrap">{item.notes}</p>
@@ -350,7 +346,7 @@ function DetailDrawer({ item, isOpen, onClose, onEdit, canEdit }) {
                     <div className="px-5 py-4 border-t border-[var(--color-border)]">
                         <button onClick={() => { onEdit(item); onClose() }}
                             className="w-full h-10 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[var(--color-primary)]/90 transition-all">
-                            <FontAwesomeIcon icon={faEdit} className="text-[10px]" /> Edit Item
+                            <SquarePen className="text-[10px]" /> Edit Item
                         </button>
                     </div>
                 )}
@@ -365,7 +361,7 @@ function DetailDrawer({ item, isOpen, onClose, onEdit, canEdit }) {
 function ExportModal({ isOpen, onClose, onExport, totalFiltered, totalSelected }) {
     return (
         <Modal isOpen={isOpen} onClose={onClose} title="Export Data Inventaris"
-            icon={faDownload} iconBg="bg-indigo-500/10" iconColor="text-indigo-500" size="sm" mobileVariant="bottom-sheet">
+            icon={Download} iconBg="bg-indigo-500/10" iconColor="text-indigo-500" size="sm" mobileVariant="bottom-sheet">
             <div className="space-y-3">
                 <p className="text-[11px] text-[var(--color-text-muted)]">
                     {totalSelected > 0 ? `Mengekspor ${totalSelected} item terpilih` : `Mengekspor ${totalFiltered} item yang ditampilkan`}
@@ -374,7 +370,7 @@ function ExportModal({ isOpen, onClose, onExport, totalFiltered, totalSelected }
                     <button onClick={() => { onExport('csv'); onClose() }}
                         className="w-full flex items-center gap-3 p-3 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition-all text-left group">
                         <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <FontAwesomeIcon icon={faDownload} className="text-emerald-500 text-sm" />
+                            <Download className="text-emerald-500 text-sm" />
                         </div>
                         <div>
                             <p className="text-[11px] font-black text-[var(--color-text)]">Export CSV</p>
@@ -436,7 +432,7 @@ export default function InventoryPage() {
                         <div className="flex items-center gap-2">
                             {/* Keyboard shortcut hint */}
                             <div className="hidden lg:flex items-center gap-1.5 px-2.5 h-9 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[9px] font-bold text-[var(--color-text-muted)]">
-                                <FontAwesomeIcon icon={faKeyboard} className="text-[8px]" />
+                                <Keyboard className="text-[8px]" />
                                 <span>N = tambah baru</span>
                             </div>
 
@@ -444,25 +440,25 @@ export default function InventoryPage() {
                             <button onClick={() => setIsExportOpen(true)}
                                 className="h-9 w-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
                                 title="Export">
-                                <FontAwesomeIcon icon={faDownload} className="text-xs" />
+                                <Download className="text-xs" />
                             </button>
 
                             {/* View Toggle */}
                             <div className="flex items-center bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl p-0.5 h-9">
                                 <button onClick={() => switchView('table')}
                                     className={`h-full px-2.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all flex items-center gap-1 ${viewMode === 'table' ? 'bg-white text-[var(--color-text)] shadow-sm' : 'text-[var(--color-text-muted)]'}`}>
-                                    <FontAwesomeIcon icon={faTable} className="text-[8px]" /> <span className="hidden sm:inline">Tabel</span>
+                                    <Table className="text-[8px]" /> <span className="hidden sm:inline">Tabel</span>
                                 </button>
                                 <button onClick={() => switchView('card')}
                                     className={`h-full px-2.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all flex items-center gap-1 ${viewMode === 'card' ? 'bg-white text-[var(--color-text)] shadow-sm' : 'text-[var(--color-text-muted)]'}`}>
-                                    <FontAwesomeIcon icon={faGripVertical} className="text-[8px]" /> <span className="hidden sm:inline">Kartu</span>
+                                    <GripVertical className="text-[8px]" /> <span className="hidden sm:inline">Kartu</span>
                                 </button>
                             </div>
 
                             {/* Add Button */}
                             <button onClick={openAddModal} disabled={!canEdit}
-                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 disabled:opacity-40 disabled:cursor-not-allowed border border-white/10">
-                                <FontAwesomeIcon icon={faPlus} className="text-[10px]" />
+                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10">
+                                <Plus className="text-[10px]" />
                                 <span className="hidden sm:inline">Tambah Item</span>
                             </button>
                         </div>
@@ -471,10 +467,10 @@ export default function InventoryPage() {
 
                 {/* Stats */}
                 <StatsCarousel count={4} cols={4}>
-                    <StatCard icon={faBoxes} label="Total Jenis" value={stats.total} subValue="Item terdaftar" color="sky" />
-                    <StatCard icon={faBoxOpen} label="Total Unit" value={stats.totalQty} subValue="Seluruh unit" color="indigo" />
-                    <StatCard icon={faHeartPulse} label="Kesehatan" value={`${stats.healthPct}%`} subValue={`${stats.goodQty} dari ${stats.totalQty} unit baik`} color="emerald" />
-                    <StatCard icon={faTriangleExclamation} label="Rusak" value={stats.damagedQty} subValue={stats.damagedQty > 0 ? `${Math.round((stats.damagedQty / (stats.totalQty || 1)) * 100)}% dari total` : 'Tidak ada kerusakan'} color="rose" />
+                    <StatCard icon={Boxes} label="Total Jenis" value={stats.total} subValue="Item terdaftar" color="sky" />
+                    <StatCard icon={PackageOpen} label="Total Unit" value={stats.totalQty} subValue="Seluruh unit" color="indigo" />
+                    <StatCard icon={HeartPulse} label="Kesehatan" value={`${stats.healthPct}%`} subValue={`${stats.goodQty} dari ${stats.totalQty} unit baik`} color="emerald" />
+                    <StatCard icon={TriangleAlert} label="Rusak" value={stats.damagedQty} subValue={stats.damagedQty > 0 ? `${Math.round((stats.damagedQty / (stats.totalQty || 1)) * 100)}% dari total` : 'Tidak ada kerusakan'} color="rose" />
                 </StatsCarousel>
 
                 {/* Category Tabs */}
@@ -533,7 +529,7 @@ export default function InventoryPage() {
                         <button onClick={toggleSelectAll}
                             className="flex items-center gap-2 text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
                             <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${allSelected ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : someSelected ? 'bg-[var(--color-primary)]/20 border-[var(--color-primary)]' : 'border-[var(--color-border)] bg-white'}`}>
-                                {allSelected && <FontAwesomeIcon icon={faCheck} className="text-[7px] text-white" />}
+                                {allSelected && <Check className="text-[7px] text-white" />}
                                 {someSelected && !allSelected && <div className="w-2 h-0.5 bg-[var(--color-primary)] rounded" />}
                             </div>
                             Pilih Semua ({items.length})
@@ -547,19 +543,19 @@ export default function InventoryPage() {
                 {/* Content */}
                 {loading ? (
                     <div className="flex items-center justify-center gap-2 py-16">
-                        <FontAwesomeIcon icon={faSpinner} className="animate-spin text-sm text-[var(--color-primary)]" />
+                        <LoaderCircle className="animate-spin text-sm text-[var(--color-primary)]" />
                         <span className="text-[11px] font-bold text-[var(--color-text-muted)]">Memuat data inventaris...</span>
                     </div>
                 ) : items.length === 0 ? (
-                    <EmptyState icon={faBoxes} title="Belum ada item inventaris"
+                    <EmptyState icon={Boxes} title="Belum ada item inventaris"
                         subtitle="Mulai tambahkan item untuk mencatat sarana dan prasarana."
-                        action={canEdit ? <button onClick={openAddModal} className="mt-3 h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:scale-[1.02] active:scale-95"><FontAwesomeIcon icon={faPlus} className="text-[10px]" /> Tambah Item Pertama</button> : null} />
+                        action={canEdit ? <button onClick={openAddModal} className="mt-3 h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:scale-[1.02] active:scale-95"><Plus className="text-[10px]" /> Tambah Item Pertama</button> : null} />
                 ) : viewMode === 'card' || isMobile ? (
                     /* ── Card View ── */
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
                         {items.map(item => {
                             const cat = CATEGORIES.find(c => c.id === categorizeItem(item.item_name))
-                            const Icon = CATEGORY_ICONS[cat?.id] || faBox
+                            const Icon = CATEGORY_ICONS[cat?.id] || Box
                             const isSelected = selectedIds.has(item.id)
                             return (
                                 <div key={item.id}
@@ -569,21 +565,21 @@ export default function InventoryPage() {
                                         <div className="flex items-center gap-2.5">
                                             <button onClick={e => { e.stopPropagation(); toggleSelect(item.id) }}
                                                 className={`w-5 h-5 rounded border flex items-center justify-center transition-all shrink-0 ${isSelected ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)] bg-white group-hover:border-[var(--color-primary)]/40'}`}>
-                                                {isSelected && <FontAwesomeIcon icon={faCheck} className="text-[7px] text-white" />}
+                                                {isSelected && <Check className="text-[7px] text-white" />}
                                             </button>
                                             <div className={`w-9 h-9 rounded-xl flex items-center justify-center bg-${cat?.color || 'slate'}-50 text-${cat?.color || 'slate'}-500`}>
-                                                <FontAwesomeIcon icon={Icon} className="text-sm" />
+                                                <Icon className="text-sm" />
                                             </div>
                                         </div>
                                         {canEdit && (
                                             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                                 <button onClick={e => { e.stopPropagation(); openEditModal(item) }}
                                                     className="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center hover:bg-indigo-500/20 transition-all">
-                                                    <FontAwesomeIcon icon={faEdit} className="text-[9px]" />
+                                                    <SquarePen className="text-[9px]" />
                                                 </button>
                                                 <button onClick={e => { e.stopPropagation(); handleDeleteClick(item) }}
                                                     className="w-7 h-7 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center hover:bg-red-500/20 transition-all">
-                                                    <FontAwesomeIcon icon={faTrash} className="text-[9px]" />
+                                                    <Trash2 className="text-[9px]" />
                                                 </button>
                                             </div>
                                         )}
@@ -613,7 +609,7 @@ export default function InventoryPage() {
                                     <th className="text-center px-3 py-3 w-10">
                                         <button onClick={toggleSelectAll} className="flex items-center justify-center">
                                             <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${allSelected ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : someSelected ? 'bg-[var(--color-primary)]/20 border-[var(--color-primary)]' : 'border-[var(--color-border)] bg-white'}`}>
-                                                {allSelected && <FontAwesomeIcon icon={faCheck} className="text-[7px] text-white" />}
+                                                {allSelected && <Check className="text-[7px] text-white" />}
                                                 {someSelected && !allSelected && <div className="w-2 h-0.5 bg-[var(--color-primary)] rounded" />}
                                             </div>
                                         </button>
@@ -630,7 +626,7 @@ export default function InventoryPage() {
                             <tbody>
                                 {items.map((item, idx) => {
                                     const cat = CATEGORIES.find(c => c.id === categorizeItem(item.item_name))
-                                    const Icon = CATEGORY_ICONS[cat?.id] || faBox
+                                    const Icon = CATEGORY_ICONS[cat?.id] || Box
                                     const isSelected = selectedIds.has(item.id)
                                     return (
                                         <tr key={item.id}
@@ -639,14 +635,14 @@ export default function InventoryPage() {
                                             <td className="text-center px-3 py-3">
                                                 <button onClick={e => { e.stopPropagation(); toggleSelect(item.id) }}>
                                                     <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all mx-auto ${isSelected ? 'bg-[var(--color-primary)] border-[var(--color-primary)]' : 'border-[var(--color-border)] bg-white'}`}>
-                                                        {isSelected && <FontAwesomeIcon icon={faCheck} className="text-[7px] text-white" />}
+                                                        {isSelected && <Check className="text-[7px] text-white" />}
                                                     </div>
                                                 </button>
                                             </td>
                                             <td className="px-4 py-3">
                                                 <div className="flex items-center gap-3">
                                                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-${cat?.color || 'slate'}-50 text-${cat?.color || 'slate'}-500 shrink-0`}>
-                                                        <FontAwesomeIcon icon={Icon} className="text-xs" />
+                                                        <Icon className="text-xs" />
                                                     </div>
                                                     <div className="min-w-0">
                                                         <p className="text-[11px] font-black text-[var(--color-text)] truncate">{item.item_name}</p>
@@ -679,11 +675,11 @@ export default function InventoryPage() {
                                                         <>
                                                             <button onClick={e => { e.stopPropagation(); openEditModal(item) }}
                                                                 className="w-7 h-7 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 flex items-center justify-center hover:bg-indigo-500/20 transition-all" title="Edit">
-                                                                <FontAwesomeIcon icon={faEdit} className="text-[9px]" />
+                                                                <SquarePen className="text-[9px]" />
                                                             </button>
                                                             <button onClick={e => { e.stopPropagation(); handleDeleteClick(item) }}
                                                                 className="w-7 h-7 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 flex items-center justify-center hover:bg-red-500/20 transition-all" title="Hapus">
-                                                                <FontAwesomeIcon icon={faTrash} className="text-[9px]" />
+                                                                <Trash2 className="text-[9px]" />
                                                             </button>
                                                         </>
                                                     )}
@@ -708,15 +704,15 @@ export default function InventoryPage() {
 
             {/* Delete Confirm */}
             <Modal isOpen={isDeleteOpen} onClose={() => { setIsDeleteOpen(false); setDeleteTarget(null) }} title="Hapus Item"
-                icon={faTriangleExclamation} iconBg="bg-red-500/10" iconColor="text-red-500" size="sm" mobileVariant="bottom-sheet"
+                icon={TriangleAlert} iconBg="bg-red-500/10" iconColor="text-red-500" size="sm" mobileVariant="bottom-sheet"
                 footer={
                     <div className="flex items-center w-full gap-3">
                         <button onClick={() => { setIsDeleteOpen(false); setDeleteTarget(null) }}
                             className="h-10 px-5 rounded-xl border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all">Batal</button>
                         <div className="flex-1" />
                         <button onClick={confirmDelete} disabled={submitting}
-                            className="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-red-500/20 transition-all flex items-center gap-2 disabled:opacity-50">
-                            {submitting ? <FontAwesomeIcon icon={faSpinner} className="animate-spin text-xs" /> : <FontAwesomeIcon icon={faTrash} className="text-xs" />}
+                            className="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center gap-2 disabled:opacity-50">
+                            {submitting ? <LoaderCircle className="animate-spin text-xs" /> : <Trash2 className="text-xs" />}
                             Hapus
                         </button>
                     </div>

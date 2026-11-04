@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState, memo } from 'react'
 import { createPortal } from 'react-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { X } from 'lucide-react'
 
 // Singleton portal manager
@@ -149,11 +147,11 @@ const Modal = memo(function Modal({
                 onClick={(e) => e.stopPropagation()}
             >
                 <div
-                    className={`bg-[var(--color-surface)] shadow-2xl w-full relative overflow-hidden flex flex-col border border-[var(--color-border)]/60
+                    className={`bg-[var(--color-surface)] shadow-xl w-full relative overflow-hidden flex flex-col border border-[var(--color-border)]/60
                     ${aspectSquare ? 'md:!h-full md:!max-h-full md:flex-1' : ''}
                     ${isBottomSheet
-                            ? 'rounded-t-[2.25rem] md:rounded-[2.25rem] md:max-h-[calc(100vh-6rem)]'
-                            : 'rounded-[2.25rem] max-h-[calc(100vh-6rem)]'
+                            ? 'rounded-t-2xl md:rounded-xl md:max-h-[calc(100vh-6rem)]'
+                            : 'rounded-xl max-h-[calc(100vh-6rem)]'
                         }
                 `}
                     style={isBottomSheet ? { maxHeight: `min(${maxMobileHeight}, calc(100vh - env(safe-area-inset-bottom, 0px)))` } : undefined}
@@ -168,14 +166,10 @@ const Modal = memo(function Modal({
                         <div className="flex items-center gap-3.5 min-w-0">
                             {icon && (
                                 <div className={`w-9 h-9 rounded-xl ${iconBg || 'bg-[var(--color-primary)]/10'} flex items-center justify-center shrink-0 ${iconColor || 'text-[var(--color-primary)]'}`}>
-                                    {typeof icon === 'object' && icon.prefix ? (
-                                        <FontAwesomeIcon icon={icon} className="text-sm" />
-                                    ) : (
-                                        (() => {
-                                            const IconComp = icon
-                                            return <IconComp className="w-4 h-4" />
-                                        })()
-                                    )}
+                                    {(() => {
+                                        const IconComp = icon
+                                        return <IconComp className="w-4 h-4" />
+                                    })()}
                                 </div>
                             )}
                             <div className="min-w-0">

@@ -74,7 +74,7 @@ export default function DormsAssignModal({
                             <button
                                 onClick={onSave}
                                 disabled={submitting}
-                                className="h-9.5 px-5 sm:px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-[var(--color-primary)]/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                                className="h-9.5 px-5 sm:px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-xs font-bold uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
                             >
                                 {submitting ? (
                                     <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />

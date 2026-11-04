@@ -1,24 +1,19 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from "react"
-import { NavLink, useLocation, useNavigate } from "react-router-dom"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faChevronDown, faChevronRight } from "@fortawesome/free-solid-svg-icons"
+import { NavLink, useLocation } from "react-router-dom"
+import { ChevronDown, PanelLeftClose, PanelLeftOpen } from "lucide-react"
 import { useAuth, useFeatureFlags, useLanguage } from "@context"
 import {
     DASHBOARD_ITEM, TASK_CENTER_ITEM, NAV_GROUPS, filterNavItems,
 } from "./navItems"
 
-// ─── NavIcon Helper (Pure outline, lightweight and crisp) ───────────────────
+// ─── NavIcon Helper ──────────────────────────────────────────────────────────
 function NavIcon({ icon, className = "" }) {
     if (!icon) return null
-    const isLucide = typeof icon === 'function' || (typeof icon === 'object' && icon.render)
-    if (isLucide) {
-        const IconComponent = icon
-        return <IconComponent className={className || "w-4 h-4"} strokeWidth={2} />
-    }
-    return <FontAwesomeIcon icon={icon} className={className} />
+    const IconComponent = icon
+    return <IconComponent className={className || "w-4.5 h-4.5"} strokeWidth={2} />
 }
 
-// ─── Sidebar Persistence ──────────────────────────────────────────────────────
+// ─── Sidebar Persistence ─────────────────────────────────────────────────────
 const GROUPS_KEY = 'sidebar-groups-open'
 
 const DEFAULT_GROUPS_OPEN = {
@@ -40,58 +35,50 @@ function getInitialGroupsOpen() {
     }
 }
 
-// ─── Single Nav Item ──────────────────────────────────────────────────────────
-function SidebarItem({ item, collapsed }) {
+// ─── Single Nav Item ─────────────────────────────────────────────────────────
+// Rail ciut = stabil (tooltip native), bukan flyout hover yang menutupi konten.
+function SidebarItem({ item, collapsed, inGroup = false }) {
     const { tNav } = useLanguage()
+    const label = tNav(item)
 
     return (
         <NavLink
             to={item.to}
             end={item.to === '/dashboard' || item.to === '/admin'}
+            title={collapsed ? label : undefined}
             className={({ isActive }) =>
-                `group/item flex items-center rounded-xl text-[13px] font-medium transition-all duration-300 relative min-w-0
+                `group/item relative flex h-9 min-w-0 items-center gap-2.5 rounded-lg px-2.5 text-sm transition-colors duration-150
                 ${isActive
-                    ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-semibold'
-                    : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)]'}
-                ${collapsed
-                    ? 'w-10 h-10 justify-center p-2 mx-auto group-hover/sidebar:w-full group-hover/sidebar:px-2.5 group-hover/sidebar:py-1.5 group-hover/sidebar:gap-2.5 group-hover/sidebar:justify-start group-hover/sidebar:mx-0'
-                    : 'w-full px-2.5 py-1.5 gap-2.5'}`
+                    ? 'bg-primary/10 font-semibold text-primary'
+                    : 'text-text-muted hover:bg-surface-alt hover:text-text'}`
             }
         >
             {({ isActive }) => (
                 <>
-                    {/* Active indicator bar */}
-                    {isActive && (
-                        <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4.5 rounded-r-full bg-[var(--color-primary)] transition-all duration-300
-                            ${collapsed ? 'opacity-0 group-hover/sidebar:opacity-100' : 'opacity-100'}`}
-                        />
-                    )}
-
-                    {/* Icon */}
-                    <div className={`w-5 h-5 flex items-center justify-center shrink-0 transition-colors duration-200
-                        ${isActive
-                            ? 'text-[var(--color-primary)]'
-                            : 'text-[var(--color-text-muted)] group-hover/item:text-[var(--color-text)]'}`}
+                    {/* Indikator aktif — di anak grup menempel pada guide line */}
+                    <span
+                        aria-hidden="true"
+                        className={`absolute top-1 bottom-1 w-[3px] rounded-full bg-primary transition-opacity duration-150
+                            ${inGroup ? '-left-1' : 'left-0'}
+                            ${isActive ? 'opacity-100' : 'opacity-0'}`}
+                    />
+                    <span className={`flex w-4.5 shrink-0 items-center justify-center
+                        ${isActive ? 'text-primary' : 'text-text-muted group-hover/item:text-text'}`}
                     >
-                        <NavIcon icon={item.icon} className="w-[18px] h-[18px]" />
-                    </div>
-
-                    {/* Label — animated slide/fade */}
-                    <span className={`truncate leading-5 text-left transition-all duration-300
-                        ${collapsed ? 'w-0 opacity-0 group-hover/sidebar:w-44 group-hover/sidebar:opacity-100 overflow-hidden' : 'w-auto opacity-100'}`}
-                    >
-                        {tNav(item)}
+                        <NavIcon icon={item.icon} />
                     </span>
+                    <span className="truncate leading-none">{label}</span>
                 </>
             )}
         </NavLink>
     )
 }
 
-// ─── Collapsible Group ────────────────────────────────────────────────────────
+// ─── Collapsible Group ───────────────────────────────────────────────────────
 function SidebarGroup({ group, items, collapsed, isOpen, onToggle }) {
-    const { tNav, tGroup } = useLanguage()
+    const { tGroup, dir } = useLanguage()
     const location = useLocation()
+    const label = tGroup(group.key, group.label)
 
     // Auto-expand group if any child route is active
     const hasActiveChild = useMemo(() =>
@@ -101,57 +88,36 @@ function SidebarGroup({ group, items, collapsed, isOpen, onToggle }) {
 
     const showChildren = isOpen || hasActiveChild
 
+    // Rail ciut: grup jadi pemisah section tipis — tanpa ikon ganda yang membingungkan
+    if (collapsed) {
+        return <div className="mx-3 my-1.5 h-px bg-border/60" title={label} />
+    }
+
     return (
-        <div className="relative group/grp flex flex-col pt-0.5">
-            {/* Group Header Button */}
+        <div className="flex flex-col">
             <button
                 type="button"
-                onClick={collapsed ? undefined : onToggle}
-                className={`flex items-center justify-between rounded-xl min-w-0 outline-none transition-all duration-300
-                    ${collapsed
-                        ? 'w-10 h-10 justify-center mx-auto hover:bg-[var(--color-surface-alt)] group-hover/sidebar:w-full group-hover/sidebar:px-2.5 group-hover/sidebar:py-1 group-hover/sidebar:justify-between group-hover/sidebar:mx-0'
-                        : 'w-full justify-between px-2.5 py-1'}
-                    ${(!collapsed && hasActiveChild)
-                        ? 'text-[var(--color-primary)]'
-                        : 'text-[var(--color-text-muted)]/70 hover:text-[var(--color-text-muted)]'}`}
+                onClick={onToggle}
+                aria-expanded={showChildren}
+                className="group/grp flex h-8 w-full items-center justify-between rounded-lg px-2.5 transition-colors duration-150 text-text-muted/70 hover:text-text-muted"
             >
-                {/* Left Side: Group Icon (when collapsed) OR Group Label (when expanded/hovered) */}
-                <div className="flex items-center min-w-0">
-                    {/* Group Icon — only visible when collapsed (hidden on hover sidebar) */}
-                    <div className={`flex items-center justify-center shrink-0 transition-all duration-300
-                        ${collapsed ? 'w-5 opacity-100 group-hover/sidebar:w-0 group-hover/sidebar:opacity-0 group-hover/sidebar:overflow-hidden' : 'w-0 opacity-0 overflow-hidden'}`}
-                    >
-                        <NavIcon icon={group.icon} className="w-4 h-4 text-[var(--color-text-muted)]/70" />
-                    </div>
-
-                    {/* Group Label — hidden when collapsed, shown when expanded or sidebar hover */}
-                    <span className={`truncate text-left leading-5 transition-all duration-300
-                        text-[10.5px] font-semibold tracking-wider uppercase text-[var(--color-text-muted)]/70
-                        ${collapsed ? 'w-0 opacity-0 group-hover/sidebar:w-44 group-hover/sidebar:opacity-100 overflow-hidden' : ''}`}
-                    >
-                        {tGroup(group.key, group.label)}
-                    </span>
-                </div>
-
-                {/* Right Side: Chevron icon — only visible when expanded/hovered */}
-                <div className={`w-3 flex items-center justify-center shrink-0 transition-all duration-300
-                    ${collapsed ? 'w-0 opacity-0 group-hover/sidebar:w-3 group-hover/sidebar:opacity-100 overflow-hidden' : 'w-3 opacity-100'}`}
-                >
-                    <NavIcon
-                        icon={showChildren ? faChevronDown : faChevronRight}
-                        className="text-[8px] shrink-0 text-[var(--color-text-muted)]/70"
-                    />
-                </div>
+                <span className="truncate text-xs font-semibold uppercase tracking-wider">
+                    {label}
+                </span>
+                <ChevronDown
+                    className={`w-3.5 h-3.5 shrink-0 opacity-60 transition-transform duration-200
+                        ${showChildren ? 'rotate-0' : dir === 'rtl' ? 'rotate-90' : '-rotate-90'}`}
+                />
             </button>
 
-            {/* Vertical Submenu Items */}
-            <div className={`pl-0.5 space-y-[1px] mt-0.5 transition-all duration-300 origin-top
-                ${collapsed ? 'h-0 opacity-0 overflow-hidden group-hover/sidebar:h-auto group-hover/sidebar:opacity-100 group-hover/sidebar:mt-1' : ''}`}
-            >
-                {showChildren && items.map(item => (
-                    <SidebarItem key={item.to} item={item} collapsed={collapsed} />
-                ))}
-            </div>
+            {/* Anak grup: indent + guide line tipis sebagai penanda hierarki */}
+            {showChildren && (
+                <div className="mt-0.5 ml-2.5 mr-1 space-y-0.5 border-l border-border/70 py-0.5 pl-1">
+                    {items.map(item => (
+                        <SidebarItem key={item.to} item={item} collapsed={collapsed} inGroup />
+                    ))}
+                </div>
+            )}
         </div>
     )
 }
@@ -160,9 +126,9 @@ function SidebarGroup({ group, items, collapsed, isOpen, onToggle }) {
 export default function Sidebar({ collapsed, onToggle }) {
     const { profile } = useAuth()
     const { flags } = useFeatureFlags()
-    const { t, tNav, tNum, dir } = useLanguage()
-    const role = profile?.role?.toLowerCase() || ''
-    const navigate = useNavigate()
+    const { tNum, dir } = useLanguage()
+    const role = profile?.role?.toLowerCase() || ''              // untuk filter nav (format asli)
+    const roleDisplay = role.replace(/_/g, ' ')                  // untuk tampilan footer
 
     // Main navigation scroll container reference
     const navRef = useRef(null)
@@ -206,62 +172,49 @@ export default function Sidebar({ collapsed, onToggle }) {
         })
     }, [role])
 
-    // Class styles based on state
-    const sidebarW = collapsed
-        ? 'w-[56px] hover:w-[250px] shadow-none hover:shadow-[10px_0_40px_-6px_rgba(0,0,0,0.12)] dark:hover:shadow-[10px_0_40px_-6px_rgba(0,0,0,0.45)]'
-        : 'w-[250px]'
-
+    const initial = (profile?.name || 'P').trim().charAt(0).toUpperCase()
     const isRtl = dir === 'rtl'
+    const isExpanded = !collapsed
 
     return (
         <aside
-            className={`hidden lg:flex flex-col fixed top-0 h-screen z-50 bg-[var(--color-surface)] ${sidebarW}
-                transition-all duration-300 ease-in-out group/sidebar
-                ${isRtl ? 'right-0 border-l' : 'left-0 border-r'} border-[var(--color-border)]`}
+            className={`hidden inset-y-0 lg:flex fixed z-50 flex-col bg-surface border-border transition-[width] duration-200 ease-out
+                ${collapsed ? 'w-14' : 'w-[250px]'}
+                ${isRtl ? 'right-0 border-l' : 'left-0 border-r'}`}
         >
-            {/* ── Logo Section ── */}
-            <div className={`shrink-0 h-[60px] flex items-center border-b border-[var(--color-border)] ${collapsed ? 'px-2 justify-center group-hover/sidebar:px-4 group-hover/sidebar:justify-start' : 'px-4'} transition-all duration-300`}>
-                <div className={`flex items-center ${collapsed ? 'justify-center group-hover/sidebar:justify-start group-hover/sidebar:gap-3' : 'gap-3'} transition-all duration-300`}>
-                    {/* Logo badge — Solid modern brand mark, no cheap gradients */}
-                    <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)] text-white flex items-center justify-center shrink-0 shadow-sm transition-transform active:scale-95">
-                        <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M6 4v14a2 2 0 0 0 2 2h10" />
-                            <path d="M10 8h6" />
-                            <path d="M10 12h4" />
-                        </svg>
-                    </div>
-
-                    {/* Text — hidden smoothly, expands on hover */}
-                    <div className={`min-w-0 flex flex-col transition-all duration-300
-                        ${collapsed ? 'w-0 opacity-0 group-hover/sidebar:w-44 group-hover/sidebar:opacity-100 overflow-hidden' : 'w-auto opacity-100'}`}
-                    >
-                        <p className="text-[14px] font-extrabold text-[var(--color-text)] leading-snug py-0.5 truncate font-heading">
-                            Laporanmu
-                        </p>
-                        <p className="text-[9.5px] font-bold tracking-widest uppercase text-[var(--color-text-muted)] whitespace-nowrap mt-0.5">
-                            {tNum("TA 2026/2027")}
-                        </p>
-                    </div>
+            {/* ── Logo ── */}
+            <div className="flex h-14 shrink-0 items-center gap-2.5 border-b border-border px-3">
+                <div
+                    className="w-9 h-9 rounded-lg bg-primary text-white flex items-center justify-center shrink-0"
+                    title="Laporanmu"
+                >
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M6 4v14a2 2 0 0 0 2 2h10" />
+                        <path d="M10 8h6" />
+                        <path d="M10 12h4" />
+                    </svg>
                 </div>
+                {isExpanded && (
+                    <div className="min-w-0 animate-in fade-in duration-200">
+                        <p className="truncate text-sm font-bold leading-tight text-text">Laporanmu</p>
+                        <p className="text-xs font-semibold tracking-wide text-text-muted">{tNum("TA 2026/2027")}</p>
+                    </div>
+                )}
             </div>
 
-            {/* ── Navigation ── */}
+            {/* ── Navigasi ── */}
             <nav
                 ref={navRef}
                 onScroll={handleScroll}
-                className={`flex-1 overflow-y-auto overflow-x-hidden py-2 space-y-0.5 scrollbar-none transition-all duration-300
-                    ${collapsed ? 'px-1.5 group-hover/sidebar:px-2.5' : 'px-2.5'}`}
+                aria-label="Navigasi utama"
+                className="flex-1 space-y-0.5 overflow-y-auto overflow-x-hidden px-2 py-2 scrollbar-none"
             >
-                {/* Dashboard — always first, standalone */}
                 <SidebarItem item={DASHBOARD_ITEM} collapsed={collapsed} />
                 <SidebarItem item={TASK_CENTER_ITEM} collapsed={collapsed} />
 
-                {/* Divider */}
-                <div className={`h-px bg-[var(--color-border)]/60 !my-1.5 transition-all duration-300
-                    ${collapsed ? 'mx-1 group-hover/sidebar:mx-1.5' : 'mx-1.5'}`}
-                />
+                {/* Pemisah antara menu utama dan grup fitur */}
+                {isExpanded && <div className="mx-1 my-1.5 h-px bg-border/60" />}
 
-                {/* Grouped nav items */}
                 {visibleGroups.map(group => {
                     const filteredItems = filterNavItems(group.items, flags, role)
                     if (filteredItems.length === 0) return null
@@ -278,6 +231,45 @@ export default function Sidebar({ collapsed, onToggle }) {
                     )
                 })}
             </nav>
+
+            {/* ── Footer: identitas pengguna + toggle ── */}
+            <div className="shrink-0 border-t border-border px-2 py-2">
+                {isExpanded ? (
+                    <div className="flex items-center gap-2 animate-in fade-in duration-200">
+                        <div
+                            className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold shrink-0"
+                            aria-hidden="true"
+                        >
+                            {initial}
+                        </div>
+                        <div className="min-w-0 flex-1 leading-tight">
+                            <p className="truncate text-xs font-semibold text-text">{profile?.name || 'Pengguna'}</p>
+                            <p className="truncate text-xs text-text-muted capitalize">{roleDisplay || '—'}</p>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={onToggle}
+                            aria-label="Ciutkan sidebar"
+                            title="Ciutkan sidebar"
+                            className="w-8 h-8 rounded-lg flex items-center justify-center text-text-muted hover:bg-surface-alt hover:text-text transition-colors duration-150 shrink-0"
+                        >
+                            <PanelLeftClose className="w-4.5 h-4.5 rtl:-scale-x-100" />
+                        </button>
+                    </div>
+                ) : (
+                    <div className="flex justify-center">
+                        <button
+                            type="button"
+                            onClick={onToggle}
+                            aria-label="Perluas sidebar"
+                            title="Perluas sidebar"
+                            className="w-9 h-9 rounded-lg flex items-center justify-center text-text-muted hover:bg-surface-alt hover:text-text transition-colors duration-150"
+                        >
+                            <PanelLeftOpen className="w-4.5 h-4.5 rtl:-scale-x-100" />
+                        </button>
+                    </div>
+                )}
+            </div>
         </aside>
     )
 }

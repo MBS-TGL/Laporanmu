@@ -1,17 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faPaperPlane,
-    faRobot,
-    faTimes,
-    faUserTie,
-    faShieldAlt,
-    faBolt,
-    faChevronDown,
-    faCheckCircle,
-    faChevronLeft,
-    faChevronRight
-} from '@fortawesome/free-solid-svg-icons'
+import { Send, Bot, X, Briefcase, Shield, Zap, ChevronDown, CircleCheck } from 'lucide-react'
 import { askAi } from '@lib/ai'
 
 export default function ChatAssistant({ isOpen: controlledIsOpen, onOpenChange }) {
@@ -100,12 +88,12 @@ export default function ChatAssistant({ isOpen: controlledIsOpen, onOpenChange }
             <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-end gap-3 group">
                 {showInvite && (
                     <div className="bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl border border-indigo-100 dark:border-white/5 animate-in slide-in-from-right-5 fade-in duration-500 max-w-[200px] relative">
-                        <button onClick={() => setShowInvite(false)} className="absolute -top-2 -right-2 w-6 h-6 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center text-[10px] text-slate-400"><FontAwesomeIcon icon={faTimes} /></button>
+                        <button onClick={() => setShowInvite(false)} className="absolute -top-2 -right-2 w-6 h-6 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center text-[10px] text-slate-400"><X /></button>
                         <p className="text-[11px] font-bold text-slate-800 dark:text-white leading-relaxed">Halo! 👋 Ada yang bisa <span className="text-indigo-600">Asisten</span> bantu?</p>
                     </div>
                 )}
                 <button onClick={() => setIsOpen(true)} className="px-6 h-14 bg-indigo-600 text-white shadow-lg rounded-full flex items-center gap-3 hover:scale-105 transition-all group overflow-hidden">
-                    <div className="relative"><FontAwesomeIcon icon={faRobot} className="text-lg" /><span className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-400 rounded-full animate-ping" /></div>
+                    <div className="relative"><Bot className="text-lg" /><span className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-400 rounded-full animate-ping" /></div>
                     <span className="text-sm font-bold tracking-tight">Tanya Aku!</span>
                 </button>
             </div>
@@ -113,18 +101,18 @@ export default function ChatAssistant({ isOpen: controlledIsOpen, onOpenChange }
     }
 
     return (
-        <div className="fixed bottom-6 right-6 w-[400px] max-w-[calc(100vw-3rem)] h-[620px] max-h-[85vh] bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl border border-white dark:border-white/10 rounded-[2.8rem] shadow-2xl flex flex-col overflow-hidden z-[100] animate-in zoom-in-95 duration-300">
+        <div className="fixed bottom-6 right-6 w-[400px] max-w-[calc(100vw-3rem)] h-[620px] max-h-[85vh] bg-surface border border-border rounded-2xl shadow-xl flex flex-col overflow-hidden z-[100] animate-in zoom-in-95 duration-300">
             
             {/* Balanced Integrated Header */}
             <div className="px-6 py-4 flex items-center justify-between border-b border-black/[0.02]">
                 <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-2xl bg-[var(--color-primary)] flex items-center justify-center shadow-md shadow-[var(--color-primary)]/20 text-white">
-                        <FontAwesomeIcon icon={faRobot} className="text-white text-[14px]" />
+                        <Bot className="text-white text-[14px]" />
                     </div>
                     <div>
                         <div className="flex items-center gap-2">
                             <h3 className="text-[13.5px] font-bold text-slate-900 dark:text-white font-heading tracking-tight">Asisten</h3>
-                            <FontAwesomeIcon icon={faCheckCircle} className="text-[10px] text-blue-500" />
+                            <CircleCheck className="text-[10px] text-blue-500" />
                         </div>
                         <div className="flex items-center gap-2 mt-0.5">
                             <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
@@ -133,7 +121,7 @@ export default function ChatAssistant({ isOpen: controlledIsOpen, onOpenChange }
                     </div>
                 </div>
                 <button onClick={() => setIsOpen(false)} className="w-8 h-8 rounded-full hover:bg-slate-100 dark:hover:bg-white/5 flex items-center justify-center text-slate-400 transition-colors">
-                    <FontAwesomeIcon icon={faChevronDown} className="text-xs" />
+                    <ChevronDown className="text-xs" />
                 </button>
             </div>
 
@@ -141,7 +129,7 @@ export default function ChatAssistant({ isOpen: controlledIsOpen, onOpenChange }
             <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6 custom-scrollbar">
                 {messages.map((msg, i) => (
                     <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-1 duration-300`}>
-                        <div className={`max-w-[90%] px-4 py-2.5 text-[13px] leading-relaxed relative shadow-sm ${msg.role === 'user' ? 'bg-indigo-600 text-white rounded-2xl rounded-tr-none' : 'bg-slate-100 dark:bg-white/5 text-slate-800 dark:text-slate-200 rounded-2xl rounded-tl-none border border-black/[0.03]'}`}>{renderContent(msg.content)}</div>
+                        <div className={`max-w-[90%] px-4 py-2.5 text-[13px] leading-relaxed relative shadow-sm ${msg.role === 'user' ? 'bg-primary text-white rounded-2xl rounded-tr-none' : 'bg-surface-alt text-slate-800 dark:text-slate-200 rounded-2xl rounded-tl-none border border-black/[0.03]'}`}>{renderContent(msg.content)}</div>
                     </div>
                 ))}
                 {isLoading && (
@@ -159,17 +147,17 @@ export default function ChatAssistant({ isOpen: controlledIsOpen, onOpenChange }
                 <div className="relative mb-4 group/chips">
                     <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-1">
                         {[
-                            { icon: faBolt, label: 'Cek Poin' },
-                            { icon: faUserTie, label: 'Daftar Guru' },
-                            { icon: faShieldAlt, label: 'Aturan Sekolah' },
-                            { icon: faCheckCircle, label: 'Fitur API' }
+                            { icon: Zap, label: 'Cek Poin' },
+                            { icon: Briefcase, label: 'Daftar Guru' },
+                            { icon: Shield, label: 'Aturan Sekolah' },
+                            { icon: CircleCheck, label: 'Fitur API' }
                         ].map((q, idx) => (
-                            <button 
-                                key={idx} 
-                                onClick={() => setInput(q.label)} 
+                            <button
+                                key={idx}
+                                onClick={() => setInput(q.label)}
                                 className="shrink-0 px-3 py-1 rounded-full bg-slate-100/80 dark:bg-white/5 border border-black/[0.03] text-[10.5px] font-bold text-slate-500 hover:text-indigo-600 transition-all flex items-center gap-2 snap-start shadow-sm"
                             >
-                                <FontAwesomeIcon icon={q.icon} className="text-[9px] opacity-40" />
+                                <q.icon className="text-[9px] opacity-40" />
                                 {q.label}
                             </button>
                         ))}
@@ -193,7 +181,7 @@ export default function ChatAssistant({ isOpen: controlledIsOpen, onOpenChange }
                         disabled={isLoading}
                         className="w-11 h-11 rounded-full bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shrink-0"
                     >
-                        <FontAwesomeIcon icon={faPaperPlane} className="text-xs" />
+                        <Send className="text-xs" />
                     </button>
                 </form>
             </div>

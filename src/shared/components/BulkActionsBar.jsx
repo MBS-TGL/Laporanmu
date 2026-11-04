@@ -47,13 +47,13 @@ export default function BulkActionsBar({
       }}
     >
       <div className="relative">
-        <div className="relative bg-[#0f172a]/90 backdrop-blur-3xl border border-white/20 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] px-2.5 py-2 flex items-center justify-between gap-2.5 text-white overflow-hidden">
+        <div className="relative bg-[#0f172a]/90 border border-white/20 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] px-2.5 py-2 flex items-center justify-between gap-2.5 text-white overflow-hidden">
           {/* Animated scanline */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
 
           {/* Count Indicator */}
           <div className="flex items-center gap-3 pl-1.5 rtl:pl-0 rtl:pr-1.5 shrink-0">
-            <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)] flex items-center justify-center font-bold text-sm shadow-lg shadow-[var(--color-primary)]/30 shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)] flex items-center justify-center font-bold text-sm shadow-lg shrink-0">
               {selectedCount}
             </div>
             <div className="hidden sm:block">

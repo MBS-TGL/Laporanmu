@@ -254,14 +254,14 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
             {isLast ? (
                 <button 
                     onClick={onClose}
-                    className="h-10 px-6 rounded-xl bg-amber-500 text-white text-[11px] font-black hover:bg-amber-600 transition-all flex items-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95"
+                    className="h-10 px-6 rounded-xl bg-amber-500 text-white text-[11px] font-black hover:bg-amber-600 transition-all flex items-center gap-2 shadow-lg active:scale-95"
                 >
                     <Check className="w-3.5 h-3.5" /> Selesai
                 </button>
             ) : (
                 <button 
                     onClick={() => setStep(v => Math.min(totalSteps - 1, v + 1))}
-                    className="h-10 px-6 rounded-xl bg-amber-500 text-white text-[11px] font-black hover:bg-amber-600 transition-all flex items-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95"
+                    className="h-10 px-6 rounded-xl bg-amber-500 text-white text-[11px] font-black hover:bg-amber-600 transition-all flex items-center gap-2 shadow-lg active:scale-95"
                 >
                     Berikutnya <ChevronRight className="w-3.5 h-3.5" />
                 </button>
@@ -294,9 +294,9 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
                                 src={currentSlide.img} 
                                 alt={currentSlide.title}
                                 className="w-full object-contain max-h-[300px] md:max-h-[380px] transition-all duration-300 group-hover:scale-[1.01] group-hover:brightness-95" 
-                            />
+                                loading="lazy" decoding="async" />
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none bg-slate-950/10">
-                                <div className="bg-slate-950/75 text-white text-[10px] font-black px-4 py-2 rounded-full flex items-center gap-1.5 backdrop-blur-sm shadow-lg">
+                                <div className="bg-slate-950/75 text-white text-[10px] font-black px-4 py-2 rounded-full flex items-center gap-1.5 shadow-lg">
                                     <Search className="w-2.5 h-2.5" /> Klik untuk zoom
                                 </div>
                             </div>
@@ -328,7 +328,7 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
             {/* Fullscreen Lightbox for zooming tutorial images */}
             {zoomImg && createPortal(
                 <div 
-                    className={`fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-slate-950/90 backdrop-blur-md animate-lightbox-fade-in select-none ${isZoomedIn ? 'p-0' : 'p-4'}`}
+                    className={`fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-slate-950/90 animate-lightbox-fade-in select-none ${isZoomedIn ? 'p-0' : 'p-4'}`}
                     onClick={() => setZoomImg(null)}
                 >
                     <style>{`
@@ -373,7 +373,7 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
                     {/* Floating Premium Close Button */}
                     <button
                         onClick={() => setZoomImg(null)}
-                        className="absolute top-6 right-6 w-12 h-12 bg-slate-900/50 hover:bg-slate-900/80 text-white rounded-full transition-all duration-200 flex items-center justify-center border border-white/10 shadow-2xl backdrop-blur-md group cursor-pointer z-50"
+                        className="absolute top-6 right-6 w-12 h-12 bg-slate-900/50 hover:bg-slate-900/80 text-white rounded-full transition-all duration-200 flex items-center justify-center border border-white/10 shadow-xl group cursor-pointer z-50"
                         aria-label="Tutup Preview"
                     >
                         <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
@@ -401,12 +401,12 @@ export const RaportTutorialModal = memo(function RaportTutorialModal({ isOpen, o
                         <img
                             src={zoomImg}
                             alt="Detail Panduan Fullscreen"
-                            className={`transition-all duration-300 rounded-2xl shadow-2xl border border-white/5 pointer-events-none select-none ${
+                            className={`transition-all duration-300 rounded-2xl shadow-xl border border-white/5 pointer-events-none select-none ${
                                 isZoomedIn 
                                     ? 'max-w-none w-[220vw] md:w-[140vw] h-auto' 
                                     : 'max-w-full max-h-full object-contain animate-lightbox-zoom-in'
                             }`}
-                        />
+                            loading="lazy" decoding="async" />
                     </div>
 
                     {/* Minimalist guide caption */}

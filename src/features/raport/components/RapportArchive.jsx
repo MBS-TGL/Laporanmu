@@ -207,7 +207,7 @@ function PreviewPane({ children, cardRef, zoom, setZoom, manualZoomRef, nav, act
 
             <div ref={wrapRef} className={`overflow-auto custom-scrollbar bg-[var(--color-surface-alt)] dark:bg-[var(--color-surface-alt)] p-4 ${fill ? 'flex-1' : 'max-h-[75vh] min-h-[420px]'}`}>
                 <div style={{ width: size.w ? size.w * zoom : undefined, height: size.h ? size.h * zoom : undefined, margin: '0 auto' }}>
-                    <div style={{ transform: `scale(${zoom})`, transformOrigin: 'top left', width: 'max-content' }} className="shadow-2xl">
+                    <div style={{ transform: `scale(${zoom})`, transformOrigin: 'top left', width: 'max-content' }} className="shadow-xl">
                         <div ref={cardRef}>{children}</div>
                     </div>
                 </div>
@@ -584,7 +584,7 @@ function ArchiveDetail(props) {
             </div>
 
             {isFullScreenPreview && (
-                <div className="fixed inset-0 z-[90] bg-slate-900/90 backdrop-blur-sm flex flex-col p-3 sm:p-6" role="dialog" aria-modal="true" aria-label={`Preview raport ${pStudent.name}`}>
+                <div className="fixed inset-0 z-[90] bg-slate-900/90 flex flex-col p-3 sm:p-6" role="dialog" aria-modal="true" aria-label={`Preview raport ${pStudent.name}`}>
                     <div className="flex items-center justify-between mb-3 text-white">
                         <p className="text-sm font-bold truncate">{pStudent.name} · {pClass}</p>
                         <button type="button" onClick={() => setIsFullScreenPreview(false)} aria-label="Tutup layar penuh" className="w-9 h-9 rounded-xl bg-[var(--color-surface)]/10 hover:bg-[var(--color-surface)]/20 flex items-center justify-center transition-colors">

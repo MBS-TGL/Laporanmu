@@ -73,8 +73,8 @@ function ConfirmDeleteDialog({ entry, deleting, error, onCancel, onConfirm }) {
     }, [deleting, onCancel])
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onMouseDown={(e) => e.target === e.currentTarget && !deleting && onCancel()}>
-            <div role="alertdialog" aria-modal="true" aria-labelledby="del-title" aria-describedby="del-desc" className="w-full max-w-sm rounded-2xl bg-[var(--color-surface,#fff)] p-6 shadow-2xl">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40" onMouseDown={(e) => e.target === e.currentTarget && !deleting && onCancel()}>
+            <div role="alertdialog" aria-modal="true" aria-labelledby="del-title" aria-describedby="del-desc" className="w-full max-w-sm rounded-2xl bg-[var(--color-surface,#fff)] p-6 shadow-xl">
                 <div className="w-11 h-11 rounded-xl bg-red-50 text-red-500 flex items-center justify-center mb-4">
                     <Trash2 className="w-5 h-5" />
                 </div>

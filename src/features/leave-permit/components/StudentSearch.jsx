@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Search, User, Loader2, X } from 'lucide-react'
 import { useDebounce } from '@shared/hooks/useDebounce'
-import { createPortal } from 'react-dom'
+import { FieldLabel, Input } from '@shared/components'
 
 export default function StudentSearch({ onSelect, placeholder = 'Ketik nama santri...', disabled = false }) {
   const [search, setSearch] = useState('')
@@ -106,13 +106,12 @@ export default function StudentSearch({ onSelect, placeholder = 'Ketik nama sant
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 mb-1.5 block">
-        Cari Santri *
-      </label>
+      <FieldLabel htmlFor="leave-permit-student-search">Cari Santri *</FieldLabel>
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)] pointer-events-none" />
-        <input
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
+        <Input
           ref={inputRef}
+          id="leave-permit-student-search"
           type="text"
           value={search}
           onChange={(e) => { setSearch(e.target.value); setHighlightIdx(-1) }}
@@ -120,14 +119,14 @@ export default function StudentSearch({ onSelect, placeholder = 'Ketik nama sant
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           disabled={disabled}
-          className="w-full h-10 pl-9 pr-8 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] text-sm placeholder:text-[var(--color-text-muted)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)] transition-all disabled:opacity-50"
+          className="pl-9 pr-8 disabled:opacity-50"
         />
         {(search || loading) && (
           <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-            {loading && <Loader2 className="w-3.5 h-3.5 animate-spin text-[var(--color-text-muted)]" />}
+            {loading && <Loader2 className="w-3.5 h-3.5 animate-spin text-text-muted" />}
             {search && !loading && (
-              <button onClick={handleClear} className="p-0.5 rounded hover:bg-[var(--color-surface-alt)] transition-colors">
-                <X className="w-3.5 h-3.5 text-[var(--color-text-muted)]" />
+              <button onClick={handleClear} className="p-0.5 rounded hover:bg-surface-alt transition-colors" aria-label="Hapus pencarian">
+                <X className="w-3.5 h-3.5 text-text-muted" />
               </button>
             )}
           </div>
@@ -136,26 +135,26 @@ export default function StudentSearch({ onSelect, placeholder = 'Ketik nama sant
 
       {/* Dropdown results */}
       {isOpen && results.length > 0 && (
-        <div className="absolute z-50 mt-1 w-full max-h-64 overflow-y-auto rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-lg">
+        <div className="absolute z-50 mt-1 w-full max-h-64 overflow-y-auto rounded-xl bg-surface border border-border shadow-sm">
           {results.map((student, idx) => (
             <button
               key={student.id}
               onClick={() => handleSelect(student)}
               className={`w-full flex items-center gap-3 px-3 py-2.5 text-left transition-colors ${
                 idx === highlightIdx
-                  ? 'bg-[var(--color-primary)]/10'
-                  : 'hover:bg-[var(--color-surface-alt)]'
+                  ? 'bg-primary/10'
+                  : 'hover:bg-surface-alt'
               }`}
             >
-              <div className="w-8 h-8 rounded-full bg-[var(--color-surface-alt)] flex items-center justify-center shrink-0 overflow-hidden">
+              <div className="w-8 h-8 rounded-full bg-surface-alt flex items-center justify-center shrink-0 overflow-hidden">
                 {student.photo_url
                   ? <img src={student.photo_url} alt="" className="w-full h-full object-cover" />
-                  : <User className="w-4 h-4 text-[var(--color-text-muted)]" />
+                  : <User className="w-4 h-4 text-text-muted" />
                 }
               </div>
               <div className="min-w-0 flex-1">
-                <div className="text-sm font-semibold text-[var(--color-text)] truncate">{student.name}</div>
-                <div className="text-[10px] text-[var(--color-text-muted)] flex gap-2">
+                <div className="text-sm font-semibold text-text truncate">{student.name}</div>
+                <div className="text-xs text-text-muted flex gap-2">
                   <span>{student.classes?.name || '-'}</span>
                   <span className="opacity-40">|</span>
                   <span>{student.dorms?.ar || student.dorms?.building || '-'}</span>
@@ -167,8 +166,8 @@ export default function StudentSearch({ onSelect, placeholder = 'Ketik nama sant
       )}
 
       {isOpen && search && results.length === 0 && !loading && (
-        <div className="absolute z-50 mt-1 w-full rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-lg p-4 text-center">
-          <p className="text-sm text-[var(--color-text-muted)]">Santri tidak ditemukan</p>
+        <div className="absolute z-50 mt-1 w-full rounded-xl bg-surface border border-border shadow-sm p-4 text-center">
+          <p className="text-sm text-text-muted">Santri tidak ditemukan</p>
         </div>
       )}
     </div>

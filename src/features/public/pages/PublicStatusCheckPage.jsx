@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-    faSearch, faUserCheck, faCheckCircle, faTimesCircle, faClock,
-    faUpload, faSpinner, faArrowLeft, faBuildingColumns, faUser, faPhone,
-    faBookQuran, faGraduationCap, faMapMarkerAlt, faChevronRight, faFileInvoiceDollar,
-    faInfoCircle, faExclamationTriangle, faCalendarAlt, faMoon, faSun
-} from '@fortawesome/free-solid-svg-icons'
+    ArrowLeft, CircleCheck, CircleX, Clock, GraduationCap, Info, Landmark,
+    LoaderCircle, Moon, Phone, Search, Sun, TriangleAlert, Upload, User, UserCheck
+} from 'lucide-react'
 import { supabase } from '@lib/supabase'
 import { useTheme } from '@context/Theme'
 
@@ -308,7 +305,7 @@ export default function PublicStatusCheckPage() {
                         if (isActive) {
                             if (isRejected) circleClass = 'bg-rose-500 text-white border-rose-500'
                             else if (status === 'diterima' && enrollment.metadata?.is_waiting_list) circleClass = 'bg-amber-500 text-white border-amber-500'
-                            else circleClass = 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-md shadow-[var(--color-primary)]/20'
+                            else circleClass = 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-md'
                         }
 
                         return (
@@ -316,7 +313,7 @@ export default function PublicStatusCheckPage() {
                                 <div className="flex items-center gap-3 md:flex-col md:gap-2 text-left md:text-center">
                                     {/* Line connecting in Mobile */}
                                     <div className={`w-8 h-8 rounded-2xl flex items-center justify-center font-black text-xs transition-all ${circleClass}`}>
-                                        {isDone ? <FontAwesomeIcon icon={faCheckCircle} /> : i + 1}
+                                        {isDone ? <CircleCheck /> : i + 1}
                                     </div>
                                     <div className="leading-tight">
                                         <p className={`text-xs font-bold uppercase tracking-wider ${isActive ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)] opacity-70'}`}>
@@ -349,7 +346,7 @@ export default function PublicStatusCheckPage() {
             return (
                 <div className="celebrate-card p-6 md:p-8 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 text-center space-y-4">
                     <div className="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-2xl flex items-center justify-center mx-auto">
-                        <FontAwesomeIcon icon={faGraduationCap} />
+                        <GraduationCap />
                     </div>
                     <div className="space-y-1">
                         <h3 className="text-xl md:text-2xl font-black text-emerald-600 dark:text-emerald-400">Selamat, Anda Dinyatakan LULUS!</h3>
@@ -363,7 +360,7 @@ export default function PublicStatusCheckPage() {
                     {!enrollment.metadata?.acceptance_confirmed ? (
                         <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl p-5 max-w-lg mx-auto text-left space-y-4 shadow-sm">
                             <h4 className="text-xs font-black uppercase tracking-wider text-[var(--color-text)] flex items-center gap-1.5">
-                                <FontAwesomeIcon icon={faUserCheck} className="text-emerald-500" />
+                                <UserCheck className="text-emerald-500" />
                                 Form Konfirmasi Kesediaan
                             </h4>
                             <label className="flex items-start gap-3 cursor-pointer select-none">
@@ -380,10 +377,10 @@ export default function PublicStatusCheckPage() {
                             <button
                                 onClick={handleConfirmAcceptance}
                                 disabled={!confirmChecked || confirming}
-                                className="w-full h-11 rounded-xl bg-emerald-600 hover:brightness-110 text-white font-black uppercase tracking-wider text-xs transition-all shadow-md shadow-emerald-500/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                className="w-full h-11 rounded-xl bg-emerald-600 hover:brightness-110 text-white font-black uppercase tracking-wider text-xs transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                             >
                                 {confirming ? (
-                                    <><FontAwesomeIcon icon={faSpinner} className="fa-spin" /> Memproses Konfirmasi...</>
+                                    <><LoaderCircle className="animate-spin" /> Memproses Konfirmasi...</>
                                 ) : (
                                     <>Konfirmasi Kesediaan Bergabung</>
                                 )}
@@ -402,7 +399,7 @@ export default function PublicStatusCheckPage() {
             return (
                 <div className="p-6 md:p-8 rounded-3xl bg-indigo-500/10 border border-indigo-500/20 text-center space-y-4">
                     <div className="w-14 h-14 rounded-full bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-2xl flex items-center justify-center mx-auto animate-bounce">
-                        <FontAwesomeIcon icon={faUserCheck} />
+                        <UserCheck />
                     </div>
                     <div className="space-y-1">
                         <h3 className="text-xl md:text-2xl font-black text-indigo-600 dark:text-indigo-400">Kesediaan Bergabung Terkonfirmasi</h3>
@@ -419,7 +416,7 @@ export default function PublicStatusCheckPage() {
             return (
                 <div className="p-6 md:p-8 rounded-3xl bg-amber-500/10 border border-amber-500/20 text-center space-y-4">
                     <div className="w-14 h-14 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-500 text-2xl flex items-center justify-center mx-auto">
-                        <FontAwesomeIcon icon={faClock} className="animate-pulse" />
+                        <Clock className="animate-pulse" />
                     </div>
                     <div className="space-y-1">
                         <h3 className="text-xl md:text-2xl font-black text-amber-600 dark:text-amber-400">Masuk Daftar Cadangan (Waiting List)</h3>
@@ -436,7 +433,7 @@ export default function PublicStatusCheckPage() {
             return (
                 <div className="p-6 md:p-8 rounded-3xl bg-rose-500/10 border border-rose-500/20 text-center space-y-4">
                     <div className="w-14 h-14 rounded-full bg-rose-500/20 text-rose-600 dark:text-rose-400 text-2xl flex items-center justify-center mx-auto">
-                        <FontAwesomeIcon icon={faTimesCircle} />
+                        <CircleX />
                     </div>
                     <div className="space-y-1">
                         <h3 className="text-xl md:text-2xl font-black text-rose-600 dark:text-rose-400">Belum Berhasil Lolos Ujian</h3>
@@ -453,7 +450,7 @@ export default function PublicStatusCheckPage() {
         return (
             <div className="p-5 rounded-2xl bg-indigo-500/5 border border-indigo-500/10 flex items-start gap-4">
                 <div className="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
-                    <FontAwesomeIcon icon={faInfoCircle} />
+                    <Info />
                 </div>
                 <div className="space-y-0.5">
                     <h5 className="text-xs font-black uppercase tracking-wider text-[var(--color-text)]">Status Pendaftaran Aktif</h5>
@@ -506,7 +503,7 @@ export default function PublicStatusCheckPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-5 rounded-2xl bg-indigo-500/5 border border-indigo-500/10 text-xs">
                     <div className="space-y-2">
                         <p className="font-black text-indigo-700 uppercase tracking-wider flex items-center gap-1.5">
-                            <FontAwesomeIcon icon={faBuildingColumns} /> Bank Syariah Indonesia (BSI)
+                            <Landmark /> Bank Syariah Indonesia (BSI)
                         </p>
                         <div className="space-y-0.5">
                             <p className="text-[10px] text-[var(--color-text-muted)] font-bold">Nomor Rekening:</p>
@@ -519,7 +516,7 @@ export default function PublicStatusCheckPage() {
                     </div>
                     <div className="space-y-2 border-t sm:border-t-0 sm:border-l border-[var(--color-border)] pt-3 sm:pt-0 sm:pl-5 flex flex-col justify-center">
                         <div className="flex items-start gap-2 text-[10px] text-[var(--color-text-muted)] font-bold leading-normal">
-                            <FontAwesomeIcon icon={faExclamationTriangle} className="text-amber-500 shrink-0 mt-0.5" />
+                            <TriangleAlert className="text-amber-500 shrink-0 mt-0.5" />
                             <div className="space-y-1">
                                 <p>Pastikan mengunggah foto/screenshot bukti transfer yang jelas dan terbaca nominalnya.</p>
                                 <p>Proses verifikasi manual berkas transfer memakan waktu maksimal 1-2 hari kerja.</p>
@@ -565,7 +562,7 @@ export default function PublicStatusCheckPage() {
                                     <div className="p-2.5 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]/50 text-[10px] flex items-center gap-2">
                                         {proofUrl ? (
                                             <>
-                                                <img src={proofUrl} alt="Bukti transfer" className="w-8 h-8 rounded object-cover border border-[var(--color-border)] shrink-0" />
+                                                <img src={proofUrl} alt="Bukti transfer" className="w-8 h-8 rounded object-cover border border-[var(--color-border)] shrink-0" loading="lazy" decoding="async" />
                                                 <div className="min-w-0">
                                                     <p className="font-bold text-[var(--color-text)] truncate">Bukti terlampir</p>
                                                     <a href={proofUrl} target="_blank" rel="noreferrer" className="text-[9px] font-black text-[var(--color-primary)] hover:underline">Lihat Bukti</a>
@@ -574,7 +571,7 @@ export default function PublicStatusCheckPage() {
                                         ) : (
                                             <>
                                                 <div className="w-8 h-8 rounded bg-[var(--color-border)]/30 flex items-center justify-center text-[var(--color-text-muted)] opacity-50 shrink-0">
-                                                    <FontAwesomeIcon icon={faUpload} />
+                                                    <Upload />
                                                 </div>
                                                 <div className="min-w-0">
                                                     <p className="font-semibold text-[var(--color-text-muted)]">Belum ada bukti</p>
@@ -600,9 +597,9 @@ export default function PublicStatusCheckPage() {
                                             className="w-full h-8 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] text-[9px] font-black uppercase tracking-wider transition-all disabled:opacity-50 flex items-center justify-center gap-1.5"
                                         >
                                             {uploadingCategory[p.type] ? (
-                                                <><FontAwesomeIcon icon={faSpinner} className="fa-spin" /> Unggah...</>
+                                                <><LoaderCircle className="animate-spin" /> Unggah...</>
                                             ) : (
-                                                <><FontAwesomeIcon icon={faUpload} /> {proofUrl ? 'Ganti Bukti' : 'Unggah Bukti'}</>
+                                                <><Upload /> {proofUrl ? 'Ganti Bukti' : 'Unggah Bukti'}</>
                                             )}
                                         </button>
                                     </div>
@@ -618,10 +615,10 @@ export default function PublicStatusCheckPage() {
     return (
         <div className="min-h-screen bg-[var(--color-background)] transition-colors duration-300 pb-16">
             {/* Header navbar */}
-            <header className="border-b border-[var(--color-border)] bg-[var(--color-surface)]/70 backdrop-blur-md sticky top-0 z-50 transition-colors">
+            <header className="border-b border-[var(--color-border)] bg-[var(--color-surface)] sticky top-0 z-50 transition-colors">
                 <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
                     <Link to="/psb" className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[var(--color-primary)] to-indigo-600 flex items-center justify-center text-white text-xs font-black shadow-md shadow-[var(--color-primary)]/10">
+                        <div className="w-8 h-8 rounded-xl bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-black shadow-md">
                             LM
                         </div>
                         <span className="text-[14px] font-black text-[var(--color-text)] tracking-wider">LAPORANMU PSB</span>
@@ -632,10 +629,10 @@ export default function PublicStatusCheckPage() {
                             onClick={toggleTheme}
                             className="w-9 h-9 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] flex items-center justify-center transition-all bg-[var(--color-surface)] text-sm"
                         >
-                            <FontAwesomeIcon icon={isDark ? faSun : faMoon} />
+                            {isDark ? <Sun /> : <Moon />}
                         </button>
                         <Link to="/psb" className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] flex items-center justify-center gap-2 transition-all bg-[var(--color-surface)] text-[10px] font-black uppercase tracking-wider">
-                            <FontAwesomeIcon icon={faArrowLeft} /> Kembali ke Pendaftaran
+                            <ArrowLeft /> Kembali ke Pendaftaran
                         </Link>
                     </div>
                 </div>
@@ -654,7 +651,7 @@ export default function PublicStatusCheckPage() {
 
                         {errorMsg && (
                             <div className="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-xs font-bold text-rose-600 dark:text-rose-400 text-left flex items-start gap-2.5">
-                                <FontAwesomeIcon icon={faTimesCircle} className="shrink-0 mt-0.5 text-xs" />
+                                <CircleX className="shrink-0 mt-0.5 text-xs" />
                                 <span>{errorMsg}</span>
                             </div>
                         )}
@@ -663,7 +660,7 @@ export default function PublicStatusCheckPage() {
                             <div className="space-y-1">
                                 <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Nomor Registrasi (PSB-XXXX-XXXX)</label>
                                 <div className="relative">
-                                    <FontAwesomeIcon icon={faUser} className="absolute left-4.5 top-3.5 text-xs text-[var(--color-text-muted)] opacity-40" />
+                                    <User className="absolute left-4.5 top-3.5 text-xs text-[var(--color-text-muted)] opacity-40" />
                                     <input
                                         type="text"
                                         name="regNum"
@@ -678,7 +675,7 @@ export default function PublicStatusCheckPage() {
                             <div className="space-y-1">
                                 <label className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Nomor HP Wali</label>
                                 <div className="relative">
-                                    <FontAwesomeIcon icon={faPhone} className="absolute left-4.5 top-3.5 text-xs text-[var(--color-text-muted)] opacity-40" />
+                                    <Phone className="absolute left-4.5 top-3.5 text-xs text-[var(--color-text-muted)] opacity-40" />
                                     <input
                                         type="text"
                                         name="phone"
@@ -693,12 +690,12 @@ export default function PublicStatusCheckPage() {
                             <button
                                 type="submit"
                                 disabled={searching}
-                                className="w-full h-11 rounded-xl bg-gradient-to-tr from-[var(--color-primary)] to-indigo-600 text-white font-black uppercase tracking-wider text-xs transition-all shadow-md shadow-[var(--color-primary)]/10 flex items-center justify-center gap-2"
+                                className="w-full h-11 rounded-xl bg-[var(--color-primary)] text-white font-black uppercase tracking-wider text-xs transition-all shadow-md flex items-center justify-center gap-2"
                             >
                                 {searching ? (
-                                    <><FontAwesomeIcon icon={faSpinner} className="fa-spin" /> Memeriksa...</>
+                                    <><LoaderCircle className="animate-spin" /> Memeriksa...</>
                                 ) : (
-                                    <><FontAwesomeIcon icon={faSearch} /> Cek Status Sekarang</>
+                                    <><Search /> Cek Status Sekarang</>
                                 )}
                             </button>
                         </form>

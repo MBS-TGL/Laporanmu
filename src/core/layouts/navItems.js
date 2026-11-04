@@ -43,6 +43,7 @@ import {
     Boxes,
     ClipboardList,
     ClipboardCheck,
+    ShieldAlert,
 } from "lucide-react"
 
 // ─── Dashboard & Pusat Tugas (standalone) ────────────────────────────────────
@@ -63,6 +64,7 @@ export const BOARDING_ITEMS = [
     { to: "/boarding/gate", label: "Perizinan", icon: Compass, desc: "Manajemen Izin santri keluar & kembali ke pesantren", color: "bg-red-500/10 text-red-500" },
     { to: "/boarding/leave-permit", label: "Izin Keluar", icon: ClipboardList, desc: "Surat izin keluar pondok santri & pencatatan keberangkatan", color: "bg-amber-500/10 text-amber-500" },
     { to: "/boarding/behavior", label: "Poin Santri", icon: Flag, desc: "Pencatatan pelanggaran, prestasi, dan akumulasi poin santri", color: "bg-orange-500/10 text-orange-500" },
+    { to: "/suspensions", label: "Skorsing", icon: ShieldAlert, desc: "Pembinaan siswa di rumah, tautan wali & progres harian", color: "bg-rose-500/10 text-rose-500" },
     { to: "/boarding/dorms", label: "Asrama", icon: Bed, desc: "Plotting kamar santri, kontrol kebersihan, & tugas Musyrif", color: "bg-indigo-500/10 text-indigo-600" },
     { to: "/boarding/health", label: "Kesehatan", icon: HeartPulse, desc: "Pos Kesehatan Pesantren (Poskestren) & rekam medis santri", color: "bg-emerald-500/10 text-emerald-600" },
     { to: "/boarding/counseling", label: "Konseling", icon: HeartHandshake, desc: "Sesi konseling santri, bimbingan psikologis & pembinaan mental", color: "bg-purple-500/10 text-purple-600" },
@@ -173,6 +175,8 @@ export const ROUTE_FLAG_MAP = {
     '/boarding/gate': 'nav.gate',
     '/boarding/leave-permit': 'nav.leave_permit',
     '/boarding/behavior': 'nav.poin',
+    '/suspensions': 'module.suspension',
+    '/tugas-skorsing': 'module.suspension',
     '/boarding/dorms': 'nav.dorms',
     '/boarding/health': 'nav.health',
     '/boarding/counseling': 'nav.counseling',

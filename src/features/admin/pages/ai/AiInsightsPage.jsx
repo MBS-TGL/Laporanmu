@@ -1,21 +1,12 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faRobot, faMessage, faChartLine, faClock,
-    faSearch, faCheckCircle, faTriangleExclamation,
-    faFilter, faMicrochip, faRotateLeft, faTerminal,
-    faPenNib, faXmark, faCheckSquare, faSquare,
-    faSliders, faAngleLeft, faAngleRight, faAnglesLeft, faAnglesRight,
-    faChevronDown, faArrowRotateRight, faEye, faGrip, faTableList,
-    faDownload, faTowerBroadcast, faMagicWandSparkles, faCoins,
-    faShieldHalved, faBolt
-} from '@fortawesome/free-solid-svg-icons'
+import { Bot, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, CircleCheck, Coins, Cpu, Download, Eye, GripHorizontal, MessageSquare, PenTool, RadioTower, RotateCcw, RotateCw, Search, ShieldHalf, SlidersHorizontal, TableProperties, Terminal, TriangleAlert, WandSparkles, X, Zap } from 'lucide-react'
+
+
 import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
     PieChart, Pie, Cell
 } from 'recharts'
-import Papa from 'papaparse'
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import { Breadcrumb } from '@shared/components'
 import { supabase } from '@lib/supabase'
@@ -27,8 +18,8 @@ const TOKEN_RATE = 0.0012 // $ per 1.0k tokens approximate
 const getSecurityStatus = (query) => {
     const flaggedWords = ['ssh', 'sudo', 'rm -rf', 'password', 'config', 'key', 'secret', 'token', 'exploit', 'hack', 'root', 'login', 'credentials'];
     const isFlagged = flaggedWords.some(w => query.toLowerCase().includes(w));
-    if (isFlagged) return { label: 'Flagged', color: 'text-rose-500', bg: 'bg-rose-500/10', icon: faTriangleExclamation, flagged: true };
-    return { label: 'Secure', color: 'text-emerald-500', bg: 'bg-emerald-500/10', icon: faCheckCircle, flagged: false };
+    if (isFlagged) return { label: 'Flagged', color: 'text-rose-500', bg: 'bg-rose-500/10', icon: TriangleAlert, flagged: true };
+    return { label: 'Secure', color: 'text-emerald-500', bg: 'bg-emerald-500/10', icon: CircleCheck, flagged: false };
 };
 
 // Helper to clean HTML and entities for display
@@ -161,10 +152,10 @@ export default function AiInsightsPage() {
 
     // ── Metrics Configuration (Poin 4: Enterprise Stats) ──
     const statsList = useMemo(() => [
-        { label: 'Neural Logs', val: stats.total, icon: faTerminal, color: 'text-indigo-600', bg: 'bg-indigo-600/10' },
-        { label: 'Neural Threat Level', val: stats.threatLevel, icon: faShieldHalved, color: stats.threatLevel === 'LOW' ? 'text-emerald-500' : 'text-rose-500', bg: stats.threatLevel === 'LOW' ? 'bg-emerald-500/10' : 'bg-rose-500/10' },
-        { label: 'Avg Efficiency', val: '99.4%', icon: faBolt, color: 'text-amber-500', bg: 'bg-amber-500/10' },
-        { label: 'Total Sync Cost', val: `$ ${stats.cost}`, icon: faCoins, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+        { label: 'Neural Logs', val: stats.total, icon: Terminal, color: 'text-indigo-600', bg: 'bg-indigo-600/10' },
+        { label: 'Neural Threat Level', val: stats.threatLevel, icon: ShieldHalf, color: stats.threatLevel === 'LOW' ? 'text-emerald-500' : 'text-rose-500', bg: stats.threatLevel === 'LOW' ? 'bg-emerald-500/10' : 'bg-rose-500/10' },
+        { label: 'Avg Efficiency', val: '99.4%', icon: Zap, color: 'text-amber-500', bg: 'bg-amber-500/10' },
+        { label: 'Total Sync Cost', val: `$ ${stats.cost}`, icon: Coins, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
     ], [stats]);
 
     // ── Audit Export Utility (Poin 3) ──
@@ -178,7 +169,7 @@ export default function AiInsightsPage() {
         link.click();
     };
 
-    const handleExport = () => {
+    const handleExport = async () => {
         const dataToExport = logs.map(log => ({
             timestamp: new Date(log.created_at).toLocaleString(),
             type: log.type,
@@ -187,6 +178,7 @@ export default function AiInsightsPage() {
             tokens: Math.round((log.user_query.length + (log.ai_response?.length || 0)) / 4),
             cost: `$${(Math.round((log.user_query.length + (log.ai_response?.length || 0)) / 4) * TOKEN_RATE).toFixed(4)}`
         }));
+        const { default: Papa } = await import('papaparse');
         const csv = Papa.unparse(dataToExport);
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
@@ -266,12 +258,12 @@ export default function AiInsightsPage() {
 
                         <button onClick={handleExport}
                             className="h-9 px-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:text-[var(--color-primary)] transition-all active:scale-95">
-                            <FontAwesomeIcon icon={faDownload} /> Export
+                            <Download /> Export
                         </button>
 
                         <button onClick={fetchLogs}
-                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black flex items-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-[var(--color-primary)]/20 active:scale-95 ml-1">
-                            <FontAwesomeIcon icon={faArrowRotateRight} className={`text-[10px] ${loading ? 'animate-spin' : ''}`} /> Refresh
+                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black flex items-center gap-2 hover:opacity-90 transition-all shadow-lg active:scale-95 ml-1">
+                            <RotateCw className={`text-[10px] ${loading ? 'animate-spin' : ''}`} /> Refresh
                         </button>
                     </div>
                 </div>
@@ -333,11 +325,11 @@ export default function AiInsightsPage() {
                     </div>
 
                     {/* AI intelligence Insights */}
-                    <div className="bg-indigo-600 rounded-[1.5rem] p-4 text-white shadow-lg shadow-indigo-600/20 relative overflow-hidden flex flex-col justify-between group">
+                    <div className="bg-indigo-600 rounded-[1.5rem] p-4 text-white shadow-lg relative overflow-hidden flex flex-col justify-between group">
                         <div className="relative z-10">
                             <div className="flex items-center gap-2 mb-3">
-                                <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center backdrop-blur-md">
-                                    <FontAwesomeIcon icon={faMagicWandSparkles} className="text-[10px]" />
+                                <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center">
+                                    <WandSparkles className="text-[10px]" />
                                 </div>
                                 <span className="text-[9px] font-black uppercase tracking-widest opacity-80">Topics</span>
                             </div>
@@ -356,11 +348,10 @@ export default function AiInsightsPage() {
                                 })}
                             </div>
                         </div>
-                        <div className="relative z-10 p-2.5 rounded-xl bg-white/10 border border-white/10 backdrop-blur-sm">
+                            <div className="relative z-10 p-2.5 rounded-xl bg-white/10 border border-white/10">
                             <p className="text-[8px] font-black uppercase tracking-widest opacity-60 mb-0.5">Recommendation</p>
                             <p className="text-[10px] font-bold leading-tight line-clamp-2">Update info {trendingTopics[0]?.text || 'jadwal'} di beranda.</p>
                         </div>
-                        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-white/10 rounded-full blur-3xl" />
                     </div>
                 </div>
 
@@ -374,7 +365,7 @@ export default function AiInsightsPage() {
                             <div key={i} className="flex-none w-2/3 sm:w-full snap-start sm:snap-align-none">
                                 <div className="bg-[var(--color-surface)] border border-[var(--color-border)] p-4 rounded-[1.8rem] group/card hover:border-[var(--color-primary)]/30 transition-all flex items-center gap-4 h-[85px] relative overflow-hidden shadow-sm hover:shadow-md">
                                     <div className={`w-11 h-11 rounded-2xl ${s.bg} flex items-center justify-center text-lg ${s.color} shrink-0`}>
-                                        <FontAwesomeIcon icon={s.icon} />
+                                        <s.icon />
                                     </div>
                                     <div className="flex flex-col min-w-0">
                                         <span className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60 leading-tight mb-0.5">{s.label}</span>
@@ -398,17 +389,17 @@ export default function AiInsightsPage() {
                     <div className="flex items-center gap-2 p-3">
                         {/* Search Cluster */}
                         <div className="relative flex-1 group min-w-0">
-                            <FontAwesomeIcon icon={faSearch} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] opacity-50 group-focus-within:opacity-100" />
+                            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] opacity-50 group-focus-within:opacity-100" />
                             <input
                                 value={searchInput}
                                 onChange={e => setSearchInput(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && setSearchTerm(searchInput)}
                                 placeholder="Search neural logs (Type & Press Enter)..."
-                                className="w-full h-9 pl-10 pr-8 rounded-xl border border-[var(--color-border)] bg-transparent text-[11px] font-bold focus:outline-none focus:border-indigo-500 transition-all shadow-inner shadow-black/[0.02]"
+                                className="w-full h-9 pl-10 pr-8 rounded-xl border border-[var(--color-border)] bg-transparent text-[11px] font-bold focus:outline-none focus:border-indigo-500 transition-all shadow-inner/[0.02]"
                             />
                             {searchInput && (
                                 <button onClick={() => { setSearchInput(''); setSearchTerm('') }} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-rose-500 transition-colors">
-                                    <FontAwesomeIcon icon={faXmark} className="text-[10px]" />
+                                    <X className="text-[10px]" />
                                 </button>
                             )}
                         </div>
@@ -416,9 +407,9 @@ export default function AiInsightsPage() {
                         {/* Filter Toggle */}
                         <button
                             onClick={() => setShowFilters(!showFilters)}
-                            className={`h-9 px-4 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center gap-2 ${showFilters || filterType !== 'all' || filterSecurity !== 'all' ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-indigo-500/30'}`}
+                            className={`h-9 px-4 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 flex items-center gap-2 ${showFilters || filterType !== 'all' || filterSecurity !== 'all' ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-indigo-500/30'}`}
                         >
-                            <FontAwesomeIcon icon={faSliders} className="text-[10px]" />
+                            <SlidersHorizontal className="text-[10px]" />
                             <span className="hidden sm:inline">Filter</span>
                             {(filterType !== 'all' || filterSecurity !== 'all') && (
                                 <span className="w-4 h-4 rounded-full bg-white/20 text-white text-[8px] font-black flex items-center justify-center">
@@ -434,14 +425,14 @@ export default function AiInsightsPage() {
                                 className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${viewMode === 'grid' ? 'bg-[var(--color-surface)] text-indigo-600 shadow-sm border border-[var(--color-border)]' : 'text-[var(--color-text-muted)] opacity-50 hover:opacity-100'}`}
                                 title="Grid View"
                             >
-                                <FontAwesomeIcon icon={faGrip} className="text-[10px]" />
+                                <GripHorizontal className="text-[10px]" />
                             </button>
                             <button 
                                 onClick={() => setViewMode('list')}
                                 className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${viewMode === 'list' ? 'bg-[var(--color-surface)] text-indigo-600 shadow-sm border border-[var(--color-border)]' : 'text-[var(--color-text-muted)] hover:text-indigo-600'}`}
                                 title="List View"
                             >
-                                <FontAwesomeIcon icon={faTableList} className="text-[10px]" />
+                                <TableProperties className="text-[10px]" />
                             </button>
                         </div>
 
@@ -452,7 +443,7 @@ export default function AiInsightsPage() {
                                 className="h-9 w-9 rounded-xl border border-rose-500/20 bg-rose-500/5 text-rose-500 text-[10px] items-center justify-center hover:bg-rose-500 hover:text-white transition-all active:scale-95 hidden sm:flex"
                                 title="Reset All Filters"
                             >
-                                <FontAwesomeIcon icon={faRotateLeft} />
+                                <RotateCcw />
                             </button>
                         )}
                     </div>
@@ -466,16 +457,16 @@ export default function AiInsightsPage() {
                                     <label className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] ml-1 opacity-60">Neural Interaction Type</label>
                                     <div className="flex flex-wrap gap-1.5">
                                         {[
-                                            {id: 'all', label: 'Any Interaction', icon: faBolt},
-                                            {id: 'chat', label: 'Neural Chat', icon: faMessage},
-                                            {id: 'editor', label: 'Zen Editor', icon: faPenNib}
+                                            {id: 'all', label: 'Any Interaction', icon: Zap},
+                                            {id: 'chat', label: 'Neural Chat', icon: MessageSquare},
+                                            {id: 'editor', label: 'Zen Editor', icon: PenTool}
                                         ].map(t => (
                                             <button 
                                                 key={t.id}
                                                 onClick={() => { setFilterType(t.id); setPage(0); }}
                                                 className={`h-7 px-3 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-2 border ${filterType === t.id ? 'bg-indigo-600 border-indigo-600 text-white shadow-md' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-indigo-500/30'}`}
                                             >
-                                                <FontAwesomeIcon icon={t.icon} className="text-[8px] opacity-70" />
+                                                <t.icon className="text-[8px] opacity-70" />
                                                 {t.label}
                                             </button>
                                         ))}
@@ -487,16 +478,16 @@ export default function AiInsightsPage() {
                                     <label className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] ml-1 opacity-60">Security Intelligence</label>
                                     <div className="flex flex-wrap gap-1.5">
                                         {[
-                                            {id: 'all', label: 'All Records', icon: faTowerBroadcast},
-                                            {id: 'secure', label: 'Safe Intel', icon: faCheckCircle},
-                                            {id: 'flagged', label: 'Risk Intel', icon: faTriangleExclamation}
+                                            {id: 'all', label: 'All Records', icon: RadioTower},
+                                            {id: 'secure', label: 'Safe Intel', icon: CircleCheck},
+                                            {id: 'flagged', label: 'Risk Intel', icon: TriangleAlert}
                                         ].map(s => (
                                             <button 
                                                 key={s.id}
                                                 onClick={() => { setFilterSecurity(s.id); setPage(0); }}
                                                 className={`h-7 px-3 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-2 border ${filterSecurity === s.id ? (s.id === 'flagged' ? 'bg-rose-500 border-rose-500 text-white shadow-md' : 'bg-emerald-500 border-emerald-500 text-white shadow-md') : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-indigo-500/30'}`}
                                             >
-                                                <FontAwesomeIcon icon={s.icon} className="text-[8px] opacity-70" />
+                                                <s.icon className="text-[8px] opacity-70" />
                                                 {s.label}
                                             </button>
                                         ))}
@@ -524,10 +515,10 @@ export default function AiInsightsPage() {
                         <div className="px-3 pb-3 -mt-1 flex flex-wrap items-center gap-2 animate-in fade-in duration-300">
                             {searchTerm && (
                                 <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-indigo-500/10 bg-indigo-500/5 text-[9px] font-black text-indigo-600">
-                                    <FontAwesomeIcon icon={faSearch} className="opacity-60" />
+                                    <Search className="opacity-60" />
                                     <span>KEYWORD: "{searchTerm}"</span>
                                     <button onClick={() => { setSearchInput(''); setSearchTerm('') }} className="hover:text-rose-500">
-                                        <FontAwesomeIcon icon={faXmark} />
+                                        <X />
                                     </button>
                                 </div>
                             )}
@@ -535,7 +526,7 @@ export default function AiInsightsPage() {
                                 <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-indigo-500/10 bg-indigo-500/5 text-[9px] font-black text-indigo-600 uppercase tracking-widest">
                                     <span>TYPE: {filterType}</span>
                                     <button onClick={() => setFilterType('all')} className="hover:text-rose-500">
-                                        <FontAwesomeIcon icon={faXmark} />
+                                        <X />
                                     </button>
                                 </div>
                             )}
@@ -543,7 +534,7 @@ export default function AiInsightsPage() {
                                 <div className={`inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-[9px] font-black uppercase tracking-widest ${filterSecurity === 'flagged' ? 'border-rose-500/20 bg-rose-500/5 text-rose-600' : 'border-emerald-500/20 bg-emerald-500/5 text-emerald-600'}`}>
                                     <span>FLAG: {filterSecurity}</span>
                                     <button onClick={() => setFilterSecurity('all')} className="hover:opacity-60">
-                                        <FontAwesomeIcon icon={faXmark} />
+                                        <X />
                                     </button>
                                 </div>
                             )}
@@ -588,12 +579,12 @@ export default function AiInsightsPage() {
                                                     <td className="px-6 py-4">
                                                         <div className="flex items-center gap-3">
                                                             <div className={`w-8 h-8 rounded-lg ${sec.flagged ? 'bg-rose-500/10 text-rose-600' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'} flex items-center justify-center border border-[var(--color-border)] group-hover:bg-white transition-colors`}>
-                                                                <FontAwesomeIcon icon={log.type === 'chat' ? faMessage : faTerminal} className="text-[10px]" />
+                                                                { log.type === 'chat' ? <MessageSquare className="text-[10px]" /> : <Terminal className="text-[10px]" /> }
                                                             </div>
                                                             <div className="flex flex-col">
                                                                 <span className="text-[10px] font-black uppercase text-[var(--color-text)] tracking-tight">{log.type === 'chat' ? 'Neural Chat' : 'System Editor'}</span>
                                                                 <span className={`text-[8px] font-black ${sec.color} uppercase tracking-widest flex items-center gap-1 opacity-70`}>
-                                                                    <FontAwesomeIcon icon={sec.icon} className="text-[7px]" /> {sec.label}
+                                                                    <sec.icon className="text-[7px]" /> {sec.label}
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -630,7 +621,7 @@ export default function AiInsightsPage() {
                                                     <td className="px-6 py-4">
                                                         <div className="flex items-center justify-center">
                                                             <div className="h-8 w-8 rounded-lg bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] group-hover:text-[var(--color-primary)] group-hover:bg-white group-hover:border-[var(--color-primary)]/20 flex items-center justify-center transition-all border border-[var(--color-border)] shadow-sm">
-                                                                <FontAwesomeIcon icon={faEye} className="text-[10px]" />
+                                                                <Eye className="text-[10px]" />
                                                             </div>
                                                         </div>
                                                     </td>
@@ -658,12 +649,12 @@ export default function AiInsightsPage() {
                                     <div
                                         key={log.id}
                                         onClick={() => { setSelectedLog(log); setIsDetailModalOpen(true); }}
-                                        className={`group relative bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2rem] p-5 hover:shadow-2xl hover:shadow-[var(--color-primary)]/10 transition-all cursor-pointer overflow-hidden active:scale-[0.98] ${sec.flagged ? 'ring-2 ring-rose-500/20 bg-rose-500/[0.01]' : ''}`}
+                                        className={`group relative bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2rem] p-5 hover:shadow-md transition-all cursor-pointer overflow-hidden active:scale-[0.98] ${sec.flagged ? 'ring-2 ring-rose-500/20 bg-rose-500/[0.01]' : ''}`}
                                     >
                                         <div className="flex items-center justify-between mb-4">
                                             <div className="flex items-center gap-2">
                                                 <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-[10px] ${sec.flagged ? 'bg-rose-500/10 text-rose-600' : 'bg-emerald-500/10 text-emerald-600'}`}>
-                                                    <FontAwesomeIcon icon={sec.icon} />
+                                                    <sec.icon />
                                                 </div>
                                                 <div>
                                                     <p className={`text-[8px] font-black uppercase tracking-widest opacity-40 mb-0.5 ${sec.flagged ? 'text-rose-600 opacity-100' : ''}`}>{sec.label}</p>
@@ -704,7 +695,6 @@ export default function AiInsightsPage() {
                                             </div>
                                         </div>
 
-                                        <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-[var(--color-primary)]/5 rounded-full blur-3xl group-hover:bg-[var(--color-primary)]/10 transition-all" />
                                     </div>
                                 )
                             })
@@ -728,11 +718,11 @@ export default function AiInsightsPage() {
 
                         <div className="flex items-center gap-2">
                             <div className="flex items-center bg-white dark:bg-black/10 rounded-xl border border-[var(--color-border)] p-0.5">
-                                <button disabled={page === 0} onClick={() => setPage(0)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><FontAwesomeIcon icon={faAnglesLeft} /></button>
-                                <button disabled={page === 0} onClick={() => setPage(p => p - 1)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><FontAwesomeIcon icon={faAngleLeft} /></button>
+                                <button disabled={page === 0} onClick={() => setPage(0)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><ChevronsLeft /></button>
+                                <button disabled={page === 0} onClick={() => setPage(p => p - 1)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><ChevronLeft /></button>
                                 <div className="px-3 text-[10px] font-black text-[var(--color-primary)]">{page + 1} / {totalPages}</div>
-                                <button disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><FontAwesomeIcon icon={faAngleRight} /></button>
-                                <button disabled={page >= totalPages - 1} onClick={() => setPage(totalPages - 1)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><FontAwesomeIcon icon={faAnglesRight} /></button>
+                                <button disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><ChevronRight /></button>
+                                <button disabled={page >= totalPages - 1} onClick={() => setPage(totalPages - 1)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] hover:bg-[var(--color-surface-alt)] disabled:opacity-30"><ChevronsRight /></button>
                             </div>
                         </div>
                     </div>
@@ -740,10 +730,10 @@ export default function AiInsightsPage() {
 
 
                 {/* ── Section 7: Engine Console (Footer) ── */}
-                <div className="bg-slate-900 border border-slate-800 rounded-[1.5rem] p-4 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xl">
+                <div className="bg-slate-900 border border-slate-800 rounded-[1.5rem] p-4 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
                     <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/20">
-                            <FontAwesomeIcon icon={faMicrochip} className="animate-pulse" />
+                            <Cpu className="animate-pulse" />
                         </div>
                         <div>
                             <p className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-0.5 opacity-50">Active Stream</p>
@@ -762,13 +752,13 @@ export default function AiInsightsPage() {
                 {
                     isDetailModalOpen && selectedLog && createPortal(
                         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/40 animate-in fade-in duration-200" onClick={() => setIsDetailModalOpen(false)}>
-                            <div className="bg-white dark:bg-[#0f172a] w-full max-w-3xl rounded-[2rem] border border-white/5 shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col md:flex-row h-full max-h-[85vh] md:max-h-[80vh] will-change-[transform,opacity]" onClick={e => e.stopPropagation()}>
+                            <div className="bg-white dark:bg-[#0f172a] w-full max-w-3xl rounded-[2rem] border border-white/5 shadow-xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col md:flex-row h-full max-h-[85vh] md:max-h-[80vh] will-change-[transform,opacity]" onClick={e => e.stopPropagation()}>
 
                                 {/* Sidebar Adaptif */}
                                 <div className="md:w-56 shrink-0 bg-slate-50 dark:bg-slate-900/40 border-b md:border-b-0 md:border-r border-[var(--color-border)] p-4 md:p-5 flex md:flex-col items-center md:items-start justify-between md:justify-start gap-4">
                                     <div className="flex items-center gap-3 md:block">
-                                        <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-md md:text-lg shadow-md shadow-indigo-500/20 md:mb-5">
-                                            <FontAwesomeIcon icon={selectedLog.type === 'chat' ? faMessage : faTerminal} />
+                                        <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-md md:text-lg shadow-md md:mb-5">
+                                            { selectedLog.type === 'chat' ? <MessageSquare /> : <Terminal /> }
                                         </div>
                                         <div className="md:hidden">
                                             <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Audit Mode</h3>
@@ -809,7 +799,7 @@ export default function AiInsightsPage() {
                                                 onClick={() => exportAudit(selectedLog)}
                                                 className="w-full py-2.5 rounded-xl border border-indigo-500/20 text-indigo-500 text-[10px] font-black uppercase tracking-widest hover:bg-indigo-500/10 transition-all flex items-center justify-center gap-2"
                                             >
-                                                <FontAwesomeIcon icon={faDownload} />
+                                                <Download />
                                                 Export Record
                                             </button>
                                         </div>
@@ -822,7 +812,7 @@ export default function AiInsightsPage() {
                                     {/* Mobile Quick Stats & Export */}
                                     <div className="md:hidden flex items-center gap-2">
                                         <button onClick={() => exportAudit(selectedLog)} className="w-8 h-8 rounded-lg bg-indigo-600/10 text-indigo-600 border border-indigo-500/20 flex items-center justify-center">
-                                            <FontAwesomeIcon icon={faDownload} className="text-[10px]" />
+                                            <Download className="text-[10px]" />
                                         </button>
                                         <span className="text-[10px] font-black text-emerald-500 bg-emerald-500/5 px-2 py-1 rounded border border-emerald-500/20">${(Math.round((selectedLog.user_query.length + (selectedLog.ai_response?.length || 0)) / 4) * TOKEN_RATE).toFixed(4)}</span>
                                     </div>
@@ -854,7 +844,7 @@ export default function AiInsightsPage() {
                                         {/* AI Layer */}
                                         <div className="relative pl-12">
                                             <div className="absolute left-0 top-0 w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-xs text-white">
-                                                <FontAwesomeIcon icon={faRobot} />
+                                                <Bot />
                                             </div>
                                             <div className="p-5 rounded-2xl rounded-tl-none bg-indigo-50/10 dark:bg-indigo-600/[0.02] border border-indigo-500/10 shadow-sm">
                                                 <div className="text-[13px] text-[var(--color-text)] leading-relaxed space-y-2.5 opacity-90">
@@ -877,7 +867,7 @@ export default function AiInsightsPage() {
 
                                     <div className="p-5 bg-slate-50 dark:bg-slate-900/30 border-t border-[var(--color-border)] flex items-center justify-between shrink-0">
                                         <div className="hidden sm:flex items-center gap-2 text-[10px] font-bold text-[var(--color-text-muted)] opacity-50 uppercase tracking-widest">
-                                            <FontAwesomeIcon icon={faShieldHalved} className="text-indigo-500" />
+                                            <ShieldHalf className="text-indigo-500" />
                                             Secure Neural Trace Record
                                         </div>
                                         <div className="sm:hidden text-[9px] font-bold opacity-30 uppercase">

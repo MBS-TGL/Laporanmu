@@ -213,8 +213,8 @@ export default function RaportExportModal({
             <div ref={containerRef}>
                 {/* Premium Loading Overlay */}
                 {exporting && (
-                    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[var(--color-surface)]/60 backdrop-blur-md animate-in fade-in duration-300">
-                        <div className="bg-gradient-to-b from-[var(--color-surface)] to-[var(--color-surface-alt)]/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12)] border border-[var(--color-border)]/60 rounded-3xl p-8 flex flex-col items-center gap-5 scale-110 animate-in zoom-in-95 duration-300">
+                    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[var(--color-surface)] animate-in fade-in duration-300">
+                        <div className="bg-[var(--color-surface)] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12)] border border-[var(--color-border)]/60 rounded-3xl p-8 flex flex-col items-center gap-5 scale-110 animate-in zoom-in-95 duration-300">
                             <div className="relative w-16 h-16">
                                 <div className="absolute inset-0 rounded-full bg-[var(--color-primary)]/10 animate-ping opacity-75"></div>
                                 <div className="absolute inset-0 rounded-full border-2 border-[var(--color-primary)]/10"></div>
@@ -301,7 +301,7 @@ export default function RaportExportModal({
                                             onClick={() => handlePresetClick(preset.cols)}
                                             className={`px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-wider transition-all active:scale-95 shrink-0
                                                 ${isActive
-                                                    ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm shadow-[var(--color-primary)]/20'
+                                                    ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm'
                                                     : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/40 hover:text-[var(--color-primary)]'}`}
                                         >
                                             {preset.label}

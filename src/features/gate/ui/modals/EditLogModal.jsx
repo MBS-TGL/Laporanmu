@@ -82,7 +82,7 @@ export default function EditLogModal({ log, onSave, onDelete, onCancel, saving }
                   <>
                     <button onClick={() => setConfirmDel(false)} className="h-10 px-3.5 sm:px-5 rounded-xl border border-[var(--color-border)] text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all shrink-0">{tp('modalEditCancel').toUpperCase()}</button>
                     <div className="flex-1" />
-                    <button onClick={onDelete} disabled={saving} className="h-10 px-4 sm:px-6 rounded-xl text-white text-[10px] font-black uppercase tracking-wider bg-red-600 hover:bg-red-700 shadow-lg shadow-red-500/20 transition-all flex items-center justify-center gap-1.5 sm:gap-2 shrink-0">
+                    <button onClick={onDelete} disabled={saving} className="h-10 px-4 sm:px-6 rounded-xl text-white text-[10px] font-black uppercase tracking-wider bg-red-600 hover:bg-red-700 shadow-lg transition-all flex items-center justify-center gap-1.5 sm:gap-2 shrink-0">
                       {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
                       {delLabel}
                     </button>
@@ -94,7 +94,7 @@ export default function EditLogModal({ log, onSave, onDelete, onCancel, saving }
                     </button>
                     <div className="flex-1" />
                     <button onClick={onCancel} disabled={saving} className="h-10 px-3.5 sm:px-5 rounded-xl border border-[var(--color-border)] text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all shrink-0">{tp('modalEditCancel').toUpperCase()}</button>
-                    <button onClick={handleSave} disabled={saving} className="h-10 px-4 sm:px-6 rounded-xl text-white text-[10px] font-black uppercase tracking-wider bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 shadow-lg shadow-[var(--color-primary)]/20 transition-all flex items-center justify-center gap-1.5 sm:gap-2 shrink-0">
+                      <button onClick={handleSave} disabled={saving} className="h-10 px-4 sm:px-6 rounded-xl text-white text-[10px] font-black uppercase tracking-wider bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 shadow-lg transition-all flex items-center justify-center gap-1.5 sm:gap-2 shrink-0">
                       {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
                       {saveLabel}
                     </button>
@@ -105,7 +105,7 @@ export default function EditLogModal({ log, onSave, onDelete, onCancel, saving }
                 <>
                   <div className="flex-1" />
                   <button onClick={onCancel} disabled={saving} className="h-10 px-3.5 sm:px-5 rounded-xl border border-[var(--color-border)] text-[10px] font-black uppercase tracking-wider text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all shrink-0">{tp('modalEditCancel').toUpperCase()}</button>
-                  <button onClick={handleSave} disabled={saving} className="h-10 px-4 sm:px-6 rounded-xl text-white text-[10px] font-black uppercase tracking-wider bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 shadow-lg shadow-[var(--color-primary)]/20 transition-all flex items-center justify-center gap-1.5 sm:gap-2 shrink-0">
+                    <button onClick={handleSave} disabled={saving} className="h-10 px-4 sm:px-6 rounded-xl text-white text-[10px] font-black uppercase tracking-wider bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 shadow-lg transition-all flex items-center justify-center gap-1.5 sm:gap-2 shrink-0">
                     {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
                     {saveLabel}
                   </button>

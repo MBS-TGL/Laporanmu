@@ -41,7 +41,7 @@ export default function BulkCheckoutModal({ logs = [], onConfirm, onCancel }) {
           <div className="flex-1" />
           <button
             onClick={() => onConfirm(reason.trim())}
-            className="h-10 px-6 rounded-xl bg-indigo-500 text-white text-[10px] font-black uppercase tracking-wider shadow-lg shadow-indigo-500/20 hover:bg-indigo-600 transition-all flex items-center justify-center gap-2 shrink-0"
+            className="h-10 px-6 rounded-xl bg-indigo-500 text-white text-[10px] font-black uppercase tracking-wider shadow-lg hover:bg-indigo-600 transition-all flex items-center justify-center gap-2 shrink-0"
           >
             <Check className="w-3.5 h-3.5" />
             <span>{language === 'en' ? 'CONFIRM CHECK-OUT' : language === 'ar' ? 'تأكيد الخروج' : 'PROSES CHECK-OUT'}</span>

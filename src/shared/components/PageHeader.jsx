@@ -1,13 +1,13 @@
 import React from 'react'
 import Breadcrumb from './Breadcrumb'
 
-export default function PageHeader({ 
-    title, 
-    subtitle, 
-    breadcrumbs = [], 
+export default function PageHeader({
+    title,
+    subtitle,
+    breadcrumbs = [],
     badge = null,
     actions = null,
-    className = '' 
+    className = ''
 }) {
     return (
         <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 ${className}`}>
@@ -15,11 +15,11 @@ export default function PageHeader({
                 {(breadcrumbs.length > 0 || badge) && (
                     <Breadcrumb badge={badge} items={breadcrumbs} className="mb-1" />
                 )}
-                <h1 className="text-2xl sm:text-3xl font-black font-heading tracking-tight text-[var(--color-text)] leading-tight">
+                <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-text leading-tight">
                     {title}
                 </h1>
                 {subtitle && (
-                    <p className="text-[var(--color-text-muted)] text-xs sm:text-sm mt-1.5 font-medium">
+                    <p className="text-text-muted text-xs sm:text-sm mt-1.5 font-medium">
                         {subtitle}
                     </p>
                 )}

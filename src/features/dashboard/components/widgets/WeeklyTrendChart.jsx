@@ -11,7 +11,7 @@ import {
 
 export const WeeklyTrendChart = memo(function WeeklyTrendChart({ chartData, loading }) {
     return (
-        <div className="glass rounded-[1.5rem] p-5 sm:p-6 flex flex-col h-full relative z-10 hover:shadow-2xl hover:shadow-[var(--color-primary)]/5 transition-shadow duration-500 min-h-[400px]">
+        <div className="bg-surface border border-border rounded-[1.5rem] p-5 sm:p-6 flex flex-col h-full relative z-10 hover:shadow-md transition-shadow duration-500 min-h-[400px]">
             <div className="flex items-center justify-between mb-5">
                 <div>
                     <p className="text-base font-black text-[var(--color-text)]">Tren Mingguan</p>

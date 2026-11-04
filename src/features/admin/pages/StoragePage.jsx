@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faBoxArchive, faTrash, faBroom, faImage, faFilePdf, faFileLines,
-    faSpinner, faCircleCheck, faTriangleExclamation, faFolderOpen,
-    faMagnifyingGlass, faArrowsRotate, faDatabase
-} from '@fortawesome/free-solid-svg-icons'
+import { Archive, Brush, CircleCheck, Database, FileText, FolderOpen, Image, LoaderCircle, RefreshCw, Search, Trash2, TriangleAlert } from 'lucide-react'
+
+
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import Breadcrumb from '@shared/components/Breadcrumb'
 import { useToast } from '@context/Toast'
@@ -31,14 +28,14 @@ export default function StoragePage() {
     }
 
     const getFileIcon = (mimetype, name) => {
-        const fallback = { icon: faFileLines, color: 'text-slate-500' }
+        const fallback = { icon: FileText, color: 'text-slate-500' }
         if (!name) return fallback
         const lowerName = name.toLowerCase()
-        if (mimetype?.includes('image/') || lowerName.match(/\.(jpg|jpeg|png|gif|svg|webp)$/)) return { icon: faImage, color: 'text-amber-500' }
-        if (mimetype === 'application/pdf' || lowerName.endsWith('.pdf')) return { icon: faFilePdf, color: 'text-red-500' }
-        if (lowerName.endsWith('.sql')) return { icon: faDatabase, color: 'text-cyan-500' }
-        if (lowerName.endsWith('.csv') || lowerName.endsWith('.xlsx')) return { icon: faFileLines, color: 'text-emerald-500' }
-        if (lowerName.match(/\.(zip|rar|tar|gz)$/)) return { icon: faBoxArchive, color: 'text-indigo-500' }
+        if (mimetype?.includes('image/') || lowerName.match(/\.(jpg|jpeg|png|gif|svg|webp)$/)) return { icon: Image, color: 'text-amber-500' }
+        if (mimetype === 'application/pdf' || lowerName.endsWith('.pdf')) return { icon: FileText, color: 'text-red-500' }
+        if (lowerName.endsWith('.sql')) return { icon: Database, color: 'text-cyan-500' }
+        if (lowerName.endsWith('.csv') || lowerName.endsWith('.xlsx')) return { icon: FileText, color: 'text-emerald-500' }
+        if (lowerName.match(/\.(zip|rar|tar|gz)$/)) return { icon: Archive, color: 'text-indigo-500' }
         return fallback
     }
 
@@ -265,7 +262,7 @@ export default function StoragePage() {
                     </div>
                     <button onClick={fetchBuckets} disabled={loading}
                         className="h-10 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[12px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition flex items-center gap-2 shadow-sm">
-                        <FontAwesomeIcon icon={faArrowsRotate} className={loading ? 'animate-spin' : ''} />
+                        <RefreshCw className={loading ? 'animate-spin' : ''} />
                         Refresh
                     </button>
                 </div>
@@ -273,10 +270,10 @@ export default function StoragePage() {
                 <div className="grid lg:grid-cols-3 gap-6">
                     {/* Overview & Buckets */}
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="glass rounded-[1.5rem] border border-[var(--color-border)] p-5">
+                        <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] p-5">
                             <div className="flex items-center gap-3 mb-4">
                                 <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0">
-                                    <FontAwesomeIcon icon={faFolderOpen} />
+                                    <FolderOpen />
                                 </div>
                                 <div>
                                     <h2 className="text-sm font-black text-[var(--color-text)]">Storage Buckets</h2>
@@ -286,7 +283,7 @@ export default function StoragePage() {
 
                             {loading ? (
                                 <div className="py-10 flex flex-col items-center justify-center text-[var(--color-text-muted)] gap-3">
-                                    <FontAwesomeIcon icon={faSpinner} className="animate-spin text-2xl" />
+                                    <LoaderCircle className="animate-spin text-2xl" />
                                     <span className="text-xs font-bold">Memuat buckets...</span>
                                 </div>
                             ) : buckets.length === 0 ? (
@@ -299,7 +296,7 @@ export default function StoragePage() {
                                         <div key={b.id} className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 hover:bg-[var(--color-surface-alt)] transition-colors group cursor-pointer">
                                             <div className="flex items-start justify-between mb-3">
                                                 <div className="flex items-center gap-2 text-[var(--color-primary)]">
-                                                    <FontAwesomeIcon icon={faBoxArchive} />
+                                                    <Archive />
                                                     <span className="text-sm font-black tracking-tight">{b.name}</span>
                                                 </div>
                                                 <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)]">
@@ -316,10 +313,10 @@ export default function StoragePage() {
                         </div>
 
                         {/* Recent Large Files (Mock) */}
-                        <div className="glass rounded-[1.5rem] border border-[var(--color-border)] p-5">
+                        <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] p-5">
                             <div className="flex items-center justify-between mb-4">
                                 <h2 className="text-sm font-black text-[var(--color-text)]">File Berukuran Besar Baru-baru Ini</h2>
-                                {loadingFiles && <FontAwesomeIcon icon={faSpinner} className="animate-spin text-[var(--color-text-muted)] text-sm" />}
+                                {loadingFiles && <LoaderCircle className="animate-spin text-[var(--color-text-muted)] text-sm" />}
                             </div>
 
                             {!loadingFiles && largeFiles.length === 0 ? (
@@ -329,12 +326,12 @@ export default function StoragePage() {
                             ) : (
                                 <div className="divide-y divide-[var(--color-border)] border border-[var(--color-border)] rounded-2xl overflow-hidden text-sm relative">
                                     {largeFiles.map((f, i) => {
-                                        const { icon, color } = getFileIcon(f.mimetype, f.name)
+                                        const { icon: Icon, color } = getFileIcon(f.mimetype, f.name)
                                         return (
                                             <div key={`${f.bucketName}-${f.id}-${i}`} className="flex items-center justify-between p-3 hover:bg-[var(--color-surface-alt)] transition-colors">
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-8 h-8 rounded-lg bg-[var(--color-surface)] flex items-center justify-center shrink-0 border border-[var(--color-border)]">
-                                                        <FontAwesomeIcon icon={icon} className={color} />
+                                                        <Icon className={color} />
                                                     </div>
                                                     <div>
                                                         <div className="font-bold text-[12px] truncate max-w-[140px] sm:max-w-[220px]" title={f.name}>{f.name}</div>
@@ -344,7 +341,7 @@ export default function StoragePage() {
                                                 <div className="flex items-center gap-4">
                                                     <span className="text-[11px] font-mono font-bold text-[var(--color-text-muted)]">{formatBytes(f.sizeBytes)}</span>
                                                     <button onClick={() => handleDeleteFile(f.bucketName, f.name)} className="w-8 h-8 rounded-lg text-[var(--color-text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-colors flex items-center justify-center" title="Hapus Permanen">
-                                                        <FontAwesomeIcon icon={faTrash} className="text-xs" />
+                                                        <Trash2 className="text-xs" />
                                                     </button>
                                                 </div>
                                             </div>
@@ -357,13 +354,13 @@ export default function StoragePage() {
 
                     {/* Orphan File Scanner */}
                     <div className="space-y-6">
-                        <div className="glass rounded-[1.5rem] border border-amber-500/30 overflow-hidden relative">
+                        <div className="bg-surface rounded-[1.5rem] border border-amber-500/30 overflow-hidden relative">
                             {/* Ambient background for the card */}
                             <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-amber-500/10 to-transparent pointer-events-none" />
 
                             <div className="p-6 relative z-10">
                                 <div className="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-500 flex items-center justify-center mb-4 border border-amber-500/30 shadow-inner">
-                                    <FontAwesomeIcon icon={faBroom} className="text-xl" />
+                                    <Brush className="text-xl" />
                                 </div>
                                 <h2 className="text-lg font-black text-[var(--color-text)] mb-2">Pembersih Storage</h2>
                                 <p className="text-[12px] text-[var(--color-text-muted)] mb-6 leading-relaxed">
@@ -373,9 +370,9 @@ export default function StoragePage() {
                                 {!scanResults ? (
                                     <button
                                         onClick={handleScan} disabled={scanning}
-                                        className="w-full h-12 rounded-xl bg-amber-500 text-white font-black hover:bg-amber-600 transition-all flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100"
+                                        className="w-full h-12 rounded-xl bg-amber-500 text-white font-black hover:bg-amber-600 transition-all flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100"
                                     >
-                                        <FontAwesomeIcon icon={scanning ? faSpinner : faMagnifyingGlass} className={scanning ? 'animate-spin' : ''} />
+                                        { scanning ? <LoaderCircle className={scanning ? 'animate-spin' : ''} /> : <Search className={scanning ? 'animate-spin' : ''} /> }
                                         {scanning ? 'Menyortir Database & Storage...' : 'Mulai Scan Storage'}
                                     </button>
                                 ) : (
@@ -383,7 +380,7 @@ export default function StoragePage() {
                                         <div className="p-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)]">
                                             <div className="flex items-center justify-between mb-2">
                                                 <span className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Hasil Scan</span>
-                                                <span className="text-[10px] font-bold text-emerald-500 flex items-center gap-1"><FontAwesomeIcon icon={faCircleCheck} /> Selesai</span>
+                                                <span className="text-[10px] font-bold text-emerald-500 flex items-center gap-1"><CircleCheck /> Selesai</span>
                                             </div>
                                             <div className="grid grid-cols-2 gap-2 mt-4">
                                                 <div>
@@ -404,9 +401,9 @@ export default function StoragePage() {
                                             <button
                                                 onClick={handleDeleteOrphans}
                                                 disabled={scanResults.filesToDelete.length === 0 || scanning}
-                                                className="flex-1 h-10 rounded-xl bg-rose-500 text-white font-black hover:bg-rose-600 transition-all flex items-center justify-center gap-2 shadow-lg shadow-rose-500/20 active:scale-[0.98] disabled:opacity-50"
+                                                className="flex-1 h-10 rounded-xl bg-rose-500 text-white font-black hover:bg-rose-600 transition-all flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] disabled:opacity-50"
                                             >
-                                                <FontAwesomeIcon icon={faTrash} className="text-xs" />
+                                                <Trash2 className="text-xs" />
                                                 Hapus Permanen
                                             </button>
                                             <button
@@ -414,7 +411,7 @@ export default function StoragePage() {
                                                 className="w-10 h-10 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors flex items-center justify-center"
                                                 title="Batal"
                                             >
-                                                <FontAwesomeIcon icon={faBroom} />
+                                                <Brush />
                                             </button>
                                         </div>
                                     </div>
@@ -424,7 +421,7 @@ export default function StoragePage() {
 
                         {/* Tips */}
                         <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 flex gap-3">
-                            <FontAwesomeIcon icon={faTriangleExclamation} className="text-blue-500 mt-1 shrink-0" />
+                            <TriangleAlert className="text-blue-500 mt-1 shrink-0" />
                             <div>
                                 <p className="text-[12px] font-black text-blue-600 mb-1">Tips Hemat Storage</p>
                                 <p className="text-[11px] text-blue-600/80 leading-relaxed">

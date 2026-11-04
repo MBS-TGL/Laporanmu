@@ -144,7 +144,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
         return (
             <div className="w-full space-y-6 animate-fade-in">
                 {/* Banner */}
-                <div className="relative overflow-hidden rounded-2xl p-4 sm:p-5 bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50/60 dark:from-indigo-950/40 dark:via-purple-950/30 dark:to-indigo-950/20 border border-indigo-200/80 dark:border-indigo-800/40 shadow-xs flex items-center gap-4">
+                <div className="relative overflow-hidden rounded-2xl p-4 sm:p-5 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800/40 shadow-xs flex items-center gap-4">
                     <div className="w-12 h-12 rounded-xl bg-indigo-500/15 dark:bg-indigo-500/25 border border-indigo-400/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 shadow-xs">
                         <School className="w-6 h-6" />
                     </div>
@@ -261,7 +261,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                                             className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 font-black text-xs transition-all ${isEmpty
                                                 ? 'bg-slate-200 text-slate-400'
                                                 : isSelected
-                                                    ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/30'
+                                                    ? 'bg-indigo-500 text-white shadow-lg'
                                                     : isBoarding
                                                         ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white'
                                                         : 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white'
@@ -319,7 +319,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                         }}
                         className={`h-14 flex-1 px-6 rounded-2xl text-white font-black text-sm transition-all flex items-center justify-center gap-2 shadow-lg ${!tempSelectedClassId
                             ? 'bg-slate-300 dark:bg-slate-700 cursor-not-allowed shadow-none'
-                            : 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-500/25 active:scale-[0.99] cursor-pointer'
+                            : 'bg-emerald-500 hover:bg-emerald-600 active:scale-[0.99] cursor-pointer'
                             }`}
                     >
                         <span>Lanjut ke Setup Periode</span>
@@ -338,7 +338,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
         <div className="w-full space-y-4">
 
             {/* Banner */}
-            <div className="rounded-2xl px-5 py-4 bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50/60 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-emerald-950/20 border border-emerald-200/80 dark:border-emerald-800/40 flex items-center gap-4">
+            <div className="rounded-2xl px-5 py-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/40 flex items-center gap-4">
                 <div className="w-11 h-11 rounded-xl bg-emerald-500/15 border border-emerald-400/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
                     <Sliders className="w-6 h-6" />
                 </div>
@@ -363,7 +363,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                         </label>
                         <div className="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 dark:bg-emerald-950/20 flex items-center justify-between gap-3">
                             <div className="flex items-center gap-3 min-w-0">
-                                <div className="w-11 h-11 rounded-full bg-emerald-500 text-white font-black text-sm flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/30">
+                                <div className="w-11 h-11 rounded-full bg-emerald-500 text-white font-black text-sm flex items-center justify-center shrink-0 shadow-lg">
                                     {gradeNum}
                                 </div>
                                 <div className="min-w-0">
@@ -494,7 +494,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                                     type="button"
                                     onClick={() => setLang(id)}
                                     className={`relative h-[78px] px-4 rounded-2xl border text-left transition-all flex items-center justify-between cursor-pointer ${lang === id
-                                        ? 'bg-indigo-500/10 dark:bg-indigo-950/40 border-2 border-indigo-500 shadow-sm shadow-indigo-500/10'
+                                        ? 'bg-indigo-500/10 dark:bg-indigo-950/40 border-2 border-indigo-500 shadow-sm'
                                         : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] hover:border-indigo-300'
                                         }`}
                                 >
@@ -535,7 +535,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                     type="button"
                     onClick={handleContinue}
                     disabled={submitting}
-                    className="h-11 flex-1 px-5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white font-black text-sm transition-all flex items-center justify-center gap-2 shadow-md shadow-emerald-500/25 cursor-pointer"
+                    className="h-11 flex-1 px-5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white font-black text-sm transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer"
                 >
                     {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <ChevronRight className="w-5 h-5" />}
                     <span>{submitting ? 'Memuat Data...' : 'Mulai Input Nilai'}</span>
@@ -578,7 +578,7 @@ export default function RaportSetupPage({ isAcademic = false }) {
                         <button
                             type="button"
                             onClick={() => setShowTemplateModal(false)}
-                            className="px-6 py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-700 transition-all shadow-md shadow-indigo-600/20 cursor-pointer"
+                            className="px-6 py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-700 transition-all shadow-md cursor-pointer"
                         >
                             Saya Mengerti
                         </button>

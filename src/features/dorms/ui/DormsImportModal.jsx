@@ -1,34 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faArrowLeft,
-    faArrowRight,
-    faArrowRightArrowLeft,
-    faCheck,
-    faChevronDown,
-    faDownload,
-    faFileLines,
-    faSpinner,
-    faFilter,
-    faTags,
-    faUpload,
-    faFileImport,
-    faCheckCircle,
-    faCopy,
-    faCircleExclamation,
-    faTriangleExclamation,
-    faPen,
-    faTrash,
-    faRotate,
-    faBolt,
-    faSchool,
-    faTableList,
-    faChevronUp,
-    faUser,
-    faHome,
-    faVenusMars
-} from '@fortawesome/free-solid-svg-icons'
+import { ArrowLeft, ArrowRight, Check, ChevronDown, Download, FileInput, Funnel, LoaderCircle, Pen, Trash2, TriangleAlert, Upload, Zap } from 'lucide-react'
 import Modal from '@shared/components/Modal'
 
 export default function DormsImportModal(props) {
@@ -104,7 +76,7 @@ export default function DormsImportModal(props) {
                         minWidth: Math.max(coords.width, colKey === 'student_id' ? 240 : 180)
                     }}
                 >
-                    <div className="flex flex-col bg-[var(--color-surface)] border border-[var(--color-primary)] rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl border-t-[var(--color-primary)]">
+                    <div className="flex flex-col bg-[var(--color-surface)] border border-[var(--color-primary)] rounded-2xl shadow-xl overflow-hidden border-t-[var(--color-primary)]">
                         {content}
                     </div>
                     <div className="fixed inset-0 -z-10 bg-black/0" onClick={() => setImportEditCell(null)} />
@@ -158,7 +130,7 @@ export default function DormsImportModal(props) {
                                                 <span className="truncate">{s.name}</span>
                                                 {s.classes?.name && <span className="text-[8px] text-[var(--color-text-muted)] font-normal">{s.classes.name}</span>}
                                             </div>
-                                            {value === s.id && <FontAwesomeIcon icon={faCheck} className="text-[8px]" />}
+                                            {value === s.id && <Check className="text-[8px]" />}
                                         </button>
                                     )) : (
                                         <div className="px-3 py-3 text-[9px] text-[var(--color-text-muted)] italic text-center">Data tidak ditemukan</div>
@@ -220,7 +192,7 @@ export default function DormsImportModal(props) {
                                                 <span>Kamar {d.id}</span>
                                                 <span className="text-[8px] text-[var(--color-text-muted)] font-normal uppercase">{d.building} · {d.gender}</span>
                                             </div>
-                                            {value === d.id && <FontAwesomeIcon icon={faCheck} className="text-[8px]" />}
+                                            {value === d.id && <Check className="text-[8px]" />}
                                         </button>
                                     )) : (
                                         <div className="px-3 py-3 text-[9px] text-[var(--color-text-muted)] italic text-center">Kamar tidak ditemukan</div>
@@ -262,7 +234,7 @@ export default function DormsImportModal(props) {
                             ? (importPreview[rowIdx]._roomName || '—')
                             : value}
                 </span>
-                <FontAwesomeIcon icon={faPen} className="text-[8px] opacity-0 group-hover:opacity-60 transition-opacity text-[var(--color-text-muted)]" />
+                <Pen className="text-[8px] opacity-0 group-hover:opacity-60 transition-opacity text-[var(--color-text-muted)]" />
             </div>
         )
     })
@@ -282,7 +254,7 @@ export default function DormsImportModal(props) {
             onClose={onClose}
             title="Import Plotting Kamar"
             description="Unggah file spreadsheet (.csv / .xlsx) untuk memplotting kamar santri secara massal."
-            icon={faFileImport}
+            icon={FileInput}
             iconBg="bg-amber-500/10"
             iconColor="text-amber-600"
             size={importStep === 3 ? 'xl' : 'lg'}
@@ -296,7 +268,7 @@ export default function DormsImportModal(props) {
                             onClick={() => setImportStep(prev => prev - 1)}
                             className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)] transition-all flex items-center gap-2"
                         >
-                            <FontAwesomeIcon icon={faArrowLeft} />
+                            <ArrowLeft />
                             Kembali
                         </button>
                     )}
@@ -317,7 +289,7 @@ export default function DormsImportModal(props) {
                             className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-primary)]/90 transition-all flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
                         >
                             Verifikasi Data
-                            <FontAwesomeIcon icon={faArrowRight} />
+                            <ArrowRight />
                         </button>
                     )}
                     {importStep === 3 && (
@@ -325,10 +297,10 @@ export default function DormsImportModal(props) {
                             type="button"
                             onClick={handleCommitImport}
                             disabled={hasImportBlockingErrors || importPreview.length === 0}
-                            className="h-10 px-6 rounded-xl bg-emerald-600 text-white text-[10px] font-black uppercase tracking-widest hover:bg-emerald-700 transition-all flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed shadow-md shadow-emerald-600/10"
+                            className="h-10 px-6 rounded-xl bg-emerald-600 text-white text-[10px] font-black uppercase tracking-widest hover:bg-emerald-700 transition-all flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed shadow-md"
                         >
                             Simpan ke Asrama
-                            <FontAwesomeIcon icon={faCheck} />
+                            <Check />
                         </button>
                     )}
                 </div>
@@ -337,14 +309,14 @@ export default function DormsImportModal(props) {
             <div>
                 {/* Overlay Import Progress / Saving */}
                 {importing && (
-                    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[var(--color-surface)]/60 backdrop-blur-md animate-in fade-in duration-300">
-                        <div className="bg-gradient-to-b from-[var(--color-surface)] to-[var(--color-surface-alt)]/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12)] border border-[var(--color-border)]/60 rounded-3xl p-8 flex flex-col items-center gap-5 scale-110 animate-in zoom-in-95 duration-300 w-80">
+                    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[var(--color-surface)] animate-in fade-in duration-300">
+                        <div className="bg-[var(--color-surface)] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12)] border border-[var(--color-border)]/60 rounded-3xl p-8 flex flex-col items-center gap-5 scale-110 animate-in zoom-in-95 duration-300 w-80">
                             <div className="relative w-16 h-16">
                                 <div className="absolute inset-0 rounded-full bg-emerald-500/10 animate-ping opacity-75"></div>
                                 <div className="absolute inset-0 rounded-full border-2 border-emerald-500/10"></div>
                                 <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-emerald-500 border-r-emerald-500 animate-spin"></div>
                                 <div className="absolute inset-0 m-auto w-10 h-10 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)]/60 flex items-center justify-center shadow-sm z-10">
-                                    <FontAwesomeIcon icon={faSpinner} className="text-emerald-500 text-sm animate-spin" />
+                                    <LoaderCircle className="text-emerald-500 text-sm animate-spin" />
                                 </div>
                             </div>
                             <div className="flex flex-col items-center w-full">
@@ -396,13 +368,13 @@ export default function DormsImportModal(props) {
                                 >
                                     {importLoading ? (
                                         <div className="flex flex-col items-center gap-2">
-                                            <FontAwesomeIcon icon={faSpinner} className="text-2xl text-[var(--color-primary)] animate-spin" />
+                                            <LoaderCircle className="text-2xl text-[var(--color-primary)] animate-spin" />
                                             <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Membaca file...</span>
                                         </div>
                                     ) : (
                                         <>
                                             <div className="w-12 h-12 rounded-full bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)]">
-                                                <FontAwesomeIcon icon={faUpload} className="text-lg" />
+                                                <Upload className="text-lg" />
                                             </div>
                                             <div className="text-center space-y-1">
                                                 <p className="text-xs font-black text-[var(--color-text)]">Pilih atau Tarik File Spreadsheet Anda</p>
@@ -429,7 +401,7 @@ export default function DormsImportModal(props) {
                                     onClick={handleDownloadTemplate}
                                     className="px-4 py-2.5 rounded-xl border border-[var(--color-border)] hover:border-[var(--color-primary)]/50 hover:bg-[var(--color-primary)]/5 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-all flex items-center justify-center gap-2 shrink-0 bg-[var(--color-surface)] shadow-sm"
                                 >
-                                    <FontAwesomeIcon icon={faDownload} className="text-[10px]" />
+                                    <Download className="text-[10px]" />
                                     Unduh Template
                                 </button>
                             </div>
@@ -440,7 +412,7 @@ export default function DormsImportModal(props) {
                     {importStep === 2 && (
                         <div className="space-y-4">
                             <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-amber-500/5 border border-amber-500/10 text-amber-600 text-[10px] font-bold">
-                                <FontAwesomeIcon icon={faTriangleExclamation} className="text-xs shrink-0" />
+                                <TriangleAlert className="text-xs shrink-0" />
                                 <div>
                                     Petakan kolom dari file spreadsheet Anda (Kanan) ke Kolom Sistem LaporanMu (Kiri).
                                     Kolom yang cocok akan terpilih otomatis.
@@ -484,7 +456,7 @@ export default function DormsImportModal(props) {
                                                                     <option key={h} value={h}>{h}</option>
                                                                 ))}
                                                             </select>
-                                                            <FontAwesomeIcon icon={faChevronDown} className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] text-[var(--color-text-muted)] pointer-events-none" />
+                                                            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] text-[var(--color-text-muted)] pointer-events-none" />
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -521,7 +493,7 @@ export default function DormsImportModal(props) {
                                                 ? 'bg-red-500/10 border-red-500/30 text-red-600' 
                                                 : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/40'}`}
                                     >
-                                        <FontAwesomeIcon icon={faFilter} className="text-[8px]" />
+                                        <Funnel className="text-[8px]" />
                                         Hanya Tampilkan Error
                                     </button>
                                 </div>
@@ -531,7 +503,7 @@ export default function DormsImportModal(props) {
                             {errorCount > 0 && (
                                 <div className="p-3.5 rounded-2xl border border-red-500/10 bg-red-500/5 flex flex-col md:flex-row md:items-center justify-between gap-3 animate-in slide-in-from-top-2 duration-200">
                                     <div className="flex items-start gap-2.5">
-                                        <FontAwesomeIcon icon={faBolt} className="text-red-500 text-xs mt-0.5 shrink-0" />
+                                        <Zap className="text-red-500 text-xs mt-0.5 shrink-0" />
                                         <div className="space-y-0.5">
                                             <p className="text-[10px] font-black uppercase tracking-wider text-[var(--color-text)]">Perbaikan Cepat Massal</p>
                                             <p className="text-[8px] text-[var(--color-text-muted)] font-bold">Petakan semua rekod yang bermasalah langsung ke satu nilai kamar yang sama di bawah.</p>
@@ -552,7 +524,7 @@ export default function DormsImportModal(props) {
                                                 <option key={d.id} value={d.id}>KAMAR {d.id}</option>
                                             ))}
                                         </select>
-                                        <FontAwesomeIcon icon={faChevronDown} className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] text-[var(--color-text-muted)] pointer-events-none" />
+                                        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-[9px] text-[var(--color-text-muted)] pointer-events-none" />
                                     </div>
                                 </div>
                             )}
@@ -617,7 +589,7 @@ export default function DormsImportModal(props) {
                                                             className="w-7 h-7 rounded-lg hover:bg-red-500/10 text-[var(--color-text-muted)] hover:text-red-500 transition-all flex items-center justify-center"
                                                             title="Hapus baris ini dari import"
                                                         >
-                                                            <FontAwesomeIcon icon={faTrash} className="text-[9px]" />
+                                                            <Trash2 className="text-[9px]" />
                                                         </button>
                                                     </td>
                                                 </tr>

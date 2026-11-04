@@ -125,7 +125,7 @@ export default function FormInternal({ internalList, onSubmit, loading }) {
       </div>
 
       <button onClick={submit} disabled={loading || !canSubmit}
-        className="w-full h-11 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 active:scale-[0.98] text-white shadow-md shadow-[var(--color-primary)]/20 px-4">
+        className="w-full h-11 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 active:scale-[0.98] text-white shadow-md px-4">
         {loading
           ? <Loader2 className="w-4 h-4 animate-spin" />
           : <LogOut className="w-4 h-4" />}

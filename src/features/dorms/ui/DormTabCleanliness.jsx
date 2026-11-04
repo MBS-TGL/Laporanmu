@@ -25,7 +25,7 @@ export default function DormTabCleanliness({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 animate-in fade-in duration-300">
             {/* Room Rating Cleanliness Scorecard */}
             <div className="lg:col-span-2 space-y-4">
-                <div className="glass rounded-[1.5rem] p-5">
+                <div className="bg-surface border border-border rounded-[1.5rem] p-5">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
                         <div>
                             <p className="text-[13px] font-black text-[var(--color-text)]">{t('dorms.cleanliness.title')}</p>
@@ -33,7 +33,7 @@ export default function DormTabCleanliness({
                         </div>
                         <button
                             onClick={() => setIsAuditModalOpen(true)}
-                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 disabled:opacity-40 disabled:cursor-not-allowed border border-white/10"
+                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10"
                         >
                             <Plus className="w-3.5 h-3.5" />
                             {t('dorms.cleanliness.inputRating')}
@@ -99,7 +99,7 @@ export default function DormTabCleanliness({
                                 action={audits.length === 0 ? (
                                     <button
                                         onClick={() => setIsAuditModalOpen(true)}
-                                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 shadow-lg shadow-[var(--color-primary)]/10 transition flex items-center gap-2 mx-auto"
+                                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 shadow-lg transition flex items-center gap-2 mx-auto"
                                     >
                                         <Plus className="w-3.5 h-3.5" />
                                         {t('dorms.cleanliness.inputRating')}
@@ -188,8 +188,7 @@ export default function DormTabCleanliness({
 
             {/* Best Cleanliness Performance & Guidelines */}
             <div className="space-y-4">
-                <div className="glass rounded-[1.5rem] p-5 relative overflow-hidden">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] bg-emerald-500/5 rounded-full blur-[50px] pointer-events-none" />
+                <div className="bg-surface border border-border rounded-[1.5rem] p-5 relative overflow-hidden">
                     <div className="flex items-center gap-3 mb-4">
                         <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
                             <Award className="w-5 h-5" />
@@ -209,13 +208,12 @@ export default function DormTabCleanliness({
                         const best = audits.reduce((prev, curr) => (curr.score > prev.score ? curr : prev), audits[0])
                         return (
                             <div className="relative bg-gradient-to-br from-amber-500/10 via-yellow-500/5 to-transparent border border-amber-500/20 rounded-2xl p-4 text-center overflow-hidden">
-                                <div className="absolute -right-3 -top-3 w-16 h-16 bg-amber-500/10 rounded-full blur-xl pointer-events-none" />
                                 <p className="text-[10px] font-black text-amber-600 uppercase tracking-widest flex items-center justify-center gap-1">
                                     <span>🏆</span> {t('dorms.cleanliness.bestTitle')}
                                 </p>
                                 <p className="text-xl font-black text-[var(--color-text)] mt-1.5">{t('dorms.import.rowNameDorm').replace('{room}', best.room)}</p>
                                 <p className="text-[11px] text-[var(--color-text-muted)] mt-1">{best.notes || t('dorms.cleanliness.bestRoomDesc')}</p>
-                                <div className="w-fit mx-auto mt-4 bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-black text-xs px-4 py-1.5 rounded-xl shadow-md shadow-amber-500/20">
+                                    <div className="w-fit mx-auto mt-4 bg-warning text-white font-black text-xs px-4 py-1.5 rounded-xl shadow-md">
                                     {t('dorms.cleanliness.bestPoints').replace('{score}', tNum(best.score))}
                                 </div>
                             </div>
@@ -223,7 +221,7 @@ export default function DormTabCleanliness({
                     })()}
                 </div>
 
-                <div className="glass rounded-[1.5rem] p-5 space-y-3">
+                    <div className="bg-surface border border-border rounded-[1.5rem] p-5 space-y-3">
                     <div className="flex items-center gap-2 text-[12px] font-black text-[var(--color-text)]">
                         <ShieldAlert className="w-4 h-4 text-amber-500 shrink-0" />
                         <span>{t('dorms.cleanliness.guidelines')}</span>

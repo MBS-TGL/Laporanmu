@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, RichSelect } from '@shared/components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBookQuran, faClipboardCheck, faSave, faUser, faComments, faStar } from '@fortawesome/free-solid-svg-icons'
+import { BookOpenText, ClipboardCheck, MessagesSquare, Save, Star, User } from 'lucide-react'
 import { QURAN_LEVELS, TEST_SCORES } from '@features/enrollment/utils/enrollmentConstants'
 
 function ScoreSlider({ label, value, onChange }) {
@@ -91,14 +90,14 @@ export default function EnrollmentAssessmentModal({ isOpen, onClose, onSubmit, e
             onClose={onClose}
             title="Penilaian Seleksi & Wawancara"
             description={`Masukkan hasil evaluasi komprehensif untuk: ${enrollment.name}`}
-            icon={faClipboardCheck}
+            icon={ClipboardCheck}
             size="xl"
         >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-1">
                 {/* Column 1: Quran & Kelulusan */}
                 <div className="space-y-4">
                     <div className="flex items-center gap-2 pb-1 border-b border-[var(--color-border)]/50">
-                        <FontAwesomeIcon icon={faBookQuran} className="text-emerald-500 text-xs opacity-75" />
+                        <BookOpenText className="text-emerald-500 text-xs opacity-75" />
                         <span className="text-[10px] font-black uppercase tracking-wider text-emerald-600">Evaluasi Al-Qur'an & Seleksi</span>
                     </div>
 
@@ -109,7 +108,7 @@ export default function EnrollmentAssessmentModal({ isOpen, onClose, onSubmit, e
                             onChange={v => setForm(prev => ({ ...prev, quran_level: v }))}
                             options={QURAN_LEVELS}
                             placeholder="Pilih tingkat bacaan..."
-                            icon={faBookQuran}
+                            icon={BookOpenText}
                         />
                     </div>
 
@@ -135,7 +134,7 @@ export default function EnrollmentAssessmentModal({ isOpen, onClose, onSubmit, e
                             onChange={v => setForm(prev => ({ ...prev, test_score: v }))}
                             options={TEST_SCORES}
                             placeholder="Pilih nilai tes..."
-                            icon={faClipboardCheck}
+                            icon={ClipboardCheck}
                         />
                     </div>
 
@@ -150,7 +149,7 @@ export default function EnrollmentAssessmentModal({ isOpen, onClose, onSubmit, e
                 {/* Column 2: Wawancara Digital */}
                 <div className="space-y-4">
                     <div className="flex items-center gap-2 pb-1 border-b border-[var(--color-border)]/50">
-                        <FontAwesomeIcon icon={faStar} className="text-indigo-500 text-xs opacity-75" />
+                        <Star className="text-indigo-500 text-xs opacity-75" />
                         <span className="text-[10px] font-black uppercase tracking-wider text-indigo-600">Skoring Aspek Kepribadian</span>
                     </div>
 
@@ -180,7 +179,7 @@ export default function EnrollmentAssessmentModal({ isOpen, onClose, onSubmit, e
                     <div className="space-y-1.5">
                         <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Penguji / Pewawancara</label>
                         <div className="flex items-center gap-2 px-3 h-10 border border-[var(--color-border)] rounded-xl bg-[var(--color-surface)] focus-within:border-[var(--color-primary)] transition-all">
-                            <FontAwesomeIcon icon={faUser} className="text-[10px] text-[var(--color-text-muted)] opacity-40 shrink-0" />
+                            <User className="text-[10px] text-[var(--color-text-muted)] opacity-40 shrink-0" />
                             <input
                                 type="text"
                                 value={form.interview.interviewer_name}
@@ -194,7 +193,7 @@ export default function EnrollmentAssessmentModal({ isOpen, onClose, onSubmit, e
                     <div className="space-y-1.5">
                         <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Catatan Wawancara</label>
                         <div className="flex items-start gap-2 p-3 border border-[var(--color-border)] rounded-xl bg-[var(--color-surface)] focus-within:border-[var(--color-primary)] transition-all">
-                            <FontAwesomeIcon icon={faComments} className="text-[10px] text-[var(--color-text-muted)] opacity-40 shrink-0 mt-0.5" />
+                            <MessagesSquare className="text-[10px] text-[var(--color-text-muted)] opacity-40 shrink-0 mt-0.5" />
                             <textarea
                                 value={form.interview.notes}
                                 onChange={e => handleInterviewChange('notes', e.target.value)}
@@ -218,16 +217,16 @@ export default function EnrollmentAssessmentModal({ isOpen, onClose, onSubmit, e
                 <button
                     onClick={() => onSubmit(form)}
                     disabled={!form.test_score || submitting}
-                    className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[var(--color-primary)]/20 border border-white/10 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg border border-white/10 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {submitting ? (
                         <>
-                            <FontAwesomeIcon icon={faSave} className="fa-spin" />
+                            <Save className="animate-spin" />
                             <span>Menyimpan...</span>
                         </>
                     ) : (
                         <>
-                            <FontAwesomeIcon icon={faSave} className="opacity-80 shrink-0" />
+                            <Save className="opacity-80 shrink-0" />
                             <span>Simpan & Luluskan</span>
                         </>
                     )}

@@ -1,12 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faBell, faShieldAlt, faSpinner, faMoon, faSun,
-    faCamera, faCheck, faXmark, faTrash,
-    faEye, faEyeSlash, faEnvelope, faIdBadge, faClock,
-    faTriangleExclamation
-} from '@fortawesome/free-solid-svg-icons'
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
+import { Bell, Camera, Check, Clock, Eye, EyeOff, IdCard, LoaderCircle, Mail, Moon, Shield, Sun, Trash2, TriangleAlert, X } from 'lucide-react'
+import { WhatsAppIcon } from '@shared/components'
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import Breadcrumb from '@shared/components/Breadcrumb'
 import { useTheme } from '@context/Theme'
@@ -113,7 +107,7 @@ function PwInput({ label, value, onChange }) {
                     onClick={() => setShow(v => !v)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
                 >
-                    <FontAwesomeIcon icon={show ? faEyeSlash : faEye} className="text-xs" />
+                    {show ? <EyeOff className="text-xs" /> : <Eye className="text-xs" />}
                 </button>
             </div>
         </div>
@@ -126,11 +120,11 @@ function PwInput({ label, value, onChange }) {
  */
 function ConfirmPwModal({ onConfirm, onCancel }) {
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-            <div className="glass rounded-2xl border border-[var(--color-border)] p-6 w-full max-w-sm shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+            <div className="bg-surface border border-border rounded-2xl p-6 w-full max-w-sm shadow-xl">
                 <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0">
-                        <FontAwesomeIcon icon={faTriangleExclamation} />
+                        <TriangleAlert />
                     </div>
                     <p className="font-black text-[var(--color-text)] text-sm">Konfirmasi Ubah Password</p>
                 </div>
@@ -142,13 +136,13 @@ function ConfirmPwModal({ onConfirm, onCancel }) {
                         onClick={onCancel}
                         className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-1.5"
                     >
-                        <FontAwesomeIcon icon={faXmark} className="text-[9px]" /> Batal
-                    </button>
-                    <button
-                        onClick={onConfirm}
-                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:opacity-90 transition-all flex items-center gap-2 shadow-lg shadow-[var(--color-primary)]/20"
+                        <X className="text-[9px]" /> Batal
+                        </button>
+                        <button
+                            onClick={onConfirm}
+                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:opacity-90 transition-all flex items-center gap-2 shadow-lg"
                     >
-                        <FontAwesomeIcon icon={faShieldAlt} /> Ya, Ubah
+                        <Shield /> Ya, Ubah
                     </button>
                 </div>
             </div>
@@ -268,9 +262,9 @@ function AvatarUpload({ profile, onAvatarChange }) {
         <div className="flex items-center gap-5">
             <div className="relative shrink-0">
                 <div className={`w-20 h-20 rounded-2xl overflow-hidden border-2 border-[var(--color-border)] shadow-md flex items-center justify-center font-black text-white
-                    ${showImg ? 'bg-[var(--color-surface-alt)]' : 'bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)]'}`}>
+                    ${showImg ? 'bg-[var(--color-surface-alt)]' : 'bg-[var(--color-primary)]'}`}>
                     {showImg
-                        ? <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" onError={() => setImgError(true)} />
+                        ? <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" onError={() => setImgError(true)} loading="lazy" decoding="async" />
                         : <span className="text-2xl">{letter}</span>
                     }
                 </div>
@@ -280,10 +274,10 @@ function AvatarUpload({ profile, onAvatarChange }) {
                     disabled={busy}
                     className="absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-xl bg-[var(--color-primary)] text-white flex items-center justify-center shadow-lg hover:brightness-110 transition-all disabled:opacity-60"
                 >
-                    <FontAwesomeIcon
-                        icon={uploading ? faSpinner : faCamera}
-                        className={`text-[10px] ${uploading ? 'animate-spin' : ''}`}
-                    />
+                    {uploading
+                        ? <LoaderCircle className="text-[10px] animate-spin" />
+                        : <Camera className="text-[10px]" />}
+                    
                 </button>
             </div>
             <div>
@@ -297,7 +291,7 @@ function AvatarUpload({ profile, onAvatarChange }) {
                         className="h-7 px-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all disabled:opacity-50 flex items-center gap-1.5"
                     >
                         {uploading
-                            ? <><FontAwesomeIcon icon={faSpinner} className="animate-spin" /> Mengupload...</>
+                            ? <><LoaderCircle className="animate-spin" /> Mengupload...</>
                             : 'Ganti Foto'
                         }
                     </button>
@@ -309,8 +303,8 @@ function AvatarUpload({ profile, onAvatarChange }) {
                             className="h-7 px-3 rounded-lg border border-red-500/30 bg-red-500/10 text-[10px] font-black text-red-500 hover:bg-red-500/20 transition-all disabled:opacity-50 flex items-center gap-1.5"
                         >
                             {deleting
-                                ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
-                                : <FontAwesomeIcon icon={faTrash} />
+                                ? <LoaderCircle className="animate-spin" />
+                                : <Trash2 />
                             }
                             Hapus
                         </button>
@@ -464,7 +458,7 @@ export default function SettingsPage() {
                     <div className="space-y-4">
 
                         {/* Profil */}
-                        <div className="glass rounded-2xl border border-[var(--color-border)] p-5">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-5">
                             <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-4">
                                 Foto & Identitas
                             </p>
@@ -497,7 +491,7 @@ export default function SettingsPage() {
                                     <div>
                                         <FieldLabel>Email</FieldLabel>
                                         <div className="h-11 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 flex items-center gap-2">
-                                            <FontAwesomeIcon icon={faEnvelope} className="text-[var(--color-text-muted)] text-xs shrink-0" />
+                                            <Mail className="text-[var(--color-text-muted)] text-xs shrink-0" />
                                             <span className="text-sm text-[var(--color-text-muted)] font-medium truncate">
                                                 {user?.email || '—'}
                                             </span>
@@ -506,7 +500,7 @@ export default function SettingsPage() {
                                     <div>
                                         <FieldLabel>Role</FieldLabel>
                                         <div className="h-11 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 flex items-center gap-2">
-                                            <FontAwesomeIcon icon={faIdBadge} className="text-[var(--color-text-muted)] text-xs shrink-0" />
+                                            <IdCard className="text-[var(--color-text-muted)] text-xs shrink-0" />
                                             <span className={`text-[11px] font-black px-2 py-0.5 rounded-lg border ${roleMeta.color} ${roleMeta.bg} ${roleMeta.border}`}>
                                                 {roleMeta.label}
                                             </span>
@@ -520,16 +514,16 @@ export default function SettingsPage() {
                                         onClick={() => { setName(profile?.name || ''); setProfileDirty(false) }}
                                         className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-1.5"
                                     >
-                                        <FontAwesomeIcon icon={faXmark} className="text-[9px]" /> Batal
+                                        <X className="text-[9px]" /> Batal
                                     </button>
                                     <button
                                         onClick={handleSaveProfile}
                                         disabled={savingProfile}
-                                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:opacity-90 transition-all flex items-center gap-2 shadow-lg shadow-[var(--color-primary)]/20 disabled:opacity-60"
+                                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:opacity-90 transition-all flex items-center gap-2 shadow-lg disabled:opacity-60"
                                     >
                                         {savingProfile
-                                            ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
-                                            : <FontAwesomeIcon icon={faCheck} />
+                                            ? <LoaderCircle className="animate-spin" />
+                                            : <Check />
                                         }
                                         Simpan
                                     </button>
@@ -538,7 +532,7 @@ export default function SettingsPage() {
                         </div>
 
                         {/* Password */}
-                        <div className="glass rounded-2xl border border-[var(--color-border)] p-5">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-5">
                             <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-4">
                                 Ubah Password
                             </p>
@@ -589,7 +583,7 @@ export default function SettingsPage() {
                                         )}
                                         {pw.confirm && pw.next === pw.confirm && pw.confirm.length > 0 && (
                                             <p className="text-[10px] text-emerald-500 font-bold flex items-center gap-1">
-                                                <FontAwesomeIcon icon={faCheck} className="text-[8px]" /> Password cocok
+                                                <Check className="text-[8px]" /> Password cocok
                                             </p>
                                         )}
                                     </div>
@@ -599,11 +593,11 @@ export default function SettingsPage() {
                                     <button
                                         onClick={() => setShowPwConfirm(true)}
                                         disabled={savingPw || !pwFormReady}
-                                        className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black uppercase tracking-widest hover:opacity-90 transition-all flex items-center gap-2 shadow-lg shadow-[var(--color-primary)]/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black uppercase tracking-widest hover:opacity-90 transition-all flex items-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         {savingPw
-                                            ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
-                                            : <FontAwesomeIcon icon={faShieldAlt} />
+                                            ? <LoaderCircle className="animate-spin" />
+                                            : <Shield />
                                         }
                                         Ubah Password
                                     </button>
@@ -616,14 +610,14 @@ export default function SettingsPage() {
                     <div className="space-y-4">
 
                         {/* Tampilan & Notifikasi */}
-                        <div className="glass rounded-2xl border border-[var(--color-border)] p-5">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-5">
                             <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-3">
                                 Tampilan
                             </p>
                             <div className="flex items-center justify-between p-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50">
                                 <div className="flex items-center gap-3">
                                     <div className="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-sm">
-                                        <FontAwesomeIcon icon={isDark ? faMoon : faSun} />
+                                        {isDark ? <Moon /> : <Sun />}
                                     </div>
                                     <div>
                                         <p className="font-bold text-sm text-[var(--color-text)]">Mode Gelap</p>
@@ -641,7 +635,7 @@ export default function SettingsPage() {
 
                             {/* Coming Soon Banner */}
                             <div className="mb-4 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center gap-2">
-                                <FontAwesomeIcon icon={faClock} className="text-amber-500 text-xs" />
+                                <Clock className="text-amber-500 text-xs" />
                                 <p className="text-[11px] text-amber-600 dark:text-amber-400 font-medium">
                                     Fitur notifikasi sedang dalam pengembangan. Nantikan segera!
                                 </p>
@@ -655,7 +649,7 @@ export default function SettingsPage() {
                                 >
                                     <div className="flex items-center gap-3 min-w-0">
                                         <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-sm shrink-0">
-                                            <FontAwesomeIcon icon={faBell} />
+                                            <Bell />
                                         </div>
                                         <div className="min-w-0">
                                             <p className="font-bold text-sm text-[var(--color-text)]">Email</p>
@@ -674,7 +668,7 @@ export default function SettingsPage() {
                                 >
                                     <div className="flex items-center gap-3 min-w-0">
                                         <div className="w-9 h-9 rounded-xl bg-green-500/10 text-green-500 flex items-center justify-center text-sm shrink-0">
-                                            <FontAwesomeIcon icon={faWhatsapp} />
+                                            <WhatsAppIcon />
                                         </div>
                                         <div className="min-w-0">
                                             <p className="font-bold text-sm text-[var(--color-text)]">WhatsApp</p>
@@ -693,7 +687,7 @@ export default function SettingsPage() {
                         </div>
 
                         {/* Info Akun */}
-                        <div className="glass rounded-2xl border border-[var(--color-border)] p-5">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-5">
                             <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-3">
                                 Info Akun
                             </p>
@@ -726,7 +720,7 @@ export default function SettingsPage() {
                         </div>
 
                         {/* Tips Keamanan */}
-                        <div className="glass rounded-2xl border border-[var(--color-border)] p-5">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-5">
                             <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-3">
                                 Tips Keamanan
                             </p>

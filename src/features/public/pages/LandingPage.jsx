@@ -1,29 +1,27 @@
 import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-    faArrowRight,
-    faChartLine,
-    faShieldAlt,
-    faUsers,
-    faMoon,
-    faSun,
-    faBars,
-    faTimes,
-    faQuoteLeft,
-    faSearch,
-    faClock,
-    faUser,
-    faStar,
-    faNewspaper,
-    faTag,
-    faCalendar,
-    faPrint,
-    faEnvelope,
-    faPhone,
-    faLocationDot,
-    faChevronDown
-} from '@fortawesome/free-solid-svg-icons'
+    ArrowRight,
+    Calendar,
+    ChartLine,
+    ChevronDown,
+    Clock,
+    Mail,
+    MapPin,
+    Menu,
+    Moon,
+    Newspaper,
+    Phone,
+    Printer,
+    Quote,
+    Search,
+    Shield,
+    Star,
+    Sun,
+    User,
+    Users,
+    X
+} from 'lucide-react'
 import { useTheme } from '@context/Theme'
 import { useAuth } from '@context/Auth'
 import { supabase } from '@lib/supabase'
@@ -118,15 +116,15 @@ function NewsDetailModal({ news, onClose }) {
     }
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-md animate-in fade-in duration-200" onClick={onClose} />
-            <div className="relative w-full max-w-2xl bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
+            <div className="absolute inset-0 bg-black/60 animate-in fade-in duration-200" onClick={onClose} />
+            <div className="relative w-full max-w-2xl bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2.5rem] shadow-xl overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
                 {/* Thumbnail */}
                 {news.image_url && (
                     <div className="h-56 sm:h-64 w-full shrink-0 relative">
-                        <img src={news.image_url} alt={news.image_alt || news.title} className="w-full h-full object-cover" />
+                        <img src={news.image_url} alt={news.image_alt || news.title} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                         <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-surface)] via-transparent to-transparent" />
-                        <button onClick={onClose} className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/20 hover:bg-black/40 backdrop-blur-sm text-white flex items-center justify-center border border-white/10 transition-colors">
-                            <FontAwesomeIcon icon={faTimes} />
+                        <button onClick={onClose} className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center border border-white/10 transition-colors">
+                            <X />
                         </button>
                     </div>
                 )}
@@ -139,7 +137,7 @@ function NewsDetailModal({ news, onClose }) {
                             <span className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">{formatDate(news.created_at)}</span>
                             {news.read_time && (
                                 <span className="text-[10px] font-bold text-[var(--color-text-muted)] opacity-60 flex items-center gap-1">
-                                    <FontAwesomeIcon icon={faClock} className="text-[8px]" />{news.read_time} mnt baca
+                                    <Clock className="text-[8px]" />{news.read_time} mnt baca
                                 </span>
                             )}
                         </div>
@@ -156,7 +154,7 @@ function NewsDetailModal({ news, onClose }) {
                             </div>
                             {/* Close button — next to font toggle, never overlaps */}
                             <button onClick={onClose} className="w-8 h-8 rounded-full bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] border border-[var(--color-border)] text-[var(--color-text-muted)] flex items-center justify-center transition-colors">
-                                <FontAwesomeIcon icon={faTimes} className="text-xs" />
+                                <X className="text-xs" />
                             </button>
                         </div>
                     </div>
@@ -178,8 +176,8 @@ function NewsDetailModal({ news, onClose }) {
                         dangerouslySetInnerHTML={{ __html: news.content }} />
                 </div>
                 {/* Footer */}
-                <div className="shrink-0 px-6 sm:px-10 py-4 border-t border-[var(--color-border)] bg-[var(--color-surface)]/80 backdrop-blur-sm flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center text-white font-black text-base shadow-md shrink-0">
+                <div className="shrink-0 px-6 sm:px-10 py-4 border-t border-[var(--color-border)] bg-[var(--color-surface)] flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white font-black text-base shadow-md shrink-0">
                         {(news.display_name || news.author || 'A').charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -188,7 +186,7 @@ function NewsDetailModal({ news, onClose }) {
                     </div>
                     <div className="ml-auto flex items-center gap-2">
                         <button onClick={handlePrint} className="px-4 py-2 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors flex items-center gap-1.5">
-                            <FontAwesomeIcon icon={faPrint} className="text-[9px]" /> Print
+                            <Printer className="text-[9px]" /> Print
                         </button>
                         <button onClick={onClose} className="px-4 py-2 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors">Tutup</button>
                     </div>
@@ -271,24 +269,22 @@ export default function LandingPage() {
             `}</style>
             {/* Ambient Background Glows */}
             <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-                <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-primary/10 dark:bg-primary/5 blur-[100px]" />
-                <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-accent/10 dark:bg-accent/5 blur-[120px]" />
             </div>
 
             {/* ═══ NAVBAR ═══ */}
-            <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'glass py-3' : 'bg-transparent py-5'}`}>
+            <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-surface border border-border py-3' : 'bg-transparent py-5'}`}>
                 <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between relative">
                         {/* Logo */}
                         <Link to="/" className="flex items-center gap-3 group relative z-50">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform duration-300">
+                            <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
                                 <span className="text-white font-bold text-xl font-heading">L</span>
                             </div>
                             <span className="font-heading font-bold text-2xl text-[var(--color-text)] tracking-tight">Laporan<span className="text-[var(--color-primary)]">mu</span></span>
                         </Link>
 
                         {/* Desktop Nav */}
-                        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8 bg-[var(--color-surface)]/50 dark:bg-[var(--color-surface-alt)]/50 backdrop-blur-md px-6 py-2.5 rounded-full border border-[var(--color-border)]">
+                        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8 bg-[var(--color-surface)] dark:bg-[var(--color-surface-alt)] px-6 py-2.5 rounded-full border border-[var(--color-border)]">
                             <a href="#visi-misi" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] font-medium text-sm transition-all hover:scale-105 active:scale-95">Visi</a>
                             <a href="#fitur" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] font-medium text-sm transition-all hover:scale-105 active:scale-95">Fitur</a>
                             <a href="#alur" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] font-medium text-sm transition-all hover:scale-105 active:scale-95">Alur</a>
@@ -305,12 +301,12 @@ export default function LandingPage() {
                         {/* Desktop Actions */}
                         <div className="hidden md:flex items-center gap-4 z-50">
                             <button onClick={toggleTheme} className="w-10 h-10 rounded-full flex items-center justify-center bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 transition-all" aria-label="Toggle theme">
-                                <FontAwesomeIcon icon={isDark ? faSun : faMoon} />
+                                {isDark ? <Sun /> : <Moon />}
                             </button>
                             <Link to="/check" className="inline-flex items-center px-4 py-2 text-[13px] font-bold rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all">
                                 Cek Poin & Raport
                             </Link>
-                            <Link to={user ? "/dashboard" : "/login"} className="inline-flex items-center px-5 py-2 text-[13px] font-black rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white shadow-lg shadow-indigo-500/20 hover:scale-105 active:scale-95 transition-all">
+                                <Link to={user ? "/dashboard" : "/login"} className="inline-flex items-center px-5 py-2 text-[13px] font-black rounded-xl bg-[var(--color-primary)] text-white shadow-lg hover:scale-105 active:scale-95 transition-all">
                                 {user ? 'Ke Dashboard' : 'Login Staff'}
                             </Link>
                         </div>
@@ -318,10 +314,10 @@ export default function LandingPage() {
                         {/* Mobile Actions */}
                         <div className="flex items-center gap-3 md:hidden z-50">
                             <button onClick={toggleTheme} className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text)]">
-                                <FontAwesomeIcon icon={isDark ? faSun : faMoon} />
+                                {isDark ? <Sun /> : <Moon />}
                             </button>
-                            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white shadow-lg shadow-[var(--color-primary)]/30">
-                                <FontAwesomeIcon icon={isMobileMenuOpen ? faTimes : faBars} />
+                                <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--color-primary)] text-white shadow-lg">
+                                {isMobileMenuOpen ? <X /> : <Menu />}
                             </button>
                         </div>
                     </div>
@@ -329,8 +325,8 @@ export default function LandingPage() {
 
                 {/* Mobile Menu Overlay */}
                 <div className={`fixed inset-0 z-40 md:hidden transition-all duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                    <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
-                    <div className={`absolute right-4 left-4 top-24 bg-[var(--color-surface)] rounded-2xl shadow-2xl border border-[var(--color-border)] p-5 transition-all duration-300 transform ${isMobileMenuOpen ? 'translate-y-0 scale-100' : '-translate-y-4 scale-95'}`}>
+                    <div className="absolute inset-0 bg-black/40" onClick={() => setIsMobileMenuOpen(false)} />
+                    <div className={`absolute right-4 left-4 top-24 bg-[var(--color-surface)] rounded-2xl shadow-xl border border-[var(--color-border)] p-5 transition-all duration-300 transform ${isMobileMenuOpen ? 'translate-y-0 scale-100' : '-translate-y-4 scale-95'}`}>
                         <div className="flex flex-col gap-2">
                             {[
                                 { name: 'Visi & Misi', id: 'visi-misi' },
@@ -346,9 +342,9 @@ export default function LandingPage() {
                             <Link to="/check" className="flex items-center justify-center px-4 py-3.5 rounded-xl bg-[var(--color-surface-alt)] text-[var(--color-text)] font-semibold text-sm border border-[var(--color-border)] active:scale-95 transition-all w-full" onClick={() => setIsMobileMenuOpen(false)}>
                                 Cek Data Siswa
                             </Link>
-                            <Link to={user ? "/dashboard" : "/login"} className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white font-bold text-sm shadow-lg shadow-[var(--color-primary)]/20 active:scale-95 transition-all w-full mt-2" onClick={() => setIsMobileMenuOpen(false)}>
+                                <Link to={user ? "/dashboard" : "/login"} className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-[var(--color-primary)] text-white font-bold text-sm shadow-lg active:scale-95 transition-all w-full mt-2" onClick={() => setIsMobileMenuOpen(false)}>
                                 {user ? 'Ke Dashboard' : 'Login Staff'}
-                                <FontAwesomeIcon icon={faArrowRight} className="text-xs" />
+                                <ArrowRight className="text-xs" />
                             </Link>
                         </div>
                     </div>
@@ -359,7 +355,7 @@ export default function LandingPage() {
             <section className="pt-32 lg:pt-48 pb-20 lg:pb-32 relative z-10 flex flex-col items-center justify-center min-h-[90vh]">
                 <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 w-full text-center">
                     {/* Badge */}
-                    <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-[var(--color-surface)]/80 backdrop-blur-md border border-[var(--color-primary)]/20 shadow-xl shadow-[var(--color-primary)]/5 mb-10 animate-[fadeIn_1s_ease-out]">
+                    <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-primary)]/20 shadow-xl mb-10 animate-[fadeIn_1s_ease-out]">
                         <span className="relative flex h-3 w-3">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-accent)] opacity-75" />
                             <span className="relative inline-flex rounded-full h-3 w-3 bg-[var(--color-primary)]" />
@@ -382,9 +378,9 @@ export default function LandingPage() {
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto animate-[fadeIn_1s_ease-out_0.6s_both]">
                         <Link to={user ? "/dashboard" : "/login"} className="btn btn-primary w-full sm:w-auto group text-base px-8 py-4">
                             {user ? 'Ke Dashboard' : 'Mulai Sekarang'}
-                            <FontAwesomeIcon icon={faArrowRight} className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                         </Link>
-                        <Link to="/check" className="btn btn-secondary w-full sm:w-auto text-base px-8 py-4 bg-[var(--color-surface)]/80 backdrop-blur">
+                            <Link to="/check" className="btn btn-secondary w-full sm:w-auto text-base px-8 py-4 bg-[var(--color-surface)]">
                             Portal Wali Murid
                         </Link>
                     </div>
@@ -392,7 +388,7 @@ export default function LandingPage() {
 
                 {/* Dashboard Preview Mockup */}
                 <div className="w-full max-w-5xl mx-auto mt-20 px-4 sm:px-6 lg:px-8 animate-[fadeIn_1s_ease-out_0.8s_both]">
-                    <div className="relative rounded-2xl border border-[var(--color-border)]/50 bg-[var(--color-surface)]/40 p-2 glass shadow-2xl">
+                    <div className="relative rounded-2xl border border-[var(--color-border)]/50 p-2 bg-surface shadow-sm">
                         <div className="rounded-xl overflow-hidden bg-[var(--color-surface)] border border-[var(--color-border)] flex flex-col">
                             {/* Mockup Header */}
                             <div className="h-12 bg-[var(--color-surface-alt)] border-b border-[var(--color-border)] flex items-center px-4 gap-2">
@@ -453,16 +449,14 @@ export default function LandingPage() {
 
             {/* ═══ VISI & MISI ═══ */}
             <section id="visi-misi" className="py-20 sm:py-24 relative z-10 overflow-hidden">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-[var(--color-primary)]/5 rounded-full blur-[100px] -mr-48 -mt-48" />
-                <div className="absolute bottom-0 left-0 w-96 h-96 bg-[var(--color-accent)]/5 rounded-full blur-[100px] -ml-48 -mb-48" />
 
                 <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 relative">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 items-start">
                         {/* Vision */}
                         <Reveal>
-                            <div className="bg-gradient-to-br from-slate-900 to-indigo-950 p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[3.5rem] text-white shadow-2xl relative overflow-hidden group border border-white/5">
+                            <div className="bg-slate-900 p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[3.5rem] text-white shadow-sm relative overflow-hidden group border border-white/5">
                                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-500">
-                                    <FontAwesomeIcon icon={faQuoteLeft} className="text-8xl text-indigo-400" />
+                                    <Quote className="text-8xl text-indigo-400" />
                                 </div>
                                 <span className="inline-block px-4 py-1.5 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-bold uppercase tracking-[0.2em] mb-8 border border-indigo-500/30">Visi Utama</span>
                                 <h2 className="text-3xl sm:text-4xl font-black mb-10 leading-tight">
@@ -482,14 +476,14 @@ export default function LandingPage() {
 
                                 <div className="space-y-12">
                                     {[
-                                        { icon: faShieldAlt, color: 'bg-blue-500/10 text-blue-500', title: 'Integritas Data', desc: 'Menjamin setiap rekaman perilaku tercatat secara akurat, objektif, dan transparan tanpa ada manipulasi.' },
-                                        { icon: faChartLine, color: 'bg-emerald-500/10 text-emerald-500', title: 'Monitoring Pertumbuhan', desc: 'Fokus pada evaluasi prestasi dan perilaku harian untuk mendukung potensi terbaik setiap murid.' },
-                                        { icon: faUsers, color: 'bg-amber-500/10 text-amber-500', title: 'Sinergi Orang Tua', desc: 'Memperkuat jalinan komunikasi antara sekolah dan wali murid dalam memantau tumbuh kembang karakter siswa.' }
+                                        { icon: Shield, color: 'bg-blue-500/10 text-blue-500', title: 'Integritas Data', desc: 'Menjamin setiap rekaman perilaku tercatat secara akurat, objektif, dan transparan tanpa ada manipulasi.' },
+                                        { icon: ChartLine, color: 'bg-emerald-500/10 text-emerald-500', title: 'Monitoring Pertumbuhan', desc: 'Fokus pada evaluasi prestasi dan perilaku harian untuk mendukung potensi terbaik setiap murid.' },
+                                        { icon: Users, color: 'bg-amber-500/10 text-amber-500', title: 'Sinergi Orang Tua', desc: 'Memperkuat jalinan komunikasi antara sekolah dan wali murid dalam memantau tumbuh kembang karakter siswa.' }
                                     ].map((misi, i) => (
                                         <Reveal key={i} delay={0.1 * (i + 1)}>
                                             <div className="flex gap-6 group">
                                                 <div className={`w-14 h-14 shrink-0 rounded-2xl ${misi.color} flex items-center justify-center text-xl shadow-sm border border-transparent group-hover:scale-110 transition-all duration-300`}>
-                                                    <FontAwesomeIcon icon={misi.icon} />
+                                                    <misi.icon />
                                                 </div>
                                                 <div>
                                                     <h4 className="text-lg font-bold text-[var(--color-text)] mb-2 group-hover:text-[var(--color-primary)] transition-colors">{misi.title}</h4>
@@ -522,17 +516,17 @@ export default function LandingPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {[
-                            { icon: faChartLine, title: "Poin Perilaku & Tatib", desc: "Catat skor pelanggaran (minus) dan prestasi (plus) siswa secara instan sesuai aturan buku saku sekolah." },
-                            { icon: faSearch, title: "Portal Wali Murid", desc: "Orang tua cukup memasukkan NISN/ID siswa untuk mengecek rekapitulasi poin, absensi, dan raport secara real-time tanpa perlu mendaftar." },
-                            { icon: faUsers, title: "Raport Bulanan & Absensi", desc: "Pembuatan laporan absensi bulanan serta akumulasi nilai perilaku siswa secara otomatis untuk wali kelas." },
-                            { icon: faShieldAlt, title: "Sistem Keamanan Gerbang", desc: "Modul khusus untuk satpam/petugas piket mencatat waktu keterlambatan atau izin keluar masuk siswa di gerbang sekolah." },
-                            { icon: faNewspaper, title: "Pengumuman Real-time", desc: "Bagikan berita penting sekolah, jadwal ujian, rapat wali murid, hingga artikel edukasi karakter secara terintegrasi." },
-                            { icon: faStar, title: "AI Insights & Prediksi", desc: "Analisis cerdas berbasis AI untuk mendeteksi dini tren perilaku buruk siswa agar sekolah dapat memberikan tindakan preventif." }
+                            { icon: ChartLine, title: "Poin Perilaku & Tatib", desc: "Catat skor pelanggaran (minus) dan prestasi (plus) siswa secara instan sesuai aturan buku saku sekolah." },
+                            { icon: Search, title: "Portal Wali Murid", desc: "Orang tua cukup memasukkan NISN/ID siswa untuk mengecek rekapitulasi poin, absensi, dan raport secara real-time tanpa perlu mendaftar." },
+                            { icon: Users, title: "Raport Bulanan & Absensi", desc: "Pembuatan laporan absensi bulanan serta akumulasi nilai perilaku siswa secara otomatis untuk wali kelas." },
+                            { icon: Shield, title: "Sistem Keamanan Gerbang", desc: "Modul khusus untuk satpam/petugas piket mencatat waktu keterlambatan atau izin keluar masuk siswa di gerbang sekolah." },
+                            { icon: Newspaper, title: "Pengumuman Real-time", desc: "Bagikan berita penting sekolah, jadwal ujian, rapat wali murid, hingga artikel edukasi karakter secara terintegrasi." },
+                            { icon: Star, title: "AI Insights & Prediksi", desc: "Analisis cerdas berbasis AI untuk mendeteksi dini tren perilaku buruk siswa agar sekolah dapat memberikan tindakan preventif." }
                         ].map((fitur, idx) => (
                             <Reveal key={idx} delay={0.08 * idx}>
                                 <div className="group h-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2rem] p-8 hover:border-[var(--color-primary)]/50 transition-all duration-300 hover:shadow-xl flex flex-col">
                                     <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 text-[var(--color-primary)] flex items-center justify-center text-lg mb-6 group-hover:scale-110 transition-transform">
-                                        <FontAwesomeIcon icon={fitur.icon} />
+                                        <fitur.icon />
                                     </div>
                                     <h4 className="font-bold text-[var(--color-text)] text-lg mb-3 group-hover:text-[var(--color-primary)] transition-colors">{fitur.title}</h4>
                                     <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{fitur.desc}</p>
@@ -556,7 +550,7 @@ export default function LandingPage() {
                             </div>
                             <a href="/informasi" className="group text-[var(--color-primary)] font-bold flex items-center gap-2 hover:gap-3 text-sm transition-all shrink-0">
                                 Lihat Semua Informasi
-                                <FontAwesomeIcon icon={faArrowRight} className="text-xs group-hover:translate-x-0.5 transition-transform" />
+                                <ArrowRight className="text-xs group-hover:translate-x-0.5 transition-transform" />
                             </a>
                         </div>
 
@@ -576,7 +570,7 @@ export default function LandingPage() {
                                 {news[0]?.is_featured && (
                                     <Reveal>
                                         <div
-                                            className="group relative rounded-[2.5rem] overflow-hidden border border-[var(--color-border)] hover:border-[var(--color-primary)]/30 transition-all duration-500 hover:shadow-2xl cursor-pointer"
+                                            className="group relative rounded-[2.5rem] overflow-hidden border border-[var(--color-border)] hover:border-[var(--color-primary)]/30 transition-all duration-500 hover:shadow-md cursor-pointer"
                                             onClick={() => setSelectedNews(news[0])}
                                         >
                                             <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[320px]">
@@ -586,8 +580,8 @@ export default function LandingPage() {
                                                         <img src={news[0].image_url} alt={news[0].image_alt || news[0].title} loading="lazy"
                                                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                                                     ) : (
-                                                        <div className="w-full h-full bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-accent)]/20 flex items-center justify-center">
-                                                            <FontAwesomeIcon icon={faNewspaper} className="text-6xl text-[var(--color-primary)]/30" />
+                                                        <div className="w-full h-full bg-[var(--color-primary)]/20 flex items-center justify-center">
+                                                            <Newspaper className="text-6xl text-[var(--color-primary)]/30" />
                                                         </div>
                                                     )}
                                                     <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[var(--color-surface)] to-transparent" />
@@ -596,7 +590,7 @@ export default function LandingPage() {
                                                 <div className="relative lg:order-1 p-8 sm:p-10 flex flex-col justify-center bg-[var(--color-surface)]">
                                                     <div className="flex items-center gap-2 mb-4 flex-wrap">
                                                         <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 text-[9px] font-black uppercase tracking-widest border border-amber-500/20">
-                                                            <FontAwesomeIcon icon={faStar} className="text-[7px]" /> Featured
+                                                            <Star className="text-[7px]" /> Featured
                                                         </span>
                                                         <span className="px-3 py-1 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black uppercase tracking-widest border border-[var(--color-primary)]/10">
                                                             {news[0].tag}
@@ -610,17 +604,17 @@ export default function LandingPage() {
                                                     </p>
                                                     <div className="flex items-center gap-4 text-[10px] text-[var(--color-text-muted)] font-bold uppercase tracking-widest opacity-60">
                                                         <span className="flex items-center gap-1.5">
-                                                            <FontAwesomeIcon icon={faCalendar} />
+                                                            <Calendar />
                                                             {new Date(news[0].created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
                                                         </span>
                                                         {news[0].read_time && (
                                                             <span className="flex items-center gap-1.5">
-                                                                <FontAwesomeIcon icon={faClock} />
+                                                                <Clock />
                                                                 {news[0].read_time} mnt baca
                                                             </span>
                                                         )}
                                                         <span className="flex items-center gap-1.5">
-                                                            <FontAwesomeIcon icon={faUser} />
+                                                            <User />
                                                             {news[0].display_name || news[0].author?.split('@')[0] || 'Admin'}
                                                         </span>
                                                     </div>
@@ -635,7 +629,7 @@ export default function LandingPage() {
                                     {news.filter((_, i) => i > 0 || !news[0]?.is_featured).slice(0, 3).map((item, i) => (
                                         <Reveal key={item.id} delay={0.08 * i}>
                                             <div
-                                                className="group bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2.5rem] overflow-hidden hover:shadow-2xl hover:border-[var(--color-primary)]/30 transition-all duration-500 flex flex-col h-full cursor-pointer ring-1 ring-inset ring-transparent hover:ring-[var(--color-primary)]/10"
+                                                className="group bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2.5rem] overflow-hidden hover:shadow-md hover:border-[var(--color-primary)]/30 transition-all duration-500 flex flex-col h-full cursor-pointer ring-1 ring-inset ring-transparent hover:ring-[var(--color-primary)]/10"
                                                 onClick={() => setSelectedNews(item)}
                                             >
                                                 <div className="h-44 w-full overflow-hidden shrink-0 relative">
@@ -643,8 +637,8 @@ export default function LandingPage() {
                                                         <img src={item.image_url} alt={item.image_alt || item.title} loading="lazy"
                                                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                                                     ) : (
-                                                        <div className="w-full h-full bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-accent)]/20 flex items-center justify-center">
-                                                            <FontAwesomeIcon icon={faNewspaper} className="text-4xl text-[var(--color-primary)]/30" />
+                                                        <div className="w-full h-full bg-[var(--color-primary)]/20 flex items-center justify-center">
+                                                            <Newspaper className="text-4xl text-[var(--color-primary)]/30" />
                                                         </div>
                                                     )}
                                                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
@@ -659,7 +653,7 @@ export default function LandingPage() {
                                                         </span>
                                                         {item.read_time && (
                                                             <span className="text-[var(--color-text-muted)] text-[9px] font-bold opacity-50 flex items-center gap-1">
-                                                                <FontAwesomeIcon icon={faClock} className="text-[8px]" /> {item.read_time} mnt
+                                                                <Clock className="text-[8px]" /> {item.read_time} mnt
                                                             </span>
                                                         )}
                                                     </div>
@@ -671,12 +665,12 @@ export default function LandingPage() {
                                                     </p>
                                                     <div className="mt-auto pt-5 border-t border-[var(--color-border)]/50 flex items-center justify-between">
                                                         <span className="text-[9px] font-black text-[var(--color-text-muted)] opacity-50 uppercase tracking-widest flex items-center gap-1.5">
-                                                            <FontAwesomeIcon icon={faUser} className="text-[8px]" />
+                                                            <User className="text-[8px]" />
                                                             {item.display_name || item.author?.split('@')[0] || 'Admin'}
                                                         </span>
                                                         <button className="group/btn inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)] hover:gap-2.5 transition-all duration-200">
                                                             Baca
-                                                            <FontAwesomeIcon icon={faArrowRight} className="text-[9px]" />
+                                                            <ArrowRight className="text-[9px]" />
                                                         </button>
                                                     </div>
                                                 </div>
@@ -713,7 +707,7 @@ export default function LandingPage() {
                         ].map((item, idx) => (
                             <Reveal key={idx} delay={0.12 * idx}>
                                 <div className="relative z-10 group bg-[var(--color-bg)] border border-[var(--color-border)] rounded-[2.5rem] p-8 hover:border-[var(--color-primary)]/50 transition-all duration-300 shadow-sm flex flex-col items-center text-center hover:shadow-xl">
-                                    <div className="w-14 h-14 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center font-black text-xl shadow-lg shadow-indigo-500/30 mb-8 group-hover:scale-110 transition-transform">
+                                    <div className="w-14 h-14 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center font-black text-xl shadow-lg mb-8 group-hover:scale-110 transition-transform">
                                         {item.step}
                                     </div>
                                     <h4 className="font-bold text-[var(--color-text)] text-lg mb-3 tracking-tight group-hover:text-[var(--color-primary)] transition-colors">{item.title}</h4>
@@ -753,7 +747,7 @@ export default function LandingPage() {
                                         >
                                             <span>{faq.q}</span>
                                             <span className={`text-[var(--color-primary)] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
-                                                <FontAwesomeIcon icon={faChevronDown} className="text-xs" />
+                                                <ChevronDown className="text-xs" />
                                             </span>
                                         </button>
                                         <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'max-h-48 border-t border-[var(--color-border)]' : 'max-h-0'}`}>
@@ -773,10 +767,8 @@ export default function LandingPage() {
             <Reveal>
                 <section className="py-24 relative z-10 px-4 sm:px-6 lg:px-8">
                     <div className="max-w-5xl mx-auto">
-                        <div className="rounded-[3rem] bg-gradient-to-r from-[var(--color-primary-dark)] via-[var(--color-primary)] to-[var(--color-accent)] p-10 sm:p-16 text-center text-white shadow-2xl relative overflow-hidden">
+                        <div className="rounded-[3rem] bg-[var(--color-primary-dark)] p-10 sm:p-16 text-center text-white shadow-sm relative overflow-hidden">
                             {/* Decorative */}
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-                            <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl" />
 
                             <div className="relative z-10">
                                 <h2 className="text-3xl sm:text-5xl font-bold mb-6 font-heading">
@@ -790,7 +782,7 @@ export default function LandingPage() {
                                         {user ? 'Ke Dashboard' : 'Login Staff / Guru'}
                                     </Link>
                                     <Link to="/check" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border-2 border-white/30 hover:bg-white/10 text-white font-bold text-lg transition-colors w-full sm:w-auto">
-                                        <FontAwesomeIcon icon={faSearch} className="text-sm" />
+                                        <Search className="text-sm" />
                                         Cek Data Siswa
                                     </Link>
                                 </div>
@@ -807,7 +799,7 @@ export default function LandingPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-12 mb-12 border-b border-[var(--color-border)]">
                         <div className="flex items-start gap-4">
                             <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0">
-                                <FontAwesomeIcon icon={faEnvelope} className="text-sm" />
+                                <Mail className="text-sm" />
                             </div>
                             <div>
                                 <h5 className="font-bold text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Hubungi Kami</h5>
@@ -816,7 +808,7 @@ export default function LandingPage() {
                         </div>
                         <div className="flex items-start gap-4">
                             <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0">
-                                <FontAwesomeIcon icon={faPhone} className="text-sm" />
+                                <Phone className="text-sm" />
                             </div>
                             <div>
                                 <h5 className="font-bold text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-1">WhatsApp Center</h5>
@@ -825,7 +817,7 @@ export default function LandingPage() {
                         </div>
                         <div className="flex items-start gap-4">
                             <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0">
-                                <FontAwesomeIcon icon={faLocationDot} className="text-sm" />
+                                <MapPin className="text-sm" />
                             </div>
                             <div>
                                 <h5 className="font-bold text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-1">Alamat Layanan</h5>
@@ -837,7 +829,7 @@ export default function LandingPage() {
                     <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-4">
                         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-10">
                             <Link to="/" className="flex items-center gap-2 group">
-                                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center">
+                                <div className="w-7 h-7 rounded-lg bg-[var(--color-primary)] flex items-center justify-center">
                                     <span className="text-white font-bold text-sm">L</span>
                                 </div>
                                 <span className="font-heading font-bold text-lg tracking-tight text-[var(--color-text)]">Laporanmu</span>
@@ -882,10 +874,10 @@ export default function LandingPage() {
             {/* Scroll to Top Floating Button */}
             <button
                 onClick={scrollToTop}
-                className={`fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full glass border border-[var(--color-border)] text-[var(--color-primary)] flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 active:scale-90 ${showScrollTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+                className={`fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-surface border border-[var(--color-border)] text-[var(--color-primary)] flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 active:scale-90 ${showScrollTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
                 aria-label="Scroll to top"
             >
-                <FontAwesomeIcon icon={faArrowRight} className="-rotate-90" />
+                <ArrowRight className="-rotate-90" />
             </button>
         </div>
     )

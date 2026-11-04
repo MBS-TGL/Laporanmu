@@ -1,15 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo, memo } from 'react'
 import { createPortal } from 'react-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-    faPlus, faEdit, faTrash, faSearch, faSpinner, faCalendar,
-    faCheckCircle, faXmark, faSliders, faBoxArchive, faRotateLeft,
-    faKeyboard, faChevronLeft, faChevronRight, faGrip,
-    faAnglesLeft, faAnglesRight, faDownload, faCopy,
-    faGraduationCap, faLayerGroup, faCircleCheck, faCheck,
-    faClock, faCalendarDay, faTableList, faHistory, faFileImport,
-    faFingerprint, faTimeline, faTimes, faFileExport, faEye, faEyeSlash
-} from '@fortawesome/free-solid-svg-icons'
+    Archive, CalendarDays, CircleCheck, Copy, Eye, EyeOff, FileInput,
+    FileOutput, FingerprintPattern, GraduationCap, History, Keyboard,
+    Layers, LoaderCircle, Plus, RotateCcw, Search, SlidersHorizontal,
+    SquarePen, TableProperties, Trash2, X
+} from 'lucide-react'
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import { useToast } from '@context/Toast'
 import { useLanguage } from '@context/Language'
@@ -84,9 +80,9 @@ const DebouncedSearchInput = memo(({ searchQuery, onSearch, inputRef, isLoading 
         <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--color-text-muted)] text-sm group-focus-within:text-[var(--color-primary)] transition-colors">
                 {isLoading ? (
-                    <FontAwesomeIcon icon={faSpinner} className="animate-spin text-xs text-[var(--color-primary)]" />
+                    <LoaderCircle className="animate-spin text-xs text-[var(--color-primary)]" />
                 ) : (
-                    <FontAwesomeIcon icon={faSearch} />
+                    <Search />
                 )}
             </div>
             <input
@@ -106,7 +102,7 @@ function TimelineView({ years, onEdit, onHistory, onSetActive, onDuplicate, onDe
     if (years.length === 0) {
         return (
             <EmptyState
-                icon={faSearch}
+                icon={Search}
                 title="Tidak Ada Data Ditemukan"
                 description="Sesuaikan filter atau kata kunci pencarian Anda"
                 color="indigo"
@@ -120,8 +116,6 @@ function TimelineView({ years, onEdit, onHistory, onSetActive, onDuplicate, onDe
         <div className="relative w-full overflow-hidden bg-[var(--color-surface-alt)]/10">
             {/* ── Premium Ambient Background ── */}
             <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
-                <div className="absolute top-0 left-1/4 w-[200px] h-[200px] bg-[var(--color-primary)]/10 blur-[80px] rounded-full animate-pulse" />
-                <div className="absolute bottom-0 right-1/4 w-[200px] h-[200px] bg-indigo-500/10 blur-[80px] rounded-full" />
             </div>
 
             <div className="relative overflow-x-auto pb-8 pt-12 no-scrollbar select-none flex justify-start lg:justify-center" style={{ minHeight: '400px' }}>
@@ -171,9 +165,8 @@ function TimelineView({ years, onEdit, onHistory, onSetActive, onDuplicate, onDe
 
                                 {/* ── Premium Card (Centered Layout) ── */}
                                 <div className={`px-4 w-full transition-all duration-700 ${isActive ? 'opacity-100' : 'opacity-70 grayscale-[30%] group-hover/item:opacity-100 group-hover/item:grayscale-0'}`}>
-                                    <div className={`relative group/card glass rounded-[1.5rem] p-5 border-2 transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] flex flex-col items-center text-center ${isActive ? 'border-[var(--color-primary)]/50 shadow-xl shadow-[var(--color-primary)]/10 ring-4 ring-[var(--color-primary)]/5' : 'border-[var(--color-border)] hover:border-[var(--color-primary)]/40 shadow-lg shadow-black/[0.02]'}`}>
+                                    <div className={`relative group/card bg-surface rounded-[1.5rem] p-5 border-2 transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] flex flex-col items-center text-center ${isActive ? 'border-[var(--color-primary)]/50 shadow-xl ring-4 ring-[var(--color-primary)]/5' : 'border-[var(--color-border)] hover:border-[var(--color-primary)]/40 shadow-lg/[0.02]'}`}>
                                         {/* Dynamic Glow Layer */}
-                                        <div className={`absolute -inset-3 rounded-[2.5rem] opacity-0 group-hover/card:opacity-10 dark:group-hover/card:opacity-20 transition-opacity duration-1000 pointer-events-none blur-xl ${isActive ? 'bg-[var(--color-primary)]' : 'bg-indigo-500'}`} />
 
                                         {/* Card Header & Badges (Centered) */}
                                         <div className="flex items-center justify-center gap-1.5 mb-3 flex-wrap">
@@ -188,7 +181,7 @@ function TimelineView({ years, onEdit, onHistory, onSetActive, onDuplicate, onDe
                                             )}
                                             {year.is_locked && (
                                                 <span className="px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest bg-rose-500/10 text-rose-600 border border-rose-500/20 flex items-center gap-1">
-                                                    <FontAwesomeIcon icon={faBoxArchive} className="text-[7px]" />
+                                                    <Archive className="text-[7px]" />
                                                     TUTUP
                                                 </span>
                                             )}
@@ -211,7 +204,7 @@ function TimelineView({ years, onEdit, onHistory, onSetActive, onDuplicate, onDe
                                             {/* Duration */}
                                             <div className="flex items-center justify-center gap-2 pt-3 mt-3 border-t border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-bold">
                                                 <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 bg-[var(--color-surface)] border border-[var(--color-border)] group-hover/card:border-[var(--color-primary)]/30 group-hover/card:text-[var(--color-primary)] transition-all`}>
-                                                    <FontAwesomeIcon icon={faCalendarDay} className="text-[9px]" />
+                                                    <CalendarDays className="text-[9px]" />
                                                 </div>
                                                 <div className="flex flex-col text-left">
                                                     <span className="text-[7px] font-black uppercase tracking-widest opacity-50 leading-none mb-0.5">Masa Berlaku</span>
@@ -222,7 +215,7 @@ function TimelineView({ years, onEdit, onHistory, onSetActive, onDuplicate, onDe
 
                                         {/* Abstract Decorative SVG (Watermark) */}
                                         <div className="absolute right-4 bottom-4 opacity-[0.03] pointer-events-none group-hover/card:scale-150 group-hover/card:opacity-10 transition-all duration-1000 grayscale flex items-center justify-center">
-                                            <FontAwesomeIcon icon={faTimeline} className="text-6xl" />
+                                            <History className="text-6xl" />
                                         </div>
 
                                         {/* Premium Action Layer */}
@@ -238,25 +231,25 @@ function TimelineView({ years, onEdit, onHistory, onSetActive, onDuplicate, onDe
                                             <div className="flex items-center justify-center gap-2 w-full">
                                                 {canEdit && (
                                                     <button onClick={() => onEdit(year)} className="w-8 h-8 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all flex items-center justify-center">
-                                                        <FontAwesomeIcon icon={faEdit} className="text-[10px]" />
+                                                        <SquarePen className="text-[10px]" />
                                                     </button>
                                                 )}
                                                 <button onClick={() => onHistory(year)} className="w-8 h-8 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-indigo-500 hover:border-indigo-500 transition-all flex items-center justify-center">
-                                                    <FontAwesomeIcon icon={faHistory} className="text-[10px]" />
+                                                    <History className="text-[10px]" />
                                                 </button>
                                                 {canEdit && (
                                                     <button onClick={() => onDuplicate(year)} title="Duplikat" className="w-8 h-8 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-emerald-500 hover:border-emerald-500 transition-all flex items-center justify-center">
-                                                        <FontAwesomeIcon icon={faCopy} className="text-[10px]" />
+                                                        <Copy className="text-[10px]" />
                                                     </button>
                                                 )}
                                                 {canEdit && !isActive && (
                                                     <button onClick={() => onToggleLock(year)} title={year.is_locked ? "Buka Buku" : "Tutup Buku"} className={`w-8 h-8 rounded-xl transition-all flex items-center justify-center ${year.is_locked ? 'bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white border border-rose-500/20' : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-rose-500 hover:border-rose-500'}`}>
-                                                        <FontAwesomeIcon icon={year.is_locked ? faRotateLeft : faBoxArchive} className="text-[10px]" />
+                                                        {year.is_locked ? <RotateCcw className="text-[10px]" /> : <Archive className="text-[10px]" />}
                                                     </button>
                                                 )}
                                                 {canEdit && isActive && (
                                                     <button onClick={() => onDelete(year)} className="w-8 h-8 rounded-xl bg-red-500/10 text-red-500 border border-red-500/20 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
-                                                        <FontAwesomeIcon icon={faBoxArchive} className="text-[10px]" />
+                                                        <Archive className="text-[10px]" />
                                                     </button>
                                                 )}
                                             </div>
@@ -1178,8 +1171,8 @@ export default function AcademicYearsPage() {
                                 : 'calc(50vw + (var(--sidebar-width, 0px) / 2))'
                         }}
                     >
-                        <div className="bg-gray-900 text-white rounded-[2.5rem] p-2 pr-6 shadow-2xl flex items-center gap-4 border border-white/10 backdrop-blur-xl">
-                            <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center font-black text-sm shadow-lg shadow-[var(--color-primary)]/20 animate-bounce">
+                        <div className="bg-gray-900 text-white rounded-[2.5rem] p-2 pr-6 shadow-xl flex items-center gap-4 border border-white/10">
+                            <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center font-black text-sm shadow-lg animate-bounce">
                                 {selectedIds.length}
                             </div>
                             <div className="flex-1">
@@ -1188,8 +1181,8 @@ export default function AcademicYearsPage() {
                             </div>
                             <div className="h-8 w-px bg-white/10" />
                             <button onClick={() => setSelectedIds([])} className="h-10 px-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white transition-all">Batal</button>
-                            <button onClick={() => setIsBulkDeleteOpen(true)} className="h-10 px-5 rounded-2xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-red-500/20 transition-all flex items-center gap-2 active:scale-95">
-                                <FontAwesomeIcon icon={faBoxArchive} className="text-[9px]" />
+                                <button onClick={() => setIsBulkDeleteOpen(true)} className="h-10 px-5 rounded-2xl bg-red-500 hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center gap-2 active:scale-95">
+                                <Archive className="text-[9px]" />
                                 Arsipkan
                             </button>
                         </div>
@@ -1198,7 +1191,7 @@ export default function AcademicYearsPage() {
 
                 {!canEdit && (
                     <div className="px-4 py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center gap-2">
-                        <FontAwesomeIcon icon={faCheckCircle} className="text-rose-500 shrink-0 text-xs" />
+                        <CircleCheck className="text-rose-500 shrink-0 text-xs" />
                         <p className="text-[11px] font-bold text-rose-600">Mode Read-only — Edit tahun pelajaran dinonaktifkan oleh administrator.</p>
                     </div>
                 )}
@@ -1218,18 +1211,18 @@ export default function AcademicYearsPage() {
                             className={`h-9 w-9 rounded-lg border flex items-center justify-center text-sm transition-all active:scale-95 ${isHeaderMenuOpen ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
                             title="Aksi lainnya"
                         >
-                            <FontAwesomeIcon icon={faSliders} />
+                            <SlidersHorizontal />
                         </button>
 
                         {/* Portaled Header Menu Dropdown */}
                         {headerMenuMounted && headerMenuRect && createPortal(
                             <>
                                 <div
-                                    className={`fixed inset-0 z-[9990] bg-black/5 backdrop-blur-[1px] transition-opacity duration-200 ${isHeaderMenuOpen ? 'opacity-100' : 'opacity-0'}`}
+                                    className={`fixed inset-0 z-[9990] bg-black/5 transition-opacity duration-200 ${isHeaderMenuOpen ? 'opacity-100' : 'opacity-0'}`}
                                     onClick={() => setIsHeaderMenuOpen(false)}
                                 />
                                 <div
-                                    className={`fixed z-[9991] w-56 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl p-2 transition-all duration-200 ease-out origin-top-right
+                                    className={`fixed z-[9991] w-56 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 transition-all duration-200 ease-out origin-top-right
                                         ${isHeaderMenuOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2'}`}
                                     style={{
                                         top: headerMenuRect.bottom + 8,
@@ -1239,7 +1232,7 @@ export default function AcademicYearsPage() {
                                     <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">Data</p>
                                     <button onClick={() => { setIsHeaderMenuOpen(false); handleImportClick() }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                         <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <FontAwesomeIcon icon={faFileImport} className="text-xs" />
+                                            <FileInput className="text-xs" />
                                         </div>
                                         <div className="text-left">
                                             <p className="text-[11px] font-black leading-tight">Import CSV / Excel</p>
@@ -1248,7 +1241,7 @@ export default function AcademicYearsPage() {
                                     </button>
                                     <button onClick={() => { setIsHeaderMenuOpen(false); setIsExportModalOpen(true) }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                         <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <FontAwesomeIcon icon={faFileExport} className="text-xs" />
+                                            <FileOutput className="text-xs" />
                                         </div>
                                         <div className="text-left">
                                             <p className="text-[11px] font-black leading-tight">Export Data</p>
@@ -1259,7 +1252,7 @@ export default function AcademicYearsPage() {
                                     <p className="px-3 py-2 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Manajemen</p>
                                     <button onClick={() => { setIsHeaderMenuOpen(false); fetchArchived(); setIsArchivedOpen(true) }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
                                         <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <FontAwesomeIcon icon={faBoxArchive} className="text-xs" />
+                                            <Archive className="text-xs" />
                                         </div>
                                         <div className="text-left">
                                             <p className="text-[11px] font-black leading-tight">Arsip Periode</p>
@@ -1288,14 +1281,14 @@ export default function AcademicYearsPage() {
                                     : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
                                 }`}
                             title="Keyboard Shortcuts (?)">
-                            <FontAwesomeIcon icon={faKeyboard} className="text-sm" />
+                            <Keyboard className="text-sm" />
                         </button>
 
                         {/* Portaled Keyboard Shortcuts Dropdown */}
                         {isShortcutOpen && shortcutRect && createPortal(
                             <>
-                                <div className="fixed inset-0 z-[9990] bg-black/5 backdrop-blur-[1px]" onClick={() => setIsShortcutOpen(false)} />
-                                <div className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl shadow-black/10 overflow-hidden text-left animate-in fade-in zoom-in-95 duration-200"
+                                <div className="fixed inset-0 z-[9990] bg-black/5" onClick={() => setIsShortcutOpen(false)} />
+                                <div className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden text-left animate-in fade-in zoom-in-95 duration-200"
                                     style={{
                                         top: shortcutRect.bottom + 8,
                                         left: Math.max(10, shortcutRect.right - 288)
@@ -1327,14 +1320,14 @@ export default function AcademicYearsPage() {
                         }}
                             className={`h-9 w-9 sm:w-auto sm:px-3 rounded-lg border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 ${isPrivacyMode ? 'bg-amber-500/10 border-amber-500/30 text-amber-600' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'} `}
                             title={isPrivacyMode ? "Matikan Mode Privasi" : "Aktifkan Mode Privasi"}>
-                            <FontAwesomeIcon icon={isPrivacyMode ? faEyeSlash : faEye} className="text-sm" />
+                            {isPrivacyMode ? <EyeOff className="text-sm" /> : <Eye className="text-sm" />}
                             <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline">Privasi</span>
                         </button>
 
                         {/* Add button */}
                         {canEdit && (
-                            <button onClick={handleAdd} className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 disabled:opacity-40 disabled:cursor-not-allowed border border-white/10">
-                                <FontAwesomeIcon icon={faPlus} className="text-[10px]" />
+                            <button onClick={handleAdd} className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10">
+                                <Plus className="text-[10px]" />
                                 <span>Tambah Periode</span>
                             </button>
                         )}
@@ -1345,10 +1338,10 @@ export default function AcademicYearsPage() {
                 {/* ── Stats ── */}
                 <StatsCarousel count={STAT_CARD_COUNT} cols={4}>
                     {[
-                        { icon: faLayerGroup, label: 'Total Periode', value: stats.total, borderColor: 'border-t-blue-500', iconBg: 'bg-blue-500/10 text-blue-500' },
-                        { icon: faCircleCheck, label: 'Status Aktif', value: stats.active, borderColor: 'border-t-emerald-500', iconBg: 'bg-emerald-500/10 text-emerald-500' },
-                        { icon: faGraduationCap, label: 'Smt. Ganjil', value: stats.ganjil, borderColor: 'border-t-indigo-500', iconBg: 'bg-indigo-500/10 text-indigo-500' },
-                        { icon: faGraduationCap, label: 'Smt. Genap', value: stats.genap, borderColor: 'border-t-purple-500', iconBg: 'bg-purple-500/10 text-purple-500' },
+                        { icon: Layers, label: 'Total Periode', value: stats.total, borderColor: 'border-t-blue-500', iconBg: 'bg-blue-500/10 text-blue-500' },
+                        { icon: CircleCheck, label: 'Status Aktif', value: stats.active, borderColor: 'border-t-emerald-500', iconBg: 'bg-emerald-500/10 text-emerald-500' },
+                        { icon: GraduationCap, label: 'Smt. Ganjil', value: stats.ganjil, borderColor: 'border-t-indigo-500', iconBg: 'bg-indigo-500/10 text-indigo-500' },
+                        { icon: GraduationCap, label: 'Smt. Genap', value: stats.genap, borderColor: 'border-t-purple-500', iconBg: 'bg-purple-500/10 text-purple-500' },
                     ].map((s, i) => (
                         <StatCard
                             key={i}
@@ -1362,7 +1355,7 @@ export default function AcademicYearsPage() {
                 </StatsCarousel>
 
                 {/* ── Filter Bar ── */}
-                <div className="glass rounded-[1.5rem] mb-4 border border-[var(--color-border)] overflow-hidden">
+                <div className="bg-surface rounded-[1.5rem] mb-4 border border-[var(--color-border)] overflow-hidden">
                     <div className="flex flex-row items-center gap-2 p-3">
                         <div className="flex-1 min-w-[120px] transition-all duration-300">
                             <DebouncedSearchInput
@@ -1375,23 +1368,23 @@ export default function AcademicYearsPage() {
                         <div className="flex items-center gap-1.5 shrink-0">
                             <div className="hidden md:flex items-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/20 p-1 shadow-none">
                                 <button onClick={() => setViewMode('table')} className={`h-7 px-3 rounded-lg flex items-center gap-2 text-[9px] font-black uppercase tracking-wider transition-all ${viewMode === 'table' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                    <FontAwesomeIcon icon={faTableList} className="text-[9px]" />
+                                    <TableProperties className="text-[9px]" />
                                     <span>Tabel</span>
                                 </button>
                                 <button onClick={() => setViewMode('timeline')} className={`h-7 px-3 rounded-lg flex items-center gap-2 text-[9px] font-black uppercase tracking-wider transition-all ${viewMode === 'timeline' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                    <FontAwesomeIcon icon={faTimeline} className="text-[9px]" />
+                                    <History className="text-[9px]" />
                                     <span>Linimasa</span>
                                 </button>
                             </div>
                             <button
                                 onClick={() => setIsFilterOpen(!isFilterOpen)}
-                                className={`h-9 px-3 sm:px-4 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${isFilterOpen || activeFilterCount > 0 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/30' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
+                                className={`h-9 px-3 sm:px-4 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${isFilterOpen || activeFilterCount > 0 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
                             >
-                                <FontAwesomeIcon icon={faSliders} />
+                                <SlidersHorizontal />
                                 <span className="hidden xs:inline">Filter</span>
                                 {activeFilterCount > 0 && <span className="w-4 h-4 rounded-full bg-white/30 text-white text-[9px] font-black flex items-center justify-center">{activeFilterCount}</span>}
                             </button>
-                            {activeFilterCount > 0 && <button onClick={resetAllFilters} className="h-9 px-3 rounded-xl border border-red-500/20 bg-red-500/5 text-red-500 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-red-500/10 flex items-center gap-1.5"><FontAwesomeIcon icon={faXmark} /><span className="hidden sm:inline">Reset</span></button>}
+                            {activeFilterCount > 0 && <button onClick={resetAllFilters} className="h-9 px-3 rounded-xl border border-red-500/20 bg-red-500/5 text-red-500 text-[10px] font-black uppercase tracking-widest transition-all hover:bg-red-500/10 flex items-center gap-1.5"><X /><span className="hidden sm:inline">Reset</span></button>}
                         </div>
                     </div>
 
@@ -1400,15 +1393,15 @@ export default function AcademicYearsPage() {
                         <div className="px-3 pb-3 -mt-1 flex flex-wrap gap-2 animate-in fade-in slide-in-from-top-1 duration-300">
                             {searchQuery && (
                                 <button type="button" onClick={() => setSearchQuery('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-[10px] font-black text-[var(--color-text)]">
-                                    <FontAwesomeIcon icon={faSearch} className="opacity-40" />
+                                    <Search className="opacity-40" />
                                     <span>"{searchQuery.slice(0, 20)}{searchQuery.length > 20 ? '...' : ''}"</span>
-                                    <FontAwesomeIcon icon={faTimes} className="text-[8px] opacity-40 group-hover:text-red-500 transition-colors" />
+                                    <X className="text-[8px] opacity-40 group-hover:text-red-500 transition-colors" />
                                 </button>
                             )}
                             {filterSemester && (
                                 <button type="button" onClick={() => setFilterSemester('')} className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 text-[10px] font-black text-[var(--color-primary)]">
                                     <span>{filterSemester}</span>
-                                    <FontAwesomeIcon icon={faTimes} className="text-[8px] opacity-40 group-hover:text-red-500 transition-colors" />
+                                    <X className="text-[8px] opacity-40 group-hover:text-red-500 transition-colors" />
                                 </button>
                             )}
                             {filterTimeStatus && (
@@ -1416,25 +1409,25 @@ export default function AcademicYearsPage() {
                                     className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-[10px] font-black text-amber-600">
                                     Status: {filterTimeStatus}
                                     <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-amber-500/20 flex items-center justify-center text-amber-600 opacity-70 group-hover:opacity-100 transition-opacity">
-                                        <FontAwesomeIcon icon={faTimes} className="text-[10px]" />
+                                        <X className="text-[10px]" />
                                     </span>
                                 </button>
                             )}
                             <button onClick={resetAllFilters} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-[10px] font-black text-red-500 hover:bg-red-500/5 transition-all">
-                                <FontAwesomeIcon icon={faRotateLeft} className="text-[9px]" />
+                                <RotateCcw className="text-[9px]" />
                                 Hapus Semua
                             </button>
                         </div>
                     )}
 
                     {isFilterOpen && (
-                        <div className="border-t border-[var(--color-border)] p-3.5 bg-[var(--color-surface-alt)]/60 backdrop-blur-md animate-in fade-in slide-in-from-top-2">
+                        <div className="border-t border-[var(--color-border)] p-3.5 bg-[var(--color-surface-alt)] animate-in fade-in slide-in-from-top-2">
                             {/* Header Panel with Standardized "Vertical Bar" Pattern */}
                             <div className="flex items-center justify-between mb-3">
                                 <div className="flex items-center gap-2.5">
                                     <div className="w-1 h-3.5 bg-indigo-500 rounded-full" />
                                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-600 flex items-center gap-2">
-                                        <FontAwesomeIcon icon={faSliders} className="text-[9px] opacity-60" />
+                                        <SlidersHorizontal className="text-[9px] opacity-60" />
                                         Filter Lanjutan
                                     </span>
                                 </div>
@@ -1442,7 +1435,7 @@ export default function AcademicYearsPage() {
                                     onClick={resetAllFilters}
                                     className="text-[9px] font-black uppercase tracking-widest text-red-500 hover:bg-red-50 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-100"
                                 >
-                                    <FontAwesomeIcon icon={faRotateLeft} className="text-[9px]" />
+                                    <RotateCcw className="text-[9px]" />
                                     Reset Semua
                                 </button>
                             </div>
@@ -1510,7 +1503,7 @@ export default function AcademicYearsPage() {
 
 
                 {/* ── Main Data View ── */}
-                <div className="glass rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
+                <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
                     {loading ? (
                         <div className="p-12 space-y-4">
                             <div className="flex gap-4">
@@ -1566,7 +1559,7 @@ export default function AcademicYearsPage() {
                                                                 <svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><rect x="0" y="0" width="5" height="5" rx="1" /><rect x="7" y="0" width="5" height="5" rx="1" /><rect x="0" y="7" width="5" height="5" rx="1" /><rect x="7" y="7" width="5" height="5" rx="1" /></svg>
                                                             </button>
                                                             {isColMenuOpen && createPortal(
-                                                                <div ref={colMenuPortalRef} className={`absolute z-[9999] w-48 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl shadow-black/10 p-2 space-y-0.5 animate-in fade-in zoom-in-95 ${colMenuPos.showUp ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'}`}
+                                                                <div ref={colMenuPortalRef} className={`absolute z-[9999] w-48 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 space-y-0.5 animate-in fade-in zoom-in-95 ${colMenuPos.showUp ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'}`}
                                                                     style={{ top: colMenuPos.top, right: colMenuPos.right }}>
                                                                     <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] px-3 py-2">Atur Kolom</p>
                                                                     {[{ key: 'period', label: 'Tahun Pelajaran' }, { key: 'semester', label: 'Semester' }, { key: 'curriculum', label: 'Kurikulum' }, { key: 'duration', label: 'Pelaksanaan' }, { key: 'status', label: 'Status' }].map(({ key, label }) => (
@@ -1586,7 +1579,7 @@ export default function AcademicYearsPage() {
                                             </thead>
                                             <tbody>
 {isEmpty ? (
-                                                    <tr><td colSpan="5" className="py-24 text-center"><EmptyState icon={faSearch} title="Tidak ada data ditemukan" description="Sesuaikan filter atau kata kunci pencarian Anda" color="slate" variant="plain" /></td></tr>
+                                                    <tr><td colSpan="5" className="py-24 text-center"><EmptyState icon={Search} title="Tidak ada data ditemukan" description="Sesuaikan filter atau kata kunci pencarian Anda" color="slate" variant="plain" /></td></tr>
                                                 ) : paged.map(year => {
                                                     const isSelected = selectedIds.includes(year.id);
                                                     const ts = getTimeStatus(year.start_date, year.end_date)
@@ -1596,7 +1589,7 @@ export default function AcademicYearsPage() {
                                                             {visibleCols.period && (
                                                                 <td className="px-6 py-4">
                                                                     <div className="flex items-start gap-3">
-                                                                        <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-black shadow-sm relative transition-transform hover:scale-110 shrink-0 ${year.is_active ? 'bg-gradient-to-br from-[var(--color-primary)]/10 to-[var(--color-accent)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
+                                                                        <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-black shadow-sm relative transition-transform hover:scale-110 shrink-0 ${year.is_active ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
                                                                             <span className="relative z-10">{year.name?.slice(2, 4) || '??'}</span>
                                                                         </div>
                                                                         <div className="flex flex-col min-w-0 flex-1">
@@ -1640,7 +1633,7 @@ export default function AcademicYearsPage() {
                                                                         )}
                                                                         {year.is_locked && (
                                                                             <span className="text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-lg flex items-center gap-1">
-                                                                                <FontAwesomeIcon icon={faBoxArchive} className="text-[8px]"/> Tutup
+                                                                                <Archive className="text-[8px]"/> Tutup
                                                                             </span>
                                                                         )}
                                                                     </div>
@@ -1649,11 +1642,11 @@ export default function AcademicYearsPage() {
                                                             <td className="px-6 py-4">
                                                                 <div className="flex items-center justify-center gap-1">
                                                                     {canEdit && (
-                                                                        <button onClick={() => handleEdit(year)} title="Edit" className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-blue-500 hover:bg-blue-500/10 transition-all text-sm"><FontAwesomeIcon icon={faEdit} /></button>
+                                                                        <button onClick={() => handleEdit(year)} title="Edit" className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-blue-500 hover:bg-blue-500/10 transition-all text-sm"><SquarePen /></button>
                                                                     )}
-                                                                    <button onClick={() => handleOpenHistory(year)} title="Riwayat" className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-purple-500 hover:bg-purple-500/10 transition-all text-sm"><FontAwesomeIcon icon={faHistory} /></button>
+                                                                    <button onClick={() => handleOpenHistory(year)} title="Riwayat" className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-purple-500 hover:bg-purple-500/10 transition-all text-sm"><History /></button>
                                                                     {canEdit && (
-                                                                        <button onClick={() => { setItemToDelete(year); setIsDeleteModalOpen(true) }} title="Hapus" className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-all text-sm"><FontAwesomeIcon icon={faTrash} /></button>
+                                                                        <button onClick={() => { setItemToDelete(year); setIsDeleteModalOpen(true) }} title="Hapus" className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-all text-sm"><Trash2 /></button>
                                                                     )}
                                                                 </div>
                                                             </td>
@@ -1672,7 +1665,7 @@ export default function AcademicYearsPage() {
                                                         <div className="flex flex-col items-center gap-3 pt-1">
                                                             <input type="checkbox" checked={selectedIds.includes(year.id)} onChange={() => toggleSelect(year.id)} className="w-4 h-4 rounded border-[var(--color-border)] text-[var(--color-primary)] focus:ring-[var(--color-primary)] accent-[var(--color-primary)] cursor-pointer shrink-0 mt-1" />
                                                         </div>
-                                                        <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-black shadow-sm relative transition-transform shrink-0 ${year.is_active ? 'bg-gradient-to-br from-[var(--color-primary)]/10 to-[var(--color-accent)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
+                                                        <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-black shadow-sm relative transition-transform shrink-0 ${year.is_active ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
                                                             <span className="relative z-10">{year.name?.slice(2, 4) || '??'}</span>
                                                         </div>
                                                         <div className="flex-1 min-w-0">
@@ -1686,7 +1679,7 @@ export default function AcademicYearsPage() {
                                                                     <p className="text-[10px] text-[var(--color-text-muted)] font-mono mt-1 opacity-60 uppercase tracking-widest">ID: {year.id.slice(0, 8)}</p>
                                                                 </div>
                                                                 <div className="flex items-center gap-1">
-                                                                    {canEdit && <button onClick={() => handleEdit(year)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]"><FontAwesomeIcon icon={faEdit} className="text-xs" /></button>}
+                                                                    {canEdit && <button onClick={() => handleEdit(year)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]"><SquarePen className="text-xs" /></button>}
                                                                 </div>
                                                             </div>
                                                             <div className="mt-3 flex items-center gap-2">
@@ -1695,7 +1688,7 @@ export default function AcademicYearsPage() {
                                                                 ) : (
                                                                     <div className="flex-1 h-9 rounded-xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]">Tidak Aktif</div>
                                                                 )}
-                                                                <button onClick={() => handleOpenHistory(year)} className="flex-1 h-9 rounded-xl bg-indigo-500/10 text-indigo-600 border border-indigo-500/20 flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all"><FontAwesomeIcon icon={faHistory} className="text-xs" /> Riwayat</button>
+                                                                <button onClick={() => handleOpenHistory(year)} className="flex-1 h-9 rounded-xl bg-indigo-500/10 text-indigo-600 border border-indigo-500/20 flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all"><History className="text-xs" /> Riwayat</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1740,18 +1733,18 @@ export default function AcademicYearsPage() {
                                         <div className="text-xs font-black">{getDuration(readOnlyDetailItem.start_date, readOnlyDetailItem.end_date)}</div>
                                     </div>
                                 </div>
-                                <button onClick={() => { setIsReadOnlyDetailOpen(false); handleOpenHistory(readOnlyDetailItem) }} className="w-full h-12 rounded-xl bg-indigo-500/10 text-indigo-600 font-black text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-2 border border-indigo-500/20"><FontAwesomeIcon icon={faHistory} />Riwayat Perubahan</button>
+                                <button onClick={() => { setIsReadOnlyDetailOpen(false); handleOpenHistory(readOnlyDetailItem) }} className="w-full h-12 rounded-xl bg-indigo-500/10 text-indigo-600 font-black text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-2 border border-indigo-500/20"><History />Riwayat Perubahan</button>
                                 <button onClick={() => { setIsReadOnlyDetailOpen(false); setReadOnlyDetailItem(null) }} className="w-full h-12 rounded-xl bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] font-black text-[10px] uppercase tracking-widest transition-all">Tutup</button>
                             </div>
                         )
                     })()}
                 </Modal>
 
-                <Modal isOpen={isHistoryOpen} onClose={() => { setIsHistoryOpen(false); setHistoryItem(null) }} title={`Riwayat · ${historyItem?.name || ''}`} description="Audit log untuk rekaman ini." icon={faFingerprint} iconBg="bg-orange-500/10" iconColor="text-orange-500" size="lg">
+                <Modal isOpen={isHistoryOpen} onClose={() => { setIsHistoryOpen(false); setHistoryItem(null) }} title={`Riwayat · ${historyItem?.name || ''}`} description="Audit log untuk rekaman ini." icon={FingerprintPattern} iconBg="bg-orange-500/10" iconColor="text-orange-500" size="lg">
                     {historyItem && <div className="h-[60vh] overflow-hidden"><AuditTimeline tableName="academic_years" recordId={historyItem.id} limit={30} /></div>}
                 </Modal>
 
-                <Modal isOpen={isBulkDeleteOpen} onClose={() => setIsBulkDeleteOpen(false)} title="Arsipkan Massal" description={`Pindahkan ${selectedIds.length} data ke arsip.`} icon={faBoxArchive} iconBg="bg-red-500/10" iconColor="text-red-500" size="sm" footer={<div className="flex gap-3"><button onClick={() => setIsBulkDeleteOpen(false)} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] transition-all">Batal</button><div className="flex-1" /><button onClick={handleBulkDelete} disabled={submitting} className="h-9 px-5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-black text-[10px] transition-all flex items-center gap-2">Arsipkan Sekarang</button></div>}>
+                <Modal isOpen={isBulkDeleteOpen} onClose={() => setIsBulkDeleteOpen(false)} title="Arsipkan Massal" description={`Pindahkan ${selectedIds.length} data ke arsip.`} icon={Archive} iconBg="bg-red-500/10" iconColor="text-red-500" size="sm" footer={<div className="flex gap-3"><button onClick={() => setIsBulkDeleteOpen(false)} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-[10px] font-black text-[var(--color-text-muted)] transition-all">Batal</button><div className="flex-1" /><button onClick={handleBulkDelete} disabled={submitting} className="h-9 px-5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-black text-[10px] transition-all flex items-center gap-2">Arsipkan Sekarang</button></div>}>
                     <p className="text-[11px] font-bold text-red-700/70 p-4 rounded-2xl bg-red-500/5 border border-red-500/10">Anda akan mengarsipkan <span className="font-black text-red-600">{selectedIds.length} tahun pelajaran</span> secara bersamaan.</p>
                 </Modal>
 

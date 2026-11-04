@@ -13,6 +13,8 @@ export default function Breadcrumb({ items = [], badge = null, className = '' })
 
     const translate = (str) => {
         if (!str) return ''
+        // Breadcrumb/badge bisa berupa angka (mis. jumlah item) — jangan crash
+        if (typeof str !== 'string') return String(str)
         const trimmed = str.trim()
         
         // Exact match check
@@ -67,12 +69,16 @@ export default function Breadcrumb({ items = [], badge = null, className = '' })
 
             {safeItems.length > 0 ? (
                 <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] opacity-75">
-                    {safeItems.map((it, idx) => (
-                        <span key={`${it}-${idx}`}>
-                            {idx > 0 ? <span className="opacity-40 mx-1.5">›</span> : null}
-                            {translate(it)}
-                        </span>
-                    ))}
+                    {safeItems.map((it, idx) => {
+                        // Dukung bentuk string ('Skorsing') dan objek ({ label: 'Skorsing' })
+                        const label = typeof it === 'object' ? (it?.label ?? it?.name ?? '') : it
+                        return (
+                            <span key={`${idx}-${typeof it === 'object' ? label : it}`}>
+                                {idx > 0 ? <span className="opacity-40 mx-1.5">›</span> : null}
+                                {translate(label)}
+                            </span>
+                        )
+                    })}
                 </span>
             ) : null}
         </div>

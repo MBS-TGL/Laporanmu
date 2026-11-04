@@ -86,8 +86,7 @@ export function TaskCenterWidget() {
   const progressPercentage = Math.round((completedCount / tasks.length) * 100)
 
   return (
-    <div className="glass rounded-[1.5rem] p-5 bg-gradient-to-br from-[var(--color-surface)] to-[var(--color-surface-alt)] relative overflow-hidden group hover:shadow-2xl hover:shadow-[var(--color-primary)]/10 transition-all duration-500 flex flex-col justify-between min-h-[300px]">
-      <div className="absolute -right-4 -top-4 w-24 h-24 bg-[var(--color-primary)]/5 rounded-full blur-2xl group-hover:bg-[var(--color-primary)]/10 transition-colors" />
+    <div className="rounded-[1.5rem] p-5 bg-[var(--color-surface)] border border-border relative overflow-hidden group hover:shadow-md transition-all duration-500 flex flex-col justify-between min-h-[300px]">
 
       {/* Header */}
       <div className="relative z-10">

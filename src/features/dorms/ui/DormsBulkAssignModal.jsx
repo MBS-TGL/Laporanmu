@@ -45,7 +45,7 @@ export default function DormsBulkAssignModal({
                     <button
                         onClick={onSave}
                         disabled={submitting || !selectedRoom}
-                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-[var(--color-primary)]/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-xs font-bold uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {submitting ? (
                             <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -70,7 +70,7 @@ export default function DormsBulkAssignModal({
                                     className="flex items-center justify-between pl-3 pr-1.5 py-1 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/60 text-xs font-medium text-[var(--color-text)] min-w-0"
                                 >
                                     <div className="flex items-center gap-1.5 min-w-0 mr-1">
-                                        <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${student.gender === 'P' || student.gender === 'Perempuan' ? 'bg-pink-500 shadow-sm shadow-pink-500/20' : 'bg-[var(--color-primary)]'}`} />
+                                        <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${student.gender === 'P' || student.gender === 'Perempuan' ? 'bg-pink-500 shadow-sm' : 'bg-[var(--color-primary)]'}`} />
                                         <span className="truncate">{student.name}</span>
                                     </div>
                                     <button

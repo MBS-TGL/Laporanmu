@@ -1,12 +1,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faPlay, faCircleCheck, faCircleXmark,
-    faClockRotateLeft, faTriangleExclamation,
-    faBolt, faClock, faBroom, faChartLine,
-    faSpinner, faTrashAlt, faHistory, faFilter, faXmark,
-    faDownload,
-} from '@fortawesome/free-solid-svg-icons'
+import { Brush, ChartLine, CircleCheck, CircleX, Clock, Download, Funnel, History, LoaderCircle, Play, Trash2, TriangleAlert, X, Zap } from 'lucide-react'
+
+
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import Breadcrumb from '@shared/components/Breadcrumb'
 import { useToast } from '@context/Toast'
@@ -24,7 +19,7 @@ const INITIAL_TASKS = [
         id: 'sync_stats',
         name: 'Sinkronisasi Statistik',
         desc: 'Menghitung ulang total poin, rata-rata kelas, dan ranking untuk seluruh siswa.',
-        icon: faChartLine, color: 'text-indigo-500', bg: 'bg-indigo-500/10',
+        icon: ChartLine, color: 'text-indigo-500', bg: 'bg-indigo-500/10',
         destructive: false,
         status: 'idle', lastRun: null, duration: '—', progress: 0,
     },
@@ -32,7 +27,7 @@ const INITIAL_TASKS = [
         id: 'cleanup_orphans',
         name: 'Pembersihan Data Orphan',
         desc: 'Menghapus poin dan histori kelas yang tidak memiliki entri siswa valid.',
-        icon: faBroom, color: 'text-amber-500', bg: 'bg-amber-500/10',
+        icon: Brush, color: 'text-amber-500', bg: 'bg-amber-500/10',
         destructive: true,
         status: 'idle', lastRun: null, duration: '—', progress: 0,
     },
@@ -40,7 +35,7 @@ const INITIAL_TASKS = [
         id: 'rotate_logs',
         name: 'Rotasi Audit Logs',
         desc: 'Mengarsipkan audit logs lama (di atas 45 hari) untuk menjaga performa query.',
-        icon: faClockRotateLeft, color: 'text-emerald-500', bg: 'bg-emerald-500/10',
+        icon: History, color: 'text-emerald-500', bg: 'bg-emerald-500/10',
         destructive: true,
         status: 'idle', lastRun: null, duration: '—', progress: 0,
     },
@@ -162,11 +157,11 @@ function ConfirmModal({ task, onConfirm, onCancel }) {
     if (!task) return null
     return (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onCancel} />
-            <div className="relative w-full max-w-sm bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2rem] shadow-2xl p-6 animate-in zoom-in-95 duration-200">
+            <div className="absolute inset-0 bg-black/50" onClick={onCancel} />
+            <div className="relative w-full max-w-sm bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[2rem] shadow-xl p-6 animate-in zoom-in-95 duration-200">
                 <div className="flex flex-col items-center text-center space-y-4">
                     <div className="w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500 text-2xl">
-                        <FontAwesomeIcon icon={faTriangleExclamation} />
+                        <TriangleAlert />
                     </div>
                     <div>
                         <h3 className="text-base font-black text-[var(--color-text)]">Jalankan "{task.name}"?</h3>
@@ -181,7 +176,7 @@ function ConfirmModal({ task, onConfirm, onCancel }) {
                         </button>
                         <button onClick={onConfirm}
                             className="flex-1 h-11 rounded-xl bg-amber-500 text-white text-[10px] font-black uppercase tracking-widest hover:bg-amber-600 active:scale-95 transition-all flex items-center justify-center gap-2">
-                            <FontAwesomeIcon icon={faPlay} className="text-xs" /> Lanjutkan
+                            <Play className="text-xs" /> Lanjutkan
                         </button>
                     </div>
                 </div>
@@ -333,7 +328,7 @@ export default function TasksPage() {
                                 const isDisabled = isAnyRunning && !isRunning
                                 return (
                                     <div key={task.id}
-                                        className={`relative glass rounded-[2rem] border transition-all duration-300 ${isRunning
+                                        className={`relative bg-surface rounded-[2rem] border transition-all duration-300 ${isRunning
                                             ? 'border-[var(--color-primary)] ring-4 ring-[var(--color-primary)]/5 p-6'
                                             : isDisabled
                                                 ? 'border-[var(--color-border)] p-5 opacity-50'
@@ -351,8 +346,7 @@ export default function TasksPage() {
                                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                             <div className="flex items-start sm:items-center gap-4 sm:gap-5">
                                                 <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center shrink-0 shadow-inner ${task.bg}`}>
-                                                    <FontAwesomeIcon icon={task.icon}
-                                                        className={`text-xl sm:text-2xl ${task.color} ${isRunning ? 'animate-bounce' : ''}`} />
+                                                    <task.icon className={`text-xl sm:text-2xl ${task.color} ${isRunning ? 'animate-bounce' : ''}`} />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
@@ -360,12 +354,12 @@ export default function TasksPage() {
                                                         <div className="flex items-center gap-1.5 flex-wrap">
                                                             {isRunning && (
                                                                 <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[9px] font-black uppercase tracking-tighter animate-pulse w-fit">
-                                                                    <FontAwesomeIcon icon={faSpinner} className="animate-spin" /> Sedang Diproses
+                                                                    <LoaderCircle className="animate-spin" /> Sedang Diproses
                                                                 </span>
                                                             )}
                                                             {task.destructive && !isRunning && (
                                                                 <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 text-[8px] font-black uppercase tracking-tighter w-fit">
-                                                                    <FontAwesomeIcon icon={faTriangleExclamation} className="text-[7px]" /> Destruktif
+                                                                    <TriangleAlert className="text-[7px]" /> Destruktif
                                                                 </span>
                                                             )}
                                                         </div>
@@ -373,7 +367,7 @@ export default function TasksPage() {
                                                     <p className="text-[11px] text-[var(--color-text-muted)] font-medium max-w-full sm:max-w-md">{task.desc}</p>
                                                     <div className="flex items-center gap-3 mt-3 flex-wrap">
                                                         <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
-                                                            <FontAwesomeIcon icon={faClockRotateLeft} className="opacity-60" />
+                                                            <History className="opacity-60" />
                                                             Terakhir:
                                                             <span className="text-[var(--color-text)]" title={formatAbsolute(task.lastRun)}>
                                                                 {task.lastRun ? formatRelative(task.lastRun) : 'Belum pernah'}
@@ -381,7 +375,7 @@ export default function TasksPage() {
                                                         </div>
                                                         {task.duration !== '—' && (
                                                             <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">
-                                                                <FontAwesomeIcon icon={faBolt} className="opacity-60" />
+                                                                <Zap className="opacity-60" />
                                                                 Durasi: <span className="text-[var(--color-text)]">{task.duration}</span>
                                                             </div>
                                                         )}
@@ -396,14 +390,14 @@ export default function TasksPage() {
                                                         <button onClick={() => cancelTask(task.id)}
                                                             className="w-10 h-10 rounded-2xl bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all active:scale-90 flex items-center justify-center"
                                                             title="Hentikan task">
-                                                            <FontAwesomeIcon icon={faXmark} className="text-sm" />
+                                                            <X className="text-sm" />
                                                         </button>
                                                     </div>
                                                 ) : (
                                                     <button onClick={() => handleRunClick(task)} disabled={isDisabled}
                                                         className="group h-11 px-4 sm:px-6 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] text-[12px] font-black hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] disabled:cursor-not-allowed transition-all flex items-center gap-2 sm:gap-3 shadow-sm hover:shadow-md active:scale-95 disabled:active:scale-100">
                                                         <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center group-hover:bg-[var(--color-primary)]/10 transition-colors">
-                                                            <FontAwesomeIcon icon={faPlay} className="text-[9px] group-hover:scale-125 transition-transform" />
+                                                            <Play className="text-[9px] group-hover:scale-125 transition-transform" />
                                                         </div>
                                                         <span className="hidden sm:inline">Run Task</span>
                                                     </button>
@@ -416,11 +410,11 @@ export default function TasksPage() {
                         </section>
 
                         {/* Logs */}
-                        <section className="glass rounded-[2rem] border border-[var(--color-border)] overflow-hidden">
+                        <section className="bg-surface rounded-[2rem] border border-[var(--color-border)] overflow-hidden">
                             <div className="p-4 sm:p-5 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                 <div className="flex items-center gap-3">
                                     <div className="w-8 h-8 rounded-xl bg-slate-500/10 text-slate-500 flex items-center justify-center shrink-0">
-                                        <FontAwesomeIcon icon={faHistory} />
+                                        <History />
                                     </div>
                                     <div>
                                         <h3 className="font-black text-sm text-[var(--color-text)]">Audit Log Eksekusi</h3>
@@ -429,7 +423,7 @@ export default function TasksPage() {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="relative flex-1 sm:flex-none">
-                                        <FontAwesomeIcon icon={faFilter} className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
+                                        <Funnel className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] pointer-events-none" />
                                         <input type="text" placeholder="Cari log..." value={searchLog}
                                             onChange={e => setSearchLog(e.target.value)}
                                             className="h-8 pl-8 pr-3 w-full sm:w-48 text-[11px] font-medium bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl outline-none focus:border-[var(--color-primary)] transition-all" />
@@ -438,12 +432,12 @@ export default function TasksPage() {
                                         <>
                                             <button onClick={exportLogs} title="Export CSV"
                                                 className="h-8 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 transition-colors flex items-center gap-1.5 text-[10px] font-black shrink-0">
-                                                <FontAwesomeIcon icon={faDownload} className="text-[9px]" />
+                                                <Download className="text-[9px]" />
                                                 <span className="hidden sm:inline">CSV</span>
                                             </button>
                                             <button onClick={clearLogs} title="Hapus semua log"
                                                 className="h-8 px-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-rose-500 hover:border-rose-500/30 transition-colors flex items-center gap-1.5 text-[10px] font-black shrink-0">
-                                                <FontAwesomeIcon icon={faTrashAlt} className="text-[9px]" />
+                                                <Trash2 className="text-[9px]" />
                                                 <span className="hidden sm:inline">Hapus</span>
                                             </button>
                                         </>
@@ -461,7 +455,7 @@ export default function TasksPage() {
                                         <div key={log.id} className="p-3 sm:p-4 flex items-start sm:items-center justify-between gap-3 transition-colors hover:bg-[var(--color-surface-alt)]/20">
                                             <div className="flex items-start sm:items-center gap-3 sm:gap-4 min-w-0">
                                                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${log.status === 'success' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-rose-500/10 text-rose-500'}`}>
-                                                    <FontAwesomeIcon icon={log.status === 'success' ? faCircleCheck : faCircleXmark} className="text-xs" />
+                                                    { log.status === 'success' ? <CircleCheck className="text-xs" /> : <CircleX className="text-xs" /> }
                                                 </div>
                                                 <div className="min-w-0">
                                                     <p className="text-[11px] font-black text-[var(--color-text)] truncate">{taskInfo?.name || 'Unknown Task'}</p>
@@ -491,9 +485,9 @@ export default function TasksPage() {
 
                     {/* Sidebar */}
                     <div className="space-y-4 lg:order-last order-first">
-                        <div className="glass rounded-[1.5rem] border border-[var(--color-border)] p-5">
+                        <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] p-5">
                             <div className="flex items-center gap-3 mb-4">
-                                <FontAwesomeIcon icon={faClock} className="text-[var(--color-text-muted)] text-lg" />
+                                <Clock className="text-[var(--color-text-muted)] text-lg" />
                                 <h3 className="font-black text-sm text-[var(--color-text)]">Jadwal Otomatis (Cron)</h3>
                             </div>
                             <div className="space-y-4 relative">
@@ -513,7 +507,7 @@ export default function TasksPage() {
                         </div>
 
                         {/* Log stats */}
-                        <div className="glass rounded-[1.5rem] border border-[var(--color-border)] p-5 space-y-3">
+                        <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] p-5 space-y-3">
                             <h3 className="font-black text-sm text-[var(--color-text)]">Statistik Log</h3>
                             {[
                                 { label: 'Total eksekusi', value: logs.length },
@@ -528,7 +522,7 @@ export default function TasksPage() {
                         </div>
 
                         <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600/90 text-[11px] leading-relaxed flex gap-3">
-                            <FontAwesomeIcon icon={faTriangleExclamation} className="mt-0.5 shrink-0" />
+                            <TriangleAlert className="mt-0.5 shrink-0" />
                             <p>Menjalankan fungsi secara manual dapat memberatkan database. Pastikan tidak ada user lain yang sedang melakukan ekspor data masif.</p>
                         </div>
                     </div>

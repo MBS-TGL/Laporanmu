@@ -1,26 +1,23 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
+import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from 'react'
 import { createPortal } from 'react-dom'
 import { useNavigate, useParams } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-    faPen, faFilter, faGlobe, faEye, faImage, faTags, faUserPen,
-    faHashtag, faClock, faCheck, faXmark, faSpinner, faPlus,
-    faArrowUpRightFromSquare, faMagicWandSparkles, faChevronLeft,
-    faCloudArrowUp, faTriangleExclamation, faTrash, faAlignLeft,
-    faBookOpen, faNewspaper, faFloppyDisk, faUser, faChevronDown,
-    faEyeSlash, faShareNodes, faRotateLeft, faCheckCircle,
-    faMoon, faCloudRain, faCoffee, faLeaf,
-    faBackward, faPlay, faPause, faForward, faMusic, faKeyboard, faRepeat,
-    faArrowRight, faCircleInfo, faMaximize
-} from '@fortawesome/free-solid-svg-icons'
+    ArrowRight, Bold, BookOpen, Check, ChevronLeft, Clock, CloudRain, CloudUpload,
+    Coffee, ExternalLink, Eye, EyeOff, FastForward, Funnel, Globe, Hash, Image, Info,
+    Italic, Keyboard, Leaf, Link, LoaderCircle, Maximize2, Moon, Music, Newspaper,
+    Pause, Pen, Play, Repeat, Rewind, RotateCcw, Save, Share2, Tags, TextAlignStart,
+    Trash2, TriangleAlert, User, UserPen, WandSparkles, X
+} from 'lucide-react'
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import Breadcrumb from '@shared/components/Breadcrumb'
 import { useToast } from '@context/Toast'
 import { useAuth } from '@context/Auth'
 import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
-import ReactQuill from 'react-quill-new'
 import 'react-quill-new/dist/quill.snow.css'
+
+// Quill (~160 KB) di-code-split: hanya diunduh saat halaman editor dibuka
+const ReactQuill = lazy(() => import('react-quill-new'))
 import { useSchoolSettings } from '@context/SchoolSettings'
 import MediaLibraryModal from '@features/news/components/MediaLibraryModal'
 import Modal from '@shared/components/Modal'
@@ -284,10 +281,10 @@ export default function NewsEditorPage() {
 
     // ── Sultans Feature: Zen Ambience ──
     const ambienceOptions = [
-        { id: 'none', label: 'None', icon: faMoon },
-        { id: 'rain', label: 'Rainy Day', icon: faCloudRain, url: 'https://actions.google.com/sounds/v1/weather/rain_on_roof.ogg' },
-        { id: 'cafe', label: 'Library', icon: faCoffee, url: 'https://actions.google.com/sounds/v1/ambiences/coffee_shop.ogg' },
-        { id: 'forest', label: 'Nature', icon: faLeaf, url: 'https://assets.mixkit.co/active_storage/sfx/2431/2431-preview.mp3' } // Better Forest birds
+        { id: 'none', label: 'None', icon: Moon },
+        { id: 'rain', label: 'Rainy Day', icon: CloudRain, url: 'https://actions.google.com/sounds/v1/weather/rain_on_roof.ogg' },
+        { id: 'cafe', label: 'Library', icon: Coffee, url: 'https://actions.google.com/sounds/v1/ambiences/coffee_shop.ogg' },
+        { id: 'forest', label: 'Nature', icon: Leaf, url: 'https://assets.mixkit.co/active_storage/sfx/2431/2431-preview.mp3' } // Better Forest birds
     ];
 
     const [ambience, setAmbience] = useState({ type: 'none', playing: false, url: '', title: '', volume: 0.4, repeat: true });
@@ -886,11 +883,11 @@ export default function NewsEditorPage() {
         if (!isOpen) return null
         return createPortal(
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-                <div className="absolute inset-0 bg-black/40 backdrop-blur-[4px] animate-in fade-in duration-300" onClick={onClose} />
-                <div className="relative w-full max-w-[380px] bg-[var(--color-surface)] rounded-[2.5rem] border border-[var(--color-border)] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+                <div className="absolute inset-0 bg-black/40 animate-in fade-in duration-300" onClick={onClose} />
+                <div className="relative w-full max-w-[380px] bg-[var(--color-surface)] rounded-[2.5rem] border border-[var(--color-border)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-300">
                     <div className="p-8 text-center pb-6">
                         <div className="w-14 h-14 rounded-2xl bg-rose-500/10 flex items-center justify-center text-rose-500 text-xl mx-auto mb-6">
-                            <FontAwesomeIcon icon={faTriangleExclamation} />
+                            <TriangleAlert />
                         </div>
                         <h3 className="text-xl font-black text-[var(--color-text)] mb-3 tracking-tight">Batalkan Penulisan?</h3>
                         <p className="text-[12px] font-bold text-[var(--color-text-muted)] leading-relaxed px-4 opacity-80">
@@ -903,7 +900,7 @@ export default function NewsEditorPage() {
                             Batal
                         </button>
                         <button onClick={onConfirm}
-                            className="flex-1 h-11 rounded-xl bg-rose-500 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-rose-500/20 hover:brightness-110 active:scale-95 transition-all">
+                            className="flex-1 h-11 rounded-xl bg-rose-500 text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 active:scale-95 transition-all">
                             Ya, Buang
                         </button>
                     </div>
@@ -963,7 +960,7 @@ export default function NewsEditorPage() {
                     <div className="flex items-center justify-between p-4 bg-amber-500/10 border border-amber-500/20 rounded-[1.5rem] animate-in fade-in slide-in-from-top-4">
                         <div className="flex items-center gap-4 px-2">
                             <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-600">
-                                <FontAwesomeIcon icon={faTriangleExclamation} />
+                                <TriangleAlert />
                             </div>
                             <div>
                                 <p className="text-[10px] font-black uppercase tracking-widest text-amber-700">Draft Ditemukan!</p>
@@ -972,7 +969,7 @@ export default function NewsEditorPage() {
                         </div>
                         <div className="flex items-center gap-3">
                             <button onClick={discardDraft} className="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-rose-500 hover:bg-rose-500/5 rounded-xl transition-all">Abaikan</button>
-                            <button onClick={recoverDraft} className="px-6 py-3 bg-amber-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl shadow-lg shadow-amber-500/20 active:scale-95 transition-all">Pulihkan Konten</button>
+                                <button onClick={recoverDraft} className="px-6 py-3 bg-amber-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl shadow-lg active:scale-95 transition-all">Pulihkan Konten</button>
                         </div>
                     </div>
                 )}
@@ -988,7 +985,7 @@ export default function NewsEditorPage() {
                     <div className="flex items-center justify-between gap-3 min-w-0">
                         <div className="flex items-center gap-2 md:gap-4 min-w-0">
                             <button onClick={handleGoBack} className="shrink-0 w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-xl md:rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
-                                <FontAwesomeIcon icon={faChevronLeft} className="text-xs md:text-sm" />
+                                <ChevronLeft className="text-xs md:text-sm" />
                             </button>
                             <h1 className="text-lg md:text-2xl font-black font-heading tracking-tight text-[var(--color-text)] truncate">
                                 {isEdit ? 'Edit Informasi' : 'Tulis Informasi Baru'}
@@ -1001,7 +998,7 @@ export default function NewsEditorPage() {
                                 {collaborators.map((user, idx) => (
                                     <div key={idx} className="relative group cursor-help">
                                         {user.avatar_url ? (
-                                            <img src={user.avatar_url} className="w-8 h-8 rounded-full border-2 border-[var(--color-surface)] shadow-sm object-cover" alt={user.name} />
+                                            <img src={user.avatar_url} className="w-8 h-8 rounded-full border-2 border-[var(--color-surface)] shadow-sm object-cover" alt={user.name} loading="lazy" decoding="async" />
                                         ) : (
                                             <div className="w-8 h-8 rounded-full border-2 border-[var(--color-surface)] bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center text-[10px] font-black shadow-sm">
                                                 {user.name.charAt(0).toUpperCase()}
@@ -1032,8 +1029,8 @@ export default function NewsEditorPage() {
                                 Batal
                             </button>
                             <button type="button" onClick={handleSave} disabled={isSaving || !form.title.trim() || !form.content.trim()}
-                                className="h-9 md:h-10 px-4 md:px-6 rounded-xl bg-[var(--color-primary)] text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none shadow-lg shadow-[var(--color-primary)]/20">
-                                {isSaving ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" /> : <FontAwesomeIcon icon={faFloppyDisk} />}
+                                className="h-9 md:h-10 px-4 md:px-6 rounded-xl bg-[var(--color-primary)] text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none shadow-lg">
+                                {isSaving ? <LoaderCircle className="animate-spin" /> : <Save />}
                                 <span className="hidden xs:inline">{isSaving ? 'Menyimpan...' : 'Simpan'}</span>
                                 <span className="xs:hidden">{isSaving ? '...' : (isEdit ? 'Update' : 'Kirim')}</span>
                             </button>
@@ -1042,10 +1039,10 @@ export default function NewsEditorPage() {
                 </div>
 
                 {/* ── Mobile Sticky Footer ── */}
-                <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] p-4 bg-[var(--color-surface)]/80 backdrop-blur-md border-t border-[var(--color-border)] shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.1)] flex items-center gap-3">
+                <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] p-4 bg-[var(--color-surface)] border-t border-[var(--color-border)] shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.1)] flex items-center gap-3">
                     <button type="button" onClick={handleSave} disabled={isSaving || !form.title.trim() || !form.content.trim()}
-                        className="flex-1 h-12 rounded-2xl bg-[var(--color-primary)] text-white text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg shadow-[var(--color-primary)]/20 active:scale-95 transition-all">
-                        {isSaving ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" /> : <FontAwesomeIcon icon={faFloppyDisk} />}
+                        className="flex-1 h-12 rounded-2xl bg-[var(--color-primary)] text-white text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all">
+                        {isSaving ? <LoaderCircle className="animate-spin" /> : <Save />}
                         <span>{isSaving ? 'Menyimpan...' : (isEdit ? 'Update Informasi' : 'Terbitkan Sekarang')}</span>
                     </button>
                 </div>
@@ -1126,14 +1123,14 @@ export default function NewsEditorPage() {
                         {/* Tab Nav */}
                         <div className="flex items-center justify-between sm:justify-start gap-1 md:gap-2 p-1 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl w-full sm:w-fit shadow-sm overflow-hidden">
                             {[
-                                { id: 'content', label: 'Konten', icon: faPen },
-                                { id: 'settings', label: 'Pengaturan', icon: faFilter },
-                                { id: 'seo', label: 'SEO', icon: faGlobe },
-                                ...(!isSidePreview ? [{ id: 'preview', label: 'Preview', icon: faEye }] : []),
+                                { id: 'content', label: 'Konten', icon: Pen },
+                                { id: 'settings', label: 'Pengaturan', icon: Funnel },
+                                { id: 'seo', label: 'SEO', icon: Globe },
+                                ...(!isSidePreview ? [{ id: 'preview', label: 'Preview', icon: Eye }] : []),
                             ].map(t => (
                                 <button key={t.id} type="button" onClick={() => setActiveTab(t.id)}
                                     className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-2 sm:px-4 py-2 rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-tight sm:tracking-widest transition-all duration-300 ${activeTab === t.id ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] active' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)]'}`}>
-                                    <FontAwesomeIcon icon={t.icon} className="text-[10px] sm:text-xs" />
+                                    <t.icon className="text-[10px] sm:text-xs" />
                                     <span className="whitespace-nowrap">{t.label}</span>
                                 </button>
                             ))}
@@ -1149,14 +1146,14 @@ export default function NewsEditorPage() {
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-3">
                                                 <label className="text-xs font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-80">
-                                                    <FontAwesomeIcon icon={faNewspaper} className="mr-2" />Judul Informasi <span className="text-rose-500">*</span>
+                                                    <Newspaper className="mr-2" />Judul Informasi <span className="text-rose-500">*</span>
                                                 </label>
                                                 <button
                                                     type="button"
                                                     onClick={() => setIsAiModalOpen(true)}
                                                     className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-600 text-[9px] font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all active:scale-95 animate-pulse-slow"
                                                 >
-                                                    <FontAwesomeIcon icon={faMagicWandSparkles} className="text-[8px]" />
+                                                    <WandSparkles className="text-[8px]" />
                                                     ASISTEN AI
                                                 </button>
                                             </div>
@@ -1174,7 +1171,7 @@ export default function NewsEditorPage() {
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
                                             <label className="text-xs font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-80">
-                                                <FontAwesomeIcon icon={faAlignLeft} className="mr-2" />Ringkasan Singkat
+                                                <TextAlignStart className="mr-2" />Ringkasan Singkat
                                             </label>
                                             <div className="flex items-center gap-3">
                                                 <button type="button"
@@ -1191,7 +1188,7 @@ export default function NewsEditorPage() {
                                                         addToast('Ringkasan SEO berhasil diekstrak dari konten.', 'success');
                                                     }}
                                                     className="text-[9px] font-black uppercase tracking-widest text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] flex items-center gap-1.5 transition-all bg-[var(--color-primary)]/5 px-2 py-1 rounded-lg hover:bg-[var(--color-primary)]/10">
-                                                    <FontAwesomeIcon icon={faMagicWandSparkles} />
+                                                    <WandSparkles />
                                                     Generate Otomatis
                                                 </button>
                                                 <span className={`text-[10px] font-black px-2.5 py-1 rounded-full ${(form.excerpt?.length || 0) > 160 ? 'bg-rose-500/10 text-rose-500' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)]'}`}>
@@ -1209,25 +1206,25 @@ export default function NewsEditorPage() {
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between mt-6 mb-2">
                                             <label className="text-xs font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-80">
-                                                <FontAwesomeIcon icon={faBookOpen} className="mr-2" />Isi Informasi <span className="text-rose-500">*</span>
+                                                <BookOpen className="mr-2" />Isi Informasi <span className="text-rose-500">*</span>
                                             </label>
                                             {/* Preview toggle desktop */}
                                             <div className="flex items-center gap-2">
                                                 <div className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-500/5 border border-slate-500/10 text-[var(--color-text-muted)] text-[9px] font-black uppercase tracking-widest">
-                                                    <FontAwesomeIcon icon={faClock} className="text-[var(--color-primary)]/50" />
+                                                    <Clock className="text-[var(--color-primary)]/50" />
                                                     {calculatedReadTime} menit baca
                                                 </div>
 
                                                 <button type="button" onClick={() => setIsSidePreview(p => !p)}
-                                                    className={`hidden xl:flex items-center gap-2 h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 border ${isSidePreview ? 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]' : 'bg-[var(--color-primary)]/10 border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white shadow-lg shadow-[var(--color-primary)]/10'}`}>
-                                                    <FontAwesomeIcon icon={isSidePreview ? faEyeSlash : faEye} />
+                                                    className={`hidden xl:flex items-center gap-2 h-9 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 border ${isSidePreview ? 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]' : 'bg-[var(--color-primary)]/10 border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white shadow-lg'}`}>
+                                                    {isSidePreview ? <EyeOff /> : <Eye />}
                                                     <span>{isSidePreview ? 'Tutup Preview' : 'Live Preview'}</span>
                                                 </button>
 
                                                 <button type="button" onClick={() => setIsZenMode(true)}
                                                     className="flex items-center gap-2 px-4 h-9 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 hover:bg-[var(--color-primary)] hover:text-white transition-all shadow-sm font-black text-[10px] uppercase tracking-widest group"
                                                     title="Focus Zen Mode">
-                                                    <FontAwesomeIcon icon={faMaximize} className="text-xs group-hover:scale-110 transition-transform" />
+                                                    <Maximize2 className="text-xs group-hover:scale-110 transition-transform" />
                                                     <span>Focus Mode</span>
                                                 </button>
                                             </div>
@@ -1253,9 +1250,9 @@ export default function NewsEditorPage() {
 
                                             {/* Command Strip UI (Enterprise Style) */}
                                             <div className={`absolute top-[42px] inset-x-0 z-[30] flex justify-center transition-all duration-300 ease-out ${commandStrip.open ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'}`}>
-                                                <div className="mx-4 mt-2 p-2 flex items-center gap-2 bg-[var(--color-surface)] border border-[var(--color-border)] shadow-2xl rounded-2xl min-w-[400px] max-w-[600px] w-full animate-in zoom-in-95">
+                                                <div className="mx-4 mt-2 p-2 flex items-center gap-2 bg-[var(--color-surface)] border border-[var(--color-border)] shadow-xl rounded-2xl min-w-[400px] max-w-[600px] w-full animate-in zoom-in-95">
                                                     <div className={`w-8 h-8 shrink-0 rounded-xl flex items-center justify-center text-[10px] shadow-sm ${commandStrip.type === 'link' ? 'bg-blue-500/10 text-blue-500' : 'bg-rose-500/10 text-rose-500'}`}>
-                                                        <FontAwesomeIcon icon={commandStrip.type === 'link' ? faPen : faBookOpen} />
+                                                        {commandStrip.type === 'link' ? <Pen /> : <BookOpen />}
                                                     </div>
 
                                                     {commandStrip.type === 'link' && (
@@ -1296,7 +1293,7 @@ export default function NewsEditorPage() {
 
                                                     <div className="flex items-center gap-1 shrink-0">
                                                         <button type="button" onClick={() => setCommandStrip(s => ({ ...s, open: false }))}
-                                                            className="w-8 h-8 rounded-lg text-slate-400 hover:bg-slate-100 transition-all text-[10px]" title="Batal (Esc)"><FontAwesomeIcon icon={faRotateLeft} /></button>
+                                                            className="w-8 h-8 rounded-lg text-slate-400 hover:bg-slate-100 transition-all text-[10px]" title="Batal (Esc)"><RotateCcw /></button>
                                                         <button type="button" disabled={!commandStrip.url}
                                                             onClick={() => {
                                                                 const event = new KeyboardEvent('keydown', { key: 'Enter' });
@@ -1315,7 +1312,7 @@ export default function NewsEditorPage() {
                                                                 setCommandStrip(s => ({ ...s, open: false }));
                                                                 addToast('Berhasil disisipkan', 'success');
                                                             }}
-                                                            className={`h-8 px-4 rounded-lg text-[9px] font-black uppercase tracking-widest text-white shadow-md transition-all active:scale-95 ${commandStrip.type === 'link' ? 'bg-blue-500 shadow-blue-500/10' : 'bg-rose-500 shadow-rose-500/10'}`}>OK</button>
+                                                            className={`h-8 px-4 rounded-lg text-[9px] font-black uppercase tracking-widest text-white shadow-md transition-all active:scale-95 ${commandStrip.type === 'link' ? 'bg-blue-500' : 'bg-rose-500'}`}>OK</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1325,11 +1322,11 @@ export default function NewsEditorPage() {
                                                 <div className="absolute z-[40] flex items-center gap-1 p-1 bg-slate-900 shadow-xl rounded-xl border border-white/10 animate-in fade-in zoom-in-95 duration-200"
                                                     style={{ left: bubbleMenu.x, top: bubbleMenu.y, transform: 'translateY(-100%)' }}>
                                                     <button type="button" onClick={() => quillRef.current.getEditor().format('bold', !quillRef.current.getEditor().getFormat().bold)}
-                                                        className="w-8 h-8 rounded-lg text-white hover:bg-white/20 transition-all flex items-center justify-center text-xs"><FontAwesomeIcon icon={faBold} /></button>
+                                                        className="w-8 h-8 rounded-lg text-white hover:bg-white/20 transition-all flex items-center justify-center text-xs"><Bold /></button>
                                                     <button type="button" onClick={() => quillRef.current.getEditor().format('italic', !quillRef.current.getEditor().getFormat().italic)}
-                                                        className="w-8 h-8 rounded-lg text-white hover:bg-white/20 transition-all flex items-center justify-center text-xs"><FontAwesomeIcon icon={faItalic} /></button>
+                                                        className="w-8 h-8 rounded-lg text-white hover:bg-white/20 transition-all flex items-center justify-center text-xs"><Italic /></button>
                                                     <button type="button" onClick={() => handlers.link.call({ quill: quillRef.current.getEditor() })}
-                                                        className="w-8 h-8 rounded-lg text-white hover:bg-white/20 transition-all flex items-center justify-center text-xs"><FontAwesomeIcon icon={faLink} /></button>
+                                                        className="w-8 h-8 rounded-lg text-white hover:bg-white/20 transition-all flex items-center justify-center text-xs"><Link /></button>
                                                     <div className="w-[1px] h-4 bg-white/10 mx-1" />
                                                     <button type="button" onClick={() => quillRef.current.getEditor().format('header', 2)}
                                                         className="w-8 h-8 rounded-lg text-white hover:bg-white/20 transition-all flex items-center justify-center text-[10px] font-black">H2</button>
@@ -1337,20 +1334,22 @@ export default function NewsEditorPage() {
                                             )}
 
 
-                                            <ReactQuill theme="snow" value={form.content} ref={quillRef}
-                                                placeholder="Tulis detail informasi di sini..."
-                                                onChange={handleContentChange}
-                                                modules={modules}
-                                                className="flex-1"
-                                            />
+                                            <Suspense fallback={<div className="flex-1 min-h-[300px] animate-pulse bg-[var(--color-surface-alt)] rounded-xl" />}>
+                                                <ReactQuill theme="snow" value={form.content} ref={quillRef}
+                                                    placeholder="Tulis detail informasi di sini..."
+                                                    onChange={handleContentChange}
+                                                    modules={modules}
+                                                    className="flex-1"
+                                                />
+                                            </Suspense>
                                             <div className="flex items-center justify-between p-4 bg-[var(--color-surface-alt)]/50 border-t border-[var(--color-border)] rounded-b-[1.5rem]">
                                                 <div className="flex items-center gap-4">
                                                     <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] group cursor-help transition-all" title="Target: > 100 kata untuk SEO yang baik">
-                                                        <FontAwesomeIcon icon={faAlignLeft} className={`${(form.content?.replace(/<[^>]*>/g, '').length || 0) > 500 ? 'text-emerald-500' : 'text-[var(--color-primary)]/50'}`} />
+                                                        <TextAlignStart className={`${(form.content?.replace(/<[^>]*>/g, '').length || 0) > 500 ? 'text-emerald-500' : 'text-[var(--color-primary)]/50'}`} />
                                                         <span>{form.content?.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').trim().split(/\s+/).filter(Boolean).length || 0} Kata</span>
                                                     </div>
                                                     <div className="hidden sm:flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">
-                                                        <FontAwesomeIcon icon={faHashtag} />
+                                                        <Hash />
                                                         <span>{form.content?.length || 0} Karakter</span>
                                                     </div>
                                                 </div>
@@ -1393,7 +1392,7 @@ export default function NewsEditorPage() {
 
                                                     <div className="hidden sm:flex items-center gap-2 text-[11px] font-bold text-[var(--color-text-muted)] py-1.5 px-3 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)]">
                                                         <div className="w-6 h-6 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)]">
-                                                            <FontAwesomeIcon icon={faUser} className="text-[10px]" />
+                                                            <User className="text-[10px]" />
                                                         </div>
                                                         <span className="opacity-80 font-heading">{form.display_name || 'Admin'}</span>
                                                     </div>
@@ -1417,7 +1416,7 @@ export default function NewsEditorPage() {
                                                     placeholder="Pilih atau ketik kategori..."
                                                     className="w-full h-10 px-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] focus:border-[var(--color-primary)] text-sm font-bold outline-none transition-all"
                                                 />
-                                                <FontAwesomeIcon icon={faTags} className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] opacity-40 pointer-events-none" />
+                                                <Tags className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-muted)] opacity-40 pointer-events-none" />
 
                                                 {showTagSuggestions && existingTags.length > 0 && (
                                                     <div className="absolute z-50 top-full left-0 right-0 mt-2 bg-white border border-[var(--color-border)] rounded-xl shadow-xl py-2 animate-in fade-in slide-in-from-top-2 duration-200">
@@ -1457,7 +1456,7 @@ export default function NewsEditorPage() {
                                             <div className="flex items-center justify-between">
                                                 <label className="text-xs font-black uppercase tracking-widest text-[var(--color-text-muted)]">Slug URL</label>
                                                 <button type="button" onClick={refreshSlug} className="text-[9px] font-black uppercase tracking-widest text-[var(--color-primary)] hover:underline flex items-center gap-1">
-                                                    <FontAwesomeIcon icon={faRotateLeft} className="text-[8px]" /> Sinkron Judul
+                                                    <RotateCcw className="text-[8px]" /> Sinkron Judul
                                                 </button>
                                             </div>
                                             <div className="flex group">
@@ -1488,10 +1487,10 @@ export default function NewsEditorPage() {
                                             className={`h-32 relative group cursor-pointer overflow-hidden rounded-[1.25rem] border-2 border-dashed transition-all duration-300 ${isDragging ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5 scale-[1.01]' : 'border-[var(--color-border)] hover:border-[var(--color-primary)]/50 bg-[var(--color-surface-alt)]/50'}`}>
                                             {imagePreview ? (
                                                 <>
-                                                    <img src={imagePreview} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Thumbnail" />
-                                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 backdrop-blur-[2px]">
+                                                    <img src={imagePreview} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Thumbnail" loading="lazy" decoding="async" />
+                                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                                                         <button type="button" onClick={() => fileInputRef.current?.click()} className="group/btn relative px-5 py-2.5 bg-white text-black text-[10px] font-black uppercase tracking-widest rounded-xl shadow-xl flex items-center gap-2 hover:bg-[var(--color-primary)] hover:text-white transition-all">
-                                                            <FontAwesomeIcon icon={faPen} /> Ganti
+                                                            <Pen /> Ganti
                                                         </button>
                                                         <button type="button"
                                                             onClick={(e) => {
@@ -1501,14 +1500,14 @@ export default function NewsEditorPage() {
                                                                 setForm(f => ({ ...f, image_url: '' }));
                                                             }}
                                                             className="w-10 h-10 bg-rose-500 text-white rounded-xl shadow-xl flex items-center justify-center hover:bg-rose-600 transition-all" title="Hapus Gambar">
-                                                            <FontAwesomeIcon icon={faTrash} />
+                                                            <Trash2 />
                                                         </button>
                                                     </div>
                                                 </>
                                             ) : (
                                                 <div className="h-full flex items-center justify-center p-6 text-center gap-6">
                                                     <div className="w-12 h-12 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:scale-110 group-hover:bg-[var(--color-primary)]/10 group-hover:text-[var(--color-primary)] group-hover:border-[var(--color-primary)]/30 transition-all shadow-sm">
-                                                        <FontAwesomeIcon icon={faCloudArrowUp} className="text-xl" />
+                                                        <CloudUpload className="text-xl" />
                                                     </div>
                                                     <div className="text-left">
                                                         <p className="text-[11px] font-black text-[var(--color-text)] uppercase tracking-widest mb-1">{isDragging ? 'Lepas Gambar' : 'Klik atau Seret Gambar'}</p>
@@ -1522,18 +1521,18 @@ export default function NewsEditorPage() {
                                         <div className="flex items-center justify-between mt-2">
                                             {imageError ? (
                                                 <p className="text-xs font-bold text-rose-500 flex items-center gap-1.5">
-                                                    <FontAwesomeIcon icon={faTriangleExclamation} /> {imageError}
+                                                    <TriangleAlert /> {imageError}
                                                 </p>
                                             ) : <div className="flex items-center gap-2">
                                                 <button type="button" onClick={() => setIsMediaModalOpen(true)} className="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-[var(--color-primary)] bg-[var(--color-primary)]/5 hover:bg-[var(--color-primary)]/10 rounded-xl transition-colors flex items-center gap-2">
-                                                    <FontAwesomeIcon icon={faImage} /> Pilih dari Galeri
+                                                    <Image /> Pilih dari Galeri
                                                 </button>
                                             </div>}
 
                                             {imagePreview && (
                                                 <button type="button" onClick={(e) => { e.stopPropagation(); setImagePreview(null); setImageFile(null); setForm(f => ({ ...f, image_url: '' })) }}
                                                     className="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-rose-500 hover:bg-rose-500/10 rounded-xl transition-colors flex items-center gap-2">
-                                                    <FontAwesomeIcon icon={faTrash} /> Hapus Gambar
+                                                    <Trash2 /> Hapus Gambar
                                                 </button>
                                             )}
                                         </div>
@@ -1614,8 +1613,8 @@ export default function NewsEditorPage() {
                                             <div className="flex items-center justify-between">
                                                 <h4 className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">SEO Analysis Checklist</h4>
                                                 <button type="button" onClick={generateAiSeo} disabled={isGeneratingSeo || !form.content}
-                                                    className="h-8 px-4 rounded-lg bg-indigo-500 text-white text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all shadow-lg shadow-indigo-500/20 disabled:opacity-50 flex items-center justify-center gap-2 whitespace-nowrap">
-                                                    {isGeneratingSeo ? <FontAwesomeIcon icon={faSpinner} className="animate-spin text-[8px]" /> : <FontAwesomeIcon icon={faMagicWandSparkles} className="text-[8px]" />}
+                                                    className="h-8 px-4 rounded-lg bg-indigo-500 text-white text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all shadow-lg disabled:opacity-50 flex items-center justify-center gap-2 whitespace-nowrap">
+                                                    {isGeneratingSeo ? <LoaderCircle className="animate-spin text-[8px]" /> : <WandSparkles className="text-[8px]" />}
                                                     {isGeneratingSeo ? 'Gen...' : 'AI Optimizer'}
                                                 </button>
                                             </div>
@@ -1623,7 +1622,7 @@ export default function NewsEditorPage() {
                                                 {seoAnalysis.map((item, idx) => (
                                                     <div key={idx} className="flex items-start gap-2.5 text-[9px] sm:text-[10px]">
                                                         <div className={`w-3.5 h-3.5 shrink-0 mt-0.5 rounded-full flex items-center justify-center text-[6px] ${item.st === 'success' ? 'bg-emerald-500 text-white' : item.st === 'error' ? 'bg-rose-500 text-white' : 'bg-amber-500 text-white'}`}>
-                                                            <FontAwesomeIcon icon={item.st === 'success' ? faCheck : item.st === 'error' ? faXmark : faTriangleExclamation} />
+                                                            {item.st === 'success' ? <Check /> : item.st === 'error' ? <X /> : <TriangleAlert />}
                                                         </div>
                                                         <span className={`font-bold leading-tight ${item.st === 'success' ? 'text-emerald-700/80' : item.st === 'error' ? 'text-rose-700/80' : 'text-amber-700/80'}`}>{item.label}</span>
                                                     </div>
@@ -1674,7 +1673,7 @@ export default function NewsEditorPage() {
                                         <div className="space-y-4">
                                             <div className="flex items-center justify-between border-b border-[var(--color-border)] pb-2">
                                                 <p className="text-[11px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-2">
-                                                    <FontAwesomeIcon icon={seoView === 'search' ? faGlobe : faShareNodes} className="opacity-50" />
+                                                    {seoView === 'search' ? <Globe className="opacity-50" /> : <Share2 className="opacity-50" />}
                                                     {seoView === 'search' ? 'Google Search Preview' : 'Social Media Card Preview'}
                                                 </p>
                                                 <span className="text-[9px] font-black text-emerald-500 bg-emerald-500/10 px-2.5 py-1 rounded-full uppercase tracking-tighter whitespace-nowrap">Live Simulation</span>
@@ -1685,9 +1684,9 @@ export default function NewsEditorPage() {
                                                     <div className="flex items-center gap-3 mb-2">
                                                         <div className="w-7 h-7 rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 overflow-hidden shadow-sm">
                                                             {settings.logo_url ? (
-                                                                <img src={settings.logo_url} className="w-full h-full object-contain p-0.5" alt="Favicon" />
+                                                                <img src={settings.logo_url} className="w-full h-full object-contain p-0.5" alt="Favicon" loading="lazy" decoding="async" />
                                                             ) : (
-                                                                <FontAwesomeIcon icon={faGlobe} className="text-xs text-gray-400" />
+                                                                <Globe className="text-xs text-gray-400" />
                                                             )}
                                                         </div>
                                                         <div className="flex flex-col min-w-0">
@@ -1708,10 +1707,10 @@ export default function NewsEditorPage() {
                                             ) : (
                                                 <div className="max-w-[380px] rounded-xl bg-white dark:bg-[#202c33] border border-gray-200 dark:border-gray-700 overflow-hidden shadow-xl animate-in zoom-in-95 duration-500">
                                                     {imagePreview ? (
-                                                        <img src={imagePreview} className="w-full aspect-[2/1] object-cover" alt="Card" />
+                                                        <img src={imagePreview} className="w-full aspect-[2/1] object-cover" alt="Card" loading="lazy" decoding="async" />
                                                     ) : (
                                                         <div className="w-full aspect-[2/1] bg-gray-100 flex items-center justify-center text-gray-300">
-                                                            <FontAwesomeIcon icon={faImage} size="2x" />
+                                                            <Image size={32} />
                                                         </div>
                                                     )}
                                                     <div className="p-3 border-l-4 border-emerald-500 bg-[#f0f2f5] dark:bg-[#111b21]/50 space-y-0.5">
@@ -1739,11 +1738,11 @@ export default function NewsEditorPage() {
                             {/* ── MOBILE PREVIEW TAB ── */}
                             {activeTab === 'preview' && (
                                 <div className="space-y-6 animate-in fade-in duration-300 max-w-3xl mx-auto">
-                                    {imagePreview && <img src={imagePreview} className="w-full h-64 md:h-80 object-cover rounded-[2rem] shadow-xl border border-[var(--color-border)]" alt="Preview" />}
+                                    {imagePreview && <img src={imagePreview} className="w-full h-64 md:h-80 object-cover rounded-[2rem] shadow-xl border border-[var(--color-border)]" alt="Preview" loading="lazy" decoding="async" />}
                                     <div className="flex items-center gap-3 flex-wrap">
                                         <span className="px-4 py-1.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-black uppercase tracking-widest">{form.tag}</span>
                                         <span className="text-[var(--color-text-muted)] text-sm font-bold flex items-center gap-2">
-                                            <FontAwesomeIcon icon={faClock} className="opacity-50" /> {calculatedReadTime} menit baca
+                                            <Clock className="opacity-50" /> {calculatedReadTime} menit baca
                                         </span>
                                     </div>
                                     <h2 className="text-3xl md:text-4xl font-black font-heading leading-tight text-[var(--color-text)]">
@@ -1751,7 +1750,7 @@ export default function NewsEditorPage() {
                                     </h2>
                                     <div className="flex items-center gap-4 py-6 border-y border-[var(--color-border)]">
                                         <div className="w-12 h-12 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-xl text-[var(--color-text-muted)]">
-                                            <FontAwesomeIcon icon={faUser} />
+                                            <User loading="lazy" decoding="async" />
                                         </div>
                                         <div className="flex flex-col">
                                             <span className="text-sm font-black text-[var(--color-text)]">{form.display_name || 'Admin Platform'}</span>
@@ -1786,18 +1785,18 @@ export default function NewsEditorPage() {
                             <div className="flex-1 overflow-y-auto custom-scrollbar p-6 bg-[var(--color-surface)] m-4 rounded-[1.5rem] border border-[var(--color-border)] shadow-sm">
                                 <div className="space-y-6">
                                     {imagePreview && (
-                                        <img src={imagePreview} className="w-full aspect-[4/3] object-cover rounded-[1.5rem] shadow-md border border-[var(--color-border)]" alt="Preview Thumbnail" />
+                                        <img src={imagePreview} className="w-full aspect-[4/3] object-cover rounded-[1.5rem] shadow-md border border-[var(--color-border)]" alt="Preview Thumbnail" loading="lazy" decoding="async" />
                                     )}
                                     <div className="flex items-center gap-2 flex-wrap pb-2">
-                                        <span className="px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest shadow-sm shadow-[var(--color-primary)]/30">{form.tag}</span>
-                                        <span className="text-[var(--color-text-muted)] text-[11px] font-bold uppercase tracking-widest"><FontAwesomeIcon icon={faClock} className="mr-1" /> {calculatedReadTime} mnt</span>
+                                        <span className="px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest shadow-sm">{form.tag}</span>
+                                        <span className="text-[var(--color-text-muted)] text-[11px] font-bold uppercase tracking-widest"><Clock className="mr-1" /> {calculatedReadTime} mnt</span>
                                     </div>
                                     <h2 className="text-2xl font-black font-heading leading-snug text-[var(--color-text)]">
                                         {form.title || 'Judul Simulasi UI'}
                                     </h2>
                                     <div className="flex items-center gap-3 border-b border-[var(--color-border)] pb-5 pt-2 mt-4">
                                         <div className="w-10 h-10 rounded-[1rem] bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)]">
-                                            <FontAwesomeIcon icon={faUser} className="text-sm" />
+                                            <User className="text-sm" />
                                         </div>
                                         <div className="flex flex-col">
                                             <span className="text-sm font-black text-[var(--color-text)] leading-none mb-1">{form.display_name || 'Admin'}</span>
@@ -1812,22 +1811,22 @@ export default function NewsEditorPage() {
                                                     <div class="ql-video-static-preview group">
                                                         <img src="https://img.youtube.com/vi/${id.split('?')[0]}/maxresdefault.jpg" class="w-full aspect-video object-cover" />
                                                         <div class="absolute inset-0 bg-black/20 flex items-center justify-center transition-all group-hover:bg-black/40">
-                                                            <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white border border-white/30 shadow-2xl">
+                                                            <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-white border border-white/30 shadow-xl">
                                                                 <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                                                             </div>
                                                         </div>
-                                                        <div class="absolute bottom-3 left-3 px-2 py-1 bg-black/60 backdrop-blur-md rounded text-[8px] font-black text-white uppercase tracking-widest border border-white/10">Preview Only</div>
+                                                            <div class="absolute bottom-3 left-3 px-2 py-1 bg-black/60 rounded text-[8px] font-black text-white uppercase tracking-widest border border-white/10">Preview Only</div>
                                                     </div>
                                                 `)
                                                 .replace(/<a[^>]+href="(https?:\/\/www\.youtube\.com\/embed\/([^"]+))"[^>]*>.*?<\/a>/g, (match, url, id) => `
                                                     <div class="ql-video-static-preview group">
                                                         <img src="https://img.youtube.com/vi/${id.split('?')[0]}/maxresdefault.jpg" class="w-full aspect-video object-cover" />
                                                         <div class="absolute inset-0 bg-black/20 flex items-center justify-center transition-all group-hover:bg-black/40">
-                                                            <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white border border-white/30 shadow-2xl">
+                                                            <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-white border border-white/30 shadow-xl">
                                                                 <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                                                             </div>
                                                         </div>
-                                                        <div class="absolute bottom-3 left-3 px-2 py-1 bg-black/60 backdrop-blur-md rounded text-[8px] font-black text-white uppercase tracking-widest border border-white/10">Preview Only</div>
+                                                            <div class="absolute bottom-3 left-3 px-2 py-1 bg-black/60 rounded text-[8px] font-black text-white uppercase tracking-widest border border-white/10">Preview Only</div>
                                                     </div>
                                                 `)
                                         }} />
@@ -1844,10 +1843,10 @@ export default function NewsEditorPage() {
                             <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,var(--color-surface)_100%)] opacity-40 z-[1]" />
 
                             {/* Header - Adaptive & Translucent */}
-                            <div className={`sticky top-0 z-[30] bg-[var(--color-surface)]/80 backdrop-blur-xl px-4 sm:px-8 py-3 sm:py-4 flex items-center justify-between border-b border-[var(--color-border)] transition-all duration-700 ${isTyping ? 'opacity-10 pointer-events-none translate-y-[-10px]' : 'opacity-100'}`}>
+                            <div className={`sticky top-0 z-[30] bg-[var(--color-surface)] px-4 sm:px-8 py-3 sm:py-4 flex items-center justify-between border-b border-[var(--color-border)] transition-all duration-700 ${isTyping ? 'opacity-10 pointer-events-none translate-y-[-10px]' : 'opacity-100'}`}>
                                 <div className="flex items-center gap-3 sm:gap-4 overflow-hidden">
                                     <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] shrink-0">
-                                        <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="text-sm sm:text-base" />
+                                        <ExternalLink className="text-sm sm:text-base" />
                                     </div>
                                     <div className="truncate">
                                         <h2 className="text-base sm:text-xl font-black text-[var(--color-text)] tracking-tight">Focus Zen Mode</h2>
@@ -1862,7 +1861,7 @@ export default function NewsEditorPage() {
                                             <button key={opt.id} onClick={() => setAmbience({ ...ambience, type: opt.id, playing: opt.id === 'none' ? false : true, title: opt.label, url: '' })}
                                                 className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${ambience.type === opt.id ? 'bg-[var(--color-primary)] text-white shadow-lg' : 'text-slate-400 hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5'}`}
                                                 title={opt.label}>
-                                                <FontAwesomeIcon icon={opt.icon} className="text-sm" />
+                                                <opt.icon className="text-sm" />
                                             </button>
                                         ))}
 
@@ -1872,7 +1871,7 @@ export default function NewsEditorPage() {
                                             onClick={() => setTypewriterEnabled(!typewriterEnabled)}
                                             className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${typewriterEnabled ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/10' : 'text-slate-400 opacity-40'}`}
                                             title="Typewriter Sound">
-                                            <FontAwesomeIcon icon={faKeyboard} className="text-xs" />
+                                            <Keyboard className="text-xs" />
                                         </button>
 
                                         <div className="w-[1px] h-4 bg-slate-200 dark:bg-white/10 mx-1" />
@@ -1919,7 +1918,7 @@ export default function NewsEditorPage() {
                                         Score: {form.seo_score}
                                     </div>
                                     <button onClick={() => setIsZenMode(false)}
-                                        className="h-11 px-7 rounded-2xl bg-[var(--color-primary)] text-white text-[11px] font-black uppercase tracking-widest shadow-xl shadow-[var(--color-primary)]/20 active:scale-95 transition-all">
+                                        className="h-11 px-7 rounded-2xl bg-[var(--color-primary)] text-white text-[11px] font-black uppercase tracking-widest shadow-xl active:scale-95 transition-all">
                                         Simpan & Keluar Zen
                                     </button>
                                 </div>
@@ -1930,10 +1929,10 @@ export default function NewsEditorPage() {
                                 {/* Floating Navigation Map (ToC) */}
                                 {toc.length > 0 && (
                                     <div className="fixed left-8 top-32 w-64 hidden xl:block z-[20] animate-in slide-in-from-left-8 duration-700">
-                                        <div className="bg-white/40 dark:bg-slate-900/40 backdrop-blur-md rounded-3xl p-6 border border-white/20 shadow-2xl">
+                                        <div className="bg-white/40 dark:bg-slate-900/40 rounded-3xl p-6 border border-white/20 shadow-sm">
                                             <div className="flex items-center gap-3 mb-6">
                                                 <div className="w-8 h-8 rounded-xl bg-[var(--color-primary)]/20 flex items-center justify-center text-[var(--color-primary)]">
-                                                    <FontAwesomeIcon icon={faAlignLeft} className="text-sm" />
+                                                    <TextAlignStart className="text-sm" />
                                                 </div>
                                                 <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Navigate article</span>
                                             </div>
@@ -1952,7 +1951,7 @@ export default function NewsEditorPage() {
                                 {/* ── Zen Player ── */}
                                 {ambience.type !== 'none' && (
                                     <div className={`fixed right-8 bottom-8 z-[100] transition-all duration-700 group ${isTyping ? 'opacity-5 blur-sm scale-90 translate-x-4' : 'opacity-100'}`}>
-                                        <div className="relative flex items-center bg-slate-950 dark:bg-black backdrop-blur-3xl rounded-full border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.9)] transition-all duration-500 ease-out w-14 h-14 hover:w-auto hover:h-[72px] hover:px-6 overflow-hidden group-hover:rounded-[2.5rem]">
+                                        <div className="relative flex items-center bg-slate-950 dark:bg-black rounded-full border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.9)] transition-all duration-500 ease-out w-14 h-14 hover:w-auto hover:h-[72px] hover:px-6 overflow-hidden group-hover:rounded-[2.5rem]">
 
                                             {/* Vinyl Wrapper - Fixed Center */}
                                             <div className="flex items-center justify-center shrink-0 w-14 h-14 relative z-10">
@@ -1974,7 +1973,7 @@ export default function NewsEditorPage() {
                                                     }`}>
                                                     <div className="absolute inset-1 rounded-full border border-white/10" />
                                                     <div className="w-2.5 h-2.5 rounded-full bg-slate-950 border border-white/40 z-10" />
-                                                    <FontAwesomeIcon icon={faMusic} className={`text-white transition-all ${ambience.playing ? 'scale-110 opacity-70' : 'scale-90 opacity-20'
+                                                    <Music className={`text-white transition-all ${ambience.playing ? 'scale-110 opacity-70' : 'scale-90 opacity-20'
                                                         } ${ambience.type === 'rain' ? 'text-blue-400' :
                                                             ambience.type === 'cafe' ? 'text-amber-400' :
                                                                 ambience.type === 'forest' ? 'text-emerald-400' :
@@ -2016,7 +2015,7 @@ export default function NewsEditorPage() {
                                                             else if (audioRef.current) audioRef.current.currentTime -= 10;
                                                         }}
                                                         className="text-white opacity-40 hover:opacity-100 transition-colors text-[11px]">
-                                                        <FontAwesomeIcon icon={faBackward} />
+                                                        <Rewind />
                                                     </button>
 
                                                     <button
@@ -2025,7 +2024,7 @@ export default function NewsEditorPage() {
                                                             setAmbience({ ...ambience, playing: !ambience.playing });
                                                         }}
                                                         className="w-11 h-11 rounded-full bg-white text-black flex items-center justify-center text-[11px] shadow-lg hover:scale-110 active:scale-95 transition-all">
-                                                        <FontAwesomeIcon icon={ambience.playing ? faPause : faPlay} />
+                                                        {ambience.playing ? <Pause /> : <Play />}
                                                     </button>
 
                                                     <button
@@ -2035,7 +2034,7 @@ export default function NewsEditorPage() {
                                                             else if (audioRef.current) audioRef.current.currentTime += 10;
                                                         }}
                                                         className="text-white opacity-40 hover:opacity-100 transition-colors text-[11px]">
-                                                        <FontAwesomeIcon icon={faForward} />
+                                                        <FastForward />
                                                     </button>
 
                                                     <button
@@ -2044,13 +2043,13 @@ export default function NewsEditorPage() {
                                                             setAmbience({ ...ambience, repeat: !ambience.repeat });
                                                         }}
                                                         className={`text-[11px] transition-all ${ambience.repeat ? 'text-[var(--color-primary)]' : 'text-white opacity-30 hover:opacity-100'}`}>
-                                                        <FontAwesomeIcon icon={faRepeat} />
+                                                        <Repeat />
                                                     </button>
 
                                                     <div className="w-[1px] h-4 bg-white/10 mx-1" />
 
                                                     <div className="flex items-center gap-2">
-                                                        <FontAwesomeIcon icon={faMusic} className="text-[10px] text-white/20" />
+                                                        <Music className="text-[10px] text-white/20" />
                                                         <input
                                                             type="range" min="0" max="1" step="0.05"
                                                             value={ambience.volume ?? 0.4}
@@ -2085,15 +2084,17 @@ export default function NewsEditorPage() {
                                     />
 
                                     <div className="flex-1 flex flex-col zen-quill-wrapper">
-                                        <ReactQuill
-                                            theme="snow"
-                                            value={form.content}
-                                            ref={quillRef}
-                                            onChange={handleContentChange}
-                                            modules={modules}
-                                            placeholder="Mulai menulis cerita Anda di sini..."
-                                            className="flex-1"
-                                        />
+                                        <Suspense fallback={<div className="flex-1 min-h-[300px] animate-pulse bg-[var(--color-surface-alt)] rounded-xl" />}>
+                                            <ReactQuill
+                                                theme="snow"
+                                                value={form.content}
+                                                ref={quillRef}
+                                                onChange={handleContentChange}
+                                                modules={modules}
+                                                placeholder="Mulai menulis cerita Anda di sini..."
+                                                className="flex-1"
+                                            />
+                                        </Suspense>
                                         <style>{`
                                         .fixed .ql-container.ql-snow { border: none !important; height: auto !important; min-height: 500px !important; }
                                         .fixed .ql-toolbar.ql-snow { 
@@ -2128,14 +2129,14 @@ export default function NewsEditorPage() {
                                 </div>
 
                                 {/* Floating Stats & Auto-save */}
-                                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[50] flex items-center gap-3 px-6 py-3 bg-[var(--color-surface)]/80 backdrop-blur-md border border-[var(--color-border)] rounded-full shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-1000">
+                                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[50] flex items-center gap-3 px-6 py-3 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-full shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-1000">
                                     <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] opacity-60">
-                                        <FontAwesomeIcon icon={faAlignLeft} className="text-[var(--color-primary)]" />
+                                        <TextAlignStart className="text-[var(--color-primary)]" />
                                         <span>{form.content?.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').trim().split(/\s+/).filter(Boolean).length || 0} Kata</span>
                                     </div>
                                     <div className="w-px h-3 bg-[var(--color-border)]" />
                                     <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500">
-                                        <FontAwesomeIcon icon={faCloudArrowUp} className="animate-pulse" />
+                                        <CloudUpload className="animate-pulse" />
                                         <span>Tersimpan Otomatis</span>
                                     </div>
                                     <div className="w-px h-3 bg-[var(--color-border)]" />
@@ -2182,12 +2183,12 @@ export default function NewsEditorPage() {
                     isOpen={showCommandPalette}
                     onClose={() => setShowCommandPalette(false)}
                     actions={[
-                        { id: 'save', label: 'Simpan Informasi', icon: faFloppyDisk, shortcut: 'Ctrl+S', action: () => handleSave() },
-                        { id: 'media', label: 'Buka Media Library', icon: faImage, shortcut: 'M', action: () => setIsMediaModalOpen(true) },
-                        { id: 'zen', label: 'Toggle Zen Mode', icon: faMoon, shortcut: 'Z', action: () => setIsZenMode(!isZenMode) },
-                        { id: 'ai', label: 'Buka AI Assistant', icon: faMagicWandSparkles, shortcut: 'Ctrl+J', action: () => setIsAiModalOpen(true) },
-                        { id: 'history', label: 'Riwayat Revisi', icon: faRotateLeft, action: () => setShowRevisionHistory(true) },
-                        { id: 'back', label: 'Kembali ke Daftar', icon: faChevronLeft, action: handleGoBack },
+                        { id: 'save', label: 'Simpan Informasi', icon: Save, shortcut: 'Ctrl+S', action: () => handleSave() },
+                        { id: 'media', label: 'Buka Media Library', icon: Image, shortcut: 'M', action: () => setIsMediaModalOpen(true) },
+                        { id: 'zen', label: 'Toggle Zen Mode', icon: Moon, shortcut: 'Z', action: () => setIsZenMode(!isZenMode) },
+                        { id: 'ai', label: 'Buka AI Assistant', icon: WandSparkles, shortcut: 'Ctrl+J', action: () => setIsAiModalOpen(true) },
+                        { id: 'history', label: 'Riwayat Revisi', icon: RotateCcw, action: () => setShowRevisionHistory(true) },
+                        { id: 'back', label: 'Kembali ke Daftar', icon: ChevronLeft, action: handleGoBack },
                     ]}
                 />
 
@@ -2227,10 +2228,10 @@ function CommandPalette({ isOpen, onClose, actions }) {
     }, [isOpen, activeIndex, filtered, onClose])
     if (!isOpen) return null
     return createPortal(
-        <div className="fixed inset-0 z-[11000] flex items-start justify-center pt-24 px-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200" onClick={onClose}>
-            <div className="w-full max-w-xl bg-[var(--color-surface)] rounded-3xl border border-[var(--color-border)] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 z-[11000] flex items-start justify-center pt-24 px-4 bg-slate-900/40 animate-in fade-in duration-200" onClick={onClose}>
+            <div className="w-full max-w-xl bg-[var(--color-surface)] rounded-3xl border border-[var(--color-border)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
                 <div className="p-4 border-b border-[var(--color-border)] flex items-center gap-3">
-                    <FontAwesomeIcon icon={faFilter} className="text-[var(--color-text-muted)] opacity-30" />
+                    <Funnel className="text-[var(--color-text-muted)] opacity-30" />
                     <input autoFocus placeholder="Ketik perintah atau navigasi..." className="flex-1 bg-transparent border-none outline-none text-sm font-bold text-[var(--color-text)]" value={search} onChange={e => setSearch(e.target.value)} />
                     <div className="px-2 py-1 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-widest">ESC</div>
                 </div>
@@ -2239,7 +2240,7 @@ function CommandPalette({ isOpen, onClose, actions }) {
                         <div key={opt.id} onClick={() => { opt.action(); onClose() }} className={`group flex items-center justify-between p-3 rounded-2xl cursor-pointer transition-all ${i === activeIndex ? 'bg-[var(--color-primary)] text-white' : 'hover:bg-[var(--color-surface-alt)] text-[var(--color-text)]'}`}>
                             <div className="flex items-center gap-3">
                                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${i === activeIndex ? 'bg-white/20' : 'bg-[var(--color-surface-alt)] group-hover:bg-white/10 opacity-70'}`}>
-                                    <FontAwesomeIcon icon={opt.icon} className="text-sm" />
+                                    <opt.icon className="text-sm" />
                                 </div>
                                 <span className="text-[13px] font-bold">{opt.label}</span>
                             </div>
@@ -2272,9 +2273,9 @@ function AiAssistant({ isOpen, onClose, content, title, onApply }) {
     }
 
     const tones = [
-        { label: 'Formal', val: 'FORMAL', icon: faUserPen, color: 'text-blue-500', bg: 'bg-blue-500/5', hover: 'hover:bg-blue-500/10' },
-        { label: 'Santai', val: 'SANTAI', icon: faCoffee, color: 'text-amber-500', bg: 'bg-amber-500/5', hover: 'hover:bg-amber-500/10' },
-        { label: 'Prof-Zen', val: 'PROFESSIONAL-ZEN', icon: faMoon, color: 'text-purple-500', bg: 'bg-purple-500/5', hover: 'hover:bg-purple-500/10' },
+        { label: 'Formal', val: 'FORMAL', icon: UserPen, color: 'text-blue-500', bg: 'bg-blue-500/5', hover: 'hover:bg-blue-500/10' },
+        { label: 'Santai', val: 'SANTAI', icon: Coffee, color: 'text-amber-500', bg: 'bg-amber-500/5', hover: 'hover:bg-amber-500/10' },
+        { label: 'Prof-Zen', val: 'PROFESSIONAL-ZEN', icon: Moon, color: 'text-purple-500', bg: 'bg-purple-500/5', hover: 'hover:bg-purple-500/10' },
     ]
 
     return (
@@ -2283,11 +2284,11 @@ function AiAssistant({ isOpen, onClose, content, title, onApply }) {
             onClose={onClose}
             title="Asisten Penulisan AI"
             description="Mesin Penulisan Cerdas Enterprise"
-            icon={faMagicWandSparkles}
+            icon={WandSparkles}
             size="md"
             footer={
                 <div className="flex items-center justify-center gap-2 w-full opacity-60">
-                    <FontAwesomeIcon icon={faCircleInfo} className="text-indigo-500 text-[9px]" />
+                    <Info className="text-indigo-500 text-[9px]" />
                     <span className="text-[9px] font-black text-[var(--color-text-muted)] tracking-tight">
                         Hasil AI perlu ditinjau kembali oleh manusia.
                     </span>
@@ -2304,7 +2305,7 @@ function AiAssistant({ isOpen, onClose, content, title, onApply }) {
                     <div className="grid grid-cols-3 gap-2">
                         {tones.map(t => (
                             <button key={t.val} onClick={() => handleGenerate(t.val)} className={`group relative h-9 rounded-xl border border-[var(--color-border)] ${t.bg} flex items-center justify-center gap-2 transition-all duration-300 ${t.hover} hover:border-indigo-500/30 active:scale-95`}>
-                                <FontAwesomeIcon icon={t.icon} className={`text-[10px] ${t.color} opacity-40 group-hover:opacity-100 transition-opacity`} />
+                                <t.icon className={`text-[10px] ${t.color} opacity-40 group-hover:opacity-100 transition-opacity`} />
                                 <span className="text-[9px] font-black uppercase tracking-tight text-[var(--color-text)]">{t.label}</span>
                             </button>
                         ))}
@@ -2336,16 +2337,16 @@ function AiAssistant({ isOpen, onClose, content, title, onApply }) {
                     <button
                         disabled={!prompt || loading}
                         onClick={() => handleGenerate()}
-                        className="group relative w-full h-10 rounded-xl bg-indigo-600 overflow-hidden shadow-lg hover:shadow-indigo-500/20 transition-all duration-300 active:scale-95 disabled:opacity-50"
+                        className="group relative w-full h-10 rounded-xl bg-indigo-600 overflow-hidden shadow-lg transition-all duration-300 active:scale-95 disabled:opacity-50"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-violet-600"></div>
+                        <div className="absolute inset-0 bg-primary"></div>
                         <div className="relative flex items-center justify-center gap-2">
                             {loading ? (
-                                <FontAwesomeIcon icon={faSpinner} className="animate-spin text-white text-xs" />
+                                <LoaderCircle className="animate-spin text-white text-xs" />
                             ) : (
                                 <>
                                     <span className="text-[10px] font-black uppercase tracking-[0.15em] text-white">Olah Konten</span>
-                                    <FontAwesomeIcon icon={faArrowRight} className="text-white/40 text-[10px] group-hover:translate-x-1 transition-transform" />
+                                    <ArrowRight className="text-white/40 text-[10px] group-hover:translate-x-1 transition-transform" />
                                 </>
                             )}
                         </div>
@@ -2367,7 +2368,7 @@ function AiAssistant({ isOpen, onClose, content, title, onApply }) {
                             <div className="mt-5 flex justify-end">
                                 <button
                                     onClick={() => { onApply(result); onClose(); }}
-                                    className="h-9 px-6 rounded-lg bg-indigo-600 text-white text-[9px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all active:scale-95 shadow-lg shadow-indigo-600/10"
+                                    className="h-9 px-6 rounded-lg bg-indigo-600 text-white text-[9px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all active:scale-95 shadow-lg"
                                 >
                                     Terapkan Perubahan
                                 </button>
@@ -2383,10 +2384,10 @@ function AiAssistant({ isOpen, onClose, content, title, onApply }) {
 function RevisionHistoryModal({ isOpen, onClose, id }) {
     if (!isOpen) return null
     return createPortal(
-        <div className="fixed inset-0 z-[11000] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300" onClick={onClose}>
-            <div className="w-full max-w-lg bg-[var(--color-surface)] rounded-[2rem] border border-[var(--color-border)] shadow-2xl p-8 animate-in zoom-in-95 duration-300" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 z-[11000] flex items-center justify-center p-4 bg-slate-900/60 animate-in fade-in duration-300" onClick={onClose}>
+            <div className="w-full max-w-lg bg-[var(--color-surface)] rounded-[2rem] border border-[var(--color-border)] shadow-xl p-8 animate-in zoom-in-95 duration-300" onClick={e => e.stopPropagation()}>
                 <div className="flex items-center gap-4 mb-8">
-                    <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 text-xl"><FontAwesomeIcon icon={faRotateLeft} /></div>
+                    <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 text-xl"><RotateCcw /></div>
                     <div>
                         <h3 className="text-lg font-black text-[var(--color-text)]">Riwayat Revisi</h3>
                         <p className="text-[10px] text-[var(--color-text-muted)] font-black uppercase tracking-widest">Snapshot konten artikel ini</p>

@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useCallback, memo } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faPlus, faEdit, faSpinner, faCheckCircle, faChevronDown, faSchool, faBuilding, faBed, faMars, faVenus, faIdBadge, faUserTie, faCalendarAlt, faTriangleExclamation
-} from '@fortawesome/free-solid-svg-icons'
-import { Modal, RichSelect } from '@shared/components'
+import { Bed, Briefcase, Building, Calendar, CircleCheck, IdCard, LoaderCircle, Plus, School, SquarePen, TriangleAlert } from 'lucide-react'
+import { MarsIcon, Modal, RichSelect, VenusIcon } from '@shared/components'
 
 const ClassFormModal = memo(function ClassFormModal({
     isOpen,
@@ -127,7 +124,7 @@ const ClassFormModal = memo(function ClassFormModal({
                     <span className="text-[10px] font-black text-[var(--color-primary)]">{overallProgress}% Lengkap</span>
                 </div>
             }
-            icon={selectedItem ? faEdit : faPlus}
+            icon={selectedItem ? SquarePen : Plus}
             iconBg="bg-[var(--color-primary)]/10"
             iconColor="text-[var(--color-primary)]"
             size="lg"
@@ -146,16 +143,16 @@ const ClassFormModal = memo(function ClassFormModal({
                         type="submit"
                         form="class-form-modal"
                         disabled={submitting}
-                        className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[var(--color-primary)]/20 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 shrink-0"
+                        className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 shrink-0"
                     >
                         {submitting ? (
                             <>
-                                <FontAwesomeIcon icon={faSpinner} className="fa-spin" />
+                                <LoaderCircle className="animate-spin" />
                                 <span>Menyimpan...</span>
                             </>
                         ) : (
                             <>
-                                <FontAwesomeIcon icon={faCheckCircle} className="text-xs opacity-80 shrink-0" />
+                                <CircleCheck className="text-xs opacity-80 shrink-0" />
                                 <span className="truncate hidden sm:inline">{selectedItem ? 'Simpan Perubahan' : 'Simpan Data'}</span>
                                 <span className="truncate sm:hidden">Simpan</span>
                             </>
@@ -169,7 +166,7 @@ const ClassFormModal = memo(function ClassFormModal({
                 <div className="space-y-4">
                     <div className="flex items-center gap-2.5 pt-2">
                         <div className="w-1 h-4 bg-[var(--color-primary)] rounded-full" />
-                        <FontAwesomeIcon icon={faIdBadge} className="text-[var(--color-primary)] text-[10px] opacity-70" />
+                        <IdCard className="text-[var(--color-primary)] text-[10px] opacity-70" />
                         <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Identitas Kelas</span>
                         <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                     </div>
@@ -203,10 +200,10 @@ const ClassFormModal = memo(function ClassFormModal({
                                         type="button"
                                         onClick={() => setField('gender_type', g)}
                                         className={`flex-1 rounded-lg text-[10px] font-bold tracking-wider transition-all duration-200 flex items-center justify-center gap-2 ${form.gender_type === g
-                                            ? 'bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/20'
+                                            ? 'bg-[var(--color-primary)] text-white shadow-md'
                                             : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]'}`}
                                     >
-                                        <FontAwesomeIcon icon={g === 'Putra' ? faMars : faVenus} className="text-[10px]" />
+                                        {g === 'Putra' ? <MarsIcon className="text-[10px]" /> : <VenusIcon className="text-[10px]" />}
                                         {g}
                                     </button>
                                 ))}
@@ -221,7 +218,7 @@ const ClassFormModal = memo(function ClassFormModal({
                                 onChange={val => setField('level', val)}
                                 options={LEVELS.map(l => ({ id: l, name: `Kelas ${l}` }))}
                                 placeholder="Pilih Tingkat"
-                                icon={faSchool}
+                                icon={School}
                                 status={getStatus('level')}
                             />
                         </div>
@@ -235,10 +232,10 @@ const ClassFormModal = memo(function ClassFormModal({
                                         type="button"
                                         onClick={() => setField('program', p)}
                                         className={`flex-1 rounded-lg text-[10px] font-bold tracking-wider transition-all duration-200 flex items-center justify-center gap-2 ${form.program === p
-                                            ? 'bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/20'
+                                            ? 'bg-[var(--color-primary)] text-white shadow-md'
                                             : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]'}`}
                                     >
-                                        <FontAwesomeIcon icon={p === 'Boarding' ? faBed : faBuilding} className="text-[10px]" />
+                                        {p === 'Boarding' ? <Bed className="text-[10px]" /> : <Building className="text-[10px]" />}
                                         {p}
                                     </button>
                                 ))}
@@ -251,7 +248,7 @@ const ClassFormModal = memo(function ClassFormModal({
                 <div className="space-y-4 pb-4">
                     <div className="flex items-center gap-2.5 pt-2">
                         <div className="w-1 h-4 bg-[var(--color-primary)] rounded-full" />
-                        <FontAwesomeIcon icon={faUserTie} className="text-[var(--color-primary)] text-[10px] opacity-70" />
+                        <Briefcase className="text-[var(--color-primary)] text-[10px] opacity-70" />
                         <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Penanggung Jawab & Periode</span>
                         <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                     </div>
@@ -266,7 +263,7 @@ const ClassFormModal = memo(function ClassFormModal({
                                 options={teachersList.map(t => ({ id: t.id, name: t.name }))}
                                 extraOption={{ id: '', name: '— Tanpa Wali Kelas —' }}
                                 placeholder={hasTeachers ? 'Pilih Wali Kelas' : 'Tidak ada data guru'}
-                                icon={faUserTie}
+                                icon={Briefcase}
                                 searchable
                                 disabled={!hasTeachers}
                                 status={getStatus('homeroom_teacher_id')}
@@ -287,7 +284,7 @@ const ClassFormModal = memo(function ClassFormModal({
                                 onChange={val => setField('academic_year_id', val)}
                                 options={academicYearsList.map(y => ({ id: y.id, name: y.label }))}
                                 placeholder="Pilih Tahun Akademik"
-                                icon={faCalendarAlt}
+                                icon={Calendar}
                                 status={getStatus('academic_year_id', true)}
                             />
                         </div>
@@ -296,7 +293,7 @@ const ClassFormModal = memo(function ClassFormModal({
 
                 {formError && (
                     <div className="flex items-center gap-3 p-3 rounded-xl bg-red-500/10 border border-red-500/20 animate-in fade-in">
-                        <FontAwesomeIcon icon={faTriangleExclamation} className="text-red-500 shrink-0" />
+                        <TriangleAlert className="text-red-500 shrink-0" />
                         <p className="text-xs font-bold text-red-600">{formError}</p>
                     </div>
                 )}

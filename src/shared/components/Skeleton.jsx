@@ -18,12 +18,12 @@ export default function Skeleton({ className = "" }) {
  */
 export function TableSkeleton({ rows = 5, cols = 5 }) {
     return (
-        <div className="glass rounded-[1.5rem] overflow-hidden border border-[var(--color-border)] shadow-sm">
+        <div className="bg-surface rounded-[1.5rem] overflow-hidden border border-[var(--color-border)] shadow-sm">
             <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                     {/* Header Skeleton */}
                     <thead>
-                        <tr className="bg-[var(--color-surface-alt)]/50 border-b border-[var(--color-border)] backdrop-blur-sm">
+                        <tr className="bg-[var(--color-surface-alt)] border-b border-[var(--color-border)]">
                             {Array.from({ length: cols }).map((_, i) => (
                                 <th key={i} className="px-6 py-4">
                                     <div className="h-3 bg-[var(--color-border)] rounded animate-pulse w-20" />
@@ -64,7 +64,7 @@ export function CardSkeleton({ count = 3 }) {
     return (
         <div className="space-y-3">
             {Array.from({ length: count }).map((_, idx) => (
-                <div key={idx} className="glass rounded-2xl p-4 border border-[var(--color-border)]">
+                <div key={idx} className="bg-surface rounded-2xl p-4 border border-[var(--color-border)]">
                     {/* Header skeleton */}
                     <div className="flex items-center gap-3 mb-3">
                         <div className="w-12 h-12 rounded-xl bg-[var(--color-border)] animate-pulse" />
@@ -133,7 +133,7 @@ export function MobileCardSkeleton({ count = 3 }) {
     return (
         <div className="space-y-3">
             {Array.from({ length: count }).map((_, idx) => (
-                <div key={idx} className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                <div key={idx} className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                     {/* Top section - avatar + name */}
                     <div className="p-4 flex items-center gap-3">
                         <div className="w-14 h-14 rounded-2xl bg-[var(--color-border)] animate-pulse shrink-0" style={{ animationDelay: `${idx * 100}ms` }} />

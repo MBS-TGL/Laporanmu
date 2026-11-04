@@ -368,7 +368,7 @@ export default function PublicVerifyPage() {
                             <div className="flex items-center gap-4">
                                 <div className="w-12 h-12 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center font-bold text-base text-[var(--color-text-muted)] overflow-hidden shrink-0">
                                     {student.photo_url ? (
-                                        <img src={student.photo_url} alt="" className="w-full h-full object-cover" />
+                                        <img src={student.photo_url} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
                                     ) : (
                                         student.name?.charAt(0) || 'S'
                                     )}

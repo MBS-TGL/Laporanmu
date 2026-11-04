@@ -1,11 +1,6 @@
 import { useState, useEffect, useCallback, memo } from 'react'
 import { createPortal } from 'react-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { 
-    faImage, faSearch, faSpinner, faXmark, 
-    faCheck, faCloudArrowUp, faTrash, faFilter,
-    faChevronLeft, faChevronRight
-} from '@fortawesome/free-solid-svg-icons'
+import { Check, CloudUpload, Image, LoaderCircle, Search, Trash2, X } from 'lucide-react'
 import { supabase } from '@lib/supabase'
 import { useToast } from '@context'
 
@@ -160,19 +155,19 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
 
     return createPortal(
         <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-md animate-in fade-in duration-300" onClick={onClose} />
+            <div className="absolute inset-0 bg-black/60 animate-in fade-in duration-300" onClick={onClose} />
             
             <div 
-                className="relative w-full max-w-5xl bg-[var(--color-surface)] rounded-[2.5rem] border border-[var(--color-border)] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-300"
+                className="relative w-full max-w-5xl bg-[var(--color-surface)] rounded-[2.5rem] border border-[var(--color-border)] shadow-xl overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-300"
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
             >
                 {/* Drag Overlay */}
                 {isDragging && (
-                    <div className="absolute inset-0 z-[12000] bg-[var(--color-primary)]/10 backdrop-blur-sm border-4 border-dashed border-[var(--color-primary)] m-4 rounded-[2rem] flex flex-col items-center justify-center pointer-events-none animate-in fade-in duration-200">
-                        <div className="w-20 h-20 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-3xl shadow-2xl animate-bounce">
-                            <FontAwesomeIcon icon={faCloudArrowUp} />
+                    <div className="absolute inset-0 z-[12000] bg-[var(--color-primary)]/10 border-4 border-dashed border-[var(--color-primary)] m-4 rounded-[2rem] flex flex-col items-center justify-center pointer-events-none animate-in fade-in duration-200">
+                        <div className="w-20 h-20 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-3xl shadow-xl animate-bounce">
+                            <CloudUpload />
                         </div>
                         <p className="mt-4 text-lg font-black text-[var(--color-primary)] uppercase tracking-widest">Lepaskan untuk Upload</p>
                     </div>
@@ -182,7 +177,7 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                 <div className="p-6 border-b border-[var(--color-border)] flex items-center justify-between shrink-0 bg-[var(--color-surface-alt)]/30">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center text-xl">
-                            <FontAwesomeIcon icon={faImage} />
+                            <Image />
                         </div>
                         <div>
                             <h2 className="text-xl font-black text-[var(--color-text)] tracking-tight">Media Library</h2>
@@ -191,13 +186,13 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                     </div>
                     
                     <div className="flex items-center gap-3">
-                        <label className={`h-10 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-[var(--color-primary)]/20 ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
-                            {uploading ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" /> : <FontAwesomeIcon icon={faCloudArrowUp} />}
+                        <label className={`h-10 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[11px] font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer hover:brightness-110 active:scale-95 transition-all shadow-lg ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                            {uploading ? <LoaderCircle className="animate-spin" /> : <CloudUpload />}
                             {uploading ? `Uploading ${uploadProgress}%` : 'Upload Baru'}
                             <input type="file" className="hidden" accept="image/*" multiple onChange={(e) => handleFiles(Array.from(e.target.files || []))} />
                         </label>
                         <button onClick={onClose} className="w-10 h-10 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-rose-500 transition-colors">
-                            <FontAwesomeIcon icon={faXmark} />
+                            <X />
                         </button>
                     </div>
                 </div>
@@ -205,7 +200,7 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                 {/* Toolbar */}
                 <div className="p-4 border-b border-[var(--color-border)] flex flex-col sm:flex-row items-center gap-4 bg-[var(--color-surface-alt)]/10 shrink-0">
                     <div className="relative flex-1 group w-full">
-                        <FontAwesomeIcon icon={faSearch} className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors" />
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors" />
                         <input 
                             type="text" 
                             placeholder="Cari file berdasarkan nama..."
@@ -238,12 +233,12 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                     <div className="flex-1 overflow-y-auto p-6 custom-scrollbar bg-[var(--color-surface)]">
                         {loading ? (
                             <div className="h-full flex flex-col items-center justify-center gap-4 text-[var(--color-text-muted)]">
-                                <FontAwesomeIcon icon={faSpinner} className="text-4xl animate-spin text-[var(--color-primary)]" />
+                                <LoaderCircle className="text-4xl animate-spin text-[var(--color-primary)]" />
                                 <p className="text-[10px] font-black uppercase tracking-widest">Memuat Library...</p>
                             </div>
                         ) : filteredImages.length === 0 ? (
                             <div className="h-full flex flex-col items-center justify-center gap-4 text-[var(--color-text-muted)] opacity-40">
-                                <FontAwesomeIcon icon={faImage} size="5x" />
+                                <Image size={80} />
                                 <p className="font-bold text-center">Belum ada gambar {search ? 'yang cocok' : 'di folder ini'}.</p>
                             </div>
                         ) : (
@@ -255,12 +250,12 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                                         onDoubleClick={() => onSelect(img.url)}
                                         className={`group relative aspect-square rounded-2xl border-2 overflow-hidden cursor-pointer transition-all duration-300 ${selectedAsset?.url === img.url ? 'border-[var(--color-primary)] ring-4 ring-[var(--color-primary)]/10' : 'border-[var(--color-border)] hover:border-[var(--color-primary)]/50'} ${currentSelection === img.url ? 'ring-2 ring-emerald-500 ring-offset-2 ring-offset-[var(--color-surface)]' : ''}`}
                                     >
-                                        <img src={img.url} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={img.name} />
+                                        <img src={img.url} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={img.name} loading="lazy" decoding="async" />
                                         
                                         {/* Select Indicator */}
                                         {currentSelection === img.url && (
                                             <div className="absolute top-2 left-2 w-6 h-6 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-[10px] shadow-lg animate-in zoom-in-50">
-                                                <FontAwesomeIcon icon={faCheck} />
+                                                <Check />
                                             </div>
                                         )}
 
@@ -273,11 +268,11 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                                             className="absolute top-2 right-2 w-8 h-8 rounded-lg bg-rose-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-rose-600 shadow-lg active:scale-95"
                                             title="Hapus aset"
                                         >
-                                            <FontAwesomeIcon icon={faTrash} className="text-xs" />
+                                            <Trash2 className="text-xs" />
                                         </button>
 
                                         {/* Type Badge */}
-                                        <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-[8px] font-black text-white uppercase tracking-tighter opacity-70">
+                                        <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-black/60 text-[8px] font-black text-white uppercase tracking-tighter opacity-70">
                                             {img.type}
                                         </div>
                                     </div>
@@ -291,7 +286,7 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                         {selectedAsset ? (
                             <div className="p-6 space-y-6 w-80 shrink-0">
                                 <div className="aspect-video rounded-xl overflow-hidden border border-[var(--color-border)] shadow-sm bg-white">
-                                    <img src={selectedAsset.url} className="w-full h-full object-contain bg-slate-50" />
+                                    <img src={selectedAsset.url} className="w-full h-full object-contain bg-slate-50" loading="lazy" decoding="async" />
                                 </div>
                                 
                                 <div className="space-y-4">
@@ -326,14 +321,14 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                                                 }}
                                                 className="w-9 h-9 shrink-0 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"
                                             >
-                                                <FontAwesomeIcon icon={faCheck} className="text-xs" />
+                                                <Check className="text-xs" />
                                             </button>
                                         </div>
                                     </div>
 
                                     <button 
                                         onClick={() => onSelect(selectedAsset.url)}
-                                        className="w-full h-11 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-[var(--color-primary)]/20 hover:brightness-110 active:scale-95 transition-all"
+                                        className="w-full h-11 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 active:scale-95 transition-all"
                                     >
                                         Pilih Gambar Ini
                                     </button>
@@ -355,10 +350,10 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
 
                 {/* Custom Delete Confirmation Overlay */}
                 {deleteConfirm.isOpen && (
-                    <div className="absolute inset-0 z-[11000] flex items-center justify-center p-6 bg-black/10 backdrop-blur-sm animate-in fade-in duration-300">
-                        <div className="w-full max-w-sm bg-[var(--color-surface)] rounded-[2rem] border border-[var(--color-border)] shadow-2xl p-8 animate-in zoom-in-95 duration-300">
+                    <div className="absolute inset-0 z-[11000] flex items-center justify-center p-6 bg-black/10 animate-in fade-in duration-300">
+                        <div className="w-full max-w-sm bg-[var(--color-surface)] rounded-[2rem] border border-[var(--color-border)] shadow-xl p-8 animate-in zoom-in-95 duration-300">
                             <div className="w-16 h-16 rounded-3xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-2xl mx-auto mb-6">
-                                <FontAwesomeIcon icon={faTrash} />
+                                <Trash2 />
                             </div>
                             <h3 className="text-lg font-black text-[var(--color-text)] text-center mb-2">Hapus Aset Permanen?</h3>
                             <p className="text-xs text-[var(--color-text-muted)] text-center mb-8 leading-relaxed">
@@ -375,11 +370,11 @@ const MediaLibraryModal = memo(({ isOpen, onClose, onSelect, currentSelection })
                                 <button 
                                     onClick={handleDelete}
                                     disabled={deleteConfirm.isDeleting}
-                                    className="h-12 rounded-xl bg-rose-500 text-white text-[11px] font-black uppercase tracking-widest hover:bg-rose-600 transition-all shadow-lg shadow-rose-500/20 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
+                                    className="h-12 rounded-xl bg-rose-500 text-white text-[11px] font-black uppercase tracking-widest hover:bg-rose-600 transition-all shadow-lg active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
                                 >
                                     {deleteConfirm.isDeleting ? (
                                         <>
-                                            <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+                                            <LoaderCircle className="animate-spin" />
                                             Menghapus...
                                         </>
                                     ) : 'Ya, Hapus'}

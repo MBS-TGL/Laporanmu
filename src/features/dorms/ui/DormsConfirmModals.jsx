@@ -36,7 +36,7 @@ export function ConfirmEvictModal({
                         type="button"
                         onClick={onConfirm}
                         disabled={submitting}
-                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-red-500/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
                     >
                         {submitting ? (
                             <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -102,7 +102,7 @@ export function ConfirmDeleteDormModal({
                         type="button"
                         onClick={onConfirm}
                         disabled={submitting}
-                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-red-500/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
                     >
                         {submitting ? (
                             <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -186,7 +186,7 @@ export function ConfirmDeleteAuditModal({
                         type="button"
                         onClick={onConfirm}
                         disabled={submitting}
-                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-red-500/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
                     >
                         {submitting ? (
                             <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -265,7 +265,7 @@ export function ConfirmDeleteInventoryModal({
                     <button
                         type="button"
                         onClick={onConfirm}
-                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-red-500/20 transition-all flex items-center justify-center gap-2 shrink-0"
+                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 shrink-0"
                     >
                         <Trash2 className="w-3.5 h-3.5 opacity-70" /> {t('dorms.confirm.deleteInventory.confirm')}
                     </button>

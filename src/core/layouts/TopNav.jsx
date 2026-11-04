@@ -1,17 +1,16 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
 import { createPortal } from "react-dom"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
-    faBell, faChevronDown, faMoon, faSun, faGear, faRightFromBracket,
-    faLayerGroup, faXmark, faArrowRight, faRotateRight, faCircleExclamation,
-    faTriangleExclamation, faCircleInfo, faCircleCheck,
-    faClipboardList, faCalendarWeek, faShieldHalved,
-    faUsers, faChalkboardTeacher, faSchool, faExclamationTriangle, faCalendarAlt,
-    faPersonWalkingArrowRight, faUserGear, faClockRotateLeft, faScrewdriverWrench,
-    faDatabase, faBoxArchive, faServer, faPalette, faNewspaper, faRobot, faCube,
-    faBook, faUserPlus, faCalendarDays, faQrcode, faFileInvoice, faMoneyBillWave, faWallet
-} from "@fortawesome/free-solid-svg-icons"
+    Bell, ChevronDown, Moon, Sun, Settings, LogOut,
+    Layers, X, ArrowRight, RotateCw, CircleAlert,
+    TriangleAlert, Info, CircleCheck,
+    ClipboardList, CalendarRange, ShieldHalf,
+    Users, Presentation, School, Calendar,
+    UserCog, History, Wrench,
+    Database, Archive, Server, Palette, Newspaper, Bot, Box,
+    Book, UserPlus, CalendarDays, QrCode, ReceiptText, Banknote, Wallet
+} from "lucide-react"
 import { useTheme, useAuth, useFeatureFlags, useLanguage } from "@context"
 import { useNotifications, translateNotification } from "@hooks/useNotifications"
 
@@ -27,7 +26,7 @@ function Avatar({ url, name, size = "w-10 h-10", textSize = "text-base", rounded
         <div className={`${size} ${rounded} overflow-hidden shrink-0 flex items-center justify-center font-black text-white
             ${showImg ? 'bg-[var(--color-surface-alt)]' : 'bg-[var(--color-primary)]'}`}>
             {showImg
-                ? <img src={url} alt={name} className="w-full h-full object-cover" onError={() => setImgError(true)} />
+                ? <img src={url} alt={name} className="w-full h-full object-cover" onError={() => setImgError(true)} loading="lazy" decoding="async" />
                 : <span className={textSize}>{letter}</span>
             }
         </div>
@@ -52,52 +51,52 @@ function getPortalContainer(id) {
 }
 
 const MASTER_ITEMS = [
-    { to: "/master/students", label: "Data Siswa", icon: faUsers, desc: "Pusat database seluruh santri aktif dalam sistem" },
-    { to: "/master/teachers", label: "Data Guru", icon: faChalkboardTeacher, desc: "Data akun pengajar, musyrif, dan staf sekolah" },
-    { to: "/master/classes", label: "Data Kelas", icon: faSchool, desc: "Pengaturan struktur kelas dan pembagian asrama" },
-    { to: "/master/subjects", label: "Mata Pelajaran", icon: faBook, desc: "Daftar kurikulum mata pelajaran sekolah" },
-    { to: "/master/academic-years", label: "Tahun Pelajaran", icon: faCalendarAlt, desc: "Manajemen semester dan periode kalender akademik" },
-    { to: "/master/enrollment", label: "PSB / Enrollment", icon: faUserPlus, desc: "Manajemen pendaftaran dan penerimaan siswa baru", color: "bg-emerald-500/10 text-emerald-600" },
+    { to: "/master/students", label: "Data Siswa", icon: Users, desc: "Pusat database seluruh santri aktif dalam sistem" },
+    { to: "/master/teachers", label: "Data Guru", icon: Presentation, desc: "Data akun pengajar, musyrif, dan staf sekolah" },
+    { to: "/master/classes", label: "Data Kelas", icon: School, desc: "Pengaturan struktur kelas dan pembagian asrama" },
+    { to: "/master/subjects", label: "Mata Pelajaran", icon: Book, desc: "Daftar kurikulum mata pelajaran sekolah" },
+    { to: "/master/academic-years", label: "Tahun Pelajaran", icon: Calendar, desc: "Manajemen semester dan periode kalender akademik" },
+    { to: "/master/enrollment", label: "PSB / Enrollment", icon: UserPlus, desc: "Manajemen pendaftaran dan penerimaan siswa baru", color: "bg-emerald-500/10 text-emerald-600" },
 ]
 
 const ACADEMIC_ITEMS = [
-    { to: "/academic/attendance", label: "Presensi Siswa", icon: faQrcode, desc: "Absensi real-time via scan QR kartu siswa", color: "bg-indigo-500/10 text-indigo-600" },
-    { to: "/academic/schedule", label: "Jadwal Pelajaran", icon: faCalendarDays, desc: "Atur plotting jadwal KBM dan guru pengajar", color: "bg-purple-500/10 text-purple-600" },
-    { to: "/academic/raport", label: "E-Rapor & Nilai", icon: faFileInvoice, desc: "Input nilai harian, ujian, dan cetak raport", color: "bg-emerald-500/10 text-emerald-600" },
+    { to: "/academic/attendance", label: "Presensi Siswa", icon: QrCode, desc: "Absensi real-time via scan QR kartu siswa", color: "bg-indigo-500/10 text-indigo-600" },
+    { to: "/academic/schedule", label: "Jadwal Pelajaran", icon: CalendarDays, desc: "Atur plotting jadwal KBM dan guru pengajar", color: "bg-purple-500/10 text-purple-600" },
+    { to: "/academic/raport", label: "E-Rapor & Nilai", icon: ReceiptText, desc: "Input nilai harian, ujian, dan cetak raport", color: "bg-emerald-500/10 text-emerald-600" },
 ]
 
 const FINANCE_ITEMS = [
-    { to: "/finance/invoices", label: "Tagihan SPP", icon: faMoneyBillWave, desc: "Kelola tagihan bulanan dan iuran sekolah", color: "bg-amber-500/10 text-amber-600" },
-    { to: "/finance/payments", label: "Riwayat Bayar", icon: faWallet, desc: "Rekapitulasi pembayaran dan tunggakan wali", color: "bg-emerald-500/10 text-emerald-600" },
+    { to: "/finance/invoices", label: "Tagihan SPP", icon: Banknote, desc: "Kelola tagihan bulanan dan iuran sekolah", color: "bg-amber-500/10 text-amber-600" },
+    { to: "/finance/payments", label: "Riwayat Bayar", icon: Wallet, desc: "Rekapitulasi pembayaran dan tunggakan wali", color: "bg-emerald-500/10 text-emerald-600" },
 ]
 
 const REPORTS_ITEMS = [
-    { to: "/boarding/gate", label: "Portal Keluar Masuk", icon: faPersonWalkingArrowRight, desc: "Manajemen Izin Keluar Masuk Santri", color: "bg-red-500/10 text-red-500" },
-    { to: "/raport", label: "Raport Pondok", icon: faClipboardList, desc: "Rekapitulasi Raport Bulanan & Pondok Santri", color: "bg-indigo-500/10 text-indigo-600" },
-    { to: "/attendance", label: "Absensi Bulanan", icon: faCalendarWeek, desc: "Rekapitulasi Absensi Santri", color: "bg-emerald-500/10 text-emerald-600" },
-    { to: "/boarding/behavior", label: "Kedisiplinan & Poin", icon: faShieldHalved, desc: "Rekapitulasi Pelanggaran & Prestasi Santri", color: "bg-orange-500/10 text-orange-500" },
+    { to: "/boarding/gate", label: "Portal Keluar Masuk", icon: LogOut, desc: "Manajemen Izin Keluar Masuk Santri", color: "bg-red-500/10 text-red-500" },
+    { to: "/raport", label: "Raport Pondok", icon: ClipboardList, desc: "Rekapitulasi Raport Bulanan & Pondok Santri", color: "bg-indigo-500/10 text-indigo-600" },
+    { to: "/attendance", label: "Absensi Bulanan", icon: CalendarRange, desc: "Rekapitulasi Absensi Santri", color: "bg-emerald-500/10 text-emerald-600" },
+    { to: "/boarding/behavior", label: "Kedisiplinan & Poin", icon: ShieldHalf, desc: "Rekapitulasi Pelanggaran & Prestasi Santri", color: "bg-orange-500/10 text-orange-500" },
 ]
 
 // Admin-only items — hanya tampil untuk developer & admin
 const ADMIN_ITEMS = [
-    { to: "/admin", label: "Admin Dashboard Center", icon: faCube, desc: "Pusat monitoring teknis & integrasi sistem", color: "bg-indigo-600/10 text-indigo-600" },
-    { to: "/admin/news", label: "Manajemen Informasi", icon: faNewspaper, desc: "Update Informasi & info terbaru ke landing page", color: "bg-emerald-500/10 text-emerald-600" },
-    { to: "/admin/ai-insights", label: "AI Insights Center", icon: faRobot, desc: "Audit perckapan AI dan analisis performa mesin", color: "bg-indigo-500/10 text-indigo-600" },
-    { to: "/admin/logs", label: "Audit Logs", icon: faClockRotateLeft, desc: "Log historis aktivitas user dan perubahan data", color: "bg-purple-500/10 text-purple-600" },
-    { to: "/admin/users", label: "User Management", icon: faUserGear, desc: "Pengaturan hak akses, role, dan kredensial user", color: "bg-rose-500/10 text-rose-600" },
-    { to: "/admin/database", label: "Database Health", icon: faDatabase, desc: "Pemantauan status database & kesehatan tabel", color: "bg-cyan-500/10 text-cyan-600" },
-    { to: "/admin/storage", label: "Storage Manager", icon: faBoxArchive, desc: "Manajemen media, foto siswa, dan berkas sistem", color: "bg-amber-500/10 text-amber-600" },
-    { to: "/admin/tasks", label: "Background Tasks", icon: faServer, desc: "Status sinkronisasi background & automasi sistem", color: "bg-indigo-500/10 text-indigo-600" },
-    { to: "/admin/settings", label: "Pengaturan", icon: faScrewdriverWrench, desc: "Panel pusat pengaturan parameter aplikasi utama", color: "bg-slate-500/10 text-slate-600" },
-    { to: "/admin/playground", label: "UI Playground", icon: faPalette, desc: "Panduan visual komponen dan dokumentasi desain", color: "bg-pink-500/10 text-pink-600" },
+    { to: "/admin", label: "Admin Dashboard Center", icon: Box, desc: "Pusat monitoring teknis & integrasi sistem", color: "bg-indigo-600/10 text-indigo-600" },
+    { to: "/admin/news", label: "Manajemen Informasi", icon: Newspaper, desc: "Update Informasi & info terbaru ke landing page", color: "bg-emerald-500/10 text-emerald-600" },
+    { to: "/admin/ai-insights", label: "AI Insights Center", icon: Bot, desc: "Audit perckapan AI dan analisis performa mesin", color: "bg-indigo-500/10 text-indigo-600" },
+    { to: "/admin/logs", label: "Audit Logs", icon: History, desc: "Log historis aktivitas user dan perubahan data", color: "bg-purple-500/10 text-purple-600" },
+    { to: "/admin/users", label: "User Management", icon: UserCog, desc: "Pengaturan hak akses, role, dan kredensial user", color: "bg-rose-500/10 text-rose-600" },
+    { to: "/admin/database", label: "Database Health", icon: Database, desc: "Pemantauan status database & kesehatan tabel", color: "bg-cyan-500/10 text-cyan-600" },
+    { to: "/admin/storage", label: "Storage Manager", icon: Archive, desc: "Manajemen media, foto siswa, dan berkas sistem", color: "bg-amber-500/10 text-amber-600" },
+    { to: "/admin/tasks", label: "Background Tasks", icon: Server, desc: "Status sinkronisasi background & automasi sistem", color: "bg-indigo-500/10 text-indigo-600" },
+    { to: "/admin/settings", label: "Pengaturan", icon: Wrench, desc: "Panel pusat pengaturan parameter aplikasi utama", color: "bg-slate-500/10 text-slate-600" },
+    { to: "/admin/playground", label: "UI Playground", icon: Palette, desc: "Panduan visual komponen dan dokumentasi desain", color: "bg-pink-500/10 text-pink-600" },
 ]
 
 // ── Warna & icon per type notifikasi
 const TYPE_STYLE = {
-    error: { bg: 'bg-red-500/10', border: 'border-red-500/20', dot: 'bg-red-500', text: 'text-red-500', icon: faCircleExclamation },
-    warning: { bg: 'bg-amber-500/10', border: 'border-amber-500/20', dot: 'bg-amber-500', text: 'text-amber-500', icon: faTriangleExclamation },
-    info: { bg: 'bg-blue-500/10', border: 'border-blue-500/20', dot: 'bg-blue-500', text: 'text-blue-500', icon: faCircleInfo },
-    success: { bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', dot: 'bg-emerald-500', text: 'text-emerald-500', icon: faCircleCheck },
+    error: { bg: 'bg-red-500/10', border: 'border-red-500/20', dot: 'bg-red-500', text: 'text-red-500', icon: CircleAlert },
+    warning: { bg: 'bg-amber-500/10', border: 'border-amber-500/20', dot: 'bg-amber-500', text: 'text-amber-500', icon: TriangleAlert },
+    info: { bg: 'bg-blue-500/10', border: 'border-blue-500/20', dot: 'bg-blue-500', text: 'text-blue-500', icon: Info },
+    success: { bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', dot: 'bg-emerald-500', text: 'text-emerald-500', icon: CircleCheck },
 }
 
 // Badge merah di atas icon bell
@@ -114,11 +113,12 @@ function NotifBadge({ count }) {
 function NotifItem({ notif, onDismiss, onNavigate }) {
     const { t } = useLanguage()
     const s = TYPE_STYLE[notif.type] || TYPE_STYLE.info
+    const IconComp = s.icon
     return (
         <div className={`group relative rounded-xl border p-3 transition-all ${s.bg} ${s.border}`}>
             <div className="flex items-start gap-2.5">
                 <div className={`mt-0.5 text-sm shrink-0 ${s.text}`}>
-                    <FontAwesomeIcon icon={s.icon} />
+                    <IconComp />
                 </div>
                 <div className="flex-1 min-w-0">
                     <p className="text-[11px] font-black text-[var(--color-text)] leading-tight">{notif.title}</p>
@@ -129,7 +129,7 @@ function NotifItem({ notif, onDismiss, onNavigate }) {
                             aria-label={notif.action.label}
                             className={`mt-1.5 text-[9px] font-black uppercase tracking-widest flex items-center gap-1 ${s.text} hover:opacity-70 transition-opacity`}
                         >
-                            {notif.action.label} <FontAwesomeIcon icon={faArrowRight} className="text-[7px]" />
+                            {notif.action.label} <ArrowRight className="text-[7px]" />
                         </button>
                     )}
                 </div>
@@ -139,7 +139,7 @@ function NotifItem({ notif, onDismiss, onNavigate }) {
                     title={t('notif.close')}
                     aria-label={t('notif.close')}
                 >
-                    <FontAwesomeIcon icon={faXmark} />
+                    <X />
                 </button>
             </div>
         </div>
@@ -187,7 +187,7 @@ function NotifPanel({ isOpen, notifications, loading, refreshing, onDismiss, onR
                     aria-label={t('notif.refresh')}
                     className={`p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition text-xs ${refreshing ? 'animate-spin pointer-events-none' : ''}`}
                 >
-                    <FontAwesomeIcon icon={faRotateRight} />
+                    <RotateCw />
                 </button>
             </div>
 
@@ -195,7 +195,7 @@ function NotifPanel({ isOpen, notifications, loading, refreshing, onDismiss, onR
             <div className="max-h-[60vh] overflow-y-auto p-3 space-y-2">
                 {loading ? (
                     <div className="py-8 flex flex-col items-center gap-2 text-[var(--color-text-muted)]">
-                        <FontAwesomeIcon icon={faRotateRight} className="animate-spin text-lg" />
+                        <RotateCw className="animate-spin text-lg" />
                         <p className="text-[10px]">{t('notif.loading')}</p>
                     </div>
                 ) : notifications.length === 0 ? (
@@ -369,7 +369,7 @@ export default function TopNav({ title, subtitle }) {
                     title={t('notif.header')}
                     type="button"
                 >
-                    <FontAwesomeIcon icon={faBell} />
+                    <Bell />
                     <NotifBadge count={urgentCount || (totalCount > 0 ? totalCount : 0)} />
                 </button>
             </div>
@@ -423,7 +423,7 @@ export default function TopNav({ title, subtitle }) {
                     {/* ===================== */}
                     {/* MOBILE */}
                     {/* ===================== */}
-                    <div className="lg:hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]/70 backdrop-blur-md shadow-[0_12px_30px_rgba(15,23,42,0.06)]">
+                    <div className="lg:hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[0_12px_30px_rgba(15,23,42,0.06)]">
                         <div className="flex items-start justify-between px-4 py-3">
                             {/* Left */}
                             <div className="min-w-0">
@@ -445,7 +445,7 @@ export default function TopNav({ title, subtitle }) {
                                     className="p-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition"
                                     type="button"
                                 >
-                                    <FontAwesomeIcon icon={isDark ? faSun : faMoon} />
+                                    {isDark ? <Sun /> : <Moon />}
                                 </button>
 
                                 <div className="relative flex-shrink-0" ref={mobileProfileRef}>
@@ -456,8 +456,7 @@ export default function TopNav({ title, subtitle }) {
                                         type="button"
                                     >
                                         <Avatar url={profile?.avatar_url} name={profile?.name} />
-                                        <FontAwesomeIcon
-                                            icon={faChevronDown}
+                                        <ChevronDown
                                             className={`text-xs text-[var(--color-text-muted)] transition-transform ${profileOpen ? "rotate-180" : ""}`}
                                         />
                                     </button>
@@ -469,14 +468,14 @@ export default function TopNav({ title, subtitle }) {
                                                 className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[var(--color-surface-alt)] transition font-bold text-sm text-[var(--color-text)]"
                                                 type="button"
                                             >
-                                                <FontAwesomeIcon icon={faGear} /> Settings
+                                                <Settings /> Settings
                                             </button>
                                             <button
                                                 onClick={async () => { setProfileOpen(false); await signOut(); navigate("/login") }}
                                                 className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[var(--color-surface-alt)] transition font-bold text-sm text-red-600"
                                                 type="button"
                                             >
-                                                <FontAwesomeIcon icon={faRightFromBracket} /> Logout
+                                                <LogOut /> Logout
                                             </button>
                                         </div>
                                     )}
@@ -488,7 +487,7 @@ export default function TopNav({ title, subtitle }) {
                     {/* ===================== */}
                     {/* DESKTOP */}
                     {/* ===================== */}
-                    <div className="hidden lg:block rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]/85 backdrop-blur-xl shadow-[0_12px_30px_rgba(15,23,42,0.06)]">
+                    <div className="hidden lg:block rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[0_12px_30px_rgba(15,23,42,0.06)]">
                         <div className="flex items-center justify-between px-4 py-3">
 
                             {/* Left: Logo */}
@@ -511,7 +510,7 @@ export default function TopNav({ title, subtitle }) {
                                     <NavLink to="/dashboard" className={tabClass}>Dashboard</NavLink>
                                     <div className="relative" ref={academicRef}>
                                         <button onClick={() => setAcademicOpen(v => !v)} className={`px-3 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${academicOpen ? "bg-[var(--color-surface)] shadow-sm text-[var(--color-text)]" : "text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white/50 dark:hover:bg-white/5"}`} type="button">
-                                            <FontAwesomeIcon icon={faCalendarAlt} className="opacity-70" /> Akademik <FontAwesomeIcon icon={faChevronDown} className={`text-[10px] transition-transform ${academicOpen ? "rotate-180" : ""}`} />
+                                            <Calendar className="opacity-70" /> Akademik <ChevronDown className={`text-[10px] transition-transform ${academicOpen ? "rotate-180" : ""}`} />
                                         </button>
                                         {academicOpen && (
                                             <div className="absolute left-0 mt-2 w-64 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200">
@@ -519,7 +518,7 @@ export default function TopNav({ title, subtitle }) {
                                                 <div className="p-2">
                                                     {ACADEMIC_ITEMS.map(it => (
                                                         <button key={it.to} onClick={() => { setAcademicOpen(false); navigate(it.to) }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] transition group" type="button">
-                                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${it.color}`}><FontAwesomeIcon icon={it.icon} className="text-xs" /></div>
+                                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${it.color}`}><it.icon className="text-xs" /></div>
                                                             <div className="text-left"><p className="text-[11px] font-black text-[var(--color-text)] leading-tight">{it.label}</p><p className="text-[9px] text-[var(--color-text-muted)] font-medium leading-tight mt-0.5">{it.desc}</p></div>
                                                         </button>
                                                     ))}
@@ -529,7 +528,7 @@ export default function TopNav({ title, subtitle }) {
                                     </div>
                                     <div className="relative" ref={financeRef}>
                                         <button onClick={() => setFinanceOpen(v => !v)} className={`px-3 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${financeOpen ? "bg-[var(--color-surface)] shadow-sm text-[var(--color-text)]" : "text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white/50 dark:hover:bg-white/5"}`} type="button">
-                                            <FontAwesomeIcon icon={faMoneyBillWave} className="opacity-70" /> Keuangan <FontAwesomeIcon icon={faChevronDown} className={`text-[10px] transition-transform ${financeOpen ? "rotate-180" : ""}`} />
+                                            <Banknote className="opacity-70" /> Keuangan <ChevronDown className={`text-[10px] transition-transform ${financeOpen ? "rotate-180" : ""}`} />
                                         </button>
                                         {financeOpen && (
                                             <div className="absolute left-0 mt-2 w-64 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200">
@@ -537,7 +536,7 @@ export default function TopNav({ title, subtitle }) {
                                                 <div className="p-2">
                                                     {FINANCE_ITEMS.map(it => (
                                                         <button key={it.to} onClick={() => { setFinanceOpen(false); navigate(it.to) }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] transition group" type="button">
-                                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${it.color}`}><FontAwesomeIcon icon={it.icon} className="text-xs" /></div>
+                                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${it.color}`}><it.icon className="text-xs" /></div>
                                                             <div className="text-left"><p className="text-[11px] font-black text-[var(--color-text)] leading-tight">{it.label}</p><p className="text-[9px] text-[var(--color-text-muted)] font-medium leading-tight mt-0.5">{it.desc}</p></div>
                                                         </button>
                                                     ))}
@@ -547,7 +546,7 @@ export default function TopNav({ title, subtitle }) {
                                     </div>
                                     <div className="relative" ref={reportsRef}>
                                         <button onClick={() => setReportsOpen(v => !v)} className={`px-3 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${reportsOpen ? "bg-[var(--color-surface)] shadow-sm text-[var(--color-text)]" : "text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white/50 dark:hover:bg-white/5"}`} type="button">
-                                            <FontAwesomeIcon icon={faClipboardList} className="opacity-70" /> Laporan <FontAwesomeIcon icon={faChevronDown} className={`text-[10px] transition-transform ${reportsOpen ? "rotate-180" : ""}`} />
+                                            <ClipboardList className="opacity-70" /> Laporan <ChevronDown className={`text-[10px] transition-transform ${reportsOpen ? "rotate-180" : ""}`} />
                                         </button>
                                         {reportsOpen && (
                                             <div className="absolute left-0 mt-2 w-64 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200">
@@ -555,7 +554,7 @@ export default function TopNav({ title, subtitle }) {
                                                 <div className="p-2">
                                                     {REPORTS_ITEMS.map(it => (
                                                         <button key={it.to} onClick={() => { setReportsOpen(false); navigate(it.to) }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] transition group" type="button">
-                                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${it.color}`}><FontAwesomeIcon icon={it.icon} className="text-xs" /></div>
+                                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${it.color}`}><it.icon className="text-xs" /></div>
                                                             <div className="text-left"><p className="text-[11px] font-black text-[var(--color-text)] leading-tight">{it.label}</p><p className="text-[9px] text-[var(--color-text-muted)] font-medium leading-tight mt-0.5">{it.desc}</p></div>
                                                         </button>
                                                     ))}
@@ -565,7 +564,7 @@ export default function TopNav({ title, subtitle }) {
                                     </div>
                                     <div className="relative" ref={masterRef}>
                                         <button onClick={() => setMasterOpen(v => !v)} className={`px-3 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 ${masterOpen ? "bg-[var(--color-surface)] shadow-sm text-[var(--color-text)]" : "text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white/50 dark:hover:bg-white/5"}`} type="button">
-                                            <FontAwesomeIcon icon={faLayerGroup} className="opacity-70" /> Master <FontAwesomeIcon icon={faChevronDown} className={`text-[10px] transition-transform ${masterOpen ? "rotate-180" : ""}`} />
+                                            <Layers className="opacity-70" /> Master <ChevronDown className={`text-[10px] transition-transform ${masterOpen ? "rotate-180" : ""}`} />
                                         </button>
                                         {masterOpen && (
                                             <div className="absolute left-0 mt-2 w-64 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200">
@@ -573,7 +572,7 @@ export default function TopNav({ title, subtitle }) {
                                                 <div className="p-2">
                                                     {MASTER_ITEMS.map(it => (
                                                         <button key={it.to} onClick={() => { setMasterOpen(false); navigate(it.to) }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] transition group" type="button">
-                                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-indigo-500/10 text-indigo-600`}><FontAwesomeIcon icon={it.icon} className="text-xs" /></div>
+                                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-indigo-500/10 text-indigo-600`}><it.icon className="text-xs" /></div>
                                                             <div className="text-left"><p className="text-[11px] font-black text-[var(--color-text)] leading-tight">{it.label}</p><p className="text-[9px] text-[var(--color-text-muted)] font-medium leading-tight mt-0.5">{it.desc}</p></div>
                                                         </button>
                                                     ))}
@@ -594,13 +593,13 @@ export default function TopNav({ title, subtitle }) {
                                                         : "text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-white/50 dark:hover:bg-white/5"}`}
                                                 type="button"
                                             >
-                                                <FontAwesomeIcon icon={faUserGear} />
+                                                <UserCog />
                                                 Admin
-                                                <FontAwesomeIcon icon={faChevronDown} className={`text-xs transition-transform ${adminOpen ? "rotate-180" : ""}`} />
+                                                <ChevronDown className={`text-xs transition-transform ${adminOpen ? "rotate-180" : ""}`} />
                                             </button>
 
                                             {adminOpen && (
-                                                <div className="absolute right-0 lg:left-auto lg:right-0 mt-2 w-[calc(100vw-2rem)] sm:w-[480px] rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 origin-top-right z-50">
+                                                <div className="absolute right-0 lg:left-auto lg:right-0 mt-2 w-[calc(100vw-2rem)] sm:w-[480px] rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200 origin-top-right z-50">
                                                     <div className="px-5 py-3.5 text-[10px] font-black tracking-[0.2em] text-[var(--color-text-muted)] uppercase border-b border-[var(--color-border)]/50 bg-[var(--color-surface-alt)]/30">
                                                         Infrastructure & Control
                                                     </div>
@@ -613,7 +612,7 @@ export default function TopNav({ title, subtitle }) {
                                                                 type="button"
                                                             >
                                                                 <div className={`w-9 h-9 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shrink-0 ${it.color} shadow-sm`}>
-                                                                    <FontAwesomeIcon icon={it.icon} className="text-sm" />
+                                                                    <it.icon className="text-sm" />
                                                                 </div>
                                                                 <div className="text-left min-w-0">
                                                                     <p className={`text-[11px] font-black text-[var(--color-text)] leading-tight truncate ${idx === 0 ? 'text-indigo-600' : ''}`}>{it.label}</p>
@@ -645,7 +644,7 @@ export default function TopNav({ title, subtitle }) {
                                             className="p-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition"
                                             type="button"
                                         >
-                                            <FontAwesomeIcon icon={isDark ? faSun : faMoon} />
+                                            {isDark ? <Sun /> : <Moon />}
                                         </button>
                                     </div>
                                 </nav>
@@ -666,8 +665,7 @@ export default function TopNav({ title, subtitle }) {
                                             <span className="text-sm font-extrabold text-[var(--color-text)]">{profile?.name || "User"}</span>
                                             <span className="text-[10px] font-bold tracking-widest uppercase text-[var(--color-text-muted)]">{profile?.role || "Staff"}</span>
                                         </div>
-                                        <FontAwesomeIcon
-                                            icon={faChevronDown}
+                                        <ChevronDown
                                             className={`text-xs text-[var(--color-text-muted)] transition-transform ${profileOpen ? "rotate-180" : ""}`}
                                         />
                                     </button>
@@ -679,14 +677,14 @@ export default function TopNav({ title, subtitle }) {
                                                 className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[var(--color-surface-alt)] transition font-bold text-sm text-[var(--color-text)]"
                                                 type="button"
                                             >
-                                                <FontAwesomeIcon icon={faGear} /> Settings
+                                                <Settings /> Settings
                                             </button>
                                             <button
                                                 onClick={async () => { setProfileOpen(false); await signOut(); navigate("/login") }}
                                                 className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[var(--color-surface-alt)] transition font-bold text-sm text-red-600"
                                                 type="button"
                                             >
-                                                <FontAwesomeIcon icon={faRightFromBracket} /> Logout
+                                                <LogOut /> Logout
                                             </button>
                                         </div>
                                     )}

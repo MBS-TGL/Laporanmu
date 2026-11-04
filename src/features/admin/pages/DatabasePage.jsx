@@ -1,16 +1,8 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { StatsCarousel, Breadcrumb } from '@shared/components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faDatabase, faShieldHalved, faRotateRight, faSpinner,
-    faCircleCheck, faTriangleExclamation, faCircleExclamation,
-    faUsers, faChalkboardTeacher, faSchool, faClipboardList,
-    faCalendarAlt, faExclamationTriangle, faShield,
-    faPersonWalkingArrowRight, faUserShield, faBolt,
-    faChevronDown, faChevronUp, faSearch, faXmark,
-    faDownload, faArrowsRotate, faCheckDouble,
-    faLinkSlash, faCalendarWeek, faCircleInfo, faFloppyDisk,
-} from '@fortawesome/free-solid-svg-icons'
+import { Calendar, CheckCheck, ChevronDown, ChevronUp, CircleAlert, CircleCheck, ClipboardList, Database, Download, Info, LoaderCircle, LogOut, Presentation, RefreshCw, RotateCw, Save, School, Search, Shield, ShieldCheck, ShieldHalf, Trash2, TriangleAlert, Unlink, Users, X, Zap } from 'lucide-react'
+
+
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import { useToast, useAuth } from '@context'
 import { supabase } from '@lib/supabase'
@@ -20,18 +12,18 @@ import { supabase } from '@lib/supabase'
 const ALLOWED_ROLES = ['admin', 'developer', 'superadmin']
 
 const TABLE_CONFIG = [
-    { key: 'students', label: 'Siswa', icon: faUsers, color: 'text-indigo-500', bg: 'bg-indigo-500/10', softDelete: true, dateCol: 'created_at' },
-    { key: 'teachers', label: 'Guru & Karyawan', icon: faChalkboardTeacher, color: 'text-emerald-500', bg: 'bg-emerald-500/10', softDelete: true, dateCol: 'created_at' },
-    { key: 'classes', label: 'Kelas', icon: faSchool, color: 'text-blue-500', bg: 'bg-blue-500/10', softDelete: false, dateCol: 'created_at' },
-    { key: 'student_monthly_reports', label: 'Raport Bulanan', icon: faClipboardList, color: 'text-purple-500', bg: 'bg-purple-500/10', softDelete: false, dateCol: 'created_at' },
-    { key: 'reports', label: 'Poin Siswa', icon: faShield, color: 'text-orange-500', bg: 'bg-orange-500/10', softDelete: false, dateCol: 'reported_at' },
-    { key: 'point_rules', label: 'Konfigurasi Poin', icon: faExclamationTriangle, color: 'text-red-500', bg: 'bg-red-500/10', softDelete: false, dateCol: 'created_at' },
-    { key: 'academic_years', label: 'Tahun Pelajaran', icon: faCalendarAlt, color: 'text-teal-500', bg: 'bg-teal-500/10', softDelete: true, dateCol: 'created_at' },
-    { key: 'gate_logs', label: 'Log Gerbang', icon: faPersonWalkingArrowRight, color: 'text-rose-500', bg: 'bg-rose-500/10', softDelete: false, dateCol: 'created_at' },
-    { key: 'profiles', label: 'Profil Akun', icon: faUserShield, color: 'text-violet-500', bg: 'bg-violet-500/10', softDelete: false, dateCol: 'created_at' },
-    { key: 'feature_flags', label: 'Feature Flags', icon: faBolt, color: 'text-amber-500', bg: 'bg-amber-500/10', softDelete: false, dateCol: null },
-    { key: 'audit_logs', label: 'Audit Logs', icon: faDatabase, color: 'text-slate-500', bg: 'bg-slate-500/10', softDelete: false, optional: true, dateCol: 'created_at' },
-    { key: 'school_settings', label: 'Pengaturan Sekolah', icon: faFloppyDisk, color: 'text-cyan-500', bg: 'bg-cyan-500/10', softDelete: false, optional: true, dateCol: null },
+    { key: 'students', label: 'Siswa', icon: Users, color: 'text-indigo-500', bg: 'bg-indigo-500/10', softDelete: true, dateCol: 'created_at' },
+    { key: 'teachers', label: 'Guru & Karyawan', icon: Presentation, color: 'text-emerald-500', bg: 'bg-emerald-500/10', softDelete: true, dateCol: 'created_at' },
+    { key: 'classes', label: 'Kelas', icon: School, color: 'text-blue-500', bg: 'bg-blue-500/10', softDelete: false, dateCol: 'created_at' },
+    { key: 'student_monthly_reports', label: 'Raport Bulanan', icon: ClipboardList, color: 'text-purple-500', bg: 'bg-purple-500/10', softDelete: false, dateCol: 'created_at' },
+    { key: 'reports', label: 'Poin Siswa', icon: Shield, color: 'text-orange-500', bg: 'bg-orange-500/10', softDelete: false, dateCol: 'reported_at' },
+    { key: 'point_rules', label: 'Konfigurasi Poin', icon: TriangleAlert, color: 'text-red-500', bg: 'bg-red-500/10', softDelete: false, dateCol: 'created_at' },
+    { key: 'academic_years', label: 'Tahun Pelajaran', icon: Calendar, color: 'text-teal-500', bg: 'bg-teal-500/10', softDelete: true, dateCol: 'created_at' },
+    { key: 'gate_logs', label: 'Log Gerbang', icon: LogOut, color: 'text-rose-500', bg: 'bg-rose-500/10', softDelete: false, dateCol: 'created_at' },
+    { key: 'profiles', label: 'Profil Akun', icon: ShieldCheck, color: 'text-violet-500', bg: 'bg-violet-500/10', softDelete: false, dateCol: 'created_at' },
+    { key: 'feature_flags', label: 'Feature Flags', icon: Zap, color: 'text-amber-500', bg: 'bg-amber-500/10', softDelete: false, dateCol: null },
+    { key: 'audit_logs', label: 'Audit Logs', icon: Database, color: 'text-slate-500', bg: 'bg-slate-500/10', softDelete: false, optional: true, dateCol: 'created_at' },
+    { key: 'school_settings', label: 'Pengaturan Sekolah', icon: Save, color: 'text-cyan-500', bg: 'bg-cyan-500/10', softDelete: false, optional: true, dateCol: null },
 ]
 
 const INTEGRITY_CHECKS = [
@@ -40,7 +32,7 @@ const INTEGRITY_CHECKS = [
         label: 'Siswa tanpa kelas valid',
         desc: 'Siswa aktif yang class_id-nya kosong atau tidak cocok dengan tabel classes',
         severity: 'warning',
-        icon: faUsers,
+        icon: Users,
         canRepair: true,
         columns: [
             { label: 'Nama Siswa', key: 'name', width: '1fr' },
@@ -52,7 +44,7 @@ const INTEGRITY_CHECKS = [
         label: 'Duplikat ID Reg (Siswa)',
         desc: 'Siswa yang memiliki ID Registrasi / Nomor Induk yang sama',
         severity: 'error',
-        icon: faCheckDouble,
+        icon: CheckCheck,
         columns: [
             { label: 'ID Reg', key: 'code', width: '120px', mono: true, highlight: true },
             { label: 'Nama-nama Terkait', key: 'names', width: '1fr' },
@@ -64,7 +56,7 @@ const INTEGRITY_CHECKS = [
         label: 'Poin tanpa siswa valid',
         desc: 'Data poin yang student_id-nya tidak ada di tabel students',
         severity: 'error',
-        icon: faShield,
+        icon: Shield,
         canRepair: true,
         columns: [
             { label: 'Report ID', key: 'id', width: '200px', mono: true },
@@ -77,7 +69,7 @@ const INTEGRITY_CHECKS = [
         label: 'Raport tanpa siswa valid',
         desc: 'Raport bulanan yang student_id-nya tidak ada di tabel students',
         severity: 'error',
-        icon: faClipboardList,
+        icon: ClipboardList,
         canRepair: true,
         columns: [
             { label: 'Raport ID', key: 'id', width: '200px', mono: true },
@@ -90,7 +82,7 @@ const INTEGRITY_CHECKS = [
         label: 'Kelas tanpa siswa',
         desc: 'Kelas aktif yang tidak memiliki siswa sama sekali',
         severity: 'info',
-        icon: faSchool,
+        icon: School,
         columns: [
             { label: 'Nama Kelas', key: 'name', width: '1fr' },
             { label: 'ID', key: 'id', width: '200px', mono: true },
@@ -101,7 +93,7 @@ const INTEGRITY_CHECKS = [
         label: 'Siswa dengan nama duplikat',
         desc: 'Nama siswa yang muncul lebih dari 1x dalam satu kelas',
         severity: 'warning',
-        icon: faCheckDouble,
+        icon: CheckCheck,
         columns: [
             { label: 'Nama Siswa', key: 'name', width: '1fr' },
             { label: 'Kelas', key: 'class_name', width: '120px' },
@@ -113,7 +105,7 @@ const INTEGRITY_CHECKS = [
         label: 'Guru tanpa akun login',
         desc: 'Guru aktif yang belum di-link ke profil akun',
         severity: 'info',
-        icon: faLinkSlash,
+        icon: Unlink,
         columns: [
             { label: 'Nama Guru', key: 'name', width: '1fr' },
             { label: 'NBM / NIP', key: 'nbm', width: '140px', mono: true },
@@ -124,7 +116,7 @@ const INTEGRITY_CHECKS = [
         label: 'Duplikat NBM (Guru/Karyawan)',
         desc: 'Guru/Karyawan yang memiliki NBM/NIP yang sama',
         severity: 'warning',
-        icon: faCheckDouble,
+        icon: CheckCheck,
         columns: [
             { label: 'NBM / NIP', key: 'nbm', width: '140px', mono: true, highlight: true },
             { label: 'Nama-nama Terkait', key: 'names', width: '1fr' },
@@ -134,10 +126,10 @@ const INTEGRITY_CHECKS = [
 ]
 
 const SEVERITY_STYLE = {
-    error: { color: 'text-red-500', bg: 'bg-red-500/10', border: 'border-red-500/25', icon: faCircleExclamation },
-    warning: { color: 'text-amber-500', bg: 'bg-amber-500/10', border: 'border-amber-500/25', icon: faTriangleExclamation },
-    info: { color: 'text-blue-500', bg: 'bg-blue-500/10', border: 'border-blue-500/25', icon: faCircleInfo },
-    ok: { color: 'text-emerald-500', bg: 'bg-emerald-500/10', border: 'border-emerald-500/25', icon: faCircleCheck },
+    error: { color: 'text-red-500', bg: 'bg-red-500/10', border: 'border-red-500/25', icon: CircleAlert },
+    warning: { color: 'text-amber-500', bg: 'bg-amber-500/10', border: 'border-amber-500/25', icon: TriangleAlert },
+    info: { color: 'text-blue-500', bg: 'bg-blue-500/10', border: 'border-blue-500/25', icon: Info },
+    ok: { color: 'text-emerald-500', bg: 'bg-emerald-500/10', border: 'border-emerald-500/25', icon: CircleCheck },
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -157,7 +149,7 @@ function TableRow({ table, data, isExpanded, onToggle }) {
         return (
             <div className="flex items-center gap-3 px-5 py-3.5 opacity-40">
                 <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${table.bg}`}>
-                    <FontAwesomeIcon icon={table.icon} className={`text-[11px] ${table.color}`} />
+                    <table.icon className={`text-[11px] ${table.color}`} />
                 </div>
                 <div className="flex-1 min-w-0">
                     <p className="text-[12px] font-black text-[var(--color-text-muted)]">{table.label}</p>
@@ -179,7 +171,7 @@ function TableRow({ table, data, isExpanded, onToggle }) {
                 {/* Name */}
                 <div className="flex items-center gap-3 min-w-0">
                     <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${table.bg}`}>
-                        <FontAwesomeIcon icon={table.icon} className={`text-[11px] ${table.color}`} />
+                        <table.icon className={`text-[11px] ${table.color}`} />
                     </div>
                     <div className="min-w-0">
                         <p className="text-[12px] font-black text-[var(--color-text)] truncate">{table.label}</p>
@@ -221,10 +213,7 @@ function TableRow({ table, data, isExpanded, onToggle }) {
 
                 {/* Expand */}
                 <div className="hidden md:flex items-center justify-center">
-                    <FontAwesomeIcon
-                        icon={isExpanded ? faChevronUp : faChevronDown}
-                        className={`text-[10px] ${isExpanded ? 'text-[var(--color-primary)]' : 'text-[var(--color-border)]'}`}
-                    />
+                    { isExpanded ? <ChevronUp className={`text-[10px] ${isExpanded ? 'text-[var(--color-primary)]' : 'text-[var(--color-border)]'}`} /> : <ChevronDown className={`text-[10px] ${isExpanded ? 'text-[var(--color-primary)]' : 'text-[var(--color-border)]'}`} /> }
                 </div>
             </div>
 
@@ -279,7 +268,7 @@ function IntegrityRow({ check, result, isExpanded, onToggle, onRepair }) {
                 onClick={canExpand ? onToggle : undefined}
             >
                 <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${style.bg}`}>
-                    <FontAwesomeIcon icon={isOk ? faCircleCheck : style.icon} className={`text-[11px] ${style.color}`} />
+                    { isOk ? <CircleCheck className={`text-[11px] ${style.color}`} /> : <style.icon className={`text-[11px] ${style.color}`} /> }
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
@@ -308,14 +297,11 @@ function IntegrityRow({ check, result, isExpanded, onToggle, onRepair }) {
                                 className={`text-[10px] font-black px-3 py-1.5 rounded-lg border transition-all flex items-center gap-1.5 disabled:opacity-50 ${style.bg} ${style.color} ${style.border} hover:scale-105 active:scale-95`}
                                 title={`Bersihkan data ${check.label}`}
                             >
-                                <FontAwesomeIcon icon={repairing ? faSpinner : faTrash} className={repairing ? 'animate-spin' : ''} />
+                                { repairing ? <LoaderCircle className={repairing ? 'animate-spin' : ''} /> : <Trash2 className={repairing ? 'animate-spin' : ''} /> }
                                 <span>{repairing ? 'Membersihkan...' : 'Bersihkan'}</span>
                             </button>
                         )}
-                        <FontAwesomeIcon
-                            icon={isExpanded ? faChevronUp : faChevronDown}
-                            className={`text-[10px] ${isExpanded ? style.color : 'text-[var(--color-text-muted)]'}`}
-                        />
+                        { isExpanded ? <ChevronUp className={`text-[10px] ${isExpanded ? style.color : 'text-[var(--color-text-muted)]'}`} /> : <ChevronDown className={`text-[10px] ${isExpanded ? style.color : 'text-[var(--color-text-muted)]'}`} /> }
                     </div>
                 )}
             </div>
@@ -732,7 +718,7 @@ export default function DatabasePage() {
         <DashboardLayout title="Database Health">
             <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
                 <div className="w-20 h-20 rounded-3xl bg-red-500/10 flex items-center justify-center">
-                    <FontAwesomeIcon icon={faShieldHalved} className="text-3xl text-red-500" />
+                    <ShieldHalf className="text-3xl text-red-500" />
                 </div>
                 <div className="text-center">
                     <h2 className="text-xl font-black text-[var(--color-text)] mb-2">Akses Terbatas</h2>
@@ -789,7 +775,7 @@ export default function DatabasePage() {
                                 }`}
                             title="Auto-refresh 60 detik"
                         >
-                            <FontAwesomeIcon icon={faArrowsRotate} className={autoRefresh ? 'animate-spin' : ''} style={{ animationDuration: '3s' }} />
+                            <RefreshCw className={autoRefresh ? 'animate-spin' : ''} style={{ animationDuration: '3s' }} />
                             <span className="hidden sm:inline">{autoRefresh ? 'Auto On' : 'Auto-refresh'}</span>
                         </button>
                         <button
@@ -798,14 +784,14 @@ export default function DatabasePage() {
                             className="h-9 w-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] flex items-center justify-center hover:text-[var(--color-text)] transition-all disabled:opacity-50"
                             title="Refresh"
                         >
-                            <FontAwesomeIcon icon={faRotateRight} className={`text-sm ${loadingTables ? 'animate-spin' : ''}`} />
+                            <RotateCw className={`text-sm ${loadingTables ? 'animate-spin' : ''}`} />
                         </button>
                         <button
                             onClick={exportSummary}
                             disabled={loadingTables}
                             className="h-9 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-[10px] font-black flex items-center gap-1.5 hover:text-[var(--color-text)] transition-all disabled:opacity-40"
                         >
-                            <FontAwesomeIcon icon={faDownload} className="text-[10px]" />
+                            <Download className="text-[10px]" />
                             <span className="hidden sm:inline">Export</span>
                         </button>
                     </div>
@@ -814,14 +800,14 @@ export default function DatabasePage() {
                 {/* Summary Stats */}
                 <StatsCarousel count={4}>
                     {[
-                        { label: 'Total Tabel', value: summaryStats.tableCount, icon: faDatabase, color: 'text-cyan-500', bg: 'bg-cyan-500/10' },
-                        { label: 'Total Rows', value: summaryStats.totalRows, icon: faBolt, color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
-                        { label: 'Integrity Score', value: integrityScore?.percentage != null ? `${integrityScore.percentage}%` : '—', icon: faShieldHalved, color: integrityScore?.percentage >= 90 ? 'text-emerald-500' : integrityScore?.percentage >= 70 ? 'text-amber-500' : 'text-red-500', bg: integrityScore?.percentage >= 90 ? 'bg-emerald-500/10' : integrityScore?.percentage >= 70 ? 'bg-amber-500/10' : 'bg-red-500/10' },
-                        { label: 'Soft Deleted', value: summaryStats.totalDeleted, icon: faTriangleExclamation, color: 'text-amber-500', bg: 'bg-amber-500/10' },
+                        { label: 'Total Tabel', value: summaryStats.tableCount, icon: Database, color: 'text-cyan-500', bg: 'bg-cyan-500/10' },
+                        { label: 'Total Rows', value: summaryStats.totalRows, icon: Zap, color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10' },
+                        { label: 'Integrity Score', value: integrityScore?.percentage != null ? `${integrityScore.percentage}%` : '—', icon: ShieldHalf, color: integrityScore?.percentage >= 90 ? 'text-emerald-500' : integrityScore?.percentage >= 70 ? 'text-amber-500' : 'text-red-500', bg: integrityScore?.percentage >= 90 ? 'bg-emerald-500/10' : integrityScore?.percentage >= 70 ? 'bg-amber-500/10' : 'bg-red-500/10' },
+                        { label: 'Soft Deleted', value: summaryStats.totalDeleted, icon: TriangleAlert, color: 'text-amber-500', bg: 'bg-amber-500/10' },
                     ].map((s, i) => (
-                        <div key={i} className="shrink-0 snap-center w-[200px] xs:w-[220px] sm:w-auto glass rounded-[1.5rem] p-4 flex items-center gap-3 border border-[var(--color-border)] transition-all hover:scale-[1.02]">
+                        <div key={i} className="shrink-0 snap-center w-[200px] xs:w-[220px] sm:w-auto bg-surface rounded-[1.5rem] p-4 flex items-center gap-3 border border-[var(--color-border)] transition-all hover:scale-[1.02]">
                             <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${s.bg}`}>
-                                <FontAwesomeIcon icon={s.icon} className={`text-sm ${s.color}`} />
+                                <s.icon className={`text-sm ${s.color}`} />
                             </div>
                             <div>
                                 <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">{s.label}</p>
@@ -834,10 +820,10 @@ export default function DatabasePage() {
                 </StatsCarousel>
 
                 {/* Search */}
-                <div className="glass rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
+                <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
                     <div className="flex items-center gap-2 p-3">
                         <div className="flex-1 relative">
-                            <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-sm pointer-events-none" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-sm pointer-events-none" />
                             <input
                                 type="text" value={search} onChange={e => setSearch(e.target.value)}
                                 placeholder="Cari tabel..."
@@ -845,7 +831,7 @@ export default function DatabasePage() {
                             />
                             {search && (
                                 <button onClick={() => setSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-                                    <FontAwesomeIcon icon={faXmark} className="text-xs" />
+                                    <X className="text-xs" />
                                 </button>
                             )}
                         </div>
@@ -856,7 +842,7 @@ export default function DatabasePage() {
                 </div>
 
                 {/* Table Counts */}
-                <div className="glass rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
+                <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
                     <div className="hidden md:grid grid-cols-[1fr_100px_100px_100px_140px_40px] gap-3 px-5 py-3 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]">
                         {['Tabel', 'Aktif', 'Dihapus', 'Total', 'Terakhir Dibuat', ''].map((h, i) => (
                             <div key={i} className={`text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] ${i > 0 && i < 4 ? 'text-center' : ''}`}>
@@ -883,7 +869,7 @@ export default function DatabasePage() {
                     ) : filteredTables.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-20 gap-4">
                             <div className="w-14 h-14 rounded-2xl bg-[var(--color-surface-alt)] flex items-center justify-center">
-                                <FontAwesomeIcon icon={faDatabase} className="text-2xl text-[var(--color-text-muted)] opacity-30" />
+                                <Database className="text-2xl text-[var(--color-text-muted)] opacity-30" />
                             </div>
                             <div className="text-center">
                                 <p className="text-[13px] font-black text-[var(--color-text)] mb-1">Tidak ditemukan</p>
@@ -906,11 +892,11 @@ export default function DatabasePage() {
                 </div>
 
                 {/* Integrity Checks */}
-                <div className="glass rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
+                <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
                     <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]">
                         <div className="flex items-center gap-3">
                             <div className="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
-                                <FontAwesomeIcon icon={faCheckDouble} className="text-sm text-emerald-500" />
+                                <CheckCheck className="text-sm text-emerald-500" />
                             </div>
                             <div>
                                 <p className="text-[13px] font-black text-[var(--color-text)]">Cek Integritas Data</p>
@@ -942,9 +928,9 @@ export default function DatabasePage() {
                                 className="h-9 px-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 text-[10px] font-black flex items-center gap-1.5 hover:bg-emerald-500/20 transition-all disabled:opacity-50"
                             >
                                 {loadingIntegrity ? (
-                                    <FontAwesomeIcon icon={faSpinner} className="animate-spin text-[10px]" />
+                                    <LoaderCircle className="animate-spin text-[10px]" />
                                 ) : (
-                                    <FontAwesomeIcon icon={faCheckDouble} className="text-[10px]" />
+                                    <CheckCheck className="text-[10px]" />
                                 )}
                                 <span className="hidden sm:inline">{loadingIntegrity ? 'Memeriksa...' : 'Jalankan Cek'}</span>
                             </button>
@@ -955,7 +941,7 @@ export default function DatabasePage() {
                         {Object.keys(integrityResults).length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-12 gap-3">
                                 <div className="w-14 h-14 rounded-2xl bg-[var(--color-surface-alt)] flex items-center justify-center">
-                                    <FontAwesomeIcon icon={faCheckDouble} className="text-2xl text-[var(--color-text-muted)] opacity-30" />
+                                    <CheckCheck className="text-2xl text-[var(--color-text-muted)] opacity-30" />
                                 </div>
                                 <div className="text-center">
                                     <p className="text-[13px] font-black text-[var(--color-text)] mb-1">Belum Diperiksa</p>
@@ -981,7 +967,7 @@ export default function DatabasePage() {
 
                 {/* Info note */}
                 <div className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-start gap-2.5">
-                    <FontAwesomeIcon icon={faCircleInfo} className="text-[var(--color-text-muted)] text-xs mt-0.5 shrink-0" />
+                    <Info className="text-[var(--color-text-muted)] text-xs mt-0.5 shrink-0" />
                     <p className="text-[10px] text-[var(--color-text-muted)] leading-relaxed">
                         Data ditarik langsung dari Supabase via <code className="bg-[var(--color-surface)] px-1 rounded font-mono text-[9px]">SELECT COUNT(*)</code>.
                         Integritas data dicek dengan cross-reference antar tabel. Tidak ada data yang diubah — hanya baca.

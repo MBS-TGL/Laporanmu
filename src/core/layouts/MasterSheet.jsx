@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 import { createPortal } from "react-dom"
 import { useNavigate } from "react-router-dom"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useAuth, useFeatureFlags, useLanguage } from "@context"
 import {
     ACADEMIC_ITEMS, FINANCE_ITEMS, BOARDING_ITEMS, MASTER_ITEMS, ADMIN_ITEMS,
@@ -26,12 +25,8 @@ function getPortalContainer(id) {
 // ─── NavIcon Helper ──────────────────────────────────────────────────────────
 function NavIcon({ icon, className = "" }) {
     if (!icon) return null
-    const isLucide = typeof icon === 'function' || (typeof icon === 'object' && icon.render)
-    if (isLucide) {
-        const IconComponent = icon
-        return <IconComponent className={className || "w-4 h-4"} strokeWidth={2} />
-    }
-    return <FontAwesomeIcon icon={icon} className={className} />
+    const IconComponent = icon
+    return <IconComponent className={className || "w-4 h-4"} strokeWidth={2} />
 }
 
 
@@ -39,18 +34,18 @@ function Section({ title, items, onNavigate }) {
     return (
         <>
             <div className="px-4 pt-3 pb-1">
-                <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">{title}</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-text-muted">{title}</p>
             </div>
             <div className="px-2 pb-1">
                 {items.map((it) => (
                     <button key={it.to} onClick={() => onNavigate(it.to)}
-                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-2xl hover:bg-[var(--color-surface-alt)] transition">
-                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${it.color}`}>
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-surface-alt transition">
+                        <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${it.color}`}>
                             <NavIcon icon={it.icon} className="w-4.5 h-4.5" />
                         </div>
                         <div className="text-left min-w-0">
-                            <div className="text-[13px] font-bold text-[var(--color-text)] leading-tight">{it.label}</div>
-                            {it.desc && <div className="text-[10px] text-[var(--color-text-muted)]">{it.desc}</div>}
+                            <div className="text-sm font-bold text-text leading-tight">{it.label}</div>
+                            {it.desc && <div className="text-xs text-text-muted">{it.desc}</div>}
                         </div>
                     </button>
                 ))}
@@ -61,7 +56,7 @@ function Section({ title, items, onNavigate }) {
 
 // ─── Divider ──────────────────────────────────────────────────────────────────
 function Divider() {
-    return <div className="h-px bg-[var(--color-border)] mx-4 my-1" />
+    return <div className="h-px bg-border mx-4 my-1" />
 }
 
 // ─── MasterSheet ─────────────────────────────────────────────────────────────
@@ -132,7 +127,7 @@ export default function MasterSheet({ isOpen, onClose, section }) {
                         contain: 'content'
                     }}
                 >
-                    <div className="mx-auto max-w-xl rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl overflow-hidden">
+                    <div className="mx-auto max-w-xl rounded-xl border border-border bg-surface shadow-xl overflow-hidden">
 
                         {/* Grabber */}
                         <div className="flex justify-center pt-3 pb-1">

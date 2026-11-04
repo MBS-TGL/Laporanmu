@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react'
 import { createPortal } from 'react-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCalendarAlt, faChevronLeft, faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { Calendar, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react'
 import { useLanguage } from '@context'
 
 const LOCALES = {
@@ -378,7 +377,7 @@ const RichDatePicker = memo(({
                     onClick={handlePrevMonth}
                     className="w-8 h-8 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] flex items-center justify-center transition-colors border border-[var(--color-border)]/30 active:scale-90"
                 >
-                    <FontAwesomeIcon icon={faChevronLeft} className="text-xs opacity-70" />
+                    <ChevronLeft className="text-xs opacity-70" />
                 </button>
                 <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text)]">
                     {currentLocale.months[month]} {tNum(year)}
@@ -388,7 +387,7 @@ const RichDatePicker = memo(({
                     onClick={handleNextMonth}
                     className="w-8 h-8 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] flex items-center justify-center transition-colors border border-[var(--color-border)]/30 active:scale-90"
                 >
-                    <FontAwesomeIcon icon={faChevronRight} className="text-xs opacity-70" />
+                    <ChevronRight className="text-xs opacity-70" />
                 </button>
             </div>
 
@@ -417,7 +416,7 @@ const RichDatePicker = memo(({
                             type="button"
                             onClick={() => handleSelectDay(day)}
                             className={`w-full aspect-square max-w-[40px] max-h-[40px] mx-auto rounded-xl text-xs font-semibold transition-all relative flex items-center justify-center ${selected
-                                ? 'bg-[var(--color-primary)] text-white font-bold shadow-md shadow-[var(--color-primary)]/20 scale-105'
+                                ? 'bg-[var(--color-primary)] text-white font-bold shadow-md scale-105'
                                 : activeToday
                                     ? 'border-2 border-[var(--color-primary)] text-[var(--color-primary)] font-bold'
                                     : 'hover:bg-[var(--color-surface-alt)] text-[var(--color-text)]'
@@ -468,13 +467,11 @@ const RichDatePicker = memo(({
                 className={`w-full pl-9 pr-8 h-[40px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] outline-none transition-all text-xs sm:text-sm font-medium shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
             />
 
-            <FontAwesomeIcon
-                icon={faCalendarAlt}
+            <Calendar
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-[var(--color-text-muted)] opacity-50 pointer-events-none"
             />
 
-            <FontAwesomeIcon
-                icon={faChevronDown}
+            <ChevronDown
                 className={`absolute right-3.5 top-1/2 -translate-y-1/2 text-xs opacity-40 transition-transform duration-300 pointer-events-none ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
             />
 
@@ -490,7 +487,7 @@ const RichDatePicker = memo(({
                             }}
                         />
                         <div
-                            className="fixed bottom-0 left-0 right-0 z-[99999] bg-[var(--color-surface)] border-t border-[var(--color-border)] rounded-t-2xl shadow-2xl animate-in slide-in-from-bottom duration-200 flex flex-col pb-4"
+                            className="fixed bottom-0 left-0 right-0 z-[99999] bg-[var(--color-surface)] border-t border-[var(--color-border)] rounded-t-2xl shadow-xl animate-in slide-in-from-bottom duration-200 flex flex-col pb-4"
                             onMouseDown={(e) => {
                                 e.stopPropagation()
                                 e.preventDefault()
@@ -504,7 +501,7 @@ const RichDatePicker = memo(({
                     </>
                 ) : (
                     <div
-                        className="fixed z-[99999] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-3"
+                        className="fixed z-[99999] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-3"
                         onMouseDown={(e) => {
                             e.stopPropagation()
                             e.preventDefault()

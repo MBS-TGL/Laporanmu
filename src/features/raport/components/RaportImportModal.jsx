@@ -747,7 +747,7 @@ export default function RaportImportModal({
                         {importStep === 1 ? (
                             <button
                                 onClick={() => Object.keys(importRawSheets).length > 0 ? setImportStep(2) : handleImportClick()}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-[11px] font-black uppercase tracking-widest shadow-lg shadow-[var(--color-primary)]/20 transition-all flex items-center gap-2"
+                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-[11px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center gap-2"
                             >
                                 {Object.keys(importRawSheets).length > 0 ? (
                                     <>Lanjutkan <ArrowRight className="w-3.5 h-3.5" /></>
@@ -762,7 +762,7 @@ export default function RaportImportModal({
                                     await buildImportPreview(importRawSheets, importColumnMapping)
                                 }}
                                 disabled={!importColumnMapping.name}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-[11px] font-black uppercase tracking-widest disabled:opacity-40 shadow-lg shadow-[var(--color-primary)]/20 transition-all flex items-center gap-2"
+                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-[11px] font-black uppercase tracking-widest disabled:opacity-40 shadow-lg transition-all flex items-center gap-2"
                             >
                                 Validasi Data <ArrowRight className="w-3.5 h-3.5" />
                             </button>
@@ -770,7 +770,7 @@ export default function RaportImportModal({
                             <button
                                 onClick={handleCommitImport}
                                 disabled={importing || hasImportBlockingErrors || importReadyRows.length === 0}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-[11px] font-black uppercase tracking-widest disabled:opacity-40 shadow-lg shadow-[var(--color-primary)]/20 transition-all flex items-center gap-2"
+                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] hover:brightness-110 text-white text-[11px] font-black uppercase tracking-widest disabled:opacity-40 shadow-lg transition-all flex items-center gap-2"
                             >
                                 {importing ? (
                                     <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Menyimpan...</>
@@ -874,7 +874,7 @@ export default function RaportImportModal({
 
                         <button
                             onClick={handleDownloadTemplate}
-                            className="shrink-0 h-9 px-4 rounded-xl bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-emerald-600 hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-emerald-500/20"
+                            className="shrink-0 h-9 px-4 rounded-xl bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-emerald-600 hover:scale-[1.02] active:scale-95 transition-all shadow-lg"
                         >
                             <Download className="w-3.5 h-3.5" /> Download Template Raport
                         </button>
@@ -987,7 +987,7 @@ export default function RaportImportModal({
                                         onClick={() => setImportSkipDupes(!importSkipDupes)}
                                         className={`flex items-center gap-2 h-8 px-3 rounded-xl border text-[10px] font-black uppercase tracking-tight transition-all
                                             ${importSkipDupes
-                                                ? 'bg-violet-500 text-white border-violet-500 shadow-md shadow-violet-500/20'
+                                                ? 'bg-violet-500 text-white border-violet-500 shadow-md'
                                                 : 'bg-[var(--color-surface)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-violet-500/40 hover:text-violet-600'}`}
                                     >
                                         <Copy className="w-3 h-3" />
@@ -998,7 +998,7 @@ export default function RaportImportModal({
                                         onClick={() => setFilterIssuesOnly(!filterIssuesOnly)}
                                         className={`flex items-center gap-2 h-8 px-3 rounded-xl border text-[10px] font-black uppercase tracking-tight transition-all
                                             ${filterIssuesOnly
-                                                ? 'bg-red-500 text-white border-red-500 shadow-md shadow-red-500/20'
+                                                ? 'bg-red-500 text-white border-red-500 shadow-md'
                                                 : 'bg-[var(--color-surface)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-red-500/40 hover:text-red-500'}`}
                                     >
                                         {filterIssuesOnly ? (

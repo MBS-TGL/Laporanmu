@@ -1,12 +1,5 @@
 import React, { memo } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faTriangleExclamation,
-    faBoxArchive,
-    faCircleExclamation,
-    faTrash,
-    faSpinner
-} from '@fortawesome/free-solid-svg-icons'
+import { Archive, CircleAlert, LoaderCircle, Trash2, TriangleAlert } from 'lucide-react'
 import { Modal } from '@shared/components'
 
 export const ArchiveModal = memo(function ArchiveModal({
@@ -24,7 +17,7 @@ export const ArchiveModal = memo(function ArchiveModal({
             onClose={onClose}
             title="Konfirmasi Arsip"
             description="Tahun akademik ini akan diarsipkan."
-            icon={faBoxArchive}
+            icon={Archive}
             iconBg="bg-amber-500/10"
             iconColor="text-amber-600"
             size="sm"
@@ -36,8 +29,8 @@ export const ArchiveModal = memo(function ArchiveModal({
                     </button>
                     <div className="flex-1" />
                     <button type="button" onClick={onConfirm} disabled={submitting}
-                        className="h-9 px-5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-black text-[10px] transition-all hover:scale-[1.02] active:scale-95 shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 disabled:opacity-50">
-                        {submitting ? <FontAwesomeIcon icon={faSpinner} className="fa-spin text-[9px]" /> : <FontAwesomeIcon icon={faBoxArchive} className="text-[9px]" />}
+                        className="h-9 px-5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-black text-[10px] transition-all hover:scale-[1.02] active:scale-95 shadow-lg flex items-center justify-center gap-2 disabled:opacity-50">
+                        {submitting ? <LoaderCircle className="animate-spin text-[9px]" /> : <Archive className="text-[9px]" />}
                         {submitting ? 'Mengarsipkan...' : 'Arsipkan Sekarang'}
                     </button>
                 </div>
@@ -67,7 +60,7 @@ export const DeactivateModal = memo(function DeactivateModal({
             onClose={onClose}
             title="Nonaktifkan Periode"
             description="Sistem akan berjalan tanpa periode acuan aktif."
-            icon={faTriangleExclamation}
+            icon={TriangleAlert}
             iconBg="bg-orange-500/10"
             iconColor="text-orange-600"
             size="sm"
@@ -79,8 +72,8 @@ export const DeactivateModal = memo(function DeactivateModal({
                     </button>
                     <div className="flex-1" />
                     <button type="button" onClick={onConfirm} disabled={submitting}
-                        className="h-9 px-5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-black text-[10px] transition-all hover:scale-[1.02] active:scale-95 shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 disabled:opacity-50">
-                        {submitting ? <FontAwesomeIcon icon={faSpinner} className="fa-spin text-[9px]" /> : <FontAwesomeIcon icon={faCircleExclamation} className="text-[9px]" />}
+                        className="h-9 px-5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-black text-[10px] transition-all hover:scale-[1.02] active:scale-95 shadow-lg flex items-center justify-center gap-2 disabled:opacity-50">
+                        {submitting ? <LoaderCircle className="animate-spin text-[9px]" /> : <CircleAlert className="text-[9px]" />}
                         {submitting ? 'Memproses...' : 'Nonaktifkan Sekarang'}
                     </button>
                 </div>

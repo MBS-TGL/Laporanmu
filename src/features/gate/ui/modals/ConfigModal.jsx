@@ -38,7 +38,7 @@ export default function ConfigModal({ onSave, onCancel, testNotification }) {
         <div className="flex items-center w-full gap-3">
           <button onClick={onCancel} className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black uppercase tracking-wider hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all shrink-0">{tp('modalConfigCancel').toUpperCase()}</button>
           <div className="flex-1" />
-          <button onClick={handleSave} className="h-10 px-6 rounded-xl bg-indigo-500 text-white text-[10px] font-black uppercase tracking-wider shadow-lg shadow-indigo-500/20 hover:bg-indigo-600 transition-all flex items-center justify-center gap-2 shrink-0">
+          <button onClick={handleSave} className="h-10 px-6 rounded-xl bg-indigo-500 text-white text-[10px] font-black uppercase tracking-wider shadow-lg hover:bg-indigo-600 transition-all flex items-center justify-center gap-2 shrink-0">
             <Check className="w-3.5 h-3.5" />
             <span>{tp('modalConfigSave').toUpperCase()}</span>
           </button>

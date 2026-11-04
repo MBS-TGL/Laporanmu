@@ -1,19 +1,13 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { supabase } from '@lib/supabase'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faPlus, faPen, faTrash, faHistory, faSync, faTools,
-    faCircleInfo, faChevronRight, faDatabase, faSearch,
-    faClock, faExclamationTriangle, faStopwatch, faFingerprint,
-    faAngleDown, faXmark, faShieldHalved
-} from '@fortawesome/free-solid-svg-icons'
+import { Plus, Pen, Trash2, History, RefreshCw, Wrench, Info, ChevronRight, Database, Search, Clock, TriangleAlert, Timer, Fingerprint, ShieldHalf } from 'lucide-react'
 import { fmtDate, fmtTime, fmtDateTime, fmtRelative } from '@utils/formatters'
 
 const SEVERITY_STYLES = {
-    LOW: { label: 'Low', color: 'bg-slate-500/10 text-slate-500 border-slate-500/20', icon: faCircleInfo },
-    MEDIUM: { label: 'Medium', color: 'bg-amber-500/10 text-amber-500 border-amber-500/20', icon: faExclamationTriangle },
-    HIGH: { label: 'High', color: 'bg-orange-500/10 text-orange-500 border-orange-500/20', icon: faExclamationTriangle },
-    CRITICAL: { label: 'Critical', color: 'bg-rose-500/10 text-rose-500 border-rose-500/20', icon: faShieldHalved },
+    LOW: { label: 'Low', color: 'bg-slate-500/10 text-slate-500 border-slate-500/20', icon: Info },
+    MEDIUM: { label: 'Medium', color: 'bg-amber-500/10 text-amber-500 border-amber-500/20', icon: TriangleAlert },
+    HIGH: { label: 'High', color: 'bg-orange-500/10 text-orange-500 border-orange-500/20', icon: TriangleAlert },
+    CRITICAL: { label: 'Critical', color: 'bg-rose-500/10 text-rose-500 border-rose-500/20', icon: ShieldHalf },
 }
 
 /**
@@ -22,19 +16,20 @@ const SEVERITY_STYLES = {
  */
 export const ActionBadge = ({ action }) => {
     const config = {
-        INSERT: { label: 'TAMBAH', color: 'bg-emerald-500/10 text-emerald-500', icon: faPlus },
-        UPDATE: { label: 'UBAH', color: 'bg-amber-500/10 text-amber-500', icon: faPen },
-        DELETE: { label: 'HAPUS', color: 'bg-rose-500/10 text-rose-500', icon: faTrash },
-        RESTORE: { label: 'PULIH', color: 'bg-indigo-500/10 text-indigo-500', icon: faHistory },
-        EXECUTE: { label: 'JALAN', color: 'bg-sky-500/10 text-sky-500', icon: faSync },
-        LOGIN: { label: 'MASUK', color: 'bg-emerald-500/10 text-emerald-500', icon: faHistory },
-        REPAIR: { label: 'PERBAIKAN', color: 'bg-purple-500/10 text-purple-500', icon: faTools },
+        INSERT: { label: 'TAMBAH', color: 'bg-emerald-500/10 text-emerald-500', icon: Plus },
+        UPDATE: { label: 'UBAH', color: 'bg-amber-500/10 text-amber-500', icon: Pen },
+        DELETE: { label: 'HAPUS', color: 'bg-rose-500/10 text-rose-500', icon: Trash2 },
+        RESTORE: { label: 'PULIH', color: 'bg-indigo-500/10 text-indigo-500', icon: History },
+        EXECUTE: { label: 'JALAN', color: 'bg-sky-500/10 text-sky-500', icon: RefreshCw },
+        LOGIN: { label: 'MASUK', color: 'bg-emerald-500/10 text-emerald-500', icon: History },
+        REPAIR: { label: 'PERBAIKAN', color: 'bg-purple-500/10 text-purple-500', icon: Wrench },
     }
-    const c = config[action] || { label: action, color: 'bg-gray-500/10 text-gray-500', icon: faHistory }
+    const c = config[action] || { label: action, color: 'bg-gray-500/10 text-gray-500', icon: History }
+    const IconComp = c.icon
 
     return (
         <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 w-fit ${c.color}`}>
-            <FontAwesomeIcon icon={c.icon} className="text-[9px]" />
+            <IconComp className="text-[9px]" />
             {c.label}
         </span>
     )
@@ -95,7 +90,7 @@ export const DiffViewer = ({ oldData, newData, changedFields }) => {
 
     if (keys.length === 0) return (
         <div className="flex flex-col items-center justify-center py-8 opacity-40">
-            <FontAwesomeIcon icon={faCircleInfo} className="text-xl mb-2" />
+            <Info className="text-xl mb-2" />
             <p className="text-xs font-semibold text-[var(--color-text-muted)]">Tidak ada perubahan terbaca</p>
         </div>
     )
@@ -143,7 +138,7 @@ export const DiffViewer = ({ oldData, newData, changedFields }) => {
                                 {/* New Value */}
                                 <div className="relative p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 min-h-[32px] flex items-center">
                                     <div className="absolute -left-2 top-1/2 -translate-y-1/2 hidden lg:flex w-4 h-4 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] items-center justify-center z-10">
-                                        <FontAwesomeIcon icon={faChevronRight} className="text-[8px] text-[var(--color-text-muted)] opacity-30" />
+                                        <ChevronRight className="text-[8px] text-[var(--color-text-muted)] opacity-30" />
                                     </div>
                                     <code className="text-[10px] font-mono font-black break-all text-emerald-600">
                                         {isSensitive
@@ -169,7 +164,7 @@ export const DeleteTombstone = ({ data }) => {
     if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-6 opacity-40">
-                <FontAwesomeIcon icon={faDatabase} className="text-xl mb-2" />
+                <Database className="text-xl mb-2" />
                 <p className="text-[10px] font-bold uppercase tracking-widest">Data forensik tidak tersedia</p>
             </div>
         )
@@ -183,7 +178,7 @@ export const DeleteTombstone = ({ data }) => {
             <div className="flex items-center gap-2 mb-3">
                 <div className="flex-1 h-px bg-rose-500/20" />
                 <span className="text-[8px] font-black uppercase tracking-widest text-rose-500/70 flex items-center gap-1.5">
-                    <FontAwesomeIcon icon={faTrash} className="text-[7px]" /> Snapshot Record Sebelum Dihapus
+                    <Trash2 className="text-[7px]" /> Snapshot Record Sebelum Dihapus
                 </span>
                 <div className="flex-1 h-px bg-rose-500/20" />
             </div>
@@ -223,7 +218,7 @@ export const InsertViewer = ({ data }) => {
             <div className="flex items-center gap-2 mb-3">
                 <div className="flex-1 h-px bg-emerald-500/20" />
                 <span className="text-[8px] font-black uppercase tracking-widest text-emerald-500/70 flex items-center gap-1.5">
-                    <FontAwesomeIcon icon={faPlus} className="text-[7px]" /> Data Record Baru
+                    <Plus className="text-[7px]" /> Data Record Baru
                 </span>
                 <div className="flex-1 h-px bg-emerald-500/20" />
             </div>
@@ -343,7 +338,7 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
     if (logs.length === 0) return (
         <div className="py-12 flex flex-col items-center justify-center text-center opacity-30 gap-3">
             <div className="w-12 h-12 rounded-2xl bg-[var(--color-surface-alt)] flex items-center justify-center">
-                <FontAwesomeIcon icon={faHistory} className="text-xl" />
+                <History className="text-xl" />
             </div>
             <div>
                 <p className="text-[10px] font-black uppercase tracking-widest">Belum ada jejak audit</p>
@@ -356,7 +351,7 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
         <div className={`space-y-1 ${containerClassName} ${stickyHeader ? 'pt-0' : ''}`}>
             {showSearch && (
                 <div className={`relative ${stickyHeader ? 'sticky top-0 z-[30] bg-[var(--color-surface)] py-1.5 px-3 -mx-0 border-b border-[var(--color-border)]/50 shadow-sm transition-shadow' : 'mb-4'}`}>
-                    <FontAwesomeIcon icon={faSearch} className="absolute left-6 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-[10px]" />
+                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-[10px]" />
                     <input
                         type="text"
                         value={search}
@@ -416,7 +411,7 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
                                         <div className="p-2.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]/50 space-y-2.5">
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-2">
-                                                    <FontAwesomeIcon icon={faClock} className="text-xs text-indigo-500" />
+                                                    <Clock className="text-xs text-indigo-500" />
                                                     <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
                                                         Forensic Diff
                                                     </span>
@@ -450,7 +445,7 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
                                                         return (
                                                             <div className="flex items-center gap-2 pr-4 border-r border-[var(--color-border)] last:border-0 border-opacity-30">
                                                                 <div className={`w-6 h-6 rounded-lg ${sev.color.split(' ')[0]} flex items-center justify-center`}>
-                                                                    <FontAwesomeIcon icon={faExclamationTriangle} className="text-[9px]" />
+                                                                    <TriangleAlert className="text-[9px]" />
                                                                 </div>
                                                                 <div className="flex flex-col">
                                                                     <span className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Severity</span>
@@ -465,7 +460,7 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
                                                     {log.duration_ms != null && (
                                                         <div className="flex items-center gap-2 pr-4 border-r border-[var(--color-border)] last:border-0 border-opacity-30">
                                                             <div className="w-6 h-6 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)]">
-                                                                <FontAwesomeIcon icon={faStopwatch} className="text-[9px]" />
+                                                                <Timer className="text-[9px]" />
                                                             </div>
                                                             <div className="flex flex-col">
                                                                 <span className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Durasi</span>
@@ -479,7 +474,7 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
                                                     {log.session_id && (
                                                         <div className="flex items-center gap-2 group cursor-help" title={log.session_id}>
                                                             <div className="w-6 h-6 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:bg-[var(--color-primary)]/10 group-hover:text-[var(--color-primary)] transition-colors">
-                                                                <FontAwesomeIcon icon={faFingerprint} className="text-[9px]" />
+                                                                <Fingerprint className="text-[9px]" />
                                                             </div>
                                                             <div className="flex flex-col min-w-0">
                                                                 <span className="text-[8px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-50">Session</span>
@@ -499,9 +494,9 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
                                                             className={`h-7 px-3 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-2
                                                                 ${restoringId === log.id
                                                                     ? 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] animate-pulse'
-                                                                    : 'bg-amber-500 text-white hover:bg-amber-600 shadow-lg shadow-amber-500/20 active:scale-95'}`}
+                                                                    : 'bg-amber-500 text-white hover:bg-amber-600 shadow-lg active:scale-95'}`}
                                                         >
-                                                            <FontAwesomeIcon icon={faHistory} className={restoringId === log.id ? 'animate-spin' : ''} />
+                                                            <History className={restoringId === log.id ? 'animate-spin' : ''} />
                                                             {restoringId === log.id
                                                                 ? 'Memulihkan...'
                                                                 : log.action === 'DELETE' ? 'Pulihkan Record' : 'Revert ke State ini'}
@@ -516,7 +511,7 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
                                 {!isExpanded && (
                                     <div className="flex items-center justify-end mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                         <span className="text-[8px] font-black uppercase text-[var(--color-primary)] flex items-center gap-1.5">
-                                            Detail Forensik <FontAwesomeIcon icon={faChevronRight} className="text-[7px]" />
+                                            Detail Forensik <ChevronRight className="text-[7px]" />
                                         </span>
                                     </div>
                                 )}

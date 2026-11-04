@@ -2,17 +2,9 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { supabase } from '@lib/supabase'
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import Breadcrumb from '@shared/components/Breadcrumb'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faShieldHalved, faRotateRight, faFilter, faSearch,
-    faXmark, faChevronLeft, faChevronRight, faCircleInfo, faKey,
-    faUsers, faBolt, faDatabase, faFileExport, faEraser, faSpinner,
-    faAngleDown, faHistory, faTrashRestore, faGlobe, faMicrochip,
-    faLink, faCircle, faDesktop, faInfoCircle, faChartLine,
-    faPlus, faPen, faTrash, faSync, faTools, faClock,
-    faUserShield, faCheckCircle, faExclamationTriangle,
-    faStopwatch, faFingerprint
-} from '@fortawesome/free-solid-svg-icons'
+import { ArchiveRestore, ChartLine, ChevronDown, ChevronLeft, ChevronRight, Database, Eraser, FileOutput, FingerprintPattern, Funnel, Globe, History, Info, Key, Link, LoaderCircle, Monitor, RotateCw, Search, ShieldCheck, ShieldHalf, Timer, TriangleAlert, Users, X, Zap } from 'lucide-react'
+
+
 import { useToast } from '@context/Toast'
 import { useAuth } from '@context/Auth'
 import { logAudit } from '@utils/auditLogger'
@@ -20,7 +12,6 @@ import {
     ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip as ChartTooltip,
     CartesianGrid
 } from 'recharts'
-import Papa from 'papaparse'
 
 import { fmtDate, fmtTime, fmtDateTime, fmtRelative } from '@utils/formatters'
 import { ActionBadge, JsonVisualizer, DiffViewer, DeleteTombstone, InsertViewer, AuditTimeline } from '@shared/components'
@@ -32,9 +23,9 @@ import { ActionBadge, JsonVisualizer, DiffViewer, DeleteTombstone, InsertViewer,
 const ALLOWED_ROLES = ['admin', 'developer']
 
 const SOURCE_META = {
-    SYSTEM: { label: 'Security', color: 'text-rose-600', bg: 'bg-rose-500/10', border: 'border-rose-500/20', icon: faKey },
-    MASTER: { label: 'Master Data', color: 'text-blue-600', bg: 'bg-blue-500/10', border: 'border-blue-500/20', icon: faUsers },
-    OPERATIONAL: { label: 'Operational', color: 'text-amber-600', bg: 'bg-amber-500/10', border: 'border-amber-500/20', icon: faBolt },
+    SYSTEM: { label: 'Security', color: 'text-rose-600', bg: 'bg-rose-500/10', border: 'border-rose-500/20', icon: Key },
+    MASTER: { label: 'Master Data', color: 'text-blue-600', bg: 'bg-blue-500/10', border: 'border-blue-500/20', icon: Users },
+    OPERATIONAL: { label: 'Operational', color: 'text-amber-600', bg: 'bg-amber-500/10', border: 'border-amber-500/20', icon: Zap },
 }
 
 const ACTION_STYLES = {
@@ -44,10 +35,10 @@ const ACTION_STYLES = {
 }
 
 const SEVERITY_STYLES = {
-    LOW: { label: 'Low', color: 'bg-slate-500/10 text-slate-500 border-slate-500/20', icon: faCircleInfo },
-    MEDIUM: { label: 'Medium', color: 'bg-amber-500/10 text-amber-500 border-amber-500/20', icon: faExclamationTriangle },
-    HIGH: { label: 'High', color: 'bg-orange-500/10 text-orange-500 border-orange-500/20', icon: faExclamationTriangle },
-    CRITICAL: { label: 'Critical', color: 'bg-rose-500/10 text-rose-500 border-rose-500/20', icon: faShieldHalved },
+    LOW: { label: 'Low', color: 'bg-slate-500/10 text-slate-500 border-slate-500/20', icon: Info },
+    MEDIUM: { label: 'Medium', color: 'bg-amber-500/10 text-amber-500 border-amber-500/20', icon: TriangleAlert },
+    HIGH: { label: 'High', color: 'bg-orange-500/10 text-orange-500 border-orange-500/20', icon: TriangleAlert },
+    CRITICAL: { label: 'Critical', color: 'bg-rose-500/10 text-rose-500 border-rose-500/20', icon: ShieldHalf },
 }
 
 const TABLE_LABELS = {
@@ -183,7 +174,7 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                             const sev = SEVERITY_STYLES[entry.severity] || SEVERITY_STYLES.LOW
                             return (
                                 <span className={`ml-2 inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-widest border ${sev.color}`}>
-                                    <FontAwesomeIcon icon={sev.icon} className="text-[6px]" />
+                                    <sev.icon className="text-[6px]" />
                                     {sev.label}
                                 </span>
                             )
@@ -194,7 +185,7 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                 {/* Aktor — tampilkan nama lengkap, bukan user ID */}
                 <div className="w-36 hidden lg:block">
                     <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-primary)]/5 border border-[var(--color-primary)]/20 flex items-center justify-center shrink-0">
+                        <div className="w-7 h-7 rounded-lg bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/20 flex items-center justify-center shrink-0">
                             <span className="text-[10px] font-black text-[var(--color-primary)]">{initial}</span>
                         </div>
                         <div className="min-w-0">
@@ -219,10 +210,7 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                     <span className={`text-[8px] font-black px-2 py-0.5 rounded-full border uppercase tracking-widest ${meta.bg} ${meta.border} ${meta.color}`}>
                         {meta.label}
                     </span>
-                    <FontAwesomeIcon
-                        icon={isExpanded ? faXmark : faAngleDown}
-                        className="text-[10px] text-[var(--color-text-muted)] opacity-30"
-                    />
+                    { isExpanded ? <X className="text-[10px] text-[var(--color-text-muted)] opacity-30" /> : <ChevronDown className="text-[10px] text-[var(--color-text-muted)] opacity-30" /> }
                 </div>
             </div>
 
@@ -235,13 +223,13 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                         <div className="space-y-4">
                             <div className="p-3 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] space-y-2">
                                 <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-2">
-                                    <FontAwesomeIcon icon={faCircleInfo} /> Forensic Context
+                                    <Info /> Forensic Context
                                 </p>
                                 <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-3 border-t border-[var(--color-border)] mt-1">
                                     {/* User Agent */}
                                     <div className="flex items-center gap-2 group cursor-help" title={entry.user_agent}>
                                         <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:bg-[var(--color-primary)]/10 group-hover:text-[var(--color-primary)] transition-colors">
-                                            <FontAwesomeIcon icon={faDesktop} className="text-[10px]" />
+                                            <Monitor className="text-[10px]" />
                                         </div>
                                         <div className="flex flex-col min-w-0">
                                             <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">User Agent</span>
@@ -253,7 +241,7 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                                     {/* Remote IP */}
                                     <div className="flex items-center gap-2">
                                         <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)]">
-                                            <FontAwesomeIcon icon={faGlobe} className="text-[10px]" />
+                                            <Globe className="text-[10px]" />
                                         </div>
                                         <div className="flex flex-col">
                                             <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Remote IP</span>
@@ -265,7 +253,7 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                                     {/* URL */}
                                     <div className="flex items-center gap-2 group min-w-0 flex-1">
                                         <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)]">
-                                            <FontAwesomeIcon icon={faLink} className="text-[10px]" />
+                                            <Link className="text-[10px]" />
                                         </div>
                                         <div className="flex flex-col min-w-0 flex-1">
                                             <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Interaction URL</span>
@@ -278,7 +266,7 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                                     {entry.actor_role && (
                                         <div className="flex items-center gap-2">
                                             <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)]">
-                                                <FontAwesomeIcon icon={faUserShield} className="text-[10px]" />
+                                                <ShieldCheck className="text-[10px]" />
                                             </div>
                                             <div className="flex flex-col">
                                                 <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Role</span>
@@ -294,7 +282,7 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                                         return (
                                             <div className="flex items-center gap-2">
                                                 <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)]">
-                                                    <FontAwesomeIcon icon={faExclamationTriangle} className="text-[10px]" />
+                                                    <TriangleAlert className="text-[10px]" />
                                                 </div>
                                                 <div className="flex flex-col">
                                                     <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Severity</span>
@@ -309,7 +297,7 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                                     {entry.session_id && (
                                         <div className="flex items-center gap-2 group cursor-help" title={entry.session_id}>
                                             <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:bg-[var(--color-primary)]/10 group-hover:text-[var(--color-primary)] transition-colors">
-                                                <FontAwesomeIcon icon={faFingerprint} className="text-[10px]" />
+                                                <FingerprintPattern className="text-[10px]" />
                                             </div>
                                             <div className="flex flex-col min-w-0">
                                                 <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Session</span>
@@ -323,7 +311,7 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                                     {entry.duration_ms != null && (
                                         <div className="flex items-center gap-2">
                                             <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)]">
-                                                <FontAwesomeIcon icon={faStopwatch} className="text-[10px]" />
+                                                <Timer className="text-[10px]" />
                                             </div>
                                             <div className="flex flex-col">
                                                 <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60">Durasi</span>
@@ -405,9 +393,9 @@ const LogRow = ({ entry, isExpanded, onToggle, onRestore }) => {
                         <div className="pt-2 border-t border-[var(--color-border)] flex justify-end">
                             <button
                                 onClick={() => onRestore(entry)}
-                                className="h-8 px-4 rounded-xl bg-amber-500 text-white text-[10px] font-black hover:bg-amber-600 transition-all shadow-lg shadow-amber-500/20 flex items-center gap-2"
+                                className="h-8 px-4 rounded-xl bg-amber-500 text-white text-[10px] font-black hover:bg-amber-600 transition-all shadow-lg flex items-center gap-2"
                             >
-                                <FontAwesomeIcon icon={faTrashRestore} /> Pulihkan Record ini
+                                <ArchiveRestore /> Pulihkan Record ini
                             </button>
                         </div>
                     )}
@@ -675,6 +663,7 @@ export default function LogsPage() {
             }))
 
             if (format === 'csv') {
+                const { default: Papa } = await import('papaparse')
                 const csv = Papa.unparse(exportData)
                 const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
                 const url = URL.createObjectURL(blob)
@@ -727,7 +716,7 @@ export default function LogsPage() {
     if (!isAllowed) return (
         <DashboardLayout title="Akses Dibatasi">
             <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-                <FontAwesomeIcon icon={faShieldHalved} className="text-4xl text-rose-500 opacity-20" />
+                <ShieldHalf className="text-4xl text-rose-500 opacity-20" />
                 <p className="text-sm font-bold text-[var(--color-text-muted)]">Hanya untuk Admin/Developer.</p>
             </div>
         </DashboardLayout>
@@ -748,11 +737,11 @@ export default function LogsPage() {
 
                 {/* Trends & Stats */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                    <div className="lg:col-span-2 glass rounded-2xl p-5 border border-[var(--color-border)] relative overflow-hidden">
+                    <div className="lg:col-span-2 bg-surface rounded-2xl p-5 border border-[var(--color-border)] relative overflow-hidden">
                         <div className="flex items-center justify-between mb-4">
                             <div>
                                 <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-2">
-                                    <FontAwesomeIcon icon={faChartLine} className="text-[var(--color-primary)]" /> Tren Aktivitas 24 Jam
+                                    <ChartLine className="text-[var(--color-primary)]" /> Tren Aktivitas 24 Jam
                                 </p>
                                 <p className="text-[9px] text-[var(--color-text-muted)] opacity-60 mt-0.5">
                                     Frekuensi perubahan data per jam.
@@ -769,16 +758,16 @@ export default function LogsPage() {
 
                     <div className="grid grid-cols-2 gap-3">
                         {[
-                            { label: 'Total Audit', value: total, icon: faHistory, color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10', sub: '24 Jam Terakhir' },
-                            { label: 'Security', value: logs.filter(l => l.source === 'SYSTEM').length, icon: faShieldHalved, color: 'text-rose-500', bg: 'bg-rose-500/10', sub: 'Akses & Auth' },
-                            { label: 'Master Data', value: logs.filter(l => ['students', 'teachers', 'classes'].includes(l.table_name)).length, icon: faUsers, color: 'text-emerald-500', bg: 'bg-emerald-500/10', sub: 'Siswa, Guru, Kelas' },
-                            { label: 'Operational', value: logs.filter(l => l.source === 'OPERATIONAL').length, icon: faBolt, color: 'text-amber-500', bg: 'bg-amber-500/10', sub: 'Tugas & Sistem' },
+                            { label: 'Total Audit', value: total, icon: History, color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/10', sub: '24 Jam Terakhir' },
+                            { label: 'Security', value: logs.filter(l => l.source === 'SYSTEM').length, icon: ShieldHalf, color: 'text-rose-500', bg: 'bg-rose-500/10', sub: 'Akses & Auth' },
+                            { label: 'Master Data', value: logs.filter(l => ['students', 'teachers', 'classes'].includes(l.table_name)).length, icon: Users, color: 'text-emerald-500', bg: 'bg-emerald-500/10', sub: 'Siswa, Guru, Kelas' },
+                            { label: 'Operational', value: logs.filter(l => l.source === 'OPERATIONAL').length, icon: Zap, color: 'text-amber-500', bg: 'bg-amber-500/10', sub: 'Tugas & Sistem' },
                         ].map((s, i) => (
                             <div key={i} className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
                                 <div className={`absolute top-0 right-0 w-24 h-24 ${s.bg} rounded-bl-full opacity-30 -mr-8 -mt-8 transition-transform group-hover:scale-110`} />
                                 <div className="flex items-center gap-4 relative">
                                     <div className={`w-12 h-12 ${s.bg} ${s.color} rounded-xl flex items-center justify-center text-lg`}>
-                                        <FontAwesomeIcon icon={s.icon} />
+                                        <s.icon />
                                     </div>
                                     <div>
                                         <div className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] mb-0.5">{s.label}</div>
@@ -792,10 +781,10 @@ export default function LogsPage() {
                 </div>
 
                 {/* Toolbar */}
-                <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                     <div className="flex flex-wrap items-center gap-2 p-3">
                         <div className="flex-1 min-w-[200px] relative">
-                            <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-sm" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] text-sm" />
                             <input
                                 type="text"
                                 value={search}
@@ -809,14 +798,14 @@ export default function LogsPage() {
                                 onClick={() => fetchLogs()}
                                 className="h-10 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-surface)] text-[11px] font-black flex items-center gap-2 transition-all"
                             >
-                                <FontAwesomeIcon icon={faRotateRight} className={loading ? 'animate-spin' : ''} />
+                                <RotateCw className={loading ? 'animate-spin' : ''} />
                                 <span className="hidden sm:inline">Refresh</span>
                             </button>
                             <button
                                 onClick={() => setShowFilters(!showFilters)}
                                 className={`h-10 px-4 rounded-xl border font-black text-[11px] flex items-center gap-2 transition-all ${showFilters ? 'bg-[var(--color-primary)] text-white border-transparent' : 'border-[var(--color-border)] bg-[var(--color-surface-alt)]'}`}
                             >
-                                <FontAwesomeIcon icon={faFilter} /> Filter
+                                <Funnel /> Filter
                             </button>
                             <div className="h-8 w-px bg-[var(--color-border)] mx-1" />
                             <div className="flex items-center gap-1.5">
@@ -826,14 +815,14 @@ export default function LogsPage() {
                                     className="h-10 w-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] hover:text-emerald-500 transition-all flex items-center justify-center"
                                     title="Export CSV"
                                 >
-                                    <FontAwesomeIcon icon={faFileExport} />
+                                    <FileOutput />
                                 </button>
                                 <button
                                     onClick={() => setIsCleanupOpen(true)}
                                     className="h-10 w-10 rounded-xl border border-rose-500/20 bg-rose-500/5 text-rose-500 hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center"
                                     title="Cleanup Logs"
                                 >
-                                    <FontAwesomeIcon icon={faEraser} />
+                                    <Eraser />
                                 </button>
                             </div>
                         </div>
@@ -925,7 +914,7 @@ export default function LogsPage() {
                                 onClick={() => { setFilterSource(''); setFilterTable(''); setFilterRange({ from: '', to: '' }); setFilterAction(''); setFilterSeverity('') }}
                                 className="h-9 px-4 rounded-xl border border-rose-500/20 text-rose-500 text-[10px] font-black flex items-center gap-2 hover:bg-rose-500/5 transition-all"
                             >
-                                <FontAwesomeIcon icon={faXmark} /> Reset
+                                <X /> Reset
                             </button>
                         </div>
                     )}
@@ -952,7 +941,7 @@ export default function LogsPage() {
                 )}
 
                 {/* Tabel log */}
-                <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                     <div className="hidden md:grid grid-cols-[160px_1fr_128px_96px] gap-3 px-5 py-3 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/50">
                         {['Waktu', 'Aksi & Subjek', 'Actor', 'Kategori'].map((h, i) => (
                             <div key={i} className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">{h}</div>
@@ -971,7 +960,7 @@ export default function LogsPage() {
                         ) : logs.length === 0 ? (
                             <div className="py-20 flex flex-col items-center justify-center gap-4 text-center">
                                 <div className="w-16 h-16 rounded-3xl bg-[var(--color-surface-alt)] flex items-center justify-center">
-                                    <FontAwesomeIcon icon={faDatabase} className="text-2xl text-[var(--color-text-muted)] opacity-20" />
+                                    <Database className="text-2xl text-[var(--color-text-muted)] opacity-20" />
                                 </div>
                                 <div>
                                     <p className="text-sm font-black">Tidak Ada Jejak Audit</p>
@@ -999,13 +988,13 @@ export default function LogsPage() {
                             </p>
                             <div className="flex items-center gap-1">
                                 <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="w-8 h-8 rounded-lg border border-[var(--color-border)] flex items-center justify-center disabled:opacity-30 hover:bg-[var(--color-surface)]">
-                                    <FontAwesomeIcon icon={faChevronLeft} className="text-[10px]" />
+                                    <ChevronLeft className="text-[10px]" />
                                 </button>
                                 <div className="px-3 h-8 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[10px] font-black">
                                     {page}
                                 </div>
                                 <button onClick={() => setPage(p => p + 1)} disabled={page >= Math.ceil(total / pageSize)} className="w-8 h-8 rounded-lg border border-[var(--color-border)] flex items-center justify-center disabled:opacity-30 hover:bg-[var(--color-surface)]">
-                                    <FontAwesomeIcon icon={faChevronRight} className="text-[10px]" />
+                                    <ChevronRight className="text-[10px]" />
                                 </button>
                             </div>
                         </div>
@@ -1014,7 +1003,7 @@ export default function LogsPage() {
 
                 {/* Catatan integritas */}
                 <div className="p-4 rounded-2xl bg-indigo-500/5 border border-indigo-500/10 flex items-start gap-3">
-                    <FontAwesomeIcon icon={faCircleInfo} className="text-indigo-500 text-sm mt-0.5" />
+                    <Info className="text-indigo-500 text-sm mt-0.5" />
                     <div>
                         <p className="text-[11px] font-black text-indigo-500 uppercase tracking-widest mb-1">Penting: Integritas Data</p>
                         <p className="text-[10px] text-[var(--color-text-muted)] leading-relaxed">
@@ -1029,11 +1018,11 @@ export default function LogsPage() {
 
             {/* Modal: Restore */}
             {restoreEntry && (
-                <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={() => setRestoreEntry(null)}>
-                    <div className="w-full max-w-sm bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+                <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/40" onClick={() => setRestoreEntry(null)}>
+                    <div className="w-full max-w-sm bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
                         <div className="p-6">
                             <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-4">
-                                <FontAwesomeIcon icon={faTrashRestore} className="text-xl text-amber-500" />
+                                <ArchiveRestore className="text-xl text-amber-500" />
                             </div>
                             <h3 className="text-lg font-black text-[var(--color-text)] mb-1">Pulihkan Data?</h3>
                             <p className="text-[11px] text-[var(--color-text-muted)] mb-4 leading-relaxed">
@@ -1047,8 +1036,8 @@ export default function LogsPage() {
                                 <button onClick={() => setRestoreEntry(null)} className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-[11px] font-black hover:bg-[var(--color-surface-alt)] transition-all">
                                     Batal
                                 </button>
-                                <button onClick={handleRestore} disabled={restoring} className="flex-1 h-10 rounded-xl bg-amber-500 text-white text-[11px] font-black hover:bg-amber-600 transition-all shadow-lg shadow-amber-500/20 disabled:opacity-50 flex items-center justify-center gap-2">
-                                    {restoring ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" /> : 'Ya, Pulihkan'}
+                                    <button onClick={handleRestore} disabled={restoring} className="flex-1 h-10 rounded-xl bg-amber-500 text-white text-[11px] font-black hover:bg-amber-600 transition-all shadow-lg disabled:opacity-50 flex items-center justify-center gap-2">
+                                    {restoring ? <LoaderCircle className="animate-spin" /> : 'Ya, Pulihkan'}
                                 </button>
                             </div>
                         </div>
@@ -1058,11 +1047,11 @@ export default function LogsPage() {
 
             {/* Modal: Cleanup */}
             {isCleanupOpen && (
-                <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={() => setIsCleanupOpen(false)}>
-                    <div className="w-full max-w-sm bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+                <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/40" onClick={() => setIsCleanupOpen(false)}>
+                    <div className="w-full max-w-sm bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
                         <div className="p-6">
                             <div className="w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center mb-4">
-                                <FontAwesomeIcon icon={faEraser} className="text-xl text-rose-500" />
+                                <Eraser className="text-xl text-rose-500" />
                             </div>
                             <h3 className="text-lg font-black text-[var(--color-text)] mb-1">Pembersihan Log</h3>
                             <p className="text-[11px] text-[var(--color-text-muted)] mb-4 leading-relaxed">
@@ -1075,7 +1064,7 @@ export default function LogsPage() {
                                         <button
                                             key={d}
                                             onClick={() => setCleanupDays(d)}
-                                            className={`h-9 rounded-xl border text-[10px] font-black transition-all ${cleanupDays === d ? 'bg-rose-500 border-rose-500 text-white shadow-lg shadow-rose-500/20' : 'border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]'}`}
+                                            className={`h-9 rounded-xl border text-[10px] font-black transition-all ${cleanupDays === d ? 'bg-rose-500 border-rose-500 text-white shadow-lg' : 'border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]'}`}
                                         >
                                             {d} Hari
                                         </button>
@@ -1086,8 +1075,8 @@ export default function LogsPage() {
                                 <button onClick={() => setIsCleanupOpen(false)} className="flex-1 h-10 rounded-xl border border-[var(--color-border)] text-[11px] font-black hover:bg-[var(--color-surface-alt)] transition-all">
                                     Batal
                                 </button>
-                                <button onClick={handleCleanup} disabled={clearing} className="flex-1 h-10 rounded-xl bg-rose-500 text-white text-[11px] font-black hover:bg-rose-600 transition-all shadow-lg shadow-rose-500/20 disabled:opacity-50 flex items-center justify-center gap-2">
-                                    {clearing ? <FontAwesomeIcon icon={faSpinner} className="animate-spin" /> : 'Eksekusi Hapus'}
+                                    <button onClick={handleCleanup} disabled={clearing} className="flex-1 h-10 rounded-xl bg-rose-500 text-white text-[11px] font-black hover:bg-rose-600 transition-all shadow-lg disabled:opacity-50 flex items-center justify-center gap-2">
+                                    {clearing ? <LoaderCircle className="animate-spin" /> : 'Eksekusi Hapus'}
                                 </button>
                             </div>
                         </div>

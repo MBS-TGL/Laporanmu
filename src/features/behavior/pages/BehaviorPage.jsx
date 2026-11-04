@@ -338,7 +338,7 @@ export default function BehaviorPage() {
                                             onClick={() => setIsHeaderMenuOpen(false)}
                                         />
                                         <div
-                                            className={`fixed z-[9991] w-56 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl p-2 transition-[opacity,transform] duration-200 ease-out origin-top-right
+                                            className={`fixed z-[9991] w-56 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 transition-[opacity,transform] duration-200 ease-out origin-top-right
                                             ${isHeaderMenuOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2'}`}
                                             style={{
                                                 top: headerMenuRect.bottom + 8,
@@ -389,7 +389,7 @@ export default function BehaviorPage() {
                                     <>
                                         <div className="fixed inset-0 z-[9990] bg-black/[0.08]" onClick={() => setIsShortcutOpen(false)} />
                                         <div
-                                            className={`fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl shadow-black/10 overflow-hidden text-left animate-in fade-in zoom-in-95 duration-200
+                                            className={`fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden text-left animate-in fade-in zoom-in-95 duration-200
                                             ${isShortcutOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2'}`}
                                             style={{
                                                 top: shortcutRect.bottom + 8,
@@ -450,7 +450,7 @@ export default function BehaviorPage() {
 
                             {/* Primary Add Button */}
                             <button onClick={handleAdd} disabled={!canInput}
-                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 disabled:opacity-40 disabled:cursor-not-allowed border border-white/10"
+                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10"
                             >
                                 <Plus className="w-4 h-4" />
                                 <span>{canInput ? tp('createReport') : tp('readOnly')}</span>
@@ -537,7 +537,7 @@ export default function BehaviorPage() {
                     viewMode === 'table' ? (
                         <TableSkeleton rows={10} cols={6} />
                     ) : (
-                        <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden animate-pulse">
+                        <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden animate-pulse">
                             <div className="p-4 sm:p-5">
                                 <div className="relative pl-[28px] sm:pl-[64px]">
                                     {/* Vertical timeline line skeleton */}
@@ -575,7 +575,7 @@ export default function BehaviorPage() {
                         </div>
                     )
                 ) : totalRows === 0 && !debouncedSearch && !filterType && !filterClass ? (
-                    <div className="glass rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                    <div className="bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden">
                         <div className="p-4 sm:p-5">
                             <EmptyState
                                 variant="plain"
@@ -584,7 +584,7 @@ export default function BehaviorPage() {
                                 title={tp('noReports')}
                                 description={tp('noReportsDesc')}
                                 action={
-                                    <button onClick={handleAdd} disabled={!canInput} className="btn btn-primary h-10 px-6 text-xs font-bold uppercase tracking-wider shadow-lg shadow-[var(--color-primary)]/20 disabled:opacity-40 disabled:cursor-not-allowed">
+                                    <button onClick={handleAdd} disabled={!canInput} className="btn btn-primary h-10 px-6 text-xs font-bold uppercase tracking-wider shadow-lg disabled:opacity-40 disabled:cursor-not-allowed">
                                         {canInput ? tp('createNow') : tp('readOnly')}
                                     </button>
                                 }
@@ -593,7 +593,7 @@ export default function BehaviorPage() {
                     </div>
                 ) : viewMode === 'timeline' ? (
 
-                    <div className={`glass rounded-2xl border border-[var(--color-border)] overflow-hidden animate-in fade-in duration-300 transition-all duration-300 relative ${loading ? 'opacity-65 pointer-events-none select-none blur-[0.5px]' : ''}`}>
+                    <div className={`bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden animate-in fade-in duration-300 transition-all duration-300 relative ${loading ? 'opacity-65 pointer-events-none select-none blur-[0.5px]' : ''}`}>
                         {loading && (
                             <div className="absolute top-0 left-0 right-0 h-0.5 bg-[var(--color-primary)]/10 z-50 overflow-hidden">
                                 <div className="h-full bg-[var(--color-primary)] animate-pulse w-full" />
@@ -633,7 +633,7 @@ export default function BehaviorPage() {
                                             <div className="absolute pointer-events-none left-[9px] sm:left-[43px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[var(--color-primary)]/20 flex items-center justify-center z-10 shadow-[0_0_8px_rgba(79,70,229,0.3)]">
                                                 <div className="w-2 h-2 rounded-full bg-[var(--color-primary)] ring-2 ring-[var(--color-surface)]" />
                                             </div>
-                                            <div className="flex items-center gap-3 bg-[var(--color-surface)]/95 backdrop-blur-md pl-4 pr-5 py-1.5 rounded-2xl border border-[var(--color-border)] w-fit shadow-md shadow-black/[0.02] shrink-0">
+                                                <div className="flex items-center gap-3 bg-[var(--color-surface)] pl-4 pr-5 py-1.5 rounded-2xl border border-[var(--color-border)] w-fit shadow-md/[0.02] shrink-0">
                                                 <span className="text-xs font-bold uppercase text-[var(--color-text)] tracking-wider leading-none whitespace-nowrap">{fmtDayLabel(date)}</span>
                                                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] opacity-40 animate-pulse shrink-0" />
                                                 <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider font-bold leading-none whitespace-nowrap">{tNum(items.length)} {tp('reportCount')}</span>
@@ -683,7 +683,7 @@ export default function BehaviorPage() {
                     /* ═══════════════════════════════════════════════════════════
                        TABLE VIEW — pagination inside the same card
                     ═══════════════════════════════════════════════════════════ */
-                    <div className={`glass rounded-2xl border border-[var(--color-border)] overflow-hidden animate-in fade-in duration-300 transition-all duration-300 relative ${loading ? 'opacity-65 pointer-events-none select-none blur-[0.5px]' : ''}`}>
+                    <div className={`bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden animate-in fade-in duration-300 transition-all duration-300 relative ${loading ? 'opacity-65 pointer-events-none select-none blur-[0.5px]' : ''}`}>
                         {loading && (
                             <div className="absolute top-0 left-0 right-0 h-0.5 bg-[var(--color-primary)]/10 z-50 overflow-hidden">
                                 <div className="h-full bg-[var(--color-primary)] animate-pulse w-full" />
@@ -744,7 +744,7 @@ export default function BehaviorPage() {
                                                             <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><rect x="0" y="0" width="5" height="5" rx="1" /><rect x="7" y="0" width="5" height="5" rx="1" /><rect x="0" y="7" width="5" height="5" rx="1" /><rect x="7" y="7" width="5" height="5" rx="1" /></svg>
                                                         </button>
                                                         {isColMenuOpen && createPortal(
-                                                            <div ref={colMenuRef} className="absolute z-[9999] w-44 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl p-2 space-y-0.5 animate-in fade-in zoom-in-95 slide-in-from-top-2"
+                                                            <div ref={colMenuRef} className="absolute z-[9999] w-44 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 space-y-0.5 animate-in fade-in zoom-in-95 slide-in-from-top-2"
                                                                 style={{
                                                                     top: menuPos.top,
                                                                     right: menuPos.right,
@@ -819,7 +819,7 @@ export default function BehaviorPage() {
                             setExportScope('selected');
                             setIsExportModalOpen(true);
                         }}
-                        className="h-9 px-4 rounded-xl transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white justify-center shadow-lg shadow-emerald-500/5"
+                        className="h-9 px-4 rounded-xl transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white justify-center shadow-lg"
                     >
                         <Download className="w-3.5 h-3.5" />
                         <span>{tp('exportData')}</span>
@@ -829,7 +829,7 @@ export default function BehaviorPage() {
                     {canInput && (
                         <button
                             onClick={() => setIsBulkDeleteOpen(true)}
-                            className="h-9 px-4 rounded-xl transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500 hover:text-white justify-center shadow-lg shadow-red-500/5"
+                            className="h-9 px-4 rounded-xl transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500 hover:text-white justify-center shadow-lg"
                         >
                             <Trash2 className="w-3.5 h-3.5" />
                             <span>{tp('delete')}</span>

@@ -55,7 +55,7 @@ export default function DormTabPlotting({
     return (
         <div className="space-y-5 animate-in fade-in duration-300">
             {/* ── SEARCH & FILTER BAR (Standardized from BehaviorPage) ── */}
-            <div className="glass rounded-[1.5rem] mb-4 border border-[var(--color-border)] overflow-hidden">
+            <div className="bg-surface rounded-[1.5rem] mb-4 border border-[var(--color-border)] overflow-hidden">
                 {/* Row 1: Search + Quick Filters + Action Buttons */}
                 <div className="flex items-center gap-1.5 p-2 xs:gap-2 xs:p-2.5 lg:p-3">
                     {/* Search Bar - Dynamic & Responsive */}
@@ -146,7 +146,7 @@ export default function DormTabPlotting({
                         {/* Pilih Semua / Batal */}
                         <button
                             onClick={toggleAll}
-                            className={`h-8.5 px-2.5 xs:px-3 rounded-xl border text-xs font-bold uppercase tracking-wider transition-all active:scale-95 flex items-center justify-center gap-2 ${selectedIds.length > 0 ? 'bg-indigo-500 border-indigo-500 text-white shadow-md shadow-indigo-500/20' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
+                            className={`h-8.5 px-2.5 xs:px-3 rounded-xl border text-xs font-bold uppercase tracking-wider transition-all active:scale-95 flex items-center justify-center gap-2 ${selectedIds.length > 0 ? 'bg-indigo-500 border-indigo-500 text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
                             title={selectedIds.length > 0 ? t('dorms.plotting.deselectAll') : t('dorms.plotting.selectAll')}
                         >
                             <CheckCircle2 className="w-4 h-4" />
@@ -162,7 +162,7 @@ export default function DormTabPlotting({
                         <button
                             onClick={() => setShowAdvFilter(v => !v)}
                             className={`h-8.5 px-2.5 xs:px-3 sm:px-4 rounded-xl border text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${showAdvFilter || activeFilters.length > 0
-                                ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/30'
+                                ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md'
                                 : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
                             title={t('dorms.plotting.advancedFilter')}
                         >
@@ -206,7 +206,7 @@ export default function DormTabPlotting({
 
                 {/* Row 2: Advanced Filter Panel */}
                 {showAdvFilter && (
-                    <div className="border-t border-[var(--color-border)] p-3.5 bg-[var(--color-surface-alt)]/60 backdrop-blur-md animate-in fade-in slide-in-from-top-2">
+                    <div className="border-t border-[var(--color-border)] p-3.5 bg-[var(--color-surface-alt)] animate-in fade-in slide-in-from-top-2">
                         {/* Header Panel with Standardized "Vertical Bar" Pattern */}
                         <div className="flex items-center justify-between mb-3.5">
                             <div className="flex items-center gap-2.5">
@@ -300,7 +300,7 @@ export default function DormTabPlotting({
             </div>
 
             {/* ── CARD 2: DATA CONTAINER ── */}
-            <div className="glass rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
+            <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
                 {loading ? (
                     <div className="p-4 sm:p-5">
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -544,14 +544,14 @@ export default function DormTabPlotting({
             >
                 <button
                     onClick={() => { setSelectedBulkRoom(''); setIsBulkAssignModalOpen(true); }}
-                    className="h-9 px-4 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-[var(--color-primary)] text-white hover:scale-105 active:scale-95 justify-center shadow-lg shadow-[var(--color-primary)]/10"
+                    className="h-9 px-4 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-[var(--color-primary)] text-white hover:scale-105 active:scale-95 justify-center shadow-lg"
                 >
                     <ArrowRightLeft className="w-3.5 h-3.5" />
                     <span>{t('dorms.plotting.bulkAssign')} ({selectedIds.length})</span>
                 </button>
                 <button
                     onClick={handleBulkUnassign}
-                    className="h-9 px-4 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-rose-500/10 text-rose-500 border border-rose-500/20 hover:bg-rose-500 hover:text-white justify-center shadow-lg shadow-rose-500/5"
+                    className="h-9 px-4 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-rose-500/10 text-rose-500 border border-rose-500/20 hover:bg-rose-500 hover:text-white justify-center shadow-lg"
                 >
                     <UserMinus className="w-3.5 h-3.5" />
                     <span>{t('dorms.plotting.bulkEvict')}</span>

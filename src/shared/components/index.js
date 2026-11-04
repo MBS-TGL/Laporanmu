@@ -14,3 +14,10 @@ export { default as StatsCarousel } from './StatsCarousel'
 export { default as GlobalErrorBoundary } from './GlobalErrorBoundary'
 export { ActionBadge, JsonVisualizer, DiffViewer, DeleteTombstone, InsertViewer, AuditTimeline } from './AuditTimeline'
 
+/* ── Primitif UI (design system) ── */
+export { default as Button } from './Button'
+export { default as Badge } from './Badge'
+export { default as Card } from './Card'
+export { Input, Textarea, Select, FieldLabel } from './FormControls'
+export { WhatsAppIcon, MarsIcon, VenusIcon, VenusMarsIcon } from './icons/BrandIcons'
+

@@ -1,10 +1,6 @@
 import React, { memo, useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faEdit, faTrash, faMars, faVenus, faBoxArchive,
-    faUserTie, faThumbtack, faShieldHalved, faIdCard, faClockRotateLeft
-} from '@fortawesome/free-solid-svg-icons'
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
+import { Archive, Briefcase, Pin, ShieldHalf, SquarePen } from 'lucide-react'
+import { MarsIcon, VenusIcon, WhatsAppIcon } from '@shared/components'
 
 export const STATUS_CONFIG = {
     active: { label: 'Aktif', color: 'bg-emerald-500/10 text-emerald-600' },
@@ -19,9 +15,9 @@ function Avatar({ url, name, size = 'w-10 h-10', textSize = 'text-xs', rounded =
     const showImg = url && !imgError
     return (
         <div className={`${size} ${rounded} overflow-hidden shrink-0 flex items-center justify-center font-black shadow-sm relative cursor-pointer transition-transform hover:scale-110
-            ${showImg ? 'bg-[var(--color-surface-alt)]' : 'bg-gradient-to-br from-[var(--color-primary)]/10 to-[var(--color-accent)]/10 text-[var(--color-primary)]'}`}>
+            ${showImg ? 'bg-[var(--color-surface-alt)]' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'}`}>
             {showImg
-                ? <img src={url} alt={name} className="w-full h-full object-cover relative z-10" onError={() => setImgError(true)} />
+                ? <img src={url} alt={name} className="w-full h-full object-cover relative z-10" onError={() => setImgError(true)} loading="lazy" decoding="async" />
                 : <span className={`${textSize} relative z-10`}>{letter}</span>
             }
         </div>
@@ -66,8 +62,7 @@ const TeacherRow = memo(({
                                 : 'text-[var(--color-text-muted)] opacity-0 group-hover/row:opacity-100 hover:text-amber-500'
                             }`}
                     >
-                        <FontAwesomeIcon
-                            icon={faThumbtack}
+                        <Pin
                             className={`text-[9px] transition-transform ${teacher.is_pinned ? 'rotate-0' : 'rotate-45'}`}
                         />
                     </button>
@@ -93,10 +88,10 @@ const TeacherRow = memo(({
             </td>
             {visibleCols.nbm && <td className="px-6 py-4 text-xs text-[var(--color-text-muted)] font-mono">{disp(teacher.nbm)}</td>}
             {visibleCols.subject && <td className="px-6 py-4">{teacher.subject ? <span className="px-2.5 py-1 rounded-md bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 text-[10px] font-black uppercase tracking-widest">{teacher.subject}</span> : <span className="text-xs text-[var(--color-text-muted)]">—</span>}</td>}
-            {visibleCols.gender && <td className="px-6 py-4 text-left"><span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm shadow-inner border transition-all ${teacher.gender === 'L' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' : teacher.gender === 'P' ? 'bg-pink-500/10 text-pink-500 border-pink-500/20' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border-transparent'}`}><FontAwesomeIcon icon={teacher.gender === 'L' ? faMars : faVenus} /></span></td>}
+            {visibleCols.gender && <td className="px-6 py-4 text-left"><span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm shadow-inner border transition-all ${teacher.gender === 'L' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' : teacher.gender === 'P' ? 'bg-pink-500/10 text-pink-500 border-pink-500/20' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border-transparent'}`}>{teacher.gender === 'L' ? <MarsIcon /> : <VenusIcon />}</span></td>}
             {visibleCols.contact && (
                 <td className="px-6 py-4 space-y-1">
-                    {teacher.phone && <a href={`https://wa.me/${teacher.phone.replace(/^0/, '62')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-green-600 hover:text-green-700 font-bold w-fit"><FontAwesomeIcon icon={faWhatsapp} className="text-sm" />{disp(teacher.phone)}</a>}
+                    {teacher.phone && <a href={`https://wa.me/${teacher.phone.replace(/^0/, '62')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-green-600 hover:text-green-700 font-bold w-fit"><WhatsAppIcon className="text-sm" />{disp(teacher.phone)}</a>}
                     {teacher.email && <p className="text-xs text-[var(--color-text-muted)] truncate max-w-[180px]">{disp(teacher.email)}</p>}
                     {!teacher.phone && !teacher.email && <span className="text-xs text-[var(--color-text-muted)]">—</span>}
                 </td>
@@ -124,7 +119,7 @@ const TeacherRow = memo(({
             <td className="px-6 py-4">
                 <div className="flex items-center justify-center gap-1">
                     <button onClick={() => openProfile(teacher)} title="Lihat Profil" className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-emerald-500 hover:bg-emerald-500/10 transition-all text-sm">
-                        <FontAwesomeIcon icon={faUserTie} />
+                        <Briefcase />
                     </button>
                     <button
                         disabled={!teacher.phone}
@@ -135,19 +130,19 @@ const TeacherRow = memo(({
                                 ? 'text-[var(--color-text-muted)] hover:text-emerald-600 hover:bg-emerald-500/10'
                                 : 'text-slate-400 opacity-60 grayscale cursor-not-allowed'}`}
                     >
-                        <FontAwesomeIcon icon={faWhatsapp} />
+                        <WhatsAppIcon />
                     </button>
                     {handleEdit && (
                         <button onClick={() => handleEdit(teacher)} title="Edit" className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-blue-500 hover:bg-blue-500/10 transition-all text-sm">
-                            <FontAwesomeIcon icon={faEdit} />
+                            <SquarePen />
                         </button>
                     )}
                     <button onClick={() => openProfile(teacher, 'audit')} title="Audit Trail" className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-purple-500 hover:bg-purple-500/10 transition-all text-sm">
-                        <FontAwesomeIcon icon={faShieldHalved} />
+                        <ShieldHalf />
                     </button>
                     {setIsArchiveModalOpen && (
                         <button onClick={() => { setTeacherToAction(teacher); setIsArchiveModalOpen(true) }} title="Arsipkan" className="w-8 h-8 rounded-lg flex items-center justify-center text-red-400 hover:text-red-500 hover:bg-red-500/10 transition-all text-sm">
-                            <FontAwesomeIcon icon={faBoxArchive} />
+                            <Archive />
                         </button>
                     )}
                 </div>
@@ -180,7 +175,7 @@ const TeacherMobileCard = memo(({
                         onClick={() => handleTogglePin(teacher)}
                         className={`w-6 h-6 rounded-md flex items-center justify-center transition-all ${teacher.is_pinned ? 'text-amber-500' : 'text-[var(--color-text-muted)] opacity-40'}`}
                     >
-                        <FontAwesomeIcon icon={faThumbtack} className={`text-[10px] ${teacher.is_pinned ? '' : 'rotate-45'}`} />
+                        <Pin className={`text-[10px] ${teacher.is_pinned ? '' : 'rotate-45'}`} />
                     </button>
                 </div>
                 <div className="relative shrink-0">
@@ -200,8 +195,8 @@ const TeacherMobileCard = memo(({
                             <p className="text-[10px] text-[var(--color-text-muted)] font-mono mt-1 opacity-60 uppercase tracking-widest">{teacher.nbm || 'NO NBM'}</p>
                         </div>
                         <div className="flex items-center gap-1">
-                            <button onClick={() => openProfile(teacher)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]"><FontAwesomeIcon icon={faUserTie} className="text-xs" /></button>
-                            {handleEdit && <button onClick={() => handleEdit(teacher)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]"><FontAwesomeIcon icon={faEdit} className="text-xs" /></button>}
+                            <button onClick={() => openProfile(teacher)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]"><Briefcase className="text-xs" /></button>
+                            {handleEdit && <button onClick={() => handleEdit(teacher)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]"><SquarePen className="text-xs" /></button>}
                         </div>
                     </div>
                     <div className="mt-3 flex items-center gap-2">
@@ -211,9 +206,9 @@ const TeacherMobileCard = memo(({
                             className={`flex-1 h-9 rounded-xl flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest transition-all
                                 ${teacher.phone ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 active:scale-95' : 'bg-slate-100 text-slate-400 grayscale opacity-60 cursor-not-allowed'}`}
                         >
-                            <FontAwesomeIcon icon={faWhatsapp} className="text-xs" /> WhatsApp
+                            <WhatsAppIcon className="text-xs" /> WhatsApp
                         </button>
-                        {setIsArchiveModalOpen && <button onClick={() => { setTeacherToAction(teacher); setIsArchiveModalOpen(true) }} className="flex-1 h-9 rounded-xl bg-red-500/10 text-red-600 border border-red-500/20 flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all"><FontAwesomeIcon icon={faBoxArchive} className="text-xs" /> Arsipkan</button>}
+                        {setIsArchiveModalOpen && <button onClick={() => { setTeacherToAction(teacher); setIsArchiveModalOpen(true) }} className="flex-1 h-9 rounded-xl bg-red-500/10 text-red-600 border border-red-500/20 flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all"><Archive className="text-xs" /> Arsipkan</button>}
                     </div>
                 </div>
             </div>

@@ -1,35 +1,7 @@
 import React, { memo, useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faEdit,
-    faMars,
-    faVenus,
-    faTriangleExclamation,
-    faTags,
-    faBoxArchive,
-    faUserTie,
-    faCheck,
-    faIdCard,
-    faClockRotateLeft,
-    faArrowTrendUp,
-    faArrowTrendDown,
-    faCrown,
-    faMedal,
-    faBolt,
-    faXmark,
-    faPencil,
-    faPlus,
-    faMinus,
-    faThumbtack,
-    faChevronDown,
-    faChevronLeft,
-    faCheckDouble,
-    faStar,
-    faFire,
-    faPaperPlane
-} from '@fortawesome/free-solid-svg-icons'
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
+import { Archive, Briefcase, Check, ChevronDown, Crown, Flame, History, IdCard, Minus, Pencil, Pin, Plus, SquarePen, Star, Tags, TrendingDown, TrendingUp, TriangleAlert, X, Zap } from 'lucide-react'
+import { WhatsAppIcon } from '@shared/components'
 import useLongPress from '@hooks/useLongPress'
 import { getTagColor, calculateCompleteness } from '@features/students/utils/studentsConstants'
 
@@ -67,10 +39,10 @@ const InlineEditName = ({ value, onSave, onCancel }) => {
                 className="input-field h-7 px-2 rounded-lg border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-extrabold w-36 focus:border-[var(--color-primary)] outline-none"
             />
             <button onClick={() => onSave(val.trim())} className="w-7 h-7 rounded-md bg-emerald-500 text-white flex items-center justify-center text-[10px] hover:brightness-110 transition-all shadow-sm">
-                <FontAwesomeIcon icon={faCheck} />
+                <Check />
             </button>
             <button onClick={onCancel} className="w-7 h-7 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] flex items-center justify-center text-[10px] hover:bg-[var(--color-border)] transition-all">
-                <FontAwesomeIcon icon={faXmark} />
+                <X />
             </button>
         </div>
     )
@@ -89,11 +61,11 @@ const InlineEditGender = ({ value, onSave, onCancel }) => (
                         : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)] bg-[var(--color-surface)]'
                     }`}
             >
-                <FontAwesomeIcon icon={g === 'L' ? faMars : faVenus} />
+                {g === 'L' ? <MarsIcon /> : <VenusIcon />}
             </button>
         ))}
         <button onClick={onCancel} className="w-8 h-8 rounded-lg flex items-center justify-center bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-all text-[10px]">
-            <FontAwesomeIcon icon={faXmark} />
+            <X />
         </button>
     </div>
 )
@@ -113,10 +85,10 @@ const InlineEditKelas = ({ value, classesList, onSave, onCancel }) => {
                 {classesList.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
             <button onClick={() => onSave(val)} disabled={!val} className="w-8 h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-[10px] hover:brightness-110 disabled:opacity-40 transition-all">
-                <FontAwesomeIcon icon={faCheck} />
+                <Check />
             </button>
             <button onClick={onCancel} className="w-8 h-8 rounded-lg flex items-center justify-center border border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] transition-all text-[10px]">
-                <FontAwesomeIcon icon={faXmark} />
+                <X />
             </button>
         </div>
     )
@@ -144,11 +116,11 @@ const InlineEditPoin = ({ value, onSave, onCancel }) => {
             />
             {val !== '' && (
                 <button onClick={() => onSave(parsed)} className="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-[10px] hover:brightness-110 transition-all shadow-sm">
-                    <FontAwesomeIcon icon={faCheck} />
+                    <Check />
                 </button>
             )}
             <button onClick={onCancel} className="w-7 h-7 rounded-lg flex items-center justify-center border border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] transition-all text-[10px]">
-                <FontAwesomeIcon icon={faXmark} />
+                <X />
             </button>
         </div>
     )
@@ -344,10 +316,7 @@ export const StudentRow = memo(({
                                 : 'text-[var(--color-text-muted)] opacity-0 group-hover/row:opacity-100 hover:text-amber-500'
                             }`}
                     >
-                        <FontAwesomeIcon
-                            icon={faThumbtack}
-                            className={`text-[9px] transition-transform ${student.is_pinned ? 'rotate-0' : 'rotate-45'}`}
-                        />
+                        <Pin className={`text-[9px] transition-transform ${student.is_pinned ? 'rotate-0' : 'rotate-45'}`} />
                     </button>
                 </div>
             </td>
@@ -359,13 +328,13 @@ export const StudentRow = memo(({
                     <div className="relative shrink-0">
                         <div
                             className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-black shadow-sm overflow-hidden relative cursor-pointer transition-transform hover:scale-110
-                                ${isRisk ? 'bg-red-500/10 text-red-500' : 'bg-gradient-to-br from-[var(--color-primary)]/10 to-[var(--color-accent)]/10 text-[var(--color-primary)]'}
+                                ${isRisk ? 'bg-red-500/10 text-red-500' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'}
                                 ${isPrivacyMode ? 'blur-sm grayscale opacity-60' : ''}`}
                             onClick={() => { if (isPrivacyMode) return; student.photo_url && onPhotoZoom({ url: student.photo_url, name: student.name, registrationCode: student.registration_code, className: student.className }) }}
                             title={student.photo_url && !isPrivacyMode ? 'Klik untuk zoom foto' : ''}
                         >
                             {student.photo_url
-                                ? <img src={student.photo_url} alt="" className="w-full h-full object-cover relative z-10" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling && (e.target.nextSibling.style.display = '') }} />
+                                ? <img src={student.photo_url} alt="" className="w-full h-full object-cover relative z-10" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling && (e.target.nextSibling.style.display = '') }} loading="lazy" decoding="async" />
                                 : null
                             }
                             <span className="relative z-10" style={student.photo_url ? { display: 'none' } : {}}>{isPrivacyMode ? '*' : (student.name || 'S').charAt(0)}</span>
@@ -373,14 +342,11 @@ export const StudentRow = memo(({
                         {/* Rank badge — pojok kiri bawah avatar */}
                         {student._rank <= 3 && student._rank >= 1 && (student.total_points > 0) && (
                             <div className={`absolute -bottom-1 -left-1 w-5 h-5 rounded-full flex items-center justify-center shadow-md border-2 border-[var(--color-surface)] z-20
-                                ${student._rank === 1 ? 'bg-gradient-to-br from-yellow-400 to-amber-500'
-                                    : student._rank === 2 ? 'bg-gradient-to-br from-slate-300 to-slate-500'
-                                        : 'bg-gradient-to-br from-orange-400 to-orange-600'}`}
+                                ${student._rank === 1 ? 'bg-yellow-400'
+                                    : student._rank === 2 ? 'bg-slate-300'
+                                        : 'bg-orange-400'}`}
                             >
-                                <FontAwesomeIcon
-                                    icon={student._rank === 1 ? faCrown : faMedal}
-                                    className="text-white text-[8px]"
-                                />
+                                {student._rank === 1 ? <Crown className="text-white text-[8px]" /> : <Medal className="text-white text-[8px]" />}
                             </div>
                         )}
                     </div>
@@ -414,7 +380,7 @@ export const StudentRow = memo(({
                                             <div
                                                 onMouseEnter={handlePopoverEnter}
                                                 onMouseLeave={handleMouseLeave}
-                                                className="fixed z-[9999] w-72 p-5 rounded-[2rem] glass shadow-2xl border border-[var(--color-primary)]/20 animate-in fade-in slide-in-from-bottom-3 duration-300 pointer-events-auto"
+                                                className="fixed z-[9999] w-72 p-5 rounded-[2rem] bg-surface shadow-xl border border-[var(--color-primary)]/20 animate-in fade-in slide-in-from-bottom-3 duration-300 pointer-events-auto"
                                                 style={{
                                                     top: popoverPos.top,
                                                     left: popoverPos.left,
@@ -424,14 +390,14 @@ export const StudentRow = memo(({
                                                 {/* Header Profile Section */}
                                                 <div className="flex items-center gap-4 mb-4 pb-4 border-b border-[var(--color-border)]/50">
                                                     <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-lg font-black shadow-inner relative group/pop-img
-                                                        ${isRisk ? 'bg-red-500/10 text-red-500' : 'bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-accent)]/20 text-[var(--color-primary)]'}`}>
+                                                        ${isRisk ? 'bg-red-500/10 text-red-500' : 'bg-[var(--color-primary)]/20 text-[var(--color-primary)]'}`}>
                                                         {student.photo_url ? (
-                                                            <img src={student.photo_url} className="w-full h-full object-cover rounded-2xl" onError={(e) => { e.target.onerror = null; e.target.parentElement.innerHTML = `<span>${(student.name || 'S').charAt(0)}</span>` }} />
+                                                            <img src={student.photo_url} className="w-full h-full object-cover rounded-2xl" onError={(e) => { e.target.onerror = null; e.target.parentElement.innerHTML = `<span>${(student.name || 'S').charAt(0)}</span>` }} loading="lazy" decoding="async" />
                                                         ) : (
                                                             <span>{(student.name || 'S').charAt(0)}</span>
                                                         )}
                                                         <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/pop-img:opacity-100 transition-opacity rounded-2xl flex items-center justify-center">
-                                                            <FontAwesomeIcon icon={faPlus} className="text-white text-xs" />
+                                                            <Plus className="text-white text-xs" />
                                                         </div>
                                                     </div>
                                                     <div className="min-w-0">
@@ -465,7 +431,7 @@ export const StudentRow = memo(({
                                                 <div className="flex items-center gap-2">
                                                     <button
                                                         onClick={(e) => { e.stopPropagation(); onViewProfile(student) }}
-                                                        className="flex-1 h-10 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-[var(--color-primary)]/20"
+                                                        className="flex-1 h-10 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-lg"
                                                     >
                                                         Lihat Profil
                                                     </button>
@@ -479,7 +445,7 @@ export const StudentRow = memo(({
                                                             className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20"
                                                             title="Chat WhatsApp"
                                                         >
-                                                            <FontAwesomeIcon icon={faWhatsapp} className="text-sm" />
+                                                            <WhatsAppIcon className="text-sm" />
                                                         </button>
                                                     )}
                                                 </div>
@@ -500,7 +466,7 @@ export const StudentRow = memo(({
                                             className="shrink-0 w-5 h-5 rounded-md flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 transition-all opacity-0 group-hover/name:opacity-100"
                                             title="Edit nama"
                                         >
-                                            <FontAwesomeIcon icon={faPencil} className="text-[9px]" />
+                                            <Pencil className="text-[9px]" />
                                         </button>
                                     )}
                                 </div>
@@ -513,27 +479,27 @@ export const StudentRow = memo(({
                             <div className="flex items-center gap-1 flex-shrink-0">
                                 {isRisk ? (
                                     <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[8px] font-black bg-red-500/10 text-red-500 border border-red-500/20 uppercase tracking-widest animate-pulse">
-                                        <FontAwesomeIcon icon={faTriangleExclamation} className="text-[7px]" />
+                                        <TriangleAlert className="text-[7px]" />
                                         Risiko
                                     </span>
                                 ) : p < 0 ? (
                                     <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[8px] font-black bg-amber-500/10 text-amber-600 border border-amber-500/20 uppercase tracking-widest">
-                                        <FontAwesomeIcon icon={faTriangleExclamation} className="text-[7px]" />
+                                        <TriangleAlert className="text-[7px]" />
                                         Monitor
                                     </span>
                                 ) : p >= 200 ? (
                                     <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[8px] font-black bg-orange-500/10 text-orange-600 border border-orange-500/20 uppercase tracking-widest">
-                                        <FontAwesomeIcon icon={faFire} className="text-[7px]" />
+                                        <Flame className="text-[7px]" />
                                         Legendary
                                     </span>
                                 ) : p >= 100 ? (
                                     <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[8px] font-black bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 uppercase tracking-widest">
-                                        <FontAwesomeIcon icon={faCrown} className="text-[7px]" />
+                                        <Crown className="text-[7px]" />
                                         Excellent
                                     </span>
                                 ) : p >= 50 ? (
                                     <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[8px] font-black bg-amber-500/10 text-amber-600 border border-amber-500/20 uppercase tracking-widest">
-                                        <FontAwesomeIcon icon={faStar} className="text-[7px]" />
+                                        <Star className="text-[7px]" />
                                         Star
                                     </span>
                                 ) : null}
@@ -561,14 +527,14 @@ export const StudentRow = memo(({
                             <div className="relative">
                                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs shadow-inner transition-all
                                     ${student.gender === 'L' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' : 'bg-pink-500/10 text-pink-500 border border-pink-500/20'}`}>
-                                    <FontAwesomeIcon icon={student.gender === 'L' ? faMars : faVenus} />
+                                    {student.gender === 'L' ? <MarsIcon /> : <VenusIcon />}
                                 </div>
                                 <button
                                     onClick={() => setEditingField('gender')}
                                     className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all opacity-0 group-hover/gender:opacity-100 shadow-sm"
                                     title="Edit gender"
                                 >
-                                    <FontAwesomeIcon icon={faPencil} className="text-[7px]" />
+                                    <Pencil className="text-[7px]" />
                                 </button>
                             </div>
                         </div>
@@ -600,7 +566,7 @@ export const StudentRow = memo(({
                                     className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-all opacity-0 group-hover/kelas:opacity-100 shadow-sm"
                                     title="Edit kelas"
                                 >
-                                    <FontAwesomeIcon icon={faPencil} className="text-[7px]" />
+                                    <Pencil className="text-[7px]" />
                                 </button>
                             </div>
                         </div>
@@ -642,7 +608,7 @@ export const StudentRow = memo(({
                                     className="w-5 h-5 rounded-md flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 transition-all opacity-0 group-hover/point:opacity-100"
                                     title="Edit poin"
                                 >
-                                    <FontAwesomeIcon icon={faPencil} className="text-[9px]" />
+                                    <Pencil className="text-[9px]" />
                                 </button>
 
                                 {/* Quick Action bolt */}
@@ -657,16 +623,16 @@ export const StudentRow = memo(({
                                             setShowQuickAction(!showQuickAction)
                                         }}
                                         className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all
-                                                ${showQuickAction ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/30' : 'bg-amber-500/10 text-amber-500 opacity-0 group-hover/point:opacity-100 hover:bg-amber-500 hover:text-white'}`}
+                                        ${showQuickAction ? 'bg-amber-500 text-white shadow-lg' : 'bg-amber-500/10 text-amber-500 opacity-0 group-hover/point:opacity-100 hover:bg-amber-500 hover:text-white'}`}
                                         title="Aksi Cepat"
                                     >
-                                        <FontAwesomeIcon icon={faBolt} className="text-[10px]" />
+                                        <Zap className="text-[10px]" />
                                     </button>
                                     {showQuickAction && boltRect && createPortal(
                                         <>
-                                            <div className="fixed inset-0 z-[9990] bg-black/5 backdrop-blur-[1px]" onClick={() => setShowQuickAction(false)} />
+                                            <div className="fixed inset-0 z-[9990] bg-black/5" onClick={() => setShowQuickAction(false)} />
                                             <div
-                                                className="fixed z-[9991] w-40 glass-morphism bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border border-[var(--color-border)] p-1.5 animate-in fade-in zoom-in-95 duration-200"
+                                                className="fixed z-[9991] w-40 bg-white dark:bg-gray-800 shadow-xl rounded-2xl border border-[var(--color-border)] p-1.5 animate-in fade-in zoom-in-95 duration-200"
                                                 style={{
                                                     top: boltRect.top + boltRect.height + 8,
                                                     left: boltRect.left + (boltRect.width / 2) - 80
@@ -699,9 +665,9 @@ export const StudentRow = memo(({
                                             openWAForStudent?.(student, msg)
                                             setLastAction(null)
                                         }}
-                                        className="h-8 px-3 rounded-xl bg-emerald-500 text-white text-[9px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all"
+                                        className="h-8 px-3 rounded-xl bg-emerald-500 text-white text-[9px] font-black uppercase tracking-widest shadow-lg flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all"
                                     >
-                                        <FontAwesomeIcon icon={faWhatsapp} className="text-xs" />
+                                        <WhatsAppIcon className="text-xs" />
                                         Laporkan ke WA
                                     </button>
                                 </div>
@@ -771,7 +737,7 @@ export const StudentRow = memo(({
                 <td className="px-4 py-3 text-center w-[280px] whitespace-nowrap">
                     <div className="flex items-center justify-center gap-1">
                         <button onClick={() => onViewProfile(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-emerald-500 hover:bg-emerald-500/10 transition-all text-sm" title="Lihat Profil">
-                            <FontAwesomeIcon icon={faUserTie} />
+                            <Briefcase />
                         </button>
 
                         <button
@@ -783,26 +749,26 @@ export const StudentRow = memo(({
                                     : 'text-slate-400 opacity-60 grayscale cursor-not-allowed'}`}
                             title={student.phone ? "Hubungi via WhatsApp" : "Nomer WA belum diatur"}
                         >
-                            <FontAwesomeIcon icon={faWhatsapp} />
+                            <WhatsAppIcon />
                         </button>
                         {onEdit && (
                             <button onClick={() => onEdit(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-blue-500 hover:bg-blue-500/10 transition-all text-sm" title="Edit">
-                                <FontAwesomeIcon icon={faEdit} />
+                                <SquarePen />
                             </button>
                         )}
                         <button onClick={() => onViewPrint(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-amber-500 hover:bg-amber-500/10 transition-all text-sm" title="ID Card">
-                            <FontAwesomeIcon icon={faIdCard} />
+                            <IdCard />
                         </button>
                         <button onClick={() => onViewTags(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-violet-500 hover:bg-violet-500/10 transition-all text-sm" title="Label">
-                            <FontAwesomeIcon icon={faTags} />
+                            <Tags />
                         </button>
                         <button onClick={() => onViewClassHistory(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-purple-500 hover:bg-purple-500/10 transition-all text-sm" title="Riwayat Perilaku">
-                            <FontAwesomeIcon icon={faClockRotateLeft} />
+                            <History />
                         </button>
 
                         {onConfirmDelete && (
                             <button onClick={() => onConfirmDelete(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-red-400 hover:text-red-500 hover:bg-red-500/10 transition-all text-sm" title="Arsipkan">
-                                <FontAwesomeIcon icon={faBoxArchive} />
+                                <Archive />
                             </button>
                         )}
                     </div>
@@ -884,10 +850,10 @@ export const StudentMobileCard = memo(({
     };
 
     const quickActions = [
-        { label: 'Sangat Aktif', amount: 5, color: 'text-emerald-500', icon: faPlus },
-        { label: 'Fokus', amount: 2, color: 'text-emerald-500', icon: faBolt },
-        { label: 'Ramai', amount: -2, color: 'text-amber-500', icon: faMinus },
-        { label: 'Melanggar', amount: -5, color: 'text-red-500', icon: faTriangleExclamation },
+        { label: 'Sangat Aktif', amount: 5, color: 'text-emerald-500', icon: Plus },
+        { label: 'Fokus', amount: 2, color: 'text-emerald-500', icon: Zap },
+        { label: 'Ramai', amount: -2, color: 'text-amber-500', icon: Minus },
+        { label: 'Melanggar', amount: -5, color: 'text-red-500', icon: TriangleAlert },
     ]
 
     const maskInfo = (str, visibleLen = 3) => {
@@ -902,8 +868,8 @@ export const StudentMobileCard = memo(({
             className={`group relative p-1.5 rounded-3xl border transition-all duration-300 ease-out select-none
                 ${showQuickAction ? 'z-[100]' : 'z-auto'}
                 ${isSelected
-                    ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/[0.04] shadow-xl shadow-[var(--color-primary)]/10 ring-1 ring-[var(--color-primary)]/20'
-                    : 'border-[var(--color-border)] bg-[var(--color-surface)] shadow-md shadow-black/[0.02]'}
+                    ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/[0.04] shadow-xl ring-1 ring-[var(--color-primary)]/20'
+                    : 'border-[var(--color-border)] bg-[var(--color-surface)] shadow-md/[0.02]'}
                 ${student.is_pinned ? 'border-amber-400/40' : ''}
                 ${isPressed ? 'scale-[0.985] shadow-inner brightness-[0.98]' : 'scale-100'}
                 ${hasSelection ? 'cursor-pointer' : ''}
@@ -925,7 +891,7 @@ export const StudentMobileCard = memo(({
             {student.is_pinned && (
                 <div className="absolute top-2.5 right-4 flex items-center gap-1">
                     <div className="text-[8px] font-black text-amber-500 uppercase tracking-widest opacity-60">Pinned</div>
-                    <FontAwesomeIcon icon={faThumbtack} className="text-[9px] text-amber-500" />
+                    <Pin className="text-[9px] text-amber-500" />
                 </div>
             )}
 
@@ -937,11 +903,11 @@ export const StudentMobileCard = memo(({
                         <div
                             className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-black shadow-inner border-2 transition-all overflow-hidden
                                 ${isSelected ? 'border-[var(--color-primary)] scale-110' : 'border-white dark:border-gray-800'}
-                                ${isRisk ? 'bg-red-500/10 text-red-500' : 'bg-gradient-to-br from-[var(--color-primary)] via-[var(--color-primary)]/90 to-[var(--color-accent)] text-white'}
+                                ${isRisk ? 'bg-red-500/10 text-red-500' : 'bg-[var(--color-primary)] text-white'}
                                 ${isPrivacyMode ? 'blur-md grayscale opacity-60' : ''}`}
                         >
                             {student.photo_url
-                                ? <img src={student.photo_url} alt="" className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling && (e.target.nextSibling.style.display = '') }} />
+                                ? <img src={student.photo_url} alt="" className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling && (e.target.nextSibling.style.display = '') }} loading="lazy" decoding="async" />
                                 : null
                             }
                             <span style={student.photo_url ? { display: 'none' } : {}}>{isPrivacyMode ? '*' : (student.name || 'S').charAt(0)}</span>
@@ -949,7 +915,7 @@ export const StudentMobileCard = memo(({
                             {/* Selection Checkmark Badge - Top Left of Avatar */}
                             {isSelected && (
                                 <div className="absolute -top-1 -left-1 w-5.5 h-5.5 rounded-full bg-[var(--color-primary)] border-2 border-white dark:border-gray-800 flex items-center justify-center shadow-md z-30 animate-in zoom-in-50 duration-200">
-                                    <FontAwesomeIcon icon={faCheck} className="text-white text-[8px]" />
+                                    <Check className="text-white text-[8px]" />
                                 </div>
                             )}
                         </div>
@@ -957,10 +923,7 @@ export const StudentMobileCard = memo(({
                         {/* Status Dot */}
                         <div className={`absolute -bottom-0.5 -right-0.5 w-4.5 h-4.5 rounded-full border-2 border-white dark:border-gray-800 flex items-center justify-center shadow-lg
                             ${p < 0 ? 'bg-amber-500' : p > 0 ? 'bg-emerald-500' : 'bg-gray-300'}`}>
-                            <FontAwesomeIcon
-                                icon={p < 0 ? faArrowTrendDown : p > 0 ? faArrowTrendUp : faBolt}
-                                className="text-white text-[7px]"
-                            />
+                            {p < 0 ? <TrendingDown className="text-white text-[7px]" /> : p > 0 ? <TrendingUp className="text-white text-[7px]" /> : <Zap className="text-white text-[7px]" />}
                         </div>
                     </div>
 
@@ -987,7 +950,7 @@ export const StudentMobileCard = memo(({
                 <div className="mt-3 flex items-center justify-between gap-2">
                     <div className="flex items-center gap-1.5 min-w-0 flex-1">
                         <div className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-[var(--color-surface-alt)]/80 border border-[var(--color-border)]/40 min-w-0">
-                            <FontAwesomeIcon icon={faUserTie} className="text-[9px] text-[var(--color-text-muted)] shrink-0" />
+                            <Briefcase className="text-[9px] text-[var(--color-text-muted)] shrink-0" />
                             <span className="text-[10px] font-black text-[var(--color-text)] uppercase tracking-tight truncate">
                                 {student.className}
                             </span>
@@ -1023,10 +986,10 @@ export const StudentMobileCard = memo(({
                             title={student.phone ? `Hubungi WA: ${student.phone}` : 'Belum ada nomor WA'}
                             className={`w-7 h-7 rounded-lg flex items-center justify-center border transition-all
                                 ${student.phone
-                                    ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white hover:shadow-lg hover:shadow-emerald-500/20 active:scale-90'
+                                    ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white hover:shadow-lg active:scale-90'
                                     : 'border-[var(--color-border)]/40 bg-[var(--color-surface-alt)]/80 text-[var(--color-text-muted)] opacity-40 cursor-not-allowed'}`}
                         >
-                            <FontAwesomeIcon icon={faWhatsapp} className="text-[12px]" />
+                            <WhatsAppIcon className="text-[12px]" />
                         </button>
                     </div>
                 </div>
@@ -1064,7 +1027,7 @@ export const StudentMobileCard = memo(({
                         onClick={(e) => { e.stopPropagation(); onViewProfile(student) }}
                         className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-[var(--color-text-muted)] hover:text-emerald-500 hover:bg-[var(--color-surface)] active:scale-95 transition-all"
                     >
-                        <FontAwesomeIcon icon={faIdCard} className="text-[11px]" />
+                        <IdCard className="text-[11px]" />
                         <span className="text-[8px] font-black uppercase tracking-wider leading-none">Profil</span>
                     </button>
 
@@ -1073,7 +1036,7 @@ export const StudentMobileCard = memo(({
                         onClick={(e) => { e.stopPropagation(); onEdit(student) }}
                         className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-[var(--color-text-muted)] hover:text-indigo-500 hover:bg-[var(--color-surface)] active:scale-95 transition-all"
                     >
-                        <FontAwesomeIcon icon={faEdit} className="text-[11px]" />
+                        <SquarePen className="text-[11px]" />
                         <span className="text-[8px] font-black uppercase tracking-wider leading-none">Edit</span>
                     </button>
 
@@ -1083,7 +1046,7 @@ export const StudentMobileCard = memo(({
                         className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl transition-all active:scale-95
                             ${student.is_pinned ? 'text-amber-500 bg-[var(--color-surface)] shadow-sm border border-[var(--color-border)]/50' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] border border-transparent'}`}
                     >
-                        <FontAwesomeIcon icon={faThumbtack} className={`text-[10px] ${student.is_pinned ? 'rotate-0' : 'rotate-45'}`} />
+                        <Pin className={`text-[10px] ${student.is_pinned ? 'rotate-0' : 'rotate-45'}`} />
                         <span className="text-[8px] font-black uppercase tracking-wider leading-none">
                             {student.is_pinned ? 'Unpin' : 'Pin'}
                         </span>
@@ -1106,16 +1069,16 @@ export const StudentMobileCard = memo(({
                                     ? 'bg-amber-500 text-white border-amber-500 shadow-lg'
                                     : 'bg-amber-500/10 border-amber-500/20 text-amber-500 hover:bg-amber-500 hover:text-white'}`}
                         >
-                            <FontAwesomeIcon icon={faBolt} className="text-[11px]" />
+                            <Zap className="text-[11px]" />
                             <span className="text-[8px] font-black uppercase tracking-wider leading-none">Poin</span>
                         </button>
 
                         {showQuickAction && boltRect && createPortal(
                             <>
-                                <div className="fixed inset-0 z-[9990] bg-black/10 backdrop-blur-[1px]" onClick={(e) => { e.stopPropagation(); setShowQuickAction(false) }} />
+                                <div className="fixed inset-0 z-[9990] bg-black/10" onClick={(e) => { e.stopPropagation(); setShowQuickAction(false) }} />
                                 <div
                                     onClick={e => e.stopPropagation()}
-                                    className="fixed z-[9991] w-52 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[1.5rem] shadow-2xl animate-in fade-in slide-in-from-bottom-2 zoom-in-95 duration-200 p-2.5 text-[var(--color-text)]"
+                                    className="fixed z-[9991] w-52 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[1.5rem] shadow-xl animate-in fade-in slide-in-from-bottom-2 zoom-in-95 duration-200 p-2.5 text-[var(--color-text)]"
                                     style={{
                                         top: boltRect.top - 8,
                                         left: Math.min(window.innerWidth - 215, Math.max(10, boltRect.right - 208)),
@@ -1123,7 +1086,7 @@ export const StudentMobileCard = memo(({
                                     }}
                                 >
                                     <div className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] p-2 mb-1.5 border-b border-[var(--color-border)] text-center flex items-center justify-center gap-2">
-                                        <FontAwesomeIcon icon={faBolt} className="text-[8px]" />
+                                        <Zap className="text-[8px]" />
                                         Input Poin Cepat
                                     </div>
                                     <div className="grid grid-cols-2 gap-1.5">
@@ -1133,7 +1096,7 @@ export const StudentMobileCard = memo(({
                                                 onClick={() => { handleQuickPointInternal(student, act.amount, act.label); setShowQuickAction(false) }}
                                                 className="flex flex-col items-center justify-center gap-1 p-2.5 rounded-xl bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] transition-all border border-[var(--color-border)] active:scale-95"
                                             >
-                                                <FontAwesomeIcon icon={act.icon} className={`text-[10px] ${act.color}`} />
+                                                <act.icon className={`text-[10px] ${act.color}`} />
                                                 <span className="text-[8px] font-black uppercase tracking-widest leading-none mt-0.5">{act.label.split(' ')[0]}</span>
                                                 <span className={`text-[10px] font-black ${act.color}`}>{act.amount > 0 ? `+${act.amount}` : act.amount}</span>
                                             </button>
@@ -1141,7 +1104,7 @@ export const StudentMobileCard = memo(({
                                     </div>
                                     <button
                                         onClick={() => { handleQuickPointInternal(student, 0, 'custom'); setShowQuickAction(false) }}
-                                        className="w-full mt-2 py-3 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg shadow-[var(--color-primary)]/20 transition-all active:scale-[0.98]"
+                                        className="w-full mt-2 py-3 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg transition-all active:scale-[0.98]"
                                     >
                                         Input Kustom
                                     </button>
@@ -1157,7 +1120,7 @@ export const StudentMobileCard = memo(({
                             onClick={(e) => { e.stopPropagation(); onConfirmDelete(student) }}
                             className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-red-400/50 hover:text-red-500 hover:bg-red-500/10 active:scale-95 transition-all"
                         >
-                            <FontAwesomeIcon icon={faBoxArchive} className="text-[11px]" />
+                            <Archive className="text-[11px]" />
                             <span className="text-[8px] font-black uppercase tracking-wider leading-none">Arsip</span>
                         </button>
                     )}
@@ -1165,7 +1128,7 @@ export const StudentMobileCard = memo(({
 
                 {/* Mobile WA Post-Action Overlay - Rounded to match card */}
                 {lastAction && student.phone && (
-                    <div className="absolute inset-0 bg-emerald-500 z-[90] animate-in slide-in-from-right-full duration-500 rounded-3xl flex flex-col items-center justify-center text-white shadow-2xl overflow-hidden">
+                    <div className="absolute inset-0 bg-emerald-500 z-[90] animate-in slide-in-from-right-full duration-500 rounded-3xl flex flex-col items-center justify-center text-white shadow-xl overflow-hidden">
                         <button
                             onClick={() => {
                                 const msg = buildWAMessage?.(student, 'points') || `Laporan untuk ${student.name}: Poin ${lastAction.amount > 0 ? '+' : ''}${lastAction.amount} (${lastAction.reason})`
@@ -1174,14 +1137,14 @@ export const StudentMobileCard = memo(({
                             }}
                             className="w-full h-full flex flex-col items-center justify-center gap-1 active:scale-90 transition-transform"
                         >
-                            <FontAwesomeIcon icon={faWhatsapp} className="text-xl" />
+                            <WhatsAppIcon className="text-xl" />
                             <span className="text-[8px] font-black uppercase tracking-widest">Kirim WA</span>
                         </button>
                         <button
                             onClick={() => setLastAction(null)}
                             className="absolute top-4 right-5 w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-[12px] active:scale-95 transition-all"
                         >
-                            <FontAwesomeIcon icon={faXmark} />
+                            <X />
                         </button>
                     </div>
                 )}
@@ -1228,7 +1191,7 @@ export const StudentSkeletonRow = () => (
 )
 
 export const StudentSkeletonCard = () => (
-    <div className="animate-pulse rounded-[2.2rem] border border-[var(--color-border)]/50 p-2 bg-[var(--color-surface)] shadow-md shadow-black/[0.02] flex flex-col gap-1">
+    <div className="animate-pulse rounded-[2.2rem] border border-[var(--color-border)]/50 p-2 bg-[var(--color-surface)] shadow-md/[0.02] flex flex-col gap-1">
         <div className="p-3">
             <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-2xl bg-[var(--color-surface-alt)]" />
@@ -1358,10 +1321,10 @@ export const StudentMobileListRow = memo(({
 
     // Quick point options
     const quickActions = [
-        { label: 'Sakit / Izin', amount: 0, icon: faClockRotateLeft, color: 'text-amber-500' },
-        { label: 'Terlambat', amount: -5, icon: faArrowTrendDown, color: 'text-red-500' },
-        { label: 'Melanggar', amount: -10, icon: faTriangleExclamation, color: 'text-red-500' },
-        { label: 'Prestasi', amount: 10, icon: faArrowTrendUp, color: 'text-emerald-500' },
+        { label: 'Sakit / Izin', amount: 0, icon: History, color: 'text-amber-500' },
+        { label: 'Terlambat', amount: -5, icon: TrendingDown, color: 'text-red-500' },
+        { label: 'Melanggar', amount: -10, icon: TriangleAlert, color: 'text-red-500' },
+        { label: 'Prestasi', amount: 10, icon: TrendingUp, color: 'text-emerald-500' },
     ]
 
     return (
@@ -1390,9 +1353,9 @@ export const StudentMobileListRow = memo(({
                     >
                         <div className={`w-5.5 h-5.5 rounded-lg border-2 transition-all duration-300 flex items-center justify-center
                             ${isSelected
-                                ? 'bg-[var(--color-primary)] border-[var(--color-primary)] scale-110 shadow-lg shadow-[var(--color-primary)]/10'
+                                ? 'bg-[var(--color-primary)] border-[var(--color-primary)] scale-110 shadow-lg'
                                 : 'border-[var(--color-border)] bg-[var(--color-surface-alt)]/50'}`}>
-                            {isSelected && <FontAwesomeIcon icon={faCheck} className="text-white text-[8px]" />}
+                            {isSelected && <Check className="text-white text-[8px]" />}
                         </div>
                     </div>
                 )}
@@ -1401,7 +1364,7 @@ export const StudentMobileListRow = memo(({
                 <div className="relative shrink-0 pointer-events-none">
                     <div
                         className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-black shadow-inner border transition-all overflow-hidden
-                            ${isRisk ? 'bg-red-500/10 text-red-500 border-red-200 shadow-red-200' : 'bg-gradient-to-br from-[var(--color-primary)]/10 to-[var(--color-accent)]/10 text-[var(--color-primary)] border-[var(--color-border)]'}
+                        ${isRisk ? 'bg-red-500/10 text-red-500 border-red-200' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-border)]'}
                             ${isPrivacyMode ? 'blur-md grayscale opacity-60' : ''}`}
                     >
                         {student.photo_url && !isPrivacyMode ? (
@@ -1439,10 +1402,7 @@ export const StudentMobileListRow = memo(({
                 {/* Expanded State indicator (Chevron) */}
                 {!hasSelection && (
                     <div className="shrink-0 pl-1 text-[var(--color-text-muted)] opacity-40">
-                        <FontAwesomeIcon
-                            icon={faChevronDown}
-                            className={`text-[10px] transition-transform duration-300 ${isExpanded ? 'rotate-180 text-[var(--color-primary)] opacity-100' : ''}`}
-                        />
+                        <ChevronDown className={`text-[10px] transition-transform duration-300 ${isExpanded ? 'rotate-180 text-[var(--color-primary)] opacity-100' : ''}`} />
                     </div>
                 )}
             </div>
@@ -1462,7 +1422,7 @@ export const StudentMobileListRow = memo(({
                         onClick={(e) => { e.stopPropagation(); onViewProfile(student) }}
                         className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-[var(--color-text-muted)] hover:text-emerald-500 hover:bg-[var(--color-surface)] active:scale-95 transition-all animate-in fade-in duration-300"
                     >
-                        <FontAwesomeIcon icon={faIdCard} className="text-[11px]" />
+                        <IdCard className="text-[11px]" />
                         <span className="text-[8px] font-black uppercase tracking-wider leading-none">Profil</span>
                     </button>
 
@@ -1472,7 +1432,7 @@ export const StudentMobileListRow = memo(({
                             onClick={(e) => { e.stopPropagation(); onEdit(student) }}
                             className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-[var(--color-text-muted)] hover:text-indigo-500 hover:bg-[var(--color-surface)] active:scale-95 transition-all animate-in fade-in duration-300"
                         >
-                            <FontAwesomeIcon icon={faEdit} className="text-[11px]" />
+                            <SquarePen className="text-[11px]" />
                             <span className="text-[8px] font-black uppercase tracking-wider leading-none">Edit</span>
                         </button>
                     )}
@@ -1496,7 +1456,7 @@ export const StudentMobileListRow = memo(({
                                 ? 'text-emerald-600 hover:text-emerald-500 hover:bg-[var(--color-surface)]'
                                 : 'text-[var(--color-text-muted)] opacity-35 cursor-not-allowed'}`}
                     >
-                        <FontAwesomeIcon icon={faWhatsapp} className="text-[11px]" />
+                        <WhatsAppIcon className="text-[11px]" />
                         <span className="text-[8px] font-black uppercase tracking-wider leading-none">WA</span>
                     </button>
 
@@ -1506,7 +1466,7 @@ export const StudentMobileListRow = memo(({
                         className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl transition-all active:scale-95 animate-in fade-in duration-300
                             ${student.is_pinned ? 'text-amber-500 bg-[var(--color-surface)] shadow-sm border border-[var(--color-border)]/50' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] border border-transparent'}`}
                     >
-                        <FontAwesomeIcon icon={faThumbtack} className={`text-[10px] ${student.is_pinned ? 'rotate-0' : 'rotate-45'}`} />
+                        <Pin className={`text-[10px] ${student.is_pinned ? 'rotate-0' : 'rotate-45'}`} />
                         <span className="text-[8px] font-black uppercase tracking-wider leading-none">
                             {student.is_pinned ? 'Unpin' : 'Pin'}
                         </span>
@@ -1529,16 +1489,16 @@ export const StudentMobileListRow = memo(({
                                     ? 'bg-amber-500 text-white border-amber-500 shadow-lg'
                                     : 'bg-amber-500/10 border-amber-500/20 text-amber-500 hover:bg-amber-500 hover:text-white'}`}
                         >
-                            <FontAwesomeIcon icon={faBolt} className="text-[11px]" />
+                            <Zap className="text-[11px]" />
                             <span className="text-[8px] font-black uppercase tracking-wider leading-none">Poin</span>
                         </button>
 
                         {showQuickAction && boltRect && createPortal(
                             <>
-                                <div className="fixed inset-0 z-[9990] bg-black/10 backdrop-blur-[1px]" onClick={(e) => { e.stopPropagation(); setShowQuickAction(false) }} />
+                                <div className="fixed inset-0 z-[9990] bg-black/10" onClick={(e) => { e.stopPropagation(); setShowQuickAction(false) }} />
                                 <div
                                     onClick={e => e.stopPropagation()}
-                                    className="fixed z-[9991] w-52 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[1.5rem] shadow-2xl animate-in fade-in slide-in-from-bottom-2 zoom-in-95 duration-200 p-2.5 text-[var(--color-text)]"
+                                    className="fixed z-[9991] w-52 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[1.5rem] shadow-xl animate-in fade-in slide-in-from-bottom-2 zoom-in-95 duration-200 p-2.5 text-[var(--color-text)]"
                                     style={{
                                         top: boltRect.top - 8,
                                         left: Math.min(window.innerWidth - 215, Math.max(10, boltRect.right - 208)),
@@ -1546,7 +1506,7 @@ export const StudentMobileListRow = memo(({
                                     }}
                                 >
                                     <div className="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)] p-2 mb-1.5 border-b border-[var(--color-border)] text-center flex items-center justify-center gap-2">
-                                        <FontAwesomeIcon icon={faBolt} className="text-[8px]" />
+                                        <Zap className="text-[8px]" />
                                         Input Poin Cepat
                                     </div>
                                     <div className="grid grid-cols-2 gap-1.5">
@@ -1556,7 +1516,7 @@ export const StudentMobileListRow = memo(({
                                                 onClick={() => { handleQuickPointInternal(student, act.amount, act.label); setShowQuickAction(false) }}
                                                 className="flex flex-col items-center justify-center gap-1 p-2.5 rounded-xl bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] transition-all border border-[var(--color-border)] active:scale-95"
                                             >
-                                                <FontAwesomeIcon icon={act.icon} className={`text-[10px] ${act.color}`} />
+                                                <act.icon className={`text-[10px] ${act.color}`} />
                                                 <span className="text-[8px] font-black uppercase tracking-widest leading-none mt-0.5">{act.label.split(' ')[0]}</span>
                                                 <span className={`text-[10px] font-black ${act.color}`}>{act.amount > 0 ? `+${act.amount}` : act.amount}</span>
                                             </button>
@@ -1564,7 +1524,7 @@ export const StudentMobileListRow = memo(({
                                     </div>
                                     <button
                                         onClick={() => { handleQuickPointInternal(student, 0, 'custom'); setShowQuickAction(false) }}
-                                        className="w-full mt-2 py-3 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg shadow-[var(--color-primary)]/20 transition-all active:scale-[0.98]"
+                                        className="w-full mt-2 py-3 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg transition-all active:scale-[0.98]"
                                     >
                                         Input Kustom
                                     </button>
@@ -1580,7 +1540,7 @@ export const StudentMobileListRow = memo(({
                             onClick={(e) => { e.stopPropagation(); onConfirmDelete(student) }}
                             className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-red-400/50 hover:text-red-500 hover:bg-red-500/10 active:scale-95 transition-all animate-in fade-in duration-300"
                         >
-                            <FontAwesomeIcon icon={faBoxArchive} className="text-[11px]" />
+                            <Archive className="text-[11px]" />
                             <span className="text-[8px] font-black uppercase tracking-wider leading-none">Arsip</span>
                         </button>
                     )}

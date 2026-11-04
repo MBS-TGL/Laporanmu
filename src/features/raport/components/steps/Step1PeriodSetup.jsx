@@ -63,7 +63,7 @@ export default function Step1PeriodSetup({
     if (!selectedClassId) {
         return (
             <div className="space-y-6 animate-fade-in pb-2">
-                <div className="p-5 rounded-3xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20">
+                <div className="p-5 rounded-3xl bg-indigo-500/10 border border-indigo-500/20">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 flex items-center justify-center shrink-0">
                             <School className="text-indigo-500 w-5 h-5" />
@@ -185,7 +185,7 @@ export default function Step1PeriodSetup({
                                             ${isEmpty
                                                 ? 'bg-slate-200 text-slate-400'
                                                 : isSelected
-                                                    ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/30'
+                                                    ? 'bg-indigo-500 text-white shadow-lg'
                                                     : isBoarding
                                                         ? 'bg-emerald-500/10 text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white'
                                                         : 'bg-indigo-500/10 text-indigo-600 group-hover:bg-indigo-500 group-hover:text-white'
@@ -246,7 +246,7 @@ export default function Step1PeriodSetup({
                         className={`flex-1 h-12 rounded-2xl text-white text-xs sm:text-sm font-black shadow-lg transition-all flex items-center justify-center gap-2 overflow-hidden px-2
                             ${!tempSelectedClassId
                                 ? 'bg-slate-300 dark:bg-slate-700 cursor-not-allowed shadow-none'
-                                : 'bg-emerald-500 shadow-emerald-500/20 hover:brightness-110 active:scale-95'
+                                : 'bg-emerald-500 hover:brightness-110 active:scale-95'
                             }`}
                     >
                         <span className="whitespace-nowrap">Lanjut ke Setup Periode</span>
@@ -259,7 +259,7 @@ export default function Step1PeriodSetup({
 
     return (
         <div className="space-y-6 animate-fade-in">
-            <div className="p-5 rounded-3xl bg-gradient-to-br from-emerald-500/10 to-indigo-500/10 border border-emerald-500/20">
+            <div className="p-5 rounded-3xl bg-success/10 border border-emerald-500/20">
                 <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center shrink-0">
                         <ClipboardList className="text-emerald-500 w-5 h-5" />
@@ -281,7 +281,7 @@ export default function Step1PeriodSetup({
                         </label>
                         <div className="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 flex items-center justify-between gap-4">
                             <div className="flex items-center gap-3 min-w-0 flex-1">
-                                <div className="w-10 h-10 rounded-[1.2rem] bg-emerald-500 flex items-center justify-center text-white text-xs font-black shadow-lg shadow-emerald-500/20 shrink-0">
+                                <div className="w-10 h-10 rounded-[1.2rem] bg-emerald-500 flex items-center justify-center text-white text-xs font-black shadow-lg shrink-0">
                                     {selectedClass?.name?.charAt(0) || 'K'}
                                 </div>
                                 <div className="min-w-0 flex-1">
@@ -441,7 +441,7 @@ export default function Step1PeriodSetup({
                         if (ok) setStep(3)
                     }}
                     disabled={!selectedClassId || loading}
-                    className="flex-1 h-12 rounded-2xl bg-emerald-500 text-white text-xs sm:text-sm font-black shadow-lg shadow-emerald-500/20 hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 overflow-hidden px-2"
+                    className="flex-1 h-12 rounded-2xl bg-emerald-500 text-white text-xs sm:text-sm font-black shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 overflow-hidden px-2"
                 >
                     {loading ? (
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />

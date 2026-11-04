@@ -1,4 +1,3 @@
-import QRCode from 'qrcode'
 import { logAudit } from '@utils/auditLogger'
 
 // ── Helper: Convert image URL to Base64 ──────────────────────────────────
@@ -27,6 +26,7 @@ export const handlePrintThermal = async (student, { addToast, setGeneratingPdf }
     addToast('Menyiapkan struk thermal...', 'info');
     try {
         const qrValue = `${window.location.origin}/check?code=${student.code}&pin=${student.pin}`;
+        const { default: QRCode } = await import('qrcode');
         const qrDataUrl = await QRCode.toDataURL(qrValue, {
             width: 220, errorCorrectionLevel: 'H', margin: 4
         }).catch(() => null);
@@ -105,6 +105,7 @@ export const handleSavePNG = async (student, { addToast, setGeneratingPdf }) => 
         if (student.photo_url) photoDataUrl = await getBase64Image(student.photo_url);
 
         const qrValue = `${window.location.origin}/check?code=${student.code}&pin=${student.pin}`;
+        const { default: QRCode } = await import('qrcode');
         const qrDataUrl = await QRCode.toDataURL(qrValue, {
             width: 200, errorCorrectionLevel: 'H', margin: 4
         }).catch(() => null);
@@ -564,6 +565,7 @@ export const generateStudentPDF = async (targets, captureRef = null, { addToast,
                     `;
 
                     // Render QR ke dataURL langsung — tanpa React root
+                    const { default: QRCode } = await import('qrcode');
                     const qrDataUrl = await QRCode.toDataURL(qrValue, {
                         width: 200, errorCorrectionLevel: 'H', margin: 4
                     }).catch(() => null);

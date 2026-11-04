@@ -17,8 +17,8 @@ export default function ConfirmTimeModal({ log, onConfirm, onCancel }) {
   })
   const label = isInternal ? (language === 'en' ? 'Return' : language === 'ar' ? 'العودة' : 'Kembali') : (language === 'en' ? 'Exit' : language === 'ar' ? 'الخروج' : 'Keluar')
   const colorCls = isInternal
-    ? 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-500/20'
-    : 'bg-red-500 hover:bg-red-600 shadow-red-500/20'
+    ? 'bg-emerald-500 hover:bg-emerald-600'
+    : 'bg-red-500 hover:bg-red-600'
 
   return (
     <Modal

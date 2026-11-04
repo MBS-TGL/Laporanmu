@@ -8,7 +8,9 @@ import { visualizer } from 'rollup-plugin-visualizer'
 export default defineConfig({
   plugins: [
     react(),
-    visualizer({ open: false, gzipSize: true }),
+    // Bundle visualizer hanya saat ANALYZE=1 (npx ANALYZE=1 vite build) —
+    // jangan tulis stats.html 1.7 MB setiap build.
+    process.env.ANALYZE && visualizer({ open: false, gzipSize: true }),
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
@@ -72,7 +74,6 @@ export default defineConfig({
           'vendor-react': ['react', 'react-dom', 'react-router-dom'],
           'vendor-supabase': ['@supabase/supabase-js'],
           'vendor-charts': ['recharts'],
-          'vendor-icons': ['@fortawesome/fontawesome-svg-core', '@fortawesome/free-solid-svg-icons', '@fortawesome/react-fontawesome'],
         }
       }
     },

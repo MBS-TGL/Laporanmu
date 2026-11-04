@@ -1,8 +1,6 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faEdit, faTrash, faUsers, faMars, faVenus, faBed, faBuilding, faCalendarAlt, faEye, faEyeSlash, faChevronRight
-} from '@fortawesome/free-solid-svg-icons'
+import { Bed, Building, EyeOff, SquarePen, Trash2, Users } from 'lucide-react'
+import { MarsIcon, VenusIcon } from '@shared/components'
 
 export const ClassRow = React.memo(({
     cls,
@@ -43,7 +41,7 @@ export const ClassRow = React.memo(({
                 title={handleEdit ? `Edit ${cls.name}` : undefined}
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)]/10 to-[var(--color-accent)]/10 flex items-center justify-center text-[var(--color-primary)] text-sm font-black shadow-inner shrink-0 border border-[var(--color-primary)]/20">
+                    <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] text-sm font-black shadow-inner shrink-0 border border-[var(--color-primary)]/20">
                         {cls.grade}
                     </div>
                     <div className="flex flex-col min-w-0">
@@ -81,11 +79,11 @@ export const ClassRow = React.memo(({
                 <td className="px-6 py-4 text-center">
                     {cls.major.includes('Boarding') ? (
                         <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-600 text-[9px] font-black uppercase border border-amber-500/20 tracking-widest">
-                            <FontAwesomeIcon icon={faBed} className="text-[8px]" /> Boarding
+                            <Bed className="text-[8px]" /> Boarding
                         </span>
                     ) : (
                         <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-[9px] font-black uppercase border border-[var(--color-border)] tracking-widest">
-                            <FontAwesomeIcon icon={faBuilding} className="text-[8px]" /> Reguler
+                            <Building className="text-[8px]" /> Reguler
                         </span>
                     )}
                 </td>
@@ -97,11 +95,11 @@ export const ClassRow = React.memo(({
                     <div className="flex justify-center">
                         {cls.major.includes('Putra') ? (
                             <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs bg-blue-500/10 text-blue-500 border border-blue-500/20 shadow-inner" title="Putra">
-                                <FontAwesomeIcon icon={faMars} />
+                                <MarsIcon />
                             </div>
                         ) : cls.major.includes('Putri') ? (
                             <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs bg-pink-500/10 text-pink-500 border border-pink-500/20 shadow-inner" title="Putri">
-                                <FontAwesomeIcon icon={faVenus} />
+                                <VenusIcon />
                             </div>
                         ) : (
                             <span className="text-[var(--color-text-muted)] text-[10px] opacity-30">—</span>
@@ -117,7 +115,7 @@ export const ClassRow = React.memo(({
                         <span className="font-bold text-xs text-[var(--color-text)] truncate max-w-[150px]">
                             {isPrivacyMode ? (
                                 <span className="inline-flex items-center gap-2">
-                                    <FontAwesomeIcon icon={faEyeSlash} className="text-[10px] opacity-50" />
+                                    <EyeOff className="text-[10px] opacity-50" />
                                     {maskInfo(cls.teacherName, 4)}
                                 </span>
                             ) : (cls.teacherName || '—')}
@@ -131,7 +129,7 @@ export const ClassRow = React.memo(({
             {visibleCols.students && (
                 <td className="px-6 py-4 text-center">
                     <div className="inline-flex items-center gap-2 bg-[var(--color-surface-alt)]/50 px-2.5 py-1 rounded-md text-[10px] font-black text-[var(--color-text)] border border-[var(--color-border)]">
-                        <FontAwesomeIcon icon={faUsers} className="text-[var(--color-primary)] text-[9px]" />
+                        <Users className="text-[var(--color-primary)] text-[9px]" />
                         {cls.students || 0}
                     </div>
                     {isCrowded && (
@@ -161,7 +159,7 @@ export const ClassRow = React.memo(({
                             title="Edit"
                             aria-label={`Edit kelas ${cls.name}`}
                         >
-                            <FontAwesomeIcon icon={faEdit} />
+                            <SquarePen />
                         </button>
                     )}
                     {setItemToDelete && setIsDeleteModalOpen && (
@@ -171,7 +169,7 @@ export const ClassRow = React.memo(({
                             title="Hapus"
                             aria-label={`Hapus kelas ${cls.name}`}
                         >
-                            <FontAwesomeIcon icon={faTrash} />
+                            <Trash2 />
                         </button>
                     )}
                 </div>
@@ -203,7 +201,7 @@ export const ClassMobileCard = React.memo(({
                 />
 
                 {/* Identity */}
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[var(--color-primary)]/10 to-[var(--color-accent)]/10 flex items-center justify-center text-[var(--color-primary)] text-sm font-black shrink-0 border border-[var(--color-primary)]/20 shadow-inner">
+                <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center text-[var(--color-primary)] text-sm font-black shrink-0 border border-[var(--color-primary)]/20 shadow-inner">
                     {cls.grade}
                 </div>
 
@@ -231,8 +229,8 @@ export const ClassMobileCard = React.memo(({
                             </div>
                         </div>
                         <div className="flex gap-1 shrink-0">
-                            {handleEdit && <button onClick={() => handleEdit(cls)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] bg-[var(--color-surface-alt)]/50 text-xs transition-all"><FontAwesomeIcon icon={faEdit} /></button>}
-                            {setItemToDelete && setIsDeleteModalOpen && <button onClick={() => { setItemToDelete(cls); setIsDeleteModalOpen(true) }} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 bg-[var(--color-surface-alt)]/50 text-xs transition-all"><FontAwesomeIcon icon={faTrash} /></button>}
+                            {handleEdit && <button onClick={() => handleEdit(cls)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] bg-[var(--color-surface-alt)]/50 text-xs transition-all"><SquarePen /></button>}
+                            {setItemToDelete && setIsDeleteModalOpen && <button onClick={() => { setItemToDelete(cls); setIsDeleteModalOpen(true) }} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 bg-[var(--color-surface-alt)]/50 text-xs transition-all"><Trash2 /></button>}
                         </div>
                     </div>
 
@@ -244,7 +242,7 @@ export const ClassMobileCard = React.memo(({
                         <div className="space-y-0.5 text-right">
                             <p className="text-[8px] font-black text-[var(--color-text-muted)] uppercase tracking-widest opacity-60">Siswa</p>
                             <p className="font-bold text-[11px] text-[var(--color-text)]">
-                                <FontAwesomeIcon icon={faUsers} className="text-[var(--color-primary)] mr-1.5 text-[9px]" />
+                                <Users className="text-[var(--color-primary)] mr-1.5 text-[9px]" />
                                 {cls.students || 0}
                             </p>
                             {isCrowded && (

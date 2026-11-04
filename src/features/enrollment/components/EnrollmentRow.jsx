@@ -1,11 +1,6 @@
 import React, { memo } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faMars, faVenus, faEye, faPen, faTrash,
-    faArrowRight, faArrowLeft, faSchool, faBookQuran, faUserPlus,
-    faCheckCircle, faXmarkCircle, faClipboardCheck,
-    faChevronRight
-} from '@fortawesome/free-solid-svg-icons'
+import { ArrowLeft, ArrowRight, BookOpenText, ChevronRight, CircleCheck, Eye, Pen, School } from 'lucide-react'
+import { MarsIcon, VenusIcon } from '@shared/components'
 import {
     getStatusConfig, getQuranLevelConfig, getProgramLabel, formatEnrollmentDate, REQUIRED_DOCUMENTS
 } from '@features/enrollment/utils/enrollmentConstants'
@@ -95,7 +90,7 @@ export const EnrollmentRow = memo(({
                         ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
                         : 'bg-rose-500/10 text-rose-500'}`}>
                         {enrollment.photo_url
-                            ? <img src={enrollment.photo_url} alt="" className="w-full h-full object-cover rounded-xl" />
+                            ? <img src={enrollment.photo_url} alt="" className="w-full h-full object-cover rounded-xl" loading="lazy" decoding="async" />
                             : name?.charAt(0) || '?'}
                     </div>
                     <div className="min-w-0">
@@ -104,7 +99,7 @@ export const EnrollmentRow = memo(({
                         </button>
                         <div className="flex items-center gap-2 mt-0.5">
                             <span className="text-[9px] font-bold text-[var(--color-text-muted)] opacity-60 tracking-wider">{registration_number}</span>
-                            <FontAwesomeIcon icon={gender === 'L' ? faMars : faVenus} className={`text-[8px] ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} />
+                            {gender === 'L' ? <MarsIcon className={`text-[8px] ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} /> : <VenusIcon className={`text-[8px] ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} />}
                             {missingCount === 0 ? (
                                 <span className="ml-1 text-[8px] font-bold bg-emerald-500/10 text-emerald-600 px-1.5 py-0.5 rounded border border-emerald-500/20">Berkas Lengkap</span>
                             ) : (
@@ -151,45 +146,45 @@ export const EnrollmentRow = memo(({
             <td className="py-3 px-3">
                 <div className="flex items-center gap-1">
                     <button onClick={() => onView(enrollment)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10 transition-all text-sm" title="Lihat Detail">
-                        <FontAwesomeIcon icon={faEye} />
+                        <Eye />
                     </button>
                     {canEdit && (
                         <>
                             <button onClick={() => onEdit(enrollment)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-blue-500 hover:bg-blue-500/10 transition-all text-sm" title="Edit">
-                                <FontAwesomeIcon icon={faPen} />
+                                <Pen />
                             </button>
                             {/* Quick status actions */}
                             {/* Backward progress actions */}
                             {status === 'verifikasi' && (
                                 <button onClick={() => onStatusChange(enrollment, 'mendaftar')} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-all text-sm" title="Kembalikan ke Mendaftar">
-                                    <FontAwesomeIcon icon={faArrowLeft} />
+                                    <ArrowLeft />
                                 </button>
                             )}
                             {status === 'tes' && (
                                 <button onClick={() => onStatusChange(enrollment, 'verifikasi')} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-all text-sm" title="Kembalikan ke Verifikasi">
-                                    <FontAwesomeIcon icon={faArrowLeft} />
+                                    <ArrowLeft />
                                 </button>
                             )}
                             {(status === 'diterima' || status === 'ditolak') && (
                                 <button onClick={() => onStatusChange(enrollment, 'tes')} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 hover:bg-red-500/10 transition-all text-sm" title="Kembalikan ke Tahap Tes">
-                                    <FontAwesomeIcon icon={faArrowLeft} />
+                                    <ArrowLeft />
                                 </button>
                             )}
 
                             {/* Forward progress actions */}
                             {status === 'mendaftar' && (
                                 <button onClick={() => onStatusChange(enrollment, 'verifikasi')} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-amber-500 hover:bg-amber-500/10 transition-all text-sm" title="Lanjut Verifikasi">
-                                    <FontAwesomeIcon icon={faArrowRight} />
+                                    <ArrowRight />
                                 </button>
                             )}
                             {status === 'verifikasi' && (
                                 <button onClick={() => onStatusChange(enrollment, 'tes')} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-purple-500 hover:bg-purple-500/10 transition-all text-sm" title="Lanjut Tes">
-                                    <FontAwesomeIcon icon={faArrowRight} />
+                                    <ArrowRight />
                                 </button>
                             )}
                             {status === 'tes' && (
                                 <button onClick={() => onStatusChange(enrollment, 'diterima')} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-emerald-500 hover:bg-emerald-500/10 transition-all text-sm" title="Terima">
-                                    <FontAwesomeIcon icon={faCheckCircle} />
+                                    <CircleCheck />
                                 </button>
                             )}
                         </>
@@ -215,8 +210,8 @@ export const EnrollmentMobileCard = memo(({
 
     return (
         <div
-            className={`group glass rounded-2xl border transition-all duration-200 overflow-hidden ${isSelected
-                ? 'border-[var(--color-primary)]/40 bg-[var(--color-primary)]/[0.03] shadow-lg shadow-[var(--color-primary)]/5'
+            className={`group bg-surface rounded-2xl border transition-all duration-200 overflow-hidden ${isSelected
+                ? 'border-[var(--color-primary)]/40 bg-[var(--color-primary)]/[0.03] shadow-lg'
                 : 'border-[var(--color-border)] hover:border-[var(--color-primary)]/20 hover:shadow-md'
             }`}
         >
@@ -244,7 +239,7 @@ export const EnrollmentMobileCard = memo(({
                     </button>
                     <div className="flex items-center gap-2 mt-0.5">
                         <span className="text-[9px] font-bold text-[var(--color-text-muted)] opacity-50 tracking-wider">{registration_number}</span>
-                        <FontAwesomeIcon icon={gender === 'L' ? faMars : faVenus} className={`text-[8px] ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} />
+                        {gender === 'L' ? <MarsIcon className={`text-[8px] ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} /> : <VenusIcon className={`text-[8px] ${gender === 'L' ? 'text-blue-400' : 'text-pink-400'}`} />}
                         {missingCount === 0 ? (
                             <span className="ml-1 text-[8px] font-bold bg-emerald-500/10 text-emerald-600 px-1.5 py-0.5 rounded border border-emerald-500/20">Berkas Lengkap</span>
                         ) : (
@@ -261,11 +256,11 @@ export const EnrollmentMobileCard = memo(({
             {/* Details Grid */}
             <div className="px-4 pb-3 grid grid-cols-2 gap-2">
                 <div className="flex items-center gap-2 text-[10px]">
-                    <FontAwesomeIcon icon={faSchool} className="text-[var(--color-text-muted)] opacity-40 text-[9px]" />
+                    <School className="text-[var(--color-text-muted)] opacity-40 text-[9px]" />
                     <span className="text-[var(--color-text-muted)] font-medium truncate">{school_origin || '-'}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[10px]">
-                    <FontAwesomeIcon icon={faBookQuran} className="text-[var(--color-text-muted)] opacity-40 text-[9px]" />
+                    <BookOpenText className="text-[var(--color-text-muted)] opacity-40 text-[9px]" />
                     <span className="text-[var(--color-text-muted)] font-medium">
                         {quranCfg?.name || '-'}{hafalan_quran > 0 ? ` · ${hafalan_quran} Juz` : ''}
                     </span>
@@ -282,11 +277,11 @@ export const EnrollmentMobileCard = memo(({
             {canEdit && (
                 <div className="flex items-center gap-1 px-3 py-2.5 border-t border-[var(--color-border)]/50 bg-[var(--color-surface-alt)]/20">
                     <button onClick={() => onView(enrollment)} className="flex-1 h-8 rounded-lg text-[10px] font-bold text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 flex items-center justify-center gap-1.5 transition-all">
-                        <FontAwesomeIcon icon={faEye} className="text-[9px]" /> Detail
+                        <Eye className="text-[9px]" /> Detail
                     </button>
                     <div className="w-px h-4 bg-[var(--color-border)]" />
                     <button onClick={() => onEdit(enrollment)} className="flex-1 h-8 rounded-lg text-[10px] font-bold text-[var(--color-text-muted)] hover:text-amber-500 hover:bg-amber-500/5 flex items-center justify-center gap-1.5 transition-all">
-                        <FontAwesomeIcon icon={faPen} className="text-[9px]" /> Edit
+                        <Pen className="text-[9px]" /> Edit
                     </button>
                     {/* Backward action on Mobile */}
                     {status !== 'mendaftar' && (
@@ -300,7 +295,7 @@ export const EnrollmentMobileCard = memo(({
                                 className="flex-1 h-8 rounded-lg text-[10px] font-bold text-rose-600 hover:bg-rose-500/5 flex items-center justify-center gap-1 transition-all"
                                 title="Kembalikan Status"
                             >
-                                <FontAwesomeIcon icon={faArrowLeft} className="text-[8px]" /> Kembali
+                                <ArrowLeft className="text-[8px]" /> Kembali
                             </button>
                         </>
                     )}
@@ -315,7 +310,7 @@ export const EnrollmentMobileCard = memo(({
                                 }}
                                 className="flex-1 h-8 rounded-lg text-[10px] font-bold text-emerald-600 hover:bg-emerald-500/10 flex items-center justify-center gap-1.5 transition-all"
                             >
-                                <FontAwesomeIcon icon={faChevronRight} className="text-[8px]" />
+                                <ChevronRight className="text-[8px]" />
                                 {status === 'mendaftar' ? 'Verifikasi' : status === 'verifikasi' ? 'Tes' : 'Terima'}
                             </button>
                         </>
@@ -352,7 +347,7 @@ EnrollmentSkeletonRow.displayName = 'EnrollmentSkeletonRow'
 
 // ─── Skeleton Card ────────────────────────────────────────────────────────────
 export const EnrollmentSkeletonCard = memo(() => (
-    <div className="glass rounded-2xl border border-[var(--color-border)] p-4 space-y-3">
+    <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-4 space-y-3">
         <div className="flex items-start gap-3">
             <div className="w-5 h-5 skeleton rounded-md" />
             <div className="w-11 h-11 skeleton rounded-xl" />

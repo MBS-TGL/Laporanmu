@@ -1,10 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react'
 import { createPortal } from 'react-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faCalendarAlt, faClock, faXmark, faChevronLeft,
-    faChevronRight, faChevronDown, faChevronUp, faCheck
-} from '@fortawesome/free-solid-svg-icons'
+import { Calendar, X, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Check } from 'lucide-react'
 
 const MONTHS = [
     'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
@@ -302,18 +298,18 @@ const RichDateTimePicker = memo(({
                 className={`w-full flex items-center justify-between gap-2.5 px-3.5 h-[42px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)]/50 focus:border-[var(--color-primary)] outline-none transition-all text-xs sm:text-sm font-medium relative group shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
                 <div className="flex items-center gap-2 truncate">
-                    <FontAwesomeIcon icon={faCalendarAlt} className="text-xs text-[var(--color-text-muted)] opacity-50 group-focus:text-[var(--color-primary)] group-hover:text-[var(--color-primary)] transition-colors shrink-0" />
+                    <Calendar className="text-xs text-[var(--color-text-muted)] opacity-50 group-focus:text-[var(--color-primary)] group-hover:text-[var(--color-primary)] transition-colors shrink-0" />
                     <span className={value ? 'text-xs sm:text-sm text-[var(--color-text)] tracking-wide font-semibold' : 'text-[var(--color-text-muted)] opacity-60'}>
                         {displayLabel}
                     </span>
                 </div>
-                <FontAwesomeIcon icon={faChevronDown} className={`text-xs opacity-40 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
+                <ChevronDown className={`text-xs opacity-40 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
             </button>
 
             {/* Premium Readable & Scaled Width Portal Dropdown Menu (Desktop: 510px wide & 320px height, Mobile: 280px wide) */}
             {isOpen && createPortal(
                 <div
-                    className={`fixed z-[99999] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-2xl overflow-hidden animate-in fade-in ${coords.placement === 'top' ? 'slide-in-from-bottom-3' : 'slide-in-from-top-3'} select-none`}
+                    className={`fixed z-[99999] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-xl overflow-hidden animate-in fade-in ${coords.placement === 'top' ? 'slide-in-from-bottom-3' : 'slide-in-from-top-3'} select-none`}
                     onMouseDown={(e) => e.stopPropagation()}
                     style={{
                         width: 'max-content',
@@ -340,7 +336,7 @@ const RichDateTimePicker = memo(({
                             onClick={handleDone}
                             className="w-8 h-8 rounded-xl bg-[var(--color-border)]/20 hover:bg-red-500/10 text-[var(--color-text-muted)] hover:text-red-500 flex items-center justify-center transition-colors active:scale-90"
                         >
-                            <FontAwesomeIcon icon={faXmark} className="text-xs sm:text-sm" />
+                            <X className="text-xs sm:text-sm" />
                         </button>
                     </div>
 
@@ -356,7 +352,7 @@ const RichDateTimePicker = memo(({
                                     onClick={handlePrevMonth}
                                     className="w-8 h-8 rounded-xl flex items-center justify-center hover:bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors active:scale-95"
                                 >
-                                    <FontAwesomeIcon icon={faChevronLeft} className="text-xs" />
+                                    <ChevronLeft className="text-xs" />
                                 </button>
                                 <div className="text-xs font-bold uppercase tracking-wider text-[var(--color-text)] select-none">
                                     {MONTHS[activeMonth]} {activeYear}
@@ -366,7 +362,7 @@ const RichDateTimePicker = memo(({
                                     onClick={handleNextMonth}
                                     className="w-8 h-8 rounded-xl flex items-center justify-center hover:bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors active:scale-95"
                                 >
-                                    <FontAwesomeIcon icon={faChevronRight} className="text-xs" />
+                                    <ChevronRight className="text-xs" />
                                 </button>
                             </div>
 
@@ -393,7 +389,7 @@ const RichDateTimePicker = memo(({
                                             type="button"
                                             onClick={(e) => { e.stopPropagation(); handleSelectDay(day); }}
                                             className={`w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center transition-all active:scale-90 ${selected
-                                                    ? 'bg-[var(--color-primary)] text-white font-bold shadow-md shadow-[var(--color-primary)]/20'
+                                                ? 'bg-[var(--color-primary)] text-white font-bold shadow-md'
                                                     : today
                                                         ? 'border border-[var(--color-primary)] text-[var(--color-primary)] font-bold bg-[var(--color-primary)]/5 hover:bg-[var(--color-primary)]/10'
                                                         : 'text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] border border-transparent'
@@ -431,7 +427,7 @@ const RichDateTimePicker = memo(({
                                             onClick={() => adjustHour(1)}
                                             className="w-8 h-6 flex items-center justify-center text-xs sm:text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors active:scale-75"
                                         >
-                                            <FontAwesomeIcon icon={faChevronUp} />
+                                            <ChevronUp />
                                         </button>
                                         <span className="text-xl sm:text-2xl font-bold tracking-wider text-[var(--color-text)] select-none">
                                             {timeDisplay.hour}
@@ -441,7 +437,7 @@ const RichDateTimePicker = memo(({
                                             onClick={() => adjustHour(-1)}
                                             className="w-8 h-6 flex items-center justify-center text-xs sm:text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors active:scale-75"
                                         >
-                                            <FontAwesomeIcon icon={faChevronDown} />
+                                            <ChevronDown />
                                         </button>
                                     </div>
 
@@ -454,7 +450,7 @@ const RichDateTimePicker = memo(({
                                             onClick={() => adjustMinute(1)}
                                             className="w-8 h-6 flex items-center justify-center text-xs sm:text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors active:scale-75"
                                         >
-                                            <FontAwesomeIcon icon={faChevronUp} />
+                                            <ChevronUp />
                                         </button>
                                         <span className="text-xl sm:text-2xl font-bold tracking-wider text-[var(--color-text)] select-none">
                                             {timeDisplay.minute}
@@ -464,7 +460,7 @@ const RichDateTimePicker = memo(({
                                             onClick={() => adjustMinute(-1)}
                                             className="w-8 h-6 flex items-center justify-center text-xs sm:text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors active:scale-75"
                                         >
-                                            <FontAwesomeIcon icon={faChevronDown} />
+                                            <ChevronDown />
                                         </button>
                                     </div>
 
@@ -521,9 +517,9 @@ const RichDateTimePicker = memo(({
                         <button
                             type="button"
                             onClick={handleDone}
-                            className="w-full h-10 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-md shadow-[var(--color-primary)]/20"
+                            className="w-full h-10 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-md"
                         >
-                            <FontAwesomeIcon icon={faCheck} className="text-sm text-white" />
+                            <Check className="text-sm text-white" />
                             <span>Selesai Memilih</span>
                         </button>
                     </div>

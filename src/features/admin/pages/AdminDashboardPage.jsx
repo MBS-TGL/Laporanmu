@@ -1,11 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faDatabase, faRobot, faShieldHalved, faServer,
-    faTerminal, faMicrochip, faCloud, faRotateLeft,
-    faArrowUp, faArrowDown, faBolt, faTriangleExclamation,
-    faCircleCheck, faDownload, faTableColumns, faCube
-} from '@fortawesome/free-solid-svg-icons'
+import { Bot, Cloud, Cpu, Database, RotateCcw, Server, ShieldHalf, Terminal, TriangleAlert, Zap } from 'lucide-react'
+
+
 import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
     BarChart, Bar, Cell, PieChart, Pie
@@ -121,7 +117,7 @@ export default function AdminDashboardPage() {
                             </p>
                             <div className="h-3 w-px bg-[var(--color-border)]" />
                             <div className="flex items-center gap-1.5 text-[9px] font-black text-indigo-500 uppercase tracking-widest">
-                                <FontAwesomeIcon icon={faServer} className="text-[8px]" />
+                                <Server className="text-[8px]" />
                                 ap-southeast-1 (SG)
                             </div>
                             <div className="h-3 w-px bg-[var(--color-border)]" />
@@ -130,7 +126,7 @@ export default function AdminDashboardPage() {
                     </div>
                     <div className="flex items-center gap-2">
                         <button onClick={fetchTechnicalStats} className="h-9 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-[var(--color-surface-alt)] transition-all shadow-sm group">
-                            <FontAwesomeIcon icon={faRotateLeft} className={`${loading ? 'animate-spin' : 'group-hover:rotate-180'} transition-transform duration-500`} /> Refresh Sync
+                            <RotateCcw className={`${loading ? 'animate-spin' : 'group-hover:rotate-180'} transition-transform duration-500`} /> Refresh Sync
                         </button>
                     </div>
                 </div>
@@ -138,14 +134,14 @@ export default function AdminDashboardPage() {
                 {/* ── STATS ROW ── */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                     {[
-                        { label: 'DB Complexity', val: stats.dbRows, sub: 'Total Rows', icon: faDatabase, color: 'text-indigo-500', bg: 'bg-indigo-500/10' },
-                        { label: 'Neural Traffic', val: stats.aiTokens, sub: `${stats.aiTokens} Tkns`, icon: faRobot, color: 'text-violet-500', bg: 'bg-violet-500/10' },
-                        { label: 'Cloud Assets', val: stats.storageUsage, sub: 'Est. Size', icon: faCloud, color: 'text-sky-500', bg: 'bg-sky-500/10' },
-                        { label: 'System Health', val: 'Healthy', sub: `${stats.latency} Stable`, icon: faBolt, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+                        { label: 'DB Complexity', val: stats.dbRows, sub: 'Total Rows', icon: Database, color: 'text-indigo-500', bg: 'bg-indigo-500/10' },
+                        { label: 'Neural Traffic', val: stats.aiTokens, sub: `${stats.aiTokens} Tkns`, icon: Bot, color: 'text-violet-500', bg: 'bg-violet-500/10' },
+                        { label: 'Cloud Assets', val: stats.storageUsage, sub: 'Est. Size', icon: Cloud, color: 'text-sky-500', bg: 'bg-sky-500/10' },
+                        { label: 'System Health', val: 'Healthy', sub: `${stats.latency} Stable`, icon: Zap, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
                     ].map((s, i) => (
-                        <div key={i} className="glass rounded-[1.5rem] p-4 border border-[var(--color-border)] flex items-center gap-3 hover:shadow-lg transition-all group">
+                        <div key={i} className="bg-surface rounded-[1.5rem] p-4 border border-[var(--color-border)] flex items-center gap-3 hover:shadow-lg transition-all group">
                             <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm shrink-0 ${s.bg} group-hover:scale-110 transition-transform`}>
-                                <FontAwesomeIcon icon={s.icon} className={s.color} />
+                                <s.icon className={s.color} />
                             </div>
                             <div className="min-w-0">
                                 <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)] opacity-60 leading-none mb-1">{s.label}</p>
@@ -157,7 +153,7 @@ export default function AdminDashboardPage() {
 
                 {/* ── CHARTS ROW ── */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                    <div className="lg:col-span-2 glass rounded-[1.5rem] border border-[var(--color-border)] p-6 shadow-sm">
+                    <div className="lg:col-span-2 bg-surface rounded-[1.5rem] border border-[var(--color-border)] p-6 shadow-sm">
                         <div className="flex items-center justify-between mb-5">
                             <div>
                                 <h3 className="text-[13px] font-black text-[var(--color-text)]">Neural Consumption</h3>
@@ -186,7 +182,7 @@ export default function AdminDashboardPage() {
                         </div>
                     </div>
 
-                    <div className="glass rounded-[1.5rem] border border-[var(--color-border)] p-6 shadow-sm flex flex-col items-center">
+                        <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] p-6 shadow-sm flex flex-col items-center">
                         <div className="w-full text-left mb-4">
                             <h3 className="text-[13px] font-black text-[var(--color-text)]">Data Distribution</h3>
                             <p className="text-[10px] text-[var(--color-text-muted)] opacity-70">Baris data per modul</p>
@@ -220,7 +216,7 @@ export default function AdminDashboardPage() {
 
                 {/* ── RECENT AUDIT ── */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                    <div className="glass rounded-[2rem] border border-[var(--color-border)] p-1 overflow-hidden shadow-sm">
+                    <div className="bg-surface rounded-[2rem] border border-[var(--color-border)] p-1 overflow-hidden shadow-sm">
                         <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]/50">
                             <h3 className="text-[12px] font-black text-[var(--color-text)] flex items-center gap-2">
                                 <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
@@ -237,7 +233,7 @@ export default function AdminDashboardPage() {
                                 systemLogs.map((log, i) => (
                                     <div key={i} className="flex items-center gap-3 p-3 rounded-2xl hover:bg-[var(--color-surface-alt)] border border-transparent hover:border-[var(--color-border)] group transition-all">
                                         <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border transition-all ${log.action === 'ERROR' ? 'bg-rose-500/10 border-rose-500/20 text-rose-500' : 'bg-indigo-500/10 border-indigo-500/20 text-indigo-500'}`}>
-                                            <FontAwesomeIcon icon={log.action === 'ERROR' ? faTriangleExclamation : faMicrochip} className="text-[10px]" />
+                                            { log.action === 'ERROR' ? <TriangleAlert className="text-[10px]" /> : <Cpu className="text-[10px]" /> }
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center justify-between mb-0.5">
@@ -257,16 +253,16 @@ export default function AdminDashboardPage() {
 
                     <div className="grid grid-cols-3 gap-3">
                         {[
-                            { title: 'DB', icon: faDatabase, color: 'text-indigo-500', bg: 'bg-indigo-500/5', to: '/admin/database', status: 'Healthy' },
-                            { title: 'Logs', icon: faTerminal, color: 'text-purple-500', bg: 'bg-purple-500/5', to: '/admin/logs', status: 'Syncing' },
-                            { title: 'AI', icon: faRobot, color: 'text-sky-500', bg: 'bg-sky-500/5', to: '/admin/ai-insights', status: 'Active' },
-                            { title: 'Cloud', icon: faCloud, color: 'text-amber-500', bg: 'bg-amber-500/5', to: '/admin/storage', status: 'Normal' },
-                            { title: 'Svr', icon: faServer, color: 'text-emerald-500', bg: 'bg-emerald-500/5', to: '/admin/tasks', status: 'Idle' },
-                            { title: 'ACL', icon: faShieldHalved, color: 'text-rose-500', bg: 'bg-rose-500/5', to: '/admin/users', status: 'Locked' },
+                            { title: 'DB', icon: Database, color: 'text-indigo-500', bg: 'bg-indigo-500/5', to: '/admin/database', status: 'Healthy' },
+                            { title: 'Logs', icon: Terminal, color: 'text-purple-500', bg: 'bg-purple-500/5', to: '/admin/logs', status: 'Syncing' },
+                            { title: 'AI', icon: Bot, color: 'text-sky-500', bg: 'bg-sky-500/5', to: '/admin/ai-insights', status: 'Active' },
+                            { title: 'Cloud', icon: Cloud, color: 'text-amber-500', bg: 'bg-amber-500/5', to: '/admin/storage', status: 'Normal' },
+                            { title: 'Svr', icon: Server, color: 'text-emerald-500', bg: 'bg-emerald-500/5', to: '/admin/tasks', status: 'Idle' },
+                            { title: 'ACL', icon: ShieldHalf, color: 'text-rose-500', bg: 'bg-rose-500/5', to: '/admin/users', status: 'Locked' },
                         ].map((c, i) => (
-                            <a key={i} href={c.to} className="group glass p-4 rounded-[1.5rem] border border-[var(--color-border)] flex flex-col items-center justify-center text-center gap-2 hover:border-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/5 transition-all active:scale-95 relative overflow-hidden">
+                            <a key={i} href={c.to} className="group bg-surface p-4 rounded-[1.5rem] border border-[var(--color-border)] flex flex-col items-center justify-center text-center gap-2 hover:border-indigo-500/30 hover:shadow-xl transition-all active:scale-95 relative overflow-hidden">
                                 <div className={`w-10 h-10 rounded-2xl ${c.bg} ${c.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                                    <FontAwesomeIcon icon={c.icon} className="text-sm" />
+                                    <c.icon className="text-sm" />
                                 </div>
                                 <div className="space-y-0.5">
                                     <p className="text-[11px] font-black text-[var(--color-text)] transition-colors">{c.title}</p>
@@ -276,7 +272,7 @@ export default function AdminDashboardPage() {
                                     </div>
                                 </div>
                                 <div className="absolute top-0 right-0 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <FontAwesomeIcon icon={faRotateLeft} className="text-[8px] text-[var(--color-text-muted)]" />
+                                    <RotateCcw className="text-[8px] text-[var(--color-text-muted)]" />
                                 </div>
                             </a>
                         ))}

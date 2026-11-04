@@ -1,25 +1,19 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react'
 import { createPortal } from 'react-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown, faSearch, faXmark, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { ChevronDown, Search, X, Check } from 'lucide-react'
 
 /**
  * RichSelect - A premium, reusable dropdown component with auto-flip, portal, search, and dynamic grouping/tab filtering.
- * 
+ *
  * @param {boolean} compact - Lightweight mode: no portal, smaller padding, inline absolute dropdown.
  *                             Ideal for pagination or toolbar selects with few options.
  */
 /**
- * Polymorphic icon renderer - supports both FontAwesome icon objects and Lucide React components.
- * FontAwesome: pass icon object like { iconName: 'bed', ... }
+ * Polymorphic icon renderer for Lucide React components.
  * Lucide React: pass component reference like Bed, Calendar, etc.
  */
 const renderIcon = (icon, className = '') => {
     if (!icon) return null
-    const isFontAwesome = typeof icon === 'object' && icon !== null && 'iconName' in icon
-    if (isFontAwesome) {
-        return <FontAwesomeIcon icon={icon} className={className} />
-    }
     const IconComp = icon
     return <IconComp className={className} />
 }
@@ -223,7 +217,7 @@ const RichSelect = memo(({
             {searchable && (
                 <div className="p-2 border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/30 shrink-0">
                     <div className="relative">
-                        <FontAwesomeIcon icon={faSearch} className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[var(--color-text-muted)] opacity-40" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[var(--color-text-muted)] opacity-40" />
                         <input
                             ref={searchInputRef}
                             type="text"
@@ -237,7 +231,7 @@ const RichSelect = memo(({
                                 onClick={() => setSearch('')}
                                 className="absolute right-2 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 transition-colors"
                             >
-                                <FontAwesomeIcon icon={faXmark} className="text-xs" />
+                                <X className="text-xs" />
                             </button>
                         )}
                     </div>
@@ -263,8 +257,8 @@ const RichSelect = memo(({
                         const isActive = activeGroup === g
 
                         let activeClasses = 'bg-[var(--color-primary)] text-white border-transparent'
-                        if (isPelanggaran) activeClasses = 'bg-rose-500 text-white border-transparent shadow-sm shadow-rose-500/10'
-                        if (isPrestasi) activeClasses = 'bg-emerald-500 text-white border-transparent shadow-sm shadow-emerald-500/10'
+                        if (isPelanggaran) activeClasses = 'bg-rose-500 text-white border-transparent shadow-sm'
+                        if (isPrestasi) activeClasses = 'bg-emerald-500 text-white border-transparent shadow-sm'
 
                         return (
                             <button
@@ -298,7 +292,7 @@ const RichSelect = memo(({
                             <div className={`w-1.5 h-1.5 rounded-full ${value === extraOption.id ? 'bg-[var(--color-primary)]' : 'bg-amber-600'}`} />
                             {extraOption.name}
                         </div>
-                        {value === extraOption.id && <FontAwesomeIcon icon={faCheck} className="text-xs" />}
+                        {value === extraOption.id && <Check className="text-xs" />}
                     </button>
                 )}
 
@@ -312,7 +306,7 @@ const RichSelect = memo(({
                             <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse" />
                             <span>Gunakan "{search}"</span>
                         </div>
-                        <FontAwesomeIcon icon={faCheck} className="text-xs" />
+                        <Check className="text-xs" />
                     </button>
                 )}
 
@@ -325,7 +319,7 @@ const RichSelect = memo(({
                     Object.keys(groupedOptions).map(groupName => (
                         <div key={groupName} className="flex flex-col">
                             {/* Sticky Color-coded Group Header */}
-                            <div className={`px-4 py-1.5 text-xs font-bold uppercase tracking-wider border-y border-[var(--color-border)]/35 sticky top-0 backdrop-blur-md z-10 select-none ${groupName.toLowerCase().includes('pelanggaran')
+                            <div className={`px-4 py-1.5 text-xs font-bold uppercase tracking-wider border-y border-[var(--color-border)]/35 sticky top-0 z-10 select-none ${groupName.toLowerCase().includes('pelanggaran')
                                     ? 'text-rose-500 bg-rose-50/90 dark:bg-rose-950/20'
                                     : groupName.toLowerCase().includes('prestasi')
                                         ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50/90 dark:bg-emerald-950/20'
@@ -346,7 +340,7 @@ const RichSelect = memo(({
                                         <div className={`w-1.5 h-1.5 rounded-full transition-all ${String(value) === String(opt.id) ? 'bg-[var(--color-primary)] scale-125 shadow-[0_0_8px_rgba(var(--color-primary-rgb),0.4)]' : 'bg-[var(--color-border)] group-hover:bg-[var(--color-text-muted)]'}`} />
                                         {opt.render ? opt.render : opt.name}
                                     </div>
-                                    {String(value) === String(opt.id) && <FontAwesomeIcon icon={faCheck} className="text-xs animate-in zoom-in-50 duration-300" />}
+                                    {String(value) === String(opt.id) && <Check className="text-xs animate-in zoom-in-50 duration-300" />}
                                 </button>
                             ))}
                         </div>
@@ -364,7 +358,7 @@ const RichSelect = memo(({
                                 <div className={`w-1.5 h-1.5 rounded-full transition-all ${String(value) === String(opt.id) ? 'bg-[var(--color-primary)] scale-125 shadow-[0_0_8px_rgba(var(--color-primary-rgb),0.4)]' : 'bg-[var(--color-border)] group-hover:bg-[var(--color-text-muted)]'}`} />
                                 {opt.render ? opt.render : opt.name}
                             </div>
-                            {String(value) === String(opt.id) && <FontAwesomeIcon icon={faCheck} className="text-xs animate-in zoom-in-50 duration-300" />}
+                            {String(value) === String(opt.id) && <Check className="text-xs animate-in zoom-in-50 duration-300" />}
                         </button>
                     ))
                 )}
@@ -401,13 +395,13 @@ const RichSelect = memo(({
                         {selectedOption ? (selectedOption.render ? selectedOption.render : selectedOption.name) : placeholder}
                     </span>
                 </div>
-                <FontAwesomeIcon icon={faChevronDown} className={`text-xs opacity-40 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
+                <ChevronDown className={`text-xs opacity-40 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
             </button>
 
             {isOpen && (!usePortal || compact ? (
                 /* ─── Compact/Inline: absolute dropdown ─── */
                 <div
-                    className={`absolute z-50 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-2xl overflow-hidden animate-in fade-in ${compactPlacement === 'top' ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'} duration-150`}
+                    className={`absolute z-50 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-xl overflow-hidden animate-in fade-in ${compactPlacement === 'top' ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'} duration-150`}
                     onMouseDown={(e) => e.stopPropagation()}
                     style={{
                         minWidth: '100%',
@@ -433,7 +427,7 @@ const RichSelect = memo(({
                                 }}
                             />
                             <div
-                                className="fixed bottom-0 left-0 right-0 z-[99999] bg-[var(--color-surface)] border-t border-[var(--color-border)] rounded-t-2xl shadow-2xl animate-in slide-in-from-bottom duration-200 flex flex-col pb-safe"
+                                className="fixed bottom-0 left-0 right-0 z-[99999] bg-[var(--color-surface)] border-t border-[var(--color-border)] rounded-t-2xl shadow-xl animate-in slide-in-from-bottom duration-200 flex flex-col pb-safe"
                                 onMouseDown={(e) => e.stopPropagation()}
                                 style={{
                                     maxHeight: '75vh',
@@ -446,7 +440,7 @@ const RichSelect = memo(({
                         </>
                     ) : (
                         <div
-                            className={`fixed z-[99999] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl sm:rounded-2xl shadow-2xl animate-in fade-in ${coords.placement === 'top' ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'} flex flex-col`}
+                            className={`fixed z-[99999] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl sm:rounded-2xl shadow-xl animate-in fade-in ${coords.placement === 'top' ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'} flex flex-col`}
                             onMouseDown={(e) => e.stopPropagation()}
                             style={{
                                 width: 'max-content',

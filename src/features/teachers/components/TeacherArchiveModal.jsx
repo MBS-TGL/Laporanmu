@@ -1,14 +1,5 @@
 import React, { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faBoxArchive,
-    faChevronLeft,
-    faChevronRight,
-    faRotateLeft,
-    faSpinner,
-    faTrash,
-    faTriangleExclamation
-} from '@fortawesome/free-solid-svg-icons'
+import { Archive, ChevronLeft, ChevronRight, LoaderCircle, RotateCcw, Trash2, TriangleAlert } from 'lucide-react'
 import { Modal, EmptyState } from '@shared/components'
 import { supabase } from '@lib/supabase'
 
@@ -97,7 +88,7 @@ export default function TeacherArchiveModal({
             onClose={onClose}
             title="Arsip Guru"
             description="Kelola dan pulihkan data guru yang telah dihapus sementara."
-            icon={faBoxArchive}
+            icon={Archive}
             iconBg="bg-amber-500/10"
             iconColor="text-amber-600"
             size="lg"
@@ -121,7 +112,7 @@ export default function TeacherArchiveModal({
                     className={`absolute inset-0 z-20 bg-[var(--color-surface)] flex flex-col items-center justify-center gap-4 p-6 rounded-xl transition-all duration-300 ease-out ${deleteTarget ? 'opacity-100 visible scale-100' : 'opacity-0 invisible scale-95 pointer-events-none'}`}
                 >
                     <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
-                        <FontAwesomeIcon icon={faTriangleExclamation} className="text-red-500 text-2xl" />
+                        <TriangleAlert className="text-red-500 text-2xl" />
                     </div>
                     <div className="text-center max-w-xs">
                         <p className="text-sm font-black text-[var(--color-text)] mb-1">Hapus Permanen?</p>
@@ -140,16 +131,16 @@ export default function TeacherArchiveModal({
                         <button
                             onClick={confirmPermanentDelete}
                             disabled={deleting}
-                            className="h-9 px-5 rounded-xl bg-red-500 hover:brightness-110 text-white text-[10px] font-black uppercase tracking-widest transition-all shadow-lg shadow-red-500/20 disabled:opacity-50 flex items-center gap-2"
+                            className="h-9 px-5 rounded-xl bg-red-500 hover:brightness-110 text-white text-[10px] font-black uppercase tracking-widest transition-all shadow-lg disabled:opacity-50 flex items-center gap-2"
                         >
-                            {deleting ? <><FontAwesomeIcon icon={faSpinner} className="fa-spin" /> Menghapus...</> : <><FontAwesomeIcon icon={faTrash} /> Hapus Permanen</>}
+                            {deleting ? <><LoaderCircle className="animate-spin" /> Menghapus...</> : <><Trash2 /> Hapus Permanen</>}
                         </button>
                     </div>
                 </div>
 
                 {/* ====== MAIN CONTENT ====== */}
                 <div className="p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20 flex items-center gap-3">
-                    <FontAwesomeIcon icon={faBoxArchive} className="text-amber-600 text-base shrink-0" />
+                    <Archive className="text-amber-600 text-base shrink-0" />
                     <div>
                         <p className="text-[11px] font-black text-amber-700 dark:text-amber-400">{archivedTeachers.length} guru di arsip</p>
                         <p className="text-[10px] text-[var(--color-text-muted)] font-medium">Pulihkan untuk mengembalikan ke daftar aktif, atau hapus permanen.</p>
@@ -158,12 +149,12 @@ export default function TeacherArchiveModal({
 
                 {loadingArchived ? (
                     <div className="text-center py-12 text-[var(--color-text-muted)]">
-                        <FontAwesomeIcon icon={faSpinner} className="fa-spin mb-3 text-xl" />
+                        <LoaderCircle className="animate-spin mb-3 text-xl" />
                         <p className="text-xs font-bold">Memuat arsip...</p>
                     </div>
                 ) : archivedTeachers.length === 0 ? (
                     <EmptyState
-                        icon={faBoxArchive}
+                        icon={Archive}
                         title="Arsip Kosong"
                         description="Tidak ada data guru yang telah dihapus sementara saat ini."
                         variant="dashed"
@@ -201,14 +192,14 @@ export default function TeacherArchiveModal({
                                                         disabled={restoring}
                                                         className="h-7 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500 hover:text-white border border-emerald-500/20 text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-1 disabled:opacity-50"
                                                     >
-                                                        <FontAwesomeIcon icon={faRotateLeft} className="text-[8px]" />
+                                                        <RotateCcw className="text-[8px]" />
                                                         Pulihkan
                                                     </button>
                                                     <button
                                                         onClick={() => setDeleteTarget(t)}
                                                         className="h-7 px-2.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-1"
                                                     >
-                                                        <FontAwesomeIcon icon={faTrash} className="text-[8px]" />
+                                                        <Trash2 className="text-[8px]" />
                                                         Hapus
                                                     </button>
                                                 </div>
@@ -231,14 +222,14 @@ export default function TeacherArchiveModal({
                                         onClick={() => setArchivePage(p => p - 1)}
                                         className="w-7 h-7 rounded-lg border border-[var(--color-border)] flex items-center justify-center disabled:opacity-30 hover:bg-[var(--color-surface-alt)] shadow-sm transition-colors"
                                     >
-                                        <FontAwesomeIcon icon={faChevronLeft} className="text-[9px]" />
+                                        <ChevronLeft className="text-[9px]" />
                                     </button>
                                     <button
                                         disabled={archivePage >= Math.ceil(archivedTeachers.length / archivePageSize)}
                                         onClick={() => setArchivePage(p => p + 1)}
                                         className="w-7 h-7 rounded-lg border border-[var(--color-border)] flex items-center justify-center disabled:opacity-30 hover:bg-[var(--color-surface-alt)] shadow-sm transition-colors"
                                     >
-                                        <FontAwesomeIcon icon={faChevronRight} className="text-[9px]" />
+                                        <ChevronRight className="text-[9px]" />
                                     </button>
                                 </div>
                             </div>

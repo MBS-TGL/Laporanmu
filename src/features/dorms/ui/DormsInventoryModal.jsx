@@ -268,7 +268,7 @@ export function DormsInventoryModal({
                             setInventoryModalDorm(null)
                             setIsInventoryModalOpen(true)
                         }}
-                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 transition-all"
+                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:scale-[1.02] active:scale-95 shadow-md transition-all"
                     >
                         <Plus className="w-3.5 h-3.5" />
                         {t('dorms.inventory.addItemBtn')}
@@ -333,7 +333,7 @@ export function DormsInventoryFormModal({
                         {t('dorms.inventoryForm.cancel')}
                     </button>
                     <button type="submit" form="inventory-form" disabled={submittingInventory}
-                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-[var(--color-primary)]/20 transition flex items-center justify-center gap-2 ml-auto disabled:opacity-50">
+                        className="h-9.5 px-5 sm:px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white text-xs font-bold uppercase tracking-wider shadow-md transition flex items-center justify-center gap-2 ml-auto disabled:opacity-50">
                         {submittingInventory ? <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Check className="w-3.5 h-3.5" />}
                         {t('dorms.inventoryForm.save')}
                     </button>

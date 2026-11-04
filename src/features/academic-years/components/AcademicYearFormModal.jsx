@@ -1,14 +1,5 @@
 import React, { useState, useEffect, memo } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faTriangleExclamation,
-    faCalendar,
-    faCircleCheck,
-    faSpinner,
-    faCirclePlus,
-    faCheckCircle,
-    faEdit
-} from '@fortawesome/free-solid-svg-icons'
+import { Calendar, CircleCheck, CirclePlus, LoaderCircle, SquarePen, TriangleAlert } from 'lucide-react'
 import { Modal } from '@shared/components'
 
 const AcademicYearFormModal = memo(function AcademicYearFormModal({
@@ -151,7 +142,7 @@ const AcademicYearFormModal = memo(function AcademicYearFormModal({
             onClose={handleClose}
             title={selectedItem?.id ? 'Update Tahun Pelajaran' : 'Tahun Pelajaran Baru'}
             description={selectedItem?.id ? 'Perbarui detail tahun pelajaran ini.' : 'Buat periode tahun pelajaran baru.'}
-            icon={selectedItem?.id ? faEdit : faCirclePlus}
+            icon={selectedItem?.id ? SquarePen : CirclePlus}
             iconBg={'bg-indigo-500/15'}
             iconColor={'text-indigo-500'}
             size="lg"
@@ -170,16 +161,16 @@ const AcademicYearFormModal = memo(function AcademicYearFormModal({
                         type="button"
                         onClick={handleFormSubmit}
                         disabled={submitting || isDuplicateName || !formData.name || !formData.startDate || !formData.endDate}
-                        className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[var(--color-primary)]/20 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 shrink-0"
+                        className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 shrink-0"
                     >
                         {submitting ? (
                             <>
-                                <FontAwesomeIcon icon={faSpinner} className="fa-spin text-xs" />
+                                <LoaderCircle className="animate-spin text-xs" />
                                 <span>Menyimpan...</span>
                             </>
                         ) : (
                             <>
-                                <FontAwesomeIcon icon={selectedItem?.id ? faCheckCircle : faCirclePlus} className="text-xs opacity-80 shrink-0" />
+                                {selectedItem?.id ? <CircleCheck className="text-xs opacity-80 shrink-0" /> : <CirclePlus className="text-xs opacity-80 shrink-0" />}
                                 <span className="truncate hidden sm:inline">{selectedItem?.id ? 'Update Data' : 'Simpan Tahun'}</span>
                                 <span className="truncate sm:hidden">Simpan</span>
                             </>
@@ -221,13 +212,13 @@ const AcademicYearFormModal = memo(function AcademicYearFormModal({
                                     onClick={handlePredictDates}
                                     className="mt-2 ml-1 text-[10px] font-black text-[var(--color-primary)] hover:text-[var(--color-primary-600)] transition-all flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/10 hover:bg-[var(--color-primary)]/10 animate-in fade-in slide-in-from-top-1"
                                 >
-                                    <FontAwesomeIcon icon={faCalendar} className="text-[9px]" />
+                                    <Calendar className="text-[9px]" />
                                     Gunakan tanggal standar ({formData.semester === 'Ganjil' ? '14 Jul – 22 Des' : '5 Jan – 20 Jun'})
                                 </button>
                             )}
                             {formErrors.name && (
                                 <p className="mt-1 ml-1 text-[9px] font-bold text-red-500 flex items-center gap-1 animate-in fade-in slide-in-from-top-1">
-                                    <FontAwesomeIcon icon={faTriangleExclamation} className="text-[8px]" />{formErrors.name}
+                                    <TriangleAlert className="text-[8px]" />{formErrors.name}
                                 </p>
                             )}
                         </div>
@@ -250,7 +241,7 @@ const AcademicYearFormModal = memo(function AcademicYearFormModal({
                     {/* Duplicates Alert */}
                     {isDuplicateName && !formErrors.name && (
                         <div className="p-2.5 rounded-xl border border-amber-500/30 bg-amber-500/5 text-amber-700 flex gap-2.5 animate-in fade-in slide-in-from-top-1">
-                            <FontAwesomeIcon icon={faTriangleExclamation} className="text-amber-500 text-[10px] mt-0.5" />
+                            <TriangleAlert className="text-amber-500 text-[10px] mt-0.5" />
                             <p className="text-[10px] font-bold leading-tight">Nama & semester ini sudah ada dalam sistem.</p>
                         </div>
                     )}
@@ -273,10 +264,10 @@ const AcademicYearFormModal = memo(function AcademicYearFormModal({
                                     className="w-full px-3.5 h-9 opacity-0 cursor-pointer outline-none bg-transparent date-input-hidden z-10"
                                 />
                                 <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
-                                    <FontAwesomeIcon icon={faCalendar} className="text-[10px]" />
+                                    <Calendar className="text-[10px]" />
                                 </div>
                             </div>
-                            {formErrors.startDate && <p className="mt-1 text-[9px] font-bold text-red-500 flex items-center gap-1 animate-in fade-in slide-in-from-top-1"><FontAwesomeIcon icon={faTriangleExclamation} className="text-[8px]" />{formErrors.startDate}</p>}
+                            {formErrors.startDate && <p className="mt-1 text-[9px] font-bold text-red-500 flex items-center gap-1 animate-in fade-in slide-in-from-top-1"><TriangleAlert className="text-[8px]" />{formErrors.startDate}</p>}
                         </div>
                         <div>
                             <label className="block text-[9px] font-black text-[var(--color-text-muted)] uppercase tracking-[0.2em] mb-1.5 ml-1 opacity-60">Selesai <span className="text-red-500">*</span></label>
@@ -294,11 +285,11 @@ const AcademicYearFormModal = memo(function AcademicYearFormModal({
                                     className="w-full px-3.5 h-9 opacity-0 cursor-pointer outline-none bg-transparent date-input-hidden z-10"
                                 />
                                 <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
-                                    <FontAwesomeIcon icon={faCalendar} className="text-[10px]" />
+                                    <Calendar className="text-[10px]" />
                                 </div>
                             </div>
                             {formErrors.endDate && !formErrors.endDate.includes('tumpang tindih') && (
-                                <p className="mt-1 text-[9px] font-bold text-red-500 flex items-center gap-1 animate-in fade-in slide-in-from-top-1"><FontAwesomeIcon icon={faTriangleExclamation} className="text-[8px]" />{formErrors.endDate}</p>
+                                <p className="mt-1 text-[9px] font-bold text-red-500 flex items-center gap-1 animate-in fade-in slide-in-from-top-1"><TriangleAlert className="text-[8px]" />{formErrors.endDate}</p>
                             )}
                         </div>
                     </div>
@@ -309,7 +300,7 @@ const AcademicYearFormModal = memo(function AcademicYearFormModal({
                             {isOverlapping && (
                                 <div className="flex items-start gap-2.5 px-3 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 animate-in zoom-in-95">
                                     <div className="w-5 h-5 rounded-lg bg-amber-500/20 flex items-center justify-center shrink-0 mt-0.5">
-                                        <FontAwesomeIcon icon={faTriangleExclamation} className="text-amber-600 text-[10px]" />
+                                        <TriangleAlert className="text-amber-600 text-[10px]" />
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-black text-amber-700 leading-tight">Konflik Jadwal Deteksi!</p>
@@ -322,7 +313,7 @@ const AcademicYearFormModal = memo(function AcademicYearFormModal({
                             )}
                             {formData.startDate && formData.endDate && formData.endDate > formData.startDate && !isOverlapping && (
                                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/15">
-                                    <FontAwesomeIcon icon={faCalendar} className="text-[var(--color-primary)] text-[10px] opacity-60" />
+                                    <Calendar className="text-[var(--color-primary)] text-[10px] opacity-60" />
                                     <p className="text-[10px] font-bold text-[var(--color-text-muted)]">
                                         Estimasi Durasi: <span className="font-black text-[var(--color-primary)]">{getDuration(formData.startDate, formData.endDate)}</span>
                                     </p>
@@ -366,7 +357,7 @@ const AcademicYearFormModal = memo(function AcademicYearFormModal({
                     >
                         <div className="flex items-center gap-3">
                             <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-colors ${formData.makeActive ? 'bg-emerald-500/20 text-emerald-600' : 'bg-[var(--color-border)] text-[var(--color-text-muted)]'}`}>
-                                <FontAwesomeIcon icon={faCircleCheck} className="text-xs" />
+                                <CircleCheck className="text-xs" />
                             </div>
                             <div>
                                 <p className={`text-[11px] font-black ${formData.makeActive ? 'text-emerald-700' : 'text-[var(--color-text)]'}`}>Jadikan Tahun Aktif</p>

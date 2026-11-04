@@ -42,7 +42,7 @@ export default function PurposeInput({ value, onChange, presets, placeholder, la
       </div>
 
       {open && presets && presets.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-1 z-50 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-2xl p-2 flex flex-wrap gap-1.5 max-h-36 overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 mt-1 z-50 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-xl p-2 flex flex-wrap gap-1.5 max-h-36 overflow-y-auto">
           {presets.map(p => {
             const translated = translatePreset(p)
             const isSelected = value === p || value === translated

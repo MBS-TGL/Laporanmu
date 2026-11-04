@@ -14,8 +14,7 @@ import { useAuth, useLanguage } from "@context"
 import MasterSheet from "./MasterSheet"
 
 // ─── Warna aktif ─────────────────────────────────────────────────────────────
-const ACTIVE_COLOR = "text-indigo-600"
-const INACTIVE_COLOR = "text-[var(--color-text-muted)]"
+const INACTIVE_COLOR = "text-text-muted"
 
 // ─── NavItem (route link) ────────────────────────────────────────────────────
 function NavItem({ to, icon, label }) {
@@ -24,24 +23,24 @@ function NavItem({ to, icon, label }) {
         <NavLink
             to={to}
             className={({ isActive }) =>
-                `relative flex flex-col items-center justify-center gap-1.5 py-2 px-1 transition-all duration-300
-                 ${isActive ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`
+                `relative flex flex-col items-center justify-center gap-1.5 py-2 px-1 transition-colors duration-200
+                 ${isActive ? 'text-primary' : 'text-text-muted hover:text-text'}`
             }
         >
             {({ isActive }) => (
                 <>
                     {/* Active pill background around icon */}
-                    <div className={`w-12 h-7 rounded-xl flex items-center justify-center transition-all duration-300
-                        ${isActive 
-                            ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] ring-1 ring-[var(--color-primary)]/10' 
-                            : 'bg-transparent text-[var(--color-text-muted)]'}`}
+                    <div className={`w-12 h-7 rounded-lg flex items-center justify-center transition-colors duration-200
+                        ${isActive
+                            ? 'bg-primary/10 text-primary ring-1 ring-primary/10'
+                            : 'bg-transparent text-text-muted'}`}
                     >
                         <IconComp
-                            className={`w-[18px] h-[18px] transition-transform duration-300 ${isActive ? 'scale-105' : ''}`}
+                            className={`w-5 h-5 transition-transform duration-200 ${isActive ? 'scale-105' : ''}`}
                             strokeWidth={isActive ? 2.5 : 2}
                         />
                     </div>
-                    <span className={`text-[9.5px] font-black tracking-tight leading-none transition-all duration-300 ${isActive ? 'text-[var(--color-primary)] font-black' : 'text-[var(--color-text-muted)] font-bold'}`}>
+                    <span className={`text-xs font-bold tracking-tight leading-none truncate transition-colors duration-200 ${isActive ? 'text-primary' : 'text-text-muted'}`}>
                         {label}
                     </span>
                 </>
@@ -58,21 +57,21 @@ function MenuButton({ icon, label, onClick, active = false }) {
             onClick={onClick}
             type="button"
             aria-label={`Buka menu ${label}`}
-            className={`relative flex flex-col items-center justify-center gap-1.5 py-2 px-1 transition-all duration-300
-                ${active ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+            className={`relative flex flex-col items-center justify-center gap-1.5 py-2 px-1 transition-colors duration-200
+                ${active ? 'text-primary' : 'text-text-muted hover:text-text'}`}
         >
             {/* Active pill background around icon */}
-            <div className={`w-12 h-7 rounded-xl flex items-center justify-center transition-all duration-300
-                ${active 
-                    ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] ring-1 ring-[var(--color-primary)]/10' 
-                    : 'bg-transparent text-[var(--color-text-muted)]'}`}
+            <div className={`w-12 h-7 rounded-lg flex items-center justify-center transition-colors duration-200
+                ${active
+                    ? 'bg-primary/10 text-primary ring-1 ring-primary/10'
+                    : 'bg-transparent text-text-muted'}`}
             >
                 <IconComp
-                    className={`w-[18px] h-[18px] transition-transform duration-300 ${active ? 'scale-105' : ''}`}
+                    className={`w-5 h-5 transition-transform duration-200 ${active ? 'scale-105' : ''}`}
                     strokeWidth={active ? 2.5 : 2}
                 />
             </div>
-            <span className={`text-[9.5px] font-black tracking-tight leading-none transition-all duration-300 ${active ? 'text-[var(--color-primary)] font-black' : 'text-[var(--color-text-muted)] font-bold'}`}>
+            <span className={`text-xs font-bold tracking-tight leading-none truncate transition-colors duration-200 ${active ? 'text-primary' : 'text-text-muted'}`}>
                 {label}
             </span>
         </button>
@@ -124,12 +123,12 @@ export default function BottomNav() {
         <>
             <nav
                 className={`lg:hidden fixed bottom-0 left-0 right-0 z-[200]
-                    transition-transform duration-300 ease-in-out
+                    transition-transform duration-200 ease-in-out
                     ${isVisible ? 'translate-y-0' : 'translate-y-full'}`}
             >
                 {/* Safe area padding for notched phones */}
                 <div className="mx-auto max-w-lg px-3 pb-2">
-                    <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]/95 backdrop-blur-xl shadow-[0_-4px_24px_rgba(15,23,42,0.10)] overflow-hidden">
+                    <div className="rounded-xl border border-border bg-surface shadow-xl overflow-hidden">
 
                         {/* ── Admin / Developer: 5 col → Home | Kesantrian | Akademik | Keuangan | Lainnya ── */}
                         {isAdminUp && (

@@ -112,7 +112,7 @@ export default function DormsPage() {
                                             onClick={() => setIsHeaderMenuOpen(false)}
                                         />
                                         <div
-                                            className={`fixed z-[9991] w-56 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl p-2 transition-[opacity,transform] duration-200 ease-out origin-top-right ${
+                                            className={`fixed z-[9991] w-56 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 transition-[opacity,transform] duration-200 ease-out origin-top-right ${
                                                 isHeaderMenuOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2'
                                             }`}
                                             style={{ top: headerMenuRect.bottom + 8, left: Math.max(10, headerMenuRect.right - 224) }}
@@ -170,7 +170,7 @@ export default function DormsPage() {
                             {/* Primary: Assign Santri */}
                             <button
                                 onClick={() => data.handleOpenAssignModal(null)}
-                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md shadow-[var(--color-primary)]/20 border border-white/10"
+                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md border border-white/10"
                             >
                                 <Plus className="w-3.5 h-3.5" />
                                 <span>{t('dorms.assignStudent')}</span>

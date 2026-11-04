@@ -1,13 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight, faChartPie, faShieldAlt } from '@fortawesome/free-solid-svg-icons'
+import { ArrowRight, ChartPie, Shield } from 'lucide-react'
 
 export default function AnalyticsRow({ raportProgress, riskStudents, loading }) {
     return (
         <div className="grid lg:grid-cols-2 gap-4">
             {/* ① Progress Raport Bulanan */}
-            <div className="glass rounded-[1.5rem] p-5 flex flex-col">
+            <div className="bg-surface border border-border rounded-[1.5rem] p-5 flex flex-col">
                 <div className="flex items-center justify-between mb-5">
                     <div>
                         <p className="text-[13px] font-black text-[var(--color-text)]">Raport Bulan Ini</p>
@@ -24,7 +23,7 @@ export default function AnalyticsRow({ raportProgress, riskStudents, loading }) 
                 ) : raportProgress.length === 0 ? (
                     <div className="flex-1 flex flex-col items-center justify-center gap-3 py-10 opacity-50 text-center hover:opacity-100 transition-opacity">
                         <div className="w-12 h-12 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center text-xl">
-                            <FontAwesomeIcon icon={faChartPie} />
+                            <ChartPie />
                         </div>
                         <div>
                             <p className="text-[12px] font-black text-[var(--color-text)]">Belum Ada Data</p>
@@ -68,7 +67,7 @@ export default function AnalyticsRow({ raportProgress, riskStudents, loading }) 
                                 <span className="text-sm font-black tabular-nums leading-none mt-0.5" style={{ color }}>{overallPct}%</span>
                             </div>
                             <Link to="/raport" className="text-[10px] font-black text-[var(--color-primary)] hover:opacity-70 flex items-center gap-1.5 transition-all">
-                                Lihat Semua Raport <FontAwesomeIcon icon={faArrowRight} className="text-[8px]" />
+                                Lihat Semua Raport <ArrowRight className="text-[8px]" />
                             </Link>
                         </div>
                     )
@@ -76,7 +75,7 @@ export default function AnalyticsRow({ raportProgress, riskStudents, loading }) 
             </div>
 
             {/* ② Siswa Risiko */}
-            <div className="glass rounded-[1.5rem] p-5 flex flex-col">
+            <div className="bg-surface border border-border rounded-[1.5rem] p-5 flex flex-col">
                 <div className="flex items-center justify-between mb-5">
                     <div>
                         <p className="text-[13px] font-black text-[var(--color-text)]">Siswa Risiko</p>
@@ -92,8 +91,8 @@ export default function AnalyticsRow({ raportProgress, riskStudents, loading }) 
                     </div>
                 ) : riskStudents.length === 0 ? (
                     <div className="flex-1 flex flex-col items-center justify-center gap-3 py-10 opacity-60 text-center hover:opacity-100 transition-opacity">
-                        <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl shadow-lg shadow-emerald-500/5">
-                            <FontAwesomeIcon icon={faShieldAlt} />
+                        <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl shadow-lg">
+                            <Shield />
                         </div>
                         <div>
                             <p className="text-[12px] font-black text-emerald-500">Kondisi Aman</p>
@@ -120,7 +119,7 @@ export default function AnalyticsRow({ raportProgress, riskStudents, loading }) 
                 )}
                 <Link to="/master/students"
                     className="mt-4 pt-4 border-t border-[var(--color-border)] text-[10px] font-black text-[var(--color-primary)] hover:opacity-70 flex items-center justify-end gap-1.5 transition-all">
-                    Lihat Semua Siswa <FontAwesomeIcon icon={faArrowRight} className="text-[8px]" />
+                    Lihat Semua Siswa <ArrowRight className="text-[8px]" />
                 </Link>
             </div>
         </div>

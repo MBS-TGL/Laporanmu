@@ -65,7 +65,7 @@ export default function ConfirmDialog({
                         disabled={submitting || confirmDisabled}
                         className={
                             confirmClassName ||
-                            'h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-red-500/20 transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed'
+                            'h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wider shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed'
                         }
                     >
                         {submitting ? (

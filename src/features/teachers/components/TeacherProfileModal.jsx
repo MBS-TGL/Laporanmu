@@ -1,15 +1,6 @@
 import React, { memo } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faIdCard, faMars, faEdit, faPhone, faEnvelope,
-    faHistory, faChartLine, faClockRotateLeft,
-    faChalkboardTeacher, faCalendarAlt, faMapMarkerAlt,
-    faInfoCircle, faBolt, faPlus, faMinus,
-    faCopy, faNoteSticky, faBriefcase, faFingerprint,
-    faCalendarCheck, faCheckCircle, faGraduationCap, faBook
-} from '@fortawesome/free-solid-svg-icons'
-import { Modal, StatCard, EmptyState, AuditTimeline } from '@shared/components'
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
+import { Briefcase, ChartLine, Copy, FingerprintPattern, GraduationCap, History, IdCard, MapPin, Phone, Presentation, SquarePen, StickyNote } from 'lucide-react'
+import { Modal, StatCard, EmptyState, AuditTimeline, WhatsAppIcon } from '@shared/components'
 
 const STATUS_CONFIG = {
     active: { label: 'Aktif', color: 'bg-emerald-500 text-white border-white/20' },
@@ -54,7 +45,7 @@ export default memo(function TeacherProfileModal({
             onClose={onClose}
             title="Profil Guru & Karyawan"
             description="Detail informasi kepegawaian, jadwal kerja, statistik performa, dan jejak aktivitas."
-            icon={faChalkboardTeacher}
+            icon={Presentation}
             iconBg="bg-indigo-500/10"
             iconColor="text-indigo-600"
             size="lg"
@@ -72,9 +63,9 @@ export default memo(function TeacherProfileModal({
                                 onClose();
                                 handleEdit(selectedTeacher);
                             }}
-                            className="h-10 px-8 rounded-xl bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-indigo-600/20 hover:brightness-110 transition-all flex items-center justify-center gap-2 border border-white/10"
+                            className="h-10 px-8 rounded-xl bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 transition-all flex items-center justify-center gap-2 border border-white/10"
                         >
-                            <FontAwesomeIcon icon={faEdit} className="opacity-70" /> Edit Data Guru
+                            <SquarePen className="opacity-70" /> Edit Data Guru
                         </button>
                     )}
                 </div>
@@ -82,12 +73,12 @@ export default memo(function TeacherProfileModal({
         >
             <div className="space-y-4">
                 {/* ── Header Profile Card ── */}
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 to-indigo-900 p-5 text-white shadow-xl">
+                <div className="relative overflow-hidden rounded-2xl bg-slate-900 p-5 text-white shadow-xl">
                     <div className="relative flex items-center gap-5">
                         <div className="relative shrink-0">
-                            <div className="w-20 h-20 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 p-1 flex items-center justify-center text-2xl font-black overflow-hidden shadow-lg">
+                            <div className="w-20 h-20 rounded-xl bg-white/10 border border-white/20 p-1 flex items-center justify-center text-2xl font-black overflow-hidden shadow-lg">
                                 {selectedTeacher.avatar_url || selectedTeacher.photo_url ? (
-                                    <img src={selectedTeacher.avatar_url || selectedTeacher.photo_url} className="w-full h-full object-cover rounded-lg" alt="" />
+                                    <img src={selectedTeacher.avatar_url || selectedTeacher.photo_url} className="w-full h-full object-cover rounded-lg" alt="" loading="lazy" decoding="async" />
                                 ) : (
                                     <span>{selectedTeacher.name?.charAt(0) || '?'}</span>
                                 )}
@@ -102,13 +93,13 @@ export default memo(function TeacherProfileModal({
                                 {selectedTeacher.name}
                             </h2>
                             <div className="flex flex-wrap gap-3 items-center text-[10px] font-bold text-white/70 uppercase tracking-wider">
-                                <span className="flex items-center gap-1.5"><FontAwesomeIcon icon={faIdCard} className="text-indigo-400" /> {selectedTeacher.nbm || 'Tanpa NBM'}</span>
+                                <span className="flex items-center gap-1.5"><IdCard className="text-indigo-400" /> {selectedTeacher.nbm || 'Tanpa NBM'}</span>
                                 <span className="w-1 h-1 rounded-full bg-white/30" />
-                                <span className="flex items-center gap-1.5"><FontAwesomeIcon icon={faBriefcase} className="text-indigo-400" /> {selectedTeacher.type === 'karyawan' ? 'Karyawan' : selectedTeacher.type === 'pengabdian' ? 'Pengabdian' : 'Guru'}</span>
+                                <span className="flex items-center gap-1.5"><Briefcase className="text-indigo-400" /> {selectedTeacher.type === 'karyawan' ? 'Karyawan' : selectedTeacher.type === 'pengabdian' ? 'Pengabdian' : 'Guru'}</span>
                                 {selectedTeacher.subject && (
                                     <>
                                         <span className="w-1 h-1 rounded-full bg-white/30" />
-                                        <span className="flex items-center gap-1.5 text-emerald-300"><FontAwesomeIcon icon={faChalkboardTeacher} /> {selectedTeacher.subject}</span>
+                                        <span className="flex items-center gap-1.5 text-emerald-300"><Presentation /> {selectedTeacher.subject}</span>
                                     </>
                                 )}
                             </div>
@@ -118,7 +109,7 @@ export default memo(function TeacherProfileModal({
                         </div>
 
                         {profileStats && (
-                            <div className="shrink-0 text-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10">
+                            <div className="shrink-0 text-center px-4 py-2 bg-white/10 rounded-2xl border border-white/10">
                                 <p className="text-[8px] font-black text-white/50 uppercase tracking-widest mb-1">Poin</p>
                                 <p className={`text-2xl font-black ${profileStats.totalPts >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                                     {profileStats.totalPts > 0 ? '+' : ''}{profileStats.totalPts || 0}
@@ -131,10 +122,10 @@ export default memo(function TeacherProfileModal({
                 {/* ── Tabs ── */}
                 <div className="flex bg-[var(--color-surface-alt)] p-1 rounded-xl border border-[var(--color-border)] overflow-x-auto no-scrollbar">
                     {[
-                        { id: 'info', label: 'Info', icon: faIdCard },
-                        { id: 'stats', label: 'Statistik', icon: faChartLine },
-                        { id: 'laporan', label: 'Laporan', icon: faHistory },
-                        { id: 'audit', label: 'Audit', icon: faClockRotateLeft }
+                        { id: 'info', label: 'Info', icon: IdCard },
+                        { id: 'stats', label: 'Statistik', icon: ChartLine },
+                        { id: 'laporan', label: 'Laporan', icon: History },
+                        { id: 'audit', label: 'Audit', icon: History }
                     ].map(t => (
                         <button
                             key={t.id}
@@ -142,7 +133,7 @@ export default memo(function TeacherProfileModal({
                             className={`flex-1 min-w-[80px] h-12 flex flex-col items-center justify-center gap-1 transition-all relative
                                 ${profileTab === t.id ? 'text-indigo-500' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                         >
-                            <FontAwesomeIcon icon={t.icon} className="text-sm mb-1" />
+                            <t.icon className="text-sm mb-1" />
                             <span className="text-[10px] font-black uppercase tracking-widest">{t.label}</span>
                             {profileTab === t.id && <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-indigo-500 rounded-full" />}
                         </button>
@@ -156,7 +147,7 @@ export default memo(function TeacherProfileModal({
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                             <div className="flex items-center gap-2.5 pt-1">
                                 <div className="w-1 h-4 bg-indigo-500 rounded-full" />
-                                <FontAwesomeIcon icon={faIdCard} className="text-indigo-500 text-[10px] opacity-70" />
+                                <IdCard className="text-indigo-500 text-[10px] opacity-70" />
                                 <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Identitas & Biodata</span>
                                 <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                             </div>
@@ -172,7 +163,7 @@ export default memo(function TeacherProfileModal({
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                             <div className="flex items-center gap-2.5 pt-1">
                                 <div className="w-1 h-4 bg-emerald-500 rounded-full" />
-                                <FontAwesomeIcon icon={faBriefcase} className="text-emerald-500 text-[10px] opacity-70" />
+                                <Briefcase className="text-emerald-500 text-[10px] opacity-70" />
                                 <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Kepegawaian</span>
                                 <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                             </div>
@@ -188,7 +179,7 @@ export default memo(function TeacherProfileModal({
                         <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                             <div className="flex items-center gap-2.5 pt-1">
                                 <div className="w-1 h-4 bg-blue-500 rounded-full" />
-                                <FontAwesomeIcon icon={faGraduationCap} className="text-blue-500 text-[10px] opacity-70" />
+                                <GraduationCap className="text-blue-500 text-[10px] opacity-70" />
                                 <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Pendidikan Terakhir</span>
                                 <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                             </div>
@@ -206,7 +197,7 @@ export default memo(function TeacherProfileModal({
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                                 <div className="flex items-center gap-2.5 pt-1">
                                     <div className="w-1 h-4 bg-emerald-500 rounded-full" />
-                                    <FontAwesomeIcon icon={faPhone} className="text-emerald-500 text-[10px] opacity-70" />
+                                    <Phone className="text-emerald-500 text-[10px] opacity-70" />
                                     <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Kontak</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
@@ -222,14 +213,14 @@ export default memo(function TeacherProfileModal({
                                             {selectedTeacher.phone && (
                                                 <div className="flex gap-1.5">
                                                     <button onClick={() => copyToClipboard(selectedTeacher.phone, 'HP')} className="w-7 h-7 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[11px] hover:bg-[var(--color-border)] transition-colors">
-                                                        <FontAwesomeIcon icon={faCopy} className="opacity-40" />
+                                                        <Copy className="opacity-40" />
                                                     </button>
                                                     <a
                                                         href={`https://wa.me/${selectedTeacher.phone.replace(/\D/g, '').replace(/^0/, '62')}`}
                                                         target="_blank" rel="noopener noreferrer"
                                                         className="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-[11px] hover:brightness-110 transition-all shadow-sm"
                                                     >
-                                                        <FontAwesomeIcon icon={faWhatsapp} />
+                                                        <WhatsAppIcon />
                                                     </a>
                                                 </div>
                                             )}
@@ -242,7 +233,7 @@ export default memo(function TeacherProfileModal({
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                                 <div className="flex items-center gap-2.5 pt-1">
                                     <div className="w-1 h-4 bg-amber-500 rounded-full" />
-                                    <FontAwesomeIcon icon={faFingerprint} className="text-amber-500 text-[10px] opacity-70" />
+                                    <FingerprintPattern className="text-amber-500 text-[10px] opacity-70" />
                                     <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Presensi</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
@@ -270,7 +261,7 @@ export default memo(function TeacherProfileModal({
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                                 <div className="flex items-center gap-2.5 pt-1">
                                     <div className="w-1 h-4 bg-blue-500 rounded-full" />
-                                    <FontAwesomeIcon icon={faMapMarkerAlt} className="text-blue-500 text-[10px] opacity-70" />
+                                    <MapPin className="text-blue-500 text-[10px] opacity-70" />
                                     <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Domisili</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
@@ -283,7 +274,7 @@ export default memo(function TeacherProfileModal({
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                                 <div className="flex items-center gap-2.5 pt-1">
                                     <div className="w-1 h-4 bg-amber-500 rounded-full" />
-                                    <FontAwesomeIcon icon={faNoteSticky} className="text-amber-500 text-[10px] opacity-70" />
+                                    <StickyNote className="text-amber-500 text-[10px] opacity-70" />
                                     <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Catatan Internal</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
@@ -301,14 +292,14 @@ export default memo(function TeacherProfileModal({
                     <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
                         {loadingProfile ? (
                             <div className="py-20 flex flex-col items-center justify-center text-[var(--color-text-muted)] gap-3">
-                                <FontAwesomeIcon icon={faChartLine} className="text-2xl opacity-20 animate-pulse" />
+                                <ChartLine className="text-2xl opacity-20 animate-pulse" />
                                 <p className="text-xs font-bold animate-pulse">Menganalisis data statistik...</p>
                             </div>
                         ) : profileStats ? (
                             <div className="space-y-4">
                                 <EmptyState
                                     variant="dashed"
-                                    icon={faChartLine}
+                                    icon={ChartLine}
                                     title="Grafik belum tersedia"
                                     description="Data performa diperlukan untuk memunculkan grafik tren kinerja bulanan."
                                 />
@@ -316,7 +307,7 @@ export default memo(function TeacherProfileModal({
                         ) : (
                             <EmptyState
                                 variant="dashed"
-                                icon={faChartLine}
+                                icon={ChartLine}
                                 title="Data statistik kosong"
                                 description="Belum ada riwayat performa atau poin yang tercatat untuk guru ini."
                             />
@@ -333,7 +324,7 @@ export default memo(function TeacherProfileModal({
                         ) : profileReports.length === 0 ? (
                             <EmptyState
                                 variant="dashed"
-                                icon={faHistory}
+                                icon={History}
                                 title="Riwayat laporan kosong"
                                 description="Belum ada catatan aktivitas atau laporan log masuk untuk guru ini."
                             />

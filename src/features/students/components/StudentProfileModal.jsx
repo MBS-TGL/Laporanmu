@@ -1,16 +1,7 @@
 import React, { memo } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faIdCard, faMars, faEdit, faTags,
-    faHistory, faChartLine, faFileLines, faClockRotateLeft,
-    faUserTie, faGraduationCap, faCopy,
-    faInfoCircle, faBolt, faPlus, faMinus,
-    faMapMarkerAlt, faCalendarAlt, faPrayingHands, faIdBadge, faDoorOpen,
-    faHeart, faAddressCard, faUsers
-} from '@fortawesome/free-solid-svg-icons'
+import { Briefcase, Calendar, ChartLine, CircleAlert, Copy, DoorOpen, FileText, GraduationCap, Heart, HeartHandshake, History, IdCard, Info, MapPin, Minus, Plus, SquarePen, Tags, Users, Zap } from 'lucide-react'
 import Modal from '@shared/components/Modal'
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
-import { AuditTimeline } from '@shared/components'
+import { AuditTimeline, MarsIcon, WhatsAppIcon } from '@shared/components'
 import { EmptyState, StatCard } from '@shared/components/DataDisplay'
 
 export default memo(function StudentProfileModal({
@@ -33,10 +24,10 @@ export default memo(function StudentProfileModal({
         }
     }
 
-    const InfoRow = ({ label, value, icon }) => (
+    const InfoRow = ({ label, value, icon: Icon }) => (
         <div className="space-y-1">
             <p className="text-[9px] font-black uppercase text-[var(--color-text-muted)] tracking-widest flex items-center gap-1.5 opacity-80">
-                {icon && <FontAwesomeIcon icon={icon} className="opacity-50 text-[8px]" />} {label}
+                {Icon && <Icon className="opacity-50 text-[8px]" />} {label}
             </p>
             <p className="text-[12px] font-bold text-[var(--color-text)] truncate">{value || '-'}</p>
         </div>
@@ -54,16 +45,16 @@ export default memo(function StudentProfileModal({
 
     const age = calculateAge(selectedStudent.birth_date)
 
-    const SectionEmptyState = ({ label, icon = faInfoCircle }) => (
+    const SectionEmptyState = ({ label, icon: Icon = CircleAlert }) => (
         <div className="py-4 flex flex-col items-center justify-center text-center space-y-2 border border-dashed border-[var(--color-border)] rounded-xl bg-[var(--color-surface-alt)]/30">
             <div className="w-8 h-8 rounded-full bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-muted)] shadow-sm">
-                <FontAwesomeIcon icon={icon} className="text-[10px] opacity-40" />
+                {Icon && <Icon className="text-[10px] opacity-40" />}
             </div>
             <div className="space-y-0.5">
                 <p className="text-[10px] font-bold text-[var(--color-text-muted)]">Data {label} belum tersedia</p>
                 {canEdit && !isPrivacyMode && (
                     <button onClick={() => { onClose(); handleEdit(selectedStudent); }} className="text-[8px] font-black uppercase tracking-widest text-indigo-500 hover:text-indigo-600 transition-colors">
-                        Lengkapi Data <FontAwesomeIcon icon={faPlus} className="ml-1" />
+                        Lengkapi Data <Plus className="ml-1" />
                     </button>
                 )}
             </div>
@@ -98,7 +89,7 @@ export default memo(function StudentProfileModal({
             onClose={onClose}
             title="Profil Siswa"
             description="Detail informasi akademik, statistik perilaku, histori laporan perizinan, dan rekapan raport siswa."
-            icon={faUserTie}
+            icon={Briefcase}
             iconBg="bg-indigo-500/10"
             iconColor="text-indigo-600"
             size="lg"
@@ -106,7 +97,7 @@ export default memo(function StudentProfileModal({
             footer={
                 <div className="flex items-center w-full gap-3">
                     <button onClick={onOpenTagModal} className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center gap-2 shrink-0">
-                        <FontAwesomeIcon icon={faTags} className="opacity-70" /> Label
+                        <Tags className="opacity-70" /> Label
                     </button>
 
                     <div className="flex-1" />
@@ -121,21 +112,21 @@ export default memo(function StudentProfileModal({
                                 onClose();
                                 handleEdit(selectedStudent);
                             }}
-                            className="h-10 px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-[var(--color-primary)]/20 hover:brightness-110 transition-all flex items-center justify-center gap-2 shrink-0"
+                            className="h-10 px-8 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:brightness-110 transition-all flex items-center justify-center gap-2 shrink-0"
                         >
-                            <FontAwesomeIcon icon={faEdit} className="opacity-70" /> Edit Data
+                            <SquarePen className="opacity-70" /> Edit Data
                         </button>
                     )}
                 </div>
             }
         >
             <div className="space-y-4">
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 to-indigo-900 p-5 text-white shadow-xl">
+                <div className="relative overflow-hidden rounded-2xl bg-slate-900 p-5 text-white shadow-xl">
                     <div className="relative flex items-center gap-5">
                         <div className="relative shrink-0">
-                            <div className="w-20 h-20 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 p-1 flex items-center justify-center text-2xl font-black overflow-hidden shadow-lg">
+                            <div className="w-20 h-20 rounded-xl bg-white/10 border border-white/20 p-1 flex items-center justify-center text-2xl font-black overflow-hidden shadow-lg">
                                 {selectedStudent.photo_url && !isPrivacyMode ? (
-                                    <img src={selectedStudent.photo_url} className="w-full h-full object-cover rounded-lg" alt="" onError={(e) => { e.target.onerror = null; e.target.parentElement.innerHTML = `<span>${selectedStudent.name?.charAt(0) || '?'}</span>` }} />
+                                    <img src={selectedStudent.photo_url} className="w-full h-full object-cover rounded-lg" alt="" onError={(e) => { e.target.onerror = null; e.target.parentElement.innerHTML = `<span>${selectedStudent.name?.charAt(0) || '?'}</span>` }} loading="lazy" decoding="async" />
                                 ) : (
                                     <span>{isPrivacyMode ? maskInfo(selectedStudent.name, 1) : (selectedStudent.name?.charAt(0) || '?')}</span>
                                 )}
@@ -150,9 +141,9 @@ export default memo(function StudentProfileModal({
                                 {isPrivacyMode ? maskInfo(selectedStudent.name, 4) : selectedStudent.name}
                             </h2>
                             <div className="flex flex-wrap gap-3 items-center text-[10px] font-bold text-white/70 uppercase tracking-wider">
-                                <span className="flex items-center gap-1.5"><FontAwesomeIcon icon={faIdCard} className="text-indigo-400" /> {selectedStudent.registration_code}</span>
+                                <span className="flex items-center gap-1.5"><IdCard className="text-indigo-400" /> {selectedStudent.registration_code}</span>
                                 <span className="w-1 h-1 rounded-full bg-white/30" />
-                                <span className="flex items-center gap-1.5"><FontAwesomeIcon icon={faGraduationCap} className="text-indigo-400" /> {selectedStudent.className}</span>
+                                <span className="flex items-center gap-1.5"><GraduationCap className="text-indigo-400" /> {selectedStudent.className}</span>
                             </div>
 
                             {/* Tags display */}
@@ -167,7 +158,7 @@ export default memo(function StudentProfileModal({
                             )}
                         </div>
 
-                        <div className="shrink-0 text-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10">
+                            <div className="shrink-0 text-center px-4 py-2 bg-white/10 rounded-2xl border border-white/10">
                             <p className="text-[8px] font-black text-white/50 uppercase tracking-widest mb-1">Poin</p>
                             <p className={`text-2xl font-black ${(selectedStudent.total_points ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                                 {(selectedStudent.total_points ?? 0) > 0 ? '+' : ''}{selectedStudent.total_points ?? 0}
@@ -185,12 +176,7 @@ export default memo(function StudentProfileModal({
                             className={`flex-1 min-w-[70px] h-12 flex flex-col items-center justify-center gap-1 transition-all relative
                                 ${profileTab === t ? 'text-indigo-500' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                         >
-                            <FontAwesomeIcon icon={
-                                t === 'info' ? faIdCard :
-                                    t === 'stats' ? faChartLine :
-                                        t === 'log' ? faHistory :
-                                            t === 'audit' ? faClockRotateLeft : faFileLines
-                            } className="text-sm mb-1" />
+                            {t === 'info' ? <IdCard className="text-sm mb-1" /> : t === 'stats' ? <ChartLine className="text-sm mb-1" /> : t === 'log' ? <History className="text-sm mb-1" /> : t === 'audit' ? <History className="text-sm mb-1" /> : <FileText className="text-sm mb-1" />}
                             <span className="text-[10px] font-black uppercase tracking-widest">{t === 'log' ? 'Perilaku' : t === 'raport' ? 'Raport' : t}</span>
                             {profileTab === t && <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-indigo-500 rounded-full" />}
 
@@ -206,7 +192,7 @@ export default memo(function StudentProfileModal({
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                                 <div className="flex items-center gap-2.5 pt-1">
                                     <div className="w-1 h-4 bg-indigo-500 rounded-full" />
-                                    <FontAwesomeIcon icon={faIdCard} className="text-indigo-500 text-[10px] opacity-70" />
+                                    <IdCard className="text-indigo-500 text-[10px] opacity-70" />
                                     <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Profil Pribadi</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
@@ -219,10 +205,10 @@ export default memo(function StudentProfileModal({
                                             {isPrivacyMode ? maskInfo(selectedStudent.nik, 4) : (selectedStudent.nik || '---')}
                                         </p>
                                     </div>
-                                    <InfoRow label="Tempat, Tgl Lahir" value={`${selectedStudent.birth_place || '-'}, ${selectedStudent.birth_date || '-'}${age !== null ? ` (${age} thn)` : ''}`} icon={faCalendarAlt} />
-                                    <InfoRow label="Jenis Kelamin" value={selectedStudent.gender === 'L' ? 'Laki-laki' : 'Perempuan'} icon={faMars} />
-                                    <InfoRow label="Agama" value={selectedStudent.religion || 'Islam'} icon={faPrayingHands} />
-                                    <InfoRow label="Status" value={selectedStudent.status ? (selectedStudent.status.charAt(0).toUpperCase() + selectedStudent.status.slice(1)) : 'Aktif'} icon={faIdBadge} />
+                                    <InfoRow label="Tempat, Tgl Lahir" value={`${selectedStudent.birth_place || '-'}, ${selectedStudent.birth_date || '-'}${age !== null ? ` (${age} thn)` : ''}`} icon={Calendar} />
+                                    <InfoRow label="Jenis Kelamin" value={selectedStudent.gender === 'L' ? 'Laki-laki' : 'Perempuan'} icon={MarsIcon} />
+                                    <InfoRow label="Agama" value={selectedStudent.religion || 'Islam'} icon={HeartHandshake} />
+                                    <InfoRow label="Status" value={selectedStudent.status ? (selectedStudent.status.charAt(0).toUpperCase() + selectedStudent.status.slice(1)) : 'Aktif'} icon={IdCard} />
                                 </div>
                             </div>
 
@@ -230,7 +216,7 @@ export default memo(function StudentProfileModal({
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-6">
                                 <div className="flex items-center gap-2.5 pt-1">
                                     <div className="w-1 h-4 bg-indigo-500 rounded-full" />
-                                    <FontAwesomeIcon icon={faUsers} className="text-indigo-500 text-[10px] opacity-70" />
+                                    <Users className="text-indigo-500 text-[10px] opacity-70" />
                                     <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Data Orang Tua & Wali</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
@@ -239,7 +225,7 @@ export default memo(function StudentProfileModal({
                                     {/* Kolom Ayah */}
                                     <div className="space-y-4">
                                         <div className="flex items-center gap-2 border-b border-[var(--color-border)] pb-2">
-                                            <FontAwesomeIcon icon={faUserTie} className="text-[10px] text-indigo-500/60" />
+                                            <Briefcase className="text-[10px] text-indigo-500/60" />
                                             <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Ayah</span>
                                         </div>
                                         {selectedStudent.metadata?.father?.name || selectedStudent.metadata?.father?.nik ? (
@@ -249,14 +235,14 @@ export default memo(function StudentProfileModal({
                                                 <InfoRow label="Pekerjaan" value={selectedStudent.metadata?.father?.job || '-'} />
                                             </div>
                                         ) : (
-                                            <SectionEmptyState label="Ayah" icon={faUserTie} />
+                                            <SectionEmptyState label="Ayah" icon={Briefcase} />
                                         )}
                                     </div>
 
                                     {/* Kolom Ibu */}
                                     <div className="space-y-4">
                                         <div className="flex items-center gap-2 border-b border-[var(--color-border)] pb-2">
-                                            <FontAwesomeIcon icon={faHeart} className="text-[10px] text-pink-500/60" />
+                                            <Heart className="text-[10px] text-pink-500/60" />
                                             <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Ibu</span>
                                         </div>
                                         {selectedStudent.metadata?.mother?.name || selectedStudent.metadata?.mother?.nik ? (
@@ -266,21 +252,21 @@ export default memo(function StudentProfileModal({
                                                 <InfoRow label="Pekerjaan" value={selectedStudent.metadata?.mother?.job || '-'} />
                                             </div>
                                         ) : (
-                                            <SectionEmptyState label="Ibu" icon={faHeart} />
+                                            <SectionEmptyState label="Ibu" icon={Heart} />
                                         )}
                                     </div>
 
                                     {/* Kolom Wali / Kontak */}
                                     <div className="space-y-4">
                                         <div className="flex items-center gap-2 border-b border-[var(--color-border)] pb-2">
-                                            <FontAwesomeIcon icon={faIdBadge} className="text-[10px] text-emerald-500/60" />
+                                            <IdCard className="text-[10px] text-emerald-500/60" />
                                             <span className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text-muted)]">Kontak Wali Utama</span>
                                         </div>
                                         <div className="space-y-1 px-1">
                                             <InfoRow label="Nama Wali / Ortu" value={isPrivacyMode ? maskInfo(selectedStudent.guardian_name, 4) : (selectedStudent.guardian_name || '-')} />
                                             <div className="space-y-1">
                                                 <p className="text-[9px] font-black uppercase text-[var(--color-text-muted)] tracking-widest mb-1 flex items-center gap-1.5 opacity-80">
-                                                    <FontAwesomeIcon icon={faWhatsapp} className="text-emerald-500 text-[10px]" /> No. HP / WhatsApp
+                                                    <WhatsAppIcon className="text-emerald-500 text-[10px]" /> No. HP / WhatsApp
                                                 </p>
                                                 <div className="flex items-center justify-between group/wa">
                                                     <p className="text-[12px] font-bold text-[var(--color-text)] tracking-wider">
@@ -289,7 +275,7 @@ export default memo(function StudentProfileModal({
                                                     {selectedStudent.phone && !isPrivacyMode && (
                                                         <div className="flex gap-1.5 opacity-0 group-hover/wa:opacity-100 transition-opacity">
                                                             <button onClick={() => copyToClipboard(selectedStudent.phone, 'HP')} className="w-6 h-6 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[10px] hover:bg-[var(--color-border)] transition-colors">
-                                                                <FontAwesomeIcon icon={faCopy} className="opacity-40" />
+                                                                <Copy className="opacity-40" />
                                                             </button>
                                                             <button
                                                                 onClick={() => {
@@ -304,7 +290,7 @@ export default memo(function StudentProfileModal({
                                                                 }}
                                                                 className="w-6 h-6 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-[10px] hover:brightness-110 transition-all shadow-sm"
                                                             >
-                                                                <FontAwesomeIcon icon={faWhatsapp} />
+                                                                <WhatsAppIcon />
                                                             </button>
                                                         </div>
                                                     )}
@@ -312,7 +298,7 @@ export default memo(function StudentProfileModal({
                                             </div>
                                             {!isPrivacyMode && selectedStudent.phone && (
                                                 <button onClick={handleSaveContact} className="w-full mt-2 h-8 rounded-lg border border-indigo-500/20 bg-indigo-500/5 text-indigo-600 text-[8px] font-black uppercase tracking-widest hover:bg-indigo-500 hover:text-white transition-all flex items-center justify-center gap-2">
-                                                    <FontAwesomeIcon icon={faAddressCard} className="text-[9px]" /> Simpan Kontak VCF
+                                                    <IdCard className="text-[9px]" /> Simpan Kontak VCF
                                                 </button>
                                             )}
                                         </div>
@@ -323,7 +309,7 @@ export default memo(function StudentProfileModal({
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                                 <div className="flex items-center gap-2.5 pt-1">
                                     <div className="w-1 h-4 bg-emerald-500 rounded-full" />
-                                    <FontAwesomeIcon icon={faMapMarkerAlt} className="text-emerald-500 text-[10px] opacity-70" />
+                                    <MapPin className="text-emerald-500 text-[10px] opacity-70" />
                                     <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Alamat & Domisili</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
@@ -339,18 +325,18 @@ export default memo(function StudentProfileModal({
                                             <InfoRow label="Kecamatan" value={isPrivacyMode ? maskInfo(selectedStudent.metadata?.address_detail?.district || selectedStudent.metadata?.address?.district, 3) : (selectedStudent.metadata?.address_detail?.district || selectedStudent.metadata?.address?.district || '-')} />
                                             <InfoRow label="Kabupaten/Kota" value={isPrivacyMode ? maskInfo(selectedStudent.metadata?.address_detail?.city || selectedStudent.metadata?.address?.city, 3) : (selectedStudent.metadata?.address_detail?.city || selectedStudent.metadata?.address?.city || '-')} />
                                             <InfoRow label="Provinsi" value={isPrivacyMode ? maskInfo(selectedStudent.metadata?.address_detail?.province || selectedStudent.metadata?.address?.province, 3) : (selectedStudent.metadata?.address_detail?.province || selectedStudent.metadata?.address?.province || '-')} />
-                                            <InfoRow label="Kamar / Rayon" value={selectedStudent.metadata?.kamar || '-'} icon={faDoorOpen} />
+                                            <InfoRow label="Kamar / Rayon" value={selectedStudent.metadata?.kamar || '-'} icon={DoorOpen} />
                                         </div>
                                     </div>
                                 ) : (
-                                    <SectionEmptyState label="Alamat" icon={faMapMarkerAlt} />
+                                    <SectionEmptyState label="Alamat" icon={MapPin} />
                                 )}
                             </div>
 
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                                 <div className="flex items-center gap-2.5 pt-1">
                                     <div className="w-1 h-4 bg-amber-500 rounded-full" />
-                                    <FontAwesomeIcon icon={faIdBadge} className="text-amber-500 text-[10px] opacity-70" />
+                                    <IdCard className="text-amber-500 text-[10px] opacity-70" />
                                     <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Dokumen Sipil</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
@@ -364,7 +350,7 @@ export default memo(function StudentProfileModal({
                                                 </p>
                                                 {(selectedStudent.metadata?.documents?.no_kk || selectedStudent.metadata?.docs?.no_kk) && !isPrivacyMode && (
                                                     <button onClick={() => copyToClipboard(selectedStudent.metadata?.documents?.no_kk || selectedStudent.metadata?.docs?.no_kk, 'No. KK')} className="w-6 h-6 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[10px] hover:bg-[var(--color-border)] transition-colors">
-                                                        <FontAwesomeIcon icon={faCopy} className="opacity-40" />
+                                                        <Copy className="opacity-40" />
                                                     </button>
                                                 )}
                                             </div>
@@ -377,14 +363,14 @@ export default memo(function StudentProfileModal({
                                                 </p>
                                                 {(selectedStudent.metadata?.documents?.no_akta || selectedStudent.metadata?.docs?.no_akta) && !isPrivacyMode && (
                                                     <button onClick={() => copyToClipboard(selectedStudent.metadata?.documents?.no_akta || selectedStudent.metadata?.docs?.no_akta, 'No. Akta')} className="w-6 h-6 rounded-lg bg-[var(--color-surface-alt)] flex items-center justify-center text-[10px] hover:bg-[var(--color-border)] transition-colors">
-                                                        <FontAwesomeIcon icon={faCopy} className="opacity-40" />
+                                                        <Copy className="opacity-40" />
                                                     </button>
                                                 )}
                                             </div>
                                         </div>
                                     </div>
                                 ) : (
-                                    <SectionEmptyState label="Dokumen Sipil" icon={faIdBadge} />
+                                    <SectionEmptyState label="Dokumen Sipil" icon={IdCard} />
                                 )}
                             </div>
 
@@ -399,7 +385,7 @@ export default memo(function StudentProfileModal({
                                     <div className="p-3.5 rounded-2xl border border-violet-500/10 bg-[var(--color-surface)] shadow-sm space-y-4">
                                         <div className="flex items-center gap-2.5 pt-1 mb-2">
                                             <div className="w-1 h-4 bg-violet-500 rounded-full" />
-                                            <FontAwesomeIcon icon={faInfoCircle} className="text-violet-500 text-[10px] opacity-70" />
+                                            <Info className="text-violet-500 text-[10px] opacity-70" />
                                             <span className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text)]">Info Khusus</span>
                                             <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                         </div>
@@ -457,19 +443,19 @@ export default memo(function StudentProfileModal({
                                     </div>
                                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                                         <StatCard
-                                            icon={faBolt} label="Total Poin" value={selectedStudent.total_points} color={selectedStudent.total_points >= 0 ? 'emerald' : 'rose'}
+                                            icon={Zap} label="Total Poin" value={selectedStudent.total_points} color={selectedStudent.total_points >= 0 ? 'emerald' : 'rose'}
                                             className="!w-full !rounded-2xl !p-3 !min-h-0" valueClassName="text-lg"
                                         />
                                         <StatCard
-                                            icon={faHistory} label="Total Log" value={behaviorHistory.length} color="indigo"
+                                            icon={History} label="Total Log" value={behaviorHistory.length} color="indigo"
                                             className="!w-full !rounded-2xl !p-3 !min-h-0" valueClassName="text-lg"
                                         />
                                         <StatCard
-                                            icon={faPlus} label="Positif" value={timelineStats?.totalPos || 0} color="emerald"
+                                            icon={Plus} label="Positif" value={timelineStats?.totalPos || 0} color="emerald"
                                             className="!w-full !rounded-2xl !p-3 !min-h-0" valueClassName="text-lg"
                                         />
                                         <StatCard
-                                            icon={faMinus} label="Negatif" value={timelineStats?.totalNeg || 0} color="rose"
+                                            icon={Minus} label="Negatif" value={timelineStats?.totalNeg || 0} color="rose"
                                             className="!w-full !rounded-2xl !p-3 !min-h-0" valueClassName="text-lg"
                                         />
                                     </div>
@@ -477,7 +463,7 @@ export default memo(function StudentProfileModal({
                             ) : (
                                 <EmptyState
                                     variant="dashed"
-                                    icon={faChartLine}
+                                    icon={ChartLine}
                                     title="Grafik belum tersedia"
                                     description="Data histori perilaku diperlukan untuk memunculkan grafik tren."
                                 />
@@ -494,7 +480,7 @@ export default memo(function StudentProfileModal({
                             ) : timelineFiltered.length === 0 ? (
                                 <EmptyState
                                     variant="dashed"
-                                    icon={faHistory}
+                                    icon={History}
                                     title="Belum ada Kedisiplinan & Poin"
                                     description="Siswa ini belum memiliki catatan histori perilaku di sistem."
                                 />
@@ -502,9 +488,9 @@ export default memo(function StudentProfileModal({
                                 <>
                                     <div className="flex gap-1.5 mb-2 overflow-x-auto no-scrollbar pb-1">
                                         {[
-                                            { id: 'all', label: 'Semua', active: 'bg-indigo-500 text-white border-indigo-500 shadow-lg shadow-indigo-500/20' },
-                                            { id: 'pos', label: 'Positif', active: 'bg-emerald-500 text-white border-emerald-500 shadow-lg shadow-emerald-500/20' },
-                                            { id: 'neg', label: 'Negatif', active: 'bg-rose-500 text-white border-rose-500 shadow-lg shadow-rose-500/20' }
+                                          { id: 'all', label: 'Semua', active: 'bg-indigo-500 text-white border-indigo-500 shadow-lg' },
+                                          { id: 'pos', label: 'Positif', active: 'bg-emerald-500 text-white border-emerald-500 shadow-lg' },
+                                          { id: 'neg', label: 'Negatif', active: 'bg-rose-500 text-white border-rose-500 shadow-lg' }
                                         ].map(f => (
                                             <button
                                                 key={f.id}
@@ -561,7 +547,7 @@ export default memo(function StudentProfileModal({
                             ) : raportHistory.length === 0 ? (
                                 <EmptyState
                                     variant="dashed"
-                                    icon={faFileLines}
+                                    icon={FileText}
                                     title="Arsip raport kosong"
                                     description="Data raport bulanan untuk siswa ini belum tersedia."
                                 />

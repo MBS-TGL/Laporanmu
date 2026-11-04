@@ -103,8 +103,8 @@ export const WaBlastConfirmContent = memo(({ isOpen, onClose, queue, onConfirm, 
                     </button>
                     <div className="flex-1" />
                     <button onClick={handleConfirm} disabled={selectedIds.size === 0} className={`h-10 px-6 rounded-xl text-white text-[10px] font-black uppercase tracking-widest shadow-lg transition-all flex items-center gap-2 disabled:opacity-50 ${isDebug
-                        ? 'bg-amber-500 hover:bg-amber-600 shadow-amber-500/20'
-                        : 'bg-green-500 hover:bg-green-600 shadow-green-500/20'
+                        ? 'bg-amber-500 hover:bg-amber-600'
+                        : 'bg-green-500 hover:bg-green-600'
                         }`}>
                         <WhatsAppIcon className="w-4 h-4" />
                         {isDebug ? `Simulasikan Blast (${selectedIds.size})` : `Kirim ke ${selectedIds.size} Santri`}

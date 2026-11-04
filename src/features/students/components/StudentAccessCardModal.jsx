@@ -1,19 +1,6 @@
 import React, { useState, useMemo } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faCheckCircle,
-    faChevronDown,
-    faCopy,
-    faDownload,
-    faFileLines,
-    faGraduationCap,
-    faImage,
-    faLink,
-    faPrint,
-    faRotateLeft,
-    faSpinner,
-} from '@fortawesome/free-solid-svg-icons'
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
+import { ChevronDown, CircleCheck, Copy, Download, FileText, GraduationCap, Image, LoaderCircle, Printer, RotateCcw } from 'lucide-react'
+import { WhatsAppIcon } from '@shared/components'
 import Modal from '@shared/components/Modal'
 
 const LazyQRCodeCanvas = React.lazy(() =>
@@ -57,7 +44,7 @@ export default function StudentAccessCardModal({
             onClose={() => { setShowExportMenu(false); onClose?.() }}
             title={newlyCreatedStudent ? "Registrasi Berhasil!" : isBulk ? `Cetak Kartu (${studentsToShow.length} Siswa)` : "Akses & Kartu"}
             description={newlyCreatedStudent ? "Data siswa telah tersimpan. Silakan simpan kode akses atau cetak kartu pelajar di bawah." : "Kelola akses portal orang tua dan cetak kartu identitas siswa."}
-            icon={newlyCreatedStudent ? faCheckCircle : faPrint}
+            icon={newlyCreatedStudent ? CircleCheck : Printer}
             iconBg={newlyCreatedStudent ? "bg-emerald-500/10" : "bg-indigo-500/10"}
             iconColor={newlyCreatedStudent ? "text-emerald-600" : "text-indigo-600"}
             size={isBulk ? "xl" : "lg"}
@@ -67,7 +54,7 @@ export default function StudentAccessCardModal({
                 {newlyCreatedStudent && (
                     <div className="p-2.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center gap-3 text-emerald-600">
                         <div className="w-7 h-7 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 text-[10px]">
-                            <FontAwesomeIcon icon={faCheckCircle} />
+                            <CircleCheck />
                         </div>
                         <p className="text-[9px] font-black uppercase tracking-widest">Registrasi Berhasil! Data akses & kartu tersedia di bawah.</p>
                     </div>
@@ -90,15 +77,13 @@ export default function StudentAccessCardModal({
                                 style={{ background: 'transparent' }}
                             >
                                 {/* Front Card */}
-                                <div className={`w-[300px] h-[188px] rounded-xl text-white relative shadow-xl overflow-hidden shrink-0 scale-95 sm:scale-100 origin-center transition-all duration-500 hover:scale-[1.02] ring-1 ring-white/20 ${student.gender === 'P' ? 'bg-gradient-to-br from-rose-500 to-rose-700 shadow-rose-500/20' : 'bg-gradient-to-br from-indigo-600 to-indigo-800 shadow-indigo-500/20'}`}>
+                                <div className={`w-[300px] h-[188px] rounded-xl text-white relative shadow-xl overflow-hidden shrink-0 scale-95 sm:scale-100 origin-center transition-all duration-500 hover:scale-[1.02] ring-1 ring-white/20 ${student.gender === 'P' ? 'bg-danger' : 'bg-primary'}`}>
                                     {/* Security Pattern Overlay */}
                                     <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E")` }} />
 
-                                    <div className="absolute -top-10 -right-10 w-44 h-44 bg-white/10 rounded-full blur-2xl" />
-                                    <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-black/10 rounded-full blur-xl" />
 
                                     <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10">
-                                        <div className="w-5 h-5 rounded-md bg-white/10 flex items-center justify-center backdrop-blur-md border border-white/10 shadow-sm">
+                                        <div className="w-5 h-5 rounded-md bg-white/10 flex items-center justify-center border border-white/10 shadow-sm">
                                             <span className="font-black text-[9px]">L</span>
                                         </div>
                                         <span className="text-[7px] font-black uppercase tracking-[0.2em] opacity-80 text-white">Laporanmu</span>
@@ -106,7 +91,7 @@ export default function StudentAccessCardModal({
                                     <div className="absolute top-9 left-4 right-4 bottom-7 flex gap-3 z-10">
                                         <div className="w-[62px] h-[78px] rounded-lg bg-white/10 border border-white/20 p-1.5 shrink-0 shadow-lg overflow-hidden relative group">
                                             {student.photo_url ? (
-                                                <img src={student.photo_url} alt="" className="w-full h-full object-cover rounded-md" />
+                                                <img src={student.photo_url} alt="" className="w-full h-full object-cover rounded-md" loading="lazy" decoding="async" />
                                             ) : (
                                                 <div className="w-full h-full rounded-md bg-white/5 flex items-center justify-center border border-white/10">
                                                     <span className="text-2xl font-black opacity-30">{isPrivacyMode ? '*' : student.name.charAt(0)}</span>
@@ -120,7 +105,7 @@ export default function StudentAccessCardModal({
                                                 </h3>
                                                 <div className="space-y-0.5">
                                                     <p className="text-[8px] font-black text-white/90 uppercase tracking-tight leading-tight flex items-center gap-1">
-                                                        <FontAwesomeIcon icon={faGraduationCap} className="text-[7px] opacity-60" />
+                                                        <GraduationCap className="text-[7px] opacity-60" />
                                                         {student.className}
                                                     </p>
                                                     <p className="text-[5.5px] font-bold text-white/40 uppercase tracking-[0.1em] leading-none">MUHAMMADIYAH BOARDING SCHOOL TANGGUL</p>
@@ -174,10 +159,10 @@ export default function StudentAccessCardModal({
                 </div>
 
                 {/* Actions Section */}
-                <div className={`no-print ${isBulk ? 'sticky bottom-0 z-20 backdrop-blur-xl bg-[var(--color-surface-alt)]/80 border border-[var(--color-border)] rounded-2xl p-4 shadow-2xl shadow-black/10' : ''}`}>
+                <div className={`no-print ${isBulk ? 'sticky bottom-0 z-20 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-2xl p-4 shadow-xl' : ''}`}>
                     {!isBulk && studentsToShow.length > 0 ? (
                         /* Enterprise Unified Control Center - High Density */
-                        <div className="bg-[var(--color-surface-alt)]/40 border border-[var(--color-border)] rounded-[1.5rem] overflow-hidden shadow-2xl shadow-black/5 backdrop-blur-md">
+                        <div className="bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-[1.5rem] overflow-hidden shadow-sm">
                             <div className="p-4 space-y-4">
                                 {/* Section Header: Access Status */}
                                 <div className="flex items-center justify-between px-1">
@@ -191,7 +176,7 @@ export default function StudentAccessCardModal({
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-indigo-500/5 border border-indigo-500/10 shadow-sm">
-                                        <FontAwesomeIcon icon={faGraduationCap} className="text-[8px] text-indigo-500 opacity-60" />
+                                        <GraduationCap className="text-[8px] text-indigo-500 opacity-60" />
                                         <span className="text-[9px] font-black uppercase tracking-widest text-indigo-600">{studentsToShow[0].className}</span>
                                     </div>
                                 </div>
@@ -216,7 +201,7 @@ export default function StudentAccessCardModal({
                                                     title="Salin ID"
                                                     className="shrink-0 w-7 h-7 rounded-lg bg-indigo-500/5 text-indigo-600 text-[10px] hover:bg-indigo-500 hover:text-white transition-all transform active:scale-90 flex items-center justify-center"
                                                 >
-                                                    <FontAwesomeIcon icon={faCopy} />
+                                                    <Copy />
                                                 </button>
                                             </div>
                                         </div>
@@ -241,7 +226,7 @@ export default function StudentAccessCardModal({
                                                     title="Salin PIN"
                                                     className="shrink-0 w-7 h-7 rounded-lg bg-emerald-500/5 text-emerald-600 text-[10px] hover:bg-emerald-500 hover:text-white transition-all transform active:scale-90 flex items-center justify-center"
                                                 >
-                                                    <FontAwesomeIcon icon={faCopy} />
+                                                    <Copy />
                                                 </button>
                                             </div>
                                         </div>
@@ -249,9 +234,9 @@ export default function StudentAccessCardModal({
 
                                     <button
                                         onClick={() => openWAForStudent?.(studentsToShow[0], buildWAMessage?.(studentsToShow[0], waTemplate))}
-                                        className="lg:col-span-4 h-10 rounded-xl bg-emerald-500 text-white shadow-lg shadow-emerald-500/20 text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 px-4 group whitespace-nowrap"
+                                        className="lg:col-span-4 h-10 rounded-xl bg-emerald-500 text-white shadow-lg text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 px-4 group whitespace-nowrap"
                                     >
-                                        <FontAwesomeIcon icon={faWhatsapp} className="text-[13px] transition-transform group-hover:rotate-12 shrink-0" />
+                                        <WhatsAppIcon className="text-[13px] transition-transform group-hover:rotate-12 shrink-0" />
                                         <span>Bagikan ke Wali</span>
                                     </button>
                                 </div>
@@ -274,7 +259,7 @@ export default function StudentAccessCardModal({
                                             disabled={resettingPin}
                                             className="h-10 px-4 rounded-xl border border-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all flex items-center gap-2 group active:scale-95 whitespace-nowrap"
                                         >
-                                            <FontAwesomeIcon icon={resettingPin ? faSpinner : faRotateLeft} className={`${resettingPin ? 'fa-spin' : 'group-hover:-rotate-180 transition-transform duration-300'}`} />
+                                            resettingPin ? <LoaderCircle className={`${resettingPin ? 'animate-spin' : 'group-hover:-rotate-180 transition-transform duration-300'}`} /> : <RotateCcw className={`${resettingPin ? 'animate-spin' : 'group-hover:-rotate-180 transition-transform duration-300'}`} />
                                             Reset PIN
                                         </button>
                                         <p className="hidden xl:block text-[7px] text-[var(--color-text-muted)] italic opacity-40 leading-none">PIN otomatis digenerate.</p>
@@ -284,17 +269,17 @@ export default function StudentAccessCardModal({
                                         <button
                                             onClick={() => setShowExportMenu(v => !v)}
                                             disabled={generatingPdf}
-                                            className="h-10 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg shadow-[var(--color-primary)]/20 transition-all flex items-center gap-2 active:scale-95 whitespace-nowrap"
+                                            className="h-10 px-5 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg transition-all flex items-center gap-2 active:scale-95 whitespace-nowrap"
                                         >
                                             {generatingPdf
-                                                ? <><FontAwesomeIcon icon={faSpinner} className="fa-spin" /> Proses...</>
-                                                : <><FontAwesomeIcon icon={faDownload} /> Cetak & Ekspor <FontAwesomeIcon icon={faChevronDown} className={`text-[8px] transition-transform duration-300 ${showExportMenu ? 'rotate-180' : ''}`} /></>
+                                                ? <><LoaderCircle className="animate-spin" /> Proses...</>
+                                                : <><Download /> Cetak & Ekspor <ChevronDown className={`text-[8px] transition-transform duration-300 ${showExportMenu ? 'rotate-180' : ''}`} /></>
                                             }
                                         </button>
                                         {showExportMenu && (
                                             <>
                                                 <div className="fixed inset-0 z-10" onClick={() => setShowExportMenu(false)} />
-                                                <div className="absolute bottom-full mb-2 right-0 z-20 w-52 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+                                                <div className="absolute bottom-full mb-2 right-0 z-20 w-52 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden animate-in zoom-in-95 duration-200">
                                                     <div className="bg-[var(--color-surface-alt)]/80 px-3 py-2 border-b border-[var(--color-border)]">
                                                         <p className="text-[9px] font-black uppercase tracking-widest text-[var(--color-text)] leading-none">Format Ekspor</p>
                                                     </div>
@@ -303,21 +288,21 @@ export default function StudentAccessCardModal({
                                                             onClick={() => { handlePrintSingle?.(studentsToShow[0]); setShowExportMenu(false); }}
                                                             className="w-full flex items-center gap-3 px-2 py-2 text-[10px] font-bold text-[var(--color-text)] hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] rounded-lg transition-all text-left group"
                                                         >
-                                                            <FontAwesomeIcon icon={faFileLines} className="w-4 text-[var(--color-primary)]" />
+                                                            <FileText className="w-4 text-[var(--color-primary)]" />
                                                             Surat Akses PDF
                                                         </button>
                                                         <button
                                                             onClick={() => { handleSavePNG?.(studentsToShow[0]); setShowExportMenu(false); }}
                                                             className="w-full flex items-center gap-3 px-2 py-2 text-[10px] font-bold text-[var(--color-text)] hover:bg-emerald-500/10 hover:text-emerald-600 rounded-lg transition-all text-left group"
                                                         >
-                                                            <FontAwesomeIcon icon={faImage} className="w-4 text-emerald-500" />
+                                                            <Image className="w-4 text-emerald-500" />
                                                             Simpan Gambar (PNG)
                                                         </button>
                                                         <button
                                                             onClick={() => { handlePrintThermal?.(studentsToShow[0]); setShowExportMenu(false); }}
                                                             className="w-full flex items-center gap-3 px-2 py-2 text-[10px] font-bold text-[var(--color-text)] hover:bg-orange-500/10 hover:text-orange-600 rounded-lg transition-all text-left group"
                                                         >
-                                                            <FontAwesomeIcon icon={faPrint} className="w-4 text-orange-500" />
+                                                            <Printer className="w-4 text-orange-500" />
                                                             Struk Kasir (Thermal)
                                                         </button>
                                                     </div>
@@ -334,11 +319,11 @@ export default function StudentAccessCardModal({
                             <button
                                 onClick={() => generateStudentPDF?.(studentsToShow)}
                                 disabled={generatingPdf}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg shadow-[var(--color-primary)]/20 transition-all flex items-center justify-center gap-2 disabled:opacity-60 shrink-0"
+                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-60 shrink-0"
                             >
                                 {generatingPdf
-                                    ? <><FontAwesomeIcon icon={faSpinner} className="fa-spin" /> Proses...</>
-                                    : <><FontAwesomeIcon icon={faPrint} className="text-[11px]" /> Cetak Semua ({studentsToShow.length})</>
+                                    ? <><LoaderCircle className="animate-spin" /> Proses...</>
+                                    : <><Printer className="text-[11px]" /> Cetak Semua ({studentsToShow.length})</>
                                 }
                             </button>
                         </div>

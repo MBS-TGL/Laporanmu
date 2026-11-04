@@ -11,7 +11,7 @@ import Modal from '@shared/components/Modal'
 import ConfirmDialog from '@shared/components/ConfirmDialog'
 import RichSelect from '@shared/components/RichSelect'
 import Pagination from '@shared/components/Pagination'
-const LazyRulesExport = React.lazy(() => import('./modals/RulesExport'))
+const LazyRulesExport = React.lazy(() => import('./RulesExport'))
 import { StatCard, EmptyState } from '@shared/components/DataDisplay'
 import { useToast } from '@context/Toast'
 import { useAuth } from '@context/Auth'

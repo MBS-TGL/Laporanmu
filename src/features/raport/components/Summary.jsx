@@ -116,7 +116,7 @@ const DistSeg = ({ count, total, color }) => {
 
 // ─── Main Component ─────────────────────────────────────────────────
 
-const SummaryPage = memo(({
+const Summary = memo(({
     students = [],
     scores = {},
     extras = {},
@@ -807,6 +807,6 @@ const SummaryPage = memo(({
     )
 })
 
-SummaryPage.displayName = 'SummaryPage'
+Summary.displayName = 'Summary'
 
-export default SummaryPage
+export default Summary

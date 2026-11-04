@@ -7,7 +7,7 @@ import { KRITERIA } from '@utils/reports/raportConstants'
 import ConfirmDialog from '@shared/components/ConfirmDialog'
 import Modal from '@shared/components/Modal'
 import PrintCard from '@features/raport/components/PrintCard'
-import SummaryPage from '@features/raport/components/SummaryPage'
+import Summary from '@features/raport/components/Summary'
 import { WaBlastConfirmContent, WaBlastProgressContent, ZipBlastProgressContent, WhatsAppIcon } from '@features/raport/components/RaportModals'
 import { buildRaportPrintDocumentHtml } from '@features/raport/utils/printHtml'
 
@@ -624,7 +624,7 @@ export default function InputPage({ isAcademic = false }) {
             {printQueue?.length > 0 && (
                 <div ref={printContainerRef} style={{ position: 'fixed', left: '-9999px', top: 0, width: '1000px', visibility: 'hidden', pointerEvents: 'none' }}>
                     {printQueue.length > 1 && (
-                        <SummaryPage
+                        <Summary
                             students={students.filter(s => printQueue.includes(s.id))}
                             scores={scores}
                             extras={extras}

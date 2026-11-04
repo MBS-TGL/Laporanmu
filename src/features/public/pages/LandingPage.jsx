@@ -27,7 +27,7 @@ import { useAuth } from '@context/Auth'
 import { supabase } from '@lib/supabase'
 import { Button, Badge, Modal, Skeleton } from '@shared/components'
 
-const ChatAssistant = lazy(() => import('@core/layouts/ChatAssistant'))
+const ChatAssistant = lazy(() => import('@core/components/ChatAssistant'))
 
 /* ───────────────────────────── CTA class helpers (untuk <Link>) ─────────────────────────────
    Meniru shared Button (size lg/md) karena Button merender <button> — CTA navigasi butuh <Link>. */

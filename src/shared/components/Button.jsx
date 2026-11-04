@@ -16,11 +16,13 @@ const VARIANTS = {
   outline: 'bg-transparent text-primary border border-primary/30 hover:bg-primary/10',
 }
 
+// Tinggi kontrol standar aplikasi = h-9 (search input, tombol filter, ikon header).
+// md mengikuti standar itu agar Button selalu align dengan kontrol di sekitarnya.
 const SIZES = {
   sm: 'h-8 px-3 text-xs leading-none gap-1.5 rounded-lg',
-  md: 'h-10 px-4 text-sm leading-none gap-2 rounded-lg',
+  md: 'h-9 px-3.5 text-sm leading-none gap-2 rounded-lg',
   lg: 'h-11 px-6 text-sm leading-none gap-2 rounded-lg',
-  icon: 'h-10 w-10 rounded-lg',
+  icon: 'h-9 w-9 rounded-lg',
 }
 
 const Button = memo(function Button({

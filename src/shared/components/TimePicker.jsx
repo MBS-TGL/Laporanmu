@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react'
+import React, { useState, useEffect, useCallback, useMemo, memo } from 'react'
 import { createPortal } from 'react-dom'
 import { Clock, ChevronDown, ChevronUp, Check } from 'lucide-react'
 import { useLanguage } from '@context'
+import { usePopover, useIsMobile } from '@shared/hooks/usePopover'
 
 const TIME_LOCALES = {
     id: {
@@ -27,7 +28,7 @@ const TIME_LOCALES = {
 const normalizeArabicDigits = (str) => {
     if (!str) return ''
     const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩']
-    
+
     // Normalize Eastern Arabic numerals and am/pm indicator translations
     let clean = str.replace(/[٠-٩]/g, d => String(arabicDigits.indexOf(d)))
     clean = clean.replace(/ص/g, 'AM').replace(/م/g, 'PM')
@@ -38,7 +39,7 @@ const normalizeArabicDigits = (str) => {
 const parseTimeString = (str) => {
     if (!str) return null
     const clean = normalizeArabicDigits(str.trim().toUpperCase())
-    
+
     // Check 12H format with AM/PM: e.g. "01:06 PM", "1:06 PM", "5:30 AM"
     let match = clean.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/)
     if (match) {
@@ -51,7 +52,7 @@ const parseTimeString = (str) => {
             return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`
         }
     }
-    
+
     // Check 24H format: e.g. "13:06", "09:15", "9:15"
     match = clean.match(/^(\d{1,2}):(\d{2})$/)
     if (match) {
@@ -93,18 +94,12 @@ const TimePicker = memo(({
     // Default to 12H for English, 24H for Indonesian / Arabic
     const defaultIs24h = useMemo(() => systemLanguage !== 'en', [systemLanguage])
 
-    const [isOpen, setIsOpen] = useState(false)
+    const isMobile = useIsMobile()
+    const { triggerRef, isOpen, open, close, coords } = usePopover({ dropdownHeight: 170 })
+
     const [isFocused, setIsFocused] = useState(false)
     const [typedValue, setTypedValue] = useState('')
-    const [isMobile, setIsMobile] = useState(false)
 
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 640)
-        checkMobile()
-        window.addEventListener('resize', checkMobile)
-        return () => window.removeEventListener('resize', checkMobile)
-    }, [])
-    
     // Active visual state inside the popover
     const [activeTimeStr, setActiveTimeStr] = useState(value || '12:00')
     const [is24h, setIs24h] = useState(defaultIs24h)
@@ -114,9 +109,6 @@ const TimePicker = memo(({
         setIs24h(defaultIs24h)
     }, [defaultIs24h])
 
-    const ref = useRef(null)
-    const [coords, setCoords] = useState({ top: 0, bottom: 0, left: 0, right: 0, width: 0, placement: 'bottom' })
-
     // Update internal active time when prop changes
     useEffect(() => {
         if (value) {
@@ -124,56 +116,12 @@ const TimePicker = memo(({
         }
     }, [value])
 
-    const updateCoords = useCallback(() => {
-        if (ref.current) {
-            const rect = ref.current.getBoundingClientRect()
-            const dropdownHeight = 150
-            const margin = 8
-
-            let containerBottom = window.innerHeight - margin
-            let containerTop = margin
-            let hasScrollableAncestor = false
-            let el = ref.current.parentElement
-            while (el && el !== document.body) {
-                const { overflow, overflowY } = window.getComputedStyle(el)
-                if (/(auto|scroll)/.test(overflow + overflowY)) {
-                    const containerRect = el.getBoundingClientRect()
-                    containerBottom = containerRect.bottom - margin
-                    containerTop = containerRect.top + margin
-                    hasScrollableAncestor = true
-                    break
-                }
-                el = el.parentElement
-            }
-
-            if (hasScrollableAncestor) {
-                if (rect.bottom < containerTop || rect.top > containerBottom) {
-                    setIsOpen(false)
-                    return
-                }
-            }
-
-            const spaceBelow = containerBottom - rect.bottom
-            const spaceAbove = rect.top - containerTop
-            const shouldFlip = spaceBelow < dropdownHeight && spaceAbove > spaceBelow
-
-            setCoords({
-                top: rect.top,
-                bottom: rect.bottom,
-                left: rect.left,
-                right: rect.right,
-                width: rect.width,
-                placement: shouldFlip ? 'top' : 'bottom'
-            })
-        }
-    }, [setIsOpen])
-
     const formatTimeHelper = useCallback((timeStr) => {
         if (!timeStr) return ''
         const [hStr, mStr] = timeStr.split(':')
         const h24 = parseInt(hStr || '0', 10)
         const m = mStr || '00'
-        
+
         if (is24h) {
             return `${String(h24).padStart(2, '0')}:${m}`
         } else {
@@ -206,8 +154,7 @@ const TimePicker = memo(({
 
     const handleFocus = () => {
         setIsFocused(true)
-        updateCoords()
-        setIsOpen(true)
+        open()
     }
 
     const handleBlur = () => {
@@ -218,7 +165,7 @@ const TimePicker = memo(({
     const handleInputChange = (e) => {
         const val = e.target.value
         setTypedValue(val)
-        
+
         const parsed = parseTimeString(val)
         if (parsed) {
             onChange(parsed)
@@ -226,38 +173,7 @@ const TimePicker = memo(({
         }
     }
 
-    useEffect(() => {
-        if (!isOpen) return
-
-        const handleClickOutside = (e) => {
-            if (ref.current && !ref.current.contains(e.target)) {
-                handleDone()
-            }
-        }
-        document.addEventListener('mousedown', handleClickOutside)
-
-        const scrollableAncestors = []
-        let el = ref.current?.parentElement
-        while (el && el !== document.body) {
-            const { overflow, overflowY } = window.getComputedStyle(el)
-            if (/(auto|scroll)/.test(overflow + overflowY)) {
-                scrollableAncestors.push(el)
-                el.addEventListener('scroll', updateCoords, { passive: true })
-            }
-            el = el.parentElement
-        }
-        window.addEventListener('scroll', updateCoords, true)
-        window.addEventListener('resize', updateCoords)
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside)
-            scrollableAncestors.forEach(a => a.removeEventListener('scroll', updateCoords))
-            window.removeEventListener('scroll', updateCoords, true)
-            window.removeEventListener('resize', updateCoords)
-        }
-    }, [isOpen, updateCoords, activeTimeStr])
-
-    // Time adjustment functions
+    // Time adjustment functions (langsung commit — nilai draft tidak pernah tertahan)
     const adjustHour = (amount) => {
         let [h, m] = activeTimeStr.split(':').map(Number)
         h = (h + amount + 24) % 24
@@ -290,10 +206,10 @@ const TimePicker = memo(({
     const timeDisplay = useMemo(() => {
         const [hStr, mStr] = activeTimeStr.split(':')
         const h24 = parseInt(hStr || '0', 10)
-        
+
         let hh = String(h24).padStart(2, '0')
         let suffix = ''
-        
+
         if (!is24h) {
             const isPm = h24 >= 12
             suffix = isPm ? currentLocale.pm : currentLocale.am
@@ -301,7 +217,7 @@ const TimePicker = memo(({
             if (h12 === 0) h12 = 12
             hh = String(h12).padStart(2, '0')
         }
-        
+
         return {
             hour: hh,
             minute: mStr || '00',
@@ -313,12 +229,12 @@ const TimePicker = memo(({
         e.stopPropagation()
         e.preventDefault()
         onChange('')
-        setIsOpen(false)
-    }, [onChange])
+        close()
+    }, [onChange, close])
 
     const handleDone = () => {
         onChange(activeTimeStr)
-        setIsOpen(false)
+        close()
     }
 
     const renderClockDropdown = () => (
@@ -389,7 +305,7 @@ const TimePicker = memo(({
                     <button
                         type="button"
                         onClick={handleClear}
-                        className="px-3 h-8 rounded-xl border border-red-200 bg-red-50 text-red-500 hover:bg-red-100 text-xs font-bold tracking-wide leading-none uppercase transition-colors shrink-0"
+                        className="px-3 h-8 rounded-lg border border-danger/30 bg-danger/10 text-danger hover:bg-danger/20 text-xs font-bold tracking-wide leading-none uppercase transition-colors shrink-0"
                     >
                         {currentLocale.clear}
                     </button>
@@ -397,14 +313,14 @@ const TimePicker = memo(({
                 <button
                     type="button"
                     onClick={() => setIs24h(!is24h)}
-                    className="px-3 h-8 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] text-xs font-bold tracking-wide leading-none uppercase transition-colors shrink-0"
+                    className="px-3 h-8 rounded-lg border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] hover:text-[var(--color-primary)] text-xs font-bold tracking-wide leading-none uppercase transition-colors shrink-0"
                 >
                     {is24h ? '24H' : '12H'}
                 </button>
                 <button
                     type="button"
                     onClick={handleDone}
-                    className="flex-1 h-8 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide leading-none hover:brightness-110 active:scale-[0.98] transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+                    className="flex-1 h-8 rounded-lg bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide leading-none hover:brightness-110 active:scale-[0.98] transition-colors flex items-center justify-center gap-1.5 shadow-sm"
                 >
                     <Check className="w-4 h-4 text-white" />
                     <span>{currentLocale.done}</span>
@@ -414,7 +330,7 @@ const TimePicker = memo(({
     )
 
     return (
-        <div className={`relative ${className}`} ref={ref}>
+        <div className={`relative ${className}`} ref={triggerRef}>
             <input
                 type="text"
                 value={isFocused ? tNum(typedValue) : displayVal}
@@ -425,18 +341,18 @@ const TimePicker = memo(({
                 placeholder={placeholder}
                 inputMode={isMobile ? 'none' : undefined}
                 readOnly={isMobile || disabled}
-                className={`w-full pl-9 pr-8 h-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] outline-none transition-colors text-xs sm:text-sm font-medium leading-none tabular-nums shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`w-full pl-9 pr-8 ${compact ? 'h-8' : 'h-9'} rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] outline-none transition-colors text-xs sm:text-sm font-medium leading-none tabular-nums shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
             />
-            
+
             <Clock
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)] opacity-50 pointer-events-none"
             />
 
             <ChevronDown
-                className={`absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 transition-transform duration-300 pointer-events-none ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
+                className={`absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 transition-transform duration-200 pointer-events-none ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
             />
 
-            {/* Premium Headerless Highly-Readable Dropdown */}
+            {/* Headerless Highly-Readable Dropdown */}
             {isOpen && createPortal(
                 isMobile ? (
                     <>
@@ -444,7 +360,7 @@ const TimePicker = memo(({
                             className="fixed inset-0 bg-black/40 z-[99998] animate-in fade-in duration-200"
                             onMouseDown={(e) => {
                                 e.stopPropagation()
-                                handleDone()
+                                close()
                             }}
                         />
                         <div
@@ -465,11 +381,8 @@ const TimePicker = memo(({
                     </>
                 ) : (
                     <div
-                        className={`fixed z-[99999] w-[200px] h-[150px] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-xl overflow-hidden animate-in fade-in ${coords.placement === 'top' ? 'slide-in-from-bottom-3' : 'slide-in-from-top-3'} select-none flex flex-col justify-between`}
-                        onMouseDown={(e) => {
-                            e.stopPropagation()
-                            e.preventDefault()
-                        }}
+                        data-popover-panel
+                        className={`fixed z-[99999] w-[200px] h-[150px] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-xl overflow-hidden animate-in fade-in ${coords.placement === 'top' ? 'slide-in-from-bottom-3' : 'slide-in-from-top-3'} duration-150 select-none flex flex-col justify-between`}
                         style={{
                             left: Math.max(16, Math.min(coords.right - 200, window.innerWidth - 200 - 16)),
                             top: coords.placement === 'top' ? 'auto' : coords.bottom + 8,

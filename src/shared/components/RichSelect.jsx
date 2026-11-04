@@ -1,22 +1,56 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react'
 import { createPortal } from 'react-dom'
 import { ChevronDown, Search, X, Check } from 'lucide-react'
+import { usePopover, useIsMobile } from '@shared/hooks/usePopover'
 
 /**
- * RichSelect - A premium, reusable dropdown component with auto-flip, portal, search, and dynamic grouping/tab filtering.
+ * RichSelect - Dropdown reusable dengan auto-flip, portal, search, dan grouping.
  *
  * @param {boolean} compact - Lightweight mode: no portal, smaller padding, inline absolute dropdown.
  *                             Ideal for pagination or toolbar selects with few options.
+ * @param {object}  groupTones - Warna pill/header per group (case-insensitive), mis.
+ *                               { pelanggaran: 'danger', prestasi: 'success' }. Default netral (primary).
  */
-/**
- * Polymorphic icon renderer for Lucide React components.
- * Lucide React: pass component reference like Bed, Calendar, etc.
- */
-const renderIcon = (icon, className = '') => {
+// Polymorphic icon renderer for Lucide React components.
+const renderIcon = (icon, className) => {
     if (!icon) return null
     const IconComp = icon
-    return <IconComp className={className} className="w-4 h-4" />
+    return <IconComp className={className} />
 }
+
+// Tone group → class pill aktif + header sticky (token, tanpa hardcode palet)
+const GROUP_TONES = {
+    primary: {
+        pill: 'bg-primary text-white border-transparent shadow-sm',
+        header: 'text-primary bg-primary/5'
+    },
+    danger: {
+        pill: 'bg-danger text-white border-transparent shadow-sm',
+        header: 'text-danger bg-danger/10'
+    },
+    success: {
+        pill: 'bg-success text-white border-transparent shadow-sm',
+        header: 'text-success bg-success/10'
+    },
+}
+
+// Baris opsi — di-memo agar ketik search tidak me-render ulang semua row
+const OptionRow = memo(function OptionRow({ opt, selected, compact, onSelect }) {
+    return (
+        <button
+            key={opt.id}
+            type="button"
+            onClick={(e) => { e.stopPropagation(); onSelect(opt.id) }}
+            className={`w-full text-left ${compact ? 'px-3 py-1.5' : 'px-3.5 py-2'} text-xs font-medium leading-5 tabular-nums hover:bg-[var(--color-primary)]/5 transition-colors flex items-center justify-between group whitespace-nowrap ${selected ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/5 font-bold' : 'text-[var(--color-text)]'}`}
+        >
+            <div className="flex items-center gap-2.5">
+                <div className={`w-1.5 h-1.5 rounded-full transition-colors ${selected ? 'bg-[var(--color-primary)] scale-125' : 'bg-[var(--color-border)] group-hover:bg-[var(--color-text-muted)]'}`} />
+                {opt.render ? opt.render : opt.name}
+            </div>
+            {selected && <Check className="w-4 h-4" />}
+        </button>
+    )
+})
 
 const RichSelect = memo(({
     value,
@@ -28,6 +62,7 @@ const RichSelect = memo(({
     small,
     status = 'normal',
     searchable = false,
+    groupTones,
     className = "",
     disabled = false,
     allowCustom = false,
@@ -36,32 +71,25 @@ const RichSelect = memo(({
     buttonClassName = "",
     maxHeight
 }) => {
-    const [isOpen, setIsOpen] = useState(false)
     const [search, setSearch] = useState('')
     const [activeGroup, setActiveGroup] = useState('All')
-    const [isMobile, setIsMobile] = useState(false)
+    const isMobile = useIsMobile()
 
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 640)
-        checkMobile()
-        window.addEventListener('resize', checkMobile)
-        return () => window.removeEventListener('resize', checkMobile)
-    }, [])
-
-    const [coords, setCoords] = useState({ top: 0, left: 0, width: 0, placement: 'bottom', maxHeight: 240 })
+    const { triggerRef, isOpen, open, close, toggle: baseToggle, updateCoords, coords } = usePopover({
+        dropdownHeight: searchable ? 320 : 260
+    })
     const [compactPlacement, setCompactPlacement] = useState('bottom')
-    const ref = useRef(null)
     const searchInputRef = useRef(null)
 
     const statusClasses = {
-        error: 'border-rose-500/50 focus:border-rose-500 focus:ring-rose-500 bg-rose-50/5 dark:bg-rose-500/5',
-        success: 'border-emerald-500/50 focus:border-emerald-500 focus:ring-emerald-500 bg-emerald-50/5 dark:bg-emerald-500/5',
+        error: 'border-danger/50 focus:border-danger focus:ring-danger bg-danger/5',
+        success: 'border-success/50 focus:border-success focus:ring-success bg-success/5',
         normal: 'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]'
     }
 
     const iconStatusClasses = {
-        error: 'text-rose-500 opacity-80',
-        success: 'text-emerald-500 opacity-80',
+        error: 'text-danger opacity-80',
+        success: 'text-success opacity-80',
         normal: 'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)] group-hover:text-[var(--color-primary)]'
     }
 
@@ -74,111 +102,34 @@ const RichSelect = memo(({
         return Array.from(set)
     }, [options])
 
-    const updateCoords = useCallback(() => {
-        if (ref.current) {
-            const rect = ref.current.getBoundingClientRect()
-            const dropdownHeight = searchable ? 320 : 260
-            const margin = 8
-
-            let containerBottom = window.innerHeight - margin
-            let containerTop = margin
-            let hasScrollableAncestor = false
-            let el = ref.current.parentElement
-            while (el && el !== document.body) {
-                const { overflow, overflowY } = window.getComputedStyle(el)
-                if (/(auto|scroll)/.test(overflow + overflowY)) {
-                    const containerRect = el.getBoundingClientRect()
-                    containerBottom = containerRect.bottom - margin
-                    containerTop = containerRect.top + margin
-                    hasScrollableAncestor = true
-                    break
-                }
-                el = el.parentElement
-            }
-
-            if (hasScrollableAncestor) {
-                if (rect.bottom < containerTop || rect.top > containerBottom) {
-                    setIsOpen(false)
-                    return
-                }
-            }
-
-            const spaceBelow = containerBottom - rect.bottom
-            const spaceAbove = rect.top - containerTop
-
-            const shouldFlip = spaceBelow < dropdownHeight && spaceAbove > spaceBelow
-
-            setCoords({
-                top: rect.top,
-                bottom: rect.bottom,
-                left: rect.left,
-                width: rect.width,
-                placement: shouldFlip ? 'top' : 'bottom',
-                maxHeight: shouldFlip ? spaceAbove : spaceBelow
-            })
-        }
-    }, [searchable, setIsOpen])
-
     const toggle = useCallback(() => {
-        const nextState = !isOpen
-        if (nextState) {
-            if ((compact || !usePortal) && ref.current) {
-                const rect = ref.current.getBoundingClientRect()
-                const dropdownH = searchable ? 320 : Math.min(options.length * 36 + 16, 240)
-                const spaceBelow = window.innerHeight - rect.bottom - 8
-                setCompactPlacement(spaceBelow < dropdownH ? 'top' : 'bottom')
-            } else if (usePortal) {
-                updateCoords()
-            }
-            setSearch('')
-            setActiveGroup('All')
+        if (isOpen) {
+            close()
+            return
         }
-        setIsOpen(nextState)
-    }, [isOpen, compact, usePortal, updateCoords, options.length, searchable])
+        if ((compact || !usePortal) && triggerRef.current) {
+            const rect = triggerRef.current.getBoundingClientRect()
+            const dropdownH = searchable ? 320 : Math.min(options.length * 36 + 16, 240)
+            const spaceBelow = window.innerHeight - rect.bottom - 8
+            setCompactPlacement(spaceBelow < dropdownH ? 'top' : 'bottom')
+        }
+        setSearch('')
+        setActiveGroup('All')
+        open()
+    }, [isOpen, close, open, compact, usePortal, options.length, searchable, triggerRef])
 
     const handleSelect = useCallback((id) => {
         onChange(id)
-        setIsOpen(false)
-    }, [onChange])
+        close()
+    }, [onChange, close])
 
+    // Fokuskan search saat dropdown terbuka (rAF, bukan setTimeout)
     useEffect(() => {
-        if (!isOpen) return
-
-        const handleClickOutside = (e) => {
-            if (ref.current && !ref.current.contains(e.target)) setIsOpen(false)
+        if (isOpen && searchable) {
+            const raf = requestAnimationFrame(() => searchInputRef.current?.focus())
+            return () => cancelAnimationFrame(raf)
         }
-        document.addEventListener('mousedown', handleClickOutside)
-
-        if (searchable && searchInputRef.current) {
-            setTimeout(() => searchInputRef.current?.focus(), 100)
-        }
-
-        if (!compact && usePortal) {
-            const scrollableAncestors = []
-            let el = ref.current?.parentElement
-            while (el && el !== document.body) {
-                const { overflow, overflowY } = window.getComputedStyle(el)
-                if (/(auto|scroll)/.test(overflow + overflowY)) {
-                    scrollableAncestors.push(el)
-                    el.addEventListener('scroll', updateCoords, { passive: true })
-                }
-                el = el.parentElement
-            }
-            window.addEventListener('scroll', updateCoords, true)
-            window.addEventListener('resize', updateCoords)
-
-            return () => {
-                document.removeEventListener('mousedown', handleClickOutside)
-                scrollableAncestors.forEach(a => a.removeEventListener('scroll', updateCoords))
-                window.removeEventListener('scroll', updateCoords, true)
-                window.removeEventListener('resize', updateCoords)
-            }
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside)
-        }
-    }, [isOpen, updateCoords, searchable, compact, usePortal])
+    }, [isOpen, searchable])
 
     // Filtered options based on search query & active tab pill group
     const filteredOptions = useMemo(() => {
@@ -210,6 +161,20 @@ const RichSelect = memo(({
         return options.find(o => String(o.id) === String(value)) || (extraOption?.id === value ? extraOption : (allowCustom && value ? { id: value, name: value } : null))
     }, [options, value, extraOption, allowCustom])
 
+    // Resolve tone class untuk group (lookup case-insensitive di kedua sisi)
+    const groupToneLookup = useMemo(() => {
+        if (!groupTones) return null
+        const map = {}
+        Object.keys(groupTones).forEach(k => { map[k.toLowerCase()] = groupTones[k] })
+        return map
+    }, [groupTones])
+
+    const getGroupTone = useCallback((groupName) => {
+        if (!groupToneLookup) return GROUP_TONES.primary
+        const tone = groupToneLookup[groupName?.toLowerCase()]
+        return GROUP_TONES[tone] || GROUP_TONES.primary
+    }, [groupToneLookup])
+
     // ─── Dropdown content (shared between compact & portal modes) ───
     const renderDropdown = () => (
         <div className="flex flex-col min-h-0 h-full">
@@ -229,7 +194,7 @@ const RichSelect = memo(({
                         {search && (
                             <button
                                 onClick={() => setSearch('')}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 transition-colors"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-[var(--color-text-muted)] hover:text-danger transition-colors"
                             >
                                 <X className="w-4 h-4" />
                             </button>
@@ -252,21 +217,14 @@ const RichSelect = memo(({
                         Semua
                     </button>
                     {uniqueGroups.map(g => {
-                        const isPelanggaran = g.toLowerCase().includes('pelanggaran')
-                        const isPrestasi = g.toLowerCase().includes('prestasi')
-                        const isActive = activeGroup === g
-
-                        let activeClasses = 'bg-[var(--color-primary)] text-white border-transparent'
-                        if (isPelanggaran) activeClasses = 'bg-rose-500 text-white border-transparent shadow-sm'
-                        if (isPrestasi) activeClasses = 'bg-emerald-500 text-white border-transparent shadow-sm'
-
+                        const tone = getGroupTone(g)
                         return (
                             <button
                                 key={g}
                                 type="button"
                                 onClick={() => setActiveGroup(g)}
-                                className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide leading-none transition-colors border shrink-0 ${isActive
-                                        ? activeClasses
+                                className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide leading-none transition-colors border shrink-0 ${activeGroup === g
+                                        ? tone.pill
                                         : 'bg-[var(--color-surface)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]'
                                     }`}
                             >
@@ -318,48 +276,31 @@ const RichSelect = memo(({
                     /* ─── Grouped Rendering ─── */
                     Object.keys(groupedOptions).map(groupName => (
                         <div key={groupName} className="flex flex-col">
-                            {/* Sticky Color-coded Group Header */}
-                            <div className={`px-4 py-1.5 text-xs font-bold uppercase tracking-wide leading-none border-y border-[var(--color-border)]/35 sticky top-0 z-10 select-none ${groupName.toLowerCase().includes('pelanggaran')
-                                    ? 'text-rose-500 bg-rose-50/90 dark:bg-rose-950/20'
-                                    : groupName.toLowerCase().includes('prestasi')
-                                        ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50/90 dark:bg-emerald-950/20'
-                                        : 'text-[var(--color-text-muted)] bg-[var(--color-surface-alt)]/90'
-                                }`}>
+                            {/* Sticky Group Header (tone via groupTones prop) */}
+                            <div className={`px-4 py-1.5 text-xs font-bold uppercase tracking-wide leading-none border-y border-[var(--color-border)]/35 sticky top-0 z-10 select-none ${getGroupTone(groupName).header}`}>
                                 {groupName}
                             </div>
-
-                            {/* Group Options */}
                             {groupedOptions[groupName].map(opt => (
-                                <button
+                                <OptionRow
                                     key={opt.id}
-                                    type="button"
-                                    onClick={(e) => { e.stopPropagation(); handleSelect(opt.id) }}
-                                    className={`w-full text-left ${compact ? 'px-3 py-1.5' : 'px-3.5 py-2'} text-xs font-medium leading-5 tabular-nums hover:bg-[var(--color-primary)]/5 transition-colors flex items-center justify-between group whitespace-nowrap ${String(value) === String(opt.id) ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/5 font-bold' : 'text-[var(--color-text)]'}`}
-                                >
-                                    <div className="flex items-center gap-2.5">
-                                        <div className={`w-1.5 h-1.5 rounded-full transition-all ${String(value) === String(opt.id) ? 'bg-[var(--color-primary)] scale-125 shadow-[0_0_8px_rgba(var(--color-primary-rgb),0.4)]' : 'bg-[var(--color-border)] group-hover:bg-[var(--color-text-muted)]'}`} />
-                                        {opt.render ? opt.render : opt.name}
-                                    </div>
-                                    {String(value) === String(opt.id) && <Check className="w-4 h-4 animate-in zoom-in-50 duration-300" />}
-                                </button>
+                                    opt={opt}
+                                    selected={String(value) === String(opt.id)}
+                                    compact={compact}
+                                    onSelect={handleSelect}
+                                />
                             ))}
                         </div>
                     ))
                 ) : (
                     /* ─── Flat Rendering ─── */
                     filteredOptions.map((opt) => (
-                        <button
+                        <OptionRow
                             key={opt.id}
-                            type="button"
-                            onClick={(e) => { e.stopPropagation(); handleSelect(opt.id) }}
-                            className={`w-full text-left ${compact ? 'px-3 py-1.5' : 'px-3.5 py-2'} text-xs font-medium leading-5 tabular-nums hover:bg-[var(--color-primary)]/5 transition-colors flex items-center justify-between group whitespace-nowrap ${String(value) === String(opt.id) ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/5 font-bold' : 'text-[var(--color-text)]'}`}
-                        >
-                            <div className="flex items-center gap-2.5">
-                                <div className={`w-1.5 h-1.5 rounded-full transition-all ${String(value) === String(opt.id) ? 'bg-[var(--color-primary)] scale-125 shadow-[0_0_8px_rgba(var(--color-primary-rgb),0.4)]' : 'bg-[var(--color-border)] group-hover:bg-[var(--color-text-muted)]'}`} />
-                                {opt.render ? opt.render : opt.name}
-                            </div>
-                            {String(value) === String(opt.id) && <Check className="w-4 h-4 animate-in zoom-in-50 duration-300" />}
-                        </button>
+                            opt={opt}
+                            selected={String(value) === String(opt.id)}
+                            compact={compact}
+                            onSelect={handleSelect}
+                        />
                     ))
                 )}
             </div>
@@ -374,20 +315,21 @@ const RichSelect = memo(({
         heightClass = 'h-8'
         paddingClass = 'px-2.5'
     } else if (small) {
-        heightClass = 'h-8 sm:h-9'
+        heightClass = 'h-8'
         paddingClass = icon ? 'pl-8 pr-3 rtl:pl-3 rtl:pr-8' : 'px-3'
     } else {
-        heightClass = 'h-10'
+        // h-9 = tinggi kontrol standar app (samakan dengan Button/Input)
+        heightClass = 'h-9'
         paddingClass = icon ? 'pl-9 pr-3 rtl:pl-3 rtl:pr-9' : 'px-3'
     }
 
     return (
-        <div className={`relative ${className}`} ref={ref}>
+        <div className={`relative ${className}`} ref={triggerRef}>
             <button
                 type="button"
                 onClick={disabled ? undefined : toggle}
                 disabled={disabled}
-                className={`w-full flex items-center justify-between gap-2 ${hasCustomHeight ? '' : heightClass} ${paddingClass} rounded-lg sm:rounded-xl border ${statusClasses[status]} bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)]/50 focus:ring-1 outline-none transition-colors leading-none tabular-nums ${compact || small ? 'text-xs font-semibold' : 'text-xs sm:text-sm font-medium'} relative group shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${buttonClassName}`}
+                className={`w-full flex items-center justify-between gap-2 ${hasCustomHeight ? '' : heightClass} ${paddingClass} rounded-lg border ${statusClasses[status]} bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)]/50 focus:ring-1 outline-none transition-colors leading-none tabular-nums ${compact || small ? 'text-xs font-semibold' : 'text-sm font-medium'} relative group shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${buttonClassName}`}
             >
                 <div className="flex items-center gap-2 truncate">
                     {icon && !compact && renderIcon(icon, `absolute ${small ? 'left-3 rtl:left-auto rtl:right-3' : 'left-3.5 rtl:left-auto rtl:right-3.5'} w-4 h-4 top-1/2 -translate-y-1/2 transition-colors ${iconStatusClasses[status]}`)}
@@ -395,13 +337,13 @@ const RichSelect = memo(({
                         {selectedOption ? (selectedOption.render ? selectedOption.render : selectedOption.name) : placeholder}
                     </span>
                 </div>
-                <ChevronDown className={`w-4 h-4 opacity-40 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
+                <ChevronDown className={`w-4 h-4 opacity-40 transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
             </button>
 
             {isOpen && (!usePortal || compact ? (
                 /* ─── Compact/Inline: absolute dropdown ─── */
                 <div
-                    className={`absolute z-50 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-xl overflow-hidden animate-in fade-in ${compactPlacement === 'top' ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'} duration-150`}
+                    className={`absolute z-50 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl shadow-xl overflow-hidden animate-in fade-in duration-150 ${compactPlacement === 'top' ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'}`}
                     onMouseDown={(e) => e.stopPropagation()}
                     style={{
                         minWidth: '100%',
@@ -423,7 +365,7 @@ const RichSelect = memo(({
                                 className="fixed inset-0 bg-black/40 z-[99998] animate-in fade-in duration-200"
                                 onMouseDown={(e) => {
                                     e.stopPropagation()
-                                    setIsOpen(false)
+                                    close()
                                 }}
                             />
                             <div
@@ -440,8 +382,8 @@ const RichSelect = memo(({
                         </>
                     ) : (
                         <div
-                            className={`fixed z-[99999] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl sm:rounded-2xl shadow-xl animate-in fade-in ${coords.placement === 'top' ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'} flex flex-col`}
-                            onMouseDown={(e) => e.stopPropagation()}
+                            data-popover-panel
+                            className={`fixed z-[99999] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl sm:rounded-2xl shadow-xl animate-in fade-in ${coords.placement === 'top' ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'} duration-150 flex flex-col`}
                             style={{
                                 width: 'max-content',
                                 minWidth: coords.width,

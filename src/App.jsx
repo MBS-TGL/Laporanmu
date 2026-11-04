@@ -71,7 +71,7 @@ const TasksPage = lazyRetry(() => import('@features/admin/pages/TasksPage.jsx'))
 const PlaygroundPage = lazyRetry(() => import('@features/admin/pages/PlaygroundPage.jsx'))
 const ListPage = lazyRetry(() => import('@features/news/pages/ListPage.jsx'))
 const EditorPage = lazyRetry(() => import('@features/news/pages/EditorPage.jsx'))
-const InsightsPage = lazyRetry(() => import('@features/admin/pages/ai/InsightsPage.jsx'))
+const InsightsPage = lazyRetry(() => import('@features/admin/pages/InsightsPage.jsx'))
 const AdminDashboardPage = lazyRetry(() => import('@features/admin/pages/DashboardPage.jsx'))
 
 // Master Data

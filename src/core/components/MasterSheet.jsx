@@ -5,7 +5,7 @@ import { useAuth, useFeatureFlags, useLanguage } from "@context"
 import {
     ACADEMIC_ITEMS, FINANCE_ITEMS, BOARDING_ITEMS, MASTER_ITEMS, ADMIN_ITEMS,
     SECTION_TITLES, filterNavItems,
-} from "./navItems"
+} from "../layouts/navItems"
 
 // ─── Portal container ─────────────────────────────────────────────────────────
 const _portalContainers = {}

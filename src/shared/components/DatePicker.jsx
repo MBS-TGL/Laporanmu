@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react'
+import React, { useState, useEffect, useCallback, useMemo, memo } from 'react'
 import { createPortal } from 'react-dom'
 import { Calendar, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react'
 import { useLanguage } from '@context'
+import { usePopover, useIsMobile } from '@shared/hooks/usePopover'
 
 const LOCALES = {
     id: {
@@ -119,7 +120,8 @@ const DatePicker = memo(({
     disabled = false,
     className = "",
     compact = false,
-    clearable = true
+    clearable = true,
+    min // YYYY-MM-DD — tanggal sebelum ini dinonaktifkan
 }) => {
     // Access active language context with safe fallback
     let systemLanguage = 'id'
@@ -142,17 +144,11 @@ const DatePicker = memo(({
         return tNum(ph)
     }, [placeholder, currentLocale, tNum])
 
-    const [isOpen, setIsOpen] = useState(false)
+    const isMobile = useIsMobile()
+    const { triggerRef, isOpen, open, close, updateCoords, coords } = usePopover({ dropdownHeight: 300 })
+
     const [isFocused, setIsFocused] = useState(false)
     const [typedValue, setTypedValue] = useState('')
-    const [isMobile, setIsMobile] = useState(false)
-
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 640)
-        checkMobile()
-        window.addEventListener('resize', checkMobile)
-        return () => window.removeEventListener('resize', checkMobile)
-    }, [])
 
     const [currentDate, setCurrentDate] = useState(() => {
         if (value) {
@@ -162,8 +158,17 @@ const DatePicker = memo(({
         return new Date()
     })
 
-    const [coords, setCoords] = useState({ top: 0, left: 0, width: 0, placement: 'bottom', maxHeight: 360 })
-    const ref = useRef(null)
+    // Batas minimum (awal hari) — prop `min` kini benar-benar diterapkan
+    const minDate = useMemo(() => {
+        if (!min) return null
+        const d = new Date(min)
+        return isNaN(d.getTime()) ? null : new Date(d.getFullYear(), d.getMonth(), d.getDate())
+    }, [min])
+
+    const isBeforeMin = useCallback((day) => {
+        if (!minDate || !day) return false
+        return new Date(year, month, day) < minDate
+    }, [minDate, year, month])
 
     // Synchronize currentDate and typedValue when value prop or active language changes
     useEffect(() => {
@@ -180,53 +185,9 @@ const DatePicker = memo(({
         }
     }, [value, isFocused, currentLocale])
 
-    const updateCoords = useCallback(() => {
-        if (ref.current) {
-            const rect = ref.current.getBoundingClientRect()
-            const dropdownHeight = 260
-            const margin = 8
-
-            let containerBottom = window.innerHeight - margin
-            let containerTop = margin
-            let hasScrollableAncestor = false
-            let el = ref.current.parentElement
-            while (el && el !== document.body) {
-                const { overflow, overflowY } = window.getComputedStyle(el)
-                if (/(auto|scroll)/.test(overflow + overflowY)) {
-                    const containerRect = el.getBoundingClientRect()
-                    containerBottom = containerRect.bottom - margin
-                    containerTop = containerRect.top + margin
-                    hasScrollableAncestor = true
-                    break
-                }
-                el = el.parentElement
-            }
-
-            if (hasScrollableAncestor) {
-                if (rect.bottom < containerTop || rect.top > containerBottom) {
-                    setIsOpen(false)
-                    return
-                }
-            }
-
-            const spaceBelow = containerBottom - rect.bottom
-            const spaceAbove = rect.top - containerTop
-            const shouldFlip = spaceBelow < dropdownHeight && spaceAbove > spaceBelow
-
-            setCoords({
-                top: rect.top,
-                left: rect.left,
-                width: rect.width,
-                placement: shouldFlip ? 'top' : 'bottom',
-                maxHeight: shouldFlip ? spaceAbove - 16 : spaceBelow - 16
-            })
-        }
-    }, [setIsOpen])
-
     const handleFocus = () => {
         setIsFocused(true)
-        updateCoords()
-        setIsOpen(true)
+        open()
     }
 
     const handleBlur = () => {
@@ -246,7 +207,7 @@ const DatePicker = memo(({
         setTypedValue(val)
 
         const parsed = parseDateString(val, systemLanguage)
-        if (parsed) {
+        if (parsed && (!minDate || parsed >= minDate)) {
             const formattedMonth = String(parsed.getMonth() + 1).padStart(2, '0')
             const formattedDay = String(parsed.getDate()).padStart(2, '0')
             const yyyymmdd = `${parsed.getFullYear()}-${formattedMonth}-${formattedDay}`
@@ -254,37 +215,6 @@ const DatePicker = memo(({
             setCurrentDate(parsed)
         }
     }
-
-    useEffect(() => {
-        if (!isOpen) return
-
-        const handleClickOutside = (e) => {
-            if (ref.current && !ref.current.contains(e.target)) {
-                setIsOpen(false)
-            }
-        }
-        document.addEventListener('mousedown', handleClickOutside)
-
-        const scrollableAncestors = []
-        let el = ref.current?.parentElement
-        while (el && el !== document.body) {
-            const { overflow, overflowY } = window.getComputedStyle(el)
-            if (/(auto|scroll)/.test(overflow + overflowY)) {
-                scrollableAncestors.push(el)
-                el.addEventListener('scroll', updateCoords, { passive: true })
-            }
-            el = el.parentElement
-        }
-        window.addEventListener('scroll', updateCoords, true)
-        window.addEventListener('resize', updateCoords)
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside)
-            scrollableAncestors.forEach(a => a.removeEventListener('scroll', updateCoords))
-            window.removeEventListener('scroll', updateCoords, true)
-            window.removeEventListener('resize', updateCoords)
-        }
-    }, [isOpen, updateCoords])
 
     const month = currentDate.getMonth()
     const year = currentDate.getFullYear()
@@ -302,31 +232,33 @@ const DatePicker = memo(({
     }, [])
 
     const handleSelectDay = useCallback((day) => {
+        if (isBeforeMin(day)) return
         const formattedMonth = String(month + 1).padStart(2, '0')
         const formattedDay = String(day).padStart(2, '0')
         onChange(`${year}-${formattedMonth}-${formattedDay}`)
         setTypedValue(currentLocale.formatTyped(day, month, year))
-        setIsOpen(false)
-    }, [year, month, onChange, currentLocale])
+        close()
+    }, [year, month, onChange, currentLocale, close, isBeforeMin])
 
     const handleToday = useCallback((e) => {
         e.stopPropagation()
         e.preventDefault()
         const today = new Date()
+        if (minDate && new Date(today.getFullYear(), today.getMonth(), today.getDate()) < minDate) return
         const formattedMonth = String(today.getMonth() + 1).padStart(2, '0')
         const formattedDay = String(today.getDate()).padStart(2, '0')
         onChange(`${today.getFullYear()}-${formattedMonth}-${formattedDay}`)
         setTypedValue(currentLocale.formatTyped(today.getDate(), today.getMonth(), today.getFullYear()))
-        setIsOpen(false)
-    }, [onChange, currentLocale])
+        close()
+    }, [onChange, currentLocale, close, minDate])
 
     const handleClear = useCallback((e) => {
         e.stopPropagation()
         e.preventDefault()
         onChange('')
         setTypedValue('')
-        setIsOpen(false)
-    }, [onChange])
+        close()
+    }, [onChange, close])
 
     // Generate days grid
     const daysInMonth = useMemo(() => new Date(year, month + 1, 0).getDate(), [year, month])
@@ -375,7 +307,7 @@ const DatePicker = memo(({
                 <button
                     type="button"
                     onClick={handlePrevMonth}
-                    className="w-8 h-8 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] flex items-center justify-center transition-colors border border-[var(--color-border)]/30 active:scale-90"
+                    className="w-8 h-8 rounded-lg hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] flex items-center justify-center transition-colors border border-[var(--color-border)]/30 active:scale-90"
                 >
                     <ChevronLeft className="w-4 h-4 opacity-70" />
                 </button>
@@ -385,7 +317,7 @@ const DatePicker = memo(({
                 <button
                     type="button"
                     onClick={handleNextMonth}
-                    className="w-8 h-8 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] flex items-center justify-center transition-colors border border-[var(--color-border)]/30 active:scale-90"
+                    className="w-8 h-8 rounded-lg hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] flex items-center justify-center transition-colors border border-[var(--color-border)]/30 active:scale-90"
                 >
                     <ChevronRight className="w-4 h-4 opacity-70" />
                 </button>
@@ -409,17 +341,21 @@ const DatePicker = memo(({
 
                     const selected = isSelected(day)
                     const activeToday = isToday(day)
+                    const disabledDay = isBeforeMin(day)
 
                     return (
                         <button
                             key={`day-${day}`}
                             type="button"
                             onClick={() => handleSelectDay(day)}
-                            className={`w-full aspect-square max-w-[40px] max-h-[40px] mx-auto rounded-xl text-xs font-semibold leading-none tabular-nums transition-colors relative flex items-center justify-center ${selected
+                            disabled={disabledDay}
+                            className={`w-full aspect-square max-w-[40px] max-h-[40px] mx-auto rounded-lg text-xs font-semibold leading-none tabular-nums transition-colors relative flex items-center justify-center ${selected
                                 ? 'bg-[var(--color-primary)] text-white font-bold shadow-md scale-105'
                                 : activeToday
                                     ? 'border-2 border-[var(--color-primary)] text-[var(--color-primary)] font-bold'
-                                    : 'hover:bg-[var(--color-surface-alt)] text-[var(--color-text)]'
+                                    : disabledDay
+                                        ? 'text-[var(--color-text-muted)] opacity-30 cursor-not-allowed'
+                                        : 'hover:bg-[var(--color-surface-alt)] text-[var(--color-text)]'
                                 }`}
                         >
                             {tNum(day)}
@@ -434,7 +370,7 @@ const DatePicker = memo(({
                     <button
                         type="button"
                         onClick={handleClear}
-                        className="text-xs font-bold uppercase tracking-wide leading-none text-red-500 hover:bg-red-50 px-2.5 py-1.5 rounded-lg transition-colors border border-transparent hover:border-red-100"
+                        className="text-xs font-bold uppercase tracking-wide leading-none text-danger hover:bg-danger/10 px-2.5 py-1.5 rounded-lg transition-colors border border-transparent"
                     >
                         {currentLocale.clear}
                     </button>
@@ -453,7 +389,7 @@ const DatePicker = memo(({
     )
 
     return (
-        <div className={`relative ${className}`} ref={ref}>
+        <div className={`relative ${className}`} ref={triggerRef}>
             <input
                 type="text"
                 value={isFocused ? tNum(typedValue) : displayVal}
@@ -464,7 +400,7 @@ const DatePicker = memo(({
                 placeholder={defaultPlaceholder}
                 inputMode={isMobile ? 'none' : undefined}
                 readOnly={isMobile || disabled}
-                className={`w-full pl-9 pr-8 h-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] outline-none transition-colors text-xs sm:text-sm font-medium leading-none tabular-nums shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`w-full pl-9 pr-8 ${small || compact ? 'h-8' : 'h-9'} rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] outline-none transition-colors text-xs sm:text-sm font-medium leading-none tabular-nums shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
             />
 
             <Calendar
@@ -472,7 +408,7 @@ const DatePicker = memo(({
             />
 
             <ChevronDown
-                className={`absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 transition-transform duration-300 pointer-events-none ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
+                className={`absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40 transition-transform duration-200 pointer-events-none ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
             />
 
             {/* Portal Dropdown Calendar */}
@@ -483,7 +419,7 @@ const DatePicker = memo(({
                             className="fixed inset-0 bg-black/40 z-[99998] animate-in fade-in duration-200"
                             onMouseDown={(e) => {
                                 e.stopPropagation()
-                                setIsOpen(false)
+                                close()
                             }}
                         />
                         <div
@@ -501,14 +437,11 @@ const DatePicker = memo(({
                     </>
                 ) : (
                     <div
-                        className="fixed z-[99999] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-3"
-                        onMouseDown={(e) => {
-                            e.stopPropagation()
-                            e.preventDefault()
-                        }}
+                        data-popover-panel
+                        className="fixed z-[99999] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150"
                         style={{
                             left: Math.max(16, Math.min(coords.left, window.innerWidth - 240 - 16)),
-                            top: coords.placement === 'top' ? 'auto' : coords.top + 48,
+                            top: coords.placement === 'top' ? 'auto' : coords.bottom + 8,
                             bottom: coords.placement === 'top' ? (window.innerHeight - coords.top) + 8 : 'auto',
                         }}
                     >

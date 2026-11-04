@@ -9,12 +9,12 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@context/Auth'
 import { useFlag } from '@context/FeatureFlags'
-const LazyRulesTab = React.lazy(() => import('../ui/RulesTab'))
+const LazyRulesTab = React.lazy(() => import('../components/RulesTab'))
 
-const LazyExportModal = React.lazy(() => import('../ui/modals/ExportModal'))
-const LazyImportModal = React.lazy(() => import('../ui/modals/ImportModal'))
-const LazyFormModal = React.lazy(() => import('../ui/modals/FormModal'))
-const LazyDetailModal = React.lazy(() => import('../ui/modals/DetailModal'))
+const LazyExportModal = React.lazy(() => import('../components/ExportModal'))
+const LazyImportModal = React.lazy(() => import('../components/ImportModal'))
+const LazyFormModal = React.lazy(() => import('../components/FormModal'))
+const LazyDetailModal = React.lazy(() => import('../components/DetailModal'))
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import StatsCarousel from '@shared/components/StatsCarousel'
 import Breadcrumb from '@shared/components/Breadcrumb'
@@ -22,9 +22,9 @@ import PageHeader from '@shared/components/PageHeader'
 import { StatCard, EmptyState } from '@shared/components/DataDisplay'
 import Modal from '@shared/components/Modal'
 import ConfirmDialog from '@shared/components/ConfirmDialog'
-import FilterBar from '../ui/FilterBar'
-import TimelineCard from '../ui/TimelineCard'
-import TableRow from '../ui/TableRow'
+import FilterBar from '../components/FilterBar'
+import TimelineCard from '../components/TimelineCard'
+import TableRow from '../components/TableRow'
 import RichSelect from '@shared/components/RichSelect'
 import { TableSkeleton } from '@shared/components/Skeleton'
 import { useLanguage } from '@context/Language'

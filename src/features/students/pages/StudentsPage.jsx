@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, useCallback, memo, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createPortal } from 'react-dom'
 import { createRoot } from 'react-dom/client'
-import { Pencil, RefreshCw, TrendingUp, TrendingDown, CheckCheck, Archive, ArrowDownAZ, ArrowUpNarrowWide, Briefcase, Camera, ChartPie, Check, CircleAlert, CircleCheck, Crown, DoorOpen, Download, Eye, EyeOff, FileInput, FileOutput, FileText, GraduationCap, Image, Info, Keyboard, Link, LoaderCircle, PenTool, Plus, Printer, Rocket, RotateCcw, School, Search, Send, ShieldHalf, SlidersHorizontal, SquareCheck, Table, TableProperties, Tags, Trash2, TriangleAlert, Trophy, Users, X, Zap } from 'lucide-react'
+import { Pencil, RefreshCw, TrendingUp, TrendingDown, CheckCheck, Archive, ArrowDownAZ, ArrowUpNarrowWide, Briefcase, Camera, ChartPie, Check, ChevronLeft, ChevronRight, CircleAlert, CircleCheck, Crown, DoorOpen, Download, Eye, EyeOff, FileInput, FileOutput, FileText, GraduationCap, Image, Info, Keyboard, Link, LoaderCircle, PenTool, Plus, Printer, Rocket, RotateCcw, School, Search, Send, ShieldHalf, SlidersHorizontal, SquareCheck, Table, TableProperties, Tags, Trash2, TriangleAlert, Trophy, Users, X, Zap } from 'lucide-react'
 import { LIST_KAMAR } from '@utils/reports/raportConstants'
 
 import DashboardLayout from '@core/layouts/DashboardLayout'
@@ -245,7 +245,7 @@ const CHIP_COLORS = {
 
 // Chip ringkas: statis (statistik) atau tombol (insight yang bisa memfilter)
 function StatChip({ icon: Icon, label, value, color = 'indigo', loading, onClick, active }) {
-    const cls = `flex items-center gap-2 h-9 pl-1.5 pr-3 rounded-lg border bg-surface shrink-0 transition-all ${active ? 'border-primary ring-1 ring-primary' : 'border-border'} ${onClick ? 'hover:bg-surface-alt active:scale-95 cursor-pointer' : ''}`
+    const cls = `flex items-center gap-2 h-9 pl-1.5 pr-3 rounded-lg border bg-surface shrink-0 snap-start transition-all ${active ? 'border-primary ring-1 ring-primary' : 'border-border'} ${onClick ? 'hover:bg-surface-alt active:scale-95 cursor-pointer' : ''}`
     const body = (
         <>
             <span className={`w-6 h-6 rounded-md flex items-center justify-center ${CHIP_COLORS[color]}`}>
@@ -406,7 +406,25 @@ export default function StudentsPage() {
 
     // --- Enterprise Logic: Data Fetching ---
     const statsScrollRef = useRef(null)
-    const [activeStatIdx, setActiveStatIdx] = useState(0)
+    const [statsScrollState, setStatsScrollState] = useState({ left: false, right: false })
+    const updateStatsScroll = useCallback(() => {
+        const el = statsScrollRef.current
+        if (!el) return
+        setStatsScrollState({
+            left: el.scrollLeft > 4,
+            right: el.scrollLeft + el.clientWidth < el.scrollWidth - 4
+        })
+    }, [])
+    const scrollStats = useCallback((dir) => {
+        const el = statsScrollRef.current
+        if (!el) return
+        el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: 'smooth' })
+    }, [])
+
+    // Ukur ulang saat data stats berubah (jumlah chip bisa bertambah/berkurang)
+    useEffect(() => {
+        updateStatsScroll()
+    }, [updateStatsScroll, globalStats])
 
 
 
@@ -635,7 +653,8 @@ export default function StudentsPage() {
 
 
     const initialLoading = loading && students.length === 0
-    const hasInsights = globalStats.risk > 0 || globalStats.incompleteCount > 0 || globalStats.topPerformer || (globalStats.worstClass && globalStats.worstClass.avg < 0) || globalStats.avgPointsLastWeek !== null
+    const hasStatChips = canShowStats || globalStats.risk > 0 || globalStats.incompleteCount > 0 || globalStats.avgPointsLastWeek !== null
+    const hasInsights = globalStats.topPerformer || (globalStats.worstClass && globalStats.worstClass.avg < 0)
     const classNameById = useMemo(() => {
         const m = {}
             ; (classesList || []).forEach((c) => { m[c.id] = c.name })
@@ -699,11 +718,12 @@ export default function StudentsPage() {
                                         onClick={() => setIsHeaderMenuOpen(false)}
                                     />
                                     <div
-                                        className={`fixed z-[9991] w-56 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 transition-all duration-200 ease-out origin-top-right
+                                        className={`fixed z-[9991] w-80 max-w-[calc(100vw-1.25rem)] rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 transition-all duration-200 ease-out origin-top-right
                                         ${isHeaderMenuOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2'}`}
                                         style={{
                                             top: headerMenuRect.bottom + 8,
-                                            left: Math.max(10, headerMenuRect.right - 224)
+                                            // Anchor kanan dropdown ke kanan tombol; di layar sempit clamp ke tepi kanan viewport
+                                            left: Math.max(10, Math.min(headerMenuRect.right - 320, window.innerWidth - 330))
                                         }}
                                     >
                                         <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-2">Data</p>
@@ -888,9 +908,14 @@ export default function StudentsPage() {
                     }
                 />
 
-                {/* Stats + insight: chip ringkas, wrap ke baris baru saat layar sempit */}
-                {(canShowStats || hasInsights) && (
-                    <div className="flex flex-wrap gap-2">
+                {/* Stats: chip angka ringkas, 1 row — scroll horizontal + panah saat layar sempit */}
+                {hasStatChips && (
+                    <div className="relative">
+                        <div
+                            ref={statsScrollRef}
+                            onScroll={updateStatsScroll}
+                            className="flex gap-2 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
+                        >
                         {canShowStats && (
                             <>
                                 <StatChip icon={Users} label="Total Siswa" value={globalStats.total} color="indigo" loading={initialLoading} />
@@ -931,21 +956,55 @@ export default function StudentsPage() {
                                 color={globalStats.avgPointsLastWeek >= 0 ? 'emerald' : 'rose'}
                             />
                         )}
+                        </div>
 
-                        {globalStats.topPerformer && (
-                            <StatChip
-                                icon={Crown} label={`Top · +${globalStats.topPerformer.points}`}
-                                value={globalStats.topPerformer.name} color="indigo"
-                            />
+                        {/* Panah carousel — hanya muncul saat konten overflow */}
+                        {statsScrollState.left && (
+                            <button
+                                type="button"
+                                aria-label="Geser stats ke kiri"
+                                onClick={() => scrollStats(-1)}
+                                className="absolute left-0 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full border border-border bg-surface/90 backdrop-blur shadow-sm flex items-center justify-center text-text-muted hover:text-text hover:bg-surface transition-all active:scale-90"
+                            >
+                                <ChevronLeft className="w-4 h-4" />
+                            </button>
                         )}
+                        {statsScrollState.right && (
+                            <button
+                                type="button"
+                                aria-label="Geser stats ke kanan"
+                                onClick={() => scrollStats(1)}
+                                className="absolute right-0 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full border border-border bg-surface/90 backdrop-blur shadow-sm flex items-center justify-center text-text-muted hover:text-text hover:bg-surface transition-all active:scale-90"
+                            >
+                                <ChevronRight className="w-4 h-4" />
+                            </button>
+                        )}
+                    </div>
+                )}
 
+                {/* Insight strip: highlight terbaik & kelas dengan rata terendah */}
+                {hasInsights && (
+                    <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 px-3.5 py-2 rounded-xl border border-border bg-surface-alt/50 text-xs">
+                        {globalStats.topPerformer && (
+                            <span className="flex items-center gap-1.5 font-semibold text-text" title={`Poin tertinggi: +${globalStats.topPerformer.points}`}>
+                                <Crown className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                                Terbaik:
+                                <span className="font-bold max-w-[180px] truncate">{globalStats.topPerformer.name}</span>
+                                <span className="font-bold text-emerald-600 tabular-nums">+{globalStats.topPerformer.points}</span>
+                            </span>
+                        )}
                         {globalStats.worstClass && globalStats.worstClass.avg < 0 && (
-                            <StatChip
-                                icon={School} label={`Rata terendah (${globalStats.worstClass.avg})`}
-                                value={globalStats.worstClass.name} color="orange"
-                                active={filterClass === globalStats.worstClass.id}
+                            <button
+                                type="button"
                                 onClick={() => { setFilterClass(globalStats.worstClass.id); setFilterClasses([]); setPage(1); setShowAdvancedFilter(true) }}
-                            />
+                                className={`flex items-center gap-1.5 font-semibold rounded-lg transition-all active:scale-95 ${filterClass === globalStats.worstClass.id ? 'text-primary ring-1 ring-primary px-2 -mx-2 py-0.5' : 'text-text hover:text-primary'}`}
+                                title="Klik untuk filter kelas ini"
+                            >
+                                <School className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                                Terendah:
+                                <span className="font-bold max-w-[180px] truncate">{globalStats.worstClass.name}</span>
+                                <span className="font-bold text-rose-600 tabular-nums">({globalStats.worstClass.avg})</span>
+                            </button>
                         )}
                     </div>
                 )}

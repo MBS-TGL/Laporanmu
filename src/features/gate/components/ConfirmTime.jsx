@@ -3,7 +3,7 @@ import { Clock, Check } from 'lucide-react'
 import Modal from '@shared/components/Modal'
 import { useLanguage } from '@context'
 import { PAGE_T } from '@features/gate/utils/gateConstants'
-import TimeInput from '@features/gate/ui/TimeInput'
+import TimeInput from '@features/gate/components/TimeInput'
 
 export default function ConfirmTime({ log, onConfirm, onCancel }) {
   const { language } = useLanguage()

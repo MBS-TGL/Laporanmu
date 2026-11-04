@@ -8,7 +8,7 @@ import {
     ZoomIn, ZoomOut, Maximize2, Languages, PenTool, Fingerprint, QrCode
 } from 'lucide-react'
 import PrintCard from '@features/raport/components/PrintCard'
-import SummaryPage from '@features/raport/components/SummaryPage'
+import Summary from '@features/raport/components/Summary'
 import LayoutSettings from '@features/raport/components/LayoutSettings'
 import { buildRaportPrintDocumentHtml } from '@features/raport/utils/printHtml'
 import { BULAN } from '@utils/reports/raportConstants'
@@ -564,7 +564,7 @@ export default function PreviewPage({ isAcademic = false }) {
                         alignItems: 'center',
                         gap: '24px',
                     }}>
-                        <SummaryPage
+                        <Summary
                             students={students}
                             scores={scores}
                             extras={extras}
@@ -1029,7 +1029,7 @@ export default function PreviewPage({ isAcademic = false }) {
             {printQueue?.length > 0 && (
                 <div ref={printContainerRef} style={{ position: 'fixed', left: '-9999px', top: 0, width: '1000px', visibility: 'hidden', pointerEvents: 'none' }}>
                     {printQueue.length > 1 && (
-                        <SummaryPage
+                        <Summary
                             students={(archivePreview ? archivePreview.students : students).filter(s => printQueue.includes(s.id))}
                             scores={scores}
                             extras={extras}

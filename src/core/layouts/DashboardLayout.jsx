@@ -5,7 +5,7 @@ import BottomNav from "./BottomNav"
 import Sidebar from './Sidebar'
 import TopBar from './TopBar'
 
-const ChatAssistant = lazy(() => import('./ChatAssistant'))
+const ChatAssistant = lazy(() => import('../components/ChatAssistant'))
 
 // ─── Persist sidebar state ────────────────────────────────────────────────────
 const STORAGE_KEY = 'sidebar-collapsed'

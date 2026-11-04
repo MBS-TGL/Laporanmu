@@ -2,13 +2,15 @@ import { useState, useMemo, useEffect } from 'react'
 import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
 import { RiskThreshold, calculateCompleteness } from '@features/students/utils/studentsConstants'
+import { isDapodikDaftarPD, flattenDapodik, extractDapodikMetadata } from '@features/students/utils/dapodik'
 
 export const SYSTEM_COLS = [
     { key: 'name', label: 'Nama', synonyms: ['nama', 'name', 'nama lengkap', 'full name', 'student name', 'siswa', 'nama siswa'] },
-    { key: 'class_name', label: 'Kelas', synonyms: ['kelas', 'class', 'class_name', 'rombel', 'rombongan belajar'] },
+    { key: 'class_name', label: 'Kelas', synonyms: ['kelas', 'class', 'class_name', 'rombel', 'rombongan belajar', 'rombel saat ini', 'kelas saat ini'] },
     { key: 'gender', label: 'Gender', synonyms: ['gender', 'jk', 'jenis kelamin', 'kelamin', 'sex', 'l/p'] },
     { key: 'nisn', label: 'NISN', synonyms: ['nisn', 'nomor induk siswa nasional', 'nisn siswa'] },
-    { key: 'phone', label: 'No. HP / WA', synonyms: ['phone', 'no_hp', 'hp', 'whatsapp', 'wa', 'telp', 'telepon', 'phone number', 'wali_phone', 'no. whatsapp', 'no whatsapp', 'no. hp / wa', 'no. hp', 'whatsapp number'] },
+    { key: 'registration_code', label: 'NIPD / Kode Registrasi', synonyms: ['nipd', 'no. nipd', 'kode registrasi', 'registration code', 'nis'] },
+    { key: 'phone', label: 'No. HP / WA', synonyms: ['phone', 'no_hp', 'hp', 'no hp', 'whatsapp', 'wa', 'telp', 'telepon', 'phone number', 'wali_phone', 'no. whatsapp', 'no whatsapp', 'no. hp / wa', 'no. hp', 'whatsapp number'] },
     { key: 'father_name', label: 'Nama Ayah', synonyms: ['nama ayah', 'father_name', 'father name', 'nama bapak'] },
     { key: 'mother_name', label: 'Nama Ibu', synonyms: ['nama ibu', 'mother_name', 'mother name', 'nama mama'] },
     { key: 'guardian_name', label: 'Nama Wali', synonyms: ['guardian_name', 'nama_wali', 'wali', 'parent name', 'nama orang tua', 'nama wali', 'wali murid', 'nama ayah/ibu'] },
@@ -72,7 +74,7 @@ export function useImportExport({
     const [importLoading, setImportLoading] = useState(false) // loading state during file parsing
     const [isRevalidating, setIsRevalidating] = useState(false) // spinning icon state for Re-validasi button
     const [importEditCell, setImportEditCell] = useState(null) // { idx, key }
-    const [importCachedDBStudents, setImportCachedDBStudents] = useState({ names: new Set(), nisns: new Set() })
+    const [importCachedDBStudents, setImportCachedDBStudents] = useState({ names: new Set(), nisns: new Set(), codes: new Set() })
     const [exporting, setExporting] = useState(false)
 
     // ---- COMPUTED & EFFECTS ----
@@ -359,6 +361,17 @@ export function useImportExport({
         return json
     }
 
+    // Baca mentah sebagai matrix (raw:false supaya NIK/NISN tetap teks utuh,
+    // tidak berubah jadi notasi ilmiah/kehilangan presisi angka besar)
+    const parseExcelMatrix = async (file) => {
+        const XLSX = await import('xlsx')
+        const buf = await file.arrayBuffer()
+        const wb = XLSX.read(buf, { type: 'array' })
+        const firstSheet = wb.SheetNames[0]
+        const ws = wb.Sheets[firstSheet]
+        return XLSX.utils.sheet_to_json(ws, { header: 1, defval: '', raw: false })
+    }
+
     const buildImportPreview = async (rows, mapping) => {
         // 1. Initial Mapping & Pre-processing
         const preview = rows.map((r) => {
@@ -372,10 +385,15 @@ export function useImportExport({
             const className = getVal(r, 'class_name')
             const genderRaw = getVal(r, 'gender')
             const nisn = getVal(r, 'nisn')
+            const registrationCode = getVal(r, 'registration_code')
             const phone = normalizePhone(getVal(r, 'phone'))
             const fatherName = getVal(r, 'father_name')
             const motherName = getVal(r, 'mother_name')
             const guardianName = getVal(r, 'guardian_name')
+
+            // Kolom Dapodik lainnya (NIK, tempat/tanggal lahir, data ortu
+            // lengkap, KIP, dll.) -> metadata jsonb
+            const { father: dpFather = {}, mother: dpMother = {}, guardian: dpGuardian = {}, ...dpOther } = extractDapodikMetadata(r)
 
             let gender = genderRaw
             if (genderRaw) {
@@ -394,12 +412,15 @@ export function useImportExport({
                 gender,
                 phone,
                 nisn,
+                registration_code: registrationCode || '',
                 class_id: classObj?.id || '',
                 guardian_name: guardianName || null,
                 photo_url: null,
                 metadata: {
-                    father: { name: fatherName || '' },
-                    mother: { name: motherName || '' }
+                    father: { name: fatherName || '', ...dpFather },
+                    mother: { name: motherName || '', ...dpMother },
+                    guardian: { ...dpGuardian },
+                    ...dpOther,
                 },
                 _className: className || '',
                 _isDupe: false,
@@ -411,31 +432,35 @@ export function useImportExport({
         // 2. Initial Fetch of DB Students (Cache)
         let existingNames = new Set()
         let existingNisn = new Set()
+        let existingCodes = new Set()
         try {
             const { data: allStudents } = await supabase
                 .from('students')
-                .select('name, nisn')
+                .select('name, nisn, registration_code')
                 .is('deleted_at', null)
             if (allStudents) {
                 existingNames = new Set(allStudents.map(s => (s.name || '').toLowerCase().trim()))
                 existingNisn = new Set(allStudents.filter(s => s.nisn).map(s => String(s.nisn).trim()))
+                existingCodes = new Set(allStudents.map(s => String(s.registration_code || '').trim()).filter(Boolean))
             }
         } catch (err) { console.error(err) }
 
-        setImportCachedDBStudents({ names: existingNames, nisns: existingNisn })
+        setImportCachedDBStudents({ names: existingNames, nisns: existingNisn, codes: existingCodes })
         setImportPreview(preview)
-        validateImportPreview(preview, existingNames, existingNisn)
+        validateImportPreview(preview, existingNames, existingNisn, existingCodes)
     }
 
-    const validateImportPreview = (preview, dbNames = null, dbNisns = null) => {
+    const validateImportPreview = (preview, dbNames = null, dbNisns = null, dbCodes = null) => {
         const issues = []
         const dupeIndices = []
 
         const names = dbNames || importCachedDBStudents.names
         const nisns = dbNisns || importCachedDBStudents.nisns
+        const codes = dbCodes || importCachedDBStudents.codes
 
         const seenNamesInFile = new Map()
         const seenNisnInFile = new Map()
+        const seenCodesInFile = new Map()
 
         const validated = preview.map((r, idx) => {
             const rowIssues = []
@@ -449,9 +474,11 @@ export function useImportExport({
             let isDupe = false
             const lowerName = (r.name || '').toLowerCase().trim()
             const cleanNisn = String(r.nisn || '').trim()
+            const cleanCode = String(r.registration_code || '').trim()
 
             if (lowerName && names.has(lowerName)) isDupe = true
             if (cleanNisn && nisns.has(cleanNisn)) isDupe = true
+            if (cleanCode && codes.has(cleanCode)) isDupe = true
 
             // Within file dupe
             if (lowerName) {
@@ -465,6 +492,13 @@ export function useImportExport({
                     isDupe = true
                     rowIssues.push({ level: 'dupe', message: `NISN sama dengan baris ${seenNisnInFile.get(cleanNisn) + 1}` })
                 } else seenNisnInFile.set(cleanNisn, idx)
+            }
+            if (cleanCode) {
+                if (seenCodesInFile.has(cleanCode)) {
+                    // NIPD/kode registrasi punya constraint UNIQUE di DB —
+                    // dibiarkan lewat akan menggagalkan insert batch
+                    rowIssues.push({ level: 'error', message: `NIPD/Kode registrasi sama dengan baris ${seenCodesInFile.get(cleanCode) + 1}` })
+                } else seenCodesInFile.set(cleanCode, idx)
             }
 
             if (isDupe) dupeIndices.push(idx)
@@ -499,7 +533,14 @@ export function useImportExport({
         setImportLoading(true)
         try {
             const isXlsx = ext.endsWith('.xlsx') || (file.type || '').includes('sheet')
-            const rows = isXlsx ? await parseExcelFile(file) : await parseCSVFile(file)
+            let rows
+            if (isXlsx) {
+                const matrix = await parseExcelMatrix(file)
+                const flat = isDapodikDaftarPD(matrix) ? flattenDapodik(matrix) : null
+                rows = flat ? flat.rows : await parseExcelFile(file)
+            } else {
+                rows = await parseCSVFile(file)
+            }
             if (!rows.length) { addToast('File kosong atau tidak terbaca', 'error'); return }
 
             setImportRawData(rows)
@@ -628,7 +669,8 @@ export function useImportExport({
                     const { _className, _isDupe, _hasError, _hasWarn, ...cleanRow } = r
                     return {
                         ...cleanRow,
-                        registration_code: generateCode(),
+                        // Pakai NIPD dari file Dapodik kalau ada, kalau tidak generate otomatis
+                        registration_code: String(r.registration_code || '').trim() || generateCode(),
                         pin: String(Math.floor(1000 + Math.random() * 9000)),
                         total_points: 0
                     }

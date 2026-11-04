@@ -44,7 +44,7 @@ import {
 import { translitToAr, translitClassToAr, loadTranslitData } from '@utils/reports/translitData'
 import { RadarChart, SparklineTrend } from '@features/raport/components/RaportCharts'
 import PrintCard from '@features/raport/components/PrintCard'
-import SummaryPage from '@features/raport/components/SummaryPage'
+import Summary from '@features/raport/components/Summary'
 import { buildRaportPrintDocumentHtml } from '@features/raport/utils/printHtml'
 import LayoutSettings, { loadLayoutConfig } from '@features/raport/components/LayoutSettings'
 import StudentRow, { ExtraInput, ExtraTextarea } from '@features/raport/components/RecordRow'
@@ -3393,7 +3393,7 @@ await Promise.all([
                 {printQueue.length > 0 && (
                     <div ref={printContainerRef} style={{ position: 'fixed', left: '-9999px', top: 0, width: '1000px', visibility: 'hidden', pointerEvents: 'none' }}>
                         {printQueue.length > 1 && (
-                            <SummaryPage
+                            <Summary
                                 students={printStudents.filter(s => printQueue.includes(s.id))}
                                 scores={printScores}
                                 extras={printExtras}

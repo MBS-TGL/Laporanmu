@@ -11,7 +11,7 @@ import {
     MoreHorizontal,
 } from "lucide-react"
 import { useAuth, useLanguage } from "@context"
-import MasterSheet from "./MasterSheet"
+import MasterSheet from "../components/MasterSheet"
 
 // ─── Warna aktif ─────────────────────────────────────────────────────────────
 const INACTIVE_COLOR = "text-text-muted"

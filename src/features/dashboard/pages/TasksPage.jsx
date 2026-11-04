@@ -27,7 +27,7 @@ import { supabase } from '@lib/supabase'
 import { useAuth } from '@context/Auth'
 import { useToast } from '@context/Toast'
 import { logAudit } from '@utils/auditLogger'
-import LiveClock from '@features/gate/ui/LiveClock'
+import LiveClock from '@features/gate/components/LiveClock'
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 

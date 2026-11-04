@@ -14,26 +14,26 @@ import {
 import { useDormsData } from '@features/dorms/hooks/useDormsData'
 
 // UI — Modals
-import AssignModal from '@features/dorms/ui/AssignModal'
-import ExportModal from '@features/dorms/ui/ExportModal'
-import ImportModal from '@features/dorms/ui/ImportModal'
-import BulkAssign from '@features/dorms/ui/BulkAssign'
-import { InventoryModal, DormsInventoryFormModal } from '@features/dorms/ui/InventoryModal'
-import AuditModal from '@features/dorms/ui/AuditModal'
-import LogModal from '@features/dorms/ui/LogModal'
-import MasterModal from '@features/dorms/ui/MasterModal'
+import AssignModal from '@features/dorms/components/AssignModal'
+import ExportModal from '@features/dorms/components/ExportModal'
+import ImportModal from '@features/dorms/components/ImportModal'
+import BulkAssign from '@features/dorms/components/BulkAssign'
+import { InventoryModal, DormsInventoryFormModal } from '@features/dorms/components/InventoryModal'
+import AuditModal from '@features/dorms/components/AuditModal'
+import LogModal from '@features/dorms/components/LogModal'
+import MasterModal from '@features/dorms/components/MasterModal'
 import {
     ConfirmEvictModal,
     ConfirmDeleteDormModal,
     ConfirmDeleteAuditModal,
     ConfirmDeleteInventoryModal
-} from '@features/dorms/ui/ConfirmModals'
+} from '@features/dorms/components/ConfirmModals'
 
 // UI — Tabs
-import TabPlotting from '@features/dorms/ui/TabPlotting'
-import TabCleanliness from '@features/dorms/ui/TabCleanliness'
-import TabMusyrif from '@features/dorms/ui/TabMusyrif'
-import TabKelola from '@features/dorms/ui/TabKelola'
+import TabPlotting from '@features/dorms/components/TabPlotting'
+import TabCleanliness from '@features/dorms/components/TabCleanliness'
+import TabMusyrif from '@features/dorms/components/TabMusyrif'
+import TabKelola from '@features/dorms/components/TabKelola'
 
 // Utilities
 import { getPortalContainer } from '@features/dorms/utils/dormUtils'

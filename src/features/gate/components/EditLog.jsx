@@ -7,8 +7,8 @@ import {
   PRESETS_GURU, PRESETS_KARYAWAN, PRESETS_SANTRI, PRESETS_TAMU
 } from '@features/gate/utils/gateConstants'
 import { fmtTime, timeStrToISO } from '@features/gate/hooks/useCore'
-import PresetPills from '@features/gate/ui/PresetPills'
-import TimeInput from '@features/gate/ui/TimeInput'
+import PresetPills from '@features/gate/components/PresetPills'
+import TimeInput from '@features/gate/components/TimeInput'
 
 export default function EditLog({ log, onSave, onDelete, onCancel, saving }) {
   const { language } = useLanguage()

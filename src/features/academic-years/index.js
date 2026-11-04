@@ -1,2 +1,2 @@
-export { default } from './pages/AcademicYearsPage'
-export { default as AcademicYearsPage } from './pages/AcademicYearsPage'
+export { default } from './pages/YearsPage'
+export { default as YearsPage } from './pages/YearsPage'

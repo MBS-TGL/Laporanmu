@@ -1,7 +1,7 @@
 import React, { memo, useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { Archive, Briefcase, Check, ChevronDown, Crown, Flame, History, IdCard, Medal, Minus, Pencil, Pin, Plus, SquarePen, Star, Tags, TrendingDown, TrendingUp, TriangleAlert, X, Zap } from 'lucide-react'
-import { WhatsAppIcon } from '@shared/components'
+import { Archive, Briefcase, Check, ChevronDown, Crown, Flame, History, IdCard, MarsIcon, Medal, Minus, Pencil, Pin, Plus, SquarePen, Star, Tags, TrendingDown, TrendingUp, TriangleAlert, X, Zap } from 'lucide-react'
+import { VenusIcon, WhatsAppIcon } from '@shared/components'
 import useLongPress from '@hooks/useLongPress'
 import { getTagColor, calculateCompleteness } from '@features/students/utils/studentsConstants'
 
@@ -1266,7 +1266,7 @@ export const StudentMobileListRow = memo(({
             isLongPressActive.current = true
             onToggleSelect(student.id)
             if (navigator.vibrate) {
-                try { navigator.vibrate(40) } catch (err) {}
+                try { navigator.vibrate(40) } catch (err) { }
             }
         }, 600)
     }
@@ -1328,7 +1328,7 @@ export const StudentMobileListRow = memo(({
     ]
 
     return (
-        <div 
+        <div
             className={`w-full flex flex-col transition-all duration-300
                 ${isSelected ? 'bg-[var(--color-primary)]/[0.04]' : 'bg-[var(--color-surface)]'}
                 ${student.is_pinned ? 'border-l-[4px] border-l-amber-400' : ''}

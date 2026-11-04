@@ -23,10 +23,10 @@ import {
 } from 'lucide-react'
 
 import { EmptyState, Skeleton } from '@shared/components'
-import RaportPrintCard from './RaportPrintCard'
+import PrintCard from './PrintCard'
 
 import { BULAN, FISIK_FIELDS, HAFALAN_FIELDS } from '@utils/reports/raportConstants'
-import { RAPORT_TYPES, getClassLevel, getGradePredicate } from '@features/raport/utils/raportTypeRegistry'
+import { RAPORT_TYPES, getClassLevel, getGradePredicate } from '@features/raport/utils/typeRegistry'
 
 const WhatsAppIcon = (props) => (
     <svg viewBox="0 0 448 512" fill="currentColor" {...props}>
@@ -313,7 +313,7 @@ function ArchiveDetail(props) {
     }).length
 
     const renderCard = (student) => (
-        <RaportPrintCard
+        <PrintCard
             student={student}
             scores={editSc(student.id)}
             extra={editEx(student.id)}

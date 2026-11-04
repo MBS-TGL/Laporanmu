@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { LogIn, Loader2, Keyboard, IdCard, Building2, Car, Plus } from 'lucide-react'
 import { useLanguage } from '@context'
 import { PAGE_T, PRESETS_TAMU } from '@features/gate/utils/gateConstants'
-import { nowDateStr, nowTimeStr, dateTimeToISO } from '@features/gate/hooks/useGateCore'
+import { nowDateStr, nowTimeStr, dateTimeToISO } from '@features/gate/hooks/useCore'
 import PurposeInput from './PurposeInput'
-import RichDatePicker from '@shared/components/RichDatePicker'
-import RichTimePicker from '@shared/components/RichTimePicker'
+import DatePicker from '@shared/components/DatePicker'
+import TimePicker from '@shared/components/TimePicker'
 
 export default function FormTamu({ onSubmit, loading }) {
   const { language } = useLanguage()
@@ -100,13 +100,13 @@ export default function FormTamu({ onSubmit, loading }) {
             <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5 block">
               {tanggalLabel}
             </label>
-            <RichDatePicker value={dateIn} onChange={setDateIn} clearable={false} />
+            <DatePicker value={dateIn} onChange={setDateIn} clearable={false} />
           </div>
           <div>
             <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5 block">
               {jamMasukLabel}
             </label>
-            <RichTimePicker value={timeIn} onChange={setTimeIn} />
+            <TimePicker value={timeIn} onChange={setTimeIn} />
           </div>
         </div>
 
@@ -114,7 +114,7 @@ export default function FormTamu({ onSubmit, loading }) {
           <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5 block">
             {tp('formEtaTamu')} <span className="normal-case font-normal text-[var(--color-text-muted)]/75">{opsionalText}</span>
           </label>
-          <RichTimePicker value={timeEst} onChange={setTimeEst} clearable={true} />
+          <TimePicker value={timeEst} onChange={setTimeEst} clearable={true} />
         </div>
       </div>
 

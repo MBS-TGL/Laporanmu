@@ -1,4 +1,4 @@
-import { RAPORT_TYPES, getClassLevel, getGradePredicate } from './raportTypeRegistry'
+import { RAPORT_TYPES, getClassLevel, getGradePredicate } from './typeRegistry'
 
 /**
  * Validasi apakah semua kriteria nilai sudah terisi

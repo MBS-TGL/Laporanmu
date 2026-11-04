@@ -10,7 +10,7 @@ import {
   TableSkeleton, ConfirmDialog,
 } from '@shared/components'
 import useSuspensions from '../hooks/useSuspensions'
-import SuspensionFormModal from '../components/SuspensionFormModal'
+import FormModal from '../components/FormModal'
 import TokenModal from '../components/TokenModal'
 import { formatTanggalPendek } from '../utils/suspensionConstants'
 
@@ -282,7 +282,7 @@ export default function SuspensionsPage() {
         </div>
       )}
 
-      <SuspensionFormModal
+      <FormModal
         key={formOpen ? 'susform-buka' : 'susform-tutup'}
         isOpen={formOpen}
         onClose={() => setFormOpen(false)}

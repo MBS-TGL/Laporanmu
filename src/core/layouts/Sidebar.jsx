@@ -50,7 +50,7 @@ function SidebarItem({ item, collapsed, inGroup = false }) {
                 `group/item relative flex h-9 min-w-0 items-center gap-2.5 rounded-lg px-2.5 text-sm transition-colors duration-150
                 ${isActive
                     ? 'bg-primary/10 font-semibold text-primary'
-                    : 'text-text-muted hover:bg-surface-alt hover:text-text'}`
+                    : 'font-medium text-text/80 hover:bg-surface-alt hover:text-text'}`
             }
         >
             {({ isActive }) => (
@@ -67,7 +67,7 @@ function SidebarItem({ item, collapsed, inGroup = false }) {
                     >
                         <NavIcon icon={item.icon} />
                     </span>
-                    <span className="truncate leading-none">{label}</span>
+                    <span className="truncate leading-5">{label}</span>
                 </>
             )}
         </NavLink>
@@ -99,9 +99,9 @@ function SidebarGroup({ group, items, collapsed, isOpen, onToggle }) {
                 type="button"
                 onClick={onToggle}
                 aria-expanded={showChildren}
-                className="group/grp flex h-8 w-full items-center justify-between rounded-lg px-2.5 transition-colors duration-150 text-text-muted/70 hover:text-text-muted"
+                className="group/grp flex h-8 w-full items-center justify-between rounded-lg px-2.5 transition-colors duration-150 text-text-muted hover:text-text"
             >
-                <span className="truncate text-xs font-semibold uppercase tracking-wider">
+                <span className="truncate text-xs font-bold uppercase tracking-wider">
                     {label}
                 </span>
                 <ChevronDown
@@ -178,7 +178,7 @@ export default function Sidebar({ collapsed, onToggle }) {
 
     return (
         <aside
-            className={`hidden inset-y-0 lg:flex fixed z-50 flex-col bg-surface border-border transition-[width] duration-200 ease-out
+            className={`hidden inset-y-0 lg:flex fixed z-50 flex-col antialiased bg-surface border-border transition-[width] duration-200 ease-out
                 ${collapsed ? 'w-14' : 'w-[250px]'}
                 ${isRtl ? 'right-0 border-l' : 'left-0 border-r'}`}
         >
@@ -243,8 +243,8 @@ export default function Sidebar({ collapsed, onToggle }) {
                             {initial}
                         </div>
                         <div className="min-w-0 flex-1 leading-tight">
-                            <p className="truncate text-xs font-semibold text-text">{profile?.name || 'Pengguna'}</p>
-                            <p className="truncate text-xs text-text-muted capitalize">{roleDisplay || '—'}</p>
+                            <p className="truncate text-xs font-bold text-text">{profile?.name || 'Pengguna'}</p>
+                            <p className="truncate text-xs font-medium text-text-muted capitalize">{roleDisplay || '—'}</p>
                         </div>
                         <button
                             type="button"

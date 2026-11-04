@@ -14,25 +14,25 @@ import {
     StatsCarousel,
     Pagination,
     RichSelect,
-    RichDatePicker,
+    DatePicker,
     MarsIcon,
     VenusIcon
 } from '@shared/components'
 import { useToast, useLanguage } from '@context'
-import { useEnrollmentCore } from '@features/enrollment/hooks/useEnrollmentCore'
+import { useCore } from '@features/enrollment/hooks/useCore'
 import { EnrollmentRow, EnrollmentMobileCard, EnrollmentSkeletonRow, EnrollmentSkeletonCard } from '@features/enrollment/components/EnrollmentRow'
-import EnrollmentFormModal from '@features/enrollment/components/EnrollmentFormModal'
-import EnrollmentProfileModal from '@features/enrollment/components/EnrollmentProfileModal'
-import EnrollmentWaveModal from '@features/enrollment/components/EnrollmentWaveModal'
+import FormModal from '@features/enrollment/components/FormModal'
+import ProfileModal from '@features/enrollment/components/ProfileModal'
+import WaveModal from '@features/enrollment/components/WaveModal'
 import EnrollmentSearch from '@features/enrollment/components/EnrollmentSearch'
-import EnrollmentArchiveModal from '@features/enrollment/components/EnrollmentArchiveModal'
-import EnrollmentConvertModal from '@features/enrollment/components/EnrollmentConvertModal'
-import EnrollmentImportModal from '@features/enrollment/components/EnrollmentImportModal'
-import EnrollmentExportModal from '@features/enrollment/components/EnrollmentExportModal'
-import EnrollmentStatsModal from '@features/enrollment/components/EnrollmentStatsModal'
-import EnrollmentAssessmentModal from '@features/enrollment/components/EnrollmentAssessmentModal'
-import EnrollmentPaymentModal from '@features/enrollment/components/EnrollmentPaymentModal'
-import { useEnrollmentImportExport } from '@features/enrollment/hooks/useEnrollmentImportExport'
+import ArchiveModal from '@features/enrollment/components/ArchiveModal'
+import ConvertModal from '@features/enrollment/components/ConvertModal'
+import ImportModal from '@features/enrollment/components/ImportModal'
+import ExportModal from '@features/enrollment/components/ExportModal'
+import StatsModal from '@features/enrollment/components/StatsModal'
+import AssessmentModal from '@features/enrollment/components/AssessmentModal'
+import PaymentModal from '@features/enrollment/components/PaymentModal'
+import { useImportExport } from '@features/enrollment/hooks/useImportExport'
 import { STATUS_CONFIG, PROGRAM_OPTIONS, REQUIRED_DOCUMENTS } from '@features/enrollment/utils/enrollmentConstants'
 
 function getPortalContainer(id) {
@@ -45,7 +45,7 @@ function getPortalContainer(id) {
 export default function EnrollmentPage() {
     const { addToast, addUndoToast } = useToast()
     const { dir } = useLanguage()
-    const core = useEnrollmentCore({ addToast, addUndoToast })
+    const core = useCore({ addToast, addUndoToast })
     const [jumpPage, setJumpPage] = useState('')
     const [isArchiveOpen, setIsArchiveOpen] = useState(false)
     const [showStatusDropdown, setShowStatusDropdown] = useState(false)
@@ -107,14 +107,14 @@ export default function EnrollmentPage() {
             }
         }
 
-        // Validasi 2: dihapus karena sudah di-handle oleh AssessmentModal di useEnrollmentCore
+        // Validasi 2: dihapus karena sudah di-handle oleh AssessmentModal di useCore
 
         // Lolos validasi, eksekusi pembaruan
         updateStatus(enrollment, nextStatus);
     }, [updateStatus]);
 
     const importFileInputRef = useRef(null)
-    const ie = useEnrollmentImportExport({
+    const ie = useImportExport({
         enrollments,
         waves,
         fetchData,
@@ -476,7 +476,7 @@ export default function EnrollmentPage() {
                                 <div className="sm:col-span-2 md:col-span-2 lg:col-span-2">
                                     <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Rentang Tanggal</label>
                                     <div className="flex items-center gap-1.5 w-full">
-                                        <RichDatePicker
+                                        <DatePicker
                                             value={filterDateFrom}
                                             onChange={(val) => { setFilterDateFrom(val); setPage(1); }}
                                             placeholder="Dari"
@@ -484,7 +484,7 @@ export default function EnrollmentPage() {
                                             className="w-full"
                                         />
                                         <span className="text-xs text-[var(--color-text-muted)] opacity-60 shrink-0">s/d</span>
-                                        <RichDatePicker
+                                        <DatePicker
                                             value={filterDateTo}
                                             onChange={(val) => { setFilterDateTo(val); setPage(1); }}
                                             placeholder="Sampai"
@@ -610,10 +610,10 @@ export default function EnrollmentPage() {
             </div>
 
             {/* Modals */}
-            <EnrollmentFormModal isOpen={isFormOpen} onClose={closeForm} onSubmit={handleSubmit}
+            <FormModal isOpen={isFormOpen} onClose={closeForm} onSubmit={handleSubmit}
                 enrollment={selectedEnrollment} submitting={submitting} waves={waves}
                 onPhotoUpload={handlePhotoUpload} uploadingPhoto={uploadingPhoto} />
-            <EnrollmentProfileModal isOpen={isProfileOpen} onClose={closeProfile}
+            <ProfileModal isOpen={isProfileOpen} onClose={closeProfile}
                 enrollment={selectedEnrollment} onEdit={(e) => { closeProfile(); handleEdit(e) }}
                 onDelete={(e) => { closeProfile(); confirmDelete(e) }} onStatusChange={(e, s) => { closeProfile(); handleStatusChangeWithValidation(e, s) }}
                 onConvertToStudent={(e) => {
@@ -629,7 +629,7 @@ export default function EnrollmentPage() {
                     setIsPaymentOpen(true);
                 }}
             />
-            <EnrollmentConvertModal
+            <ConvertModal
                 isOpen={isConvertOpen}
                 onClose={() => { setIsConvertOpen(false); setConvertingEnrollment(null); }}
                 enrollment={convertingEnrollment}
@@ -637,9 +637,9 @@ export default function EnrollmentPage() {
                 onConvert={handleConvertToStudent}
                 converting={converting}
             />
-            <EnrollmentWaveModal isOpen={isWaveModalOpen} onClose={() => setIsWaveModalOpen(false)}
+            <WaveModal isOpen={isWaveModalOpen} onClose={() => setIsWaveModalOpen(false)}
                 waves={waves} addToast={addToast} onRefresh={fetchData} />
-            <EnrollmentArchiveModal isOpen={isArchiveOpen} onClose={() => setIsArchiveOpen(false)}
+            <ArchiveModal isOpen={isArchiveOpen} onClose={() => setIsArchiveOpen(false)}
                 archivedEnrollments={archivedEnrollments} loadingArchived={loadingArchived}
                 fetchArchivedEnrollments={fetchArchivedEnrollments} handleRestoreEnrollment={handleRestoreEnrollment}
                 handlePermanentDeleteEnrollment={handlePermanentDeleteEnrollment} addToast={addToast} />
@@ -1056,7 +1056,7 @@ export default function EnrollmentPage() {
                 onChange={ie.handleFileChange}
             />
 
-            <EnrollmentImportModal
+            <ImportModal
                 isOpen={ie.isImportModalOpen}
                 onClose={() => ie.setIsImportModalOpen(false)}
                 importing={ie.importing}
@@ -1096,7 +1096,7 @@ export default function EnrollmentPage() {
                 importDuplicates={ie.importDuplicates}
             />
 
-            <EnrollmentExportModal
+            <ExportModal
                 isOpen={ie.isExportModalOpen}
                 onClose={() => ie.setIsExportModalOpen(false)}
                 enrollments={enrollments}
@@ -1112,14 +1112,14 @@ export default function EnrollmentPage() {
                 addToast={addToast}
             />
 
-            <EnrollmentStatsModal
+            <StatsModal
                 isOpen={isStatsModalOpen}
                 onClose={() => setIsStatsModalOpen(false)}
                 enrollments={allEnrollments}
                 waves={waves}
             />
 
-            <EnrollmentAssessmentModal
+            <AssessmentModal
                 isOpen={isAssessmentOpen}
                 onClose={() => setIsAssessmentOpen(false)}
                 onSubmit={handleAssessmentSubmit}
@@ -1127,7 +1127,7 @@ export default function EnrollmentPage() {
                 submitting={submitting}
             />
 
-            <EnrollmentPaymentModal
+            <PaymentModal
                 isOpen={isPaymentOpen}
                 onClose={() => { setIsPaymentOpen(false); setPaymentEnrollment(null); }}
                 enrollment={activePaymentEnrollment}

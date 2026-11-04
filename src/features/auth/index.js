@@ -1,2 +1,2 @@
 export { default as LoginPage } from './pages/LoginPage'
-export { default as ParentCheckPage } from './pages/ParentCheckPage'
+export { default as ParentPage } from './pages/ParentPage'

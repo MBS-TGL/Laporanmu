@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useRef, useMemo } from 'react'
-import { useRaportCore } from '@features/raport/hooks/useRaportCore'
-import { useRaportImportExport } from '@features/raport/hooks/useRaportImportExport'
-import { useRaportArchive } from '@features/raport/hooks/useRaportArchive'
-import { loadLayoutConfig } from '@features/raport/components/RaportLayoutSettings'
-import { RAPORT_TYPES } from '@features/raport/utils/raportTypeRegistry'
+import { useCore } from '@features/raport/hooks/useCore'
+import { useImportExport } from '@features/raport/hooks/useImportExport'
+import { useArchive } from '@features/raport/hooks/useArchive'
+import { loadLayoutConfig } from '@features/raport/components/LayoutSettings'
+import { RAPORT_TYPES } from '@features/raport/utils/typeRegistry'
 import { BULAN } from '@utils/reports/raportConstants'
 
 const RaportContext = createContext(null)
@@ -18,7 +18,7 @@ export function RaportProvider({ children, isAcademic = false }) {
     const [pageSize, setPageSize] = useState('f4')
 
     // ── Raport Core hook integration
-    const core = useRaportCore()
+    const core = useCore()
 
     // Override or set reportType if isAcademic
     const activeRtObj = useMemo(() => RAPORT_TYPES[core.reportType] || RAPORT_TYPES.bulanan, [core.reportType])
@@ -42,7 +42,7 @@ export function RaportProvider({ children, isAcademic = false }) {
     })), [years])
 
     // ── Raport Import / Export hook integration
-    const importExport = useRaportImportExport(core, { printContainerRef, silentPrintRef, pageSize })
+    const importExport = useImportExport(core, { printContainerRef, silentPrintRef, pageSize })
 
     // ── Archive states
     const [archiveLoading, setArchiveLoading] = useState(false)
@@ -65,7 +65,7 @@ export function RaportProvider({ children, isAcademic = false }) {
     const [generatingPdfIds, setGeneratingPdfIds] = useState(new Set())
 
     // ── Archive actions hook
-    const archiveActions = useRaportArchive({
+    const archiveActions = useArchive({
         reportType: core.reportType,
         classesList: core.classesList,
         setArchiveLoading,

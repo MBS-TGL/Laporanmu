@@ -1,6 +1,6 @@
 // Kompres foto bukti di client sebelum dikirim via RPC.
 // Target: tiap foto <500 KB (batas RPC 2 MB), format JPEG.
-// Pola mengikuti compressImage di useStudentsCore (canvas manual, tanpa lib baru).
+// Pola mengikuti compressImage di useCore (canvas manual, tanpa lib baru).
 
 const TARGET_BYTES = 500 * 1024
 

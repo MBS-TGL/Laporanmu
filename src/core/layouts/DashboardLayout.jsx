@@ -3,7 +3,7 @@ import { useSessionGuard } from '@hooks/useSessionGuard'
 import { useLanguage } from '@context'
 import BottomNav from "./BottomNav"
 import Sidebar from './Sidebar'
-import SlimTopBar from './SlimTopBar'
+import TopBar from './TopBar'
 
 const ChatAssistant = lazy(() => import('./ChatAssistant'))
 
@@ -47,7 +47,7 @@ export default function DashboardLayout({ children, title }) {
             <Sidebar collapsed={sidebarCollapsed} onToggle={toggleSidebar} />
 
             {/* Slim top bar */}
-            <SlimTopBar
+            <TopBar
                 onToggleSidebar={toggleSidebar}
                 sidebarCollapsed={sidebarCollapsed}
                 onOpenChatAssistant={() => setIsChatOpen(prev => !prev)}
@@ -60,8 +60,8 @@ export default function DashboardLayout({ children, title }) {
 
             {/* Page Content — shifts right on desktop to make room for sidebar */}
             <main
-                className="relative z-10 w-full px-3 sm:px-4 lg:px-4 py-3 sm:py-4 lg:py-4 pb-24 lg:pb-4"
-                style={{ 
+                className="relative z-10 w-full px-3 sm:px-5 lg:px-6 xl:px-8 py-4 sm:py-5 lg:py-6 pb-24 lg:pb-6"
+                style={{
                     marginLeft: `0px`,
                     '--sidebar-width': '0px'
                 }}

@@ -3,19 +3,19 @@ import { useState, useRef, useEffect, useCallback, memo, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createPortal } from 'react-dom'
 import { createRoot } from 'react-dom/client'
-import { Archive, ArrowDownAZ, ArrowUpNarrowWide, Briefcase, Camera, ChartPie, Check, CircleAlert, CircleCheck, Crown, DoorOpen, Download, Eye, EyeOff, FileInput, FileOutput, FileText, GraduationCap, Image, Info, Keyboard, Link, LoaderCircle, PenTool, Plus, Printer, Rocket, RotateCcw, School, Search, Send, ShieldHalf, SlidersHorizontal, Table, TableProperties, Tags, Trash2, TriangleAlert, Trophy, Users, X, Zap } from 'lucide-react'
+import { Pencil, RefreshCw, TrendingUp, TrendingDown, CheckCheck, Archive, ArrowDownAZ, ArrowUpNarrowWide, Briefcase, Camera, ChartPie, Check, CircleAlert, CircleCheck, Crown, DoorOpen, Download, Eye, EyeOff, FileInput, FileOutput, FileText, GraduationCap, Image, Info, Keyboard, Link, LoaderCircle, PenTool, Plus, Printer, Rocket, RotateCcw, School, Search, Send, ShieldHalf, SlidersHorizontal, SquareCheck, Table, TableProperties, Tags, Trash2, TriangleAlert, Trophy, Users, X, Zap } from 'lucide-react'
 import { LIST_KAMAR } from '@utils/reports/raportConstants'
 
 import DashboardLayout from '@core/layouts/DashboardLayout'
-import { Breadcrumb, PageHeader, Modal, RichSelect, StatsCarousel, StatCard, EmptyState, Pagination, MarsIcon, VenusIcon, WhatsAppIcon } from '@shared/components'
+import { Breadcrumb, PageHeader, Modal, RichSelect, Button, EmptyState, Pagination, MarsIcon, VenusIcon, WhatsAppIcon } from '@shared/components'
 import { useToast, useFlag, useLanguage } from '@context'
 import { supabase } from '@lib/supabase'
 import mbsLogo from '@assets/images/logos/logo-mbs.png'
 import { SortOptions, RiskThreshold, AvailableTags, getTagColor, calculateCompleteness, maskInfo, formatRelativeDate } from '@features/students/utils/studentsConstants'
-import { useStudentsImportExport } from '@features/students/hooks/useStudentsImportExport'
-import { generateStudentPDF as _generateStudentPDF, handlePrintThermal as _handlePrintThermal, handleSavePNG as _handleSavePNG } from '@features/students/utils/studentPdfUtils'
-import { useStudentsCore } from '@features/students/hooks/useStudentsCore'
-import StudentClassHistoryModal from '@features/students/components/StudentClassHistoryModal'
+import { useImportExport } from '@features/students/hooks/useImportExport'
+import { generateStudentPDF as _generateStudentPDF, handlePrintThermal as _handlePrintThermal, handleSavePNG as _handleSavePNG } from '@features/students/utils/pdfUtils'
+import { useCore } from '@features/students/hooks/useCore'
+import ClassHistory from '@features/students/components/ClassHistory'
 import { MobileListSkeleton, MobileCardSkeleton } from '@shared/components/Skeleton'
 
 // NOTE(perf): library import/export di-load on-demand via dynamic import
@@ -27,32 +27,32 @@ import { MobileListSkeleton, MobileCardSkeleton } from '@shared/components/Skele
 //   <nav className="fixed bottom-0 z-[80] ...">
 // Ini mencegah backdrop modal mencover bottom nav sehingga tap nav tetap berfungsi.
 
-import StudentArchiveModal from '@features/students/components/StudentArchiveModal'
-import StudentBulkPhotoModal from '@features/students/components/StudentBulkPhotoModal'
-import StudentResetPointsModal from '@features/students/components/StudentResetPointsModal'
-import StudentGSheetsModal from '@features/students/components/StudentGSheetsModal'
-import StudentFormModal from '@features/students/components/StudentFormModal'
-import StudentInlineAddRow from '@features/students/components/StudentInlineAddRow'
+import ArchiveModal from '@features/students/components/ArchiveModal'
+import BulkPhoto from '@features/students/components/BulkPhoto'
+import ResetPoints from '@features/students/components/ResetPoints'
+import GSheetsModal from '@features/students/components/GSheetsModal'
+import FormModal from '@features/students/components/FormModal'
+import InlineAdd from '@features/students/components/InlineAdd'
 import { StudentRow, StudentMobileCard, StudentMobileListRow, StudentSkeletonRow, StudentSkeletonCard } from '@features/students/components/StudentRow'
 
 const LazyQRCodeCanvas = React.lazy(() =>
     import('qrcode.react').then((m) => ({ default: m.QRCodeCanvas }))
 )
 
-const LazyStudentAccessCardModal = React.lazy(() =>
-    import('@features/students/components/StudentAccessCardModal')
+const LazyAccessCard = React.lazy(() =>
+    import('@features/students/components/AccessCard')
 )
-const LazyStudentProfileModal = React.lazy(() =>
-    import('@features/students/components/StudentProfileModal')
+const LazyProfileModal = React.lazy(() =>
+    import('@features/students/components/ProfileModal')
 )
-const LazyStudentExportModal = React.lazy(() =>
-    import('@features/students/components/StudentExportModal')
+const LazyExportModal = React.lazy(() =>
+    import('@features/students/components/ExportModal')
 )
-const LazyStudentImportModal = React.lazy(() =>
-    import('@features/students/components/StudentImportModal')
+const LazyImportModal = React.lazy(() =>
+    import('@features/students/components/ImportModal')
 )
-const LazyStudentTagModal = React.lazy(() =>
-    import('@features/students/components/StudentTagModal')
+const LazyTagModal = React.lazy(() =>
+    import('@features/students/components/TagModal')
 )
 
 
@@ -87,7 +87,7 @@ const DebouncedSearchInput = memo(({ searchQuery, onSearch, inputRef, isLoading 
 
     return (
         <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--color-text-muted)] text-sm group-focus-within:text-[var(--color-primary)] transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[var(--color-text-muted)] text-sm group-focus-within:text-[var(--color-primary)] transition-colors">
                 {isLoading ? (
                     <LoaderCircle className="w-4 h-4 animate-spin text-[var(--color-primary)]" />
                 ) : (
@@ -99,8 +99,8 @@ const DebouncedSearchInput = memo(({ searchQuery, onSearch, inputRef, isLoading 
                 type="text"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-                placeholder="Cari nama, NISN..."
-                className="input-field pl-10 w-full h-9 text-xs sm:text-sm bg-[var(--color-surface-alt)]/50 border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/10 transition-all rounded-xl font-bold placeholder:font-normal placeholder:opacity-40"
+                placeholder="Cari nama atau NISN…  ( Ctrl K )"
+                className="w-full h-9 pl-9 pr-3 rounded-lg border border-border bg-surface text-sm outline-none focus:border-primary transition-all placeholder:text-text-muted"
             />
         </div>
     )
@@ -232,6 +232,95 @@ const SelectedStudentsCarousel = memo(({
 });
 
 
+
+// ─── Potongan UI kecil (selaras PermitPage) ────────────────────────────
+const CHIP_COLORS = {
+    indigo: 'text-indigo-600 bg-indigo-500/10',
+    sky: 'text-sky-600 bg-sky-500/10',
+    rose: 'text-rose-600 bg-rose-500/10',
+    emerald: 'text-emerald-600 bg-emerald-500/10',
+    amber: 'text-amber-600 bg-amber-500/10',
+    orange: 'text-orange-600 bg-orange-500/10',
+}
+
+// Chip ringkas: statis (statistik) atau tombol (insight yang bisa memfilter)
+function StatChip({ icon: Icon, label, value, color = 'indigo', loading, onClick, active }) {
+    const cls = `flex items-center gap-2 h-9 pl-1.5 pr-3 rounded-lg border bg-surface shrink-0 transition-all ${active ? 'border-primary ring-1 ring-primary' : 'border-border'} ${onClick ? 'hover:bg-surface-alt active:scale-95 cursor-pointer' : ''}`
+    const body = (
+        <>
+            <span className={`w-6 h-6 rounded-md flex items-center justify-center ${CHIP_COLORS[color]}`}>
+                <Icon className="w-3.5 h-3.5" />
+            </span>
+            <span className="text-sm font-semibold tabular-nums text-text max-w-[120px] truncate">{loading ? '–' : value}</span>
+            <span className="text-xs text-text-muted whitespace-nowrap">{label}</span>
+        </>
+    )
+    return onClick
+        ? <button type="button" onClick={onClick} className={cls}>{body}</button>
+        : <div className={cls}>{body}</div>
+}
+
+const TH = 'px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-text-muted'
+
+// Skeleton memakai struktur kolom yang sama dengan tabel asli
+function StudentTableSkeleton({ rows = 8 }) {
+    const bar = (w) => <div className={`h-2.5 rounded-full bg-border/70 ${w}`} />
+    return (
+        <div className="overflow-x-auto animate-pulse">
+            <table className="w-full text-left">
+                <thead>
+                    <tr className="border-b border-border bg-surface-alt/60">
+                        <th className={`${TH} w-10`}></th>
+                        <th className={TH}>Siswa</th>
+                        <th className={TH}>Kelas</th>
+                        <th className={`${TH} hidden lg:table-cell`}>Status</th>
+                        <th className={`${TH} hidden lg:table-cell`}>Poin</th>
+                        <th className={TH}><div className="flex justify-end">Aksi</div></th>
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                    {Array.from({ length: rows }).map((_, i) => (
+                        <tr key={i}>
+                            <td className="px-4 py-2.5"><div className="w-4 h-4 rounded bg-border/70" /></td>
+                            <td className="px-4 py-2.5">
+                                <div className="flex items-center gap-2.5">
+                                    <div className="w-8 h-8 rounded-xl bg-border/70 shrink-0" />
+                                    <div className="space-y-1.5">{bar('w-32')}{bar('w-20')}</div>
+                                </div>
+                            </td>
+                            <td className="px-4 py-2.5">{bar('w-20')}</td>
+                            <td className="px-4 py-2.5 hidden lg:table-cell"><div className="h-5 w-14 rounded-md bg-border/70" /></td>
+                            <td className="px-4 py-2.5 hidden lg:table-cell">{bar('w-8')}</td>
+                            <td className="px-4 py-2.5">
+                                <div className="flex justify-end gap-1.5">
+                                    <div className="h-8 w-8 rounded-lg bg-border/70" />
+                                    <div className="h-8 w-8 rounded-lg bg-border/70" />
+                                    <div className="h-8 w-8 rounded-lg bg-border/70" />
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    )
+}
+
+const STATUS_STYLE = {
+    aktif: 'text-emerald-600 bg-emerald-500/10',
+    lulus: 'text-indigo-600 bg-indigo-500/10',
+    pindah: 'text-amber-600 bg-amber-500/10',
+    keluar: 'text-rose-600 bg-rose-500/10',
+}
+
+const STATUS_TABS = [
+    { key: '', label: 'Semua' },
+    { key: 'aktif', label: 'Aktif' },
+    { key: 'lulus', label: 'Lulus' },
+    { key: 'pindah', label: 'Pindah' },
+    { key: 'keluar', label: 'Keluar' },
+]
+
 export default function StudentsPage() {
     const { addToast, addUndoToast } = useToast()
     const { dir } = useLanguage()
@@ -240,7 +329,7 @@ export default function StudentsPage() {
     const [classSearchQuery, setClassSearchQuery] = useState('')
     const [removingStudentId, setRemovingStudentId] = useState(null)
 
-    const core = useStudentsCore({ addToast, addUndoToast })
+    const core = useCore({ addToast, addUndoToast })
 
     // De-structure from core
     const {
@@ -322,7 +411,7 @@ export default function StudentsPage() {
 
 
     // Import/Export Logic
-    const importExport = useStudentsImportExport({
+    const importExport = useImportExport({
         students, classesList, fetchData, fetchStats, addToast, closeModal, importFileInputRef, generateCode,
         filterClasses, filterClass, filterGender, filterStatus, filterTag, filterMissing, debouncedSearch,
         filterPointMode, filterPointMin, filterPointMax, sortBy, selectedStudentIds, selectedStudents, gSheetsUrl,
@@ -545,6 +634,15 @@ export default function StudentsPage() {
     const navigate = navigateLocal;
 
 
+    const initialLoading = loading && students.length === 0
+    const hasInsights = globalStats.risk > 0 || globalStats.incompleteCount > 0 || globalStats.topPerformer || (globalStats.worstClass && globalStats.worstClass.avg < 0) || globalStats.avgPointsLastWeek !== null
+    const classNameById = useMemo(() => {
+        const m = {}
+            ; (classesList || []).forEach((c) => { m[c.id] = c.name })
+        return m
+    }, [classesList])
+    const allOnPageSelected = students.length > 0 && students.every((s) => selectedIdSet.has(s.id))
+
     return (
         <DashboardLayout title="Data Siswa" hideHeader={isAnyModalOpen} hideSidebar={isAnyModalOpen}>
             <style>
@@ -565,357 +663,336 @@ export default function StudentsPage() {
                     </div>
                 )}
 
+
                 {/* Header */}
                 <PageHeader
-                    badge="Master Data"
+                    badge="Kesantrian"
                     breadcrumbs={['Student Directory']}
                     title="Data Siswa"
                     subtitle={`Kelola ${globalStats.total} data siswa aktif dalam sistem laporan.`}
                     actions={
                         <>
-                        {/* Header Menu Button */}
-                        <button
-                            ref={headerMenuBtnRef}
-                            onClick={() => { if (!isHeaderMenuOpen) setHeaderMenuRect(headerMenuBtnRef.current?.getBoundingClientRect()); setIsHeaderMenuOpen(v => !v) }}
-                            className={`h-9 w-9 rounded-lg border flex items-center justify-center text-sm transition-all active:scale-95 ${isHeaderMenuOpen ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
-                            title="Aksi lainnya"
-                        >
-                            <SlidersHorizontal className="w-4 h-4" />
-                        </button>
+                            <button
+                                onClick={() => { fetchData(); fetchStats() }}
+                                disabled={loading}
+                                title="Muat ulang data (R)"
+                                aria-label="Muat ulang data"
+                                className="h-9 w-9 rounded-lg border flex items-center justify-center transition-all bg-surface-alt border-border text-text-muted enabled:hover:text-text enabled:active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
+                            >
+                                <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+                            </button>
+                            {/* Header Menu Button */}
+                            <button
+                                ref={headerMenuBtnRef}
+                                onClick={() => { if (!isHeaderMenuOpen) setHeaderMenuRect(headerMenuBtnRef.current?.getBoundingClientRect()); setIsHeaderMenuOpen(v => !v) }}
+                                className={`h-9 w-9 rounded-lg border flex items-center justify-center text-sm transition-all active:scale-95 ${isHeaderMenuOpen ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
+                                title="Aksi lainnya"
+                            >
+                                <SlidersHorizontal className="w-4 h-4" />
+                            </button>
 
-                        {/* Portaled Header Menu Dropdown */}
-                        {headerMenuMounted && headerMenuRect && createPortal(
-                            <>
-                                <div
-                                    className={`fixed inset-0 z-[9990] bg-black/5 transition-opacity duration-200 ${isHeaderMenuOpen ? 'opacity-100' : 'opacity-0'}`}
-                                    onClick={() => setIsHeaderMenuOpen(false)}
-                                />
-                                <div
-                                    className={`fixed z-[9991] w-56 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 transition-all duration-200 ease-out origin-top-right
+                            {/* Portaled Header Menu Dropdown */}
+                            {headerMenuMounted && headerMenuRect && createPortal(
+                                <>
+                                    <div
+                                        className={`fixed inset-0 z-[9990] bg-black/5 transition-opacity duration-200 ${isHeaderMenuOpen ? 'opacity-100' : 'opacity-0'}`}
+                                        onClick={() => setIsHeaderMenuOpen(false)}
+                                    />
+                                    <div
+                                        className={`fixed z-[9991] w-56 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 transition-all duration-200 ease-out origin-top-right
                                         ${isHeaderMenuOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2'}`}
-                                    style={{
-                                        top: headerMenuRect.bottom + 8,
-                                        left: Math.max(10, headerMenuRect.right - 224)
-                                    }}
-                                >
-                                    <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-2">Data</p>
-                                    {canImportCSV && (
-                                        <button onClick={() => { setIsHeaderMenuOpen(false); handleImportClick() }}
-                                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
-                                            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <FileInput className="w-4 h-4" />
-                                            </div>
-                                            <div className="text-left">
-                                                <p className="text-xs font-bold leading-tight">Import CSV / Excel</p>
-                                                <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Unggah data murid masal dari file Excel/CSV</p>
-                                            </div>
-                                        </button>
-                                    )}
-                                    {canImportGSheets && (
-                                        <button onClick={() => { setIsHeaderMenuOpen(false); setActiveModal('gsheets') }}
-                                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
-                                            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <Link className="w-4 h-4" />
-                                            </div>
-                                            <div className="text-left">
-                                                <p className="text-xs font-bold leading-tight">Import GSheets</p>
-                                                <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Sinkronisasi data otomatis via Google Sheets</p>
-                                            </div>
-                                        </button>
-                                    )}
-                                    {canExport && (
-                                        <button onClick={() => { setIsHeaderMenuOpen(false); setIsExportModalOpen(true) }}
-                                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
-                                            <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <FileOutput className="w-4 h-4" />
-                                            </div>
-                                            <div className="text-left">
-                                                <p className="text-xs font-bold leading-tight">Export Data</p>
-                                                <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Cadangkan seluruh database ke format Excel</p>
-                                            </div>
-                                        </button>
-                                    )}
-                                    {canBulkPhoto && (
-                                        <button onClick={() => { setIsHeaderMenuOpen(false); setActiveModal('bulkPhoto') }}
-                                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--text-color)] transition-all group">
-                                            <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <Camera className="w-4 h-4" />
-                                            </div>
-                                            <div className="text-left">
-                                                <p className="text-xs font-bold leading-tight">Bulk Foto</p>
-                                                <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Update foto siswa secara masal via NISN</p>
-                                            </div>
-                                        </button>
-                                    )}
-
-                                    {(canArchive || canResetPoints) && <div className="h-px bg-[var(--color-border)] my-1 mx-2" />}
-                                    {(canArchive || canResetPoints) && <p className="px-3 py-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Manajemen</p>}
-
-                                    {canArchive && (
-                                        <button onClick={() => { setIsHeaderMenuOpen(false); fetchArchivedStudents(); setActiveModal('archived') }}
-                                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
-                                            <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <Archive className="w-4 h-4" />
-                                            </div>
-                                            <div className="text-left">
-                                                <p className="text-xs font-bold leading-tight">Arsip Siswa</p>
-                                                <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Lihat & pulihkan data siswa tidak aktif</p>
-                                            </div>
-                                        </button>
-                                    )}
-                                    {canResetPoints && (
-                                        <button
-                                            onClick={() => { setResetPointsClassId(''); setActiveModal('resetPoints'); setIsHeaderMenuOpen(false); }}
-                                            disabled={!canEdit}
-                                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[var(--color-text)] transition-all group ${!canEdit ? 'opacity-40 cursor-not-allowed' : 'hover:bg-[var(--color-surface-alt)]'}`}
-                                        >
-                                            <div className="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <RotateCcw className="w-4 h-4" />
-                                            </div>
-                                            <div className="text-left">
-                                                <p className="text-xs font-bold leading-tight">Reset Poin</p>
-                                                <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Bersihkan semua poin untuk semester baru</p>
-                                            </div>
-                                        </button>
-                                    )}
-                                </div>
-                            </>,
-                            getPortalContainer('portal-header-menu')
-                        )}
-
-                        {/* Keyboard Shortcuts Button - hidden on mobile */}
-                        <button
-                            ref={shortcutBtnRef}
-                            onClick={() => { if (!isShortcutOpen) setShortcutRect(shortcutBtnRef.current?.getBoundingClientRect()); setIsShortcutOpen(v => !v) }}
-                            className={`hidden sm:flex h-9 w-9 rounded-lg border items-center justify-center transition-all active:scale-95
-                                ${isShortcutOpen
-                                    ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]'
-                                    : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
-                                }`}
-                            title="Keyboard Shortcuts (?)"
-                        >
-                            <Keyboard className="w-4 h-4" />
-                        </button>
-
-                        {/* Portaled Keyboard Shortcuts Dropdown */}
-                        {isShortcutOpen && shortcutRect && createPortal(
-                            <>
-                                <div className="fixed inset-0 z-[9990] bg-black/5" onClick={() => setIsShortcutOpen(false)} />
-                                <div
-                                    className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden text-left animate-in fade-in zoom-in-95 duration-200"
-                                    style={{
-                                        top: shortcutRect.bottom + 8,
-                                        left: Math.max(10, shortcutRect.right - 288)
-                                    }}
-                                >
-                                    <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
-                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Keyboard Shortcuts</p>
-                                        <span className="text-xs text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
-                                    </div>
-                                    <div className="p-3 space-y-0.5">
-                                        {[
-                                            { section: 'Navigasi' },
-                                            { keys: ['Ctrl', 'K'], label: 'Fokus ke search' },
-                                            { keys: ['Ctrl', 'F'], label: 'Toggle filter lanjutan' },
-                                            { keys: ['Esc'], label: 'Tutup / clear / deselect' },
-                                            { section: 'Aksi' },
-                                            { keys: ['N'], label: 'Tambah siswa baru' },
-                                            { keys: ['Ctrl', 'A'], label: 'Pilih semua / deselect' },
-                                            { keys: ['Ctrl', 'E'], label: 'Buka export' },
-                                            { section: 'Tampilan' },
-                                            { keys: ['P'], label: 'Toggle privacy mode' },
-                                            { keys: ['R'], label: 'Refresh data' },
-                                            { keys: ['X'], label: 'Reset semua filter' },
-                                            { keys: ['?'], label: 'Tampilkan shortcut ini' },
-                                        ].map((item, i) => item.section ? (
-                                            <p key={i} className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
-                                        ) : (
-                                            <div key={i} className="flex items-center justify-between px-1 py-1 rounded-lg hover:bg-[var(--color-surface-alt)] transition-all">
-                                                <span className="text-xs font-semibold text-[var(--color-text)]">{item.label}</span>
-                                                <div className="flex items-center gap-1">
-                                                    {item.keys.map((k, ki) => (
-                                                        <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] font-mono">{k}</span>
-                                                    ))}
+                                        style={{
+                                            top: headerMenuRect.bottom + 8,
+                                            left: Math.max(10, headerMenuRect.right - 224)
+                                        }}
+                                    >
+                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-2">Data</p>
+                                        {canImportCSV && (
+                                            <button onClick={() => { setIsHeaderMenuOpen(false); handleImportClick() }}
+                                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
+                                                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                                    <FileInput className="w-4 h-4" />
                                                 </div>
-                                            </div>
-                                        ))}
+                                                <div className="text-left">
+                                                    <p className="text-xs font-bold leading-tight">Import CSV / Excel</p>
+                                                    <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Unggah data murid masal dari file Excel/CSV</p>
+                                                </div>
+                                            </button>
+                                        )}
+                                        {canImportGSheets && (
+                                            <button onClick={() => { setIsHeaderMenuOpen(false); setActiveModal('gsheets') }}
+                                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
+                                                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                                    <Link className="w-4 h-4" />
+                                                </div>
+                                                <div className="text-left">
+                                                    <p className="text-xs font-bold leading-tight">Import GSheets</p>
+                                                    <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Sinkronisasi data otomatis via Google Sheets</p>
+                                                </div>
+                                            </button>
+                                        )}
+                                        {canExport && (
+                                            <button onClick={() => { setIsHeaderMenuOpen(false); setIsExportModalOpen(true) }}
+                                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
+                                                <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                                    <FileOutput className="w-4 h-4" />
+                                                </div>
+                                                <div className="text-left">
+                                                    <p className="text-xs font-bold leading-tight">Export Data</p>
+                                                    <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Cadangkan seluruh database ke format Excel</p>
+                                                </div>
+                                            </button>
+                                        )}
+                                        {canBulkPhoto && (
+                                            <button onClick={() => { setIsHeaderMenuOpen(false); setActiveModal('bulkPhoto') }}
+                                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--text-color)] transition-all group">
+                                                <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                                    <Camera className="w-4 h-4" />
+                                                </div>
+                                                <div className="text-left">
+                                                    <p className="text-xs font-bold leading-tight">Bulk Foto</p>
+                                                    <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Update foto siswa secara masal via NISN</p>
+                                                </div>
+                                            </button>
+                                        )}
+
+                                        {(canArchive || canResetPoints) && <div className="h-px bg-[var(--color-border)] my-1 mx-2" />}
+                                        {(canArchive || canResetPoints) && <p className="px-3 py-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Manajemen</p>}
+
+                                        {canArchive && (
+                                            <button onClick={() => { setIsHeaderMenuOpen(false); fetchArchivedStudents(); setActiveModal('archived') }}
+                                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
+                                                <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                                    <Archive className="w-4 h-4" />
+                                                </div>
+                                                <div className="text-left">
+                                                    <p className="text-xs font-bold leading-tight">Arsip Siswa</p>
+                                                    <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Lihat & pulihkan data siswa tidak aktif</p>
+                                                </div>
+                                            </button>
+                                        )}
+                                        {canResetPoints && (
+                                            <button
+                                                onClick={() => { setResetPointsClassId(''); setActiveModal('resetPoints'); setIsHeaderMenuOpen(false); }}
+                                                disabled={!canEdit}
+                                                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[var(--color-text)] transition-all group ${!canEdit ? 'opacity-40 cursor-not-allowed' : 'hover:bg-[var(--color-surface-alt)]'}`}
+                                            >
+                                                <div className="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                                    <RotateCcw className="w-4 h-4" />
+                                                </div>
+                                                <div className="text-left">
+                                                    <p className="text-xs font-bold leading-tight">Reset Poin</p>
+                                                    <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Bersihkan semua poin untuk semester baru</p>
+                                                </div>
+                                            </button>
+                                        )}
                                     </div>
-                                </div>
-                            </>,
-                            getPortalContainer('portal-shortcut-menu')
-                        )}
+                                </>,
+                                getPortalContainer('portal-header-menu')
+                            )}
 
-                        <input
-                            type="file"
-                            ref={importFileInputRef}
-                            onChange={handleFileChange}
-                            className="hidden"
-                            accept=".csv,.xlsx"
-                        />
-
-                        {canPrivacyMode && (
+                            {/* Keyboard Shortcuts Button - hidden on mobile */}
                             <button
-                                onClick={() => {
-                                    const next = !isPrivacyMode
-                                    setIsPrivacyMode(next)
-                                    addToast(next ? 'Mode privasi diaktifkan — Data sensitif disembunyikan' : 'Mode privasi dinonaktifkan', next ? 'info' : 'success')
-                                }}
-                                className={`h-9 w-9 sm:w-auto sm:px-3 rounded-lg border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 ${isPrivacyMode ? 'bg-amber-500/10 border-amber-500/30 text-amber-600' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'} `}
-                                title={isPrivacyMode ? "Matikan Mode Privasi" : "Aktifkan Mode Privasi"}
+                                ref={shortcutBtnRef}
+                                onClick={() => { if (!isShortcutOpen) setShortcutRect(shortcutBtnRef.current?.getBoundingClientRect()); setIsShortcutOpen(v => !v) }}
+                                className={`hidden sm:flex h-9 w-9 rounded-lg border items-center justify-center transition-all active:scale-95
+                                ${isShortcutOpen
+                                        ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]'
+                                        : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+                                    }`}
+                                title="Keyboard Shortcuts (?)"
                             >
-                                {isPrivacyMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                <span className="text-xs font-bold uppercase tracking-wide hidden md:inline">
-                                    Privasi
-                                </span>
+                                <Keyboard className="w-4 h-4" />
                             </button>
-                        )}
 
-                        {canAddStudent && (
-                            <button
-                                onClick={handleAdd}
-                                disabled={!canEdit}
-                                className="h-9 px-4 sm:px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-40 disabled:cursor-not-allowed border border-white/10"
-                            >
-                                <Plus className="w-4 h-4" />
-                                <span>{canEdit ? 'Tambah Siswa' : 'Read-only'}</span>
-                            </button>
-                        )}
+                            {/* Portaled Keyboard Shortcuts Dropdown */}
+                            {isShortcutOpen && shortcutRect && createPortal(
+                                <>
+                                    <div className="fixed inset-0 z-[9990] bg-black/5" onClick={() => setIsShortcutOpen(false)} />
+                                    <div
+                                        className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden text-left animate-in fade-in zoom-in-95 duration-200"
+                                        style={{
+                                            top: shortcutRect.bottom + 8,
+                                            left: Math.max(10, shortcutRect.right - 288)
+                                        }}
+                                    >
+                                        <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
+                                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Keyboard Shortcuts</p>
+                                            <span className="text-xs text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
+                                        </div>
+                                        <div className="p-3 space-y-0.5">
+                                            {[
+                                                { section: 'Navigasi' },
+                                                { keys: ['Ctrl', 'K'], label: 'Fokus ke search' },
+                                                { keys: ['Ctrl', 'F'], label: 'Toggle filter lanjutan' },
+                                                { keys: ['Esc'], label: 'Tutup / clear / deselect' },
+                                                { section: 'Aksi' },
+                                                { keys: ['N'], label: 'Tambah siswa baru' },
+                                                { keys: ['Ctrl', 'A'], label: 'Pilih semua / deselect' },
+                                                { keys: ['Ctrl', 'E'], label: 'Buka export' },
+                                                { section: 'Tampilan' },
+                                                { keys: ['P'], label: 'Toggle privacy mode' },
+                                                { keys: ['R'], label: 'Refresh data' },
+                                                { keys: ['X'], label: 'Reset semua filter' },
+                                                { keys: ['?'], label: 'Tampilkan shortcut ini' },
+                                            ].map((item, i) => item.section ? (
+                                                <p key={i} className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
+                                            ) : (
+                                                <div key={i} className="flex items-center justify-between px-1 py-1 rounded-lg hover:bg-[var(--color-surface-alt)] transition-all">
+                                                    <span className="text-xs font-semibold text-[var(--color-text)]">{item.label}</span>
+                                                    <div className="flex items-center gap-1">
+                                                        {item.keys.map((k, ki) => (
+                                                            <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] font-mono">{k}</span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </>,
+                                getPortalContainer('portal-shortcut-menu')
+                            )}
+
+                            <input
+                                type="file"
+                                ref={importFileInputRef}
+                                onChange={handleFileChange}
+                                className="hidden"
+                                accept=".csv,.xlsx"
+                            />
+
+                            {canPrivacyMode && (
+                                <button
+                                    onClick={() => {
+                                        const next = !isPrivacyMode
+                                        setIsPrivacyMode(next)
+                                        addToast(next ? 'Mode privasi diaktifkan — Data sensitif disembunyikan' : 'Mode privasi dinonaktifkan', next ? 'info' : 'success')
+                                    }}
+                                    className={`h-9 w-9 sm:w-auto sm:px-3 rounded-lg border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 ${isPrivacyMode ? 'bg-amber-500/10 border-amber-500/30 text-amber-600' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'} `}
+                                    title={isPrivacyMode ? "Matikan Mode Privasi" : "Aktifkan Mode Privasi"}
+                                >
+                                    {isPrivacyMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                    <span className="text-xs font-bold uppercase tracking-wide hidden md:inline">
+                                        Privasi
+                                    </span>
+                                </button>
+                            )}
+
+
+                            {canAddStudent && (
+                                <Button onClick={handleAdd} disabled={!canEdit}>
+                                    <Plus className="w-4 h-4" /> {canEdit ? 'Tambah Siswa' : 'Read-only'}
+                                </Button>
+                            )}
                         </>
                     }
                 />
 
-                {/* Stats Row Wrapper */}
-                {canShowStats && (
-                    <StatsCarousel count={4} cols={4}>
-                        <StatCard
-                            key="total"
-                            icon={Users}
-                            label="Total Siswa"
-                            value={globalStats.total}
-                            subValue="Siswa aktif terdaftar"
-                            color="sky"
-                        />
-                        <StatCard
-                            key="boys"
-                            icon={MarsIcon}
-                            label="Putra"
-                            value={globalStats.boys}
-                            subValue={`${Math.round((globalStats.boys / (globalStats.total || 1)) * 100)}% dari total siswa`}
-                            color="indigo"
-                        />
-                        <StatCard
-                            key="girls"
-                            icon={VenusIcon}
-                            label="Putri"
-                            value={globalStats.girls}
-                            subValue={`${Math.round((globalStats.girls / (globalStats.total || 1)) * 100)}% dari total siswa`}
-                            color="rose"
-                        />
-                        <StatCard
-                            key="points"
-                            icon={Trophy}
-                            label="Rata-rata Poin"
-                            value={globalStats.avgPoints}
-                            trend={globalStats.avgPointsLastWeek !== null ? Math.abs(globalStats.avgPointsLastWeek) : null}
-                            trendUp={globalStats.avgPointsLastWeek >= 0}
-                            subValue="Rata-rata poin per siswa"
-                            color="emerald"
-                            onClick={() => { setFilterPointMode('positive'); resetAllFilters({ filterPointMode: 'positive' }) }}
-                        />
-                    </StatsCarousel>
-                )}
+                {/* Stats + insight: chip ringkas, wrap ke baris baru saat layar sempit */}
+                {(canShowStats || hasInsights) && (
+                    <div className="flex flex-wrap gap-2">
+                        {canShowStats && (
+                            <>
+                                <StatChip icon={Users} label="Total Siswa" value={globalStats.total} color="indigo" loading={initialLoading} />
+                                <StatChip icon={MarsIcon} label="Putra" value={globalStats.boys} color="sky" loading={initialLoading} />
+                                <StatChip icon={VenusIcon} label="Putri" value={globalStats.girls} color="rose" loading={initialLoading} />
+                                <StatChip
+                                    icon={Trophy}
+                                    label="Rata-rata Poin"
+                                    value={globalStats.avgPoints}
+                                    color="emerald"
+                                    loading={initialLoading}
+                                    onClick={() => { setFilterPointMode('positive'); resetAllFilters({ filterPointMode: 'positive' }) }}
+                                />
+                            </>
+                        )}
 
-                {/*  INSIGHT ROW */}
-                {(globalStats.risk > 0 || globalStats.incompleteCount > 0 || globalStats.topPerformer || (globalStats.worstClass && globalStats.worstClass.avg < 0) || globalStats.avgPointsLastWeek !== null) && (
-                    <div className="flex overflow-x-auto scrollbar-hide gap-2 mb-6 animate-in fade-in slide-in-from-top-1 duration-500 pb-1">
-
-                        {/* Siswa berisiko */}
                         {globalStats.risk > 0 && (
-                            <button
+                            <StatChip
+                                icon={TriangleAlert} label="Berisiko" value={globalStats.risk} color="rose"
+                                active={filterPointMode === 'risk'}
                                 onClick={() => { setFilterPointMode(filterPointMode === 'risk' ? '' : 'risk'); setShowAdvancedFilter(true) }}
-                                className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all hover:scale-[1.02] active:scale-95 shrink-0 ${filterPointMode === 'risk' ? 'border-red-500 bg-red-500/5 ring-1 ring-red-500' : 'bg-red-500/[0.08] border-red-500/20 hover:bg-red-500/[0.15] text-red-600'}`}
-                            >
-                                <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${filterPointMode === 'risk' ? 'bg-red-500 text-white' : 'bg-red-500/15'}`}>
-                                    <TriangleAlert className="w-4 h-4" />
-                                </div>
-                                <div className="text-left whitespace-nowrap">
-                                    <p className="text-xs font-bold leading-none">{globalStats.risk} Berisiko</p>
-                                    <p className="text-xs text-[var(--color-text-muted)] font-bold mt-0.5">Poin rendah</p>
-                                </div>
-                            </button>
+                            />
                         )}
 
-                        {/* Data tidak lengkap */}
                         {globalStats.incompleteCount > 0 && (
-                            <button
+                            <StatChip
+                                icon={CircleAlert} label="Tidak Lengkap" value={globalStats.incompleteCount} color="amber"
+                                active={filterMissing === 'all'}
                                 onClick={() => { setFilterMissing(filterMissing === 'all' ? '' : 'all'); setShowAdvancedFilter(true) }}
-                                className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all hover:scale-[1.02] active:scale-95 shrink-0 ${filterMissing === 'all' ? 'border-amber-500 bg-amber-500/5 ring-1 ring-amber-500' : 'bg-amber-500/[0.08] border-amber-500/20 hover:bg-amber-500/[0.15]'}`}
-                            >
-                                <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${filterMissing === 'all' ? 'bg-amber-500 text-white' : 'bg-amber-500/15'}`}>
-                                    <CircleAlert className="w-4 h-4 text-amber-500" />
-                                </div>
-                                <div className="text-left whitespace-nowrap">
-                                    <p className={`text-xs font-bold leading-none ${filterMissing === 'photo' ? 'text-amber-600' : 'text-amber-600 dark:text-amber-400'}`}>{globalStats.incompleteCount} Tidak Lengkap</p>
-                                    <p className="text-xs text-[var(--color-text-muted)] font-bold mt-0.5">Foto / NISN / Whatsapp</p>
-                                </div>
-                            </button>
+                            />
                         )}
 
-                        {/* Tren poin minggu ini */}
                         {globalStats.avgPointsLastWeek !== null && (
-                            <div className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all shrink-0 ${globalStats.avgPointsLastWeek >= 0 ? 'bg-emerald-500/[0.08] border-emerald-500/20' : 'bg-red-500/[0.08] border-red-500/20'}`}>
-                                <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${globalStats.avgPointsLastWeek >= 0 ? 'bg-emerald-500/15' : 'bg-red-500/15'}`}>
-                                    {globalStats.avgPointsLastWeek >= 0 ? <TrendingUp className={`text-xs ${globalStats.avgPointsLastWeek >= 0 ? 'text-emerald-500' : 'text-red-500'}`} /> : <TrendingDown className={`text-xs ${globalStats.avgPointsLastWeek >= 0 ? 'text-emerald-500' : 'text-red-500'}`} />}
-                                </div>
-                                <div className="text-left whitespace-nowrap">
-                                    <p className={`text-xs font-bold leading-none ${globalStats.avgPointsLastWeek >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
-                                        Tren {globalStats.avgPointsLastWeek >= 0 ? '▲' : '▼'} {globalStats.avgPointsLastWeek > 0 ? '+' : ''}{globalStats.avgPointsLastWeek} / siswa
-                                    </p>
-                                    <p className="text-xs text-[var(--color-text-muted)] font-bold mt-0.5">Delta 7 hari</p>
-                                </div>
-                            </div>
+                            <StatChip
+                                icon={globalStats.avgPointsLastWeek >= 0 ? TrendingUp : TrendingDown}
+                                label="Tren 7 hari / siswa"
+                                value={`${globalStats.avgPointsLastWeek > 0 ? '+' : ''}${globalStats.avgPointsLastWeek}`}
+                                color={globalStats.avgPointsLastWeek >= 0 ? 'emerald' : 'rose'}
+                            />
                         )}
 
-                        {/* Top performer */}
                         {globalStats.topPerformer && (
-                            <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-indigo-500/[0.08] border border-indigo-500/20 transition-all shrink-0">
-                                <div className="w-7 h-7 rounded-lg bg-indigo-500/15 flex items-center justify-center shrink-0">
-                                    <Crown className="w-4 h-4 text-indigo-500" />
-                                </div>
-                                <div className="text-left whitespace-nowrap">
-                                    <p className="text-xs font-bold text-indigo-500 leading-none truncate max-w-[140px]">{globalStats.topPerformer.name}</p>
-                                    <p className="text-xs text-[var(--color-text-muted)] font-bold mt-0.5">Top Performer Â· +{globalStats.topPerformer.points}</p>
-                                </div>
-                            </div>
+                            <StatChip
+                                icon={Crown} label={`Top · +${globalStats.topPerformer.points}`}
+                                value={globalStats.topPerformer.name} color="indigo"
+                            />
                         )}
 
-                        {/* Kelas rata-rata terendah */}
                         {globalStats.worstClass && globalStats.worstClass.avg < 0 && (
-                            <button
+                            <StatChip
+                                icon={School} label={`Rata terendah (${globalStats.worstClass.avg})`}
+                                value={globalStats.worstClass.name} color="orange"
+                                active={filterClass === globalStats.worstClass.id}
                                 onClick={() => { setFilterClass(globalStats.worstClass.id); setFilterClasses([]); setPage(1); setShowAdvancedFilter(true) }}
-                                className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all hover:scale-[1.02] active:scale-95 shrink-0 ${filterClass === globalStats.worstClass.id ? 'border-orange-500 bg-orange-500/5 ring-1 ring-orange-500' : 'bg-orange-500/[0.08] border-orange-500/20 hover:bg-orange-500/[0.15]'}`}
-                            >
-                                <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${filterClass === globalStats.worstClass.id ? 'bg-orange-500 text-white' : 'bg-orange-500/15'}`}>
-                                    <School className="w-4 h-4 text-orange-500" />
-                                </div>
-                                <div className="text-left whitespace-nowrap">
-                                    <p className={`text-xs font-bold leading-none truncate max-w-[140px] ${filterClass === globalStats.worstClass.id ? 'text-orange-600' : 'text-orange-600 dark:text-orange-400'}`}>{globalStats.worstClass.name}</p>
-                                    <p className="text-xs text-[var(--color-text-muted)] font-bold mt-0.5">Rata terendah ({globalStats.worstClass.avg})</p>
-                                </div>
-                            </button>
+                            />
                         )}
-
                     </div>
                 )}
-                {/* ———————————————————————————————————— END INSIGHT ROW ———————————————————————————————————— */}
 
-                {/* Filters & Sort */}
-                <div className="bg-surface rounded-[1.5rem] mb-4 border border-[var(--color-border)] overflow-hidden">
+                {/* Filter + Search + Tabel: satu kartu */}
+                <div className="bg-surface border border-border rounded-2xl overflow-hidden">
 
-                    {/* Row 1: Search + Quick Filters + Action Buttons */}
-                    <div className="flex items-center gap-2 p-2.5 lg:p-3">
-                        {/* Search Bar - Dynamic & Responsive */}
-                        <div className="flex-initial w-full lg:w-[232px] xl:w-[352px] min-w-[120px] transition-all duration-300">
+                    {/* Filter bar */}
+                    <div className="flex flex-col lg:flex-row lg:items-center gap-3 px-3 py-3 border-b border-border">
+                        {/* Tab status */}
+                        <div className="flex gap-1 p-1 rounded-xl bg-surface-alt border border-border overflow-x-auto scrollbar-hide lg:w-fit shrink-0">
+                            {STATUS_TABS.map((f) => {
+                                const on = filterStatus === f.key
+                                return (
+                                    <button
+                                        key={f.key || 'all'}
+                                        onClick={() => { setFilterStatus(f.key); setPage(1) }}
+                                        className={`h-8 px-3 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap ${on ? 'bg-primary text-white shadow-sm' : 'text-text-muted hover:text-text'}`}
+                                    >
+                                        {f.label}
+                                    </button>
+                                )
+                            })}
+                        </div>
+
+                        {/* Gender */}
+                        <div className="flex gap-1 p-1 rounded-xl bg-surface-alt border border-border lg:w-fit shrink-0">
+                            {[
+                                { id: 'L', label: 'Putra', icon: MarsIcon },
+                                { id: 'P', label: 'Putri', icon: VenusIcon },
+                            ].map((g) => {
+                                const on = filterGender === g.id
+                                return (
+                                    <button
+                                        key={g.id}
+                                        onClick={() => { setFilterGender(on ? '' : g.id); setPage(1) }}
+                                        className={`h-8 px-3 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap flex items-center gap-1.5 ${on ? 'bg-primary text-white shadow-sm' : 'text-text-muted hover:text-text'}`}
+                                    >
+                                        <g.icon className="w-3.5 h-3.5" />
+                                        {g.label}
+                                    </button>
+                                )
+                            })}
+                        </div>
+
+                        {/* Search */}
+                        <div className="flex-1 min-w-[180px]">
                             <DebouncedSearchInput
                                 searchQuery={searchQuery}
                                 onSearch={handleSearchChange}
@@ -924,119 +1001,39 @@ export default function StudentsPage() {
                             />
                         </div>
 
-                        {/* Quick Filter Chips - Desktop Only */}
-                        <div className="hidden lg:flex flex-1 items-center gap-2 overflow-x-auto scrollbar-hide py-0.5 min-w-0 pr-8 h-full [mask-image:linear-gradient(to_right,black_calc(100%-32px),transparent)]">
-                            <div className="h-4 w-px bg-[var(--color-border)] mx-1 hidden lg:block" />
-
-                            {/* Group 1: Status */}
-                            <div className="flex items-center gap-1.5 shrink-0">
-                                {[
-                                    { id: '', label: 'Semua', icon: Users },
-                                    { id: 'aktif', label: 'Aktif', icon: CircleCheck },
-                                    { id: 'lulus', label: 'Lulus', icon: GraduationCap },
-                                ].map((s) => (
-                                    <button
-                                        key={s.id}
-                                        onClick={() => setFilterStatus(s.id)}
-                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${filterStatus === s.id
-                                            ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white'
-                                            : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5 hover:text-[var(--color-primary)]'
-                                            }`}
-                                    >
-                                        <s.icon className={`text-xs ${filterStatus === s.id ? 'opacity-100' : 'opacity-30'}`} />
-                                        {s.label}
-                                    </button>
-                                ))}
-                            </div>
-
-                            {/* Separator */}
-                            <div className="h-4 w-px bg-[var(--color-border)] mx-1 shrink-0" />
-
-                            {/* Group 2: Gender */}
-                            <div className="flex items-center gap-1.5 shrink-0">
-                                {[
-                                    { id: 'L', label: 'Putra', icon: MarsIcon, activeCls: 'bg-blue-500 border-blue-500' },
-                                    { id: 'P', label: 'Putri', icon: VenusIcon, activeCls: 'bg-pink-500 border-pink-500' },
-                                ].map((g) => (
-                                    <button
-                                        key={g.id}
-                                        onClick={() => setFilterGender(filterGender === g.id ? '' : g.id)}
-                                        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${filterGender === g.id
-                                            ? `${g.activeCls} text-white`
-                                            : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/5 hover:text-[var(--color-primary)]'
-                                            }`}
-                                    >
-                                        <g.icon className={`text-xs ${filterGender === g.id ? 'opacity-100' : 'opacity-30'}`} />
-                                        {g.label}
-                                    </button>
-                                ))}
-                            </div>
-                            {/* Group 3: Quick Sort */}
-                            <div className="flex items-center gap-1.5 shrink-0">
-                                <button
-                                    onClick={() => setSortBy(sortBy === 'name' ? '-name' : 'name')}
-                                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${sortBy.includes('name')
-                                        ? 'bg-amber-500 border-amber-500 text-white'
-                                        : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-amber-500/30 hover:bg-amber-500/5 hover:text-amber-600'
-                                        }`}
-                                >
-                                    <ArrowDownAZ className={`w-4 h-4 ${sortBy.includes('name') ? 'opacity-100' : 'opacity-30'}`} />
-                                    Nama {sortBy === 'name' ? 'A-Z' : 'Z-A'}
-                                </button>
-                                <button
-                                    onClick={() => setSortBy(sortBy === '-points' ? 'points' : '-points')}
-                                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all border ${sortBy.includes('points')
-                                        ? 'bg-emerald-500 border-emerald-500 text-white'
-                                        : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-emerald-500/30 hover:bg-emerald-500/5 hover:text-emerald-600'
-                                        }`}
-                                >
-                                    <ArrowUpNarrowWide className={`w-4 h-4 ${sortBy.includes('points') ? 'opacity-100' : 'opacity-30'}`} />
-                                    {sortBy === '-points' ? 'Poin Tertinggi' : 'Poin Terendah'}
-                                </button>
-                            </div>
-                        </div>
-
-
-                        {/* Dedicated Divider for Enterprise Look */}
-                        <div className="hidden lg:block w-px h-4 bg-[var(--color-border)] mx-2 shrink-0" />
-
-                        {/* Action Buttons: Always visible, grouped nicely on mobile */}
-                        <div className="flex items-center justify-end gap-2 shrink-0 lg:ml-auto">
+                        {/* Pilih + filter lanjutan */}
+                        <div className="flex items-center gap-2 shrink-0">
                             <button
                                 onClick={toggleSelectAll}
-                                className={`h-9 px-3 rounded-xl border text-xs font-bold uppercase tracking-wide transition-all active:scale-95 flex items-center justify-center gap-2 ${selectedStudentIds.length > 0 ? 'bg-indigo-500 border-indigo-500 text-white' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
-                                title="Pilih Semua / Batal"
+                                className={`h-9 px-3 rounded-lg border text-xs font-semibold transition-all active:scale-95 flex items-center justify-center gap-1.5 ${selectedStudentIds.length > 0 ? 'bg-primary border-primary text-white' : 'border-border text-text-muted hover:text-text hover:bg-surface-alt'}`}
+                                title="Pilih Semua / Batal (Ctrl A)"
                             >
-                                {selectedStudentIds.length > 0 ? <CheckCheck /> : <SquareCheck />}
-                                <span className="hidden xs:inline">{selectedStudentIds.length > 0 ? 'Terpilih' : 'Pilih'}</span>
+                                {selectedStudentIds.length > 0 ? <CheckCheck className="w-4 h-4" /> : <SquareCheck className="w-4 h-4" />}
+                                <span className="hidden sm:inline">{selectedStudentIds.length > 0 ? 'Terpilih' : 'Pilih'}</span>
                                 {selectedStudentIds.length > 0 && (
-                                    <span className="w-4 h-4 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center">
-                                        {selectedStudentIds.length}
-                                    </span>
+                                    <span className="px-1.5 rounded-full bg-white/20 text-white tabular-nums">{selectedStudentIds.length}</span>
                                 )}
                             </button>
 
                             {canAdvancedFilter && (
                                 <button
                                     onClick={() => setShowAdvancedFilter(!showAdvancedFilter)}
-                                    className={`h-9 px-3 sm:px-4 rounded-xl border text-xs font-bold uppercase tracking-wide transition-all active:scale-95 flex items-center justify-center gap-2 ${showAdvancedFilter || activeFilterCount > 0 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-md' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'} `}
+                                    className={`h-9 px-3 rounded-lg border text-xs font-semibold transition-all active:scale-95 flex items-center justify-center gap-1.5 ${showAdvancedFilter || activeFilterCount > 0 ? 'bg-primary border-primary text-white' : 'border-border text-text-muted hover:text-text hover:bg-surface-alt'}`}
+                                    title="Filter lanjutan (Ctrl F)"
                                 >
                                     <SlidersHorizontal className="w-4 h-4" />
-                                    <span className="hidden xs:inline">Lainnya</span>
+                                    <span className="hidden sm:inline">Lainnya</span>
                                     {activeFilterCount > 0 && (
-                                        <span className="w-4 h-4 rounded-full bg-white/30 text-white text-xs font-bold flex items-center justify-center">
-                                            {activeFilterCount}
-                                        </span>
+                                        <span className="px-1.5 rounded-full bg-white/20 text-white tabular-nums">{activeFilterCount}</span>
                                     )}
                                 </button>
                             )}
                         </div>
                     </div>
 
-
                     {/* Active Filter Chips */}
                     {(searchQuery || filterClass || filterGender || filterStatus || filterTag || filterMissing || filterPointMode) && (
-                        <div className="px-3 pb-3 -mt-1">
+                        <div className="px-3 py-3 border-b border-border">
                             <div className="flex flex-wrap gap-2">
                                 {searchQuery && (
                                     <button type="button" onClick={() => setSearchQuery('')}
@@ -1114,31 +1111,12 @@ export default function StudentsPage() {
                         </div>
                     )}
 
-                    {/* Row 2: Expandable filter panel */}
+                    {/* Filter lanjutan (ringkas) */}
                     {showAdvancedFilter && (
-                        <div className="border-t border-[var(--color-border)] p-3.5 bg-[var(--color-surface-alt)] animate-in fade-in slide-in-from-top-2">
-                            {/* Header Panel with Standardized "Vertical Bar" Pattern */}
-                            <div className="flex items-center justify-between mb-3">
-                                <div className="flex items-center gap-2.5">
-                                    <div className="w-1 h-3.5 bg-indigo-500 rounded-full" />
-                                    <span className="text-xs font-bold uppercase tracking-wide text-indigo-600 flex items-center gap-2">
-                                        <SlidersHorizontal className="w-4 h-4 opacity-60" />
-                                        Filter Lanjutan
-                                    </span>
-                                </div>
-                                <button
-                                    onClick={resetAllFilters}
-                                    className="text-xs font-bold uppercase tracking-wide text-red-500 hover:bg-red-50 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 border border-transparent hover:border-red-100"
-                                >
-                                    <RotateCcw className="w-4 h-4" />
-                                    Reset Semua Filter
-                                </button>
-                            </div>
-
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-3 gap-y-3 mb-3">
-                                {/* Kelas */}
+                        <div className="border-b border-border p-3 bg-surface-alt/40 animate-in fade-in slide-in-from-top-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                                 <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Kelas</label>
+                                    <label className="block text-xs font-semibold text-text-muted mb-1">Kelas</label>
                                     <RichSelect
                                         value={filterClass}
                                         onChange={(val) => { setFilterClass(val); setFilterClasses([]); setPage(1) }}
@@ -1149,56 +1127,8 @@ export default function StudentsPage() {
                                     />
                                 </div>
 
-                                {/* Gender */}
                                 <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Gender</label>
-                                    <RichSelect
-                                        value={filterGender}
-                                        onChange={(val) => { setFilterGender(val); setPage(1) }}
-                                        options={[
-                                            { id: '', name: 'Semua' },
-                                            { id: 'L', name: 'Putra' },
-                                            { id: 'P', name: 'Putri' },
-                                        ]}
-                                        placeholder="Semua"
-                                        small
-                                    />
-                                </div>
-
-                                {/* Status */}
-                                <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Status</label>
-                                    <RichSelect
-                                        value={filterStatus}
-                                        onChange={(val) => { setFilterStatus(val); setPage(1) }}
-                                        options={[
-                                            { id: '', name: 'Semua Status' },
-                                            { id: 'aktif', name: 'Aktif' },
-                                            { id: 'lulus', name: 'Lulus' },
-                                            { id: 'pindah', name: 'Pindah' },
-                                            { id: 'keluar', name: 'Keluar' },
-                                        ]}
-                                        placeholder="Semua Status"
-                                        small
-                                    />
-                                </div>
-
-                                {/* Label/Tag */}
-                                <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Label</label>
-                                    <RichSelect
-                                        value={filterTag}
-                                        onChange={(val) => { setFilterTag(val); setPage(1) }}
-                                        options={Array.from(new Set([...AvailableTags, ...allUsedTags])).sort().map(t => ({ id: t, name: t }))}
-                                        placeholder="Semua Label"
-                                        small
-                                        searchable
-                                    />
-                                </div>
-
-                                {/* Urutkan */}
-                                <div className="col-span-1">
-                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Urutkan</label>
+                                    <label className="block text-xs font-semibold text-text-muted mb-1">Urutkan</label>
                                     <RichSelect
                                         value={sortBy}
                                         onChange={(val) => setSortBy(val)}
@@ -1207,411 +1137,229 @@ export default function StudentsPage() {
                                     />
                                 </div>
 
-                                {/* Custom Poin Range */}
-                                <div className="col-span-1">
-                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Rentang Poin (Min - Max)</label>
-                                    <div className="flex items-center gap-2">
-                                        <input
-                                            type="number"
-                                            value={filterPointMin}
-                                            onChange={(e) => { setFilterPointMin(e.target.value); setFilterPointMode(e.target.value || filterPointMax ? 'custom' : ''); setPage(1) }}
-                                            placeholder="Min"
-                                            className="input-field h-8 sm:h-9 text-xs sm:text-xs w-full rounded-lg sm:rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] px-2.5"
-                                        />
-                                        <span className="text-xs text-[var(--color-text-muted)] font-bold">-</span>
-                                        <input
-                                            type="number"
-                                            value={filterPointMax}
-                                            onChange={(e) => { setFilterPointMax(e.target.value); setFilterPointMode(filterPointMin || e.target.value ? 'custom' : ''); setPage(1) }}
-                                            placeholder="Max"
-                                            className="input-field h-8 sm:h-9 text-xs sm:text-xs w-full rounded-lg sm:rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] focus:border-[var(--color-primary)] px-2.5"
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Preset Poin - Inline with Rentang */}
-                                <div className="col-span-2 lg:col-span-1">
-                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Preset Poin</label>
-                                    <div className="flex items-center gap-1.5">
+                                <div>
+                                    <label className="block text-xs font-semibold text-text-muted mb-1">Poin</label>
+                                    <div className="flex gap-1 p-1 rounded-xl bg-surface border border-border w-fit">
                                         {[
-                                            { value: '', label: 'Semua', icon: null },
-                                            { value: 'risk', label: 'Risiko', icon: TriangleAlert },
-                                            { value: 'positive', label: 'Positif', icon: Check },
-                                        ].map(opt => (
-                                            <button key={opt.value} type="button"
-                                                onClick={() => { setFilterPointMode(opt.value); setFilterPointMin(''); setFilterPointMax(''); setPage(1) }}
-                                                className={`h-8 px-2.5 rounded-lg text-xs font-bold uppercase border transition-all flex items-center justify-center gap-1.5 shrink-0 ${filterPointMode === opt.value && opt.value !== '' ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] bg-[var(--color-surface)]'}`}
-                                            >
-                                                {opt.icon && <opt.icon className="text-xs" />}
-                                                {opt.label}
-                                            </button>
-                                        ))}
+                                            { value: '', label: 'Semua' },
+                                            { value: 'risk', label: 'Berisiko' },
+                                            { value: 'positive', label: 'Positif' },
+                                        ].map(opt => {
+                                            const on = filterPointMode === opt.value
+                                            return (
+                                                <button key={opt.value || 'all'} type="button"
+                                                    onClick={() => { setFilterPointMode(opt.value); setFilterPointMin(''); setFilterPointMax(''); setPage(1) }}
+                                                    className={`h-7 px-3 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap ${on ? 'bg-primary text-white shadow-sm' : 'text-text-muted hover:text-text'}`}
+                                                >
+                                                    {opt.label}
+                                                </button>
+                                            )
+                                        })}
                                     </div>
                                 </div>
 
-                                {/* Desktop Only: Quick Menu & Actions Relocation */}
-                                <div className="hidden lg:block lg:col-span-3 pl-4 ml-4 border-l border-[var(--color-border)]/30">
-                                    <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">Menu Cepat & Aksi</label>
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex flex-wrap items-center gap-1.5">
-                                            {[
-                                                { label: 'Semua', icon: Users, active: !filterMissing && sortBy !== 'created_at' && sortBy !== 'total_points_desc', onClick: () => { setFilterMissing(''); setSortBy('name_asc'); } },
-                                                { label: 'Foto Kosong', icon: Image, active: filterMissing === 'photo', onClick: () => { setFilterMissing('photo'); setPage(1); } },
-                                                { label: 'Tanpa WA', icon: WhatsAppIcon, active: filterMissing === 'wa', onClick: () => { setFilterMissing('wa'); setPage(1); } },
-                                                { label: 'Top Performer', icon: Trophy, active: sortBy === 'total_points_desc', onClick: () => { setSortBy('total_points_desc'); setPage(1); } },
-                                                { label: 'Siswa Baru', icon: Plus, active: sortBy === 'created_at', onClick: () => { setSortBy('created_at'); setPage(1); } },
-                                            ].map((s, i) => (
-                                                <button key={i} onClick={s.onClick}
-                                                    className={`h-8 px-2.5 rounded-lg border flex items-center gap-2 transition-all ${s.active ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm' : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                                    <s.icon className="text-xs" />
-                                                    <span className="text-xs font-bold uppercase tracking-wide whitespace-nowrap">{s.label}</span>
-                                                </button>
-                                            ))}
-                                        </div>
-
-                                        <div className="flex items-center gap-2">
-                                            {activeFilterCount > 0 && (
-                                                <button
-                                                    onClick={async () => {
-                                                        try {
-                                                            const XLSX = await import('xlsx')
-                                                            const rows = await fetchFilteredForExport()
-                                                            const ws = XLSX.utils.json_to_sheet(rows)
-                                                            const wb = XLSX.utils.book_new()
-                                                            XLSX.utils.book_append_sheet(wb, ws, 'Filter')
-                                                            const out = XLSX.write(wb, { type: 'array', bookType: 'xlsx' })
-                                                            const blob = new Blob([out], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-                                                            downloadBlob(blob, `export_filter_${new Date().toISOString().slice(0, 10)}.xlsx`)
-                                                            addToast(`${rows.length} baris berhasil diekspor sebagai Excel`, 'success')
-                                                        } catch { addToast('Gagal export', 'error') }
-                                                    }}
-                                                    className="h-8 px-3 rounded-lg bg-teal-500/10 text-teal-600 hover:bg-teal-500 hover:text-white transition-all text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 border border-teal-500/20"
+                                <div>
+                                    <label className="block text-xs font-semibold text-text-muted mb-1">Data kurang</label>
+                                    <div className="flex gap-1 p-1 rounded-xl bg-surface border border-border w-fit">
+                                        {[
+                                            { value: '', label: 'Semua' },
+                                            { value: 'photo', label: 'Tanpa foto' },
+                                            { value: 'wa', label: 'Tanpa WA' },
+                                        ].map(opt => {
+                                            const on = filterMissing === opt.value
+                                            return (
+                                                <button key={opt.value || 'all'} type="button"
+                                                    onClick={() => { setFilterMissing(opt.value); setPage(1) }}
+                                                    className={`h-7 px-3 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap ${on ? 'bg-primary text-white shadow-sm' : 'text-text-muted hover:text-text'}`}
                                                 >
-                                                    <Download className="w-4 h-4" />
-                                                    Export
+                                                    {opt.label}
                                                 </button>
-                                            )}
-                                            <button
-                                                onClick={() => setShowAdvancedFilter(false)}
-                                                className="h-8 px-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
-                                            >
-                                                Tutup Panel
-                                            </button>
-                                        </div>
+                                            )
+                                        })}
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Mobile/Tablet Only: Data Needs Presets - Separate row */}
-                            <div className="lg:hidden pt-3 border-t border-[var(--color-border)]/30 mt-1">
-                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-                                    <div className="flex flex-wrap items-center gap-1.5">
-                                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mr-2">Cepat:</span>
-                                        {[
-                                            { label: 'Semua', icon: Users, active: !filterMissing && sortBy !== 'created_at' && sortBy !== 'total_points_desc', onClick: () => { setFilterMissing(''); setSortBy('name_asc'); } },
-                                            { label: 'Foto Kosong', icon: Image, active: filterMissing === 'photo', onClick: () => { setFilterMissing('photo'); setPage(1); } },
-                                            { label: 'Tanpa WA', icon: WhatsAppIcon, active: filterMissing === 'wa', onClick: () => { setFilterMissing('wa'); setPage(1); } },
-                                            { label: 'Top Performer', icon: Trophy, active: sortBy === 'total_points_desc', onClick: () => { setSortBy('total_points_desc'); setPage(1); } },
-                                            { label: 'Siswa Baru', icon: Plus, active: sortBy === 'created_at', onClick: () => { setSortBy('created_at'); setPage(1); } },
-                                        ].map((s, i) => (
-                                            <button key={i} onClick={s.onClick}
-                                                className={`h-7 px-2.5 rounded-lg border flex items-center gap-2 transition-all ${s.active ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-sm' : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
-                                                <s.icon className="text-xs" />
-                                                <span className="text-xs font-bold uppercase tracking-wide whitespace-nowrap">{s.label}</span>
-                                            </button>
-                                        ))}
-                                    </div>
-
-                                    <div className="flex items-center gap-2">
-                                        {activeFilterCount > 0 && (
-                                            <button
-                                                onClick={async () => {
-                                                    try {
-                                                        const XLSX = await import('xlsx')
-                                                        const rows = await fetchFilteredForExport()
-                                                        const ws = XLSX.utils.json_to_sheet(rows)
-                                                        const wb = XLSX.utils.book_new()
-                                                        XLSX.utils.book_append_sheet(wb, ws, 'Filter')
-                                                        const out = XLSX.write(wb, { type: 'array', bookType: 'xlsx' })
-                                                        const blob = new Blob([out], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-                                                        downloadBlob(blob, `export_filter_${new Date().toISOString().slice(0, 10)}.xlsx`)
-                                                        addToast(`${rows.length} baris berhasil diekspor sebagai Excel`, 'success')
-                                                    } catch { addToast('Gagal export', 'error') }
-                                                }}
-                                                className="h-7 px-3 rounded-lg bg-teal-500/10 text-teal-600 hover:bg-teal-500 hover:text-white transition-all text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 border border-teal-500/20"
-                                            >
-                                                <Download className="w-4 h-4" />
-                                                Export
-                                            </button>
-                                        )}
-                                        <button
-                                            onClick={() => setShowAdvancedFilter(false)}
-                                            className="h-7 px-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-wide text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all"
-                                        >
-                                            Tutup Panel
-                                        </button>
-                                    </div>
-                                </div>
+                            <div className="flex items-center justify-end gap-2 mt-3">
+                                <button
+                                    onClick={resetAllFilters}
+                                    className="h-8 px-3 rounded-lg text-xs font-semibold text-danger hover:bg-danger/10 transition-colors flex items-center gap-1.5"
+                                >
+                                    <RotateCcw className="w-3.5 h-3.5" /> Reset filter
+                                </button>
+                                <button
+                                    onClick={() => setShowAdvancedFilter(false)}
+                                    className="h-8 px-3 rounded-lg border border-border bg-surface text-xs font-semibold text-text-muted hover:text-text transition-colors"
+                                >
+                                    Tutup
+                                </button>
                             </div>
                         </div>
                     )}
-                </div>
 
-                {/* Removed: Smart Presets - SaaS Navigation Style */}
-                {loading ? (
-                    <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-sm">
-                                <thead className="bg-[var(--color-surface-alt)]">
-                                    <tr className="text-left text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
-                                        <th className="px-6 py-4 w-10"></th>
-                                        <th className="px-6 py-4">Siswa</th>
-                                        <th className="px-6 py-4 text-center">Gender</th>
-                                        <th className="px-6 py-4 text-center">Kelas</th>
-                                        <th className="px-6 py-4 text-center">Poin</th>
-                                        <th className="px-6 py-4 text-center">Lap. Terakhir</th>
-                                        <th className="px-6 py-4 text-center">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {Array.from({ length: 8 }).map((_, i) => (
-                                        <tr key={i} className="border-t border-[var(--color-border)]">
-                                            <td className="px-6 py-4"><div className="w-4 h-4 rounded bg-[var(--color-border)] animate-pulse" /></td>
-                                            <td className="px-6 py-4">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="w-10 h-10 rounded-full bg-[var(--color-border)] animate-pulse shrink-0" />
-                                                    <div className="space-y-2">
-                                                        <div className="h-3 w-32 rounded bg-[var(--color-border)] animate-pulse" />
-                                                        <div className="h-2 w-24 rounded bg-[var(--color-border)] animate-pulse opacity-60" />
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4"><div className="w-8 h-8 rounded-lg bg-[var(--color-border)] animate-pulse mx-auto" /></td>
-                                            <td className="px-6 py-4"><div className="h-5 w-20 rounded-md bg-[var(--color-border)] animate-pulse mx-auto" /></td>
-                                            <td className="px-6 py-4"><div className="h-4 w-10 rounded bg-[var(--color-border)] animate-pulse mx-auto" /></td>
-                                            <td className="px-6 py-4"><div className="h-4 w-20 rounded bg-[var(--color-border)] animate-pulse mx-auto" /></td>
-                                            <td className="px-6 py-4"><div className="h-7 w-28 rounded-lg bg-[var(--color-border)] animate-pulse ml-auto" /></td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                ) : (
-                    <div>
-                        <div className="bg-surface rounded-[1.5rem] border border-[var(--color-border)] overflow-hidden">
-                            {/* Desktop View */}
+                    {/* Daftar siswa */}
+                    {initialLoading && !isMobile ? (
+                        <StudentTableSkeleton rows={8} />
+                    ) : (
+                        <div className={`transition-opacity duration-200 ${loading ? 'opacity-60' : ''}`}>
+                            {/* Desktop: tabel ringkas */}
                             {!isMobile && (
                                 <div className="hidden md:block overflow-x-auto">
-                                    <table className="w-full text-sm">
-                                        <thead className="bg-[var(--color-surface-alt)] sticky top-0 z-10">
-                                            <tr className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
-                                                <th className="px-4 py-4 text-center w-12">
+                                    <table className="w-full text-left">
+                                        <thead>
+                                            <tr className="border-b border-border bg-surface-alt/60">
+                                                <th className={`${TH} w-10`}>
                                                     <input
                                                         type="checkbox"
-                                                        checked={selectedStudentIds.length === students.length && students.length > 0}
+                                                        checked={allOnPageSelected}
                                                         onChange={toggleSelectAll}
-                                                        className="w-4 h-4 rounded border-[var(--color-border)] text-[var(--color-primary)] focus:ring-[var(--color-primary)] accent-[var(--color-primary)] cursor-pointer shrink-0"
+                                                        aria-label="Pilih semua di halaman ini"
+                                                        className="w-4 h-4 rounded accent-[var(--color-primary)] cursor-pointer"
                                                     />
                                                 </th>
-                                                <th className="px-4 py-4 text-left min-w-[250px]">Siswa</th>
-
-                                                {visibleColumns.gender && (
-                                                    <th className="px-4 py-4 text-center w-20">Gender</th>
-                                                )}
-                                                {visibleColumns.kelas && (
-                                                    <th className="px-4 py-4 text-center w-44">Kelas</th>
-                                                )}
-                                                {visibleColumns.status && (
-                                                    <th className="px-4 py-4 text-center w-32">Status</th>
-                                                )}
-                                                {visibleColumns.poin && (
-                                                    <th className="px-4 py-4 text-center w-28">Poin</th>
-                                                )}
-                                                {visibleColumns.last_report && (
-                                                    <th className="px-4 py-4 text-center w-32 whitespace-nowrap">Lap. Terakhir</th>
-                                                )}
-                                                {visibleColumns.profil && (
-                                                    <th className="px-4 py-4 text-center w-32">Profil</th>
-                                                )}
-                                                {visibleColumns.tags && (
-                                                    <th className="px-4 py-4 text-center w-28">Label</th>
-                                                )}
-
-                                                {/* COLUMN TOGGLE BUTTON —” di dalam header Aksi */}
-                                                <th className="px-4 py-4 text-center pr-4 relative w-[280px]">
-                                                    <div className="flex items-center justify-center">
-                                                        {visibleColumns.aksi && <span>Aksi</span>}
-                                                    </div>
-
-                                                    {/* Toggle Button —” absolute kanan, seperti checkbox di kiri */}
-                                                    <div className="absolute right-6 top-1/2 -translate-y-1/2" ref={colMenuRef}>
-                                                        <button
-                                                            onClick={(e) => {
-                                                                const rect = e.currentTarget.getBoundingClientRect()
-                                                                const menuHeight = 220
-                                                                const spaceBelow = window.innerHeight - rect.bottom
-                                                                const showUp = spaceBelow < menuHeight && rect.top > menuHeight
-                                                                setColMenuPos({
-                                                                    top: showUp ? (rect.top + window.scrollY - menuHeight - 8) : (rect.bottom + window.scrollY + 8),
-                                                                    right: window.innerWidth - rect.right - window.scrollX,
-                                                                    showUp
-                                                                })
-                                                                setIsColMenuOpen(p => !p)
-                                                            }}
-                                                            title="Atur kolom"
-                                                            className={`w-6 h-6 rounded-md flex items-center justify-center transition-all
-                                ${isColMenuOpen
-                                                                    ? 'bg-[var(--color-primary)] text-white'
-                                                                    : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'
-                                                                }`}
-                                                        >
-                                                            <svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor">
-                                                                <rect x="0" y="0" width="5" height="5" rx="1" />
-                                                                <rect x="7" y="0" width="5" height="5" rx="1" />
-                                                                <rect x="0" y="7" width="5" height="5" rx="1" />
-                                                                <rect x="7" y="7" width="5" height="5" rx="1" />
-                                                            </svg>
-                                                        </button>
-
-                                                        {/* Dropdown Menu —” Portal agar tidak ter-clip oleh overflow tabel */}
-                                                        {isColMenuOpen && createPortal(
-                                                            <div
-                                                                id="portal-column-menu"
-                                                                onMouseDown={(e) => e.stopPropagation()}
-                                                                className={`absolute z-[9999] w-44 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 space-y-0.5 animate-in fade-in zoom-in-95 ${colMenuPos.showUp ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2'}`}
-                                                                style={{ top: colMenuPos.top, right: colMenuPos.right }}
-                                                            >
-                                                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-2">
-                                                                    Tampilkan Kolom
-                                                                </p>
-                                                                {[
-                                                                    { key: 'gender', label: 'Gender' },
-                                                                    { key: 'kelas', label: 'Kelas' },
-                                                                    { key: 'status', label: 'Status' },
-                                                                    { key: 'poin', label: 'Poin' },
-                                                                    { key: 'last_report', label: 'Lap. Terakhir' },
-                                                                    { key: 'profil', label: 'Profil' },
-                                                                    { key: 'tags', label: 'Label' },
-                                                                    { key: 'aksi', label: 'Aksi' },
-                                                                ].map(({ key, label }) => (
-                                                                    <button
-                                                                        key={key}
-                                                                        onClick={() => toggleColumn(key)}
-                                                                        className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] transition-all group text-left"
-                                                                    >
-                                                                        <span className="text-xs font-bold text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{label}</span>
-                                                                        <div className={`w-8 h-4.5 rounded-full transition-all flex items-center px-0.5 ${visibleColumns[key] ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}`}>
-                                                                            <div className={`w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-all ${visibleColumns[key] ? 'translate-x-[14px]' : 'translate-x-0'}`} />
-                                                                        </div>
-                                                                    </button>
-                                                                ))}
-                                                            </div>,
-                                                            getPortalContainer('portal-column-menu')
-                                                        )}
-                                                    </div>
-                                                </th>
+                                                <th className={TH}>Siswa</th>
+                                                <th className={TH}>Kelas</th>
+                                                <th className={`${TH} hidden lg:table-cell`}>Status</th>
+                                                <th className={`${TH} hidden lg:table-cell`}>Poin</th>
+                                                <th className={TH}><div className="flex justify-end">Aksi</div></th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            {loading ? (
-                                                Array.from({ length: 10 }).map((_, i) => (
-                                                    <StudentSkeletonRow key={i} />
-                                                ))
-                                            ) : students.length === 0 ? (
+                                        <tbody className="divide-y divide-border">
+                                            {students.length === 0 ? (
                                                 <tr>
-                                                    <td colSpan={9} className="px-6 py-20">
+                                                    <td colSpan={6} className="p-4">
                                                         <EmptyState
                                                             variant="plain"
+                                                            color="slate"
                                                             icon={activeFilterCount > 0 || searchQuery ? Search : Users}
-                                                            title={activeFilterCount > 0 || searchQuery ? "Pencarian Tidak Ditemukan" : "Belum Ada Data Siswa"}
+                                                            title={activeFilterCount > 0 || searchQuery ? 'Tidak ada siswa yang cocok' : 'Belum ada data siswa'}
                                                             description={activeFilterCount > 0 || searchQuery
-                                                                ? "Maaf, kami tidak menemukan data siswa dengan kriteria tersebut. Coba ubah kata kunci atau reset filter."
-                                                                : "Database siswa Anda masih kosong. Mulai tambahkan siswa baru atau import data untuk mulai mengelola."
-                                                            }
+                                                                ? 'Coba ganti filter atau kata kunci pencarian.'
+                                                                : "Klik 'Tambah Siswa' untuk menambahkan data baru"}
                                                             action={
-                                                                activeFilterCount > 0 || searchQuery ? (
+                                                                (activeFilterCount > 0 || searchQuery) && (
                                                                     <button
                                                                         type="button"
                                                                         onClick={resetAllFilters}
-                                                                        className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition"
+                                                                        className="h-8 px-4 rounded-xl border border-border text-xs font-bold text-text-muted hover:text-text transition-all"
                                                                     >
-                                                                        Reset Semua Filter
-                                                                    </button>
-                                                                ) : (
-                                                                    <button
-                                                                        onClick={() => { setIsModalOpen(true); setActiveModal('add'); }}
-                                                                        className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide bg-[var(--color-primary)] text-white shadow-lg hover:scale-105 transition-all flex items-center gap-2"
-                                                                    >
-                                                                        <Plus className="w-4 h-4" />
-                                                                        Tambah Siswa Pertama
+                                                                        Reset Filter
                                                                     </button>
                                                                 )
                                                             }
                                                         />
                                                     </td>
                                                 </tr>
-                                            ) : (
-                                                students.map((student) => (
-                                                    <StudentRow
+                                            ) : students.map((student) => {
+                                                const selected = selectedIdSet.has(student.id)
+                                                const pts = student.total_points || 0
+                                                const isRisk = pts <= RiskThreshold
+                                                const className = classNameById[student.class_id] || student.classes?.name || '-'
+                                                const genderLabel = student.gender === 'L' ? 'Putra' : student.gender === 'P' ? 'Putri' : null
+                                                const idLabel = isPrivacyMode ? '••••••' : (student.nisn || student.registration_code || '-')
+                                                return (
+                                                    <tr
                                                         key={student.id}
-                                                        student={student}
-                                                        visibleColumns={visibleColumns}
-                                                        isSelected={selectedIdSet.has(student.id)}
-                                                        lastReportMap={lastReportMap}
-                                                        isPrivacyMode={isPrivacyMode}
-                                                        onEdit={canEdit && canEditStudent ? handleEdit : null}
-                                                        onViewProfile={handleViewProfile}
-                                                        onViewQR={handleViewQR}
-                                                        onViewPrint={handleViewPrint}
-                                                        onViewTags={handleViewTags}
-                                                        onViewClassHistory={handleViewClassHistory}
-                                                        onConfirmDelete={canEdit && canDeleteStudent ? confirmDelete : null}
-                                                        onClassBreakdown={handleClassBreakdown}
-                                                        onPhotoZoom={setPhotoZoom}
-                                                        onToggleSelect={toggleSelectStudent}
-                                                        onQuickPoint={handleQuickPoint}
-                                                        onInlineUpdate={canEdit && canEditStudent ? handleInlineUpdate : null}
-                                                        onTogglePin={handleTogglePin}
-                                                        classesList={classesList}
-                                                        formatRelativeDate={formatRelativeDate}
-                                                        RiskThreshold={RiskThreshold}
-                                                        buildWAMessage={buildWAMessage}
-                                                        openWAForStudent={openWAForStudent}
-                                                        waTemplate={waTemplate}
-                                                    />
-                                                ))
-                                            )}
-
-                                            {/* Quick Inline Add Row */}
-                                            {isInlineAddOpen && (
-                                                <StudentInlineAddRow
-                                                    classesList={classesList}
-                                                    submitting={submittingInline}
-                                                    canEdit={canEdit}
-                                                    visibleColumns={visibleColumns}
-                                                    initialClassId={inlineForm.class_id}
-                                                    onSubmit={handleInlineSubmit}
-                                                    onCancel={() => setIsInlineAddOpen(false)}
-                                                />
-                                            )}
+                                                        className={`transition-colors ${selected ? 'bg-primary/5' : 'hover:bg-surface-alt/60'}`}
+                                                    >
+                                                        <td className="px-4 py-2.5">
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={selected}
+                                                                onChange={() => toggleSelectStudent(student.id)}
+                                                                aria-label={`Pilih ${student.name}`}
+                                                                className="w-4 h-4 rounded accent-[var(--color-primary)] cursor-pointer"
+                                                            />
+                                                        </td>
+                                                        <td className="px-4 py-2.5">
+                                                            <div className="flex items-center gap-2.5 min-w-0">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => student.photo_url && setPhotoZoom(student)}
+                                                                    className={`w-8 h-8 rounded-xl bg-surface-alt flex items-center justify-center shrink-0 overflow-hidden ${student.photo_url ? 'cursor-zoom-in' : 'cursor-default'}`}
+                                                                    aria-label="Lihat foto"
+                                                                >
+                                                                    {student.photo_url
+                                                                        ? <img src={student.photo_url} alt="" className="w-full h-full object-cover" />
+                                                                        : <span className="text-xs font-bold text-primary">{student.name?.charAt(0)}</span>}
+                                                                </button>
+                                                                <div className="min-w-0">
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => handleViewProfile(student)}
+                                                                        className="text-sm font-bold text-text leading-tight truncate max-w-[260px] block text-left hover:text-primary transition-colors"
+                                                                    >
+                                                                        {student.name}
+                                                                    </button>
+                                                                    <p className="text-xs text-text-muted truncate">
+                                                                        {genderLabel && <span>{genderLabel} · </span>}
+                                                                        <span className="tabular-nums">{idLabel}</span>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-4 py-2.5">
+                                                            <span className="inline-flex items-center h-5 px-2 rounded-md text-[11px] font-semibold bg-primary/10 text-primary whitespace-nowrap">
+                                                                {className}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-4 py-2.5 hidden lg:table-cell">
+                                                            <span className={`inline-flex items-center h-5 px-2 rounded-md text-[11px] font-semibold capitalize ${STATUS_STYLE[student.status] || 'text-text-muted bg-surface-alt'}`}>
+                                                                {student.status || '-'}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-4 py-2.5 hidden lg:table-cell">
+                                                            <span className={`text-sm font-semibold tabular-nums ${isRisk ? 'text-rose-600' : pts > 0 ? 'text-emerald-600' : 'text-text-muted'}`}>
+                                                                {pts > 0 ? `+${pts}` : pts}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-4 py-2.5">
+                                                            <div className="flex items-center justify-end gap-1">
+                                                                <button
+                                                                    onClick={() => handleViewProfile(student)}
+                                                                    className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-surface-alt text-text-muted hover:text-primary transition-colors"
+                                                                    title="Lihat profil"
+                                                                    aria-label="Lihat profil"
+                                                                >
+                                                                    <Eye className="w-4 h-4" />
+                                                                </button>
+                                                                {student.phone && (
+                                                                    <button
+                                                                        onClick={() => openWAForStudent(student, buildWAMessage(student, waTemplate))}
+                                                                        className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-emerald-500/10 text-text-muted hover:text-emerald-600 transition-colors"
+                                                                        title="Kirim WhatsApp ke wali"
+                                                                        aria-label="Kirim WhatsApp"
+                                                                    >
+                                                                        <WhatsAppIcon className="w-4 h-4" />
+                                                                    </button>
+                                                                )}
+                                                                {canEdit && canEditStudent && (
+                                                                    <button
+                                                                        onClick={() => handleEdit(student)}
+                                                                        className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-surface-alt text-text-muted hover:text-primary transition-colors"
+                                                                        title="Ubah data"
+                                                                        aria-label="Ubah data"
+                                                                    >
+                                                                        <Pencil className="w-4 h-4" />
+                                                                    </button>
+                                                                )}
+                                                                {canEdit && canDeleteStudent && (
+                                                                    <button
+                                                                        onClick={() => confirmDelete(student)}
+                                                                        className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-danger/10 text-text-muted hover:text-danger transition-colors"
+                                                                        title="Hapus siswa"
+                                                                        aria-label="Hapus siswa"
+                                                                    >
+                                                                        <Trash2 className="w-4 h-4" />
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })}
                                         </tbody>
                                     </table>
-                                </div>
-                            )}
-
-                            {/* Quick Add trigger FOR DESKTOP — stays below table */}
-                            {!isMobile && !isInlineAddOpen && canEdit && canAddStudent && (
-                                <div className="hidden md:block p-4 border-t border-[var(--color-border)] bg-[var(--color-surface-alt)]/5">
-                                    <button
-                                        onClick={() => {
-                                            setIsInlineAddOpen(true)
-                                        }}
-                                        className="w-full py-3 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wide text-[var(--color-primary)] bg-[var(--color-primary)]/[0.04] hover:bg-[var(--color-primary)]/10 active:scale-[0.99] transition-all border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/40 border-dashed rounded-2xl"
-                                    >
-                                        <Plus className="w-4 h-4" />
-                                        Quick Add Siswa
-                                    </button>
                                 </div>
                             )}
 
@@ -1652,7 +1400,7 @@ export default function StudentsPage() {
                                     }}
                                 >
 
-                                    {loading ? (
+                                    {initialLoading ? (
                                         <div className="space-y-4 pt-2">
                                             {mobileView === 'card' ? (
                                                 Array.from({ length: 5 }).map((_, i) => (
@@ -1918,29 +1666,29 @@ export default function StudentsPage() {
                                     )}
                                 </div>
                             )}
-
-                            {/* Pagination Footer */}
-                            {totalRows > 0 && (
-                                <Pagination
-                                    totalRows={totalRows}
-                                    page={page}
-                                    pageSize={pageSize}
-                                    setPage={setPage}
-                                    setPageSize={setPageSize}
-                                    label="Siswa"
-                                    jumpPage={jumpPage}
-                                    setJumpPage={setJumpPage}
-                                />
-                            )}
                         </div>
-                    </div>
-                )}
+                    )}
+
+                    {/* Footer: rentang data + pagination */}
+                    {totalRows > 0 && (
+                        <Pagination
+                            totalRows={totalRows}
+                            page={page}
+                            pageSize={pageSize}
+                            setPage={setPage}
+                            setPageSize={setPageSize}
+                            label="Siswa"
+                            jumpPage={jumpPage}
+                            setJumpPage={setJumpPage}
+                        />
+                    )}
+                </div>
 
                 {/* IMPORT MODAL (lazy chunk) */}
                 {/* ===================== */}
                 <React.Suspense fallback={null}>
                     {isImportModalOpen && (
-                        <LazyStudentImportModal
+                        <LazyImportModal
                             isOpen={isImportModalOpen}
                             onClose={() => {
                                 if (importing) return
@@ -1996,7 +1744,7 @@ export default function StudentsPage() {
 
                 {/* ===================== */}
                 {/* Fitur 2 - Batch Reset Poin Modal */}
-                <StudentResetPointsModal
+                <ResetPoints
                     isOpen={activeModal === 'resetPoints'}
                     onClose={closeModal}
                     classesList={classesList}
@@ -2007,7 +1755,7 @@ export default function StudentsPage() {
                 />
 
                 {/* BULK PHOTO MATCHER MODAL */}
-                <StudentBulkPhotoModal
+                <BulkPhoto
                     isOpen={activeModal === 'bulkPhoto'}
                     onClose={closeModal}
                     uploadingBulkPhotos={uploadingBulkPhotos}
@@ -2150,7 +1898,7 @@ export default function StudentsPage() {
                 {/* ===================== */}
                 <React.Suspense fallback={null}>
                     {isExportModalOpen && (
-                        <LazyStudentExportModal
+                        <LazyExportModal
                             isOpen={isExportModalOpen}
                             onClose={() => { if (exporting) return; setIsExportModalOpen(false) }}
                             students={students}
@@ -2171,7 +1919,7 @@ export default function StudentsPage() {
 
                 {
                     isModalOpen && (
-                        <StudentFormModal
+                        <FormModal
                             isOpen={isModalOpen}
                             onClose={() => setIsModalOpen(false)}
                             selectedStudent={selectedStudent}
@@ -2187,7 +1935,7 @@ export default function StudentsPage() {
                 {/* Modal Cetak Kartu & Akses Siswa (lazy-loaded) */}
                 <React.Suspense fallback={null}>
                     {isPrintModalOpen && (
-                        <LazyStudentAccessCardModal
+                        <LazyAccessCard
                             isOpen={isPrintModalOpen}
                             onClose={() => {
                                 setIsPrintModalOpen(false);
@@ -2217,7 +1965,7 @@ export default function StudentsPage() {
                 {
                     activeModal === 'profile' && selectedStudent && (
                         <React.Suspense fallback={null}>
-                            <LazyStudentProfileModal
+                            <LazyProfileModal
                                 isOpen={activeModal === 'profile'}
                                 onClose={closeModal}
                                 selectedStudent={selectedStudent}
@@ -2590,7 +2338,7 @@ export default function StudentsPage() {
                     )
                 }
                 {/* Modal Arsip Siswa */}
-                <StudentArchiveModal
+                <ArchiveModal
                     isOpen={activeModal === 'archived'}
                     onClose={closeModal}
                     archivedStudents={archivedStudents}
@@ -2603,7 +2351,7 @@ export default function StudentsPage() {
                 />
 
                 {/* Modal Riwayat Kelas */}
-                <StudentClassHistoryModal
+                <ClassHistory
                     isOpen={activeModal === 'classHistory'}
                     onClose={() => closeModal()}
                     selectedStudent={selectedStudent}
@@ -2687,7 +2435,7 @@ export default function StudentsPage() {
                 {
                     activeModal === 'tag' && (
                         <React.Suspense fallback={null}>
-                            <LazyStudentTagModal
+                            <LazyTagModal
                                 isOpen={activeModal === 'tag'}
                                 onClose={closeModal}
                                 student={studentForTags}
@@ -2705,7 +2453,7 @@ export default function StudentsPage() {
                 }
 
                 {/* Fitur 12 - Google Sheets Import Modal */}
-                <StudentGSheetsModal
+                <GSheetsModal
                     isOpen={activeModal === 'gsheets'}
                     onClose={closeModal}
                     gSheetsUrl={gSheetsUrl}
@@ -2863,15 +2611,15 @@ export default function StudentsPage() {
                 {/* ===================== */}
                 {/* FLOATING BULK ACTION BAR - SaaS STYLE */}
                 {/* ===================== */}
-                   {
+                {
                     selectedStudentIds.length > 0 && createPortal(
                         <div
                             className="fixed -translate-x-1/2 z-[250] w-[95%] md:w-max max-w-[95%] animate-in fade-in slide-in-from-bottom-8 duration-700 cubic-bezier(0.34, 1.56, 0.64, 1)"
-                            style={{ 
+                            style={{
                                 left: dir === 'rtl'
                                     ? 'calc(50vw - (var(--sidebar-width, 0px) / 2))'
                                     : 'calc(50vw + (var(--sidebar-width, 0px) / 2))',
-                                bottom: 'var(--floating-bar-bottom, 16px)' 
+                                bottom: 'var(--floating-bar-bottom, 16px)'
                             }}
                         >
                             <div className="relative">

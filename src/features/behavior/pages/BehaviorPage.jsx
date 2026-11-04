@@ -9,12 +9,12 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@context/Auth'
 import { useFlag } from '@context/FeatureFlags'
-const LazyPointRulesTab = React.lazy(() => import('../ui/PointRulesTab'))
+const LazyRulesTab = React.lazy(() => import('../ui/RulesTab'))
 
-const LazyBehaviorExportModal = React.lazy(() => import('../ui/modals/BehaviorExportModal'))
-const LazyBehaviorImportModal = React.lazy(() => import('../ui/modals/BehaviorImportModal'))
-const LazyBehaviorFormModal = React.lazy(() => import('../ui/modals/BehaviorFormModal'))
-const LazyBehaviorDetailModal = React.lazy(() => import('../ui/modals/BehaviorDetailModal'))
+const LazyExportModal = React.lazy(() => import('../ui/modals/ExportModal'))
+const LazyImportModal = React.lazy(() => import('../ui/modals/ImportModal'))
+const LazyFormModal = React.lazy(() => import('../ui/modals/FormModal'))
+const LazyDetailModal = React.lazy(() => import('../ui/modals/DetailModal'))
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import StatsCarousel from '@shared/components/StatsCarousel'
 import Breadcrumb from '@shared/components/Breadcrumb'
@@ -22,15 +22,15 @@ import PageHeader from '@shared/components/PageHeader'
 import { StatCard, EmptyState } from '@shared/components/DataDisplay'
 import Modal from '@shared/components/Modal'
 import ConfirmDialog from '@shared/components/ConfirmDialog'
-import BehaviorFilterBar from '../ui/BehaviorFilterBar'
+import FilterBar from '../ui/FilterBar'
 import TimelineCard from '../ui/TimelineCard'
-import BehaviorTableRow from '../ui/BehaviorTableRow'
+import TableRow from '../ui/TableRow'
 import RichSelect from '@shared/components/RichSelect'
 import { TableSkeleton } from '@shared/components/Skeleton'
 import { useLanguage } from '@context/Language'
 import Pagination from '@shared/components/Pagination'
-import BulkActionsBar from '@shared/components/BulkActionsBar'
-import { useBehaviorCore } from '../hooks/useBehaviorCore'
+import ActionBar from '@shared/components/ActionBar'
+import { useCore } from '../hooks/useCore'
 
 function getPortalContainer(id) {
     let el = document.getElementById(id);
@@ -160,7 +160,7 @@ export default function BehaviorPage() {
         handleRemoveImportRow,
         copyingData,
         copyDataFromMonth
-    } = useBehaviorCore()
+    } = useCore()
 
     const { profile } = useAuth()
     const { enabled: showPoinTab } = useFlag('module.violation_types')
@@ -245,7 +245,7 @@ export default function BehaviorPage() {
 
                 <React.Suspense fallback={null}>
                     {hasOpenedExport && (
-                        <LazyBehaviorExportModal
+                        <LazyExportModal
                             isOpen={isExportModalOpen}
                             onClose={() => setIsExportModalOpen(false)}
                             exportScope={exportScope}
@@ -260,7 +260,7 @@ export default function BehaviorPage() {
                         />
                     )}
                     {hasOpenedImport && (
-                        <LazyBehaviorImportModal
+                        <LazyImportModal
                             isOpen={isImportModalOpen}
                             onClose={() => setIsImportModalOpen(false)}
                             importing={importing}
@@ -510,7 +510,7 @@ export default function BehaviorPage() {
                     <>
 
                 {/* ── SEARCH + FILTER ── */}
-                <BehaviorFilterBar
+                <FilterBar
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
                     searchInputRef={searchInputRef}
@@ -773,7 +773,7 @@ export default function BehaviorPage() {
                                         </thead>
                                         <tbody className="divide-y divide-[var(--color-border)]">
                                             {reports.map(r => (
-                                                <BehaviorTableRow
+                                                <TableRow
                                                     key={r.id}
                                                     r={r}
                                                     students={students}
@@ -807,7 +807,7 @@ export default function BehaviorPage() {
                 )}
 
                 {/* ── FLOATING BULK ACTION BAR ── */}
-                <BulkActionsBar
+                <ActionBar
                     selectedCount={selectedIds.length}
                     onClear={() => setSelectedIds([])}
                     title={tp('selected')}
@@ -835,12 +835,12 @@ export default function BehaviorPage() {
                             <span>{tp('delete')}</span>
                         </button>
                     )}
-                </BulkActionsBar>
+                </ActionBar>
 
                 {/* ── WIZARD FORM MODAL ── */}
                 <React.Suspense fallback={null}>
                     {hasOpenedForm && (
-                        <LazyBehaviorFormModal
+                        <LazyFormModal
                             isOpen={isModalOpen}
                             onClose={() => setIsModalOpen(false)}
                             selectedItem={selectedItem}
@@ -950,7 +950,7 @@ export default function BehaviorPage() {
                 {/* ── DETAIL MODAL ── */}
                 <React.Suspense fallback={null}>
                     {hasOpenedDetail && (
-                        <LazyBehaviorDetailModal
+                        <LazyDetailModal
                             isOpen={isDetailOpen}
                             onClose={() => { setIsDetailOpen(false); setDetailItem(null); }}
                             detailItem={detailItem}
@@ -971,7 +971,7 @@ export default function BehaviorPage() {
                             <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] animate-pulse">{t('behavior.loading')}</span>
                         </div>
                     }>
-                        <LazyPointRulesTab
+                        <LazyRulesTab
                             showStats={false}
                             initialPoin={violationTypes}
                             initialClasses={classesObjects}

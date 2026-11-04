@@ -8,7 +8,7 @@ import {
     getMockAudits,
     getMockTasks,
     getMockShiftLogs
-} from '@features/dorms/utils/dormMockData'
+} from '@features/dorms/utils/mockData'
 
 export function useDormsData(addToast) {
     // --- UI Filter & Pagination States ---
@@ -59,7 +59,7 @@ export function useDormsData(addToast) {
     const [studentToEvict, setStudentToEvict] = useState(null)
 
     const [selectedIds, setSelectedIds] = useState([])
-    const [isBulkAssignModalOpen, setIsBulkAssignModalOpen] = useState(false)
+    const [isBulkAssignOpen, setIsBulkAssignOpen] = useState(false)
     const [selectedBulkRoom, setSelectedBulkRoom] = useState('')
 
     const [isExportModalOpen, setIsExportModalOpen] = useState(false)
@@ -397,7 +397,7 @@ export function useDormsData(addToast) {
             }))
 
             addToast(`${selectedIds.length} santri berhasil dialokasikan ke kamar ${selectedBulkRoom}`, 'success')
-            setIsBulkAssignModalOpen(false)
+            setIsBulkAssignOpen(false)
             setSelectedIds([])
         } catch (err) {
             console.error('[DormsPage] Gagal menyimpan plotting massal:', err.message)
@@ -1260,7 +1260,7 @@ export function useDormsData(addToast) {
         isConfirmEvictOpen, setIsConfirmEvictOpen,
         studentToEvict, setStudentToEvict,
         selectedIds, setSelectedIds,
-        isBulkAssignModalOpen, setIsBulkAssignModalOpen,
+        isBulkAssignOpen, setIsBulkAssignOpen,
         selectedBulkRoom, setSelectedBulkRoom,
         isExportModalOpen, setIsExportModalOpen,
         exportScope, setExportScope,

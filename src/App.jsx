@@ -9,7 +9,7 @@ import {
 } from '@context'
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import { LoaderCircle, Lock, Wrench, TriangleAlert } from 'lucide-react'
-import { GlobalErrorBoundary } from '@shared/components'
+import { ErrorBoundary } from '@shared/components'
 import { Component } from 'react'
 
 // ─── Lazy Loading Guard ───────────────────────────────────────────────────────
@@ -36,20 +36,20 @@ function lazyRetry(componentImport) {
 // Public
 const LandingPage = lazyRetry(() => import('@features/public/pages/LandingPage.jsx'))
 const LoginPage = lazyRetry(() => import('@features/auth/pages/LoginPage.jsx'))
-const ParentCheckPage = lazyRetry(() => import('@features/auth/pages/ParentCheckPage.jsx'))
+const ParentPage = lazyRetry(() => import('@features/auth/pages/ParentPage.jsx'))
 const InformationPage = lazyRetry(() => import('@features/public/pages/InformationPage.jsx'))
-const PublicVerifyPage = lazyRetry(() => import('@features/public/pages/PublicVerifyPage.jsx'))
+const VerifyPage = lazyRetry(() => import('@features/public/pages/VerifyPage.jsx'))
 
 // Core
 const DashboardPage = lazyRetry(() => import('@features/dashboard/pages/DashboardPage.jsx'))
-const TaskCenterPage = lazyRetry(() => import('@features/dashboard/pages/TaskCenterPage.jsx'))
+const TaskCenter = lazyRetry(() => import('@features/dashboard/pages/TasksPage.jsx'))
 const RaportPage = lazyRetry(() => import('@features/raport/pages/RaportPage.jsx'))
 const RaportLayout = lazyRetry(() => import('@features/raport/layouts/RaportLayout.jsx'))
-const RaportDashboardPage = lazyRetry(() => import('@features/raport/pages/RaportDashboardPage.jsx'))
-const RaportSetupPage = lazyRetry(() => import('@features/raport/pages/RaportSetupPage.jsx'))
-const RaportInputPage = lazyRetry(() => import('@features/raport/pages/RaportInputPage.jsx'))
-const RaportPreviewPage = lazyRetry(() => import('@features/raport/pages/RaportPreviewPage.jsx'))
-const RaportArchivePage = lazyRetry(() => import('@features/raport/pages/RaportArchivePage.jsx'))
+const RaportDashboardPage = lazyRetry(() => import('@features/raport/pages/DashboardPage.jsx'))
+const SetupPage = lazyRetry(() => import('@features/raport/pages/SetupPage.jsx'))
+const InputPage = lazyRetry(() => import('@features/raport/pages/InputPage.jsx'))
+const PreviewPage = lazyRetry(() => import('@features/raport/pages/PreviewPage.jsx'))
+const ArchivePage = lazyRetry(() => import('@features/raport/pages/ArchivePage.jsx'))
 const BehaviorPage = lazyRetry(() => import('@features/behavior/pages/BehaviorPage.jsx'))
 const DormsPage = lazyRetry(() => import('@features/dorms/pages/DormsPage.jsx'))
 const HealthPage = lazyRetry(() => import('@features/health/pages/HealthPage.jsx'))
@@ -57,9 +57,8 @@ const CounselingPage = lazyRetry(() => import('@features/counseling/pages/Counse
 const AttendancePage = lazyRetry(() => import('@features/attendance/pages/AttendancePage.jsx'))
 const HalaqahPage = lazyRetry(() => import('@features/wafa/pages/HalaqahPage.jsx'))
 const GatePage = lazyRetry(() => import('@features/gate/pages/GatePage.jsx'))
-const GateKioskPage = lazyRetry(() => import('@features/gate/pages/GateKioskPage.jsx'))
-const LeavePermitPage = lazyRetry(() => import('@features/leave-permit/pages/LeavePermitPage.jsx'))
-const LeavePermitDashboardPage = lazyRetry(() => import('@features/leave-permit/pages/LeavePermitDashboardPage.jsx'))
+const KioskPage = lazyRetry(() => import('@features/gate/pages/KioskPage.jsx'))
+const PermitPage = lazyRetry(() => import('@features/leave-permit/pages/PermitPage.jsx'))
 const SettingsPage = lazyRetry(() => import('@features/settings/pages/SettingsPage.jsx'))
 
 // Admin-only
@@ -70,25 +69,25 @@ const DatabasePage = lazyRetry(() => import('@features/admin/pages/DatabasePage.
 const StoragePage = lazyRetry(() => import('@features/admin/pages/StoragePage.jsx'))
 const TasksPage = lazyRetry(() => import('@features/admin/pages/TasksPage.jsx'))
 const PlaygroundPage = lazyRetry(() => import('@features/admin/pages/PlaygroundPage.jsx'))
-const NewsListPage = lazyRetry(() => import('@features/news/pages/NewsListPage.jsx'))
-const NewsEditorPage = lazyRetry(() => import('@features/news/pages/NewsEditorPage.jsx'))
-const AiInsightsPage = lazyRetry(() => import('@features/admin/pages/ai/AiInsightsPage.jsx'))
-const AdminDashboardPage = lazyRetry(() => import('@features/admin/pages/AdminDashboardPage.jsx'))
+const ListPage = lazyRetry(() => import('@features/news/pages/ListPage.jsx'))
+const EditorPage = lazyRetry(() => import('@features/news/pages/EditorPage.jsx'))
+const InsightsPage = lazyRetry(() => import('@features/admin/pages/ai/InsightsPage.jsx'))
+const AdminDashboardPage = lazyRetry(() => import('@features/admin/pages/DashboardPage.jsx'))
 
 // Master Data
 const StudentsPage = lazyRetry(() => import('@features/students/pages/StudentsPage.jsx'))
 const TeachersPage = lazyRetry(() => import('@features/teachers/pages/TeachersPage.jsx'))
 const ClassesPage = lazyRetry(() => import('@features/classes/pages/ClassesPage.jsx'))
-const AcademicYearsPage = lazyRetry(() => import('@features/academic-years/pages/AcademicYearsPage.jsx'))
+const YearsPage = lazyRetry(() => import('@features/academic-years/pages/YearsPage.jsx'))
 const EnrollmentPage = lazyRetry(() => import('@features/enrollment/pages/EnrollmentPage.jsx'))
 const InventoryPage = lazyRetry(() => import('@features/inventory/pages/InventoryPage.jsx'))
 // Skorsing & Pembinaan di Rumah
 const SuspensionsPage = lazyRetry(() => import('@features/suspension/pages/SuspensionsPage.jsx'))
-const SuspensionDetailPage = lazyRetry(() => import('@features/suspension/pages/SuspensionDetailPage.jsx'))
-const SuspensionTasksPage = lazyRetry(() => import('@features/suspension/pages/SuspensionTasksPage.jsx'))
-const PublicSuspensionPage = lazyRetry(() => import('@features/suspension/pages/PublicSuspensionPage.jsx'))
-const PublicEnrollmentPage = lazyRetry(() => import('@features/public/pages/PublicEnrollmentPage.jsx'))
-const PublicStatusCheckPage = lazyRetry(() => import('@features/public/pages/PublicStatusCheckPage.jsx'))
+const DetailPage = lazyRetry(() => import('@features/suspension/pages/DetailPage.jsx'))
+const SuspensionTasks = lazyRetry(() => import('@features/suspension/pages/TasksPage.jsx'))
+const PublicPage = lazyRetry(() => import('@features/suspension/pages/PublicPage.jsx'))
+const PublicEnrollment = lazyRetry(() => import('@features/public/pages/EnrollmentPage.jsx'))
+const StatusPage = lazyRetry(() => import('@features/public/pages/StatusPage.jsx'))
 
 // ─── Role Hierarchy ───────────────────────────────────────────────────────────
 // developer > admin > guru = satpam > viewer
@@ -453,15 +452,15 @@ function AppRoutes() {
 
         {/* ── Public ── */}
         <Route path="/" element={<LandingPage />} />
-        <Route path="/skorsing/:token" element={<PublicSuspensionPage />} />
-        <Route path="/psb" element={<PublicEnrollmentPage />} />
-        <Route path="/psb/status" element={<PublicStatusCheckPage />} />
-        <Route path="/check" element={<ParentCheckPage />} />
+        <Route path="/skorsing/:token" element={<PublicPage />} />
+        <Route path="/psb" element={<PublicEnrollment />} />
+        <Route path="/psb/status" element={<StatusPage />} />
+        <Route path="/check" element={<ParentPage />} />
         <Route path="/login" element={
           <PublicRoute><LoginPage /></PublicRoute>
         } />
         <Route path="/informasi" element={<InformationPage />} />
-        <Route path="/verify" element={<PublicVerifyPage />} />
+        <Route path="/verify" element={<VerifyPage />} />
 
         {/* ── Protected ── */}
         <Route element={<ProtectedRoute />}>
@@ -469,17 +468,17 @@ function AppRoutes() {
 
             {/* Core — module flag guarded */}
             <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/task-center" element={<TaskCenterPage />} />
+            <Route path="/task-center" element={<TaskCenter />} />
             {/* ── Raport Pondok — nested multi-step routes ── */}
             <Route
               path="/raport"
               element={<FlagRoute flag="module.raport" label="Raport Pondok"><RaportLayout isAcademic={false} /></FlagRoute>}
             >
               <Route index element={<RaportDashboardPage isAcademic={false} />} />
-              <Route path="setup/:classId" element={<RaportSetupPage isAcademic={false} />} />
-              <Route path="input/:classId" element={<RaportInputPage isAcademic={false} />} />
-              <Route path="preview/:classId" element={<RaportPreviewPage isAcademic={false} />} />
-              <Route path="archive" element={<RaportArchivePage isAcademic={false} />} />
+              <Route path="setup/:classId" element={<SetupPage isAcademic={false} />} />
+              <Route path="input/:classId" element={<InputPage isAcademic={false} />} />
+              <Route path="preview/:classId" element={<PreviewPage isAcademic={false} />} />
+              <Route path="archive" element={<ArchivePage isAcademic={false} />} />
             </Route>
 
             {/* ── Rapor Akademik — nested multi-step routes ── */}
@@ -488,10 +487,10 @@ function AppRoutes() {
               element={<FlagRoute flag="module.raport" label="Rapor &amp; Penilaian"><RaportLayout isAcademic={true} /></FlagRoute>}
             >
               <Route index element={<RaportDashboardPage isAcademic={true} />} />
-              <Route path="setup/:classId" element={<RaportSetupPage isAcademic={true} />} />
-              <Route path="input/:classId" element={<RaportInputPage isAcademic={true} />} />
-              <Route path="preview/:classId" element={<RaportPreviewPage isAcademic={true} />} />
-              <Route path="archive" element={<RaportArchivePage isAcademic={true} />} />
+              <Route path="setup/:classId" element={<SetupPage isAcademic={true} />} />
+              <Route path="input/:classId" element={<InputPage isAcademic={true} />} />
+              <Route path="preview/:classId" element={<PreviewPage isAcademic={true} />} />
+              <Route path="archive" element={<ArchivePage isAcademic={true} />} />
             </Route>
             <Route path="/boarding/behavior" element={<FlagRoute flag="module.poin" label="Kedisiplinan & Poin"><BehaviorPage /></FlagRoute>} />
             <Route path="/suspensions" element={
@@ -501,12 +500,12 @@ function AppRoutes() {
             } />
             <Route path="/suspensions/:id" element={
               <RoleFlagRoute roles={DEV_ADMIN}>
-                <SuspensionDetailPage />
+                <DetailPage />
               </RoleFlagRoute>
             } />
             <Route path="/tugas-skorsing" element={
               <RoleFlagRoute roles={DEV_ADMIN_TEACHER} flag="module.suspension" label="Tugas Skorsing">
-                <SuspensionTasksPage />
+                <SuspensionTasks />
               </RoleFlagRoute>
             } />
             <Route path="/attendance" element={<FlagRoute flag="module.absensi" label="Absensi Bulanan"><AttendancePage /></FlagRoute>} />
@@ -536,17 +535,12 @@ function AppRoutes() {
             } />
             <Route path="/boarding/gate/kiosk" element={
               <RoleFlagRoute roles={DEV_ADMIN_GATE} flag="module.gate" label="Portal Keluar Masuk">
-                <GateKioskPage />
+                <KioskPage />
               </RoleFlagRoute>
             } />
             <Route path="/boarding/leave-permit" element={
               <RoleFlagRoute roles={DEV_ADMIN}>
-                <LeavePermitPage />
-              </RoleFlagRoute>
-            } />
-            <Route path="/boarding/leave-permit/dashboard" element={
-              <RoleFlagRoute roles={DEV_ADMIN}>
-                <LeavePermitDashboardPage />
+                <PermitPage />
               </RoleFlagRoute>
             } />
             <Route path="/admin/logs" element={
@@ -588,22 +582,22 @@ function AppRoutes() {
             {/* Master Data */}
             <Route path="/admin/news" element={
               <RoleFlagRoute roles={DEV_ADMIN}>
-                <NewsListPage />
+                <ListPage />
               </RoleFlagRoute>
             } />
             <Route path="/admin/news/create" element={
               <RoleFlagRoute roles={DEV_ADMIN}>
-                <NewsEditorPage />
+                <EditorPage />
               </RoleFlagRoute>
             } />
             <Route path="/admin/news/edit/:id" element={
               <RoleFlagRoute roles={DEV_ADMIN}>
-                <NewsEditorPage />
+                <EditorPage />
               </RoleFlagRoute>
             } />
             <Route path="/admin/ai-insights" element={
               <RoleFlagRoute roles={DEV_ADMIN}>
-                <AiInsightsPage />
+                <InsightsPage />
               </RoleFlagRoute>
             } />
             <Route path="/admin" element={
@@ -629,7 +623,7 @@ function AppRoutes() {
             } />
             <Route path="/master/academic-years" element={
               <RoleFlagRoute roles={DEV_ADMIN_TEACHER} flag="module.academic_years" label="Tahun Pelajaran">
-                <AcademicYearsPage />
+                <YearsPage />
               </RoleFlagRoute>
             } />
             <Route path="/master/enrollment" element={
@@ -661,7 +655,7 @@ function AppRoutes() {
 // ─── App Root ─────────────────────────────────────────────────────────────────
 export default function App() {
   return (
-    <GlobalErrorBoundary>
+    <ErrorBoundary>
       <BrowserRouter>
         <LanguageProvider>
           <ThemeProvider>
@@ -675,6 +669,6 @@ export default function App() {
           </ThemeProvider>
         </LanguageProvider>
       </BrowserRouter>
-    </GlobalErrorBoundary>
+    </ErrorBoundary>
   )
 }

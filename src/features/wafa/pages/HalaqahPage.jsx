@@ -1465,7 +1465,7 @@ export default function HalaqahPage() {
                 .is('deleted_at', null).eq('status', 'active').order('name')
             if (teacherErr) console.error('Teacher fetch error:', teacherErr)
 
-            // Fetch students — match useStudentsCore pattern exactly
+            // Fetch students — match useCore pattern exactly
             const { data: students, error: studentErr } = await supabase.from('students')
                 .select('*, classes(name)')
                 .is('deleted_at', null)

@@ -9,7 +9,7 @@ import {
 
 // Tugas guru: daftar skorsing aktif + tugas milik saya + penilaian.
 // Aturan kepemilikan: guru hanya ubah/nilai tugas dengan created_by = dirinya.
-// Dipakai SuspensionTasksPage.
+// Dipakai TasksPage.
 export default function useSuspensionTasks() {
   const { addToast } = useToast()
   const { user, profile } = useAuth()

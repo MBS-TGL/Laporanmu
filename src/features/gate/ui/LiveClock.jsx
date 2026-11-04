@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Clock } from 'lucide-react'
 import { useLanguage } from '@context/Language'
-import { fmtDate } from '@features/gate/hooks/useGateCore'
+import { fmtDate } from '@features/gate/hooks/useCore'
 
 export default function LiveClock() {
   const { language } = useLanguage()

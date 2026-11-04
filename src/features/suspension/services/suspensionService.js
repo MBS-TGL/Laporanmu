@@ -1,7 +1,7 @@
 // Service dashboard (authenticated) modul Skorsing.
 // Aturan: kolom eksplisit, list wajib .limit()/.range(), selalu cek error,
 // mutasi penting wajib logAudit(). Halaman publik DILARANG memakai file ini —
-// pakai publicSuspensionService.js (RPC saja).
+// pakai publicService.js (RPC saja).
 import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
 

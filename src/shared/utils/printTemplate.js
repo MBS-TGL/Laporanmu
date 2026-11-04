@@ -132,7 +132,7 @@ export function openPrintWindow(html) {
 
 /**
  * Generate a verification URL for the QR code.
- * Uses the same logic as RaportPrintCard to handle local/dev/prod environments.
+ * Uses the same logic as PrintCard to handle local/dev/prod environments.
  */
 function _getVerificationUrl(docNumber) {
   const origin = window.location.origin

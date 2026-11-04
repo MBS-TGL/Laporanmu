@@ -1,2 +1,2 @@
-export { default as NewsListPage } from './pages/NewsListPage'
-export { default as NewsEditorPage } from './pages/NewsEditorPage'
+export { default as ListPage } from './pages/ListPage'
+export { default as EditorPage } from './pages/EditorPage'

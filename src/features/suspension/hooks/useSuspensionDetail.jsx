@@ -9,7 +9,7 @@ import {
 import { eachDay } from '../utils/suspensionConstants'
 
 // Detail satu skorsing: progres per hari, tugas, log, followup.
-// Dipakai SuspensionDetailPage (admin).
+// Dipakai DetailPage (admin).
 export default function useSuspensionDetail(suspensionId) {
   const { addToast } = useToast()
   const { user } = useAuth()

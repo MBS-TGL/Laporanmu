@@ -37,27 +37,27 @@ import {
     MAX_SCORE, STORAGE_BUCKET, KRITERIA, GRADE, calcAvg, LABEL, toArabicNum,
     FISIK_FIELDS, HAFALAN_FIELDS, BULAN, CATATAN_TEMPLATES
 } from '@utils/reports/raportConstants'
-import { RAPORT_TYPES } from '@utils/reports/raportTypeRegistry'
+import { RAPORT_TYPES } from '@utils/reports/typeRegistry'
 import {
     isComplete, buildWaLines, escapeCsvCell, generateAutoComment
 } from '@utils/reports/raportHelpers'
 import { translitToAr, translitClassToAr, loadTranslitData } from '@utils/reports/translitData'
 import { RadarChart, SparklineTrend } from '@features/raport/components/RaportCharts'
-import RaportPrintCard from '@features/raport/components/RaportPrintCard'
-import RaportSummaryPage from '@features/raport/components/RaportSummaryPage'
-import { buildRaportPrintDocumentHtml } from '@features/raport/utils/raportPrintHtml'
-import RaportLayoutSettings, { loadLayoutConfig } from '@features/raport/components/RaportLayoutSettings'
-import StudentRow, { ExtraInput, ExtraTextarea } from '@features/raport/components/RaportRecordRow'
+import PrintCard from '@features/raport/components/PrintCard'
+import SummaryPage from '@features/raport/components/SummaryPage'
+import { buildRaportPrintDocumentHtml } from '@features/raport/utils/printHtml'
+import LayoutSettings, { loadLayoutConfig } from '@features/raport/components/LayoutSettings'
+import StudentRow, { ExtraInput, ExtraTextarea } from '@features/raport/components/RecordRow'
 import { ShortcutModalContent, WaBlastConfirmContent, WaBlastProgressContent, ZipBlastProgressContent } from '@features/raport/components/RaportModals'
 import Skeleton from '@shared/components/Skeleton'
-import { useRaportCore } from '@hooks/reports/useRaportCore'
-import { useRaportImportExport } from '@hooks/reports/useRaportImportExport'
-const LazyRaportInputTable = lazy(() => import('@features/raport/components/RaportInputTable'))
+import { useCore } from '@hooks/reports/useCore'
+import { useImportExport } from '@hooks/reports/useImportExport'
+const LazyInputTable = lazy(() => import('@features/raport/components/InputTable'))
 const LazyRaportArchive = lazy(() => import('@features/raport/components/RaportArchive'))
 
-const LazyRaportImportModal = lazy(() => import('@features/raport/components/RaportImportModal'))
-const LazyRaportExportModal = lazy(() => import('@features/raport/components/RaportExportModal'))
-const LazyRaportTutorialModal = lazy(() => import('@features/raport/components/RaportTutorialModal').then(module => ({ default: module.RaportTutorialModal })))
+const LazyImportModal = lazy(() => import('@features/raport/components/ImportModal'))
+const LazyExportModal = lazy(() => import('@features/raport/components/ExportModal'))
+const LazyTutorialModal = lazy(() => import('@features/raport/components/TutorialModal').then(module => ({ default: module.TutorialModal })))
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -101,7 +101,7 @@ export default function RaportPage() {
     const { enabled: autosaveEnabled } = useFlag('raport.autosave')
 
     // ── Hooks integration ──
-    const core = useRaportCore()
+    const core = useCore()
     const {
         addToast, settings, profile, now, isAllowed, canEdit,
         classesList, setClassesList, pageLoading, setPageLoading,
@@ -151,7 +151,7 @@ export default function RaportPage() {
     })), [years])
 
 
-    const importExport = useRaportImportExport(core, { printContainerRef, silentPrintRef, pageSize })
+    const importExport = useImportExport(core, { printContainerRef, silentPrintRef, pageSize })
     const {
         raportLinks, setRaportLinks, sendingWA, setSendingWA,
         waBlastConfirm, setWaBlastConfirm, waBlast, setWaBlast,
@@ -2109,7 +2109,7 @@ await Promise.all([
                     <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide animate-pulse">Memuat Lembar Input Nilai...</p>
                 </div>
             }>
-                <LazyRaportInputTable
+                <LazyInputTable
                     globalSaveIndicator={globalSaveIndicator}
                     loading={loading}
                     criteria={(() => { const rt = RAPORT_TYPES[reportType] || RAPORT_TYPES.bulanan; return rt.getCriteria(selectedClass) })()}
@@ -2328,7 +2328,7 @@ await Promise.all([
                             </button>
                         </div>
 
-                        <RaportLayoutSettings
+                        <LayoutSettings
                             config={layoutConfig}
                             onChange={setLayoutConfig}
                         />
@@ -2571,7 +2571,7 @@ await Promise.all([
                                             <div className="lg:hidden absolute inset-0 rounded-none ring-2 ring-indigo-400/40 animate-pulse pointer-events-none z-10" />
                                             <div className="lg:hidden absolute inset-0 rounded-none ring-4 ring-indigo-400/10 animate-pulse pointer-events-none z-10" style={{ animationDelay: '0.3s' }} />
                                             {previewStudent && (
-                                                <RaportPrintCard
+                                                <PrintCard
                                                     student={previewStudent}
                                                     scores={scores[previewStudent.id]}
                                                     extra={extras[previewStudent.id]}
@@ -2965,7 +2965,7 @@ await Promise.all([
                                                 >
                                                     {/* Mobile pulse ring */}
                                                     <div className="lg:hidden absolute inset-0 rounded-none ring-2 ring-indigo-400/40 animate-pulse pointer-events-none z-10" />
-                                                    <RaportPrintCard
+                                                    <PrintCard
                                                         student={pStudent}
                                                         scores={pSc[pStudent.id]}
                                                         extra={pEx[pStudent.id]}
@@ -3062,7 +3062,7 @@ await Promise.all([
     const printReportType = archivePreview ? (archivePreview.entry?.report_type || 'bulanan') : reportType
     const printSemester = archivePreview ? (archivePreview.entry?.semester || selectedSemester) : selectedSemester
     const printAcademicYear = archivePreview ? (archivePreview.entry?.academic_year || academicYear) : academicYear
-    const printSelectedClass = archivePreview ? selectedClass : selectedClass // Wait, if archivePreview, we don't have the full selectedClass object but className/level is enough. Let's pass printClass string or reconstructed object if needed. Wait, in RaportPrintCard, selectedClass is used to get ClassLevel (getClassLevel(classObj)). getClassLevel handles either string or object! So printSelectedClass can be: archivePreview ? archivePreview.className : selectedClass. Let's do that!
+    const printSelectedClass = archivePreview ? selectedClass : selectedClass // Wait, if archivePreview, we don't have the full selectedClass object but className/level is enough. Let's pass printClass string or reconstructed object if needed. Wait, in PrintCard, selectedClass is used to get ClassLevel (getClassLevel(classObj)). getClassLevel handles either string or object! So printSelectedClass can be: archivePreview ? archivePreview.className : selectedClass. Let's do that!
     const printSelectedClassResolved = archivePreview ? archivePreview.className : selectedClass
 
     // ── Fullscreen resolved preview variables
@@ -3348,7 +3348,7 @@ await Promise.all([
                 {/* SaaS Raport Import Modal */}
                 <Suspense fallback={null}>
                     {hasOpenedImport && (
-                        <LazyRaportImportModal
+                        <LazyImportModal
                             isOpen={isImportModalOpen}
                             onClose={() => setIsImportModalOpen(false)}
                             selectedMonth={selectedMonth}
@@ -3370,7 +3370,7 @@ await Promise.all([
                 {/* SaaS Raport Export Modal */}
                 <Suspense fallback={null}>
                     {hasOpenedExport && (
-                        <LazyRaportExportModal
+                        <LazyExportModal
                             isOpen={isExportModalOpen}
                             onClose={() => setIsExportModalOpen(false)}
                             students={students}
@@ -3393,7 +3393,7 @@ await Promise.all([
                 {printQueue.length > 0 && (
                     <div ref={printContainerRef} style={{ position: 'fixed', left: '-9999px', top: 0, width: '1000px', visibility: 'hidden', pointerEvents: 'none' }}>
                         {printQueue.length > 1 && (
-                            <RaportSummaryPage
+                            <SummaryPage
                                 students={printStudents.filter(s => printQueue.includes(s.id))}
                                 scores={printScores}
                                 extras={printExtras}
@@ -3411,7 +3411,7 @@ await Promise.all([
                             />
                         )}
                         {printStudents.filter(s => printQueue.includes(s.id)).map(s => (
-                            <RaportPrintCard key={s.id} student={s} scores={printScores[s.id]} extra={printExtras[s.id]} bulanObj={printBulan} tahun={printYear} musyrif={printMusyrif} className={printClass} lang={printLang} settings={settings} pageSize={pageSize} catatanArab={catatanArabMap[s.id]} studentIndex={printStudents.findIndex(x => x.id === s.id) + 1} onRendered={() => setPrintRenderedCount(c => c + 1)} reportType={printReportType} selectedSemester={printSemester} academicYear={printAcademicYear} selectedClass={printSelectedClassResolved} layoutConfig={layoutConfig} signMode={isArchiveMode ? 'basah' : signMode} signatures={isArchiveMode ? null : signatures} behaviorReports={behaviorReports[s.id]} />
+                            <PrintCard key={s.id} student={s} scores={printScores[s.id]} extra={printExtras[s.id]} bulanObj={printBulan} tahun={printYear} musyrif={printMusyrif} className={printClass} lang={printLang} settings={settings} pageSize={pageSize} catatanArab={catatanArabMap[s.id]} studentIndex={printStudents.findIndex(x => x.id === s.id) + 1} onRendered={() => setPrintRenderedCount(c => c + 1)} reportType={printReportType} selectedSemester={printSemester} academicYear={printAcademicYear} selectedClass={printSelectedClassResolved} layoutConfig={layoutConfig} signMode={isArchiveMode ? 'basah' : signMode} signatures={isArchiveMode ? null : signatures} behaviorReports={behaviorReports[s.id]} />
                         ))}
                     </div>
                 )}
@@ -3442,7 +3442,7 @@ await Promise.all([
                 {/* Tutorial Modal */}
                 <Suspense fallback={null}>
                     {hasOpenedTutorial && (
-                        <LazyRaportTutorialModal
+                        <LazyTutorialModal
                             isOpen={showTutorialModal}
                             onClose={() => setShowTutorialModal(false)}
                         />
@@ -3937,7 +3937,7 @@ await Promise.all([
                                                 style={{ width: `${naturalW}px`, transformOrigin: 'top left', transform: `scale(${fullScreenZoom})` }}
                                             >
                                                 {fsStudent && (
-                                                    <RaportPrintCard
+                                                    <PrintCard
                                                         student={fsStudent}
                                                         scores={fsScores}
                                                         extra={fsExtra}

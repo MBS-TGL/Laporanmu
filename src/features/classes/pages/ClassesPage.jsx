@@ -25,10 +25,10 @@ import { StatCard } from '@shared/components/DataDisplay'
 
 // Components
 import { ClassRow, ClassMobileCard } from '@features/classes/components/ClassRow'
-import ClassFormModal from '@features/classes/components/ClassFormModal'
-import ClassExportModal from '@features/classes/components/ClassExportModal'
-import ClassArchiveModal from '@features/classes/components/ClassArchiveModal'
-import ClassImportModal from '@features/classes/components/ClassImportModal'
+import FormModal from '@features/classes/components/FormModal'
+import ExportModal from '@features/classes/components/ExportModal'
+import ArchiveModal from '@features/classes/components/ArchiveModal'
+import ImportModal from '@features/classes/components/ImportModal'
 import Pagination from '@shared/components/Pagination'
 
 
@@ -1488,7 +1488,7 @@ export default function ClassesPage() {
                 </div>
 
                 {/* Modals */}
-                <ClassFormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} selectedItem={selectedItem} teachersList={teachersList} academicYearsList={academicYearsList} onSubmit={handleSubmit} submitting={submitting} />
+                <FormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} selectedItem={selectedItem} teachersList={teachersList} academicYearsList={academicYearsList} onSubmit={handleSubmit} submitting={submitting} />
 
                 {/* Delete Modal */}
                 <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} title="Hapus Kelas" size="sm">
@@ -1521,7 +1521,7 @@ export default function ClassesPage() {
                 </Modal>
 
                 {/* Export Modal */}
-                <ClassExportModal
+                <ExportModal
                     isOpen={isExportModalOpen}
                     onClose={() => setIsExportModalOpen(false)}
                     classes={classes}
@@ -1537,7 +1537,7 @@ export default function ClassesPage() {
                 />
 
                 {/* Arsip Kelas Modal */}
-                <ClassArchiveModal
+                <ArchiveModal
                     isOpen={isArchivedModalOpen}
                     onClose={() => setIsArchivedModalOpen(false)}
                     archivedClasses={archivedClasses}
@@ -1547,7 +1547,7 @@ export default function ClassesPage() {
 
                 {/* ── Import Modal ── */}
                 {/* ── Import Modal ── */}
-                <ClassImportModal
+                <ImportModal
                     isOpen={isImportModalOpen}
                     onClose={() => setIsImportModalOpen(false)}
                     importing={importing}

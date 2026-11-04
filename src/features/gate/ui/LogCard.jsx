@@ -4,7 +4,7 @@ import {
 } from 'lucide-react'
 import { useLanguage } from '@context'
 import { PAGE_T, getVisitorTypes, translatePurpose } from '@features/gate/utils/gateConstants'
-import { durasi, fmtTime } from '@features/gate/hooks/useGateCore'
+import { durasi, fmtTime } from '@features/gate/hooks/useCore'
 
 const LogCard = memo(function LogCard({ log, onReturn, onCheckout, onEdit, isSelected, onToggleSelect, selectionMode }) {
   const { language } = useLanguage()

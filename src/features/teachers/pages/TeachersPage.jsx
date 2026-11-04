@@ -14,11 +14,11 @@ import { useFlag } from '@context/FeatureFlags'
 import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
 import { TeacherRow, TeacherMobileCard, STATUS_CONFIG } from '@features/teachers/components/TeacherRow'
-import TeacherFormModal from '@features/teachers/components/TeacherFormModal'
-import TeacherProfileModal from '@features/teachers/components/TeacherProfileModal'
-import TeacherImportModal from '@features/teachers/components/TeacherImportModal'
-import TeacherExportModal from '@features/teachers/components/TeacherExportModal'
-import TeacherArchiveModal from '@features/teachers/components/TeacherArchiveModal'
+import FormModal from '@features/teachers/components/FormModal'
+import ProfileModal from '@features/teachers/components/ProfileModal'
+import ImportModal from '@features/teachers/components/ImportModal'
+import ExportModal from '@features/teachers/components/ExportModal'
+import ArchiveModal from '@features/teachers/components/ArchiveModal'
 
 
 import { useDebounce } from '@hooks/useDebounce'
@@ -1769,7 +1769,7 @@ export default function TeachersPage() {
                 )}
 
                 {/* ════ MODAL Tambah/Edit ════ */}
-                <TeacherFormModal
+                <FormModal
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
                     selectedItem={selectedItem}
@@ -1782,7 +1782,7 @@ export default function TeachersPage() {
                 />
 
                 {/* ════ MODAL Profil ════ */}
-                <TeacherProfileModal
+                <ProfileModal
                     isOpen={isProfileOpen}
                     onClose={() => setIsProfileOpen(false)}
                     selectedTeacher={profileTeacher}
@@ -1798,7 +1798,7 @@ export default function TeachersPage() {
                 />
 
                 {/* ════ MODAL Import ════ */}
-                <TeacherImportModal
+                <ImportModal
                     isOpen={isImportModalOpen}
                     onClose={() => { if (importing) return; setIsImportModalOpen(false); setImportPreview([]); setImportIssues([]); setImportFileName(''); setImportStep(1) }}
                     importing={importing}
@@ -1839,7 +1839,7 @@ export default function TeachersPage() {
                 />
 
                 {/* ════ MODAL Export ════ */}
-                <TeacherExportModal
+                <ExportModal
                     isOpen={isExportModalOpen}
                     onClose={() => setIsExportModalOpen(false)}
                     teachers={teachers}
@@ -1975,7 +1975,7 @@ export default function TeachersPage() {
                 </Modal>
 
                 {/* ════ MODAL Arsip List ════ */}
-                <TeacherArchiveModal
+                <ArchiveModal
                     isOpen={isArchivedOpen}
                     onClose={() => setIsArchivedOpen(false)}
                     archivedTeachers={archivedTeachers}

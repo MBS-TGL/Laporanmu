@@ -29,7 +29,7 @@ export default function StudentSearch({ onSelect, placeholder = 'Ketik nama sant
         const { data, error } = await supabase
           .from('students')
           .select(`
-            id, name, phone, class_id, dorm_id, photo_url,
+            id, name, phone, class_id, dorm_id, photo_url, metadata,
             classes ( id, name ),
             dorms ( id, ar, building, gender )
           `)
@@ -58,7 +58,7 @@ export default function StudentSearch({ onSelect, placeholder = 'Ketik nama sant
   useEffect(() => {
     const handleClick = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target) &&
-          inputRef.current && !inputRef.current.contains(e.target)) {
+        inputRef.current && !inputRef.current.contains(e.target)) {
         setIsOpen(false)
       }
     }
@@ -76,7 +76,8 @@ export default function StudentSearch({ onSelect, placeholder = 'Ketik nama sant
       phone: student.phone || '',
       className: student.classes?.name || '-',
       classId: student.class_id,
-      dormName: student.dorms?.ar || student.dorms?.building || '-',
+      // Plotting kamar dari DormsPage tersimpan di metadata.kamar; dorms (via dorm_id) sebagai cadangan
+      dormName: student.metadata?.kamar || student.dorms?.ar || student.dorms?.building || '-',
       dormId: student.dorm_id,
       photoUrl: student.photo_url,
     })
@@ -140,11 +141,10 @@ export default function StudentSearch({ onSelect, placeholder = 'Ketik nama sant
             <button
               key={student.id}
               onClick={() => handleSelect(student)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 text-left transition-colors ${
-                idx === highlightIdx
+              className={`w-full flex items-center gap-3 px-3 py-2.5 text-left transition-colors ${idx === highlightIdx
                   ? 'bg-primary/10'
                   : 'hover:bg-surface-alt'
-              }`}
+                }`}
             >
               <div className="w-8 h-8 rounded-full bg-surface-alt flex items-center justify-center shrink-0 overflow-hidden">
                 {student.photo_url
@@ -157,7 +157,7 @@ export default function StudentSearch({ onSelect, placeholder = 'Ketik nama sant
                 <div className="text-xs text-text-muted flex gap-2">
                   <span>{student.classes?.name || '-'}</span>
                   <span className="opacity-40">|</span>
-                  <span>{student.dorms?.ar || student.dorms?.building || '-'}</span>
+                  <span>{student.metadata?.kamar || student.dorms?.ar || student.dorms?.building || '-'}</span>
                 </div>
               </div>
             </button>

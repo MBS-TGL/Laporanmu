@@ -1,4 +1,4 @@
-import { fmtDate, fmtTime, fmtDateTime, durasi } from '@features/gate/hooks/useGateCore'
+import { fmtDate, fmtTime, fmtDateTime, durasi } from '@features/gate/hooks/useCore'
 import { translatePurpose } from './gateConstants'
 import { buildPrintHTML } from '@shared/utils/printTemplate'
 

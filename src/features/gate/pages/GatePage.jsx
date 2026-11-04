@@ -17,20 +17,20 @@ import {
   StatCard,
   EmptyState,
   Modal,
-  BulkActionsBar
+  ActionBar
 } from '@shared/components'
 import { useToast } from '@context/Toast'
 import { useAuth } from '@context/Auth'
 import { logAudit } from '@utils/auditLogger'
 import { useLanguage } from '@context/Language'
 import {
-  useGateCore,
+  useCore,
   fmtDate, fmtTime, fmtDateTime,
   durasi, startOfDay, addDays, nowTimeStr, nowDateStr,
   dateTimeToISO, timeStrToISO,
   sendLogNotification, sendDailySummary,
-} from '@features/gate/hooks/useGateCore'
-import { useGateImportExport } from '@features/gate/hooks/useGateImportExport'
+} from '@features/gate/hooks/useCore'
+import { useImportExport } from '@features/gate/hooks/useImportExport'
 import {
   buildPrintHTMLDetail, buildPrintHTMLRingkasan,
   buildCSVRingkasan, buildCSVDetail,
@@ -42,22 +42,22 @@ import {
   PRESETS_GURU, PRESETS_KARYAWAN, PRESETS_SANTRI, PRESETS_TAMU, MONTHS_ID
 } from '@features/gate/utils/gateConstants'
 
-import ConfirmTimeModal from '@features/gate/ui/modals/ConfirmTimeModal'
-import EditLogModal from '@features/gate/ui/modals/EditLogModal'
+import ConfirmTime from '@features/gate/ui/modals/ConfirmTime'
+import EditLog from '@features/gate/ui/modals/EditLog'
 import ConfigModal from '@features/gate/ui/modals/ConfigModal'
-import PrintOptionsModal from '@features/gate/ui/modals/PrintOptionsModal'
-import BulkCheckoutModal from '@features/gate/ui/modals/BulkCheckoutModal'
-import BulkDeleteModal from '@features/gate/ui/modals/BulkDeleteModal'
+import PrintOptions from '@features/gate/ui/modals/PrintOptions'
+import BulkCheckout from '@features/gate/ui/modals/BulkCheckout'
+import BulkDelete from '@features/gate/ui/modals/BulkDelete'
 
 import FormInternal from '@features/gate/ui/forms/FormInternal'
 import FormTamu from '@features/gate/ui/forms/FormTamu'
 import QuickGuide from '@features/gate/ui/QuickGuide'
 import LogCard from '@features/gate/ui/LogCard'
-import GateFilterBar from '@features/gate/ui/GateFilterBar'
-import GateTableRow from '@features/gate/ui/GateTableRow'
+import FilterBar from '@features/gate/ui/FilterBar'
+import TableRow from '@features/gate/ui/TableRow'
 import LiveClock from '@features/gate/ui/LiveClock'
-import GateReconcilePanel from '@features/leave-permit/ui/GateReconcilePanel'
-import useLeavePermitCore from '@features/leave-permit/hooks/useLeavePermitCore'
+import ReconcilePanel from '@features/leave-permit/ui/ReconcilePanel'
+import usePermitCore from '@features/leave-permit/hooks/useCore'
 
 
 // ─── Skeletons ──────────────────────────────────────────────────────────────
@@ -112,7 +112,7 @@ function TableSkeleton({ cols = 5, rows = 6 }) {
   )
 }
 
-// DateTimeInput now imported from GateForms.jsx
+// DateTime now imported from GateForms.jsx
 
 // QuickGuide now imported from GateForms.jsx
 
@@ -132,13 +132,13 @@ function TableSkeleton({ cols = 5, rows = 6 }) {
 
 // FormTamu now imported from GateForms.jsx
 
-// ─── ConfirmTimeModal ─────────────────────────────────────────────────────────
+// ─── ConfirmTime ─────────────────────────────────────────────────────────
 
-// ConfirmTimeModal now imported from GateModals.jsx
+// ConfirmTime now imported from GateModals.jsx
 
-// ─── EditLogModal ─────────────────────────────────────────────────────────────
+// ─── EditLog ─────────────────────────────────────────────────────────────
 
-// EditLogModal now imported from GateModals.jsx
+// EditLog now imported from GateModals.jsx
 
 // ─── LogCard ──────────────────────────────────────────────────────────────────
 
@@ -239,8 +239,8 @@ export default function GatePage() {
   const [showConfig, setShowConfig] = useState(false)
   const [showGuide, setShowGuide] = useState(false)
   const [showPrintModal, setShowPrintModal] = useState(false)
-  const [showBulkCheckoutModal, setShowBulkCheckoutModal] = useState(false)
-  const [showBulkDeleteModal, setShowBulkDeleteModal] = useState(false)
+  const [showBulkCheckout, setShowBulkCheckout] = useState(false)
+  const [showBulkDelete, setShowBulkDelete] = useState(false)
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 1024 : false)
 
   useEffect(() => {
@@ -269,9 +269,9 @@ export default function GatePage() {
     handleSaveEdit, handleDeleteLog,
     handleBulkCheckout, handleBulkDelete,
     handleSelectAll, toggleSelect, clearSelection,
-  } = useGateCore({ activeTab, rekapMode, rekapDate })
+  } = useCore({ activeTab, rekapMode, rekapDate })
 
-  const { confirmDeparture, confirmReturn } = useLeavePermitCore()
+  const { confirmDeparture, confirmReturn } = usePermitCore()
   const [reconcileLoading, setReconcileLoading] = useState(false)
 
   const handleConfirmDeparture = async (permit) => {
@@ -462,8 +462,8 @@ export default function GatePage() {
     return Array.from(map.values()).sort((a, b) => b.totalMs - a.totalMs)
   }, [rekapData, filterRekap, searchRekap])
 
-  // ── Print & Export (handled by useGateImportExport) ────────────────────────
-  const { handleExportCSV, executePrint } = useGateImportExport({
+  // ── Print & Export (handled by useImportExport) ────────────────────────
+  const { handleExportCSV, executePrint } = useImportExport({
     language,
     activeTab,
     rekapMode,
@@ -677,7 +677,7 @@ export default function GatePage() {
         {/* ── TAB: LOG HARI INI ── */}
         {activeTab === 'log' && (
           <div className="bg-surface border border-border rounded-[1.5rem] overflow-hidden animate-in fade-in duration-200">
-            <GateFilterBar
+            <FilterBar
               searchLog={searchLog}
               setSearchLog={setSearchLog}
               filterType={filterType}
@@ -813,7 +813,7 @@ export default function GatePage() {
                       </thead>
                       <tbody className="divide-y divide-[var(--color-border)]">
                         {filteredLogs.map(log => (
-                          <GateTableRow
+                          <TableRow
                             key={log.id}
                             log={log}
                             isSelected={selectedIds.includes(log.id)}
@@ -1335,7 +1335,7 @@ export default function GatePage() {
                 <ClipboardList className="w-4 h-4 text-[var(--color-primary)]" />
                 <h3 className="text-sm font-bold text-[var(--color-text)]">Rekoncile Izin Santri</h3>
               </div>
-              <GateReconcilePanel
+              <ReconcilePanel
                 onConfirmDeparture={handleConfirmDeparture}
                 onConfirmReturn={handleConfirmReturn}
                 loading={reconcileLoading}
@@ -1384,7 +1384,7 @@ export default function GatePage() {
 
       {/* Modals */}
       {confirmModal && (
-        <ConfirmTimeModal
+        <ConfirmTime
           log={confirmModal.log}
           action={confirmModal.action}
           onConfirm={handleConfirmTime}
@@ -1392,7 +1392,7 @@ export default function GatePage() {
         />
       )}
       {editLog && (
-        <EditLogModal
+        <EditLog
           log={editLog}
           onSave={handleSaveEdit}
           onDelete={handleDeleteLog}
@@ -1413,7 +1413,7 @@ export default function GatePage() {
         />
       )}
       {showPrintModal && (
-        <PrintOptionsModal
+        <PrintOptions
           isOpen={showPrintModal}
           onClose={() => setShowPrintModal(false)}
           activeTab={activeTab}
@@ -1423,29 +1423,29 @@ export default function GatePage() {
         />
       )}
 
-      {showBulkCheckoutModal && (
-        <BulkCheckoutModal
+      {showBulkCheckout && (
+        <BulkCheckout
           logs={todayLogs.filter(l => selectedIds.includes(l.id))}
-          onConfirm={(reason) => { setShowBulkCheckoutModal(false); handleBulkCheckout(reason) }}
-          onCancel={() => setShowBulkCheckoutModal(false)}
+          onConfirm={(reason) => { setShowBulkCheckout(false); handleBulkCheckout(reason) }}
+          onCancel={() => setShowBulkCheckout(false)}
         />
       )}
-      {showBulkDeleteModal && (
-        <BulkDeleteModal
+      {showBulkDelete && (
+        <BulkDelete
           logs={todayLogs.filter(l => selectedIds.includes(l.id))}
-          onConfirm={() => { setShowBulkDeleteModal(false); handleBulkDelete() }}
-          onCancel={() => setShowBulkDeleteModal(false)}
+          onConfirm={() => { setShowBulkDelete(false); handleBulkDelete() }}
+          onCancel={() => setShowBulkDelete(false)}
         />
       )}
 
-      <BulkActionsBar
+      <ActionBar
         selectedCount={selectedIds.length}
         onClear={() => { setSelectedIds([]); setSelectionMode(false); setBulkDeleteConfirm(false) }}
         title={tp('bulkTitle') || 'Entri Terpilih'}
         subtitle={tp('bulkAction') || 'Aksi Massal'}
       >
         <button
-          onClick={() => setShowBulkCheckoutModal(true)}
+          onClick={() => setShowBulkCheckout(true)}
           disabled={submitting}
           className="h-10 sm:h-9 px-3 sm:px-4 rounded-xl bg-indigo-500 text-white hover:bg-indigo-600 transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wide whitespace-nowrap shadow-lg disabled:opacity-50 justify-center"
         >
@@ -1455,7 +1455,7 @@ export default function GatePage() {
         </button>
 
         <button
-          onClick={() => setShowBulkDeleteModal(true)}
+          onClick={() => setShowBulkDelete(true)}
           disabled={submitting}
           className="h-10 sm:h-9 px-3 sm:px-4 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wide disabled:opacity-50 justify-center bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500 hover:text-white"
           title={tp('bulkDelete') || 'Hapus'}
@@ -1463,7 +1463,7 @@ export default function GatePage() {
           <Trash2 className="w-3.5 h-3.5" />
           <span className="inline">{tp('bulkDelete') || 'Hapus'}</span>
         </button>
-      </BulkActionsBar>
+      </ActionBar>
     </DashboardLayout>
   )
 }

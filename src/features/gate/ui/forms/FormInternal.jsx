@@ -5,11 +5,11 @@ import {
   PAGE_T, getVisitorTypes,
   PRESETS_GURU, PRESETS_KARYAWAN, PRESETS_SANTRI
 } from '@features/gate/utils/gateConstants'
-import { nowDateStr, nowTimeStr, dateTimeToISO } from '@features/gate/hooks/useGateCore'
+import { nowDateStr, nowTimeStr, dateTimeToISO } from '@features/gate/hooks/useCore'
 import TeacherSearch from './TeacherSearch'
 import PurposeInput from './PurposeInput'
-import RichDatePicker from '@shared/components/RichDatePicker'
-import RichTimePicker from '@shared/components/RichTimePicker'
+import DatePicker from '@shared/components/DatePicker'
+import TimePicker from '@shared/components/TimePicker'
 
 export default function FormInternal({ internalList, onSubmit, loading }) {
   const { language } = useLanguage()
@@ -106,13 +106,13 @@ export default function FormInternal({ internalList, onSubmit, loading }) {
             <label className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-muted)]/70 mb-1.5 block">
               {tanggalLabel}
             </label>
-            <RichDatePicker value={dateOut} onChange={setDateOut} clearable={false} />
+            <DatePicker value={dateOut} onChange={setDateOut} clearable={false} />
           </div>
           <div>
             <label className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-muted)]/70 mb-1.5 block">
               {jamKeluarLabel}
             </label>
-            <RichTimePicker value={timeOut} onChange={setTimeOut} />
+            <TimePicker value={timeOut} onChange={setTimeOut} />
           </div>
         </div>
 
@@ -120,7 +120,7 @@ export default function FormInternal({ internalList, onSubmit, loading }) {
           <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5 block">
             {tp('formEta')} <span className="normal-case font-normal text-[var(--color-text-muted)]/75">{opsionalText}</span>
           </label>
-          <RichTimePicker value={timeEst} onChange={setTimeEst} clearable={true} />
+          <TimePicker value={timeEst} onChange={setTimeEst} clearable={true} />
         </div>
       </div>
 

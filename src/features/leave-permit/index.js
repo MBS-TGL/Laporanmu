@@ -1,3 +1,3 @@
-export { default as LeavePermitPage } from './pages/LeavePermitPage'
+export { default as PermitPage } from './pages/PermitPage'
 export { default as LeavePermitDashboardPage } from './pages/LeavePermitDashboardPage'
-export { default as useLeavePermitCore } from './hooks/useLeavePermitCore'
+export { default as useCore } from './hooks/useCore'

@@ -1,7 +1,7 @@
 /**
  * ─── Shared Navigation Items ──────────────────────────────────────────────────
  * Single source of truth for all navigation data.
- * Used by: Sidebar, SlimTopBar (search), BottomNav/MasterSheet (mobile).
+ * Used by: Sidebar, TopBar (search), BottomNav/MasterSheet (mobile).
  */
 import {
     Home,

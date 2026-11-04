@@ -11,12 +11,12 @@ import { StatCard, EmptyState } from '@shared/components/DataDisplay'
 const AnalyticsRow = lazy(() => import('@features/dashboard/components/AnalyticsRow'))
 
 // Lazy loaded widgets for optimal performance & code splitting
-const WeeklyTrendChart = lazy(() => import('@features/dashboard/components/widgets/WeeklyTrendChart').then(m => ({ default: m.WeeklyTrendChart })))
+const TrendChart = lazy(() => import('@features/dashboard/components/widgets/TrendChart').then(m => ({ default: m.TrendChart })))
 const RecentReports = lazy(() => import('@features/dashboard/components/widgets/RecentReports').then(m => ({ default: m.RecentReports })))
-const PointsConfigPie = lazy(() => import('@features/dashboard/components/widgets/PointsConfigPie').then(m => ({ default: m.PointsConfigPie })))
+const PointsPie = lazy(() => import('@features/dashboard/components/widgets/PointsPie').then(m => ({ default: m.PointsPie })))
 const QuickActions = lazy(() => import('@features/dashboard/components/widgets/QuickActions').then(m => ({ default: m.QuickActions })))
 const GatePresence = lazy(() => import('@features/dashboard/components/widgets/GatePresence').then(m => ({ default: m.GatePresence })))
-const TaskCenterWidget = lazy(() => import('@features/dashboard/components/widgets/TaskCenterWidget').then(m => ({ default: m.TaskCenterWidget })))
+const TaskWidget = lazy(() => import('@features/dashboard/components/widgets/TaskWidget').then(m => ({ default: m.TaskWidget })))
 import { useAuth } from '@context/Auth'
 import { supabase } from '@lib/supabase'
 
@@ -390,7 +390,7 @@ export default function DashboardPage() {
                                 <div className="flex-1 bg-gray-400/10 rounded-2xl" />
                             </div>
                         }>
-                            <WeeklyTrendChart chartData={chartData} loading={loading} />
+                            <TrendChart chartData={chartData} loading={loading} />
                         </Suspense>
                         <Suspense fallback={
                             <div className="rounded-[1.5rem] p-6 h-[380px] animate-pulse bg-[var(--color-surface-alt)] border border-border flex flex-col gap-4">
@@ -409,7 +409,7 @@ export default function DashboardPage() {
                         <Suspense fallback={
                             <div className="rounded-[1.5rem] p-5 h-[200px] animate-pulse bg-[var(--color-surface-alt)] border border-border" />
                         }>
-                            <TaskCenterWidget />
+                            <TaskWidget />
                         </Suspense>
                         <Suspense fallback={
                             <div className="rounded-[1.5rem] p-6 h-[280px] animate-pulse bg-[var(--color-surface-alt)] border border-border flex flex-col items-center justify-center gap-4">
@@ -417,7 +417,7 @@ export default function DashboardPage() {
                                 <div className="h-3 w-32 bg-gray-400/20 rounded" />
                             </div>
                         }>
-                            <PointsConfigPie pieData={pieData} loading={loading} />
+                            <PointsPie pieData={pieData} loading={loading} />
                         </Suspense>
                             <Suspense fallback={<div className="rounded-[1.5rem] p-5 h-[240px] animate-pulse bg-[var(--color-surface-alt)] border border-border" />}>
                             <QuickActions />

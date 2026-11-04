@@ -14,26 +14,26 @@ import {
 import { useDormsData } from '@features/dorms/hooks/useDormsData'
 
 // UI — Modals
-import DormsAssignModal from '@features/dorms/ui/DormsAssignModal'
-import DormsExportModal from '@features/dorms/ui/DormsExportModal'
-import DormsImportModal from '@features/dorms/ui/DormsImportModal'
-import DormsBulkAssignModal from '@features/dorms/ui/DormsBulkAssignModal'
-import { DormsInventoryModal, DormsInventoryFormModal } from '@features/dorms/ui/DormsInventoryModal'
-import DormsAuditModal from '@features/dorms/ui/DormsAuditModal'
-import DormsLogModal from '@features/dorms/ui/DormsLogModal'
-import DormsMasterModal from '@features/dorms/ui/DormsMasterModal'
+import AssignModal from '@features/dorms/ui/AssignModal'
+import ExportModal from '@features/dorms/ui/ExportModal'
+import ImportModal from '@features/dorms/ui/ImportModal'
+import BulkAssign from '@features/dorms/ui/BulkAssign'
+import { InventoryModal, DormsInventoryFormModal } from '@features/dorms/ui/InventoryModal'
+import AuditModal from '@features/dorms/ui/AuditModal'
+import LogModal from '@features/dorms/ui/LogModal'
+import MasterModal from '@features/dorms/ui/MasterModal'
 import {
     ConfirmEvictModal,
     ConfirmDeleteDormModal,
     ConfirmDeleteAuditModal,
     ConfirmDeleteInventoryModal
-} from '@features/dorms/ui/DormsConfirmModals'
+} from '@features/dorms/ui/ConfirmModals'
 
 // UI — Tabs
-import DormTabPlotting from '@features/dorms/ui/DormTabPlotting'
-import DormTabCleanliness from '@features/dorms/ui/DormTabCleanliness'
-import DormTabMusyrif from '@features/dorms/ui/DormTabMusyrif'
-import DormTabKelola from '@features/dorms/ui/DormTabKelola'
+import TabPlotting from '@features/dorms/ui/TabPlotting'
+import TabCleanliness from '@features/dorms/ui/TabCleanliness'
+import TabMusyrif from '@features/dorms/ui/TabMusyrif'
+import TabKelola from '@features/dorms/ui/TabKelola'
 
 // Utilities
 import { getPortalContainer } from '@features/dorms/utils/dormUtils'
@@ -242,7 +242,7 @@ export default function DormsPage() {
 
                 {/* --- ACTIVE TAB VIEWS --- */}
                 {activeTab === 'plotting' && (
-                    <DormTabPlotting
+                    <TabPlotting
                         searchQuery={data.searchQuery}
                         setSearchQuery={data.setSearchQuery}
                         selectedRoomTab={data.selectedRoomTab}
@@ -279,14 +279,14 @@ export default function DormsPage() {
                         jumpPage={data.jumpPage}
                         setJumpPage={data.setJumpPage}
                         handleBulkUnassign={data.handleBulkUnassign}
-                        setIsBulkAssignModalOpen={data.setIsBulkAssignModalOpen}
+                        setIsBulkAssignOpen={data.setIsBulkAssignOpen}
                         setSelectedBulkRoom={data.setSelectedBulkRoom}
                         students={data.students}
                     />
                 )}
 
                 {activeTab === 'kelola_kamar' && (
-                    <DormTabKelola
+                    <TabKelola
                         setEditingDorm={data.setEditingDorm}
                         setNewDorm={data.setNewDorm}
                         setIsDormModalOpen={data.setIsDormModalOpen}
@@ -301,7 +301,7 @@ export default function DormsPage() {
             </div>
 
             {/* --- MODALS --- */}
-            <DormsAssignModal
+            <AssignModal
                 isOpen={data.isAssignModalOpen}
                 onClose={() => data.setIsAssignModalOpen(false)}
                 studentToAssign={data.studentToAssign}
@@ -317,7 +317,7 @@ export default function DormsPage() {
                 submitting={data.submitting}
             />
 
-            <DormsExportModal
+            <ExportModal
                 isOpen={data.isExportModalOpen}
                 onClose={() => data.setIsExportModalOpen(false)}
                 defaultDataset={data.exportDataset}
@@ -329,7 +329,7 @@ export default function DormsPage() {
                 addToast={addToast}
             />
 
-            <DormsImportModal
+            <ImportModal
                 isOpen={data.isImportModalOpen}
                 onClose={() => data.setIsImportModalOpen(false)}
                 importing={data.importing}
@@ -366,9 +366,9 @@ export default function DormsPage() {
                 handleBulkFix={data.handleBulkFix}
             />
 
-            <DormsBulkAssignModal
-                isOpen={data.isBulkAssignModalOpen}
-                onClose={() => data.setIsBulkAssignModalOpen(false)}
+            <BulkAssign
+                isOpen={data.isBulkAssignOpen}
+                onClose={() => data.setIsBulkAssignOpen(false)}
                 selectedCount={data.selectedIds.length}
                 selectedStudents={(data.students || []).filter(s => (data.selectedIds || []).includes(s.id))}
                 onRemoveStudent={(id) => data.setSelectedIds(prev => prev.filter(x => x !== id))}
@@ -379,7 +379,7 @@ export default function DormsPage() {
                 submitting={data.bulkSubmitting}
             />
 
-            <DormsInventoryModal
+            <InventoryModal
                 inventoryModalDorm={data.inventoryModalDorm}
                 setInventoryModalDorm={data.setInventoryModalDorm}
                 inventories={data.inventories}
@@ -408,7 +408,7 @@ export default function DormsPage() {
                 setEditingInventoryItem={data.setEditingInventoryItem}
             />
 
-            <DormsAuditModal
+            <AuditModal
                 isOpen={data.isAuditModalOpen}
                 onClose={() => data.setIsAuditModalOpen(false)}
                 newAudit={data.newAudit}
@@ -417,7 +417,7 @@ export default function DormsPage() {
                 onSave={data.handleSaveAudit}
             />
 
-            <DormsLogModal
+            <LogModal
                 isOpen={data.isLogModalOpen}
                 onClose={() => data.setIsLogModalOpen(false)}
                 newLog={data.newLog}
@@ -425,7 +425,7 @@ export default function DormsPage() {
                 onSave={data.handleSaveLog}
             />
 
-            <DormsMasterModal
+            <MasterModal
                 isOpen={data.isDormModalOpen}
                 onClose={() => data.setIsDormModalOpen(false)}
                 editingDorm={data.editingDorm}

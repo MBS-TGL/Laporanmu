@@ -8,8 +8,8 @@ import {
     EmptyState, StatCard,
     StatsCarousel,
     Pagination,
-    RichDatePicker,
-    RichTimePicker,
+    DatePicker,
+    TimePicker,
     RichSelect,
     Modal
 } from '@shared/components'
@@ -757,7 +757,7 @@ export default function HealthPage() {
     }
 
     // Helper for editing a log
-    const openEditLogModal = (log) => {
+    const openEditLog = (log) => {
         setActiveLog(log)
         setFormLog({
             student_id: log.student_id || '',
@@ -1305,7 +1305,7 @@ export default function HealthPage() {
                                                             </button>
                                                         )}
                                                         <button
-                                                            onClick={() => openEditLogModal(log)}
+                                                            onClick={() => openEditLog(log)}
                                                             className="w-8 h-8 rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-indigo-600 flex items-center justify-center transition-all bg-[var(--color-surface)]"
                                                             title="Edit Catatan"
                                                         >
@@ -1403,7 +1403,7 @@ export default function HealthPage() {
                                                         <span>Sudah Sembuh & Kembali</span>
                                                     </button>
                                                     <button
-                                                        onClick={() => openEditLogModal(log)}
+                                                        onClick={() => openEditLog(log)}
                                                         className="w-9.5 h-9.5 border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]/60 text-[var(--color-text-muted)] hover:text-[var(--color-text)] rounded-xl flex items-center justify-center transition-all bg-[var(--color-surface)]"
                                                         title="Edit Log Medis"
                                                     >
@@ -1602,7 +1602,7 @@ export default function HealthPage() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">Tanggal Masuk</label>
-                                <RichDatePicker
+                                <DatePicker
                                     value={formLog.date}
                                     onChange={val => setFormLog(prev => ({ ...prev, date: val }))}
                                     placeholder="Pilih tanggal"
@@ -1610,7 +1610,7 @@ export default function HealthPage() {
                             </div>
                             <div>
                                 <label className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] block mb-1.5">Waktu / Jam</label>
-                                <RichTimePicker
+                                <TimePicker
                                     value={formLog.time}
                                     onChange={val => setFormLog(prev => ({ ...prev, time: val }))}
                                 />

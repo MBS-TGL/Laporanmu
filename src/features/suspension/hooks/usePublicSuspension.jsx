@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import {
   validatePublicToken, fetchPublicDay, savePublicLog, submitPublicTask,
-} from '../services/publicSuspensionService'
+} from '../services/publicService'
 import {
   readDraft, writeDraft, clearDraft,
 } from '../utils/suspensionConstants'

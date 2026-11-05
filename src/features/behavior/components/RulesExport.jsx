@@ -294,7 +294,7 @@ export default function RulesExport({
                                 className={`px-4 py-3 rounded-xl border transition-all flex items-center gap-2 text-xs font-bold
                                     ${advancedOpen ? 'border-[var(--color-primary)] bg-[var(--color-primary)] text-white' : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:border-[var(--color-primary)]/40'}`}
                             >
-                                <Settings className={advancedOpen ? 'animate-spin-slow' : ''} className="w-4 h-4" />
+                                <Settings className={advancedOpen ? 'animate-spin-slow w-4 h-4' : 'w-4 h-4'} />
                                 {tp('exportConfigOptions')}
                             </button>
                         </div>

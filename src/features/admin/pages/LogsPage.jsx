@@ -798,7 +798,7 @@ export default function LogsPage() {
                                 onClick={() => fetchLogs()}
                                 className="h-10 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-surface)] text-xs font-bold flex items-center gap-2 transition-all"
                             >
-                                <RotateCw className={loading ? 'animate-spin' : ''} className="w-4 h-4" />
+                                <RotateCw className={loading ? 'animate-spin w-4 h-4' : 'w-4 h-4'} />
                                 <span className="hidden sm:inline">Refresh</span>
                             </button>
                             <button

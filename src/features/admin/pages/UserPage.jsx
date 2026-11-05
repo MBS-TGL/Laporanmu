@@ -1125,7 +1125,7 @@ export default function UserManagementPage() {
                         </div>
                         <button onClick={() => fetchSessions()} disabled={loadingSessions}
                             className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] flex items-center gap-1.5 transition-all">
-                            <RotateCw className={loadingSessions ? 'animate-spin' : ''} className="w-4 h-4" />
+                            <RotateCw className={loadingSessions ? 'animate-spin w-4 h-4' : 'w-4 h-4'} />
                             Refresh
                         </button>
                     </div>

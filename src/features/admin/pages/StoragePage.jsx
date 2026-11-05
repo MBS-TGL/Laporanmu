@@ -262,7 +262,7 @@ export default function StoragePage() {
                     </div>
                     <button onClick={fetchBuckets} disabled={loading}
                         className="h-10 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition flex items-center gap-2 shadow-sm">
-                        <RefreshCw className={loading ? 'animate-spin' : ''} className="w-4 h-4" />
+                        <RefreshCw className={loading ? 'animate-spin w-4 h-4' : 'w-4 h-4'} />
                         Refresh
                     </button>
                 </div>
@@ -331,7 +331,7 @@ export default function StoragePage() {
                                             <div key={`${f.bucketName}-${f.id}-${i}`} className="flex items-center justify-between p-3 hover:bg-[var(--color-surface-alt)] transition-colors">
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-8 h-8 rounded-lg bg-[var(--color-surface)] flex items-center justify-center shrink-0 border border-[var(--color-border)]">
-                                                        <Icon className={color} className="w-4 h-4" />
+                                                        <Icon className={`color w-4 h-4`} />
                                                     </div>
                                                     <div>
                                                         <div className="font-bold text-xs truncate max-w-[140px] sm:max-w-[220px]" title={f.name}>{f.name}</div>
@@ -372,7 +372,7 @@ export default function StoragePage() {
                                         onClick={handleScan} disabled={scanning}
                                         className="w-full h-12 rounded-xl bg-amber-500 text-white font-bold hover:bg-amber-600 transition-all flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100"
                                     >
-                                        { scanning ? <LoaderCircle className={scanning ? 'animate-spin' : ''} className="w-4 h-4" /> : <Search className={scanning ? 'animate-spin' : ''} className="w-4 h-4" /> }
+                                        { scanning ? <LoaderCircle className={scanning ? 'animate-spin w-4 h-4' : 'w-4 h-4'} /> : <Search className={scanning ? 'animate-spin w-4 h-4' : 'w-4 h-4'} /> }
                                         {scanning ? 'Menyortir Database & Storage...' : 'Mulai Scan Storage'}
                                     </button>
                                 ) : (

@@ -374,7 +374,7 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
                                   log.action === 'UPDATE' ? 'bg-orange-500/30 border-orange-500/40' :
                                   log.action === 'DELETE' ? 'bg-rose-500/30 border-rose-500/40' :
                                   'bg-indigo-500/30 border-indigo-500/40'}
-                                ${isExpanded ? 'ring-4 ring-current opacity-100 scale-125' : 'opacity-60'}`} 
+                                ${isExpanded ? 'ring-4 ring-current opacity-100 scale-125' : 'opacity-60'}`}
                                 style={isExpanded ? { '--tw-ring-color': log.action === 'INSERT' ? 'rgba(16,185,129,0.1)' : log.action === 'UPDATE' ? 'rgba(245,158,11,0.1)' : 'rgba(244,63,94,0.1)' } : {}}
                             />
 
@@ -496,7 +496,7 @@ export function AuditTimeline({ tableName, recordId, limit = 20, showSearch = fa
                                                                     ? 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] animate-pulse'
                                                                     : 'bg-amber-500 text-white hover:bg-amber-600 shadow-lg active:scale-95'}`}
                                                         >
-                                                            <History className={restoringId === log.id ? 'animate-spin' : ''} className="w-4 h-4" />
+                                                            <History className={`w-4 h-4 ${restoringId === log.id ? 'animate-spin' : ''}`} />
                                                             {restoringId === log.id
                                                                 ? 'Memulihkan...'
                                                                 : log.action === 'DELETE' ? 'Pulihkan Record' : 'Revert ke State ini'}

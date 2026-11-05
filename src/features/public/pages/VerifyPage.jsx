@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import {
-    CheckCircle2, AlertTriangle, AlertCircle, Calendar,
-    User, Home, ArrowLeft, Sun, Moon, Copy, Check, Printer,
-    FileCheck, ExternalLink, QrCode
+    CheckCircle2, AlertTriangle, Copy, Check, Printer,
+    ArrowLeft, Sun, Moon, QrCode
 } from 'lucide-react'
 import { supabase } from '@lib/supabase'
 import { useTheme } from '@context/Theme'
@@ -60,7 +59,7 @@ export default function VerifyPage() {
     }, [])
 
     useEffect(() => {
-        document.title = 'Verifikasi Raport — MBS Tanggul'
+        document.title = 'Verifikasi Raport — Laporanmu'
         fetchVerificationData()
         return () => {
             document.title = 'Laporanmu'
@@ -204,11 +203,12 @@ export default function VerifyPage() {
         setTimeout(() => setCopiedNo(false), 2000)
     }
 
-    const kepalaSekolahName = schoolSettings.headmaster_name_id || 'Khoirul Anwar, S.Pd.'
-    const pengasuhName = schoolSettings.pengasuh_name_id || 'Ir. H. M. Ali Maksum'
+    const kepalaSekolahName = schoolSettings.headmaster_name_id
+    const pengasuhName = schoolSettings.pengasuh_name_id
+    const schoolName = schoolSettings.school_name_id
 
     return (
-        <div className="min-h-screen bg-[var(--color-app-bg)] text-[var(--color-text)] py-8 px-4 sm:px-6 transition-colors duration-200">
+        <div className="min-h-screen bg-app-bg text-text py-8 px-4 sm:px-6 transition-colors duration-200">
             <style>{`
                 @media print {
                     body { background: #fff !important; color: #000 !important; }
@@ -220,19 +220,24 @@ export default function VerifyPage() {
             <div className="max-w-2xl mx-auto space-y-5">
 
                 {/* ── Top Header / Minimalist Nav ── */}
-                <header className="no-print flex items-center justify-between pb-2 border-b border-[var(--color-border)]">
-                    <Link
-                        to="/"
-                        className="inline-flex items-center gap-2 text-xs font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-                    >
-                        <ArrowLeft className="w-3.5 h-3.5" />
-                        <span>Portal LaporanMu</span>
+                <header className="no-print flex items-center justify-between pb-3 border-b border-border">
+                    <Link to="/" className="flex items-center gap-2.5 group">
+                        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
+                            <span className="text-white font-bold text-sm">L</span>
+                        </div>
+                        <span className="font-bold text-lg text-text tracking-tight group-hover:opacity-80 transition-opacity">
+                            Laporan<span className="text-primary">mu</span>
+                        </span>
+                        <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-text-muted ml-2 pl-3 border-l border-border">
+                            <ArrowLeft className="w-3 h-3" />
+                            Portal LaporanMu
+                        </span>
                     </Link>
 
                     <div className="flex items-center gap-2">
                         <button
                             onClick={() => window.print()}
-                            className="h-8 px-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] text-xs font-medium inline-flex items-center gap-1.5 transition-colors"
+                            className="h-8 px-2.5 rounded-lg border border-border bg-surface text-text-muted hover:text-text text-xs font-medium inline-flex items-center gap-1.5 transition-colors"
                             title="Cetak Halaman"
                         >
                             <Printer className="w-3.5 h-3.5" />
@@ -240,7 +245,7 @@ export default function VerifyPage() {
                         </button>
                         <button
                             onClick={toggleTheme}
-                            className="w-8 h-8 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] flex items-center justify-center transition-colors"
+                            className="w-8 h-8 rounded-lg border border-border bg-surface text-text-muted hover:text-text flex items-center justify-center transition-colors"
                             aria-label="Toggle tema"
                         >
                             {isDark ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
@@ -250,30 +255,30 @@ export default function VerifyPage() {
 
                 {/* ── Loading State ── */}
                 {loading ? (
-                    <div className="py-20 text-center space-y-3 bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-6">
-                        <div className="w-6 h-6 border-2 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin mx-auto" />
-                        <p className="text-xs font-medium text-[var(--color-text-muted)]">
+                    <div className="py-20 text-center space-y-3 bg-surface rounded-2xl border border-border p-6">
+                        <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+                        <p className="text-xs font-medium text-text-muted">
                             Memeriksa data raport...
                         </p>
                     </div>
                 ) : !verified ? (
                     /* ── Failed State ── */
-                    <div className="verify-card bg-[var(--color-surface)] rounded-2xl border border-red-200 dark:border-red-900/50 p-6 sm:p-8 text-center space-y-4">
-                        <div className="w-12 h-12 rounded-full bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 flex items-center justify-center mx-auto">
+                    <div className="verify-card bg-surface rounded-2xl border border-danger/20 p-6 sm:p-8 text-center space-y-4">
+                        <div className="w-12 h-12 rounded-full bg-danger/10 text-danger flex items-center justify-center mx-auto">
                             <AlertTriangle className="w-6 h-6" />
                         </div>
                         <div className="space-y-1">
-                            <h2 className="text-base font-bold text-[var(--color-text)]">
+                            <h2 className="text-base font-bold text-text">
                                 Dokumen Tidak Terverifikasi
                             </h2>
-                            <p className="text-xs text-[var(--color-text-muted)] max-w-md mx-auto">
+                            <p className="text-xs text-text-muted max-w-md mx-auto">
                                 {errorMsg || 'Data raport tidak cocok dengan catatan yang ada di sistem.'}
                             </p>
                         </div>
                         <div className="pt-2">
                             <Link
                                 to="/"
-                                className="inline-flex h-9 px-4 rounded-lg bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] text-xs font-semibold text-[var(--color-text)] items-center transition-colors"
+                                className="inline-flex h-9 px-4 rounded-lg bg-surface-alt hover:bg-border text-xs font-semibold text-text items-center transition-colors"
                             >
                                 Kembali ke Beranda
                             </Link>
@@ -284,42 +289,42 @@ export default function VerifyPage() {
                     <main className="space-y-4">
 
                         {/* Status Box: Calm, Trustworthy, Authentic */}
-                        <section className="verify-card bg-[var(--color-surface)] rounded-2xl border border-emerald-200 dark:border-emerald-900/40 p-5 sm:p-6 space-y-3">
+                        <section className="verify-card bg-surface rounded-2xl border border-success/20 p-5 sm:p-6 space-y-3">
                             <div className="flex items-start gap-3.5">
-                                <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                                <div className="w-9 h-9 rounded-xl bg-success/10 text-success flex items-center justify-center shrink-0">
                                     <CheckCircle2 className="w-5 h-5" />
                                 </div>
                                 <div className="space-y-1 flex-1 min-w-0">
                                     <div className="flex items-center gap-2 flex-wrap">
-                                        <h1 className="text-sm sm:text-base font-bold text-[var(--color-text)]">
-                                            Dokumen Raport Sah & Terdaftar
+                                        <h1 className="text-sm sm:text-base font-bold text-text">
+                                            Dokumen Raport Sah &amp; Terdaftar
                                         </h1>
-                                        <span className="px-2 py-0.5 rounded text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300">
+                                        <span className="px-2 py-0.5 rounded text-xs font-semibold bg-success/10 text-success border border-success/20">
                                             Terverifikasi
                                         </span>
                                     </div>
-                                    <p className="text-xs text-[var(--color-text-muted)]">
-                                        {schoolSettings.school_name_id || 'Muhammadiyah Boarding School (MBS) Tanggul'}
+                                    <p className="text-xs text-text-muted">
+                                        {schoolName}
                                     </p>
                                 </div>
                             </div>
 
                             {/* Metadata Nomor Raport & Periode */}
-                            <div className="pt-3 border-t border-[var(--color-border)] grid grid-cols-2 gap-3 text-xs">
+                            <div className="pt-3 border-t border-border grid grid-cols-2 gap-3 text-xs">
                                 <div>
-                                    <span className="text-xs text-[var(--color-text-muted)] block">Nomor Raport</span>
+                                    <span className="text-xs text-text-muted block">Nomor Raport</span>
                                     <button
                                         onClick={handleCopyNo}
-                                        className="font-mono font-semibold text-[var(--color-text)] hover:text-[var(--color-primary)] inline-flex items-center gap-1 mt-0.5"
+                                        className="font-mono font-semibold text-text hover:text-primary inline-flex items-center gap-1 mt-0.5"
                                         title="Salin nomor"
                                     >
                                         <span>{reportNo || 'RPT/RESMI'}</span>
-                                        {copiedNo ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3 opacity-50" />}
+                                        {copiedNo ? <Check className="w-3 h-3 text-success" /> : <Copy className="w-3 h-3 opacity-50" />}
                                     </button>
                                 </div>
                                 <div>
-                                    <span className="text-xs text-[var(--color-text-muted)] block">Periode</span>
-                                    <span className="font-semibold text-[var(--color-text)] mt-0.5 block">
+                                    <span className="text-xs text-text-muted block">Periode</span>
+                                    <span className="font-semibold text-text mt-0.5 block">
                                         {parsedPeriod.monthName} {parsedPeriod.year}
                                     </span>
                                 </div>
@@ -327,36 +332,36 @@ export default function VerifyPage() {
                         </section>
 
                         {/* Signatory Validation: Clear & Grounded */}
-                        <section className="verify-card bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-4 sm:p-5 space-y-3">
+                        <section className="verify-card bg-surface rounded-2xl border border-border p-4 sm:p-5 space-y-3">
                             <div className="flex items-center justify-between">
-                                <span className="text-xs font-semibold text-[var(--color-text)] flex items-center gap-1.5">
-                                    <QrCode className="w-4 h-4 text-[var(--color-text-muted)]" />
+                                <span className="text-xs font-semibold text-text flex items-center gap-1.5">
+                                    <QrCode className="w-4 h-4 text-text-muted" />
                                     Validasi Tanda Tangan Digital
                                 </span>
-                                <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                                <span className="text-xs text-success font-medium">
                                     Resmi
                                 </span>
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
                                 <div className={`p-3 rounded-xl border ${sigTarget === 'wali_kelas'
-                                    ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20'
-                                    : 'border-[var(--color-border)] bg-[var(--color-surface-alt)]'
+                                    ? 'border-success bg-success/5'
+                                    : 'border-border bg-surface-alt'
                                     }`}>
-                                    <span className="text-xs text-[var(--color-text-muted)] block">Kepala Sekolah</span>
-                                    <p className="font-semibold text-[var(--color-text)] mt-0.5">{kepalaSekolahName}</p>
-                                    <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-1 inline-block">
+                                    <span className="text-xs text-text-muted block">Kepala Sekolah</span>
+                                    <p className="font-semibold text-text mt-0.5">{kepalaSekolahName}</p>
+                                    <span className="text-xs text-success font-medium mt-1 inline-block">
                                         ✓ Tanda tangan sah
                                     </span>
                                 </div>
 
                                 <div className={`p-3 rounded-xl border ${sigTarget === 'pengasuh'
-                                    ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20'
-                                    : 'border-[var(--color-border)] bg-[var(--color-surface-alt)]'
+                                    ? 'border-success bg-success/5'
+                                    : 'border-border bg-surface-alt'
                                     }`}>
-                                    <span className="text-xs text-[var(--color-text-muted)] block">Pengasuh Pesantren</span>
-                                    <p className="font-semibold text-[var(--color-text)] mt-0.5">{pengasuhName}</p>
-                                    <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-1 inline-block">
+                                    <span className="text-xs text-text-muted block">Pengasuh Pesantren</span>
+                                    <p className="font-semibold text-text mt-0.5">{pengasuhName}</p>
+                                    <span className="text-xs text-success font-medium mt-1 inline-block">
                                         ✓ Tanda tangan sah
                                     </span>
                                 </div>
@@ -364,9 +369,9 @@ export default function VerifyPage() {
                         </section>
 
                         {/* Student Info Card */}
-                        <section className="verify-card bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-4 sm:p-5">
+                        <section className="verify-card bg-surface rounded-2xl border border-border p-4 sm:p-5">
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center font-bold text-base text-[var(--color-text-muted)] overflow-hidden shrink-0">
+                                <div className="w-12 h-12 rounded-xl bg-surface-alt border border-border flex items-center justify-center font-bold text-base text-text-muted overflow-hidden shrink-0">
                                     {student.photo_url ? (
                                         <img src={student.photo_url} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
                                     ) : (
@@ -375,14 +380,14 @@ export default function VerifyPage() {
                                 </div>
 
                                 <div className="min-w-0 flex-1">
-                                    <h2 className="text-sm sm:text-base font-bold text-[var(--color-text)] truncate">
+                                    <h2 className="text-sm sm:text-base font-bold text-text truncate">
                                         {student.name}
                                     </h2>
-                                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-xs text-[var(--color-text-muted)]">
-                                        <span>Kelas: <strong className="text-[var(--color-text)] font-semibold">{student.classes?.name || student.class || '—'}</strong></span>
-                                        <span>NIS: <strong className="text-[var(--color-text)] font-semibold">{student.registration_code || student.nis || '—'}</strong></span>
+                                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-xs text-text-muted">
+                                        <span>Kelas: <strong className="text-text font-semibold">{student.classes?.name || student.class || '—'}</strong></span>
+                                        <span>NIS: <strong className="text-text font-semibold">{student.registration_code || student.nis || '—'}</strong></span>
                                         {(student.metadata?.kamar || student.kamar || student.room) && (
-                                            <span>Kamar: <strong className="text-[var(--color-text)] font-semibold">{student.metadata?.kamar || student.kamar || student.room}</strong></span>
+                                            <span>Kamar: <strong className="text-text font-semibold">{student.metadata?.kamar || student.kamar || student.room}</strong></span>
                                         )}
                                     </div>
                                 </div>
@@ -390,19 +395,19 @@ export default function VerifyPage() {
                         </section>
 
                         {/* Nilai Karakter Table: Clean & Readable */}
-                        <section className="verify-card bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-4 sm:p-5 space-y-3">
-                            <div className="flex items-center justify-between pb-2 border-b border-[var(--color-border)]">
-                                <h3 className="text-xs font-semibold text-[var(--color-text)]">
+                        <section className="verify-card bg-surface rounded-2xl border border-border p-4 sm:p-5 space-y-3">
+                            <div className="flex items-center justify-between pb-2 border-b border-border">
+                                <h3 className="text-xs font-semibold text-text">
                                     Penilaian Aspek Karakter
                                 </h3>
                                 {summaryStats.avg !== null && (
-                                    <span className="text-xs text-[var(--color-text-muted)]">
-                                        Rata-rata: <strong className="text-[var(--color-text)] font-bold">{summaryStats.avg}</strong> / 9
+                                    <span className="text-xs text-text-muted">
+                                        Rata-rata: <strong className="text-text font-bold">{summaryStats.avg}</strong> / {KRITERIA.length}
                                     </span>
                                 )}
                             </div>
 
-                            <div className="divide-y divide-[var(--color-border)]">
+                            <div className="divide-y divide-border">
                                 {KRITERIA.map(k => {
                                     const val = report[k.key]
                                     const vNum = (val !== null && val !== undefined && val !== '') ? Number(val) : null
@@ -411,14 +416,14 @@ export default function VerifyPage() {
                                     return (
                                         <div key={k.key} className="py-2.5 flex items-center justify-between text-xs gap-3">
                                             <div>
-                                                <span className="font-medium text-[var(--color-text)]">{k.id}</span>
-                                                <span className="text-xs text-[var(--color-text-muted)] ml-1.5 opacity-70">
+                                                <span className="font-medium text-text">{k.id}</span>
+                                                <span className="text-xs text-text-muted ml-1.5 opacity-70">
                                                     ({k.ar})
                                                 </span>
                                             </div>
 
                                             <div className="flex items-center gap-2">
-                                                <span className="font-semibold text-[var(--color-text)] font-mono text-xs">
+                                                <span className="font-semibold text-text font-mono text-xs">
                                                     {vNum !== null ? vNum : '—'}
                                                 </span>
                                                 {kg && (
@@ -437,54 +442,54 @@ export default function VerifyPage() {
                         </section>
 
                         {/* Presensi & Fisik Summary */}
-                        <section className="verify-card bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-4 sm:p-5 space-y-3">
-                            <h3 className="text-xs font-semibold text-[var(--color-text)]">
-                                Presensi & Fisik
+                        <section className="verify-card bg-surface rounded-2xl border border-border p-4 sm:p-5 space-y-3">
+                            <h3 className="text-xs font-semibold text-text">
+                                Presensi &amp; Fisik
                             </h3>
 
                             <div className="grid grid-cols-4 gap-2 text-center text-xs">
-                                <div className="p-2 rounded-lg bg-[var(--color-surface-alt)]">
-                                    <span className="text-xs text-[var(--color-text-muted)] block">Sakit</span>
-                                    <span className="font-semibold text-[var(--color-text)]">{report.hari_sakit ?? 0} hari</span>
+                                <div className="p-2 rounded-lg bg-surface-alt">
+                                    <span className="text-xs text-text-muted block">Sakit</span>
+                                    <span className="font-semibold text-text">{report.hari_sakit ?? 0} hari</span>
                                 </div>
-                                <div className="p-2 rounded-lg bg-[var(--color-surface-alt)]">
-                                    <span className="text-xs text-[var(--color-text-muted)] block">Izin</span>
-                                    <span className="font-semibold text-[var(--color-text)]">{report.hari_izin ?? 0} hari</span>
+                                <div className="p-2 rounded-lg bg-surface-alt">
+                                    <span className="text-xs text-text-muted block">Izin</span>
+                                    <span className="font-semibold text-text">{report.hari_izin ?? 0} hari</span>
                                 </div>
-                                <div className="p-2 rounded-lg bg-[var(--color-surface-alt)]">
-                                    <span className="text-xs text-[var(--color-text-muted)] block">Alpa</span>
-                                    <span className="font-semibold text-[var(--color-text)]">{report.hari_alpa ?? 0} hari</span>
+                                <div className="p-2 rounded-lg bg-surface-alt">
+                                    <span className="text-xs text-text-muted block">Alpa</span>
+                                    <span className="font-semibold text-text">{report.hari_alpa ?? 0} hari</span>
                                 </div>
-                                <div className="p-2 rounded-lg bg-[var(--color-surface-alt)]">
-                                    <span className="text-xs text-[var(--color-text-muted)] block">Pulang</span>
-                                    <span className="font-semibold text-[var(--color-text)]">{report.hari_pulang ?? 0} kali</span>
+                                <div className="p-2 rounded-lg bg-surface-alt">
+                                    <span className="text-xs text-text-muted block">Pulang</span>
+                                    <span className="font-semibold text-text">{report.hari_pulang ?? 0} kali</span>
                                 </div>
                             </div>
 
                             {(report.tinggi_badan || report.berat_badan || report.ziyadah || report.murojaah) && (
-                                <div className="pt-2 border-t border-[var(--color-border)] grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                                <div className="pt-2 border-t border-border grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
                                     {report.tinggi_badan && (
                                         <div>
-                                            <span className="text-xs text-[var(--color-text-muted)] block">Tinggi Badan</span>
-                                            <span className="font-semibold text-[var(--color-text)]">{report.tinggi_badan} cm</span>
+                                            <span className="text-xs text-text-muted block">Tinggi Badan</span>
+                                            <span className="font-semibold text-text">{report.tinggi_badan} cm</span>
                                         </div>
                                     )}
                                     {report.berat_badan && (
                                         <div>
-                                            <span className="text-xs text-[var(--color-text-muted)] block">Berat Badan</span>
-                                            <span className="font-semibold text-[var(--color-text)]">{report.berat_badan} kg</span>
+                                            <span className="text-xs text-text-muted block">Berat Badan</span>
+                                            <span className="font-semibold text-text">{report.berat_badan} kg</span>
                                         </div>
                                     )}
                                     {report.ziyadah && (
                                         <div>
-                                            <span className="text-xs text-[var(--color-text-muted)] block">Ziyadah</span>
-                                            <span className="font-semibold text-[var(--color-text)]">{report.ziyadah}</span>
+                                            <span className="text-xs text-text-muted block">Ziyadah</span>
+                                            <span className="font-semibold text-text">{report.ziyadah}</span>
                                         </div>
                                     )}
                                     {report.murojaah && (
                                         <div>
-                                            <span className="text-xs text-[var(--color-text-muted)] block">Muroja'ah</span>
-                                            <span className="font-semibold text-[var(--color-text)]">{report.murojaah}</span>
+                                            <span className="text-xs text-text-muted block">Muroja'ah</span>
+                                            <span className="font-semibold text-text">{report.murojaah}</span>
                                         </div>
                                     )}
                                 </div>
@@ -493,20 +498,20 @@ export default function VerifyPage() {
 
                         {/* Catatan Musyrif jika ada */}
                         {report.catatan && (
-                            <section className="verify-card bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-4 sm:p-5 space-y-1.5">
-                                <span className="text-xs font-semibold text-[var(--color-text-muted)] block">
+                            <section className="verify-card bg-surface rounded-2xl border border-border p-4 sm:p-5 space-y-1.5">
+                                <span className="text-xs font-semibold text-text-muted block">
                                     Catatan Pembina
                                 </span>
-                                <p className="text-xs text-[var(--color-text)] italic leading-relaxed">
+                                <p className="text-xs text-text italic leading-relaxed">
                                     "{report.catatan}"
                                 </p>
                             </section>
                         )}
 
                         {/* Footer Resmi */}
-                        <footer className="pt-3 pb-8 text-center space-y-1 text-xs text-[var(--color-text-muted)]">
+                        <footer className="pt-3 pb-8 text-center space-y-1 text-xs text-text-muted">
                             <p className="text-xs font-medium">
-                                Sistem Verifikasi Raport Digital · MBS Tanggul
+                                Sistem Verifikasi Raport Digital · {schoolName}
                             </p>
                             <p className="text-xs opacity-70">
                                 Dokumen digital ini sah dan diterbitkan resmi melalui sistem LaporanMu.

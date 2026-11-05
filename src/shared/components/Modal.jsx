@@ -2,6 +2,23 @@ import { useEffect, useRef, useState, memo } from 'react'
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 
+const SIZE_CLASSES = {
+    xs: 'max-w-xs',
+    sm: 'max-w-sm',
+    md: 'max-w-lg',
+    lg: 'max-w-2xl',
+    xl: 'max-w-4xl',
+    xxl: 'max-w-5xl',
+    xxxl: 'max-w-7xl',
+    '2xl': 'max-w-2xl',
+    '3xl': 'max-w-3xl',
+    '4xl': 'max-w-4xl',
+    '5xl': 'max-w-5xl',
+    '6xl': 'max-w-6xl',
+    '7xl': 'max-w-7xl',
+    full: 'max-w-[98vw]',
+}
+
 // Singleton portal manager
 const _portalContainers = {}
 function getPortalContainer(id) {
@@ -17,6 +34,23 @@ function getPortalContainer(id) {
     return _portalContainers[id]
 }
 
+// Scroll lock berbasis counter: aman untuk modal bertumpuk (modal di dalam modal).
+// Lock hanya dilepas saat modal terakhir tertutup.
+let _lockCount = 0
+function lockScroll() {
+    if (_lockCount++ === 0) {
+        const sbw = window.innerWidth - document.documentElement.clientWidth
+        document.body.style.overflow = 'hidden'
+        if (sbw > 0) document.body.style.paddingRight = `${sbw}px`
+    }
+}
+function unlockScroll() {
+    if (--_lockCount === 0) {
+        document.body.style.overflow = ''
+        document.body.style.paddingRight = ''
+    }
+}
+
 const Modal = memo(function Modal({
     isOpen, onClose, title, children, footer,
     size = 'md', variant = 'centered', mobileVariant = 'centered',
@@ -28,80 +62,57 @@ const Modal = memo(function Modal({
 }) {
     const [mounted, setMounted] = useState(false)
     const [visible, setVisible] = useState(false)
-    const [isAnimating, setIsAnimating] = useState(false)
     const closeTimer = useRef(null)
-    const animTimer = useRef(null)
+    const panelRef = useRef(null)
+    const lastFocused = useRef(null)
+    const onCloseRef = useRef(onClose)
 
-    // Visibility management with double rAF for perfect entry transition
+    // onClose lewat ref: listener Escape tidak perlu dipasang ulang tiap parent re-render
+    useEffect(() => { onCloseRef.current = onClose })
+
+    // Mount -> (2 frame) -> visible, supaya transisi masuk mulus
     useEffect(() => {
-        clearTimeout(closeTimer.current)
-        clearTimeout(animTimer.current)
-        setIsAnimating(true)
         if (isOpen) {
+            clearTimeout(closeTimer.current)
             setMounted(true)
-            const frame = requestAnimationFrame(() => {
-                const secondFrame = requestAnimationFrame(() => {
-                    setVisible(true)
-                    animTimer.current = setTimeout(() => setIsAnimating(false), 350)
-                })
-                return () => cancelAnimationFrame(secondFrame)
+            let raf2
+            const raf1 = requestAnimationFrame(() => {
+                raf2 = requestAnimationFrame(() => setVisible(true))
             })
-            return () => cancelAnimationFrame(frame)
-        } else {
-            setVisible(false)
-            // Match unmount exactly with duration (200ms)
-            closeTimer.current = setTimeout(() => {
-                setMounted(false)
-                setIsAnimating(false)
-            }, 200)
+            return () => { cancelAnimationFrame(raf1); cancelAnimationFrame(raf2) }
         }
+        setVisible(false)
+        closeTimer.current = setTimeout(() => setMounted(false), 200) // = durasi exit
+        return () => clearTimeout(closeTimer.current)
     }, [isOpen])
 
-    // Body scroll lock with layout shift prevention
+    // Focus UX: fokus ke panel saat open, kembalikan ke pemicu saat close
     useEffect(() => {
         if (isOpen) {
-            const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth
-            document.body.style.overflow = 'hidden'
-            if (scrollBarWidth > 0) document.body.style.paddingRight = `${scrollBarWidth}px`
-        } else {
-            // RELEASE IMMEDIATELY for better perceived responsiveness
-            document.body.style.overflow = ''
-            document.body.style.paddingRight = '0px'
+            lastFocused.current = document.activeElement
+            const raf = requestAnimationFrame(() => panelRef.current?.focus({ preventScroll: true }))
+            return () => cancelAnimationFrame(raf)
         }
-        return () => {
-            document.body.style.overflow = ''
-            document.body.style.paddingRight = '0px'
-        }
+        if (lastFocused.current?.isConnected) lastFocused.current.focus?.({ preventScroll: true })
+        lastFocused.current = null
     }, [isOpen])
 
-    // Escape key handler
+    // Body scroll lock
     useEffect(() => {
         if (!isOpen) return
-        const onKeyDown = (e) => {
-            if (e.key === 'Escape') onClose?.()
-        }
+        lockScroll()
+        return unlockScroll
+    }, [isOpen])
+
+    // Escape key
+    useEffect(() => {
+        if (!isOpen) return
+        const onKeyDown = (e) => { if (e.key === 'Escape') onCloseRef.current?.() }
         window.addEventListener('keydown', onKeyDown)
         return () => window.removeEventListener('keydown', onKeyDown)
-    }, [isOpen, onClose])
+    }, [isOpen])
 
     if (!mounted) return null
-
-    const sizeClasses = {
-        xs: 'max-w-xs',
-        sm: 'max-w-sm',
-        md: 'max-w-lg',
-        lg: 'max-w-2xl',
-        xl: 'max-w-4xl',
-        xxl: 'max-w-5xl',
-        xxxl: 'max-w-7xl',
-        '2xl': 'max-w-2xl',
-        '3xl': 'max-w-3xl',
-        '4xl': 'max-w-4xl',
-        '5xl': 'max-w-5xl',
-        '6xl': 'max-w-6xl',
-        '7xl': 'max-w-7xl',
-        full: 'max-w-[98vw]',
-    }
 
     const container = getPortalContainer('portal-modals-system')
     const isBottomSheet = mobileVariant === 'bottom-sheet'
@@ -121,40 +132,41 @@ const Modal = memo(function Modal({
             style={{
                 visibility: visible ? 'visible' : 'hidden',
                 transition: `opacity ${duration} ease`,
-                willChange: 'opacity'
             }}
             onClick={() => closeOnOutsideClick && onClose?.()}
             role="dialog"
             aria-modal="true"
         >
             {/* Optimized Backdrop (No heavy blur filters to ensure buttery smooth 60fps mobile transitions) */}
-            <div className="absolute inset-0 bg-slate-950/40" />
+            <div className="absolute inset-0 bg-black/45" />
 
             {/* Modal Panel — 2 div terpisah:
                  - Outer: handle transform/opacity animation (boleh punya willChange/transform)
                  - Inner: handle overflow-hidden untuk clip rounded corner (TIDAK boleh punya transform/contain agar portal picker tidak terurung)
             */}
             <div
-                className={`w-full z-10 ${sizeClasses[size] || 'max-w-lg'} ${aspectSquare ? 'md:aspect-square md:flex md:flex-col md:max-h-[calc(100vh-4rem)]' : ''}`}
+                tabIndex={-1}
+                ref={panelRef}
+                className={`w-full z-10 outline-none ${SIZE_CLASSES[size] || 'max-w-lg'} ${aspectSquare ? 'md:aspect-square md:flex md:flex-col md:max-h-[calc(100vh-4rem)]' : ''}`}
                 style={{
                     transform: !visible
                         ? (isBottomSheet ? 'translateY(100%)' : 'scale(0.96) translateY(10px)')
                         : 'translateY(0) scale(1)',
                     opacity: visible ? 1 : 0,
                     transition: `transform ${duration} ${sheetEase}, opacity ${duration} ease`,
-                    willChange: isAnimating ? 'transform, opacity' : 'auto',
                 }}
                 onClick={(e) => e.stopPropagation()}
             >
+                {/* max-h mobile lewat CSS variable (bukan maxHeight inline) agar tidak menimpa md:max-h di desktop */}
                 <div
                     className={`bg-[var(--color-surface)] shadow-xl w-full relative overflow-hidden flex flex-col border border-[var(--color-border)]/60
                     ${aspectSquare ? 'md:!h-full md:!max-h-full md:flex-1' : ''}
                     ${isBottomSheet
-                            ? 'rounded-t-2xl md:rounded-xl md:max-h-[calc(100vh-6rem)]'
+                            ? 'rounded-t-2xl md:rounded-xl max-h-[var(--sheet-max-h)] md:max-h-[calc(100vh-6rem)]'
                             : 'rounded-xl max-h-[calc(100vh-6rem)]'
                         }
                 `}
-                    style={isBottomSheet ? { maxHeight: `min(${maxMobileHeight}, calc(100vh - env(safe-area-inset-bottom, 0px)))` } : undefined}
+                    style={isBottomSheet ? { '--sheet-max-h': `min(${maxMobileHeight}, calc(100vh - env(safe-area-inset-bottom, 0px)))` } : undefined}
                 >
                     {/* Drag Handle for Bottom Sheet */}
                     {isBottomSheet && (
@@ -185,7 +197,7 @@ const Modal = memo(function Modal({
                         </div>
                         <button
                             onClick={onClose}
-                            className="w-10 h-10 text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] rounded-2xl transition-colors active:scale-90 flex items-center justify-center shrink-0"
+                            className="w-10 h-10 text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] rounded-lg transition-colors active:scale-90 flex items-center justify-center shrink-0"
                             aria-label="Close modal"
                         >
                             <X className="w-5 h-5" />

@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, memo, useState } from 'react'
 import { Check, CircleCheck, Info, Pen, Tags, Trash2, X } from 'lucide-react'
 import Modal from '@shared/components/Modal'
+import ConfirmDialog from '@shared/components/ConfirmDialog'
 import { AvailableTags } from '@features/students/utils/studentsConstants'
 
 /**
@@ -41,7 +42,7 @@ const TagModal = ({
         if (isOpen && tagInputRef.current) {
             // Delay focus slightly to ensure modal animation doesn't interfere
             const timer = setTimeout(() => {
-                tagInputRef.current?.focus()
+                tagInputRef.current?.focus({ preventScroll: true })
             }, 300)
             return () => clearTimeout(timer)
         }
@@ -65,22 +66,22 @@ const TagModal = ({
                 size="md"
                 mobileVariant="bottom-sheet"
                 footer={
-                    <div className="flex items-center w-full gap-3">
-                        <button
-                            onClick={onClose}
-                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center shrink-0"
-                        >
-                            Tutup
-                        </button>
-                        <div className="flex-1" />
-                        <button
-                            onClick={onClose}
-                            className="h-10 px-8 rounded-xl bg-indigo-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 border border-white/10 shrink-0"
-                        >
-                            <CircleCheck className="w-4 h-4 opacity-80" />
-                            Selesai & Simpan
-                        </button>
-                    </div>
+                <div className="flex items-center w-full gap-3">
+                    <button
+                        onClick={onClose}
+                        className="h-9 px-5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap transition-colors shrink-0"
+                    >
+                        Tutup
+                    </button>
+                    <div className="flex-1" />
+                    <button
+                        onClick={onClose}
+                        className="h-9 px-6 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap shadow-sm transition-colors flex items-center justify-center gap-2 shrink-0"
+                    >
+                        <CircleCheck className="w-4 h-4 opacity-80" />
+                        Selesai & Simpan
+                    </button>
+                </div>
                 }
             >
                 <div className="space-y-5 py-2">
@@ -89,12 +90,12 @@ const TagModal = ({
                             {/* Section: Quick Add */}
                             <div className="space-y-4">
                                 <div className="flex items-center gap-2.5 px-1">
-                                    <div className="w-1 h-3.5 bg-indigo-500 rounded-full" />
+                                    <div className="w-1 h-3.5 bg-[var(--color-primary)] rounded-full" />
                                     <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Cari atau Buat Baru</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
                                 <div className="relative group">
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-40 group-focus-within:text-indigo-500 group-focus-within:opacity-100 transition-all">
+                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] opacity-40 group-focus-within:text-[var(--color-primary)] group-focus-within:opacity-100 transition-all">
                                         <Tags className="w-4 h-4" />
                                     </div>
                                     <input
@@ -107,7 +108,7 @@ const TagModal = ({
                                             }
                                         }}
                                         placeholder="Ketik nama label lalu tekan Enter..."
-                                        className="w-full h-12 bg-[var(--color-surface-alt)]/50 border border-[var(--color-border)] rounded-2xl pl-12 pr-28 text-sm font-bold focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all outline-none placeholder:font-medium placeholder:opacity-30"
+                                        className="w-full h-12 bg-[var(--color-surface-alt)]/50 border border-[var(--color-border)] rounded-2xl pl-12 pr-28 text-sm font-bold focus:bg-white focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/5 transition-all outline-none placeholder:font-medium placeholder:opacity-30"
                                     />
                                     <div className="absolute right-2 top-1/2 -translate-y-1/2">
                                         <button
@@ -117,7 +118,7 @@ const TagModal = ({
                                                     tagInputRef.current.value = '';
                                                 }
                                             }}
-                                            className="h-8 px-4 rounded-xl bg-indigo-600 text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 active:scale-95 transition-all shadow-lg"
+                                            className="h-8 px-4 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-primary-dark)] active:scale-95 transition-all shadow-sm"
                                         >
                                             Tambah
                                         </button>
@@ -128,13 +129,13 @@ const TagModal = ({
                             {/* Section: Active Tags */}
                             <div className="space-y-4">
                                 <div className="flex items-center gap-2.5 px-1">
-                                    <div className="w-1 h-3.5 bg-emerald-500 rounded-full" />
+                                    <div className="w-1 h-3.5 bg-success rounded-full" />
                                     <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Label Tersemat</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
-                                <div className="flex flex-wrap gap-2.5 p-4 rounded-3xl bg-emerald-500/5 border border-emerald-500/10 min-h-[70px] content-start transition-all relative">
+                                <div className="flex flex-wrap gap-2.5 p-4 rounded-3xl bg-success/5 border border-success/10 min-h-[70px] content-start transition-all relative">
                                     <div className="absolute -top-3 right-6">
-                                        <span className="text-xs font-bold text-emerald-600 bg-white px-3 py-1 rounded-full ring-1 ring-emerald-500/20 uppercase tracking-tighter shadow-md">
+                                        <span className="text-xs font-bold text-success bg-white px-3 py-1 rounded-full ring-1 ring-success/20 uppercase tracking-tighter shadow-md">
                                             {studentTags.length} - Aktif
                                         </span>
                                     </div>
@@ -148,11 +149,11 @@ const TagModal = ({
                                             <button
                                                 key={tag}
                                                 onClick={() => handleToggleTag(student, tag)}
-                                                className="group flex items-center gap-2 pl-3 pr-2 py-1.5 bg-white border border-[var(--color-border)] rounded-full text-xs font-bold text-[var(--color-text)] shadow-sm hover:border-red-500 hover:text-red-600 hover:bg-red-50 transition-all active:scale-95"
+                                                className="group flex items-center gap-2 pl-3 pr-2 py-1.5 bg-white border border-[var(--color-border)] rounded-full text-xs font-bold text-[var(--color-text)] shadow-sm hover:border-danger hover:text-danger hover:bg-danger/5 transition-all active:scale-95"
                                             >
-                                                <span className="opacity-70 group-hover:hidden text-emerald-500">#</span>
+                                                <span className="opacity-70 group-hover:hidden text-success">#</span>
                                                 {tag}
-                                                <div className="w-4 h-4 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-red-500/10 transition-colors">
+                                                <div className="w-4 h-4 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-danger/10 transition-colors">
                                                     <X className="w-4 h-4" />
                                                 </div>
                                             </button>
@@ -191,14 +192,14 @@ const TagModal = ({
                                                     <div className="flex items-center border-l border-violet-100 bg-violet-50/50">
                                                         <button
                                                             onClick={() => handleGlobalRenameTag(tag, renameInput)}
-                                                            className="w-8 h-8 flex items-center justify-center text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all"
+                                                            className="w-8 h-8 flex items-center justify-center text-success hover:bg-success hover:text-white transition-all"
                                                             title="Simpan"
                                                         >
                                                             <Check className="w-4 h-4" />
                                                         </button>
                                                         <button
                                                             onClick={() => setTagToEdit(null)}
-                                                            className="w-8 h-8 flex items-center justify-center text-red-400 hover:bg-red-500 hover:text-white transition-all"
+                                                            className="w-8 h-8 flex items-center justify-center text-danger/70 hover:bg-danger hover:text-white transition-all"
                                                             title="Batal"
                                                         >
                                                             <X className="w-4 h-4" />
@@ -242,7 +243,7 @@ const TagModal = ({
                                                         <button
                                                             type="button"
                                                             onClick={(e) => { e.stopPropagation(); setConfirmDeleteTag(tag) }}
-                                                            className={`w-8 h-8 flex items-center justify-center transition-colors ${isActive ? 'text-white/70 hover:text-white' : 'text-red-500 hover:bg-red-50'}`}
+                                                            className={`w-8 h-8 flex items-center justify-center transition-colors ${isActive ? 'text-white/70 hover:text-white' : 'text-danger hover:bg-danger/10'}`}
                                                             title="Hapus Global"
                                                         >
                                                             <X className="w-4 h-4" />
@@ -257,7 +258,7 @@ const TagModal = ({
                                 <div className="p-3 rounded-xl bg-blue-50/50 border border-blue-100 flex items-start gap-3 mt-2">
                                     <Info className="w-4 h-4 text-blue-500 mt-0.5 opacity-60" />
                                     <p className="text-xs text-blue-700 font-medium leading-relaxed">
-                                        Klik label untuk menyematkan ke siswa. Gunakan ikon <Pen className="w-4 h-4 text-blue-500 mx-0.5" /> untuk ubah nama atau <X className="w-4 h-4 text-red-500 mx-0.5" /> untuk hapus global.
+                                        Klik label untuk menyematkan ke siswa. Gunakan ikon <Pen className="w-4 h-4 text-blue-500 mx-0.5" /> untuk ubah nama atau <X className="w-4 h-4 text-danger mx-0.5" /> untuk hapus global.
                                     </p>
                                 </div>
                             </div>
@@ -267,47 +268,29 @@ const TagModal = ({
             </Modal>
 
             {/* Global Tag Delete Confirmation */}
-            <Modal
+            <ConfirmDialog
                 isOpen={!!confirmDeleteTag}
                 onClose={() => setConfirmDeleteTag(null)}
+                onConfirm={async () => {
+                    const tag = confirmDeleteTag;
+                    setConfirmDeleteTag(null);
+                    await handleGlobalDeleteTag(tag, true);
+                }}
                 title="Konfirmasi Hapus Label"
                 description="Label akan dihapus secara permanen dari database sistem."
                 icon={Trash2}
-                iconBg="bg-red-50"
-                iconColor="text-red-500"
-                size="sm"
-                footer={
-                    <div className="flex items-center w-full gap-3">
-                        <button
-                            onClick={() => setConfirmDeleteTag(null)}
-                            className="h-10 px-5 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-slate-50 transition-all flex items-center justify-center shrink-0"
-                        >
-                            Batal
-                        </button>
-                        <div className="flex-1" />
-                        <button
-                            onClick={async () => {
-                                const tag = confirmDeleteTag;
-                                setConfirmDeleteTag(null);
-                                await handleGlobalDeleteTag(tag, true);
-                            }}
-                            className="h-10 px-6 rounded-xl bg-red-500 text-white text-xs font-bold uppercase tracking-wide shadow-lg hover:bg-red-600 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
-                        >
-                            <Trash2 className="w-4 h-4 opacity-80" />
-                            Hapus Global
-                        </button>
-                    </div>
-                }
+                confirmText="Hapus Global"
+                confirmIcon={Trash2}
             >
                 <div className="py-2">
-                    <p className="text-xs text-slate-500 leading-relaxed font-bold">
-                        Label <span className="px-2 py-0.5 rounded-md bg-red-50 text-red-600 font-bold border border-red-100 mx-1">#{confirmDeleteTag}</span> akan dihapus dari seluruh data siswa.
+                    <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
+                        Label <span className="px-2 py-0.5 rounded-md bg-danger/10 text-danger font-bold border border-danger/20 mx-1">#{confirmDeleteTag}</span> akan dihapus dari seluruh data siswa.
                     </p>
-                    <p className="text-xs text-slate-400 font-medium mt-3 leading-relaxed">
+                    <p className="text-xs text-[var(--color-text-muted)] font-medium mt-3 leading-relaxed">
                         Tindakan ini akan membersihkan label tersebut secara permanen dari database. Data siswa lainnya tidak akan terpengaruh.
                     </p>
                 </div>
-            </Modal>
+            </ConfirmDialog>
         </>
     )
 }

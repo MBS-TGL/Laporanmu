@@ -1,11 +1,11 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React from 'react'
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { createPortal } from 'react-dom'
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import PageHeader from '@shared/components/PageHeader'
 import { RaportProvider, useRaportContext } from '@features/raport/context/RaportContext'
 import { Check, Keyboard, Lock, Loader2, CheckCircle2, Archive } from 'lucide-react'
-import { ShortcutModalContent } from '@features/raport/components/RaportModals'
+import { usePageShortcuts } from '@shared/hooks/usePageShortcuts'
+import ShortcutsModal from '@shared/components/ShortcutsModal'
 
 function RaportLayoutContent({ isAcademic = false }) {
     const location = useLocation()
@@ -14,41 +14,26 @@ function RaportLayoutContent({ isAcademic = false }) {
     const { core } = useRaportContext()
     const { isAllowed, canEdit, globalSaveIndicator, selectedClass } = core
 
-    const [showShortcutModal, setShowShortcutModal] = useState(false)
-    const [shortcutRect, setShortcutRect] = useState(null)
-    const shortcutBtnRef = useRef(null)
-
     const basePath = isAcademic ? '/academic/raport' : '/raport'
     const pathname = location.pathname
 
-    // Toggle shortcut modal on "?" key press
-    useEffect(() => {
-        const handler = (e) => {
-            if (e.key === '?' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target?.tagName)) {
-                if (!showShortcutModal && shortcutBtnRef.current) {
-                    setShortcutRect(shortcutBtnRef.current.getBoundingClientRect())
-                }
-                setShowShortcutModal(v => !v)
-            }
-            if (e.key === 'Escape') setShowShortcutModal(false)
-        }
-        window.addEventListener('keydown', handler)
-        return () => window.removeEventListener('keydown', handler)
-    }, [showShortcutModal])
-
-    // Update shortcut dropdown position on window scroll / resize
-    useEffect(() => {
-        if (!showShortcutModal) return
-        const update = () => {
-            if (shortcutBtnRef.current) setShortcutRect(shortcutBtnRef.current.getBoundingClientRect())
-        }
-        window.addEventListener('scroll', update, true)
-        window.addEventListener('resize', update)
-        return () => {
-            window.removeEventListener('scroll', update, true)
-            window.removeEventListener('resize', update)
-        }
-    }, [showShortcutModal])
+    // ── SHORTCUTS (usePageShortcuts) ──
+    // Layout ini tidak mem-bind aksi apa pun — daftannya dokumentasi display-only
+    // untuk shortcut yang di-bind halaman sub-route (InputPage, dst). `?` toggle palet
+    // dan Esc menutup palet ditangani bawaan usePageShortcuts.
+    const sc = usePageShortcuts({
+        items: [
+            { section: 'Navigasi Sel (Excel-like)', keys: ['Tab', 'Enter'], label: 'Pindah ke cell berikutnya' },
+            { section: 'Navigasi Sel (Excel-like)', keys: ['↑', '↓'], label: 'Naik / turun baris' },
+            { section: 'Navigasi Sel (Excel-like)', keys: ['←', '→'], label: 'Pindah kolom kriteria' },
+            { section: 'Navigasi Sel (Excel-like)', keys: ['Esc'], label: 'Tutup modal / panel' },
+            { section: 'Aksi & Pengeditan', keys: ['Ctrl', 'S'], label: 'Simpan semua nilai' },
+            { section: 'Aksi & Pengeditan', keys: ['Ctrl', 'Z'], label: 'Undo nilai' },
+            { section: 'Aksi & Pengeditan', keys: ['Ctrl', 'Y'], label: 'Redo nilai' },
+            { section: 'Aksi & Pengeditan', keys: ['/'], label: 'Fokus ke pencarian santri' },
+            { section: 'Aksi & Pengeditan', keys: ['?'], label: 'Tampilkan shortcut ini', icon: Keyboard },
+        ],
+    })
 
     // Active step index determination based on URL path
     const activeStepIndex = (() => {
@@ -145,9 +130,8 @@ function RaportLayoutContent({ isAcademic = false }) {
                             )}
 
                             <button
-                                ref={shortcutBtnRef}
-                                onClick={() => { if (!showShortcutModal) setShortcutRect(shortcutBtnRef.current?.getBoundingClientRect()); setShowShortcutModal(v => !v) }}
-                                className={`hidden sm:flex h-9 w-9 rounded-lg border items-center justify-center text-sm transition-all active:scale-95 ${showShortcutModal ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)] shadow-sm' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
+                                onClick={sc.toggle}
+                                className={`hidden sm:flex h-9 w-9 rounded-lg border items-center justify-center text-sm transition-all active:scale-95 ${sc.isOpen ? 'bg-primary/10 border-primary/30 text-primary shadow-sm' : 'bg-surface-alt border-border text-text-muted hover:text-text hover:bg-border'}`}
                                 title="Keyboard Shortcuts (?)"
                             >
                                 <Keyboard className="w-3.5 h-3.5" />
@@ -166,28 +150,11 @@ function RaportLayoutContent({ isAcademic = false }) {
                     <Outlet />
                 </div>
 
-                {/* Portaled Keyboard Shortcuts Dropdown */}
-                {showShortcutModal && shortcutRect && createPortal(
-                    <>
-                        <div className="fixed inset-0 z-[9990] bg-black/5" onClick={() => setShowShortcutModal(false)} />
-                        <div
-                            className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden text-left animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200"
-                            style={{
-                                top: shortcutRect.bottom + 8,
-                                left: Math.max(10, shortcutRect.right - 288)
-                            }}
-                        >
-                            <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between bg-[var(--color-surface)]">
-                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Pintasan Keyboard</p>
-                                <span className="text-xs text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
-                            </div>
-                            <div className="max-h-[60vh] overflow-y-auto">
-                                <ShortcutModalContent />
-                            </div>
-                        </div>
-                    </>,
-                    document.body
-                )}
+                <ShortcutsModal
+                    isOpen={sc.isOpen}
+                    onClose={sc.close}
+                    sections={sc.sections}
+                />
             </div>
         </DashboardLayout>
     )

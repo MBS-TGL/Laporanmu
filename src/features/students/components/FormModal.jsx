@@ -37,7 +37,7 @@ const FormModal = memo(function FormModal({
     }
 
     const STATUS_OPTIONS = [
-        { key: 'aktif', label: 'Aktif', activeCls: 'bg-emerald-500' },
+        { key: 'aktif', label: 'Aktif', activeCls: 'bg-success' },
         { key: 'lulus', label: 'Lulus', activeCls: 'bg-blue-500' },
         { key: 'keluar', label: 'Keluar', activeCls: 'bg-slate-700' },
     ]
@@ -371,7 +371,7 @@ const FormModal = memo(function FormModal({
                                     e.stopPropagation()
                                     setCurrentStep(prev => prev - 1)
                                 }}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all shadow-sm shrink-0"
+                                className="h-9 px-5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wider leading-none whitespace-nowrap transition-colors flex items-center justify-center gap-2 shrink-0"
                             >
                                 <ArrowLeft className="w-4 h-4 opacity-50" />
                                 Kembali
@@ -381,7 +381,7 @@ const FormModal = memo(function FormModal({
                                 key="btn-close"
                                 type="button"
                                 onClick={handleSafeClose}
-                                className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0 flex items-center justify-center"
+                                className="h-9 px-5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap transition-colors shrink-0 flex items-center justify-center"
                             >
                                 Batal
                             </button>
@@ -396,7 +396,7 @@ const FormModal = memo(function FormModal({
                                 form="student-form-modal"
                                 disabled={submitting}
                                 title="Lewati Step 2 & 3 dan langsung simpan"
-                                className="h-10 px-4 sm:px-5 rounded-xl bg-emerald-500/10 text-emerald-600 text-xs font-bold uppercase tracking-wide hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20 flex items-center justify-center gap-2 shrink-0 group"
+                                className="h-9 px-4 sm:px-5 rounded-lg bg-success/10 text-success text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap hover:bg-success hover:text-white transition-colors border border-success/20 flex items-center justify-center gap-2 shrink-0 group"
                             >
                                 <Zap className="w-4 h-4 opacity-70 group-hover:animate-pulse" />
                                 <span className="hidden sm:inline">Daftar Cepat</span>
@@ -416,7 +416,7 @@ const FormModal = memo(function FormModal({
                                     }
                                     setCurrentStep(prev => prev + 1)
                                 }}
-                                className="h-10 px-6 sm:px-8 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg border border-white/10 shrink-0"
+                                className="h-9 px-6 sm:px-8 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white text-xs font-bold uppercase tracking-wider leading-none whitespace-nowrap transition-colors flex items-center justify-center gap-2 shadow-sm shrink-0"
                             >
                                 <span className="hidden sm:inline">Selanjutnya</span>
                                 <span className="sm:hidden">Lanjut</span>
@@ -428,7 +428,7 @@ const FormModal = memo(function FormModal({
                                 type="submit"
                                 form="student-form-modal"
                                 disabled={submitting}
-                                className="h-10 px-6 sm:px-8 rounded-xl bg-emerald-600 text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 shrink-0"
+                                className="h-9 px-6 sm:px-8 rounded-lg bg-success hover:bg-success-dark text-white text-xs font-bold uppercase tracking-wider leading-none whitespace-nowrap transition-colors flex items-center justify-center gap-2 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                             >
                                 {submitting ? (
                                     <>
@@ -456,14 +456,14 @@ const FormModal = memo(function FormModal({
                 {/* 0. Stepper Header & Quick Mode Toggle */}
                 <div className="flex flex-col gap-3">
                     {hasDraft && (
-                        <div className="flex items-center justify-between p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 animate-in slide-in-from-top-2">
+                        <div className="flex items-center justify-between p-2 rounded-xl bg-warning/10 border border-warning/20 animate-in slide-in-from-top-2">
                             <div className="flex items-center gap-2">
-                                <History className="w-4 h-4 text-amber-500" />
+                                <History className="w-4 h-4 text-warning" />
                                 <span className="text-xs font-bold text-amber-700">Ada draft data yang belum selesai</span>
                             </div>
                             <div className="flex gap-2">
-                                <button onClick={clearDraft} className="text-xs font-bold uppercase text-amber-600/50 hover:text-amber-600">Hapus</button>
-                                <button onClick={loadDraft} className="px-2 py-1 rounded-lg bg-amber-500 text-white text-xs font-bold uppercase tracking-wider shadow-sm">Lanjutkan</button>
+                                <button onClick={clearDraft} className="text-xs font-bold uppercase text-warning-dark/50 hover:text-warning-dark">Hapus</button>
+                                <button onClick={loadDraft} className="px-2 py-1 rounded-lg bg-warning text-white text-xs font-bold uppercase tracking-wider shadow-sm">Lanjutkan</button>
                             </div>
                         </div>
                     )}
@@ -480,7 +480,7 @@ const FormModal = memo(function FormModal({
                                                 setIsQuickMode(false)
                                             }
                                         }}
-                                        className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all relative ${currentStep === step ? 'bg-[var(--color-primary)] text-white shadow-lg scale-110' : step < currentStep ? 'bg-emerald-500 text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}
+                                        className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all relative ${currentStep === step ? 'bg-[var(--color-primary)] text-white shadow-lg scale-110' : step < currentStep ? 'bg-success text-white' : 'bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] border border-[var(--color-border)]'}`}
                                     >
                                         {step < currentStep ? <CircleCheck className="w-4 h-4" /> : <span className="text-xs font-bold">{step}</span>}
 
@@ -489,7 +489,7 @@ const FormModal = memo(function FormModal({
                                             {step === 1 ? 'Pokok' : step === 2 ? 'Keluarga' : 'Lengkap'}
                                         </span>
                                     </button>
-                                    {step < 3 && <div className={`h-[2px] w-6 rounded-full ${step < currentStep ? 'bg-emerald-500' : 'bg-[var(--color-border)]'}`} />}
+                                    {step < 3 && <div className={`h-[2px] w-6 rounded-full ${step < currentStep ? 'bg-success' : 'bg-[var(--color-border)]'}`} />}
                                 </React.Fragment>
                             ))}
                         </div>
@@ -500,7 +500,7 @@ const FormModal = memo(function FormModal({
                                 setIsQuickMode(!isQuickMode)
                                 if (!isQuickMode) setCurrentStep(1)
                             }}
-                            className={`h-7 px-2.5 rounded-lg border transition-all flex items-center gap-2 ${isQuickMode ? 'bg-amber-500 border-amber-500 text-white shadow-lg' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
+                            className={`h-7 px-2.5 rounded-lg border transition-all flex items-center gap-2 ${isQuickMode ? 'bg-warning border-warning text-white shadow-lg' : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}
                         >
                             <Zap className={`w-4 h-4 ${isQuickMode ? 'animate-pulse' : 'opacity-40'}`} />
                             <span className="text-xs font-bold uppercase tracking-wider">Mode Cepat</span>
@@ -517,7 +517,7 @@ const FormModal = memo(function FormModal({
                             {/* Avatar */}
                             <div className="relative group shrink-0 mx-auto sm:mx-0">
                                 <div
-                                    className={`w-[88px] h-[88px] rounded-2xl bg-[var(--color-surface-alt)] border flex items-center justify-center overflow-hidden transition-all cursor-pointer ${form.photo_url || avatarPreview ? 'border-emerald-500/50' : 'border-[var(--color-border)] hover:border-[var(--color-primary)]'}`}
+                                    className={`w-[88px] h-[88px] rounded-2xl bg-[var(--color-surface-alt)] border flex items-center justify-center overflow-hidden transition-all cursor-pointer ${form.photo_url || avatarPreview ? 'border-success/50' : 'border-[var(--color-border)] hover:border-[var(--color-primary)]'}`}
                                     onClick={() => photoRef.current?.click()}
                                 >
                                     {(avatarPreview || (form.photo_url && !photoError)) ? (
@@ -557,7 +557,7 @@ const FormModal = memo(function FormModal({
                             <div className="flex-1 w-full space-y-3">
                                 <div className="relative group">
                                     <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">
-                                        Nama Lengkap <span className="text-rose-500">*</span>
+                                        Nama Lengkap <span className="text-danger">*</span>
                                     </label>
                                     <div className="relative">
                                         <input
@@ -570,15 +570,15 @@ const FormModal = memo(function FormModal({
                                             onBlur={() => setFieldTouched('name')}
                                             placeholder="Masukkan nama lengkap siswa..."
                                             className={`w-full pl-9 pr-3 h-11 rounded-xl border bg-[var(--color-surface)] outline-none transition-all text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40 
-                                            ${getStatus('name', true) === 'error' ? 'border-rose-500/50 focus:border-rose-500 focus:ring-1 focus:ring-rose-500 bg-rose-50/5' :
-                                                    getStatus('name', true) === 'success' ? 'border-emerald-500/50 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-emerald-50/5' :
+                                            ${getStatus('name', true) === 'error' ? 'border-danger/50 focus:border-danger focus:ring-1 focus:ring-danger bg-danger/5' :
+                                                    getStatus('name', true) === 'success' ? 'border-success/50 focus:border-success focus:ring-1 focus:ring-success bg-success/5' :
                                                         'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]'}`}
                                             autoFocus
                                         />
-                                        <User className={`w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors ${getStatus('name', true) === 'error' ? 'text-rose-500' : getStatus('name', true) === 'success' ? 'text-emerald-500' : 'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)]'}`} />
+                                        <User className={`w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors ${getStatus('name', true) === 'error' ? 'text-danger' : getStatus('name', true) === 'success' ? 'text-success' : 'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)]'}`} />
 
                                         {getStatus('name', true) === 'success' && (
-                                            <CircleCheck className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-emerald-500 animate-in zoom-in" />
+                                            <CircleCheck className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-success animate-in zoom-in" />
                                         )}
                                     </div>
                                 </div>
@@ -594,10 +594,10 @@ const FormModal = memo(function FormModal({
                                                 onBlur={() => setFieldTouched('nisn')}
                                                 placeholder="10 Digit"
                                                 className={`w-full pl-9 pr-3 h-11 rounded-xl border outline-none transition-all text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40 bg-[var(--color-surface)]
-                                                ${touched.nisn && form.nisn && form.nisn.length !== 10 ? 'border-amber-500 bg-amber-50/10' :
-                                                        getStatus('nisn') === 'success' ? 'border-emerald-500/30 bg-emerald-50/5' : 'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]'}`}
+                                                ${touched.nisn && form.nisn && form.nisn.length !== 10 ? 'border-warning bg-warning/10' :
+                                                        getStatus('nisn') === 'success' ? 'border-success/30 bg-success/5' : 'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]'}`}
                                             />
-                                            <IdCard className={`w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors ${getStatus('nisn') === 'success' ? 'text-emerald-500' : 'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)]'}`} />
+                                            <IdCard className={`w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors ${getStatus('nisn') === 'success' ? 'text-success' : 'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)]'}`} />
                                         </div>
                                     </div>
 
@@ -616,7 +616,7 @@ const FormModal = memo(function FormModal({
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-1.5">
                                 <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">
-                                    Jenis Kelamin <span className="text-rose-500">*</span>
+                                    Jenis Kelamin <span className="text-danger">*</span>
                                 </label>
                                 <div className="flex p-1 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl h-11">
                                     {[
@@ -640,7 +640,7 @@ const FormModal = memo(function FormModal({
                                 <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">Status</label>
                                 <div className="flex p-1 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl h-11">
                                     {[
-                                        { key: 'aktif', label: 'Aktif', activeCls: 'bg-emerald-500 text-white shadow-lg' },
+                                        { key: 'aktif', label: 'Aktif', activeCls: 'bg-success text-white shadow-lg' },
                                         { key: 'lulus', label: 'Lulus', activeCls: 'bg-blue-500 text-white shadow-lg' },
                                         { key: 'keluar', label: 'Keluar', activeCls: 'bg-slate-700 text-white shadow-lg' },
                                     ].map((opt) => (
@@ -683,7 +683,7 @@ const FormModal = memo(function FormModal({
                             </div>
                             <div className="space-y-1.5">
                                 <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 opacity-50">
-                                    Kelas Akademik <span className="text-rose-500">*</span>
+                                    Kelas Akademik <span className="text-danger">*</span>
                                 </label>
                                 <RichSelect
                                     value={form.class_id}
@@ -700,8 +700,8 @@ const FormModal = memo(function FormModal({
                                 />
                                 {/* Duplicate Warning */}
                                 {duplicateWarning && (
-                                    <div className="p-3 rounded-xl border border-amber-500/30 bg-amber-50 dark:bg-amber-500/5 text-amber-700 dark:text-amber-400 animate-in slide-in-from-top-2 flex gap-3">
-                                        <TriangleAlert className="w-4 h-4 text-amber-500 mt-0.5" />
+                                    <div className="p-3 rounded-xl border border-warning/30 bg-warning/10 dark:bg-warning/5 text-warning-dark dark:text-warning animate-in slide-in-from-top-2 flex gap-3">
+                                        <TriangleAlert className="w-4 h-4 text-warning mt-0.5" />
                                         <div>
                                             <p className="text-xs font-bold uppercase tracking-wider mb-1">Potensi Duplikasi</p>
                                             <div className="space-y-0.5">
@@ -723,12 +723,12 @@ const FormModal = memo(function FormModal({
                 {currentStep === 2 && !isQuickMode && (
                     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                         <div className="flex items-center gap-3">
-                            <div className="h-0.5 flex-1 bg-gradient-to-r from-transparent to-indigo-500/20" />
-                            <span className="text-xs font-bold uppercase tracking-wide text-indigo-500">Data Keluarga & Kontak</span>
-                            <div className="h-0.5 flex-1 bg-gradient-to-l from-transparent to-indigo-500/20" />
+                            <div className="h-0.5 flex-1 bg-gradient-to-r from-transparent to-[var(--color-primary)]/20" />
+                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-primary)]">Data Keluarga & Kontak</span>
+                            <div className="h-0.5 flex-1 bg-gradient-to-l from-transparent to-[var(--color-primary)]/20" />
                         </div>
 
-                        <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-indigo-500/[0.03] border border-indigo-500/10">
+                        <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-[var(--color-primary)]/[0.03] border border-[var(--color-primary)]/10">
                             <span className="text-xs font-bold text-indigo-600/70 uppercase">Progress Section</span>
                             <span className="text-xs font-bold text-indigo-600">{calculateStepProgress(2)}%</span>
                         </div>
@@ -750,7 +750,7 @@ const FormModal = memo(function FormModal({
                                             <input
                                                 type="text" value={form.father_name}
                                                 onChange={(e) => setField('father_name', e.target.value)}
-                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-indigo-500 transition-all"
+                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-[var(--color-primary)] transition-all"
                                                 placeholder="Nama Lengkap Ayah"
                                             />
                                         </div>
@@ -759,10 +759,10 @@ const FormModal = memo(function FormModal({
                                             <input
                                                 type="text" value={form.father_nik}
                                                 onChange={(e) => setField('father_nik', e.target.value.replace(/\D/g, '').slice(0, 16))}
-                                                className={`w-full px-3 h-11 rounded-xl border bg-[var(--color-surface)] text-sm outline-none transition-all ${getStatus('father_nik') === 'warning' ? 'border-amber-500 bg-amber-50/10' : 'border-[var(--color-border)] focus:border-indigo-500'}`}
+                                                className={`w-full px-3 h-11 rounded-xl border bg-[var(--color-surface)] text-sm outline-none transition-all ${getStatus('father_nik') === 'warning' ? 'border-warning bg-warning/10' : 'border-[var(--color-border)] focus:border-[var(--color-primary)]'}`}
                                                 placeholder="16 Digit NIK"
                                             />
-                                            {getStatus('father_nik') === 'warning' && <p className="text-xs text-amber-600 mt-1 ml-1">NIK harus 16 digit</p>}
+                                            {getStatus('father_nik') === 'warning' && <p className="text-xs text-warning-dark mt-1 ml-1">NIK harus 16 digit</p>}
                                         </div>
                                         <div className="relative group">
                                             <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Pendidikan</label>
@@ -798,7 +798,7 @@ const FormModal = memo(function FormModal({
                                             <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Status</label>
                                             <div className="flex p-1 bg-[var(--color-surface-alt)] border border-[var(--color-border)] rounded-xl h-11">
                                                 {[
-                                                    { v: true, l: 'Masih Hidup', activeCls: 'bg-indigo-500 text-white shadow-lg' },
+                                                    { v: true, l: 'Masih Hidup', activeCls: 'bg-[var(--color-primary)] text-white shadow-sm' },
                                                     { v: false, l: 'Sudah Wafat', activeCls: 'bg-slate-700 text-white shadow-lg' }
                                                 ].map(opt => (
                                                     <button
@@ -826,11 +826,11 @@ const FormModal = memo(function FormModal({
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div className="relative group">
-                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Nama Ibu <span className="text-rose-500">*</span></label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Nama Ibu <span className="text-danger">*</span></label>
                                             <input
                                                 type="text" value={form.mother_name}
                                                 onChange={(e) => setField('mother_name', e.target.value)}
-                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-rose-500 transition-all"
+                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-danger transition-all"
                                                 placeholder="Nama Lengkap Ibu"
                                             />
                                         </div>
@@ -839,10 +839,10 @@ const FormModal = memo(function FormModal({
                                             <input
                                                 type="text" value={form.mother_nik}
                                                 onChange={(e) => setField('mother_nik', e.target.value.replace(/\D/g, '').slice(0, 16))}
-                                                className={`w-full px-3 h-11 rounded-xl border bg-[var(--color-surface)] text-sm outline-none transition-all ${getStatus('mother_nik') === 'warning' ? 'border-amber-500 bg-amber-50/10' : 'border-[var(--color-border)] focus:border-rose-500'}`}
+                                                className={`w-full px-3 h-11 rounded-xl border bg-[var(--color-surface)] text-sm outline-none transition-all ${getStatus('mother_nik') === 'warning' ? 'border-warning bg-warning/10' : 'border-[var(--color-border)] focus:border-danger'}`}
                                                 placeholder="16 Digit NIK"
                                             />
-                                            {getStatus('mother_nik') === 'warning' && <p className="text-xs text-amber-600 mt-1 ml-1">NIK harus 16 digit</p>}
+                                            {getStatus('mother_nik') === 'warning' && <p className="text-xs text-warning-dark mt-1 ml-1">NIK harus 16 digit</p>}
                                         </div>
                                         <div className="relative group">
                                             <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">Pendidikan</label>
@@ -921,7 +921,7 @@ const FormModal = memo(function FormModal({
                                     </div>
                                     <div className="grid grid-cols-1 gap-4">
                                         <div className="relative group">
-                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">No. HP Wali <span className="text-emerald-500">*</span></label>
+                                            <label className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider ml-1 mb-1 block opacity-50">No. HP Wali <span className="text-success">*</span></label>
                                             <div className="relative">
                                                 <input
                                                     type="text"
@@ -929,11 +929,11 @@ const FormModal = memo(function FormModal({
                                                     onChange={(e) => setField('phone', e.target.value.replace(/\D/g, '').slice(0, 15))}
                                                     placeholder="08xxxxxxxxxx"
                                                     className={`w-full pl-9 pr-3 h-11 rounded-xl border bg-[var(--color-surface)] outline-none transition-all text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] placeholder:opacity-40 
-                                                        ${getStatus('phone') === 'warning' ? 'border-amber-500 bg-amber-50/10' : 'focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] border-[var(--color-border)]'}`}
+                                                        ${getStatus('phone') === 'warning' ? 'border-warning bg-warning/10' : 'focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] border-[var(--color-border)]'}`}
                                                 />
-                                                <WhatsAppIcon className={`w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors ${getStatus('phone') === 'warning' ? 'text-amber-500' : 'text-emerald-500 opacity-70'}`} />
+                                                <WhatsAppIcon className={`w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors ${getStatus('phone') === 'warning' ? 'text-warning' : 'text-success opacity-70'}`} />
                                             </div>
-                                            {getStatus('phone') === 'warning' && <p className="text-xs text-amber-600 mt-1 ml-1">Format HP tidak valid (08... min 10 digit)</p>}
+                                            {getStatus('phone') === 'warning' && <p className="text-xs text-warning-dark mt-1 ml-1">Format HP tidak valid (08... min 10 digit)</p>}
                                         </div>
                                     </div>
                                 </div>
@@ -946,23 +946,23 @@ const FormModal = memo(function FormModal({
                 {currentStep === 3 && !isQuickMode && (
                     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                         <div className="flex items-center gap-3">
-                            <div className="h-0.5 flex-1 bg-gradient-to-r from-transparent to-emerald-500/20" />
-                            <span className="text-xs font-bold uppercase tracking-wide text-emerald-600">Alamat, Dokumen & Review</span>
-                            <div className="h-0.5 flex-1 bg-gradient-to-l from-transparent to-emerald-500/20" />
+                            <div className="h-0.5 flex-1 bg-gradient-to-r from-transparent to-success/20" />
+                            <span className="text-xs font-bold uppercase tracking-wide text-success">Alamat, Dokumen & Review</span>
+                            <div className="h-0.5 flex-1 bg-gradient-to-l from-transparent to-success/20" />
                         </div>
 
                         {/* Completion indicator */}
-                        <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-emerald-500/[0.03] border border-emerald-500/10">
-                            <span className="text-xs font-bold text-emerald-600/70 uppercase">Progress Section</span>
-                            <span className="text-xs font-bold text-emerald-600">{calculateStepProgress(3)}%</span>
+                        <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-success/[0.03] border border-success/10">
+                            <span className="text-xs font-bold text-success/70 uppercase">Progress Section</span>
+                            <span className="text-xs font-bold text-success">{calculateStepProgress(3)}%</span>
                         </div>
 
                         {/* Address & Docs content */}
                         <div className="space-y-4">
                             <div className="p-4 border border-[var(--color-border)] rounded-2xl bg-[var(--color-surface)] space-y-4">
                                 <div className="flex items-center gap-2.5 pt-2">
-                                    <div className="w-1 h-4 bg-emerald-500 rounded-full" />
-                                    <MapPin className="w-4 h-4 text-emerald-500 opacity-70" />
+                                    <div className="w-1 h-4 bg-success rounded-full" />
+                                    <MapPin className="w-4 h-4 text-success opacity-70" />
                                     <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Alamat & Domisili</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
@@ -974,13 +974,13 @@ const FormModal = memo(function FormModal({
                                                 <input
                                                     type="text" value={form.address_rt}
                                                     onChange={(e) => setField('address_rt', e.target.value.substring(0, 3))}
-                                                    className="w-full px-2 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-emerald-500 text-center"
+                                                    className="w-full px-2 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-success text-center"
                                                     placeholder="00"
                                                 />
                                                 <input
                                                     type="text" value={form.address_rw}
                                                     onChange={(e) => setField('address_rw', e.target.value.substring(0, 3))}
-                                                    className="w-full px-2 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-emerald-500 text-center"
+                                                    className="w-full px-2 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-success text-center"
                                                     placeholder="00"
                                                 />
                                             </div>
@@ -990,7 +990,7 @@ const FormModal = memo(function FormModal({
                                             <input
                                                 type="text" value={form.address_village}
                                                 onChange={(e) => setField('address_village', e.target.value)}
-                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-emerald-500 transition-all"
+                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-success transition-all"
                                             />
                                         </div>
                                     </div>
@@ -1000,7 +1000,7 @@ const FormModal = memo(function FormModal({
                                             <input
                                                 type="text" value={form.address_district}
                                                 onChange={(e) => setField('address_district', e.target.value)}
-                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-emerald-500 transition-all"
+                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-success transition-all"
                                                 placeholder="Cth: Kebayoran Baru"
                                             />
                                         </div>
@@ -1009,7 +1009,7 @@ const FormModal = memo(function FormModal({
                                             <input
                                                 type="text" value={form.address_city}
                                                 onChange={(e) => setField('address_city', e.target.value)}
-                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-emerald-500 transition-all"
+                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-success transition-all"
                                                 placeholder="Cth: Jakarta Selatan"
                                             />
                                         </div>
@@ -1020,7 +1020,7 @@ const FormModal = memo(function FormModal({
                                             <input
                                                 type="text" value={form.address_province}
                                                 onChange={(e) => setField('address_province', e.target.value)}
-                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-emerald-500 transition-all"
+                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-success transition-all"
                                                 placeholder="Cth: DKI Jakarta"
                                             />
                                         </div>
@@ -1029,7 +1029,7 @@ const FormModal = memo(function FormModal({
                                             <input
                                                 type="text" value={form.address_postal_code}
                                                 onChange={(e) => setField('address_postal_code', e.target.value.replace(/\D/g, '').slice(0, 5))}
-                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-emerald-500 transition-all"
+                                                className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-success transition-all"
                                                 placeholder="12345"
                                             />
                                         </div>
@@ -1050,8 +1050,8 @@ const FormModal = memo(function FormModal({
                             {/* ── Dokumen & EMIS ── */}
                             <div className="p-4 border border-[var(--color-border)] rounded-2xl bg-[var(--color-surface)] space-y-4">
                                 <div className="flex items-center gap-2.5 pt-2">
-                                    <div className="w-1 h-4 bg-amber-500 rounded-full" />
-                                    <FileText className="w-4 h-4 text-amber-500 opacity-70" />
+                                    <div className="w-1 h-4 bg-warning rounded-full" />
+                                    <FileText className="w-4 h-4 text-warning opacity-70" />
                                     <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Dokumen & EMIS</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
@@ -1060,7 +1060,7 @@ const FormModal = memo(function FormModal({
                                     <input
                                         type="text" value={form.no_akta}
                                         onChange={(e) => setField('no_akta', e.target.value)}
-                                        className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-amber-500"
+                                        className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-warning"
                                         placeholder="Cth: 12345/01/2024"
                                     />
                                 </div>
@@ -1079,7 +1079,7 @@ const FormModal = memo(function FormModal({
                                     <input
                                         type="text" value={form.hobby}
                                         onChange={(e) => setField('hobby', e.target.value)}
-                                        className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-amber-500"
+                                        className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-warning"
                                         placeholder="Cth: Membaca, Olahraga"
                                     />
                                 </div>
@@ -1088,7 +1088,7 @@ const FormModal = memo(function FormModal({
                                     <input
                                         type="text" value={form.aspiration}
                                         onChange={(e) => setField('aspiration', e.target.value)}
-                                        className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-amber-500"
+                                        className="w-full px-3 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-sm outline-none focus:border-warning"
                                         placeholder="Cth: Guru, Insinyur"
                                     />
                                 </div>
@@ -1151,7 +1151,7 @@ const FormModal = memo(function FormModal({
                                                         <button
                                                             type="button"
                                                             onClick={() => handleRemoveMeta(idx)}
-                                                            className="w-9 h-9 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10 transition-colors shrink-0"
+                                                            className="w-9 h-9 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:bg-danger/10 hover:text-danger transition-colors shrink-0"
                                                         >
                                                             <Trash2 className="w-4 h-4" />
                                                         </button>
@@ -1178,8 +1178,8 @@ const FormModal = memo(function FormModal({
                                 {/* Header + Completion Ring */}
                                 <div className="flex items-center justify-between relative z-10">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-                                            <Eye className="w-4 h-4 text-emerald-500" />
+                                        <div className="w-10 h-10 rounded-2xl bg-success/10 flex items-center justify-center border border-success/20">
+                                            <Eye className="w-4 h-4 text-success" />
                                         </div>
                                         <div>
                                             <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text)]">Review Konfirmasi</span>
@@ -1198,7 +1198,7 @@ const FormModal = memo(function FormModal({
                                                     <circle cx="20" cy="20" r={radius} fill="none" stroke="var(--color-border)" strokeWidth="3.5" />
                                                     <circle cx="20" cy="20" r={radius} fill="none" stroke={pct === 100 ? '#10b981' : '#6366f1'} strokeWidth="3.5" strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round" className="transition-all duration-1000" />
                                                 </svg>
-                                                <span className={`absolute inset-0 flex items-center justify-center text-xs font-bold ${pct === 100 ? 'text-emerald-500' : 'text-indigo-500'}`}>{pct}%</span>
+                                                <span className={`absolute inset-0 flex items-center justify-center text-xs font-bold ${pct === 100 ? 'text-success' : 'text-[var(--color-primary)]'}`}>{pct}%</span>
                                             </div>
                                         )
                                     })()}
@@ -1208,8 +1208,8 @@ const FormModal = memo(function FormModal({
                                     {/* Identitas Section */}
                                     <div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm">
                                         <div className="flex items-center gap-2 mb-3">
-                                            <IdCard className="w-4 h-4 text-indigo-500" />
-                                            <span className="text-xs font-bold uppercase tracking-wide text-indigo-500/80">Identitas Santri</span>
+                                            <IdCard className="w-4 h-4 text-[var(--color-primary)]" />
+                                            <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-primary)]/80">Identitas Santri</span>
                                         </div>
                                         <div className="grid grid-cols-2 gap-y-3 gap-x-4">
                                             <div>
@@ -1228,20 +1228,20 @@ const FormModal = memo(function FormModal({
                                                 <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Gender / Status</p>
                                                 <div className="flex items-center gap-1.5 mt-0.5">
                                                     {form.gender === 'L' ? (
-                                                        <div className="flex items-center gap-1.5 px-1.5 py-0.5 rounded-md bg-indigo-500/10 border border-indigo-500/20">
-                                                            <MarsIcon className="w-4 h-4 text-indigo-500" />
-                                                            <span className="text-xs font-bold text-indigo-500 uppercase tracking-tight">Putra</span>
+                                                        <div className="flex items-center gap-1.5 px-1.5 py-0.5 rounded-md bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20">
+                                                            <MarsIcon className="w-4 h-4 text-[var(--color-primary)]" />
+                                                            <span className="text-xs font-bold text-[var(--color-primary)] uppercase tracking-tight">Putra</span>
                                                         </div>
                                                     ) : form.gender === 'P' ? (
                                                         <div className="flex items-center gap-1.5 px-1.5 py-0.5 rounded-md bg-rose-500/10 border border-rose-500/20">
-                                                            <VenusIcon className="w-4 h-4 text-rose-500" />
-                                                            <span className="text-xs font-bold text-rose-500 uppercase tracking-tight">Putri</span>
+                                                            <VenusIcon className="w-4 h-4 text-danger" />
+                                                            <span className="text-xs font-bold text-danger uppercase tracking-tight">Putri</span>
                                                         </div>
                                                     ) : (
                                                         <span className="text-xs font-bold text-[var(--color-text)]">---</span>
                                                     )}
                                                     <span className="text-[var(--color-text-muted)] mx-0.5 opacity-30">·</span>
-                                                    <span className="text-emerald-500 text-xs font-bold uppercase tracking-wider">{form.status || '---'}</span>
+                                                    <span className="text-success text-xs font-bold uppercase tracking-wider">{form.status || '---'}</span>
                                                 </div>
                                             </div>
                                             <div>
@@ -1254,8 +1254,8 @@ const FormModal = memo(function FormModal({
                                     {/* Keluarga Section */}
                                     <div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm">
                                         <div className="flex items-center gap-2 mb-3">
-                                            <Users className="w-4 h-4 text-rose-500" />
-                                            <span className="text-xs font-bold uppercase tracking-wide text-rose-500/80">Keluarga & Kontak</span>
+                                            <Users className="w-4 h-4 text-danger" />
+                                            <span className="text-xs font-bold uppercase tracking-wide text-danger/80">Keluarga & Kontak</span>
                                         </div>
                                         <div className="grid grid-cols-2 gap-y-3 gap-x-4">
                                             <div>
@@ -1272,7 +1272,7 @@ const FormModal = memo(function FormModal({
                                             </div>
                                             <div>
                                                 <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tight opacity-60">Kontak WA</p>
-                                                <p className="text-xs font-bold text-emerald-500 flex items-center gap-1.5">
+                                                <p className="text-xs font-bold text-success flex items-center gap-1.5">
                                                     <WhatsAppIcon className="w-4 h-4" />
                                                     {form.phone || '---'}
                                                 </p>
@@ -1284,8 +1284,8 @@ const FormModal = memo(function FormModal({
                                         {/* Alamat Section */}
                                         <div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm">
                                             <div className="flex items-center gap-2 mb-3">
-                                                <MapPin className="w-4 h-4 text-emerald-500" />
-                                                <span className="text-xs font-bold uppercase tracking-wide text-emerald-500/80">Alamat</span>
+                                                <MapPin className="w-4 h-4 text-success" />
+                                                <span className="text-xs font-bold uppercase tracking-wide text-success/80">Alamat</span>
                                             </div>
                                             <div className="space-y-2.5">
                                                 <div>
@@ -1298,8 +1298,8 @@ const FormModal = memo(function FormModal({
                                         {/* Dokumen Section */}
                                         <div className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm">
                                             <div className="flex items-center gap-2 mb-3">
-                                                <FileText className="w-4 h-4 text-amber-500" />
-                                                <span className="text-xs font-bold uppercase tracking-wide text-amber-500/80">Dokumen</span>
+                                                <FileText className="w-4 h-4 text-warning" />
+                                                <span className="text-xs font-bold uppercase tracking-wide text-warning/80">Dokumen</span>
                                             </div>
                                             <div className="space-y-2.5">
                                                 <div>
@@ -1314,15 +1314,15 @@ const FormModal = memo(function FormModal({
                                 {/* Footer */}
                                 <div className="pt-4 border-t border-[var(--color-border)] flex items-center justify-between relative z-10">
                                     <div className="flex items-center gap-2.5">
-                                        <div className="w-6 h-6 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
-                                            <CircleCheck className="w-4 h-4 text-emerald-500" />
+                                        <div className="w-6 h-6 rounded-full bg-success/10 flex items-center justify-center shrink-0">
+                                            <CircleCheck className="w-4 h-4 text-success" />
                                         </div>
                                         <p className="text-xs text-[var(--color-text-muted)] italic leading-snug">Data valid & siap disimpan.</p>
                                     </div>
                                     <div className="flex -space-x-2">
                                         {[1, 2, 3].map(i => (
-                                            <div key={i} className="w-5 h-5 rounded-full border-2 border-[var(--color-surface)] bg-emerald-500/20 flex items-center justify-center">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                            <div key={i} className="w-5 h-5 rounded-full border-2 border-[var(--color-surface)] bg-success/20 flex items-center justify-center">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-success" />
                                             </div>
                                         ))}
                                     </div>

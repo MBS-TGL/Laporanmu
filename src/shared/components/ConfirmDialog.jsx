@@ -23,8 +23,8 @@ export default function ConfirmDialog({
     title,
     description,
     icon,
-    iconBg = 'bg-red-500/10',
-    iconColor = 'text-red-500',
+    iconBg = 'bg-danger/10',
+    iconColor = 'text-danger',
     size = 'sm',
     mobileVariant = 'bottom-sheet',
     confirmText = 'Konfirmasi',
@@ -52,7 +52,7 @@ export default function ConfirmDialog({
                         type="button"
                         onClick={onClose}
                         disabled={submitting}
-                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap transition-colors shrink-0 disabled:opacity-50"
+                        className="h-9 px-5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap transition-colors shrink-0 disabled:opacity-50"
                     >
                         {cancelText}
                     </button>
@@ -65,7 +65,7 @@ export default function ConfirmDialog({
                         disabled={submitting || confirmDisabled}
                         className={
                             confirmClassName ||
-                            'h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap shadow-lg transition-colors flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed'
+                            'h-9 px-6 rounded-lg bg-danger hover:bg-danger-dark text-white text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap shadow-sm transition-colors flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed'
                         }
                     >
                         {submitting ? (

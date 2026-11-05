@@ -5,7 +5,7 @@ import {
     ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, CheckCircle2,
     Calendar, ClipboardList, Table, LayoutList, Upload, Download, FileSpreadsheet, FileText,
     Keyboard, Eye, EyeOff, Archive, RotateCcw, Sliders, Trash2, Edit2, X, AlertCircle, FileEdit,
-    Shield, Gavel, Trophy, Info
+    Shield, Gavel, Trophy, Info, RefreshCw
 } from 'lucide-react'
 import { useAuth } from '@context/Auth'
 import { useFlag } from '@context/FeatureFlags'
@@ -22,6 +22,8 @@ import PageHeader from '@shared/components/PageHeader'
 import { StatCard, EmptyState } from '@shared/components/DataDisplay'
 import Modal from '@shared/components/Modal'
 import ConfirmDialog from '@shared/components/ConfirmDialog'
+import { ShortcutsModal } from '@shared/components'
+import { usePageShortcuts } from '@shared/hooks/usePageShortcuts'
 import FilterBar from '../components/FilterBar'
 import TimelineCard from '../components/TimelineCard'
 import TableRow from '../components/TableRow'
@@ -86,13 +88,10 @@ export default function BehaviorPage() {
         menuPos, setMenuPos,
 
         // UX & Dialog States
-        isShortcutOpen, setIsShortcutOpen,
         isPrivacyMode, setIsPrivacyMode,
         isHeaderMenuOpen, setIsHeaderMenuOpen,
         headerMenuRect, setHeaderMenuRect,
-        shortcutRect, setShortcutRect,
         headerMenuMounted, setHeaderMenuMounted,
-        shortcutMounted, setShortcutMounted,
 
         // Derived / Selectors
         totalPages,
@@ -106,9 +105,7 @@ export default function BehaviorPage() {
         searchInputRef,
         colMenuRef,
         importFileInputRef,
-        shortcutRef,
         headerMenuBtnRef,
-        shortcutBtnRef,
 
         // Handlers
         canInput,
@@ -176,6 +173,24 @@ export default function BehaviorPage() {
     }, [violationTypes])
 
     const [activeTab, setActiveTab] = useState('reports')
+
+    // ---- SHORTCUTS (binding + daftar modal dari satu deklarasi — usePageShortcuts) ----
+    // P/R/X hanya tercantum di daftar lama tanpa binding keyboard → dipertahankan display-only.
+    // Tab "rules" punya shortcut-nya sendiri (RulesTab) → palet halaman diblok di sana.
+    const sc = usePageShortcuts({
+        isBlocked: isModalOpen || isExportModalOpen || isImportModalOpen || isDeleteModalOpen || isBulkDeleteOpen || isDetailOpen || isHeaderMenuOpen || activeTab !== 'reports',
+        items: [
+            { section: tp('nav'), keys: ['Ctrl', 'K'], label: tp('shortcutSearch'), icon: Search, onSelect: () => searchInputRef.current?.focus() },
+            { section: tp('nav'), keys: ['Esc'], label: tp('shortcutEsc'), icon: X, onSelect: () => { setSearchQuery(''); setSelectedIds([]); setIsModalOpen(false); setIsExportModalOpen(false); setIsImportModalOpen(false); setIsDeleteModalOpen(false); setIsBulkDeleteOpen(false); setIsDetailOpen(false); setDetailItem(null) } },
+            { section: tp('actions'), keys: ['N'], label: tp('shortcutAdd'), icon: Plus, onSelect: () => setIsModalOpen(true) },
+            { section: tp('actions'), keys: ['Ctrl', 'E'], label: tp('shortcutExport'), icon: Download, onSelect: () => setIsExportModalOpen(true) },
+            { section: tp('actions'), keys: ['Ctrl', 'I'], label: tp('shortcutImport'), icon: Upload, onSelect: () => setIsImportModalOpen(true) },
+            { section: tp('views'), keys: ['P'], label: tp('shortcutPrivacy'), icon: EyeOff },
+            { section: tp('views'), keys: ['R'], label: tp('shortcutRefresh'), icon: RefreshCw },
+            { section: tp('views'), keys: ['X'], label: tp('shortcutReset'), icon: RotateCcw },
+            { section: tp('views'), keys: ['?'], label: tp('shortcutShow'), icon: Keyboard },
+        ],
+    })
 
     const [hasOpenedForm, setHasOpenedForm] = useState(false)
     const [hasOpenedDetail, setHasOpenedDetail] = useState(false)
@@ -373,65 +388,23 @@ export default function BehaviorPage() {
                             </div>
 
                             {/* Keyboard Shortcuts Button Standalone */}
-                            <div className="relative hidden sm:block">
-                                <button
-                                    ref={shortcutBtnRef}
-                                    onClick={() => { if (!isShortcutOpen) setShortcutRect(shortcutBtnRef.current?.getBoundingClientRect()); setIsShortcutOpen(v => !v) }}
-                                    className={`h-9 w-9 rounded-lg border flex items-center justify-center transition-all ${isShortcutOpen ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
-                                    title={tp('shortcutTitle')}
-                                    aria-label={tp('shortcutTitle')}
-                                >
-                                    <Keyboard className="w-4 h-4 text-sm" />
-                                </button>
+                            <button
+                                onClick={sc.toggle}
+                                className={`hidden sm:flex h-9 w-9 rounded-lg border items-center justify-center transition-all active:scale-95 ${sc.isOpen
+                                    ? 'bg-primary/10 border-primary/30 text-primary'
+                                    : 'bg-surface-alt border-border text-text-muted hover:text-text'
+                                    }`}
+                                title={tp('shortcutTitle')}
+                                aria-label={tp('shortcutTitle')}
+                            >
+                                <Keyboard className="w-4 h-4" />
+                            </button>
 
-                                {/* Portaled Keyboard Shortcuts Dropdown */}
-                                {shortcutMounted && shortcutRect && createPortal(
-                                    <>
-                                        <div className="fixed inset-0 z-[9990] bg-black/[0.08]" onClick={() => setIsShortcutOpen(false)} />
-                                        <div
-                                            className={`fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden text-left animate-in fade-in zoom-in-95 duration-200
-                                            ${isShortcutOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2'}`}
-                                            style={{
-                                                top: shortcutRect.bottom + 8,
-                                                left: Math.max(10, shortcutRect.right - 288)
-                                            }}
-                                        >
-                                            <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
-                                                <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text)]">{tp('shortcuts')}</p>
-                                                <span className="text-xs text-[var(--color-text-muted)] font-medium">{tp('shortcutToggle')}</span>
-                                            </div>
-                                            <div className="p-3 space-y-0.5">
-                                                {[
-                                                    { section: tp('nav') },
-                                                    { keys: ['Ctrl', 'K'], label: tp('shortcutSearch') },
-                                                    { keys: ['Esc'], label: tp('shortcutEsc') },
-                                                    { section: tp('actions') },
-                                                    { keys: ['N'], label: tp('shortcutAdd') },
-                                                    { keys: ['Ctrl', 'E'], label: tp('shortcutExport') },
-                                                    { keys: ['Ctrl', 'I'], label: tp('shortcutImport') },
-                                                    { section: tp('views') },
-                                                    { keys: ['P'], label: tp('shortcutPrivacy') },
-                                                    { keys: ['R'], label: tp('shortcutRefresh') },
-                                                    { keys: ['X'], label: tp('shortcutReset') },
-                                                    { keys: ['?'], label: tp('shortcutShow') },
-                                                ].map((item, i) => item.section ? (
-                                                    <p key={i} className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
-                                                ) : (
-                                                    <div key={i} className="flex items-center justify-between px-1 py-1 rounded-lg hover:bg-[var(--color-surface-alt)] transition-all">
-                                                        <span className="text-xs font-medium text-[var(--color-text)]">{item.label}</span>
-                                                        <div className="flex items-center gap-1">
-                                                            {item.keys.map((k, ki) => (
-                                                                <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] font-mono">{k}</span>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </>,
-                                    getPortalContainer('portal-shortcut-menu')
-                                )}
-                            </div>
+                            <ShortcutsModal
+                                isOpen={sc.isOpen}
+                                onClose={sc.close}
+                                sections={sc.sections}
+                            />
 
                             {/* Privasi Button Standalone */}
                             <button

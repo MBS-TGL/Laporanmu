@@ -24,23 +24,18 @@ import {
     AuditTimeline,
     StatsCarousel,
     StatCard,
-    EmptyState
+    EmptyState,
+    ShortcutsModal
 } from '@shared/components'
 import FormModal from '@features/academic-years/components/FormModal'
 import { ArchiveModal, DeactivateModal } from '@features/academic-years/components/YearModals'
 import YearArchiveModal from '@features/academic-years/components/ArchiveModal'
+import { SYSTEM_COLS, IMPORT_CONFIG, EXPORT_CONFIG } from '@features/academic-years/components/importExportConfig'
+import { usePageShortcuts } from '@shared/hooks/usePageShortcuts'
 
 
-const LazyExportModal = React.lazy(() => import('@features/academic-years/components/ExportModal'))
-const LazyImportModal = React.lazy(() => import('@features/academic-years/components/ImportModal'))
-
-const SYSTEM_COLS = [
-    { key: 'name', label: 'Tahun Pelajaran (e.g. 2024/2025)' },
-    { key: 'semester', label: 'Semester (Ganjil / Genap)' },
-    { key: 'start_date', label: 'Tanggal Mulai (YYYY-MM-DD)' },
-    { key: 'end_date', label: 'Tanggal Selesai (YYYY-MM-DD)' },
-    { key: 'curriculum', label: 'Kurikulum (e.g. Merdeka)' },
-]
+const LazyExportModal = React.lazy(() => import('@shared/components/import-export/ExportDataModal'))
+const LazyImportModal = React.lazy(() => import('@shared/components/import-export/ImportDataModal'))
 
 const LS_COLS = 'academic_years_columns'
 const LS_PAGE_SIZE = 'academic_years_page_size'
@@ -119,7 +114,7 @@ function TimelineView({ years, onEdit, onHistory, onSetActive, onDuplicate, onDe
             </div>
 
             <div className="relative overflow-x-auto pb-8 pt-12 no-scrollbar select-none flex justify-start lg:justify-center" style={{ minHeight: '400px' }}>
-                
+
                 {/* ── Premium Ambient Background ── */}
                 <div className="absolute inset-0 pointer-events-none opacity-[0.05] dark:opacity-[0.08]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, var(--color-text) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10rem] md:text-[16rem] font-bold font-heading tracking-wide text-[var(--color-text)] opacity-5 dark:opacity-10 pointer-events-none whitespace-nowrap select-none flex items-center justify-center">
@@ -226,7 +221,7 @@ function TimelineView({ years, onEdit, onHistory, onSetActive, onDuplicate, onDe
                                                     Aktifkan Periode
                                                 </button>
                                             )}
-                                            
+
                                             {/* Secondary Actions (Icon Row) */}
                                             <div className="flex items-center justify-center gap-2 w-full">
                                                 {canEdit && (
@@ -321,14 +316,10 @@ export default function YearsPage() {
     const [mobileView, setMobileView] = useState(() => {
         try { return localStorage.getItem('ay_mobile_view') || 'card' } catch { return 'card' }
     }) // 'card' | 'list'
-    const [isShortcutOpen, setIsShortcutOpen] = useState(false)
     const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false)
     const headerMenuRef = useRef(null)
-    const shortcutRef = useRef(null)
     const headerMenuBtnRef = useRef(null)
-    const shortcutBtnRef = useRef(null)
     const [headerMenuRect, setHeaderMenuRect] = useState(null)
-    const [shortcutRect, setShortcutRect] = useState(null)
     // Deferred unmount: keeps portal in DOM for 200ms after close so exit animation can play
     const [headerMenuMounted, setHeaderMenuMounted] = useState(false)
     const searchInputRef = useRef(null)
@@ -441,39 +432,15 @@ export default function YearsPage() {
 
     // Sticky positioning - keep portaled dropdowns anchored on scroll/resize
     useEffect(() => {
-        if (!isHeaderMenuOpen && !isShortcutOpen) return
+        if (!isHeaderMenuOpen) return
         const update = () => {
             if (isHeaderMenuOpen && headerMenuBtnRef.current) setHeaderMenuRect(headerMenuBtnRef.current.getBoundingClientRect())
-            if (isShortcutOpen && shortcutBtnRef.current) setShortcutRect(shortcutBtnRef.current.getBoundingClientRect())
         }
         update()
         window.addEventListener('scroll', update, true)
         window.addEventListener('resize', update)
         return () => { window.removeEventListener('scroll', update, true); window.removeEventListener('resize', update) }
-    }, [isHeaderMenuOpen, isShortcutOpen])
-
-    useEffect(() => {
-        const handler = (e) => {
-            if (isModalOpen || isDeleteModalOpen) return
-            const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)
-
-            if (e.key === 'Escape') {
-                if (isTyping) { document.activeElement.blur() }
-                else { setIsColMenuOpen(false); setIsHeaderMenuOpen(false); setIsShortcutOpen(false); setSearchQuery(''); setSelectedIds([]) }
-                return
-            }
-
-            if (isTyping) return
-
-            if (e.ctrlKey && e.key === 'k') { e.preventDefault(); searchInputRef.current?.focus() }
-            else if (e.key === 'n') { e.preventDefault(); handleAdd() }
-            else if (e.key === 'e' || e.key === 'E') { if (selectedIds.length === 1) { const item = years.find(y => y.id === selectedIds[0]); if (item) handleEdit(item) } }
-            else if (e.key === 'x' || e.key === 'X') { resetAllFilters() }
-            else if (e.key === '?') { setIsShortcutOpen(v => !v) }
-        }
-        document.addEventListener('keydown', handler)
-        return () => document.removeEventListener('keydown', handler)
-    }, [isModalOpen, isDeleteModalOpen, selectedIds, years])
+    }, [isHeaderMenuOpen])
 
     useEffect(() => {
         localStorage.setItem(LS_COLS, JSON.stringify(visibleCols))
@@ -918,13 +885,6 @@ export default function YearsPage() {
         }
     }
 
-    const handleFileChange = async (e) => {
-        const file = e.target.files?.[0]
-        if (!file) return
-        await processImportFile(file)
-        e.target.value = ''
-    }
-
     const processImportFile = async file => {
         if (!file) return
         setImportFileName(file.name)
@@ -991,7 +951,7 @@ export default function YearsPage() {
                 if (!row.semester) rowIssues.push('Semester tidak boleh kosong')
                 if (!row.start_date) rowIssues.push('Tanggal mulai tidak boleh kosong')
                 if (!row.end_date) rowIssues.push('Tanggal selesai tidak boleh kosong')
-                
+
                 if (row.semester && !['Ganjil', 'Genap'].includes(row.semester)) {
                     rowIssues.push('Semester harus Ganjil atau Genap')
                 }
@@ -1124,6 +1084,21 @@ export default function YearsPage() {
         setSelectedIds([])
     }
 
+    // ---- SHORTCUTS (binding + daftar modal dari satu deklarasi — usePageShortcuts) ----
+    // Esc lama: tutup menu kolom + header menu, clear search & seleksi (bagian tutup
+    // palet shortcut kini milik hook; modal form/delete tetap di-skip seperti gate lama).
+    const sc = usePageShortcuts({
+        isBlocked: isModalOpen || isDeleteModalOpen,
+        items: [
+            { section: 'Navigasi', keys: ['Ctrl', 'K'], label: 'Fokus ke search', icon: Search, onSelect: () => searchInputRef.current?.focus() },
+            { section: 'Navigasi', keys: ['Esc'], label: 'Tutup / clear / deselect', icon: X, onSelect: () => { if (isModalOpen || isDeleteModalOpen) return; setIsColMenuOpen(false); setIsHeaderMenuOpen(false); setSearchQuery(''); setSelectedIds([]) } },
+            { section: 'Aksi', keys: ['N'], label: 'Tambah periode baru', icon: Plus, onSelect: handleAdd },
+            { section: 'Aksi', keys: ['E'], label: 'Edit periode terpilih', icon: SquarePen, when: selectedIds.length === 1, onSelect: () => { const item = years.find(y => y.id === selectedIds[0]); if (item) handleEdit(item) } },
+            { section: 'Aksi', keys: ['X'], label: 'Reset semua filter', icon: RotateCcw, onSelect: resetAllFilters },
+            { section: 'Tampilan', keys: ['?'], label: 'Tampilkan shortcut ini', icon: Keyboard },
+        ],
+    })
+
     // filtering logic
     const filtered = useMemo(() => {
         return years.filter(y => {
@@ -1235,7 +1210,7 @@ export default function YearsPage() {
                                             <FileInput className="w-4 h-4" />
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-xs font-bold leading-tight">Import CSV / Excel</p>
+                                            <p className="text-xs font-bold leading-tight">Import Excel</p>
                                             <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Unggah data periode masal dari file Excel/CSV</p>
                                         </div>
                                     </button>
@@ -1264,53 +1239,22 @@ export default function YearsPage() {
                             getPortalContainer('portal-academic-header-menu')
                         )}
 
-                        <input
-                            type="file"
-                            ref={importFileInputRef}
-                            onChange={handleFileChange}
-                            className="hidden"
-                            accept=".csv,.xlsx"
-                        />
-
                         {/* Keyboard Shortcuts Button - hidden on mobile */}
-                        <button onClick={() => { if (!isShortcutOpen) setShortcutRect(shortcutBtnRef.current?.getBoundingClientRect()); setIsShortcutOpen(v => !v) }}
-                            ref={shortcutBtnRef}
+                        <button onClick={sc.toggle}
                             className={`hidden sm:flex h-9 w-9 rounded-lg border items-center justify-center transition-all active:scale-95
-                                ${isShortcutOpen
-                                    ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]'
-                                    : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+                                ${sc.isOpen
+                                    ? 'bg-primary/10 border-primary/30 text-primary'
+                                    : 'bg-surface-alt border-border text-text-muted hover:text-text'
                                 }`}
                             title="Keyboard Shortcuts (?)">
                             <Keyboard className="w-4 h-4" />
                         </button>
 
-                        {/* Portaled Keyboard Shortcuts Dropdown */}
-                        {isShortcutOpen && shortcutRect && createPortal(
-                            <>
-                                <div className="fixed inset-0 z-[9990] bg-black/5" onClick={() => setIsShortcutOpen(false)} />
-                                <div className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden text-left animate-in fade-in zoom-in-95 duration-200"
-                                    style={{
-                                        top: shortcutRect.bottom + 8,
-                                        left: Math.max(10, shortcutRect.right - 288)
-                                    }}>
-                                    <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between bg-[var(--color-surface-alt)]/50">
-                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Keyboard Shortcuts</p>
-                                        <span className="text-xs text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
-                                    </div>
-                                    <div className="p-3 space-y-0.5">
-                                        {[{ section: 'Navigasi' }, { keys: ['Ctrl', 'K'], label: 'Fokus ke search' }, { section: 'Aksi' }, { keys: ['N'], label: 'Tambah periode baru' }, { keys: ['X'], label: 'Reset semua filter' }, { keys: ['?'], label: 'Tampilkan shortcut ini' }].map((item, i) => item.section ? (
-                                            <p key={i} className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
-                                        ) : (
-                                            <div key={i} className="flex items-center justify-between px-1 py-1 rounded-lg hover:bg-[var(--color-surface-alt)] transition-all">
-                                                <span className="text-xs font-semibold text-[var(--color-text)]">{item.label}</span>
-                                                <div className="flex items-center gap-1">{item.keys.map((k, ki) => <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] font-mono">{k}</span>)}</div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </>,
-                            getPortalContainer('portal-academic-shortcut-menu')
-                        )}
+                        <ShortcutsModal
+                            isOpen={sc.isOpen}
+                            onClose={sc.close}
+                            sections={sc.sections}
+                        />
 
                         {/* Privasi toggle */}
                         <button onClick={() => {
@@ -1485,7 +1429,7 @@ export default function YearsPage() {
                                         </select>
                                     </div>
                                 </div>
-                                
+
                                 {/* Secondary Grid: Actions */}
                                 <div className="space-y-1.5 flex flex-col">
                                     <label className="block text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1.5 opacity-0 hidden xl:block">Aksi</label>
@@ -1764,7 +1708,7 @@ export default function YearsPage() {
                         <LazyExportModal
                             isOpen={isExportModalOpen}
                             onClose={() => { if (exporting) return; setIsExportModalOpen(false) }}
-                            years={filtered}
+                            items={filtered}
                             selectedIds={selectedIds}
                             exportScope={exportScope}
                             setExportScope={setExportScope}
@@ -1774,7 +1718,7 @@ export default function YearsPage() {
                             handleExportCSV={handleExportCSV}
                             handleExportExcel={handleExportExcel}
                             handleExportPDF={handleExportPDF}
-                            addToast={addToast}
+                            config={EXPORT_CONFIG}
                         />
                     )}
                     {isImportModalOpen && (
@@ -1794,13 +1738,12 @@ export default function YearsPage() {
                             setImportStep={setImportStep}
                             importPreview={importPreview}
                             importFileName={importFileName}
-                            importFileInputRef={importFileInputRef}
+                            fileInputRef={importFileInputRef}
                             importDragOver={importDragOver}
                             setImportDragOver={setImportDragOver}
                             processImportFile={processImportFile}
                             handleDownloadTemplate={handleDownloadTemplate}
                             importFileHeaders={importFileHeaders}
-                            SYSTEM_COLS={SYSTEM_COLS}
                             importColumnMapping={importColumnMapping}
                             setImportColumnMapping={setImportColumnMapping}
                             importRawData={importRawData}
@@ -1812,7 +1755,6 @@ export default function YearsPage() {
                             setImportValidationOpen={setImportValidationOpen}
                             importProgress={importProgress}
                             handleCommitImport={handleCommitImport}
-                            handleImportClick={handleImportClick}
                             hasImportBlockingErrors={hasImportBlockingErrors}
                             importReadyRows={importReadyRows}
                             handleImportCellEdit={handleImportCellEdit}
@@ -1821,7 +1763,7 @@ export default function YearsPage() {
                             handleRemoveImportRow={handleRemoveImportRow}
                             importSkipDupes={importSkipDupes}
                             setImportSkipDupes={setImportSkipDupes}
-                            handleBulkFix={handleBulkFix}
+                            config={IMPORT_CONFIG}
                         />
                     )}
                 </React.Suspense>

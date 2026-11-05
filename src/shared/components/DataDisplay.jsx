@@ -8,20 +8,20 @@ const renderIcon = (icon, className = '') => {
 
     // Treat as Lucide React or standard React functional component
     const IconComp = icon;
-    return <IconComp className={className} className="w-4 h-4" />;
+    return <IconComp className={className || 'w-4 h-4'} />;
 };
 
-export function StatCard({ 
-    icon, 
-    label, 
-    value, 
+export function StatCard({
+    icon,
+    label,
+    value,
     subValue,
     suffix,
-    trend, 
-    trendUp, 
+    trend,
+    trendUp,
     loading = false,
     borderColor,      // Tailwind color name, e.g. 'indigo-500' or 'primary'
-    iconBg, 
+    iconBg,
     color = 'primary',
     isActive = false, // shows colored ring + border to indicate selected state
     progressValue,    // 0-100, renders a thin fill bar at the bottom of card
@@ -74,9 +74,9 @@ export function StatCard({
     const TrendArrow = trendUp === true ? '↑' : trendUp === false ? '↓' : null
 
     return (
-        <div 
-            onClick={onClick} 
-            title={title} 
+        <div
+            onClick={onClick}
+            title={title}
             className={`shrink-0 snap-center w-[210px] xs:w-[230px] sm:w-auto bg-surface group relative overflow-hidden rounded-xl border-t ${finalBorderTop} border border-border p-4 sm:p-5 flex items-center gap-4 hover:border-primary/30 hover:shadow-md transition-[border-color,box-shadow] duration-200 min-h-[88px] ${onClick ? 'cursor-pointer active:scale-95' : ''} ${activeRing} ${className}`}
         >
             {/* Status Pulse Dot — top-right corner */}
@@ -88,7 +88,7 @@ export function StatCard({
             <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm ${finalBg} group-hover:scale-105 transition-transform duration-200`}>
                 {renderIcon(icon, 'w-5 h-5')}
             </div>
-            
+
             {/* Content */}
             <div className="min-w-0 relative z-10 flex-1 text-start">
                 {/* Label */}

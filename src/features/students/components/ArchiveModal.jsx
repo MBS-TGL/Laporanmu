@@ -88,15 +88,15 @@ export default function ArchiveModal({
             title="Arsip Siswa"
             description="Kelola dan pulihkan data siswa yang telah dihapus sementara."
             icon={Archive}
-            iconBg="bg-amber-500/10"
-            iconColor="text-amber-600"
+            iconBg="bg-warning/10"
+            iconColor="text-warning-dark"
             size="lg"
             mobileVariant="bottom-sheet"
             footer={
                 <div className="flex items-center w-full">
                     <button
                         onClick={onClose}
-                        className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center"
+                        className="h-9 px-5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap transition-colors shrink-0"
                     >
                         Tutup
                     </button>
@@ -110,20 +110,20 @@ export default function ArchiveModal({
                 <div
                     className={`absolute inset-0 z-20 bg-[var(--color-surface)] flex flex-col items-center justify-center gap-4 p-6 rounded-xl transition-all duration-300 ease-out ${deleteTarget ? 'opacity-100 visible scale-100' : 'opacity-0 invisible scale-95 pointer-events-none'}`}
                 >
-                    <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
-                        <TriangleAlert className="w-6 h-6 text-red-500" />
+                    <div className="w-14 h-14 rounded-2xl bg-danger/10 border border-danger/20 flex items-center justify-center">
+                        <TriangleAlert className="w-6 h-6 text-danger" />
                     </div>
                     <div className="text-center max-w-xs">
                         <p className="text-sm font-bold text-[var(--color-text)] mb-1">Hapus Permanen?</p>
                         <p className="text-xs font-medium text-[var(--color-text-muted)] leading-relaxed">
-                            Data siswa <b className="text-red-500">{deleteTarget?.name}</b> beserta semua relasi (poin, absen, histori) akan dihapus secara permanen. Tindakan ini <b>tidak dapat dibatalkan</b>.
+                            Data siswa <b className="text-danger">{deleteTarget?.name}</b> beserta semua relasi (poin, absen, histori) akan dihapus secara permanen. Tindakan ini <b>tidak dapat dibatalkan</b>.
                         </p>
                     </div>
                     <div className="flex items-center w-full max-w-xs gap-3 mt-2">
                         <button
                             onClick={() => setDeleteTarget(null)}
                             disabled={deleting}
-                            className="h-10 px-5 rounded-xl bg-[var(--color-surface-alt)] font-bold text-xs uppercase tracking-wide text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors border border-[var(--color-border)] disabled:opacity-50 shrink-0"
+                            className="h-9 px-5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap transition-colors disabled:opacity-50 shrink-0"
                         >
                             Batal
                         </button>
@@ -131,7 +131,7 @@ export default function ArchiveModal({
                         <button
                             onClick={confirmPermanentDelete}
                             disabled={deleting}
-                            className="h-10 px-5 rounded-xl bg-red-500 hover:brightness-110 text-white text-xs font-bold uppercase tracking-wide transition-all shadow-lg disabled:opacity-50 flex items-center justify-center gap-2 shrink-0"
+                            className="h-9 px-5 rounded-lg bg-danger hover:bg-danger-dark text-white text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap shadow-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 shrink-0"
                         >
                             {deleting ? <><LoaderCircle className="w-4 h-4 animate-spin" /> Menghapus...</> : <><Trash2 className="w-4 h-4" /> Hapus Permanen</>}
                         </button>
@@ -139,10 +139,10 @@ export default function ArchiveModal({
                 </div>
 
                 {/* ====== MAIN CONTENT ====== */}
-                <div className="p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20 flex items-center gap-3">
-                    <Archive className="w-5 h-5 text-amber-600 shrink-0" />
+                <div className="p-2.5 bg-warning/10 rounded-xl border border-warning/20 flex items-center gap-3">
+                    <Archive className="w-5 h-5 text-warning-dark shrink-0" />
                     <div>
-                        <p className="text-xs font-bold text-amber-700 dark:text-amber-400">{archivedStudents.length} siswa di arsip</p>
+                        <p className="text-xs font-bold text-warning-dark dark:text-amber-400">{archivedStudents.length} siswa di arsip</p>
                         <p className="text-xs text-[var(--color-text-muted)] font-medium">Pulihkan untuk mengembalikan ke daftar aktif, atau hapus permanen.</p>
                     </div>
                 </div>
@@ -190,14 +190,14 @@ export default function ArchiveModal({
                                                     <button
                                                         onClick={() => handleRestoreStudent(s)}
                                                         disabled={restoring}
-                                                        className="h-7 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500 hover:text-white border border-emerald-500/20 text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1 disabled:opacity-50"
+                                                        className="h-7 px-2.5 rounded-lg bg-success/10 text-success hover:bg-success hover:text-white border border-success/20 text-xs font-bold uppercase tracking-wide transition-colors flex items-center gap-1 disabled:opacity-50"
                                                     >
                                                         <RotateCcw className="w-4 h-4" />
                                                         Pulihkan
                                                     </button>
                                                     <button
                                                         onClick={() => setDeleteTarget(s)}
-                                                        className="h-7 px-2.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1"
+                                                        className="h-7 px-2.5 rounded-lg bg-danger/10 text-danger hover:bg-danger hover:text-white border border-danger/20 text-xs font-bold uppercase tracking-wide transition-colors flex items-center gap-1"
                                                     >
                                                         <Trash2 className="w-4 h-4" />
                                                         Hapus

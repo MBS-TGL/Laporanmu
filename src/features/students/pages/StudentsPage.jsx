@@ -3,11 +3,12 @@ import { useState, useRef, useEffect, useCallback, memo, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createPortal } from 'react-dom'
 import { createRoot } from 'react-dom/client'
-import { Pencil, RefreshCw, TrendingUp, TrendingDown, CheckCheck, Archive, ArrowDownAZ, ArrowUpNarrowWide, Briefcase, Camera, ChartPie, Check, ChevronLeft, ChevronRight, CircleAlert, CircleCheck, Crown, DoorOpen, Download, Eye, EyeOff, FileInput, FileOutput, FileText, GraduationCap, Image, Info, Keyboard, Link, LoaderCircle, PenTool, Plus, Printer, Rocket, RotateCcw, School, Search, Send, ShieldHalf, SlidersHorizontal, SquareCheck, Table, TableProperties, Tags, Trash2, TriangleAlert, Trophy, Users, X, Zap } from 'lucide-react'
+import { Camera, FileInput, FileOutput, Link as LinkIcon, Pencil, RefreshCw, TrendingUp, TrendingDown, CheckCheck, Archive, ArrowDownAZ, ArrowUpNarrowWide, Briefcase, ChartPie, Check, ChevronLeft, ChevronRight, CircleAlert, CircleCheck, Crown, DoorOpen, Download, Eye, EyeOff, FileText, GraduationCap, Image, Info, Keyboard, LoaderCircle, PenTool, Plus, Printer, Rocket, RotateCcw, School, Search, Send, ShieldHalf, SlidersHorizontal, SquareCheck, Table, TableProperties, Tags, Trash2, TriangleAlert, Trophy, Users, X, Zap } from 'lucide-react'
 import { LIST_KAMAR } from '@utils/reports/raportConstants'
 
 import DashboardLayout from '@core/layouts/DashboardLayout'
-import { Breadcrumb, PageHeader, Modal, RichSelect, Button, EmptyState, Pagination, MarsIcon, VenusIcon, WhatsAppIcon } from '@shared/components'
+import { Breadcrumb, PageHeader, Modal, RichSelect, Button, EmptyState, Pagination, MarsIcon, VenusIcon, WhatsAppIcon, ShortcutsModal } from '@shared/components'
+import { usePageShortcuts } from '@shared/hooks/usePageShortcuts'
 import { useToast, useFlag, useLanguage } from '@context'
 import { supabase } from '@lib/supabase'
 import mbsLogo from '@assets/images/logos/logo-mbs.png'
@@ -28,12 +29,14 @@ import { MobileListSkeleton, MobileCardSkeleton } from '@shared/components/Skele
 // Ini mencegah backdrop modal mencover bottom nav sehingga tap nav tetap berfungsi.
 
 import ArchiveModal from '@features/students/components/ArchiveModal'
+import { buildImportConfig, buildExportConfig } from '@features/students/components/importExportConfig'
 import BulkPhoto from '@features/students/components/BulkPhoto'
 import ResetPoints from '@features/students/components/ResetPoints'
 import GSheetsModal from '@features/students/components/GSheetsModal'
 import FormModal from '@features/students/components/FormModal'
 import InlineAdd from '@features/students/components/InlineAdd'
 import { StudentRow, StudentMobileCard, StudentMobileListRow, StudentSkeletonRow, StudentSkeletonCard } from '@features/students/components/StudentRow'
+import { Kbd } from '@shared/components/ShortcutsModal'
 
 const LazyQRCodeCanvas = React.lazy(() =>
     import('qrcode.react').then((m) => ({ default: m.QRCodeCanvas }))
@@ -46,10 +49,10 @@ const LazyProfileModal = React.lazy(() =>
     import('@features/students/components/ProfileModal')
 )
 const LazyExportModal = React.lazy(() =>
-    import('@features/students/components/ExportModal')
+    import('@shared/components/import-export/ExportDataModal')
 )
 const LazyImportModal = React.lazy(() =>
-    import('@features/students/components/ImportModal')
+    import('@shared/components/import-export/ImportDataModal')
 )
 const LazyTagModal = React.lazy(() =>
     import('@features/students/components/TagModal')
@@ -59,15 +62,6 @@ const LazyTagModal = React.lazy(() =>
 
 
 
-function getPortalContainer(id) {
-    let el = document.getElementById(id);
-    if (!el) {
-        el = document.createElement('div');
-        el.id = id;
-        document.body.appendChild(el);
-    }
-    return el;
-}
 // ── Isolated Search Input ────────────────────────────────────────────────────
 // State ketikan HARUS di komponen terpisah supaya keystroke tidak
 // re-render seluruh StudentsPage (3000+ baris)
@@ -99,7 +93,7 @@ const DebouncedSearchInput = memo(({ searchQuery, onSearch, inputRef, isLoading 
                 type="text"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-                placeholder="Cari nama atau NISN…  ( Ctrl K )"
+                placeholder="Cari ..."
                 className="w-full h-9 pl-9 pr-3 rounded-lg border border-border bg-surface text-sm outline-none focus:border-primary transition-all placeholder:text-text-muted"
             />
         </div>
@@ -321,9 +315,316 @@ const STATUS_TABS = [
     { key: 'keluar', label: 'Keluar' },
 ]
 
+// ═════════════════════════════════════════════════════════════════════════════
+// ActionMenu — dropdown aksi bergrup (dikendalikan lewat data / config)
+// ═════════════════════════════════════════════════════════════════════════════
+const MENU_WIDTH = 336 // px — satu sumber kebenaran untuk lebar & posisi
+
+/** Ambil (atau buat) container portal berdasarkan id. */
+function getPortalContainer(id) {
+    let el = document.getElementById(id)
+    if (!el) {
+        el = document.createElement('div')
+        el.id = id
+        document.body.appendChild(el)
+    }
+    return el
+}
+
+/**
+ * Dropdown aksi bergrup (ala menu Vercel / GitHub) — dikendalikan lewat data.
+ *
+ * @param {boolean} mounted        menu ada di DOM (untuk animasi keluar)
+ * @param {boolean} isOpen         menu tampil
+ * @param {DOMRect} rect           getBoundingClientRect() tombol pemicu
+ * @param {Function} onClose
+ * @param {string} [portalId]     id container portal (dibuat otomatis kalau belum ada)
+ * @param {React.RefObject} [triggerRef]  fokus dikembalikan ke sini saat menu ditutup
+ * @param {string} [label]         aria-label menu
+ * @param {Array<{
+ *   title: string,
+ *   items: Array<{
+ *     id: string,
+ *     label: string,
+ *     description?: string,
+ *     icon: React.ComponentType<{ className?: string }>,
+ *     onSelect: Function,
+ *     show?: boolean,              // default true
+ *     disabled?: boolean,
+ *     disabledReason?: string,     // tampil sebagai tooltip saat disabled
+ *     tone?: 'default' | 'danger',
+ *     shortcut?: string[],         // hint, contoh ['Ctrl', 'E'] (desktop saja)
+ *   }>
+ * }>} sections
+ */
+function ActionMenu({
+    mounted,
+    isOpen,
+    rect,
+    onClose,
+    portalId = 'portal-action-menu',
+    triggerRef,
+    label = 'Menu aksi',
+    sections = [],
+}) {
+    const menuRef = useRef(null)
+
+    /* Fokus ke item pertama saat dibuka; kembalikan ke tombol saat ditutup */
+    useEffect(() => {
+        if (!isOpen) return
+        const first = menuRef.current?.querySelector('[role="menuitem"]:not([aria-disabled="true"])')
+        first?.focus()
+        const trigger = triggerRef?.current
+        return () => trigger?.focus?.()
+    }, [isOpen, triggerRef])
+
+    if (!mounted || !rect) return null
+
+    const visible = sections
+        .map(s => ({ ...s, items: s.items.filter(i => i.show !== false) }))
+        .filter(s => s.items.length > 0)
+
+    const handleKeyDown = e => {
+        const items = [...menuRef.current.querySelectorAll('[role="menuitem"]:not([aria-disabled="true"])')]
+        const i = items.indexOf(document.activeElement)
+        switch (e.key) {
+            case 'ArrowDown': e.preventDefault(); items[(i + 1) % items.length]?.focus(); break
+            case 'ArrowUp': e.preventDefault(); items[(i - 1 + items.length) % items.length]?.focus(); break
+            case 'Home': e.preventDefault(); items[0]?.focus(); break
+            case 'End': e.preventDefault(); items[items.length - 1]?.focus(); break
+            case 'Escape': e.preventDefault(); e.stopPropagation(); onClose(); break
+            case 'Tab': onClose(); break
+            default:
+        }
+    }
+
+    const handleSelect = item => {
+        if (item.disabled) return
+        onClose()
+        item.onSelect()
+    }
+
+    return createPortal(
+        <>
+            <div
+                className={`fixed inset-0 z-[9990] bg-black/5 transition-opacity duration-200 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+                onClick={onClose}
+            />
+            <div
+                ref={menuRef}
+                role="menu"
+                aria-label={label}
+                onKeyDown={handleKeyDown}
+                className={`fixed z-[9991] rounded-2xl border border-border bg-surface shadow-xl p-2 origin-top-right transition-all duration-200 ease-out
+                ${isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'}`}
+                style={{
+                    width: MENU_WIDTH,
+                    maxWidth: 'calc(100vw - 1.25rem)',
+                    top: rect.bottom + 8,
+                    // Anchor kanan menu ke kanan tombol; di layar sempit clamp ke tepi viewport
+                    left: Math.max(10, Math.min(rect.right - MENU_WIDTH, window.innerWidth - MENU_WIDTH - 10)),
+                }}
+            >
+                {visible.map((section, si) => (
+                    <div key={section.title} role="group" aria-label={section.title}>
+                        {si > 0 && <div className="h-px bg-border my-1.5 mx-2" role="separator" />}
+                        <p className="px-3 pt-2 pb-1.5 text-xs font-semibold uppercase tracking-wide text-text-muted">
+                            {section.title}
+                        </p>
+
+                        {section.items.map((item, ii) => {
+                            const Icon = item.icon
+                            const danger = item.tone === 'danger'
+                            const prev = section.items[ii - 1]
+                            // Aksi berbahaya dipisahkan dari aksi biasa di grup yang sama
+                            const needsDivider = danger && prev && prev.tone !== 'danger'
+
+                            return (
+                                <React.Fragment key={item.id}>
+                                    {needsDivider && <div className="h-px bg-border my-1.5 mx-2" role="separator" />}
+                                    <button
+                                        type="button"
+                                        role="menuitem"
+                                        tabIndex={-1}
+                                        aria-disabled={item.disabled || undefined}
+                                        title={item.disabled ? item.disabledReason : undefined}
+                                        onClick={() => handleSelect(item)}
+                                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left outline-none transition-colors
+                                        ${item.disabled
+                                                ? 'opacity-40 cursor-not-allowed'
+                                                : danger
+                                                    ? 'hover:bg-red-500/10 focus-visible:bg-red-500/10 focus-visible:ring-2 focus-visible:ring-red-500/40'
+                                                    : 'hover:bg-surface-alt focus-visible:bg-surface-alt focus-visible:ring-2 focus-visible:ring-primary/40'
+                                            }`}
+                                    >
+                                        {/* Ukuran tetap + shrink-0 → semua judul sejajar */}
+                                        <span
+                                            className={`flex items-center justify-center w-9 h-9 shrink-0 rounded-lg border
+                                            ${danger
+                                                    ? 'border-red-500/20 bg-red-500/10 text-red-500'
+                                                    : 'border-border bg-surface-alt text-text-muted'
+                                                }`}
+                                        >
+                                            <Icon className="w-4 h-4" aria-hidden="true" />
+                                        </span>
+
+                                        <span className="flex-1 min-w-0">
+                                            <span className={`block text-sm font-semibold leading-tight ${danger ? 'text-red-500' : 'text-text'}`}>
+                                                {item.label}
+                                            </span>
+                                            {item.description && (
+                                                <span className="block text-xs text-text-muted leading-snug mt-0.5">
+                                                    {item.description}
+                                                </span>
+                                            )}
+                                        </span>
+
+                                        {item.shortcut && (
+                                            <span className="hidden sm:flex items-center gap-1 shrink-0">
+                                                {item.shortcut.map((k, i) => <Kbd key={`${k}-${i}`}>{k}</Kbd>)}
+                                            </span>
+                                        )}
+                                    </button>
+                                </React.Fragment>
+                            )
+                        })}
+                    </div>
+                ))}
+            </div>
+        </>,
+        getPortalContainer(portalId)
+    )
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// StudentsHeaderMenu — tombol "Aksi lainnya" + menu Data / Manajemen
+// ═════════════════════════════════════════════════════════════════════════════
+/**
+ * Tombol "Aksi lainnya" + dropdown Data / Manajemen di header halaman Data Siswa.
+ * State buka/tutup tetap dimiliki halaman (dipakai juga oleh listener Esc global),
+ * sedangkan posisi & animasi keluar diurus di sini.
+ *
+ * @param {boolean} isOpen
+ * @param {(v: boolean | ((prev: boolean) => boolean)) => void} setIsOpen
+ * @param {{ canImportCSV, canImportGSheets, canExport, canBulkPhoto, canArchive, canResetPoints, canEdit }} can
+ * @param {{ onImport, onGSheets, onExport, onBulkPhoto, onArchive, onResetPoints }} actions
+ */
+const StudentsHeaderMenu = memo(function StudentsHeaderMenu({ isOpen, setIsOpen, can, actions }) {
+    const btnRef = useRef(null)
+    const [rect, setRect] = useState(null)
+    // Unmount ditunda 200ms setelah tutup supaya animasi keluar sempat jalan
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        if (isOpen) {
+            setMounted(true)
+        } else {
+            const t = setTimeout(() => setMounted(false), 200)
+            return () => clearTimeout(t)
+        }
+    }, [isOpen])
+
+    // Jaga menu tetap menempel ke tombol saat scroll / resize
+    useEffect(() => {
+        if (!isOpen) return
+        const update = () => btnRef.current && setRect(btnRef.current.getBoundingClientRect())
+        update()
+        window.addEventListener('scroll', update, true)
+        window.addEventListener('resize', update)
+        return () => {
+            window.removeEventListener('scroll', update, true)
+            window.removeEventListener('resize', update)
+        }
+    }, [isOpen])
+
+    const sections = useMemo(() => [
+        {
+            title: 'Data',
+            items: [
+                {
+                    id: 'import-csv', label: 'Import Excel',
+                    description: 'Unggah data murid masal',
+                    icon: FileInput, show: can.canImportCSV, onSelect: actions.onImport,
+                },
+                {
+                    id: 'import-gsheets', label: 'Import GSheets',
+                    description: 'Sinkronisasi data via Google Sheets',
+                    icon: LinkIcon, show: can.canImportGSheets, onSelect: actions.onGSheets,
+                },
+                {
+                    id: 'export', label: 'Export Data',
+                    description: 'Cadangkan seluruh database',
+                    icon: FileOutput, show: can.canExport, shortcut: ['Ctrl', 'E'], onSelect: actions.onExport,
+                },
+                {
+                    id: 'bulk-photo', label: 'Bulk Foto',
+                    description: 'Update foto siswa secara masal via NISN',
+                    icon: Camera, show: can.canBulkPhoto, onSelect: actions.onBulkPhoto,
+                },
+            ],
+        },
+        {
+            title: 'Manajemen',
+            items: [
+                {
+                    id: 'archive', label: 'Arsip Siswa',
+                    description: 'Lihat & pulihkan data siswa tidak aktif',
+                    icon: Archive, show: can.canArchive, onSelect: actions.onArchive,
+                },
+                {
+                    id: 'reset-points', label: 'Reset Poin',
+                    description: 'Bersihkan semua poin untuk semester baru',
+                    icon: RotateCcw, show: can.canResetPoints, tone: 'danger',
+                    disabled: !can.canEdit, disabledReason: 'Kamu tidak punya izin mengedit',
+                    onSelect: actions.onResetPoints,
+                },
+            ],
+        },
+    ], [can, actions])
+
+    return (
+        <>
+            <button
+                ref={btnRef}
+                type="button"
+                onClick={() => {
+                    if (!isOpen) setRect(btnRef.current?.getBoundingClientRect())
+                    setIsOpen(v => !v)
+                }}
+                aria-haspopup="menu"
+                aria-expanded={isOpen}
+                aria-label="Impor, ekspor & manajemen data"
+                title="Impor, ekspor & manajemen data"
+                className={`h-9 w-9 rounded-lg border flex items-center justify-center text-sm transition-all active:scale-95 ${isOpen
+                        ? 'bg-primary/10 border-primary/30 text-primary'
+                        : 'bg-surface-alt border-border text-text-muted hover:text-text hover:bg-border'
+                    }`}
+            >
+                <SlidersHorizontal className="w-4 h-4" />
+            </button>
+
+            <ActionMenu
+                mounted={mounted}
+                isOpen={isOpen}
+                rect={rect}
+                onClose={() => setIsOpen(false)}
+                portalId="portal-header-menu"
+                triggerRef={btnRef}
+                label="Aksi data siswa"
+                sections={sections}
+            />
+        </>
+    )
+})
+
+
+// ─── Keyboard shortcut halaman: binding + daftar modal dari SATU deklarasi items ───
+// (listener global & pengelompokan sections ditangani usePageShortcuts di @shared/hooks)
+
+
 export default function StudentsPage() {
     const { addToast, addUndoToast } = useToast()
-    const { dir } = useLanguage()
+    const { dir, t, language } = useLanguage()
     const { enabled: canEdit } = useFlag('access.teacher_students')
     const navigateLocal = useNavigate()
     const [classSearchQuery, setClassSearchQuery] = useState('')
@@ -341,7 +642,7 @@ export default function StudentsPage() {
         showAdvancedFilter, setShowAdvancedFilter, debouncedSearch, activeFilterCount, resetAllFilters,
         isModalOpen, setIsModalOpen, isPrintModalOpen, setIsPrintModalOpen,
         activeModal, setActiveModal, isHeaderMenuOpen, setIsHeaderMenuOpen,
-        isShortcutOpen, setIsShortcutOpen, photoZoom, setPhotoZoom,
+        photoZoom, setPhotoZoom,
         isPrivacyMode, setIsPrivacyMode, isAnyModalOpen,
         selectedStudent, setSelectedStudent, studentToDelete, setStudentToDelete,
         selectedStudentIds, setSelectedStudentIds, submitting, setSubmitting,
@@ -375,7 +676,7 @@ export default function StudentsPage() {
         isInlineAddOpen, setIsInlineAddOpen, inlineForm, setInlineForm, submittingInline, setSubmittingInline,
         classBreakdownData, loadingBreakdown, resetPointsClassId, setResetPointsClassId, resettingPoints,
         resettingPin, uploadingPhoto, broadcastTemplate, setBroadcastTemplate, customWaMsg, setCustomWaMsg, broadcastIndex, setBroadcastIndex,
-        formDataRef, importFileInputRef, photoInputRef, searchInputRef, headerMenuRef, shortcutRef, cardCaptureRef,
+        formDataRef, importFileInputRef, photoInputRef, searchInputRef, headerMenuRef, cardCaptureRef,
         selectedStudents, selectedStudentsWithPhone, selectedIdSet, generateCode, handleAddCustomTag,
         bulkPhotoMatches, uploadingBulkPhotos, setBulkPhotoMatches, allStudentsForBulk, matchingPhotos,
     } = core
@@ -454,12 +755,22 @@ export default function StudentsPage() {
         isRevalidating, setIsRevalidating, importEditCell, setImportEditCell,
         importCachedDBStudents, setImportCachedDBStudents, exporting, setExporting,
         importReadyRows, hasImportBlockingErrors, ALL_EXPORT_COLUMNS, SYSTEM_COLS,
-        processImportFile, handleImportClick, handleFileChange, handleCommitImport,
-        handleBulkFix, validateImportPreview, handleDownloadTemplate,
+        processImportFile, handleImportClick, handleCommitImport,
+        handleBulkFix, handleBulkFixClassGroup, validateImportPreview, handleDownloadTemplate,
         handleExportCSV, handleExportExcel, handleExportPDF, handleFetchGSheets,
         fetchFilteredForExport, getExportData, importTab, setImportTab,
         downloadBlob, buildImportPreview, handleImportCellEdit, handleRemoveImportRow
     } = importExport
+
+    // Konfigurasi modal import/export (butuh daftar kelas, t(), dan aksi bulk-fix)
+    const importConfig = useMemo(
+        () => buildImportConfig({ t, language, classesList, handleBulkFixClassGroup }),
+        [t, language, classesList, handleBulkFixClassGroup]
+    )
+    const exportConfig = useMemo(
+        () => buildExportConfig({ students, selectedStudentIds, exportScope, generateStudentPDF, addToast }),
+        [students, selectedStudentIds, exportScope, generateStudentPDF, addToast]
+    )
 
     const timelineFiltered = useMemo(() =>
         timelineFilter === 'pos' ? behaviorHistory.filter(i => (i.points ?? 0) > 0)
@@ -527,35 +838,6 @@ export default function StudentsPage() {
     const [colMenuPos, setColMenuPos] = useState({ top: 0, left: 0 })
     const colMenuRef = useRef(null)
 
-    // Sticky portal refs & rects for header menu + shortcut dropdowns
-    const headerMenuBtnRef = useRef(null)
-    const shortcutBtnRef = useRef(null)
-    const [headerMenuRect, setHeaderMenuRect] = useState(null)
-    const [shortcutRect, setShortcutRect] = useState(null)
-    // Deferred unmount: keeps portal in DOM for 200ms after close so exit animation can play
-    const [headerMenuMounted, setHeaderMenuMounted] = useState(false)
-    useEffect(() => {
-        if (isHeaderMenuOpen) {
-            setHeaderMenuMounted(true)
-        } else {
-            const t = setTimeout(() => setHeaderMenuMounted(false), 200)
-            return () => clearTimeout(t)
-        }
-    }, [isHeaderMenuOpen])
-
-    // Sticky positioning - keep portaled dropdowns anchored on scroll/resize
-    useEffect(() => {
-        if (!isHeaderMenuOpen && !isShortcutOpen) return
-        const update = () => {
-            if (isHeaderMenuOpen && headerMenuBtnRef.current) setHeaderMenuRect(headerMenuBtnRef.current.getBoundingClientRect())
-            if (isShortcutOpen && shortcutBtnRef.current) setShortcutRect(shortcutBtnRef.current.getBoundingClientRect())
-        }
-        update()
-        window.addEventListener('scroll', update, true)
-        window.addEventListener('resize', update)
-        return () => { window.removeEventListener('scroll', update, true); window.removeEventListener('resize', update) }
-    }, [isHeaderMenuOpen, isShortcutOpen])
-
     const toggleColumn = (key) => setVisibleColumns(prev => ({
         ...prev,
         [key]: !prev[key]
@@ -570,71 +852,54 @@ export default function StudentsPage() {
         }, {})
         , [timelineFiltered])
 
-    // ---- GLOBAL LISTENERS (Shortcuts & Click Outside) ----
+    // ---- SHORTCUTS (binding + daftar modal dari satu deklarasi — usePageShortcuts) ----
+    const sc = usePageShortcuts({
+        isBlocked: isAnyModalOpen || isExportModalOpen || isHeaderMenuOpen,
+        items: [
+            { section: 'Navigasi', keys: ['Ctrl', 'K'], label: 'Fokus ke search', icon: Search, onSelect: () => searchInputRef.current?.focus() },
+            { section: 'Navigasi', keys: ['Ctrl', 'F'], label: 'Toggle filter lanjutan', icon: SlidersHorizontal, onSelect: () => setShowAdvancedFilter(v => !v) },
+            { section: 'Navigasi', keys: ['Esc'], label: 'Tutup / clear / deselect', icon: X, onSelect: () => { setIsColMenuOpen(false); setIsHeaderMenuOpen(false) } },
+            { section: 'Aksi', keys: ['N'], label: 'Tambah siswa baru', icon: Plus, when: canAddStudent && canEdit, onSelect: handleAdd },
+            { section: 'Aksi', keys: ['Ctrl', 'A'], label: 'Pilih semua / deselect', icon: CheckCheck, onSelect: toggleSelectAll },
+            { section: 'Aksi', keys: ['Ctrl', 'E'], label: 'Buka export', icon: FileOutput, when: canExport, onSelect: () => setIsExportModalOpen(true) },
+            { section: 'Tampilan', keys: ['P'], label: 'Toggle privacy mode', icon: EyeOff, when: canPrivacyMode, onSelect: () => setIsPrivacyMode(v => !v) },
+            { section: 'Tampilan', keys: ['R'], label: 'Refresh data', icon: RefreshCw, onSelect: () => { fetchData(); fetchStats() } },
+            { section: 'Tampilan', keys: ['X'], label: 'Reset semua filter', icon: RotateCcw, onSelect: resetAllFilters },
+            { section: 'Tampilan', keys: ['?'], label: 'Tampilkan shortcut ini', icon: Keyboard },
+        ],
+    })
+
+    // ---- Menu header (Data / Manajemen) ----
+    const headerMenuCan = useMemo(
+        () => ({ canImportCSV, canImportGSheets, canExport, canBulkPhoto, canArchive, canResetPoints, canEdit }),
+        [canImportCSV, canImportGSheets, canExport, canBulkPhoto, canArchive, canResetPoints, canEdit]
+    )
+    const headerMenuActions = useMemo(() => ({
+        onImport: handleImportClick,
+        onGSheets: () => setActiveModal('gsheets'),
+        onExport: () => setIsExportModalOpen(true),
+        onBulkPhoto: () => setActiveModal('bulkPhoto'),
+        onArchive: () => { fetchArchivedStudents(); setActiveModal('archived') },
+        onResetPoints: () => { setResetPointsClassId(''); setActiveModal('resetPoints') },
+    }), [handleImportClick, setActiveModal, setIsExportModalOpen, fetchArchivedStudents, setResetPointsClassId])
+
+    // ---- Click outside: menu kolom ----
     useEffect(() => {
-        const handleGlobalKeyDown = (e) => {
-            const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)
-
-            if (e.key === 'Escape') {
-                if (isTyping) {
-                    document.activeElement.blur()
-                } else {
-                    setIsColMenuOpen(false)
-                    setIsHeaderMenuOpen(false)
-                    setIsShortcutOpen(false)
-                }
-                return
-            }
-
-            if (isTyping) return
-
-            const key = e.key.toLowerCase()
-
-            if (e.ctrlKey && key === 'k') {
-                e.preventDefault()
-                searchInputRef.current?.focus()
-            } else if (e.ctrlKey && key === 'f') {
-                e.preventDefault()
-                setShowAdvancedFilter(v => !v)
-            } else if (key === 'n') {
-                e.preventDefault()
-                handleAdd()
-            } else if (e.ctrlKey && key === 'a') {
-                e.preventDefault()
-                toggleSelectAll()
-            } else if (e.ctrlKey && key === 'e') {
-                e.preventDefault()
-                setIsExportModalOpen(true)
-            } else if (key === 'p') {
-                setIsPrivacyMode(v => !v)
-            } else if (key === 'r') {
-                fetchData(); fetchStats()
-            } else if (key === 'x') {
-                resetAllFilters()
-            } else if (e.key === '?') {
-                setIsShortcutOpen(v => !v)
-            }
-        }
-
         const handleGlobalClick = (e) => {
-            // Check if click is outside gear icon AND outside the portaled menu
+            // Klik di luar ikon gear DAN di luar menu portal
             if (colMenuRef.current &&
                 !colMenuRef.current.contains(e.target) &&
                 !e.target.closest('#portal-column-menu')) {
                 setIsColMenuOpen(false)
             }
         }
-
-        window.addEventListener('keydown', handleGlobalKeyDown)
         document.addEventListener('mousedown', handleGlobalClick)
         document.addEventListener('touchstart', handleGlobalClick)
-
         return () => {
-            window.removeEventListener('keydown', handleGlobalKeyDown)
             document.removeEventListener('mousedown', handleGlobalClick)
             document.removeEventListener('touchstart', handleGlobalClick)
         }
-    }, [handleAdd, toggleSelectAll, setIsExportModalOpen, fetchData, fetchStats, resetAllFilters, setIsHeaderMenuOpen, setIsShortcutOpen, setIsPrivacyMode, setShowAdvancedFilter, setIsColMenuOpen])
+    }, [setIsColMenuOpen])
 
     const timelineStats = useMemo(() => {
         const pos = behaviorHistory.filter(i => (i.points ?? 0) > 0)
@@ -700,185 +965,30 @@ export default function StudentsPage() {
                             >
                                 <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                             </button>
-                            {/* Header Menu Button */}
-                            <button
-                                ref={headerMenuBtnRef}
-                                onClick={() => { if (!isHeaderMenuOpen) setHeaderMenuRect(headerMenuBtnRef.current?.getBoundingClientRect()); setIsHeaderMenuOpen(v => !v) }}
-                                className={`h-9 w-9 rounded-lg border flex items-center justify-center text-sm transition-all active:scale-95 ${isHeaderMenuOpen ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
-                                title="Aksi lainnya"
-                            >
-                                <SlidersHorizontal className="w-4 h-4" />
-                            </button>
-
-                            {/* Portaled Header Menu Dropdown */}
-                            {headerMenuMounted && headerMenuRect && createPortal(
-                                <>
-                                    <div
-                                        className={`fixed inset-0 z-[9990] bg-black/5 transition-opacity duration-200 ${isHeaderMenuOpen ? 'opacity-100' : 'opacity-0'}`}
-                                        onClick={() => setIsHeaderMenuOpen(false)}
-                                    />
-                                    <div
-                                        className={`fixed z-[9991] w-80 max-w-[calc(100vw-1.25rem)] rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-2 transition-all duration-200 ease-out origin-top-right
-                                        ${isHeaderMenuOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2'}`}
-                                        style={{
-                                            top: headerMenuRect.bottom + 8,
-                                            // Anchor kanan dropdown ke kanan tombol; di layar sempit clamp ke tepi kanan viewport
-                                            left: Math.max(10, Math.min(headerMenuRect.right - 320, window.innerWidth - 330))
-                                        }}
-                                    >
-                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] px-3 py-2">Data</p>
-                                        {canImportCSV && (
-                                            <button onClick={() => { setIsHeaderMenuOpen(false); handleImportClick() }}
-                                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
-                                                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                    <FileInput className="w-4 h-4" />
-                                                </div>
-                                                <div className="text-left">
-                                                    <p className="text-xs font-bold leading-tight">Import CSV / Excel</p>
-                                                    <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Unggah data murid masal dari file Excel/CSV</p>
-                                                </div>
-                                            </button>
-                                        )}
-                                        {canImportGSheets && (
-                                            <button onClick={() => { setIsHeaderMenuOpen(false); setActiveModal('gsheets') }}
-                                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
-                                                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                    <Link className="w-4 h-4" />
-                                                </div>
-                                                <div className="text-left">
-                                                    <p className="text-xs font-bold leading-tight">Import GSheets</p>
-                                                    <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Sinkronisasi data otomatis via Google Sheets</p>
-                                                </div>
-                                            </button>
-                                        )}
-                                        {canExport && (
-                                            <button onClick={() => { setIsHeaderMenuOpen(false); setIsExportModalOpen(true) }}
-                                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
-                                                <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                    <FileOutput className="w-4 h-4" />
-                                                </div>
-                                                <div className="text-left">
-                                                    <p className="text-xs font-bold leading-tight">Export Data</p>
-                                                    <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Cadangkan seluruh database ke format Excel</p>
-                                                </div>
-                                            </button>
-                                        )}
-                                        {canBulkPhoto && (
-                                            <button onClick={() => { setIsHeaderMenuOpen(false); setActiveModal('bulkPhoto') }}
-                                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--text-color)] transition-all group">
-                                                <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                    <Camera className="w-4 h-4" />
-                                                </div>
-                                                <div className="text-left">
-                                                    <p className="text-xs font-bold leading-tight">Bulk Foto</p>
-                                                    <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Update foto siswa secara masal via NISN</p>
-                                                </div>
-                                            </button>
-                                        )}
-
-                                        {(canArchive || canResetPoints) && <div className="h-px bg-[var(--color-border)] my-1 mx-2" />}
-                                        {(canArchive || canResetPoints) && <p className="px-3 py-2 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Manajemen</p>}
-
-                                        {canArchive && (
-                                            <button onClick={() => { setIsHeaderMenuOpen(false); fetchArchivedStudents(); setActiveModal('archived') }}
-                                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group">
-                                                <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                    <Archive className="w-4 h-4" />
-                                                </div>
-                                                <div className="text-left">
-                                                    <p className="text-xs font-bold leading-tight">Arsip Siswa</p>
-                                                    <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Lihat & pulihkan data siswa tidak aktif</p>
-                                                </div>
-                                            </button>
-                                        )}
-                                        {canResetPoints && (
-                                            <button
-                                                onClick={() => { setResetPointsClassId(''); setActiveModal('resetPoints'); setIsHeaderMenuOpen(false); }}
-                                                disabled={!canEdit}
-                                                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[var(--color-text)] transition-all group ${!canEdit ? 'opacity-40 cursor-not-allowed' : 'hover:bg-[var(--color-surface-alt)]'}`}
-                                            >
-                                                <div className="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                    <RotateCcw className="w-4 h-4" />
-                                                </div>
-                                                <div className="text-left">
-                                                    <p className="text-xs font-bold leading-tight">Reset Poin</p>
-                                                    <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Bersihkan semua poin untuk semester baru</p>
-                                                </div>
-                                            </button>
-                                        )}
-                                    </div>
-                                </>,
-                                getPortalContainer('portal-header-menu')
-                            )}
+                            <StudentsHeaderMenu
+                                isOpen={isHeaderMenuOpen}
+                                setIsOpen={setIsHeaderMenuOpen}
+                                can={headerMenuCan}
+                                actions={headerMenuActions}
+                            />
 
                             {/* Keyboard Shortcuts Button - hidden on mobile */}
                             <button
-                                ref={shortcutBtnRef}
-                                onClick={() => { if (!isShortcutOpen) setShortcutRect(shortcutBtnRef.current?.getBoundingClientRect()); setIsShortcutOpen(v => !v) }}
-                                className={`hidden sm:flex h-9 w-9 rounded-lg border items-center justify-center transition-all active:scale-95
-                                ${isShortcutOpen
-                                        ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]'
-                                        : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+                                onClick={sc.toggle}
+                                className={`hidden sm:flex h-9 w-9 rounded-lg border items-center justify-center transition-colors active:scale-95
+                                ${sc.isOpen
+                                        ? 'bg-primary/10 border-primary/30 text-primary'
+                                        : 'bg-surface-alt border-border text-text-muted hover:text-text'
                                     }`}
                                 title="Keyboard Shortcuts (?)"
                             >
                                 <Keyboard className="w-4 h-4" />
                             </button>
 
-                            {/* Portaled Keyboard Shortcuts Dropdown */}
-                            {isShortcutOpen && shortcutRect && createPortal(
-                                <>
-                                    <div className="fixed inset-0 z-[9990] bg-black/5" onClick={() => setIsShortcutOpen(false)} />
-                                    <div
-                                        className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden text-left animate-in fade-in zoom-in-95 duration-200"
-                                        style={{
-                                            top: shortcutRect.bottom + 8,
-                                            left: Math.max(10, shortcutRect.right - 288)
-                                        }}
-                                    >
-                                        <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
-                                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Keyboard Shortcuts</p>
-                                            <span className="text-xs text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
-                                        </div>
-                                        <div className="p-3 space-y-0.5">
-                                            {[
-                                                { section: 'Navigasi' },
-                                                { keys: ['Ctrl', 'K'], label: 'Fokus ke search' },
-                                                { keys: ['Ctrl', 'F'], label: 'Toggle filter lanjutan' },
-                                                { keys: ['Esc'], label: 'Tutup / clear / deselect' },
-                                                { section: 'Aksi' },
-                                                { keys: ['N'], label: 'Tambah siswa baru' },
-                                                { keys: ['Ctrl', 'A'], label: 'Pilih semua / deselect' },
-                                                { keys: ['Ctrl', 'E'], label: 'Buka export' },
-                                                { section: 'Tampilan' },
-                                                { keys: ['P'], label: 'Toggle privacy mode' },
-                                                { keys: ['R'], label: 'Refresh data' },
-                                                { keys: ['X'], label: 'Reset semua filter' },
-                                                { keys: ['?'], label: 'Tampilkan shortcut ini' },
-                                            ].map((item, i) => item.section ? (
-                                                <p key={i} className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
-                                            ) : (
-                                                <div key={i} className="flex items-center justify-between px-1 py-1 rounded-lg hover:bg-[var(--color-surface-alt)] transition-all">
-                                                    <span className="text-xs font-semibold text-[var(--color-text)]">{item.label}</span>
-                                                    <div className="flex items-center gap-1">
-                                                        {item.keys.map((k, ki) => (
-                                                            <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] font-mono">{k}</span>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </>,
-                                getPortalContainer('portal-shortcut-menu')
-                            )}
-
-                            <input
-                                type="file"
-                                ref={importFileInputRef}
-                                onChange={handleFileChange}
-                                className="hidden"
-                                accept=".csv,.xlsx"
+                            <ShortcutsModal
+                                isOpen={sc.isOpen}
+                                onClose={sc.close}
+                                sections={sc.sections}
                             />
 
                             {canPrivacyMode && (
@@ -1015,14 +1125,14 @@ export default function StudentsPage() {
                     {/* Filter bar */}
                     <div className="flex flex-col lg:flex-row lg:items-center gap-3 px-3 py-3 border-b border-border">
                         {/* Tab status */}
-                        <div className="flex gap-1 p-1 rounded-xl bg-surface-alt border border-border overflow-x-auto scrollbar-hide lg:w-fit shrink-0">
+                        <div className="flex items-stretch gap-1 p-1 h-10 rounded-xl bg-surface-alt border border-border overflow-x-auto scrollbar-hide lg:w-fit shrink-0">
                             {STATUS_TABS.map((f) => {
                                 const on = filterStatus === f.key
                                 return (
                                     <button
                                         key={f.key || 'all'}
                                         onClick={() => { setFilterStatus(f.key); setPage(1) }}
-                                        className={`h-8 px-3 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap ${on ? 'bg-primary text-white shadow-sm' : 'text-text-muted hover:text-text'}`}
+                                        className={`h-full px-3 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap ${on ? 'bg-primary text-white shadow-sm' : 'text-text-muted hover:text-text'}`}
                                     >
                                         {f.label}
                                     </button>
@@ -1031,7 +1141,7 @@ export default function StudentsPage() {
                         </div>
 
                         {/* Gender */}
-                        <div className="flex gap-1 p-1 rounded-xl bg-surface-alt border border-border lg:w-fit shrink-0">
+                        <div className="flex items-stretch gap-1 p-1 h-10 rounded-xl bg-surface-alt border border-border lg:w-fit shrink-0">
                             {[
                                 { id: 'L', label: 'Putra', icon: MarsIcon },
                                 { id: 'P', label: 'Putri', icon: VenusIcon },
@@ -1041,7 +1151,7 @@ export default function StudentsPage() {
                                     <button
                                         key={g.id}
                                         onClick={() => { setFilterGender(on ? '' : g.id); setPage(1) }}
-                                        className={`h-8 px-3 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap flex items-center gap-1.5 ${on ? 'bg-primary text-white shadow-sm' : 'text-text-muted hover:text-text'}`}
+                                        className={`h-full px-3 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap flex items-center gap-1.5 ${on ? 'bg-primary text-white shadow-sm' : 'text-text-muted hover:text-text'}`}
                                     >
                                         <g.icon className="w-3.5 h-3.5" />
                                         {g.label}
@@ -1051,7 +1161,7 @@ export default function StudentsPage() {
                         </div>
 
                         {/* Search */}
-                        <div className="flex-1 min-w-[180px]">
+                        <div className="flex-1 min-w-[180px] [&_input]:h-10">
                             <DebouncedSearchInput
                                 searchQuery={searchQuery}
                                 onSearch={handleSearchChange}
@@ -1064,7 +1174,7 @@ export default function StudentsPage() {
                         <div className="flex items-center gap-2 shrink-0">
                             <button
                                 onClick={toggleSelectAll}
-                                className={`h-9 px-3 rounded-lg border text-xs font-semibold transition-all active:scale-95 flex items-center justify-center gap-1.5 ${selectedStudentIds.length > 0 ? 'bg-primary border-primary text-white' : 'border-border text-text-muted hover:text-text hover:bg-surface-alt'}`}
+                                className={`h-10 px-3 rounded-lg border text-xs font-semibold transition-all active:scale-95 flex items-center justify-center gap-1.5 ${selectedStudentIds.length > 0 ? 'bg-primary border-primary text-white' : 'border-border text-text-muted hover:text-text hover:bg-surface-alt'}`}
                                 title="Pilih Semua / Batal (Ctrl A)"
                             >
                                 {selectedStudentIds.length > 0 ? <CheckCheck className="w-4 h-4" /> : <SquareCheck className="w-4 h-4" />}
@@ -1077,7 +1187,7 @@ export default function StudentsPage() {
                             {canAdvancedFilter && (
                                 <button
                                     onClick={() => setShowAdvancedFilter(!showAdvancedFilter)}
-                                    className={`h-9 px-3 rounded-lg border text-xs font-semibold transition-all active:scale-95 flex items-center justify-center gap-1.5 ${showAdvancedFilter || activeFilterCount > 0 ? 'bg-primary border-primary text-white' : 'border-border text-text-muted hover:text-text hover:bg-surface-alt'}`}
+                                    className={`h-10 px-3 rounded-lg border text-xs font-semibold transition-all active:scale-95 flex items-center justify-center gap-1.5 ${showAdvancedFilter || activeFilterCount > 0 ? 'bg-primary border-primary text-white' : 'border-border text-text-muted hover:text-text hover:bg-surface-alt'}`}
                                     title="Filter lanjutan (Ctrl F)"
                                 >
                                     <SlidersHorizontal className="w-4 h-4" />
@@ -1170,88 +1280,73 @@ export default function StudentsPage() {
                         </div>
                     )}
 
-                    {/* Filter lanjutan (ringkas) */}
+                    {/* Filter lanjutan: satu baris ramping, scroll horizontal di layar sempit */}
                     {showAdvancedFilter && (
-                        <div className="border-b border-border p-3 bg-surface-alt/40 animate-in fade-in slide-in-from-top-2">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                                <div>
-                                    <label className="block text-xs font-semibold text-text-muted mb-1">Kelas</label>
-                                    <RichSelect
-                                        value={filterClass}
-                                        onChange={(val) => { setFilterClass(val); setFilterClasses([]); setPage(1) }}
-                                        options={classesList.map(c => ({ id: c.id, name: c.name }))}
-                                        placeholder="Semua Kelas"
-                                        small
-                                        searchable
-                                    />
+                        <div className="border-b border-border px-3 py-2 bg-surface-alt/40 animate-in fade-in slide-in-from-top-2">
+                            <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide flex-1 min-w-0">
+                                <RichSelect
+                                    value={filterClass}
+                                    onChange={(val) => { setFilterClass(val); setFilterClasses([]); setPage(1) }}
+                                    options={classesList.map(c => ({ id: c.id, name: c.name }))}
+                                    extraOption={{ id: '', name: 'Semua Kelas' }}
+                                    placeholder="Semua Kelas"
+                                    icon={School}
+                                    small
+                                    searchable
+                                    className="shrink-0 w-44"
+                                />
+                                <RichSelect
+                                    value={sortBy}
+                                    onChange={(val) => setSortBy(val)}
+                                    options={SortOptions.map(opt => ({ id: opt.value, name: opt.label }))}
+                                    icon={ArrowDownAZ}
+                                    small
+                                    className="shrink-0 w-40"
+                                />
+                                <RichSelect
+                                    value={filterPointMode}
+                                    onChange={(val) => { setFilterPointMode(val); setFilterPointMin(''); setFilterPointMax(''); setPage(1) }}
+                                    options={[
+                                        { id: '', name: 'Semua Poin' },
+                                        { id: 'risk', name: 'Berisiko (poin −)' },
+                                        { id: 'positive', name: 'Poin Positif' },
+                                    ]}
+                                    icon={Trophy}
+                                    small
+                                    className="shrink-0 w-40"
+                                />
+                                <RichSelect
+                                    value={filterMissing}
+                                    onChange={(val) => { setFilterMissing(val); setPage(1) }}
+                                    options={[
+                                        { id: '', name: 'Semua Data' },
+                                        { id: 'photo', name: 'Tanpa Foto' },
+                                        { id: 'wa', name: 'Tanpa WA' },
+                                    ]}
+                                    icon={CircleAlert}
+                                    small
+                                    className="shrink-0 w-40"
+                                />
+
                                 </div>
 
-                                <div>
-                                    <label className="block text-xs font-semibold text-text-muted mb-1">Urutkan</label>
-                                    <RichSelect
-                                        value={sortBy}
-                                        onChange={(val) => setSortBy(val)}
-                                        options={SortOptions.map(opt => ({ id: opt.value, name: opt.label }))}
-                                        small
-                                    />
+                                <div className="flex items-center gap-1.5 pl-1 shrink-0">
+                                    <button
+                                        onClick={resetAllFilters}
+                                        title="Reset semua filter (X)"
+                                        className="h-8 w-8 rounded-lg text-danger hover:bg-danger/10 transition-colors flex items-center justify-center"
+                                    >
+                                        <RotateCcw className="w-3.5 h-3.5" />
+                                    </button>
+                                    <button
+                                        onClick={() => setShowAdvancedFilter(false)}
+                                        title="Tutup filter lanjutan (Ctrl F)"
+                                        className="h-8 w-8 rounded-lg border border-border bg-surface text-text-muted hover:text-text transition-colors flex items-center justify-center"
+                                    >
+                                        <X className="w-3.5 h-3.5" />
+                                    </button>
                                 </div>
-
-                                <div>
-                                    <label className="block text-xs font-semibold text-text-muted mb-1">Poin</label>
-                                    <div className="flex gap-1 p-1 rounded-xl bg-surface border border-border w-fit">
-                                        {[
-                                            { value: '', label: 'Semua' },
-                                            { value: 'risk', label: 'Berisiko' },
-                                            { value: 'positive', label: 'Positif' },
-                                        ].map(opt => {
-                                            const on = filterPointMode === opt.value
-                                            return (
-                                                <button key={opt.value || 'all'} type="button"
-                                                    onClick={() => { setFilterPointMode(opt.value); setFilterPointMin(''); setFilterPointMax(''); setPage(1) }}
-                                                    className={`h-7 px-3 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap ${on ? 'bg-primary text-white shadow-sm' : 'text-text-muted hover:text-text'}`}
-                                                >
-                                                    {opt.label}
-                                                </button>
-                                            )
-                                        })}
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-semibold text-text-muted mb-1">Data kurang</label>
-                                    <div className="flex gap-1 p-1 rounded-xl bg-surface border border-border w-fit">
-                                        {[
-                                            { value: '', label: 'Semua' },
-                                            { value: 'photo', label: 'Tanpa foto' },
-                                            { value: 'wa', label: 'Tanpa WA' },
-                                        ].map(opt => {
-                                            const on = filterMissing === opt.value
-                                            return (
-                                                <button key={opt.value || 'all'} type="button"
-                                                    onClick={() => { setFilterMissing(opt.value); setPage(1) }}
-                                                    className={`h-7 px-3 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap ${on ? 'bg-primary text-white shadow-sm' : 'text-text-muted hover:text-text'}`}
-                                                >
-                                                    {opt.label}
-                                                </button>
-                                            )
-                                        })}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center justify-end gap-2 mt-3">
-                                <button
-                                    onClick={resetAllFilters}
-                                    className="h-8 px-3 rounded-lg text-xs font-semibold text-danger hover:bg-danger/10 transition-colors flex items-center gap-1.5"
-                                >
-                                    <RotateCcw className="w-3.5 h-3.5" /> Reset filter
-                                </button>
-                                <button
-                                    onClick={() => setShowAdvancedFilter(false)}
-                                    className="h-8 px-3 rounded-lg border border-border bg-surface text-xs font-semibold text-text-muted hover:text-text transition-colors"
-                                >
-                                    Tutup
-                                </button>
                             </div>
                         </div>
                     )}
@@ -1763,16 +1858,13 @@ export default function StudentsPage() {
                             importStep={importStep}
                             setImportStep={setImportStep}
                             importPreview={importPreview}
-                            importDuplicates={importDuplicates}
                             importFileName={importFileName}
-                            importFileInputRef={importFileInputRef}
+                            fileInputRef={importFileInputRef}
                             importDragOver={importDragOver}
                             setImportDragOver={setImportDragOver}
                             processImportFile={processImportFile}
-                            classesList={classesList}
                             handleDownloadTemplate={handleDownloadTemplate}
                             importFileHeaders={importFileHeaders}
-                            SYSTEM_COLS={SYSTEM_COLS}
                             importColumnMapping={importColumnMapping}
                             setImportColumnMapping={setImportColumnMapping}
                             importRawData={importRawData}
@@ -1784,7 +1876,6 @@ export default function StudentsPage() {
                             setImportValidationOpen={setImportValidationOpen}
                             importProgress={importProgress}
                             handleCommitImport={handleCommitImport}
-                            handleImportClick={handleImportClick}
                             hasImportBlockingErrors={hasImportBlockingErrors}
                             importReadyRows={importReadyRows}
                             handleImportCellEdit={handleImportCellEdit}
@@ -1793,7 +1884,7 @@ export default function StudentsPage() {
                             handleRemoveImportRow={handleRemoveImportRow}
                             importSkipDupes={importSkipDupes}
                             setImportSkipDupes={setImportSkipDupes}
-                            handleBulkFix={handleBulkFix}
+                            config={importConfig}
                         />
                     )}
                 </React.Suspense>
@@ -1960,8 +2051,8 @@ export default function StudentsPage() {
                         <LazyExportModal
                             isOpen={isExportModalOpen}
                             onClose={() => { if (exporting) return; setIsExportModalOpen(false) }}
-                            students={students}
-                            selectedStudentIds={selectedStudentIds}
+                            items={students}
+                            selectedIds={selectedStudentIds}
                             exportScope={exportScope}
                             setExportScope={setExportScope}
                             exportColumns={exportColumns}
@@ -1970,8 +2061,7 @@ export default function StudentsPage() {
                             handleExportCSV={handleExportCSV}
                             handleExportExcel={handleExportExcel}
                             handleExportPDF={handleExportPDF}
-                            generateStudentPDF={generateStudentPDF}
-                            addToast={addToast}
+                            config={exportConfig}
                         />
                     )}
                 </React.Suspense>
@@ -2591,17 +2681,17 @@ export default function StudentsPage() {
                     __html: `
                 @media print {
                     /* Reset everything */
-                    body > *:not(#portal-root) { 
+                    body > *:not(#portal-root) {
                         position: absolute !important;
                         left: -9999px !important;
                         visibility: hidden !important;
                     }
-                    #portal-root { 
-                        display: block !important; 
-                        position: static !important; 
+                    #portal-root {
+                        display: block !important;
+                        position: static !important;
                         visibility: visible !important;
                     }
-                    
+
                     /* Background Colors */
                     * {
                         -webkit-print-color-adjust: exact !important;
@@ -2636,7 +2726,7 @@ export default function StudentsPage() {
 
                     /* Hide Non-Card Elements */
                     .modal-content > div:first-child,
-                    .no-print, 
+                    .no-print,
                     button {
                         display: none !important;
                         visibility: hidden !important;
@@ -2655,7 +2745,7 @@ export default function StudentsPage() {
                         scale: 1 !important;
                         margin: 0 auto !important;
                     }
-                    
+
                     #printable-cards * {
                         visibility: visible !important;
                     }

@@ -25,7 +25,7 @@ function getPortalContainer(id) {
 const InlineEditName = ({ value, onSave, onCancel }) => {
     const [val, setVal] = useState(value)
     const inputRef = useRef(null)
-    useEffect(() => { inputRef.current?.focus(); inputRef.current?.select() }, [])
+    useEffect(() => { inputRef.current?.focus({ preventScroll: true }); inputRef.current?.select() }, [])
     return (
         <div className="flex items-center gap-1.5">
             <input
@@ -38,7 +38,7 @@ const InlineEditName = ({ value, onSave, onCancel }) => {
                 }}
                 className="input-field h-7 px-2 rounded-lg border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold w-36 focus:border-[var(--color-primary)] outline-none"
             />
-            <button onClick={() => onSave(val.trim())} className="w-7 h-7 rounded-md bg-emerald-500 text-white flex items-center justify-center text-xs hover:brightness-110 transition-all shadow-sm">
+            <button onClick={() => onSave(val.trim())} className="w-7 h-7 rounded-md bg-success text-white flex items-center justify-center text-xs hover:brightness-110 transition-all shadow-sm">
                 <Check className="w-4 h-4" />
             </button>
             <button onClick={onCancel} className="w-7 h-7 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] flex items-center justify-center text-xs hover:bg-[var(--color-border)] transition-all">
@@ -84,7 +84,7 @@ const InlineEditKelas = ({ value, classesList, onSave, onCancel }) => {
                 <option value="">Pilih kelas</option>
                 {classesList.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
-            <button onClick={() => onSave(val)} disabled={!val} className="w-8 h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs hover:brightness-110 disabled:opacity-40 transition-all">
+            <button onClick={() => onSave(val)} disabled={!val} className="w-8 h-8 rounded-lg bg-success text-white flex items-center justify-center text-xs hover:brightness-110 disabled:opacity-40 transition-all">
                 <Check className="w-4 h-4" />
             </button>
             <button onClick={onCancel} className="w-8 h-8 rounded-lg flex items-center justify-center border border-[var(--color-border)] text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-border)] transition-all text-xs">
@@ -98,7 +98,7 @@ const InlineEditKelas = ({ value, classesList, onSave, onCancel }) => {
 const InlineEditPoin = ({ value, onSave, onCancel }) => {
     const [val, setVal] = useState(value)
     const inputRef = useRef(null)
-    useEffect(() => { inputRef.current?.focus(); inputRef.current?.select() }, [])
+    useEffect(() => { inputRef.current?.focus({ preventScroll: true }); inputRef.current?.select() }, [])
     const parsed = parseInt(val) || 0
     return (
         <div className="flex items-center gap-1">
@@ -115,7 +115,7 @@ const InlineEditPoin = ({ value, onSave, onCancel }) => {
                 className="input-field h-7 w-16 px-2 rounded-lg border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-center outline-none focus:border-[var(--color-primary)] shadow-sm"
             />
             {val !== '' && (
-                <button onClick={() => onSave(parsed)} className="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs hover:brightness-110 transition-all shadow-sm">
+                <button onClick={() => onSave(parsed)} className="w-7 h-7 rounded-lg bg-success text-white flex items-center justify-center text-xs hover:brightness-110 transition-all shadow-sm">
                     <Check className="w-4 h-4" />
                 </button>
             )}
@@ -153,14 +153,14 @@ const Sparkline = ({ data = [], width = 30, height = 12 }) => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 points={points}
-                className={latest > 0 ? 'text-emerald-500' : latest < 0 ? 'text-red-500' : 'text-gray-400'}
+                className={latest > 0 ? 'text-success' : latest < 0 ? 'text-danger' : 'text-gray-400'}
             />
             <circle
                 cx={width}
                 cy={height - ((latest - min) / range) * height}
                 r="1.5"
                 fill="currentColor"
-                className={latest > 0 ? 'text-emerald-500 animate-pulse' : latest < 0 ? 'text-red-500 animate-pulse' : 'text-gray-400'}
+                className={latest > 0 ? 'text-success animate-pulse' : latest < 0 ? 'text-danger animate-pulse' : 'text-gray-400'}
             />
         </svg>
     )
@@ -285,17 +285,17 @@ export const StudentRow = memo(({
     }, [showQuickAction])
 
     const quickActions = [
-        { label: 'Sangat Aktif', amount: 5, color: 'text-emerald-500' },
-        { label: 'Fokus', amount: 2, color: 'text-emerald-500' },
-        { label: 'Ramai', amount: -2, color: 'text-amber-500' },
-        { label: 'Melanggar', amount: -5, color: 'text-red-500' },
+        { label: 'Sangat Aktif', amount: 5, color: 'text-success' },
+        { label: 'Fokus', amount: 2, color: 'text-success' },
+        { label: 'Ramai', amount: -2, color: 'text-warning' },
+        { label: 'Melanggar', amount: -5, color: 'text-danger' },
     ]
 
     return (
         <tr className={`border-t border-[var(--color-border)] transition-colors group/row table-row-lazy
-            ${isRisk ? 'bg-red-500/[0.03] hover:bg-red-500/[0.06]' : 'hover:bg-[var(--color-surface-alt)]/40'}
+            ${isRisk ? 'bg-danger/[0.03] hover:bg-danger/[0.06]' : 'hover:bg-[var(--color-surface-alt)]/40'}
             ${editingField ? 'bg-[var(--color-primary)]/[0.02]' : ''}
-            ${student.is_pinned ? 'bg-amber-500/[0.04] border-l-2 border-l-amber-400' : ''}
+            ${student.is_pinned ? 'bg-warning/[0.04] border-l-2 border-l-warning' : ''}
         `}>
 
             {/* Checkbox + Pin */}
@@ -312,8 +312,8 @@ export const StudentRow = memo(({
                         title={student.is_pinned ? 'Unpin siswa' : 'Pin ke atas'}
                         className={`w-5 h-5 rounded-md flex items-center justify-center transition-all
                             ${student.is_pinned
-                                ? 'text-amber-500 opacity-100'
-                                : 'text-[var(--color-text-muted)] opacity-0 group-hover/row:opacity-100 hover:text-amber-500'
+                                ? 'text-warning opacity-100'
+                                : 'text-[var(--color-text-muted)] opacity-0 group-hover/row:opacity-100 hover:text-warning'
                             }`}
                     >
                         <Pin className={`w-4 h-4 transition-transform ${student.is_pinned ? 'rotate-0' : 'rotate-45'}`} />
@@ -328,7 +328,7 @@ export const StudentRow = memo(({
                     <div className="relative shrink-0">
                         <div
                             className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold shadow-sm overflow-hidden relative cursor-pointer transition-transform hover:scale-110
-                                ${isRisk ? 'bg-red-500/10 text-red-500' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'}
+                                ${isRisk ? 'bg-danger/10 text-danger' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'}
                                 ${isPrivacyMode ? 'blur-sm grayscale opacity-60' : ''}`}
                             onClick={() => { if (isPrivacyMode) return; student.photo_url && onPhotoZoom({ url: student.photo_url, name: student.name, registrationCode: student.registration_code, className: student.className }) }}
                             title={student.photo_url && !isPrivacyMode ? 'Klik untuk zoom foto' : ''}
@@ -390,7 +390,7 @@ export const StudentRow = memo(({
                                                 {/* Header Profile Section */}
                                                 <div className="flex items-center gap-4 mb-4 pb-4 border-b border-[var(--color-border)]/50">
                                                     <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-lg font-bold shadow-inner relative group/pop-img
-                                                        ${isRisk ? 'bg-red-500/10 text-red-500' : 'bg-[var(--color-primary)]/20 text-[var(--color-primary)]'}`}>
+                                                        ${isRisk ? 'bg-danger/10 text-danger' : 'bg-[var(--color-primary)]/20 text-[var(--color-primary)]'}`}>
                                                         {student.photo_url ? (
                                                             <img src={student.photo_url} className="w-full h-full object-cover rounded-2xl" onError={(e) => { e.target.onerror = null; e.target.parentElement.innerHTML = `<span>${(student.name || 'S').charAt(0)}</span>` }} loading="lazy" decoding="async" />
                                                         ) : (
@@ -412,8 +412,8 @@ export const StudentRow = memo(({
                                                     <div className="p-3 rounded-2xl bg-[var(--color-surface-alt)]/50 border border-[var(--color-border)] hover:border-[var(--color-primary)]/30 transition-colors">
                                                         <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mb-1 opacity-60">Status Poin</p>
                                                         <div className="flex items-center gap-2">
-                                                            <div className={`w-1.5 h-1.5 rounded-full ${p >= 0 ? 'bg-emerald-500 animate-pulse' : 'bg-red-500 animate-pulse'}`} />
-                                                            <p className={`text-xs font-bold ${p >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>{p} Poin</p>
+                                                            <div className={`w-1.5 h-1.5 rounded-full ${p >= 0 ? 'bg-success animate-pulse' : 'bg-danger animate-pulse'}`} />
+                                                            <p className={`text-xs font-bold ${p >= 0 ? 'text-success' : 'text-danger'}`}>{p} Poin</p>
                                                         </div>
                                                     </div>
                                                     <div className="p-3 rounded-2xl bg-[var(--color-surface-alt)]/50 border border-[var(--color-border)] hover:border-[var(--color-primary)]/30 transition-colors">
@@ -442,7 +442,7 @@ export const StudentRow = memo(({
                                                                 const msg = buildWAMessage?.(student, 'intro') || `Halo ${student.name}, saya dari sekolah...`;
                                                                 openWAForStudent?.(student, msg);
                                                             }}
-                                                            className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/20"
+                                                            className="w-10 h-10 rounded-xl bg-success/10 text-success flex items-center justify-center hover:bg-success hover:text-white transition-all border border-success/20"
                                                             title="Chat WhatsApp"
                                                         >
                                                             <WhatsAppIcon className="w-4 h-4" />
@@ -478,12 +478,12 @@ export const StudentRow = memo(({
                             {/* Badges prioritize visibility */}
                             <div className="flex items-center gap-1 flex-shrink-0">
                                 {isRisk ? (
-                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-bold bg-red-500/10 text-red-500 border border-red-500/20 uppercase tracking-wide animate-pulse">
+                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-bold bg-danger/10 text-danger border border-danger/20 uppercase tracking-wide animate-pulse">
                                         <TriangleAlert className="w-4 h-4" />
                                         Risiko
                                     </span>
                                 ) : p < 0 ? (
-                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20 uppercase tracking-wide">
+                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-bold bg-warning/10 text-warning-dark border border-warning/20 uppercase tracking-wide">
                                         <TriangleAlert className="w-4 h-4" />
                                         Monitor
                                     </span>
@@ -493,12 +493,12 @@ export const StudentRow = memo(({
                                         Legendary
                                     </span>
                                 ) : p >= 100 ? (
-                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 uppercase tracking-wide">
+                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-bold bg-success/10 text-success border border-success/20 uppercase tracking-wide">
                                         <Crown className="w-4 h-4" />
                                         Excellent
                                     </span>
                                 ) : p >= 50 ? (
-                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20 uppercase tracking-wide">
+                                    <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-bold bg-warning/10 text-warning-dark border border-warning/20 uppercase tracking-wide">
                                         <Star className="w-4 h-4" />
                                         Star
                                     </span>
@@ -578,7 +578,7 @@ export const StudentRow = memo(({
             {vc.status && (
                 <td className="px-4 py-4 text-center whitespace-nowrap">
                     <span className={`px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider
-                        ${student.status === 'aktif' ? 'bg-emerald-500/10 text-emerald-600' :
+                        ${student.status === 'aktif' ? 'bg-success/10 text-success' :
                             student.status === 'lulus' ? 'bg-blue-500/10 text-blue-600' :
                                 'bg-slate-500/10 text-slate-500'}`}>
                         {student.status || 'aktif'}
@@ -597,7 +597,7 @@ export const StudentRow = memo(({
                     ) : (
                         <div className="flex flex-col items-start gap-1 group/point">
                             <div className="flex items-center gap-1.5">
-                                <span className={`text-sm font-bold tracking-tight ${p < 0 ? 'text-red-500' : p > 0 ? 'text-emerald-500' : 'text-[var(--color-text)] opacity-40'}`}>
+                                <span className={`text-sm font-bold tracking-tight ${p < 0 ? 'text-danger' : p > 0 ? 'text-success' : 'text-[var(--color-text)] opacity-40'}`}>
                                     {p > 0 ? '+' : ''}{p}
                                 </span>
                                 <Sparkline data={student.trendHistory} />
@@ -623,7 +623,7 @@ export const StudentRow = memo(({
                                             setShowQuickAction(!showQuickAction)
                                         }}
                                         className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all
-                                        ${showQuickAction ? 'bg-amber-500 text-white shadow-lg' : 'bg-amber-500/10 text-amber-500 opacity-0 group-hover/point:opacity-100 hover:bg-amber-500 hover:text-white'}`}
+                                        ${showQuickAction ? 'bg-warning text-white shadow-lg' : 'bg-warning/10 text-warning opacity-0 group-hover/point:opacity-100 hover:bg-warning hover:text-white'}`}
                                         title="Aksi Cepat"
                                     >
                                         <Zap className="w-4 h-4" />
@@ -632,7 +632,7 @@ export const StudentRow = memo(({
                                         <>
                                             <div className="fixed inset-0 z-[9990] bg-black/5" onClick={() => setShowQuickAction(false)} />
                                             <div
-                                                className="fixed z-[9991] w-40 bg-white dark:bg-gray-800 shadow-xl rounded-2xl border border-[var(--color-border)] p-1.5 animate-in fade-in zoom-in-95 duration-200"
+                                                className="fixed z-[9991] w-40 bg-[var(--color-surface)] shadow-xl rounded-2xl border border-[var(--color-border)] p-1.5 animate-in fade-in zoom-in-95 duration-200"
                                                 style={{
                                                     top: boltRect.top + boltRect.height + 8,
                                                     left: boltRect.left + (boltRect.width / 2) - 80
@@ -665,7 +665,7 @@ export const StudentRow = memo(({
                                             openWAForStudent?.(student, msg)
                                             setLastAction(null)
                                         }}
-                                        className="h-8 px-3 rounded-xl bg-emerald-500 text-white text-xs font-bold uppercase tracking-wide shadow-lg flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all"
+                                        className="h-8 px-3 rounded-xl bg-success text-white text-xs font-bold uppercase tracking-wide shadow-lg flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all"
                                     >
                                         <WhatsAppIcon className="w-4 h-4" />
                                         Laporkan ke WA
@@ -701,11 +701,11 @@ export const StudentRow = memo(({
                                 <>
                                     <div className="w-10 h-1.5 rounded-full bg-[var(--color-surface-alt)] overflow-hidden shrink-0 border border-[var(--color-border)]/50">
                                         <div
-                                            className={`h-full transition-all duration-1000 ${score >= 80 ? 'bg-emerald-500' : score >= 50 ? 'bg-amber-500' : 'bg-red-500'}`}
+                                            className={`h-full transition-all duration-1000 ${score >= 80 ? 'bg-success' : score >= 50 ? 'bg-warning' : 'bg-danger'}`}
                                             style={{ width: `${score}%` }}
                                         />
                                     </div>
-                                    <span className={`text-xs font-bold ${score >= 80 ? 'text-emerald-600' : score >= 50 ? 'text-amber-600' : 'text-red-600'}`}>
+                                    <span className={`text-xs font-bold ${score >= 80 ? 'text-success' : score >= 50 ? 'text-warning-dark' : 'text-red-600'}`}>
                                         {score}%
                                     </span>
                                 </>
@@ -736,7 +736,7 @@ export const StudentRow = memo(({
             {vc.aksi && (
                 <td className="px-4 py-3 text-center w-[280px] whitespace-nowrap">
                     <div className="flex items-center justify-center gap-1">
-                        <button onClick={() => onViewProfile(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-emerald-500 hover:bg-emerald-500/10 transition-all text-sm" title="Lihat Profil">
+                        <button onClick={() => onViewProfile(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-success hover:bg-success/10 transition-all text-sm" title="Lihat Profil">
                             <Briefcase className="w-4 h-4" />
                         </button>
 
@@ -745,7 +745,7 @@ export const StudentRow = memo(({
                             onClick={() => openWAForStudent(student, buildWAMessage(student, 'general'))}
                             className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all text-sm
                                 ${student.phone
-                                    ? 'text-[var(--color-text-muted)] hover:text-emerald-600 hover:bg-emerald-500/10'
+                                    ? 'text-[var(--color-text-muted)] hover:text-success hover:bg-success/10'
                                     : 'text-slate-400 opacity-60 grayscale cursor-not-allowed'}`}
                             title={student.phone ? "Hubungi via WhatsApp" : "Nomer WA belum diatur"}
                         >
@@ -756,7 +756,7 @@ export const StudentRow = memo(({
                                 <SquarePen className="w-4 h-4" />
                             </button>
                         )}
-                        <button onClick={() => onViewPrint(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-amber-500 hover:bg-amber-500/10 transition-all text-sm" title="ID Card">
+                        <button onClick={() => onViewPrint(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-warning hover:bg-warning/10 transition-all text-sm" title="ID Card">
                             <IdCard className="w-4 h-4" />
                         </button>
                         <button onClick={() => onViewTags(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-violet-500 hover:bg-violet-500/10 transition-all text-sm" title="Label">
@@ -767,7 +767,7 @@ export const StudentRow = memo(({
                         </button>
 
                         {onConfirmDelete && (
-                            <button onClick={() => onConfirmDelete(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-red-400 hover:text-red-500 hover:bg-red-500/10 transition-all text-sm" title="Arsipkan">
+                            <button onClick={() => onConfirmDelete(student)} className="w-8 h-8 rounded-lg flex items-center justify-center text-danger hover:text-danger hover:bg-danger/10 transition-all text-sm" title="Arsipkan">
                                 <Archive className="w-4 h-4" />
                             </button>
                         )}
@@ -850,10 +850,10 @@ export const StudentMobileCard = memo(({
     };
 
     const quickActions = [
-        { label: 'Sangat Aktif', amount: 5, color: 'text-emerald-500', icon: Plus },
-        { label: 'Fokus', amount: 2, color: 'text-emerald-500', icon: Zap },
-        { label: 'Ramai', amount: -2, color: 'text-amber-500', icon: Minus },
-        { label: 'Melanggar', amount: -5, color: 'text-red-500', icon: TriangleAlert },
+        { label: 'Sangat Aktif', amount: 5, color: 'text-success', icon: Plus },
+        { label: 'Fokus', amount: 2, color: 'text-success', icon: Zap },
+        { label: 'Ramai', amount: -2, color: 'text-warning', icon: Minus },
+        { label: 'Melanggar', amount: -5, color: 'text-danger', icon: TriangleAlert },
     ]
 
     const maskInfo = (str, visibleLen = 3) => {
@@ -880,7 +880,7 @@ export const StudentMobileCard = memo(({
                 <div className="absolute bottom-0 left-0 right-0 h-1 px-[2px]">
                     <div className="w-full h-full bg-[var(--color-border)]/10">
                         <div
-                            className={`h-full transition-all duration-1000 ${calculateCompleteness(student) >= 80 ? 'bg-emerald-500/60' : calculateCompleteness(student) >= 50 ? 'bg-amber-500/60' : 'bg-red-400/60'}`}
+                            className={`h-full transition-all duration-1000 ${calculateCompleteness(student) >= 80 ? 'bg-success/60' : calculateCompleteness(student) >= 50 ? 'bg-warning/60' : 'bg-danger/60'}`}
                             style={{ width: `${calculateCompleteness(student)}%` }}
                         />
                     </div>
@@ -890,8 +890,8 @@ export const StudentMobileCard = memo(({
             {/* PIN INDICATOR (Visual Only) */}
             {student.is_pinned && (
                 <div className="absolute top-2.5 right-4 flex items-center gap-1">
-                    <div className="text-xs font-bold text-amber-500 uppercase tracking-wide opacity-60">Pinned</div>
-                    <Pin className="w-4 h-4 text-amber-500" />
+                    <div className="text-xs font-bold text-warning uppercase tracking-wide opacity-60">Pinned</div>
+                    <Pin className="w-4 h-4 text-warning" />
                 </div>
             )}
 
@@ -903,7 +903,7 @@ export const StudentMobileCard = memo(({
                         <div
                             className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold shadow-inner border-2 transition-all overflow-hidden
                                 ${isSelected ? 'border-[var(--color-primary)] scale-110' : 'border-white dark:border-gray-800'}
-                                ${isRisk ? 'bg-red-500/10 text-red-500' : 'bg-[var(--color-primary)] text-white'}
+                                ${isRisk ? 'bg-danger/10 text-danger' : 'bg-[var(--color-primary)] text-white'}
                                 ${isPrivacyMode ? 'blur-md grayscale opacity-60' : ''}`}
                         >
                             {student.photo_url
@@ -922,7 +922,7 @@ export const StudentMobileCard = memo(({
 
                         {/* Status Dot */}
                         <div className={`absolute -bottom-0.5 -right-0.5 w-4.5 h-4.5 rounded-full border-2 border-white dark:border-gray-800 flex items-center justify-center shadow-lg
-                            ${p < 0 ? 'bg-amber-500' : p > 0 ? 'bg-emerald-500' : 'bg-gray-300'}`}>
+                            ${p < 0 ? 'bg-warning' : p > 0 ? 'bg-success' : 'bg-gray-300'}`}>
                             {p < 0 ? <TrendingDown className="w-4 h-4 text-white" /> : p > 0 ? <TrendingUp className="w-4 h-4 text-white" /> : <Zap className="w-4 h-4 text-white" />}
                         </div>
                     </div>
@@ -957,8 +957,8 @@ export const StudentMobileCard = memo(({
                         </div>
 
                         <div className={`flex items-center gap-1 px-2.5 py-1 rounded-xl border font-bold text-xs transition-all shrink-0
-                            ${p < 0 ? 'bg-red-500/10 border-red-500/10 text-red-600' : p > 0 ? 'bg-emerald-500/10 border-emerald-500/10 text-emerald-600' : 'bg-[var(--color-surface-alt)]/80 border-[var(--color-border)]/40 text-[var(--color-text-muted)]'}`}>
-                            <div className={`w-1.5 h-1.5 rounded-full ${p < 0 ? 'bg-red-500' : p > 0 ? 'bg-emerald-500' : 'bg-gray-400 opacity-40'}`} />
+                            ${p < 0 ? 'bg-danger/10 border-danger/10 text-red-600' : p > 0 ? 'bg-success/10 border-success/10 text-success' : 'bg-[var(--color-surface-alt)]/80 border-[var(--color-border)]/40 text-[var(--color-text-muted)]'}`}>
+                            <div className={`w-1.5 h-1.5 rounded-full ${p < 0 ? 'bg-danger' : p > 0 ? 'bg-success' : 'bg-gray-400 opacity-40'}`} />
                             {p > 0 ? '+' : ''}{p} Poin
                             <Sparkline data={student.trendHistory} />
                         </div>
@@ -986,7 +986,7 @@ export const StudentMobileCard = memo(({
                             title={student.phone ? `Hubungi WA: ${student.phone}` : 'Belum ada nomor WA'}
                             className={`w-7 h-7 rounded-lg flex items-center justify-center border transition-all
                                 ${student.phone
-                                    ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white hover:shadow-lg active:scale-90'
+                                    ? 'border-success/20 bg-success/10 text-success hover:bg-success hover:text-white hover:shadow-lg active:scale-90'
                                     : 'border-[var(--color-border)]/40 bg-[var(--color-surface-alt)]/80 text-[var(--color-text-muted)] opacity-40 cursor-not-allowed'}`}
                         >
                             <WhatsAppIcon className="w-4 h-4" />
@@ -1000,9 +1000,9 @@ export const StudentMobileCard = memo(({
                         {p >= 200 ? (
                             <span className="text-xs font-bold px-2 py-0.5 rounded-md border border-orange-500/20 bg-orange-500/10 text-orange-600 uppercase tracking-wider">Legendary</span>
                         ) : p >= 100 ? (
-                            <span className="text-xs font-bold px-2 py-0.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 text-emerald-600 uppercase tracking-wider">Perfect</span>
+                            <span className="text-xs font-bold px-2 py-0.5 rounded-md border border-success/20 bg-success/10 text-success uppercase tracking-wider">Perfect</span>
                         ) : p >= 50 ? (
-                            <span className="text-xs font-bold px-2 py-0.5 rounded-md border border-amber-500/20 bg-amber-500/10 text-amber-600 uppercase tracking-wider">Star</span>
+                            <span className="text-xs font-bold px-2 py-0.5 rounded-md border border-warning/20 bg-warning/10 text-warning-dark uppercase tracking-wider">Star</span>
                         ) : null}
 
                         {(student.tags || []).slice(0, 3).map(tag => (
@@ -1025,7 +1025,7 @@ export const StudentMobileCard = memo(({
                     {/* Profil */}
                     <button
                         onClick={(e) => { e.stopPropagation(); onViewProfile(student) }}
-                        className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-[var(--color-text-muted)] hover:text-emerald-500 hover:bg-[var(--color-surface)] active:scale-95 transition-all"
+                        className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-[var(--color-text-muted)] hover:text-success hover:bg-[var(--color-surface)] active:scale-95 transition-all"
                     >
                         <IdCard className="w-4 h-4" />
                         <span className="text-xs font-bold uppercase tracking-wider leading-none">Profil</span>
@@ -1044,7 +1044,7 @@ export const StudentMobileCard = memo(({
                     <button
                         onClick={(e) => { e.stopPropagation(); onTogglePin(student) }}
                         className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl transition-all active:scale-95
-                            ${student.is_pinned ? 'text-amber-500 bg-[var(--color-surface)] shadow-sm border border-[var(--color-border)]/50' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] border border-transparent'}`}
+                            ${student.is_pinned ? 'text-warning bg-[var(--color-surface)] shadow-sm border border-[var(--color-border)]/50' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] border border-transparent'}`}
                     >
                         <Pin className={`w-4 h-4 ${student.is_pinned ? 'rotate-0' : 'rotate-45'}`} />
                         <span className="text-xs font-bold uppercase tracking-wider leading-none">
@@ -1066,8 +1066,8 @@ export const StudentMobileCard = memo(({
                             }}
                             className={`flex flex-col items-center justify-center gap-0.5 w-full py-1 rounded-xl transition-all active:scale-95 border
                                 ${showQuickAction
-                                    ? 'bg-amber-500 text-white border-amber-500 shadow-lg'
-                                    : 'bg-amber-500/10 border-amber-500/20 text-amber-500 hover:bg-amber-500 hover:text-white'}`}
+                                    ? 'bg-warning text-white border-warning shadow-lg'
+                                    : 'bg-warning/10 border-warning/20 text-warning hover:bg-warning hover:text-white'}`}
                         >
                             <Zap className="w-4 h-4" />
                             <span className="text-xs font-bold uppercase tracking-wider leading-none">Poin</span>
@@ -1118,7 +1118,7 @@ export const StudentMobileCard = memo(({
                     {onConfirmDelete && (
                         <button
                             onClick={(e) => { e.stopPropagation(); onConfirmDelete(student) }}
-                            className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-red-400/50 hover:text-red-500 hover:bg-red-500/10 active:scale-95 transition-all"
+                            className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-danger/50 hover:text-danger hover:bg-danger/10 active:scale-95 transition-all"
                         >
                             <Archive className="w-4 h-4" />
                             <span className="text-xs font-bold uppercase tracking-wider leading-none">Arsip</span>
@@ -1128,7 +1128,7 @@ export const StudentMobileCard = memo(({
 
                 {/* Mobile WA Post-Action Overlay - Rounded to match card */}
                 {lastAction && student.phone && (
-                    <div className="absolute inset-0 bg-emerald-500 z-[90] animate-in slide-in-from-right-full duration-500 rounded-3xl flex flex-col items-center justify-center text-white shadow-xl overflow-hidden">
+                    <div className="absolute inset-0 bg-success z-[90] animate-in slide-in-from-right-full duration-500 rounded-3xl flex flex-col items-center justify-center text-white shadow-xl overflow-hidden">
                         <button
                             onClick={() => {
                                 const msg = buildWAMessage?.(student, 'points') || `Laporan untuk ${student.name}: Poin ${lastAction.amount > 0 ? '+' : ''}${lastAction.amount} (${lastAction.reason})`
@@ -1321,17 +1321,17 @@ export const StudentMobileListRow = memo(({
 
     // Quick point options
     const quickActions = [
-        { label: 'Sakit / Izin', amount: 0, icon: History, color: 'text-amber-500' },
-        { label: 'Terlambat', amount: -5, icon: TrendingDown, color: 'text-red-500' },
-        { label: 'Melanggar', amount: -10, icon: TriangleAlert, color: 'text-red-500' },
-        { label: 'Prestasi', amount: 10, icon: TrendingUp, color: 'text-emerald-500' },
+        { label: 'Sakit / Izin', amount: 0, icon: History, color: 'text-warning' },
+        { label: 'Terlambat', amount: -5, icon: TrendingDown, color: 'text-danger' },
+        { label: 'Melanggar', amount: -10, icon: TriangleAlert, color: 'text-danger' },
+        { label: 'Prestasi', amount: 10, icon: TrendingUp, color: 'text-success' },
     ]
 
     return (
         <div
             className={`w-full flex flex-col transition-all duration-300
                 ${isSelected ? 'bg-[var(--color-primary)]/[0.04]' : 'bg-[var(--color-surface)]'}
-                ${student.is_pinned ? 'border-l-[4px] border-l-amber-400' : ''}
+                ${student.is_pinned ? 'border-l-[4px] border-l-warning' : ''}
                 ${isExpanded ? 'shadow-md bg-[var(--color-surface-alt)]/[0.02]' : ''}
             `}
         >
@@ -1364,7 +1364,7 @@ export const StudentMobileListRow = memo(({
                 <div className="relative shrink-0 pointer-events-none">
                     <div
                         className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold shadow-inner border transition-all overflow-hidden
-                        ${isRisk ? 'bg-red-500/10 text-red-500 border-red-200' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-border)]'}
+                        ${isRisk ? 'bg-danger/10 text-danger border-red-200' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-border)]'}
                             ${isPrivacyMode ? 'blur-md grayscale opacity-60' : ''}`}
                     >
                         {student.photo_url && !isPrivacyMode ? (
@@ -1394,7 +1394,7 @@ export const StudentMobileListRow = memo(({
                 {/* Points Block (Slim) */}
                 <div className="flex items-center gap-2 shrink-0 pl-1 pointer-events-none">
                     <div className={`text-xs font-bold px-2 py-0.5 rounded-lg border text-center min-w-[45px] flex items-center justify-center gap-1
-                        ${p < 0 ? 'bg-red-500/10 border-red-500/10 text-red-600 shadow-sm' : p > 0 ? 'bg-emerald-500/10 border-emerald-500/10 text-emerald-600 shadow-sm' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)]/60 text-[var(--color-text-muted)] opacity-70'}`}>
+                        ${p < 0 ? 'bg-danger/10 border-danger/10 text-red-600 shadow-sm' : p > 0 ? 'bg-success/10 border-success/10 text-success shadow-sm' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)]/60 text-[var(--color-text-muted)] opacity-70'}`}>
                         <span className="tracking-tight">{p > 0 ? '+' : ''}{p}</span>
                     </div>
                 </div>
@@ -1420,7 +1420,7 @@ export const StudentMobileListRow = memo(({
                     {/* Profil */}
                     <button
                         onClick={(e) => { e.stopPropagation(); onViewProfile(student) }}
-                        className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-[var(--color-text-muted)] hover:text-emerald-500 hover:bg-[var(--color-surface)] active:scale-95 transition-all animate-in fade-in duration-300"
+                        className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-[var(--color-text-muted)] hover:text-success hover:bg-[var(--color-surface)] active:scale-95 transition-all animate-in fade-in duration-300"
                     >
                         <IdCard className="w-4 h-4" />
                         <span className="text-xs font-bold uppercase tracking-wider leading-none">Profil</span>
@@ -1453,7 +1453,7 @@ export const StudentMobileListRow = memo(({
                         disabled={!student.phone}
                         className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl active:scale-95 transition-all animate-in fade-in duration-300
                             ${student.phone
-                                ? 'text-emerald-600 hover:text-emerald-500 hover:bg-[var(--color-surface)]'
+                                ? 'text-success hover:text-success hover:bg-[var(--color-surface)]'
                                 : 'text-[var(--color-text-muted)] opacity-35 cursor-not-allowed'}`}
                     >
                         <WhatsAppIcon className="w-4 h-4" />
@@ -1464,7 +1464,7 @@ export const StudentMobileListRow = memo(({
                     <button
                         onClick={(e) => { e.stopPropagation(); onTogglePin(student) }}
                         className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl transition-all active:scale-95 animate-in fade-in duration-300
-                            ${student.is_pinned ? 'text-amber-500 bg-[var(--color-surface)] shadow-sm border border-[var(--color-border)]/50' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] border border-transparent'}`}
+                            ${student.is_pinned ? 'text-warning bg-[var(--color-surface)] shadow-sm border border-[var(--color-border)]/50' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] border border-transparent'}`}
                     >
                         <Pin className={`w-4 h-4 ${student.is_pinned ? 'rotate-0' : 'rotate-45'}`} />
                         <span className="text-xs font-bold uppercase tracking-wider leading-none">
@@ -1486,8 +1486,8 @@ export const StudentMobileListRow = memo(({
                             }}
                             className={`flex flex-col items-center justify-center gap-0.5 w-full py-1 rounded-xl transition-all active:scale-95 border
                                 ${showQuickAction
-                                    ? 'bg-amber-500 text-white border-amber-500 shadow-lg'
-                                    : 'bg-amber-500/10 border-amber-500/20 text-amber-500 hover:bg-amber-500 hover:text-white'}`}
+                                    ? 'bg-warning text-white border-warning shadow-lg'
+                                    : 'bg-warning/10 border-warning/20 text-warning hover:bg-warning hover:text-white'}`}
                         >
                             <Zap className="w-4 h-4" />
                             <span className="text-xs font-bold uppercase tracking-wider leading-none">Poin</span>
@@ -1538,7 +1538,7 @@ export const StudentMobileListRow = memo(({
                     {onConfirmDelete && (
                         <button
                             onClick={(e) => { e.stopPropagation(); onConfirmDelete(student) }}
-                            className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-red-400/50 hover:text-red-500 hover:bg-red-500/10 active:scale-95 transition-all animate-in fade-in duration-300"
+                            className="flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl text-danger/50 hover:text-danger hover:bg-danger/10 active:scale-95 transition-all animate-in fade-in duration-300"
                         >
                             <Archive className="w-4 h-4" />
                             <span className="text-xs font-bold uppercase tracking-wider leading-none">Arsip</span>

@@ -158,6 +158,9 @@ const DatePicker = memo(({
         return new Date()
     })
 
+    const month = currentDate.getMonth()
+    const year = currentDate.getFullYear()
+
     // Batas minimum (awal hari) — prop `min` kini benar-benar diterapkan
     const minDate = useMemo(() => {
         if (!min) return null
@@ -215,9 +218,6 @@ const DatePicker = memo(({
             setCurrentDate(parsed)
         }
     }
-
-    const month = currentDate.getMonth()
-    const year = currentDate.getFullYear()
 
     const handlePrevMonth = useCallback((e) => {
         e.stopPropagation()

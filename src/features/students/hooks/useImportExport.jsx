@@ -145,7 +145,7 @@ export function useImportExport({
             'Kode Registrasi': s.registration_code || '',
             NISN: s.nisn || '',
             Nama: s.name || '',
-            Gender: s.gender === 'L' ? 'Putra' : 'Putri',
+            Gender: s.gender === 'L' ? 'Putra' : s.gender === 'P' ? 'Putri' : '',
             Kelas: s.classes?.name || '',
             Poin: s.total_points ?? 0,
             Phone: s.phone || '',
@@ -161,7 +161,7 @@ export function useImportExport({
         { key: 'kode', label: 'Kode Registrasi', fn: s => s.registration_code || '' },
         { key: 'nisn', label: 'NISN', fn: s => s.nisn || '' },
         { key: 'nama', label: 'Nama', fn: s => s.name || '' },
-        { key: 'gender', label: 'Gender', fn: s => s.gender === 'L' ? 'Putra' : 'Putri' },
+        { key: 'gender', label: 'Gender', fn: s => s.gender === 'L' ? 'Putra' : s.gender === 'P' ? 'Putri' : '' },
         { key: 'kelas', label: 'Kelas', fn: s => s.classes?.name || '' },
         { key: 'father_name', label: 'Nama Ayah', fn: s => s.metadata?.father?.name || s.father_name || '' },
         { key: 'mother_name', label: 'Nama Ibu', fn: s => s.metadata?.mother?.name || s.mother_name || '' },
@@ -316,6 +316,19 @@ export function useImportExport({
     // ---- HELPERS & IMPORT PROCESS ----
     const sanitizeText = (s) => String(s ?? '').replace(/[<>]/g, '').trim()
 
+    // Buang nilai kosong ('' / null / {}) dari metadata supaya jsonb tetap bersih.
+    const isPlainObj = (v) => Object.prototype.toString.call(v) === '[object Object]'
+    const compactMeta = (obj) => {
+        const out = {}
+        for (const [k, v] of Object.entries(obj || {})) {
+            const val = isPlainObj(v) ? compactMeta(v) : v
+            const empty = val === '' || val === null || val === undefined
+                || (isPlainObj(val) && Object.keys(val).length === 0)
+            if (!empty) out[k] = val
+        }
+        return out
+    }
+
     const normalizePhone = (raw) => {
         const v = String(raw ?? '').trim()
         if (!v) return ''
@@ -395,14 +408,13 @@ export function useImportExport({
             // lengkap, KIP, dll.) -> metadata jsonb
             const { father: dpFather = {}, mother: dpMother = {}, guardian: dpGuardian = {}, ...dpOther } = extractDapodikMetadata(r)
 
-            let gender = genderRaw
+            // Gender kosong / tidak dikenali dibiarkan kosong (jangan diam-diam jadi 'L');
+            // validateImportPreview memberi peringatan agar diisi manual.
+            let gender = ''
             if (genderRaw) {
                 const l = genderRaw.toLowerCase()
                 if (l.startsWith('l') || l === 'pria' || l === 'cowok' || l === 'laki') gender = 'L'
                 else if (l.startsWith('p') || l === 'wanita' || l === 'cewek' || l === 'perempuan') gender = 'P'
-                else gender = 'L'
-            } else {
-                gender = 'L'
             }
 
             const classObj = classesList.find(c => c.name.toLowerCase() === (className || '').toLowerCase())
@@ -416,12 +428,12 @@ export function useImportExport({
                 class_id: classObj?.id || '',
                 guardian_name: guardianName || null,
                 photo_url: null,
-                metadata: {
-                    father: { name: fatherName || '', ...dpFather },
-                    mother: { name: motherName || '', ...dpMother },
+                metadata: compactMeta({
+                    father: { name: fatherName, ...dpFather },
+                    mother: { name: motherName, ...dpMother },
                     guardian: { ...dpGuardian },
                     ...dpOther,
-                },
+                }),
                 _className: className || '',
                 _isDupe: false,
                 _hasError: false,
@@ -469,6 +481,7 @@ export function useImportExport({
             if (!r.name) rowIssues.push({ level: 'error', message: 'Nama tidak boleh kosong' })
             if (!r.class_id) rowIssues.push({ level: 'error', message: 'Kelas tidak valid atau tidak ditemukan' })
             if (r.phone && !isValidPhone(r.phone)) rowIssues.push({ level: 'warn', message: 'Format No. HP mungkin salah (cek lagi jika ragu)' })
+            if (!r.gender) rowIssues.push({ level: 'warn', message: 'Gender kosong / tidak dikenali (isi manual)' })
 
             // Dupe check
             let isDupe = false
@@ -553,7 +566,7 @@ export function useImportExport({
             const mapping = {}
             const norm = (str) => (str || '').toLowerCase().replace(/[\s\xA0\n\r]+/g, ' ').trim()
             SYSTEM_COLS.forEach(sys => {
-                const match = headers.find(h => {
+                const matches = headers.filter(h => {
                     const normH = norm(h)
                     const cleanH = norm(h.split(/[\(\[\{（\n\r]/)[0])
                     const normL = norm(sys.label)
@@ -566,6 +579,11 @@ export function useImportExport({
                     })) return true
                     return false
                 })
+                // Beberapa header bisa cocok (Dapodik: 'Telepon' sering kosong, 'HP' yang terisi)
+                const filled = (h) => rows.reduce((n, r) => n + (String(r[h] ?? '').trim() !== '' ? 1 : 0), 0)
+                const match = matches.length > 1
+                    ? [...matches].sort((a, b) => filled(b) - filled(a))[0]
+                    : matches[0]
                 if (match) mapping[sys.key] = match
             })
             setImportColumnMapping(mapping)
@@ -591,6 +609,21 @@ export function useImportExport({
         setImportPreview(newPrev)
         validateImportPreview(newPrev)
         addToast(`Selesai memperbarui ${newPrev.length} baris`, 'success')
+    }
+
+    // Petakan satu grup rombel Dapodik (nama rombel + gender) ke kelas asli.
+    // Rombel Dapodik campur putra/putri & program, sedangkan kelas asli
+    // dipisah (mis. "A Boarding Putra"), jadi keputusan pemetaan per grup.
+    const handleBulkFixClassGroup = (fromClassName, gender, classId) => {
+        if (!fromClassName || !classId) return
+        const targetName = classesList.find(x => x.id === classId)?.name || ''
+        const newPrev = importPreview.map(r => {
+            if ((r._className || '') !== fromClassName) return r
+            if (gender && (r.gender || '') !== gender) return r
+            return { ...r, class_id: classId, _className: targetName || r._className }
+        })
+        setImportPreview(newPrev)
+        validateImportPreview(newPrev)
     }
 
     const handleImportCellEdit = (index, key, value) => {
@@ -669,6 +702,11 @@ export function useImportExport({
                     const { _className, _isDupe, _hasError, _hasWarn, ...cleanRow } = r
                     return {
                         ...cleanRow,
+                        // String kosong -> null (constraint students_nisn_not_blank + unique index nisn)
+                        nisn: String(r.nisn ?? '').trim() || null,
+                        phone: String(r.phone ?? '').trim() || null,
+                        gender: r.gender || null,
+                        guardian_name: String(r.guardian_name ?? '').trim() || null,
                         // Pakai NIPD dari file Dapodik kalau ada, kalau tidak generate otomatis
                         registration_code: String(r.registration_code || '').trim() || generateCode(),
                         pin: String(Math.floor(1000 + Math.random() * 9000)),
@@ -704,7 +742,7 @@ export function useImportExport({
             fetchStats()
         } catch (err) {
             console.error(err)
-            addToast('Gagal import (cek constraint DB / duplikat / koneksi)', 'error')
+            addToast(`Gagal import: ${err?.message || 'cek constraint DB / duplikat / koneksi'}`, 'error')
         } finally {
             setImporting(false)
         }
@@ -884,6 +922,7 @@ export function useImportExport({
         handleFileChange,
         handleCommitImport,
         handleBulkFix,
+        handleBulkFixClassGroup,
         validateImportPreview,
         handleDownloadTemplate,
         handleExportCSV,

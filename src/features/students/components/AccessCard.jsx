@@ -45,15 +45,15 @@ export default function AccessCard({
             title={newlyCreatedStudent ? "Registrasi Berhasil!" : isBulk ? `Cetak Kartu (${studentsToShow.length} Siswa)` : "Akses & Kartu"}
             description={newlyCreatedStudent ? "Data siswa telah tersimpan. Silakan simpan kode akses atau cetak kartu pelajar di bawah." : "Kelola akses portal orang tua dan cetak kartu identitas siswa."}
             icon={newlyCreatedStudent ? CircleCheck : Printer}
-            iconBg={newlyCreatedStudent ? "bg-emerald-500/10" : "bg-indigo-500/10"}
-            iconColor={newlyCreatedStudent ? "text-emerald-600" : "text-indigo-600"}
+            iconBg={newlyCreatedStudent ? "bg-success/10" : "bg-[var(--color-primary)]/10"}
+            iconColor={newlyCreatedStudent ? "text-success" : "text-[var(--color-primary)]"}
             size={isBulk ? "xl" : "lg"}
             mobileVariant="bottom-sheet"
         >
             <div className="space-y-4 py-1">
                 {newlyCreatedStudent && (
-                    <div className="p-2.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center gap-3 text-emerald-600">
-                        <div className="w-7 h-7 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 text-xs">
+                    <div className="p-2.5 bg-success/10 border border-success/20 rounded-xl flex items-center gap-3 text-success">
+                        <div className="w-7 h-7 rounded-full bg-success/20 flex items-center justify-center shrink-0 text-xs">
                             <CircleCheck className="w-4 h-4" />
                         </div>
                         <p className="text-xs font-bold uppercase tracking-wide">Registrasi Berhasil! Data akses & kartu tersedia di bawah.</p>
@@ -168,28 +168,28 @@ export default function AccessCard({
                                 <div className="flex items-center justify-between px-1">
                                     <div className="flex items-center gap-2.5">
                                         <div className="relative flex items-center justify-center">
-                                            <div className="w-1 h-3.5 bg-emerald-500 rounded-full" />
-                                            <div className="absolute w-2 h-4 bg-emerald-500/30 rounded-full animate-pulse" />
+                                            <div className="w-1 h-3.5 bg-success rounded-full" />
+                                            <div className="absolute w-2 h-4 bg-success/30 rounded-full animate-pulse" />
                                         </div>
                                         <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)] flex items-center gap-2">
-                                            Status Akses: <span className="text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/10">Aktif</span>
+                                            Status Akses: <span className="text-success bg-success/10 px-2 py-0.5 rounded-md border border-success/10">Aktif</span>
                                         </span>
                                     </div>
-                                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-indigo-500/5 border border-indigo-500/10 shadow-sm">
-                                        <GraduationCap className="w-4 h-4 text-indigo-500 opacity-60" />
-                                        <span className="text-xs font-bold uppercase tracking-wide text-indigo-600">{studentsToShow[0].className}</span>
+                                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/10 shadow-sm">
+                                        <GraduationCap className="w-4 h-4 text-[var(--color-primary)] opacity-60" />
+                                        <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-primary)]">{studentsToShow[0].className}</span>
                                     </div>
                                 </div>
 
                                 {/* Main Interaction Hub: High Density Grid */}
                                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
                                     <div className="lg:col-span-5 group relative">
-                                        <div className="relative h-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm group-hover:border-indigo-500/40 transition-all flex items-center overflow-hidden">
+                                        <div className="relative h-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm group-hover:border-[var(--color-primary)]/40 transition-all flex items-center overflow-hidden">
                                             <div className="px-3 h-full bg-[var(--color-surface-alt)]/50 border-r border-[var(--color-border)] flex items-center shrink-0">
                                                 <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-70">ID</label>
                                             </div>
                                             <div className="flex-1 px-3 flex items-center justify-between gap-2">
-                                                <span className="text-xs font-bold text-indigo-600 font-mono tracking-wider whitespace-nowrap">
+                                                <span className="text-xs font-bold text-[var(--color-primary)] font-mono tracking-wider whitespace-nowrap">
                                                     {isPrivacyMode ? maskInfo(studentsToShow[0].code || studentsToShow[0].registration_code, 2) : (studentsToShow[0].code || studentsToShow[0].registration_code)}
                                                 </span>
                                                 <button
@@ -199,7 +199,7 @@ export default function AccessCard({
                                                         addToast?.('ID Berhasil disalin', 'success');
                                                     }}
                                                     title="Salin ID"
-                                                    className="shrink-0 w-7 h-7 rounded-lg bg-indigo-500/5 text-indigo-600 text-xs hover:bg-indigo-500 hover:text-white transition-all transform active:scale-90 flex items-center justify-center"
+                                                    className="shrink-0 w-7 h-7 rounded-lg bg-[var(--color-primary)]/5 text-[var(--color-primary)] text-xs hover:bg-[var(--color-primary)] hover:text-white transition-all transform active:scale-90 flex items-center justify-center"
                                                 >
                                                     <Copy className="w-4 h-4" />
                                                 </button>
@@ -209,12 +209,12 @@ export default function AccessCard({
 
                                     {/* PIN Box - Col Span 3 */}
                                     <div className="lg:col-span-3 group relative">
-                                        <div className="relative h-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm group-hover:border-emerald-500/40 transition-all flex items-center overflow-hidden">
-                                            <div className="px-2.5 h-full bg-emerald-500/5 border-r border-emerald-500/10 flex items-center shrink-0">
-                                                <label className="text-xs font-bold uppercase tracking-wide text-emerald-600 opacity-70">PIN</label>
+                                        <div className="relative h-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm group-hover:border-success/40 transition-all flex items-center overflow-hidden">
+                                            <div className="px-2.5 h-full bg-success/5 border-r border-success/10 flex items-center shrink-0">
+                                                <label className="text-xs font-bold uppercase tracking-wide text-success opacity-70">PIN</label>
                                             </div>
                                             <div className="flex-1 px-2.5 flex items-center justify-between gap-2">
-                                                <span className="text-xs font-bold text-emerald-600 font-mono tracking-wide">
+                                                <span className="text-xs font-bold text-success font-mono tracking-wide">
                                                     {isPrivacyMode ? '••••' : studentsToShow[0].pin}
                                                 </span>
                                                 <button
@@ -224,7 +224,7 @@ export default function AccessCard({
                                                         addToast?.('PIN Berhasil disalin', 'success');
                                                     }}
                                                     title="Salin PIN"
-                                                    className="shrink-0 w-7 h-7 rounded-lg bg-emerald-500/5 text-emerald-600 text-xs hover:bg-emerald-500 hover:text-white transition-all transform active:scale-90 flex items-center justify-center"
+                                                    className="shrink-0 w-7 h-7 rounded-lg bg-success/5 text-success text-xs hover:bg-success hover:text-white transition-all transform active:scale-90 flex items-center justify-center"
                                                 >
                                                     <Copy className="w-4 h-4" />
                                                 </button>
@@ -234,7 +234,7 @@ export default function AccessCard({
 
                                     <button
                                         onClick={() => openWAForStudent?.(studentsToShow[0], buildWAMessage?.(studentsToShow[0], waTemplate))}
-                                        className="lg:col-span-4 h-10 rounded-xl bg-emerald-500 text-white shadow-lg text-xs font-bold uppercase tracking-wide hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 px-4 group whitespace-nowrap"
+                                        className="lg:col-span-4 h-9 rounded-lg bg-success hover:bg-success-dark text-white shadow-sm text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap transition-colors flex items-center justify-center gap-2 px-4 group"
                                     >
                                         <WhatsAppIcon className="w-4 h-4 transition-transform group-hover:rotate-12 shrink-0" />
                                         <span>Bagikan ke Wali</span>
@@ -257,7 +257,7 @@ export default function AccessCard({
                                                 handleResetPin?.(studentsToShow[0]);
                                             }}
                                             disabled={resettingPin}
-                                            className="h-10 px-4 rounded-xl border border-red-500/10 text-red-500 text-xs font-bold uppercase tracking-wide hover:bg-red-500 hover:text-white transition-all flex items-center gap-2 group active:scale-95 whitespace-nowrap"
+                                            className="h-9 px-4 rounded-lg border border-danger/20 bg-danger/5 text-danger text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap hover:bg-danger hover:text-white transition-colors flex items-center gap-2 group shrink-0"
                                         >
                                             resettingPin ? <LoaderCircle className={`w-4 h-4 ${resettingPin ? 'animate-spin' : 'group-hover:-rotate-180 transition-transform duration-300'}`} /> : <RotateCcw className={`w-4 h-4 ${resettingPin ? 'animate-spin' : 'group-hover:-rotate-180 transition-transform duration-300'}`} />
                                             Reset PIN
@@ -269,7 +269,7 @@ export default function AccessCard({
                                         <button
                                             onClick={() => setShowExportMenu(v => !v)}
                                             disabled={generatingPdf}
-                                            className="h-10 px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 shadow-lg transition-all flex items-center gap-2 active:scale-95 whitespace-nowrap"
+                                            className="h-9 px-5 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap shadow-sm transition-colors flex items-center gap-2 shrink-0"
                                         >
                                             {generatingPdf
                                                 ? <><LoaderCircle className="w-4 h-4 animate-spin" /> Proses...</>
@@ -293,16 +293,16 @@ export default function AccessCard({
                                                         </button>
                                                         <button
                                                             onClick={() => { handleSavePNG?.(studentsToShow[0]); setShowExportMenu(false); }}
-                                                            className="w-full flex items-center gap-3 px-2 py-2 text-xs font-bold text-[var(--color-text)] hover:bg-emerald-500/10 hover:text-emerald-600 rounded-lg transition-all text-left group"
+                                                            className="w-full flex items-center gap-3 px-2 py-2 text-xs font-bold text-[var(--color-text)] hover:bg-success/10 hover:text-success rounded-lg transition-all text-left group"
                                                         >
-                                                            <Image className="w-4 text-emerald-500" />
+                                                            <Image className="w-4 text-success" />
                                                             Simpan Gambar (PNG)
                                                         </button>
                                                         <button
                                                             onClick={() => { handlePrintThermal?.(studentsToShow[0]); setShowExportMenu(false); }}
-                                                            className="w-full flex items-center gap-3 px-2 py-2 text-xs font-bold text-[var(--color-text)] hover:bg-orange-500/10 hover:text-orange-600 rounded-lg transition-all text-left group"
+                                                            className="w-full flex items-center gap-3 px-2 py-2 text-xs font-bold text-[var(--color-text)] hover:bg-warning/10 hover:text-warning-dark rounded-lg transition-all text-left group"
                                                         >
-                                                            <Printer className="w-4 text-orange-500" />
+                                                            <Printer className="w-4 text-warning" />
                                                             Struk Kasir (Thermal)
                                                         </button>
                                                     </div>
@@ -319,7 +319,7 @@ export default function AccessCard({
                             <button
                                 onClick={() => generateStudentPDF?.(studentsToShow)}
                                 disabled={generatingPdf}
-                                className="h-10 px-6 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-60 shrink-0"
+                                className="h-9 px-6 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap shadow-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-60 shrink-0"
                             >
                                 {generatingPdf
                                     ? <><LoaderCircle className="w-4 h-4 animate-spin" /> Proses...</>

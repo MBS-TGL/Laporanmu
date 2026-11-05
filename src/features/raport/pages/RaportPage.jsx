@@ -8,11 +8,13 @@ import {
     Scale, Ruler, HeartPulse, DoorOpen, UploadCloud, FileText, FileSpreadsheet, FileArchive,
     Archive, Sliders, Plus, Filter, Sparkles, TrendingUp, TrendingDown, HelpCircle, Info,
     SortAsc, Wifi, Keyboard, Lightbulb, Moon, Sun, Maximize2, Minimize2, ChevronDown, Upload, ChevronUp,
-    PenTool, Fingerprint, QrCode,
+    PenTool, Fingerprint, QrCode, Undo2, Redo2,
     Cog,
     ActivityIcon,
     SlidersHorizontal
 } from 'lucide-react'
+import { usePageShortcuts } from '@shared/hooks/usePageShortcuts'
+import ShortcutsModal from '@shared/components/ShortcutsModal'
 const WhatsAppIcon = (props) => (
     <svg viewBox="0 0 448 512" fill="currentColor" {...props}>
         <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
@@ -48,7 +50,7 @@ import Summary from '@features/raport/components/Summary'
 import { buildRaportPrintDocumentHtml } from '@features/raport/utils/printHtml'
 import LayoutSettings, { loadLayoutConfig } from '@features/raport/components/LayoutSettings'
 import StudentRow, { ExtraInput, ExtraTextarea } from '@features/raport/components/RecordRow'
-import { ShortcutModalContent, WaBlastConfirmContent, WaBlastProgressContent, ZipBlastProgressContent } from '@features/raport/components/RaportModals'
+import { WaBlastConfirmContent, WaBlastProgressContent, ZipBlastProgressContent } from '@features/raport/components/RaportModals'
 import Skeleton from '@shared/components/Skeleton'
 import { useCore } from '@hooks/reports/useCore'
 import { useImportExport } from '@hooks/reports/useImportExport'
@@ -260,11 +262,6 @@ export default function RaportPage() {
     const [headerMenuRect, setHeaderMenuRect] = useState(null)
     const headerMenuBtnRef = useRef(null)
 
-    const [showShortcutModal, setShowShortcutModal] = useState(false)
-    const [shortcutRect, setShortcutRect] = useState(null)
-    const shortcutBtnRef = useRef(null)
-    const saveAllRef = useRef(null)
-    saveAllRef.current = saveAll
     const [showTutorialModal, setShowTutorialModal] = useState(false)
     const [showTemplatePreviewModal, setShowTemplatePreviewModal] = useState(false)
 
@@ -737,70 +734,43 @@ export default function RaportPage() {
         }
     }, [])
 
-    // ── Shortcut: "?" key opens shortcut modal
-    useEffect(() => {
-        const handler = (e) => {
-            if (e.key === '?' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
-                if (!showShortcutModal && shortcutBtnRef.current) {
-                    setShortcutRect(shortcutBtnRef.current.getBoundingClientRect())
-                }
-                setShowShortcutModal(v => !v)
-            }
-            if (e.key === 'Escape') setShowShortcutModal(false)
+    // ── Ctrl+Z Undo / Ctrl+Y Redo (scores only, step 2) — binding di usePageShortcuts
+    const undoScores = useCallback(() => {
+        const hist = scoresHistoryRef.current
+        const idx = scoresHistoryIdxRef.current
+        if (idx > 0) {
+            scoresHistoryIdxRef.current = idx - 1
+            setScoresRaw(JSON.parse(JSON.stringify(hist[idx - 1])))
+            addToast('Undo nilai', 'info')
         }
-        window.addEventListener('keydown', handler)
-        return () => window.removeEventListener('keydown', handler)
-    }, [showShortcutModal])
+    }, [addToast, setScoresRaw, scoresHistoryRef, scoresHistoryIdxRef])
 
-    // Sticky positioning for portaled shortcuts dropdown
-    useEffect(() => {
-        if (!showShortcutModal) return
-        const update = () => {
-            if (shortcutBtnRef.current) setShortcutRect(shortcutBtnRef.current.getBoundingClientRect())
+    const redoScores = useCallback(() => {
+        const hist = scoresHistoryRef.current
+        const idx = scoresHistoryIdxRef.current
+        if (idx < hist.length - 1) {
+            scoresHistoryIdxRef.current = idx + 1
+            setScoresRaw(JSON.parse(JSON.stringify(hist[idx + 1])))
+            addToast('Redo nilai', 'info')
         }
-        update()
-        window.addEventListener('scroll', update, true)
-        window.addEventListener('resize', update)
-        return () => {
-            window.removeEventListener('scroll', update, true)
-            window.removeEventListener('resize', update)
-        }
-    }, [showShortcutModal])
+    }, [addToast, setScoresRaw, scoresHistoryRef, scoresHistoryIdxRef])
 
-    // FIX #3: Ctrl+S — gunakan ref agar tidak ada TDZ (saveAll belum tersedia saat useEffect ini dibaca)
-    useEffect(() => {
-        const handler = (e) => { if ((e.ctrlKey || e.metaKey) && e.key === 's' && step === 2) { e.preventDefault(); saveAllRef.current?.() } }
-        window.addEventListener('keydown', handler)
-        return () => window.removeEventListener('keydown', handler)
-    }, [step])
-
-    // ── Ctrl+Z Undo / Ctrl+Y Redo (scores only, step 2)
-    useEffect(() => {
-        const handler = (e) => {
-            if (step !== 2) return
-            if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
-                e.preventDefault()
-                const hist = scoresHistoryRef.current
-                const idx = scoresHistoryIdxRef.current
-                if (idx > 0) {
-                    scoresHistoryIdxRef.current = idx - 1
-                    setScoresRaw(JSON.parse(JSON.stringify(hist[idx - 1])))
-                    addToast('Undo nilai', 'info')
-                }
-            } else if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
-                e.preventDefault()
-                const hist = scoresHistoryRef.current
-                const idx = scoresHistoryIdxRef.current
-                if (idx < hist.length - 1) {
-                    scoresHistoryIdxRef.current = idx + 1
-                    setScoresRaw(JSON.parse(JSON.stringify(hist[idx + 1])))
-                    addToast('Redo nilai', 'info')
-                }
-            }
-        }
-        window.addEventListener('keydown', handler)
-        return () => window.removeEventListener('keydown', handler)
-    }, [step, addToast])
+    // ── SHORTCUTS (binding + daftar modal dari satu deklarasi — usePageShortcuts) ──
+    // Binding lama tidak mengenal gating modal — hanya step + sedang mengetik, jadi isBlocked dibiarkan false.
+    // Baris Navigasi Sel & Esc tampil apa adanya (display-only, tanpa onSelect) mengikuti daftar lama.
+    const sc = usePageShortcuts({
+        items: [
+            { section: 'Navigasi Sel (Excel-like)', keys: ['Tab', 'Enter'], label: 'Pindah ke cell berikutnya' },
+            { section: 'Navigasi Sel (Excel-like)', keys: ['↑', '↓'], label: 'Naik / turun baris' },
+            { section: 'Navigasi Sel (Excel-like)', keys: ['←', '→'], label: 'Pindah kolom kriteria' },
+            { section: 'Navigasi Sel (Excel-like)', keys: ['Esc'], label: 'Tutup modal / panel' },
+            { section: 'Aksi & Pengeditan', keys: ['Ctrl', 'S'], label: 'Simpan semua nilai', icon: Save, when: step === 2, onSelect: () => saveAll() },
+            { section: 'Aksi & Pengeditan', keys: ['Ctrl', 'Z'], label: 'Undo nilai', icon: Undo2, when: step === 2, onSelect: undoScores },
+            { section: 'Aksi & Pengeditan', keys: ['Ctrl', 'Y'], label: 'Redo nilai', icon: Redo2, when: step === 2, onSelect: redoScores },
+            { section: 'Aksi & Pengeditan', keys: ['/'], label: 'Fokus ke pencarian santri', icon: Search, when: step === 0, onSelect: () => searchInputRef.current?.focus() },
+            { section: 'Aksi & Pengeditan', keys: ['?'], label: 'Tampilkan shortcut ini', icon: Keyboard },
+        ],
+    })
 
 
     // ── Export methods mapped from hooks ──
@@ -828,19 +798,16 @@ export default function RaportPage() {
     const fileInputRef = useRef(null)
     // Update rect on scroll to keep dropdowns attached
     useEffect(() => {
-        if (isHeaderMenuOpen || showShortcutModal) {
+        if (isHeaderMenuOpen) {
             const handleScroll = () => {
                 if (isHeaderMenuOpen && headerMenuBtnRef.current) {
                     setHeaderMenuRect(headerMenuBtnRef.current.getBoundingClientRect());
-                }
-                if (showShortcutModal && shortcutBtnRef.current) {
-                    setShortcutRect(shortcutBtnRef.current.getBoundingClientRect());
                 }
             };
             window.addEventListener('scroll', handleScroll, { passive: true });
             return () => window.removeEventListener('scroll', handleScroll);
         }
-    }, [isHeaderMenuOpen, showShortcutModal]);
+    }, [isHeaderMenuOpen]);
 
     const importXLS = useCallback(async (e) => {
         const file = e.target.files?.[0]
@@ -3215,12 +3182,11 @@ await Promise.all([
                             </button>
 
                             <button
-                                ref={shortcutBtnRef}
-                                onClick={() => { if (!showShortcutModal) setShortcutRect(shortcutBtnRef.current?.getBoundingClientRect()); setShowShortcutModal(v => !v) }}
+                                onClick={sc.toggle}
                                 className={`hidden sm:flex h-9 w-9 rounded-lg border items-center justify-center text-sm transition-all active:scale-95
-                                    ${showShortcutModal
-                                        ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)] shadow-sm'
-                                        : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]'
+                                    ${sc.isOpen
+                                        ? 'bg-primary/10 border-primary/30 text-primary shadow-sm'
+                                        : 'bg-surface-alt border-border text-text-muted hover:text-text hover:bg-border'
                                     }`}
                                 title="Keyboard Shortcuts (?)"
                             >
@@ -3416,28 +3382,11 @@ await Promise.all([
                     </div>
                 )}
 
-                {/* Portaled Keyboard Shortcuts Dropdown */}
-                {showShortcutModal && shortcutRect && createPortal(
-                    <>
-                        <div className="fixed inset-0 z-[9990] bg-black/5" onClick={() => setShowShortcutModal(false)} />
-                        <div
-                            className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden text-left animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200"
-                            style={{
-                                top: shortcutRect.bottom + 8,
-                                left: Math.max(10, shortcutRect.right - 288)
-                            }}
-                        >
-                            <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between bg-[var(--color-surface)]">
-                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Pintasan Keyboard</p>
-                                <span className="text-xs text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
-                            </div>
-                            <div className="max-h-[60vh] overflow-y-auto">
-                                <ShortcutModalContent />
-                            </div>
-                        </div>
-                    </>,
-                    document.body
-                )}
+                <ShortcutsModal
+                    isOpen={sc.isOpen}
+                    onClose={sc.close}
+                    sections={sc.sections}
+                />
 
                 {/* Tutorial Modal */}
                 <Suspense fallback={null}>

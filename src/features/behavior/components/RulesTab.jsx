@@ -5,10 +5,12 @@ import {
     Trash2, Eye, EyeOff, Download, Archive, RotateCcw, Keyboard,
     Check, AlertTriangle, AlertCircle, Info, Edit2, Layers,
     GraduationCap, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight,
-    Ban, MoreHorizontal
+    Ban, MoreHorizontal, RefreshCw
 } from 'lucide-react'
 import Modal from '@shared/components/Modal'
 import ConfirmDialog from '@shared/components/ConfirmDialog'
+import { ShortcutsModal } from '@shared/components'
+import { usePageShortcuts } from '@shared/hooks/usePageShortcuts'
 import RichSelect from '@shared/components/RichSelect'
 import Pagination from '@shared/components/Pagination'
 const LazyRulesExport = React.lazy(() => import('./RulesExport'))
@@ -148,8 +150,6 @@ export default function RulesTab({ showStats = true, initialPoin = [], initialCl
 
     // Privasi Mode
     const [isPrivacyMode, setIsPrivacyMode] = useState(false)
-    const [isShortcutOpen, setIsShortcutOpen] = useState(false)
-    const shortcutRef = useRef(null)
 
     // Pagination
     const [page, setPage] = useState(1)
@@ -329,7 +329,6 @@ export default function RulesTab({ showStats = true, initialPoin = [], initialCl
     // Click Outside
     useEffect(() => {
         const handler = (e) => {
-            if (shortcutRef.current && !shortcutRef.current.contains(e.target)) setIsShortcutOpen(false)
             if (colMenuRef.current && !colMenuRef.current.contains(e.target)) setIsColMenuOpen(false)
         }
         document.addEventListener('mousedown', handler)
@@ -339,31 +338,25 @@ export default function RulesTab({ showStats = true, initialPoin = [], initialCl
     const handleAdd = () => { setSelectedItem(null); setIsModalOpen(true) }
     const handleEdit = item => { setSelectedItem(item); setIsModalOpen(true) }
 
+    // ---- SHORTCUTS (binding + daftar modal dari satu deklarasi — usePageShortcuts) ----
+    // Sebelumnya hanya binding keyboard tanpa daftar UI (toggle `?` yang tak merender apa pun).
+    const sc = usePageShortcuts({
+        isBlocked: isAnyModalOpen,
+        items: [
+            { section: 'Navigasi', keys: ['Ctrl', 'K'], label: 'Fokus ke search', icon: Search, onSelect: () => searchInputRef.current?.focus() },
+            { section: 'Aksi', keys: ['N'], label: 'Tambah aturan baru', icon: Plus, onSelect: handleAdd },
+            { section: 'Aksi', keys: ['P'], label: 'Toggle privacy mode', icon: EyeOff, onSelect: () => setIsPrivacyMode(v => !v) },
+            { section: 'Aksi', keys: ['R'], label: 'Refresh data', icon: RefreshCw, onSelect: fetchData },
+            { section: 'Tampilan', keys: ['X'], label: 'Reset semua filter', icon: RotateCcw, onSelect: resetAllFilters },
+            { section: 'Tampilan', keys: ['?'], label: 'Tampilkan shortcut ini', icon: Keyboard },
+        ],
+    })
+
     const filteredResetClasses = useMemo(() => {
         return [...classesList]
             .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }))
             .filter(c => c.name.toLowerCase().includes(resetPointsSearch.toLowerCase()))
     }, [classesList, resetPointsSearch])
-
-    // Keyboard Shortcuts
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (isAnyModalOpen) return
-            // Jangan aktifkan shortcut saat user sedang mengetik di input/textarea/select
-            const tag = document.activeElement?.tagName
-            const isEditing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || document.activeElement?.isContentEditable
-            if (isEditing && !(e.ctrlKey && e.key === 'k')) return
-
-            if (e.ctrlKey && e.key === 'k') { e.preventDefault(); searchInputRef.current?.focus() }
-            if (e.key === '?') { e.preventDefault(); setIsShortcutOpen(v => !v) }
-            if (e.key === 'n') { e.preventDefault(); handleAdd() }
-            if (e.key === 'p') { e.preventDefault(); setIsPrivacyMode(v => !v) }
-            if (e.key === 'r') { e.preventDefault(); fetchData() }
-            if (e.key === 'x') { e.preventDefault(); resetAllFilters() }
-        }
-        window.addEventListener('keydown', handleKeyDown)
-        return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [isAnyModalOpen, fetchData])
 
     // Filter & Sort Logic
     const filteredPoin = useMemo(() => {
@@ -957,6 +950,12 @@ export default function RulesTab({ showStats = true, initialPoin = [], initialCl
 
     return (
         <div className="space-y-6">
+            <ShortcutsModal
+                isOpen={sc.isOpen}
+                onClose={sc.close}
+                sections={sc.sections}
+            />
+
             {/* Read-only Banner */}
             {!canEdit && (
                 <div className="px-4 py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center gap-2">

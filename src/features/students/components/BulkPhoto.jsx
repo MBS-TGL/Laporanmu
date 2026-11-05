@@ -80,7 +80,7 @@ export default function BulkPhoto({
             title="Bulk Match Foto Siswa"
             description="Unggah banyak foto sekaligus. Sistem akan mencocokkan nama file dengan data siswa secara otomatis."
             icon={Camera}
-            iconBg="bg-indigo-500/10"
+            iconBg="bg-[var(--color-primary)]/10"
             iconColor="text-indigo-600"
             size="lg"
             mobileVariant="bottom-sheet"
@@ -89,7 +89,7 @@ export default function BulkPhoto({
                     <button 
                         onClick={() => { if (!uploadingBulkPhotos) onClose() }} 
                         disabled={uploadingBulkPhotos}
-                        className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center shrink-0"
+                        className="h-9 px-5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap transition-colors flex items-center justify-center shrink-0"
                     >
                         {bulkPhotoMatches.length > 0 ? 'Batal' : 'Tutup'}
                     </button>
@@ -99,12 +99,12 @@ export default function BulkPhoto({
                     {bulkPhotoMatches.length > 0 && (
                         <div className="flex items-center gap-3">
                             <p className="hidden md:block text-xs font-bold text-[var(--color-text-muted)] animate-in fade-in duration-500">
-                                Siap simpan: <span className="text-emerald-600 font-bold px-1.5 py-0.5 bg-emerald-500/10 rounded border border-emerald-500/20">{matchedCount}</span>
+                                Siap simpan: <span className="text-success font-bold px-1.5 py-0.5 bg-success/10 rounded border border-success/20">{matchedCount}</span>
                             </p>
                             <button
                                 onClick={handleBulkPhotoUpload}
                                 disabled={uploadingBulkPhotos || matchedCount === 0}
-                                className="h-10 px-8 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10"
+                                className="h-9 px-6 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap shadow-sm transition-colors flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {uploadingBulkPhotos ? <><LoaderCircle className="w-4 h-4 animate-spin" /> Mengupload...</> : <><Check className="w-4 h-4" /> Simpan Foto</>}
                             </button>
@@ -191,8 +191,8 @@ export default function BulkPhoto({
                     <div className="space-y-2">
                         {/* Stats Summary */}
                         <div className="flex items-center gap-2 text-xs font-bold">
-                            <span className="text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">{matchedCount} Matched</span>
-                            {unmatchedCount > 0 && <span className="text-amber-600 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full">{unmatchedCount} Unmatched</span>}
+                            <span className="text-success bg-success/10 border border-success/20 px-2 py-0.5 rounded-full">{matchedCount} Matched</span>
+                            {unmatchedCount > 0 && <span className="text-warning-dark bg-warning/10 border border-warning/20 px-2 py-0.5 rounded-full">{unmatchedCount} Unmatched</span>}
                             <span className="text-[var(--color-text-muted)] ml-auto">{bulkPhotoMatches.length} total</span>
                         </div>
 
@@ -222,7 +222,7 @@ export default function BulkPhoto({
                                                 <td className="p-3">
                                                     <div className="font-medium opacity-70 truncate max-w-[120px]" title={item.file.name}>{item.originalFile?.name || item.file.name}</div>
                                                     {autoCompress && item.originalSize !== item.compressedSize && (
-                                                        <div className="text-xs text-emerald-600 font-bold mt-0.5">
+                                                        <div className="text-xs text-success font-bold mt-0.5">
                                                             {formatSize(item.originalSize)} → {formatSize(item.compressedSize)}
                                                         </div>
                                                     )}
@@ -246,11 +246,11 @@ export default function BulkPhoto({
                                                 </td>
                                                 <td className="p-3 text-center">
                                                     {item.status === 'matched' ? (
-                                                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 font-bold uppercase tracking-wider text-xs inline-flex items-center gap-1 border border-emerald-500/20">
+                                                        <span className="px-2 py-0.5 rounded-full bg-success/10 text-success font-bold uppercase tracking-wider text-xs inline-flex items-center gap-1 border border-success/20">
                                                             Matched
                                                         </span>
                                                     ) : (
-                                                        <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 font-bold uppercase tracking-wider text-xs inline-flex items-center gap-1 border border-amber-500/20">
+                                                        <span className="px-2 py-0.5 rounded-full bg-warning/10 text-warning-dark font-bold uppercase tracking-wider text-xs inline-flex items-center gap-1 border border-warning/20">
                                                             Unmatched
                                                         </span>
                                                     )}
@@ -259,7 +259,7 @@ export default function BulkPhoto({
                                                     <button
                                                         onClick={() => handleRemoveMatch(i)}
                                                         disabled={uploadingBulkPhotos}
-                                                        className="w-7 h-7 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors opacity-50 group-hover:opacity-100 disabled:opacity-20 flex items-center justify-center mx-auto"
+                                                        className="w-7 h-7 rounded-lg bg-danger/10 text-danger hover:bg-danger hover:text-white transition-colors opacity-50 group-hover:opacity-100 disabled:opacity-20 flex items-center justify-center mx-auto"
                                                         title="Hapus"
                                                     >
                                                         <Trash2 className="w-4 h-4" />

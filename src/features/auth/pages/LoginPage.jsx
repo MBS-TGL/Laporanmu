@@ -335,9 +335,9 @@ export default function LoginPage() {
                     <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                         <Link to="/check" className="hover:text-[var(--color-primary)] transition-colors">Wali Murid</Link>
                         <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
-                        <Link to="/privacy" className="hover:text-[var(--color-primary)] transition-colors">Privasi</Link>
+                        <Link to="/informasi" className="hover:text-[var(--color-primary)] transition-colors">Informasi</Link>
                         <span className="w-1 h-1 rounded-full bg-[var(--color-border)]" />
-                        <Link to="/contact" className="hover:text-[var(--color-primary)] transition-colors">Bantuan</Link>
+                        <Link to="/psb" className="hover:text-[var(--color-primary)] transition-colors">PSB</Link>
                     </div>
                     <Link to="/" className="text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-2">
                         <span>← Beranda</span>

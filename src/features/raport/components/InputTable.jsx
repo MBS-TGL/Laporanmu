@@ -1337,7 +1337,7 @@ export default function InputTable({
                                                 <button
                                                     type="button"
                                                     onClick={decrement}
-                                                    className="w-9 flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-colors shrink-0 text-lg font-light border-r border-[var(--color-border)] cursor-pointer"
+                                                    className="w-9 flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-colors shrink-0 text-lg font-normal border-r border-[var(--color-border)] cursor-pointer"
                                                 >−</button>
                                                 <input
                                                     type="number"
@@ -1351,7 +1351,7 @@ export default function InputTable({
                                                 <button
                                                     type="button"
                                                     onClick={increment}
-                                                    className="w-9 flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-colors shrink-0 text-lg font-light border-l border-[var(--color-border)] cursor-pointer"
+                                                    className="w-9 flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-colors shrink-0 text-lg font-normal border-l border-[var(--color-border)] cursor-pointer"
                                                 >+</button>
                                             </div>
                                         </div>

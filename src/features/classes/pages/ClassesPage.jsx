@@ -2,9 +2,11 @@ import { useState, useEffect, useCallback, useRef, useMemo, memo } from 'react'
 import { createPortal } from 'react-dom'
 import {
     Archive, ArrowDownAZ, Bed, Briefcase, Building, CheckCheck, Eye, EyeOff,
-    FileInput, FileOutput, Keyboard, LoaderCircle, Plus, RotateCcw, School,
+    FileInput, FileOutput, Keyboard, LoaderCircle, Plus, RefreshCw, RotateCcw, School,
     Search, SlidersHorizontal, SquareCheck, Trash2, Users, X
 } from 'lucide-react'
+import { usePageShortcuts } from '@shared/hooks/usePageShortcuts'
+import ShortcutsModal from '@shared/components/ShortcutsModal'
 
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import Modal from '@shared/components/Modal'
@@ -26,9 +28,10 @@ import { StatCard } from '@shared/components/DataDisplay'
 // Components
 import { ClassRow, ClassMobileCard } from '@features/classes/components/ClassRow'
 import FormModal from '@features/classes/components/FormModal'
-import ExportModal from '@features/classes/components/ExportModal'
 import ArchiveModal from '@features/classes/components/ArchiveModal'
-import ImportModal from '@features/classes/components/ImportModal'
+import ImportDataModal from '@shared/components/import-export/ImportDataModal'
+import ExportDataModal from '@shared/components/import-export/ExportDataModal'
+import { SYSTEM_COLS, buildImportConfig, EXPORT_CONFIG } from '@features/classes/components/importExportConfig'
 import Pagination from '@shared/components/Pagination'
 
 
@@ -37,15 +40,6 @@ const PROGRAMS = ['Boarding', 'Reguler']
 const LS_FILTERS = 'classes_filters'
 const LS_COLS = 'classes_columns'
 const LS_PAGE_SIZE = 'classes_page_size'
-
-const SYSTEM_COLS = [
-    { key: 'name', label: 'Nama Kelas', synonyms: ['nama kelas', 'kelas', 'name', 'nama', 'class'] },
-    { key: 'grade', label: 'Tingkat', synonyms: ['tingkat', 'grade', 'level'] },
-    { key: 'program', label: 'Program', synonyms: ['program', 'major', 'boarding', 'reguler'] },
-    { key: 'gender_type', label: 'Tipe Gender', synonyms: ['tipe gender', 'gender', 'putra', 'putri', 'l/p', 'jenis kelamin'] },
-    { key: 'teacher', label: 'Wali Kelas', synonyms: ['wali kelas', 'wali', 'teacher', 'guru', 'nama guru'] },
-    { key: 'year', label: 'Tahun Ajaran', synonyms: ['tahun ajaran', 'tahun', 'year', 'akademik', 'academic year'] }
-]
 
 const maskInfo = (str, vis = 4) => {
     if (!str) return '—'
@@ -112,6 +106,12 @@ export default function ClassesPage() {
     const [loading, setLoading] = useState(true)
     const [submitting, setSubmitting] = useState(false)
 
+    // Konfigurasi modal import (butuh daftar guru & tahun ajaran untuk kolom entity)
+    const importConfig = useMemo(
+        () => buildImportConfig({ teachersList, academicYearsList }),
+        [teachersList, academicYearsList]
+    )
+
     // Stats
     const [stats, setStats] = useState({ total: 0, boarding: 0, reguler: 0, totalStudents: 0 })
 
@@ -131,7 +131,6 @@ export default function ClassesPage() {
 
     // Privasi Mode
     const [isPrivacyMode, setIsPrivacyMode] = useState(false)
-    const [isShortcutOpen, setIsShortcutOpen] = useState(false)
     const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false)
 
     // Pagination
@@ -143,16 +142,12 @@ export default function ClassesPage() {
 
     // Refs
     const searchInputRef = useRef(null)
-    const importFileRef = useRef(null)
     const headerMenuRef = useRef(null)
-    const shortcutRef = useRef(null)
     const colMenuRef = useRef(null)
 
-    // Sticky portal refs & rects for header menu + shortcut dropdowns
+    // Sticky portal refs & rects for header menu dropdown
     const headerMenuBtnRef = useRef(null)
-    const shortcutBtnRef = useRef(null)
     const [headerMenuRect, setHeaderMenuRect] = useState(null)
-    const [shortcutRect, setShortcutRect] = useState(null)
     const [headerMenuMounted, setHeaderMenuMounted] = useState(false)
 
     // Selection
@@ -164,6 +159,7 @@ export default function ClassesPage() {
     const [isBulkDeleteOpen, setIsBulkDeleteOpen] = useState(false)
     const [isExportModalOpen, setIsExportModalOpen] = useState(false)
     const [isImportModalOpen, setIsImportModalOpen] = useState(false)
+
     const [isArchivedModalOpen, setIsArchivedModalOpen] = useState(false)
     const [selectedItem, setSelectedItem] = useState(null)
     const [itemToDelete, setItemToDelete] = useState(null)
@@ -221,16 +217,15 @@ export default function ClassesPage() {
 
     // Sticky positioning - keep portaled dropdowns anchored on scroll/resize
     useEffect(() => {
-        if (!isHeaderMenuOpen && !isShortcutOpen) return
+        if (!isHeaderMenuOpen) return
         const update = () => {
             if (isHeaderMenuOpen && headerMenuBtnRef.current) setHeaderMenuRect(headerMenuBtnRef.current.getBoundingClientRect())
-            if (isShortcutOpen && shortcutBtnRef.current) setShortcutRect(shortcutBtnRef.current.getBoundingClientRect())
         }
         update()
         window.addEventListener('scroll', update, true)
         window.addEventListener('resize', update)
         return () => { window.removeEventListener('scroll', update, true); window.removeEventListener('resize', update) }
-    }, [isHeaderMenuOpen, isShortcutOpen])
+    }, [isHeaderMenuOpen])
 
     useEffect(() => {
         const h = e => {
@@ -244,28 +239,6 @@ export default function ClassesPage() {
     const activeFilterCount = (filterLevel ? 1 : 0) + (filterProgram ? 1 : 0) + (filterNoTeacher ? 1 : 0) + (filterCrowded ? 1 : 0)
     const hasActiveFilters = !!(searchQuery || activeFilterCount)
     const resetAllFilters = () => { setSearchQuery(''); setFilterLevel(''); setFilterProgram(''); setFilterNoTeacher(false); setFilterCrowded(false); setPage(1) }
-
-    // ── keyboard shortcuts ────────────────────────────────────────────────────
-    useEffect(() => {
-        const handler = e => {
-            const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)
-            const ctrl = e.ctrlKey || e.metaKey
-            const anyModal = isModalOpen || isDeleteModalOpen || isBulkDeleteOpen || isExportModalOpen || isImportModalOpen || isArchivedModalOpen
-            if (e.key === 'Escape') { if (isShortcutOpen) { setIsShortcutOpen(false); return } if (anyModal) return; if (searchQuery) { setSearchQuery(''); return } if (selectedIds.length) { setSelectedIds([]); return } if (hasActiveFilters) { resetAllFilters(); return } }
-            if (ctrl && e.key === 'k') { e.preventDefault(); searchInputRef.current?.focus(); searchInputRef.current?.select(); return }
-            if (ctrl && e.key === 'f' && !isTyping) { e.preventDefault(); setShowAdvFilter(v => !v); return }
-            if (ctrl && e.key === 'a' && !isTyping) { e.preventDefault(); toggleSelectAll(); return }
-            if (ctrl && e.key === 'e' && !isTyping) { e.preventDefault(); setIsExportModalOpen(true); return }
-            if (e.key === 'n' && !isTyping) { e.preventDefault(); handleAdd(); return }
-            if (e.key === 'p' && !isTyping) { e.preventDefault(); setIsPrivacyMode(v => !v); return }
-            if (e.key === 'r' && !isTyping) { e.preventDefault(); fetchData(); return }
-            if (e.key === 'x' && !isTyping) { e.preventDefault(); resetAllFilters(); return }
-            if (e.key === '?' && !isTyping) { setIsShortcutOpen(v => !v); return }
-        }
-        window.addEventListener('keydown', handler)
-        return () => window.removeEventListener('keydown', handler)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isModalOpen, isDeleteModalOpen, isBulkDeleteOpen, isExportModalOpen, isImportModalOpen, isArchivedModalOpen, isShortcutOpen, searchQuery, selectedIds, hasActiveFilters])
 
     // ── DATA FETCHING ──────────────────────────────────────────────
     const loadMetadata = useCallback(async () => {
@@ -701,9 +674,9 @@ export default function ClassesPage() {
 
                 // Normalization
                 let { name, grade, program, gender_type, teacher, year } = data
-                
+
                 grade = grade.toString()
-                
+
                 let homeroom_teacher_id = null
                 if (teacher) homeroom_teacher_id = teacherByName[teacher.toLowerCase()] || null
 
@@ -728,7 +701,7 @@ export default function ClassesPage() {
                 if (!row.name) rowIssues.push('Nama Kelas tidak boleh kosong')
                 if (!row.grade) rowIssues.push('Tingkat tidak boleh kosong')
                 else if (!LEVELS.includes(row.grade)) rowIssues.push(`Tingkat "${row.grade}" tidak valid. (Gunakan: ${LEVELS.join(', ')})`)
-                
+
                 if (row.program && !PROGRAMS.includes(row.program)) rowIssues.push(`Program "${row.program}" tidak dikenali (Gunakan: Boarding/Reguler)`)
                 if (row.teacher && !row.homeroom_teacher_id) rowIssues.push(`Wali Kelas "${row.teacher}" tidak ditemukan, akan dikosongkan`)
                 if (row.year && !row.academic_year_id) rowIssues.push(`Tahun Ajaran "${row.year}" tidak ditemukan, akan dikosongkan`)
@@ -780,13 +753,6 @@ export default function ClassesPage() {
         setImportIssues(prev => prev.filter(iss => iss.row !== idx + 2).map(iss => iss.row > idx + 2 ? { ...iss, row: iss.row - 1 } : iss))
     }
 
-    const handleBulkFix = (colKey, value) => {
-        setImportPreview(prev => prev.map(r => ({ ...r, [colKey]: value, _hasError: (colKey === 'name' && !value) || (!r.grade) })))
-        addToast(`Berhasil merubah semua baris`, 'success')
-    }
-
-    const handleImportClick = () => importFileRef.current?.click()
-
     const hasImportBlockingErrors = importIssues.some(x => x.level === 'error')
     const importReadyRows = importPreview.filter(r => !r._hasError && !(importSkipDupes && r._isDupe))
 
@@ -830,6 +796,23 @@ export default function ClassesPage() {
     }
 
     const isAnyModalOpen = isModalOpen || isDeleteModalOpen || isBulkDeleteOpen || isExportModalOpen || isImportModalOpen || isArchivedModalOpen
+
+    // ── SHORTCUTS (binding + daftar modal dari satu deklarasi — usePageShortcuts) ──
+    const sc = usePageShortcuts({
+        isBlocked: isAnyModalOpen || isHeaderMenuOpen,
+        items: [
+            { section: 'Navigasi', keys: ['Ctrl', 'K'], label: 'Fokus ke search', icon: Search, onSelect: () => { searchInputRef.current?.focus(); searchInputRef.current?.select() } },
+            { section: 'Navigasi', keys: ['Ctrl', 'F'], label: 'Toggle filter lanjutan', icon: SlidersHorizontal, onSelect: () => setShowAdvFilter(v => !v) },
+            { section: 'Navigasi', keys: ['Esc'], label: 'Tutup / clear / deselect', icon: X, onSelect: () => { if (isAnyModalOpen) return; if (searchQuery) { setSearchQuery(''); return } if (selectedIds.length) { setSelectedIds([]); return } if (hasActiveFilters) { resetAllFilters() } } },
+            { section: 'Aksi', keys: ['N'], label: 'Tambah kelas baru', icon: Plus, onSelect: handleAdd },
+            { section: 'Aksi', keys: ['Ctrl', 'A'], label: 'Pilih semua / deselect', icon: CheckCheck, onSelect: toggleSelectAll },
+            { section: 'Aksi', keys: ['Ctrl', 'E'], label: 'Buka export', icon: FileOutput, onSelect: () => setIsExportModalOpen(true) },
+            { section: 'Tampilan', keys: ['P'], label: 'Toggle privacy mode', icon: EyeOff, onSelect: () => setIsPrivacyMode(v => !v) },
+            { section: 'Tampilan', keys: ['R'], label: 'Refresh data', icon: RefreshCw, onSelect: fetchData },
+            { section: 'Tampilan', keys: ['X'], label: 'Reset semua filter', icon: RotateCcw, onSelect: resetAllFilters },
+            { section: 'Tampilan', keys: ['?'], label: 'Tampilkan shortcut ini', icon: Keyboard },
+        ],
+    })
 
     return (
         <DashboardLayout title="Data Kelas" hideHeader={isAnyModalOpen} hideSidebar={isAnyModalOpen}>
@@ -895,7 +878,7 @@ export default function ClassesPage() {
                                             <FileInput className="w-4 h-4" />
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-xs font-bold leading-tight">Import CSV / Excel</p>
+                                            <p className="text-xs font-bold leading-tight">Import Excel</p>
                                             <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Unggah data kelas masal dari file Excel/CSV</p>
                                         </div>
                                     </button>
@@ -928,76 +911,21 @@ export default function ClassesPage() {
 
                         {/* Keyboard Shortcuts Button - hidden on mobile */}
                         <button
-                            ref={shortcutBtnRef}
-                            onClick={() => { if (!isShortcutOpen) setShortcutRect(shortcutBtnRef.current?.getBoundingClientRect()); setIsShortcutOpen(v => !v) }}
+                            onClick={sc.toggle}
                             className={`hidden sm:flex h-9 w-9 rounded-lg border items-center justify-center transition-all active:scale-95
-                                ${isShortcutOpen
-                                    ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]'
-                                    : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+                                ${sc.isOpen
+                                    ? 'bg-primary/10 border-primary/30 text-primary'
+                                    : 'bg-surface-alt border-border text-text-muted hover:text-text'
                                 }`}
                             title="Keyboard Shortcuts (?)"
                         >
                             <Keyboard className="w-4 h-4" />
                         </button>
 
-                        {/* Portaled Keyboard Shortcuts Dropdown */}
-                        {isShortcutOpen && shortcutRect && createPortal(
-                            <>
-                                <div className="fixed inset-0 z-[9990] bg-black/5" onClick={() => setIsShortcutOpen(false)} />
-                                <div
-                                    className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden text-left animate-in fade-in zoom-in-95 duration-200"
-                                    style={{
-                                        top: shortcutRect.bottom + 8,
-                                        left: Math.max(10, shortcutRect.right - 288)
-                                    }}
-                                >
-                                    <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
-                                        <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Keyboard Shortcuts</p>
-                                        <span className="text-xs text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
-                                    </div>
-                                    <div className="p-3 space-y-0.5">
-                                        {[
-                                            { section: 'Navigasi' },
-                                            { keys: ['Ctrl', 'K'], label: 'Fokus ke search' },
-                                            { keys: ['Ctrl', 'F'], label: 'Toggle filter lanjutan' },
-                                            { keys: ['Esc'], label: 'Tutup / clear / deselect' },
-                                            { section: 'Aksi' },
-                                            { keys: ['N'], label: 'Tambah kelas baru' },
-                                            { keys: ['Ctrl', 'A'], label: 'Pilih semua / deselect' },
-                                            { keys: ['Ctrl', 'E'], label: 'Buka export' },
-                                            { section: 'Tampilan' },
-                                            { keys: ['P'], label: 'Toggle privacy mode' },
-                                            { keys: ['R'], label: 'Refresh data' },
-                                            { keys: ['X'], label: 'Reset semua filter' },
-                                            { keys: ['?'], label: 'Tampilkan shortcut ini' },
-                                        ].map((item, i) => item.section ? (
-                                            <p key={i} className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
-                                        ) : (
-                                            <div key={i} className="flex items-center justify-between px-1 py-1 rounded-lg hover:bg-[var(--color-surface-alt)] transition-all">
-                                                <span className="text-xs font-semibold text-[var(--color-text)]">{item.label}</span>
-                                                <div className="flex items-center gap-1">
-                                                    {item.keys.map((k, ki) => (
-                                                        <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] font-mono">{k}</span>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </>,
-                            getPortalContainer('portal-class-shortcut-menu')
-                        )}
-
-                        <input
-                            type="file"
-                            ref={importFileRef}
-                            onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) processImportFile(file);
-                                e.target.value = '';
-                            }}
-                            className="hidden"
-                            accept=".csv,.xlsx"
+                        <ShortcutsModal
+                            isOpen={sc.isOpen}
+                            onClose={sc.close}
+                            sections={sc.sections}
                         />
 
                         {/* Privasi toggle */}
@@ -1521,11 +1449,11 @@ export default function ClassesPage() {
                 </Modal>
 
                 {/* Export Modal */}
-                <ExportModal
+                <ExportDataModal
                     isOpen={isExportModalOpen}
                     onClose={() => setIsExportModalOpen(false)}
-                    classes={classes}
-                    selectedClassIds={selectedIds}
+                    items={classes}
+                    selectedIds={selectedIds}
                     exportScope={exportScope}
                     setExportScope={setExportScope}
                     exportColumns={exportColumns}
@@ -1534,6 +1462,7 @@ export default function ClassesPage() {
                     handleExportCSV={handleExportCSV}
                     handleExportExcel={handleExportExcel}
                     handleExportPDF={handleExportPDF}
+                    config={EXPORT_CONFIG}
                 />
 
                 {/* Arsip Kelas Modal */}
@@ -1546,8 +1475,7 @@ export default function ClassesPage() {
                 />
 
                 {/* ── Import Modal ── */}
-                {/* ── Import Modal ── */}
-                <ImportModal
+                <ImportDataModal
                     isOpen={isImportModalOpen}
                     onClose={() => setIsImportModalOpen(false)}
                     importing={importing}
@@ -1558,11 +1486,8 @@ export default function ClassesPage() {
                     importDragOver={importDragOver}
                     setImportDragOver={setImportDragOver}
                     processImportFile={processImportFile}
-                    teachersList={teachersList}
-                    academicYearsList={academicYearsList}
                     handleDownloadTemplate={handleDownloadTemplate}
                     importFileHeaders={importFileHeaders}
-                    SYSTEM_COLS={SYSTEM_COLS}
                     importColumnMapping={importColumnMapping}
                     setImportColumnMapping={setImportColumnMapping}
                     importRawData={importRawData}
@@ -1574,7 +1499,6 @@ export default function ClassesPage() {
                     setImportValidationOpen={setImportValidationOpen}
                     importProgress={importProgress}
                     handleCommitImport={handleCommitImport}
-                    handleImportClick={handleImportClick}
                     hasImportBlockingErrors={hasImportBlockingErrors}
                     importReadyRows={importReadyRows}
                     handleImportCellEdit={handleImportCellEdit}
@@ -1583,7 +1507,7 @@ export default function ClassesPage() {
                     handleRemoveImportRow={handleRemoveImportRow}
                     importSkipDupes={importSkipDupes}
                     setImportSkipDupes={setImportSkipDupes}
-                    handleBulkFix={handleBulkFix}
+                    config={importConfig}
                 />
 
             </div>

@@ -3,9 +3,11 @@ import { createPortal } from 'react-dom'
 
 import {
     Archive, ArrowDownAZ, ArrowUpNarrowWide, Briefcase, CheckCheck, CircleCheck, Eye, EyeOff,
-    FileInput, FileOutput, Keyboard, LoaderCircle, Pin, Plus, Presentation, RotateCcw,
+    FileInput, FileOutput, Keyboard, LoaderCircle, Pin, Plus, Presentation, RefreshCw, RotateCcw,
     Search, SlidersHorizontal, SquareCheck, Users, X
 } from 'lucide-react'
+import { usePageShortcuts } from '@shared/hooks/usePageShortcuts'
+import ShortcutsModal from '@shared/components/ShortcutsModal'
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import { Modal, Breadcrumb, PageHeader, Pagination, StatsCarousel, StatCard, ActionBadge, DiffViewer, AuditTimeline, RichSelect, MarsIcon, VenusIcon, WhatsAppIcon } from '@shared/components'
 import { useToast } from '@context/Toast'
@@ -16,8 +18,9 @@ import { logAudit } from '@utils/auditLogger'
 import { TeacherRow, TeacherMobileCard, STATUS_CONFIG } from '@features/teachers/components/TeacherRow'
 import FormModal from '@features/teachers/components/FormModal'
 import ProfileModal from '@features/teachers/components/ProfileModal'
-import ImportModal from '@features/teachers/components/ImportModal'
-import ExportModal from '@features/teachers/components/ExportModal'
+import ImportDataModal from '@shared/components/import-export/ImportDataModal'
+import ExportDataModal from '@shared/components/import-export/ExportDataModal'
+import { SYSTEM_COLS, buildImportConfig, EXPORT_CONFIG } from '@features/teachers/components/importExportConfig'
 import ArchiveModal from '@features/teachers/components/ArchiveModal'
 
 
@@ -27,28 +30,6 @@ import { useDebounce } from '@hooks/useDebounce'
 const LS_FILTERS = 'teachers_filters'
 const LS_COLS = 'teachers_columns'
 const LS_PAGE_SIZE = 'teachers_page_size'
-
-const SYSTEM_COLS = [
-    { key: 'name', label: 'Nama Lengkap', synonyms: ['nama', 'name', 'nama lengkap', 'nama guru', 'guru'] },
-    { key: 'nbm', label: 'NBM', synonyms: ['nbm', 'nomor baku muhammadiyah', 'no. btm', 'btm'] },
-    { key: 'subject', label: 'Mata Pelajaran', synonyms: ['mapel', 'mata pelajaran', 'subject', 'bidang studi'] },
-    { key: 'gender', label: 'Jenis Kelamin', synonyms: ['gender', 'jk', 'jenis kelamin', 'kelamin', 'sex', 'l/p'] },
-    { key: 'phone', label: 'No. WhatsApp', synonyms: ['wa', 'no. hp/wa', 'phone', 'whatsapp', 'no hp', 'no telp'] },
-    { key: 'email', label: 'Email', synonyms: ['email', 'surel', 'e-mail'] },
-    { key: 'status', label: 'Status', synonyms: ['status', 'aktif', 'status aktif'] },
-    { key: 'type', label: 'Jenis Pegawai', synonyms: ['jenis', 'type', 'jenis pegawai', 'tipe', 'peran'] },
-    { key: 'nik', label: 'NIK', synonyms: ['nik', 'nomor induk kependudukan', 'no ktp', 'ktp'] },
-    { key: 'nip', label: 'NIP', synonyms: ['nip', 'nomor induk pegawai'] },
-    { key: 'nuptk', label: 'NUPTK', synonyms: ['nuptk'] },
-    { key: 'birth_place', label: 'Tempat Lahir', synonyms: ['tempat lahir', 'birth_place', 'birthplace', 'tmp lahir'] },
-    { key: 'birth_date', label: 'Tanggal Lahir', synonyms: ['tanggal lahir', 'birth_date', 'tgl lahir', 'tanggal_lahir'] },
-    { key: 'address', label: 'Alamat', synonyms: ['alamat', 'address', 'alamat tinggal'] },
-    { key: 'employment_status', label: 'Status Kepegawaian', synonyms: ['status kepegawaian', 'status pegawai', 'kepegawaian', 'status kerja'] },
-    { key: 'teaching_hours', label: 'Jam Mengajar', synonyms: ['jam mengajar', 'teaching_hours', 'jam', 'teaching hours'] },
-    { key: 'last_education', label: 'Pendidikan Terakhir', synonyms: ['pendidikan terakhir', 'pendidikan', 'last_education', 'last education', 'pendidikan_terakhir'] },
-    { key: 'major', label: 'Jurusan', synonyms: ['jurusan', 'major', 'program studi', 'prodi'] },
-    { key: 'graduation_year', label: 'Tahun Lulus', synonyms: ['tahun lulus', 'graduation_year', 'tahun_lulus', 'lulus tahun'] },
-]
 
 const ALL_EXPORT_COLUMNS = [
     { key: 'nama', label: 'Nama', fn: t => t.name || '' },
@@ -133,6 +114,12 @@ export default function TeachersPage() {
     const [submitting, setSubmitting] = useState(false)
     const [totalRows, setTotalRows] = useState(0)
     const [subjectsList, setSubjectsList] = useState([])
+
+    // Konfigurasi modal import (butuh daftar mapel untuk kolom entity & referensi)
+    const importConfig = useMemo(
+        () => buildImportConfig({ subjectsList }),
+        [subjectsList]
+    )
     const [classesList, setClassesList] = useState([])
     const [stats, setStats] = useState({ total: 0, active: 0, male: 0, female: 0, guru: 0, karyawan: 0, pengabdian: 0 })
     const [uploadingPhoto, setUploadingPhoto] = useState(false)
@@ -157,7 +144,6 @@ export default function TeachersPage() {
     const colMenuRef = useRef(null)
     // ui
     const [isPrivacyMode, setIsPrivacyMode] = useState(false)
-    const [isShortcutOpen, setIsShortcutOpen] = useState(false)
     const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false)
     // modals
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -209,14 +195,10 @@ export default function TeachersPage() {
     const [exporting, setExporting] = useState(false)
 
     const searchInputRef = useRef(null)
-    const importFileRef = useRef(null)
     const headerMenuRef = useRef(null)
-    const shortcutRef = useRef(null)
-    // Sticky portal refs & rects for header menu + shortcut dropdowns
+    // Sticky portal refs & rects for header menu dropdown
     const headerMenuBtnRef = useRef(null)
-    const shortcutBtnRef = useRef(null)
     const [headerMenuRect, setHeaderMenuRect] = useState(null)
-    const [shortcutRect, setShortcutRect] = useState(null)
     // Deferred unmount: keeps portal in DOM for 200ms after close so exit animation can play
     const [headerMenuMounted, setHeaderMenuMounted] = useState(false)
     const { addToast } = useToast()
@@ -256,16 +238,15 @@ export default function TeachersPage() {
 
     // Sticky positioning - keep portaled dropdowns anchored on scroll/resize
     useEffect(() => {
-        if (!isHeaderMenuOpen && !isShortcutOpen) return
+        if (!isHeaderMenuOpen) return
         const update = () => {
             if (isHeaderMenuOpen && headerMenuBtnRef.current) setHeaderMenuRect(headerMenuBtnRef.current.getBoundingClientRect())
-            if (isShortcutOpen && shortcutBtnRef.current) setShortcutRect(shortcutBtnRef.current.getBoundingClientRect())
         }
         update()
         window.addEventListener('scroll', update, true)
         window.addEventListener('resize', update)
         return () => { window.removeEventListener('scroll', update, true); window.removeEventListener('resize', update) }
-    }, [isHeaderMenuOpen, isShortcutOpen])
+    }, [isHeaderMenuOpen])
 
     useEffect(() => {
         const h = e => {
@@ -280,28 +261,6 @@ export default function TeachersPage() {
     const activeFilterCount = [filterGender, filterSubject, filterMissing, filterType, filterStatus !== 'active' ? filterStatus : ''].filter(Boolean).length
     const hasActiveFilters = !!(searchQuery || activeFilterCount)
     const resetAllFilters = () => { setSearchQuery(''); setFilterSubject(''); setFilterGender(''); setFilterMissing(''); setFilterStatus('active'); setFilterType(''); setPage(1) }
-
-    // ── keyboard shortcuts ────────────────────────────────────────────────────
-    useEffect(() => {
-        const handler = e => {
-            const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)
-            const ctrl = e.ctrlKey || e.metaKey
-            const anyModal = isModalOpen || isArchiveModalOpen || isArchivedOpen || isProfileOpen || isImportModalOpen || isExportModalOpen || isBulkModalOpen || isBulkWAOpen
-            if (e.key === 'Escape') { if (isShortcutOpen) { setIsShortcutOpen(false); return } if (anyModal) return; if (searchQuery) { setSearchQuery(''); return } if (selectedIds.length) { setSelectedIds([]); return } if (hasActiveFilters) { resetAllFilters(); return } }
-            if (ctrl && e.key === 'k') { e.preventDefault(); searchInputRef.current?.focus(); searchInputRef.current?.select(); return }
-            if (ctrl && e.key === 'f' && !isTyping) { e.preventDefault(); setShowAdvFilter(v => !v); return }
-            if (ctrl && e.key === 'a' && !isTyping) { e.preventDefault(); toggleSelectAll(); return }
-            if (ctrl && e.key === 'e' && !isTyping) { e.preventDefault(); setIsExportModalOpen(true); return }
-            if (e.key === 'n' && !isTyping) { e.preventDefault(); handleAdd(); return }
-            if (e.key === 'p' && !isTyping) { e.preventDefault(); setIsPrivacyMode(v => !v); return }
-            if (e.key === 'r' && !isTyping) { e.preventDefault(); fetchData(); return }
-            if (e.key === 'x' && !isTyping) { e.preventDefault(); resetAllFilters(); return }
-            if (e.key === '?' && !isTyping) { setIsShortcutOpen(v => !v); return }
-        }
-        window.addEventListener('keydown', handler)
-        return () => window.removeEventListener('keydown', handler)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isModalOpen, isArchiveModalOpen, isArchivedOpen, isProfileOpen, isImportModalOpen, isExportModalOpen, isBulkModalOpen, isBulkWAOpen, isShortcutOpen, searchQuery, selectedIds, hasActiveFilters])
 
     // ── fetch ─────────────────────────────────────────────────────────────────
     const fetchData = useCallback(async () => {
@@ -1034,6 +993,25 @@ export default function TeachersPage() {
 
     const disp = val => isPrivacyMode ? maskInfo(val) : (val || '—')
 
+    const isAnyModalOpen = isModalOpen || isArchiveModalOpen || isArchivedOpen || isProfileOpen || isImportModalOpen || isExportModalOpen || isBulkModalOpen || isBulkWAOpen
+
+    // ── SHORTCUTS (binding + daftar modal dari satu deklarasi — usePageShortcuts) ──
+    const sc = usePageShortcuts({
+        isBlocked: isAnyModalOpen || isHeaderMenuOpen,
+        items: [
+            { section: 'Navigasi', keys: ['Ctrl', 'K'], label: 'Fokus ke search', icon: Search, onSelect: () => { searchInputRef.current?.focus(); searchInputRef.current?.select() } },
+            { section: 'Navigasi', keys: ['Ctrl', 'F'], label: 'Toggle filter lanjutan', icon: SlidersHorizontal, onSelect: () => setShowAdvFilter(v => !v) },
+            { section: 'Navigasi', keys: ['Esc'], label: 'Tutup / clear / deselect', icon: X, onSelect: () => { if (isAnyModalOpen) return; if (searchQuery) { setSearchQuery(''); return } if (selectedIds.length) { setSelectedIds([]); return } if (hasActiveFilters) { resetAllFilters() } } },
+            { section: 'Aksi', keys: ['N'], label: 'Tambah guru baru', icon: Plus, onSelect: handleAdd },
+            { section: 'Aksi', keys: ['Ctrl', 'A'], label: 'Pilih semua / deselect', icon: CheckCheck, onSelect: toggleSelectAll },
+            { section: 'Aksi', keys: ['Ctrl', 'E'], label: 'Buka export', icon: FileOutput, onSelect: () => setIsExportModalOpen(true) },
+            { section: 'Tampilan', keys: ['P'], label: 'Toggle privacy mode', icon: EyeOff, onSelect: () => setIsPrivacyMode(v => !v) },
+            { section: 'Tampilan', keys: ['R'], label: 'Refresh data', icon: RefreshCw, onSelect: fetchData },
+            { section: 'Tampilan', keys: ['X'], label: 'Reset semua filter', icon: RotateCcw, onSelect: resetAllFilters },
+            { section: 'Tampilan', keys: ['?'], label: 'Tampilkan shortcut ini', icon: Keyboard },
+        ],
+    })
+
     // ══════════════════════════════════════════════════════════════════════════
     return (
         <DashboardLayout title="Data Guru">
@@ -1100,7 +1078,7 @@ export default function TeachersPage() {
                                                 <FileInput className="w-4 h-4" />
                                             </div>
                                             <div className="text-left">
-                                                <p className="text-xs font-bold leading-tight">Import CSV / Excel</p>
+                                                <p className="text-xs font-bold leading-tight">Import Excel</p>
                                                 <p className="text-xs opacity-60 font-medium leading-tight mt-0.5">Unggah data guru masal dari file Excel/CSV</p>
                                             </div>
                                         </button>
@@ -1133,76 +1111,21 @@ export default function TeachersPage() {
 
                             {/* Keyboard Shortcuts Button - hidden on mobile */}
                             <button
-                                ref={shortcutBtnRef}
-                                onClick={() => { if (!isShortcutOpen) setShortcutRect(shortcutBtnRef.current?.getBoundingClientRect()); setIsShortcutOpen(v => !v) }}
+                                onClick={sc.toggle}
                                 className={`hidden sm:flex h-9 w-9 rounded-lg border items-center justify-center transition-all active:scale-95
-                                ${isShortcutOpen
-                                        ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/30 text-[var(--color-primary)]'
-                                        : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+                                ${sc.isOpen
+                                        ? 'bg-primary/10 border-primary/30 text-primary'
+                                        : 'bg-surface-alt border-border text-text-muted hover:text-text'
                                     }`}
                                 title="Keyboard Shortcuts (?)"
                             >
                                 <Keyboard className="w-4 h-4" />
                             </button>
 
-                            {/* Portaled Keyboard Shortcuts Dropdown */}
-                            {isShortcutOpen && shortcutRect && createPortal(
-                                <>
-                                    <div className="fixed inset-0 z-[9990] bg-black/5" onClick={() => setIsShortcutOpen(false)} />
-                                    <div
-                                        className="fixed z-[9991] w-72 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden text-left animate-in fade-in zoom-in-95 duration-200"
-                                        style={{
-                                            top: shortcutRect.bottom + 8,
-                                            left: Math.max(10, shortcutRect.right - 288)
-                                        }}
-                                    >
-                                        <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
-                                            <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Keyboard Shortcuts</p>
-                                            <span className="text-xs text-[var(--color-text-muted)] font-bold">Tekan ? untuk toggle</span>
-                                        </div>
-                                        <div className="p-3 space-y-0.5">
-                                            {[
-                                                { section: 'Navigasi' },
-                                                { keys: ['Ctrl', 'K'], label: 'Fokus ke search' },
-                                                { keys: ['Ctrl', 'F'], label: 'Toggle filter lanjutan' },
-                                                { keys: ['Esc'], label: 'Tutup / clear / deselect' },
-                                                { section: 'Aksi' },
-                                                { keys: ['N'], label: 'Tambah guru baru' },
-                                                { keys: ['Ctrl', 'A'], label: 'Pilih semua / deselect' },
-                                                { keys: ['Ctrl', 'E'], label: 'Buka export' },
-                                                { section: 'Tampilan' },
-                                                { keys: ['P'], label: 'Toggle privacy mode' },
-                                                { keys: ['R'], label: 'Refresh data' },
-                                                { keys: ['X'], label: 'Reset semua filter' },
-                                                { keys: ['?'], label: 'Tampilkan shortcut ini' },
-                                            ].map((item, i) => item.section ? (
-                                                <p key={i} className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] pt-2 pb-1 px-1">{item.section}</p>
-                                            ) : (
-                                                <div key={i} className="flex items-center justify-between px-1 py-1 rounded-lg hover:bg-[var(--color-surface-alt)] transition-all">
-                                                    <span className="text-xs font-semibold text-[var(--color-text)]">{item.label}</span>
-                                                    <div className="flex items-center gap-1">
-                                                        {item.keys.map((k, ki) => (
-                                                            <span key={ki} className="px-1.5 py-0.5 rounded-md bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] font-mono">{k}</span>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </>,
-                                getPortalContainer('portal-teacher-shortcut-menu')
-                            )}
-
-                            <input
-                                type="file"
-                                ref={importFileRef}
-                                onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    if (file) processImportFile(file);
-                                    e.target.value = '';
-                                }}
-                                className="hidden"
-                                accept=".csv,.xlsx"
+                            <ShortcutsModal
+                                isOpen={sc.isOpen}
+                                onClose={sc.close}
+                                sections={sc.sections}
                             />
 
                             {/* Privasi toggle */}
@@ -1798,7 +1721,7 @@ export default function TeachersPage() {
                 />
 
                 {/* ════ MODAL Import ════ */}
-                <ImportModal
+                <ImportDataModal
                     isOpen={isImportModalOpen}
                     onClose={() => { if (importing) return; setIsImportModalOpen(false); setImportPreview([]); setImportIssues([]); setImportFileName(''); setImportStep(1) }}
                     importing={importing}
@@ -1806,14 +1729,11 @@ export default function TeachersPage() {
                     setImportStep={setImportStep}
                     importPreview={importPreview}
                     importFileName={importFileName}
-                    importFileInputRef={importFileRef}
                     importDragOver={importDrag}
                     setImportDragOver={setImportDrag}
                     processImportFile={processImportFile}
-                    subjectsList={subjectsList}
                     handleDownloadTemplate={handleDownloadTemplate}
                     importFileHeaders={importFileHeaders}
-                    SYSTEM_COLS={SYSTEM_COLS}
                     importColumnMapping={importColumnMapping}
                     setImportColumnMapping={setImportColumnMapping}
                     importRawData={importRawData}
@@ -1825,7 +1745,6 @@ export default function TeachersPage() {
                     setImportValidationOpen={setImportValidationOpen}
                     importProgress={importProgress}
                     handleCommitImport={handleCommitImport}
-                    handleImportClick={() => importFileRef.current?.click()}
                     hasImportBlockingErrors={hasImportBlockingErrors}
                     importReadyRows={importReadyRows}
                     handleImportCellEdit={handleImportCellEdit}
@@ -1834,16 +1753,15 @@ export default function TeachersPage() {
                     handleRemoveImportRow={handleRemoveImportRow}
                     importSkipDupes={importSkipDupes}
                     setImportSkipDupes={setImportSkipDupes}
-                    handleBulkFix={handleBulkFix}
-                    STATUS_CONFIG={STATUS_CONFIG}
+                    config={importConfig}
                 />
 
                 {/* ════ MODAL Export ════ */}
-                <ExportModal
+                <ExportDataModal
                     isOpen={isExportModalOpen}
                     onClose={() => setIsExportModalOpen(false)}
-                    teachers={teachers}
-                    selectedTeacherIds={selectedIds}
+                    items={teachers}
+                    selectedIds={selectedIds}
                     exportScope={exportScope}
                     setExportScope={setExportScope}
                     exportColumns={exportColumns}
@@ -1852,7 +1770,7 @@ export default function TeachersPage() {
                     handleExportCSV={handleExportCSV}
                     handleExportExcel={handleExportExcel}
                     handleExportPDF={handleExportPDF}
-                    addToast={addToast}
+                    config={EXPORT_CONFIG}
                 />
 
                 {/* ════ MODAL Arsipkan ════ */}

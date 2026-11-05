@@ -60,7 +60,6 @@ export function useCore() {
     const searchInputRef = useRef(null)
     const colMenuRef = useRef(null)
     const importFileInputRef = useRef(null)
-    const shortcutRef = useRef(null)
     const pressTimerRef = useRef(null)
     const [pressingId, setPressingId] = useState(null)
 
@@ -70,15 +69,11 @@ export function useCore() {
     const [menuPos, setMenuPos] = useState({ top: 0, right: 0, showUp: false })
 
     // Export/Import & UX States
-    const [isShortcutOpen, setIsShortcutOpen] = useState(false)
     const [isPrivacyMode, setIsPrivacyMode] = useState(false)
     const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false)
     const headerMenuBtnRef = useRef(null)
-    const shortcutBtnRef = useRef(null)
     const [headerMenuRect, setHeaderMenuRect] = useState(null)
-    const [shortcutRect, setShortcutRect] = useState(null)
     const [headerMenuMounted, setHeaderMenuMounted] = useState(false)
-    const [shortcutMounted, setShortcutMounted] = useState(false)
 
     useEffect(() => {
         if (isHeaderMenuOpen) {
@@ -90,24 +85,14 @@ export function useCore() {
     }, [isHeaderMenuOpen])
 
     useEffect(() => {
-        if (isShortcutOpen) {
-            setShortcutMounted(true)
-        } else {
-            const t = setTimeout(() => setShortcutMounted(false), 200)
-            return () => clearTimeout(t)
-        }
-    }, [isShortcutOpen])
-
-    useEffect(() => {
-        if (!isHeaderMenuOpen && !isShortcutOpen) return
+        if (!isHeaderMenuOpen) return
         const update = () => {
             if (isHeaderMenuOpen && headerMenuBtnRef.current) setHeaderMenuRect(headerMenuBtnRef.current.getBoundingClientRect())
-            if (isShortcutOpen && shortcutBtnRef.current) setShortcutRect(shortcutBtnRef.current.getBoundingClientRect())
         }
         update()
         window.addEventListener('resize', update)
         return () => { window.removeEventListener('resize', update) }
-    }, [isHeaderMenuOpen, isShortcutOpen])
+    }, [isHeaderMenuOpen])
 
     // Derived
     const totalPages = Math.ceil(totalRows / pageSize)
@@ -172,22 +157,10 @@ export function useCore() {
         localStorage.setItem(LS_PAGE_SIZE, pageSize)
     }, [pageSize])
 
-    // Keydown/global click listener
+    // Keydown/global click listener — shortcut binding + `?` palette pindah ke
+    // usePageShortcuts di BehaviorPage; sini hanya menutup menu kolom via keyboard.
     useEffect(() => {
         const h = e => {
-            const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)
-            if (e.ctrlKey && e.key === 'k') { e.preventDefault(); searchInputRef.current?.focus() }
-            if (e.ctrlKey && e.key === 'e') { e.preventDefault(); setIsExportModalOpen(true) }
-            if (e.ctrlKey && e.key === 'i') { e.preventDefault(); setIsImportModalOpen(true) }
-            if (e.key === 'n' && !e.ctrlKey && !isTyping) { e.preventDefault(); setIsModalOpen(true) }
-            if (e.key === 'Escape') {
-                setSearchQuery(''); setSelectedIds([]);
-                setIsModalOpen(false); setIsExportModalOpen(false); setIsImportModalOpen(false)
-                setIsShortcutOpen(false); setIsDeleteModalOpen(false); setIsBulkDeleteOpen(false)
-                setIsDetailOpen(false); setDetailItem(null);
-            }
-            if (e.key === '?' && !isTyping) setIsShortcutOpen(v => !v)
-
             if (colMenuRef.current && !colMenuRef.current.contains(e.target)) {
                 setIsColMenuOpen(false)
             }
@@ -197,14 +170,10 @@ export function useCore() {
             if (headerMenuBtnRef.current && !headerMenuBtnRef.current.contains(e.target) && !e.target.closest('#portal-header-menu')) {
                 setIsHeaderMenuOpen(false)
             }
-            if (shortcutBtnRef.current && !shortcutBtnRef.current.contains(e.target) && !e.target.closest('#portal-shortcut-menu')) {
-                setIsShortcutOpen(false)
-            }
         }
         const handleScroll = () => {
             setIsColMenuOpen(false)
             setIsHeaderMenuOpen(false)
-            setIsShortcutOpen(false)
         }
         document.addEventListener('keydown', h)
         document.addEventListener('mousedown', handleGlobalClick)
@@ -581,13 +550,10 @@ export function useCore() {
         menuPos, setMenuPos,
 
         // UX & Dialog States
-        isShortcutOpen, setIsShortcutOpen,
         isPrivacyMode, setIsPrivacyMode,
         isHeaderMenuOpen, setIsHeaderMenuOpen,
         headerMenuRect, setHeaderMenuRect,
-        shortcutRect, setShortcutRect,
         headerMenuMounted, setHeaderMenuMounted,
-        shortcutMounted, setShortcutMounted,
 
         // Derived / Selectors
         totalPages,
@@ -601,9 +567,7 @@ export function useCore() {
         searchInputRef,
         colMenuRef,
         importFileInputRef,
-        shortcutRef,
         headerMenuBtnRef,
-        shortcutBtnRef,
 
         // Handlers
         canInput,

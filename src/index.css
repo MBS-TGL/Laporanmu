@@ -9,6 +9,7 @@
    sirkular). Nama var runtime tidak berubah — class lama
    bg-[var(--color-primary)] tetap valid. */
 @theme inline {
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
   --color-primary: var(--color-primary);
   --color-primary-dark: var(--color-primary-dark);
   --color-primary-light: var(--color-primary-light);
@@ -93,7 +94,8 @@ body {
 }
 
 /* Satu famili untuk semuanya: heading (h1-h6 & .font-heading) mewarisi body.
-   Plus Jakarta Sans bervariable 200-800 — font-black (900) dipetakan ke 800
+   Plus Jakarta Sans bervariable 400-800 (range dipangkas dari 200..800 — bobot
+   terpakai hanya 400-700) — font-black (900) dipetakan ke 800
    supaya browser tidak menirukan bold palsu. */
 .font-black {
   font-weight: 800;
@@ -812,4 +814,13 @@ input[type=number] {
 .scrollbar-none {
   -ms-overflow-style: none !important;
   scrollbar-width: none !important;
+}
+/* ── Celebrate animation (StatusPage PSB — kartu selamat LULUS) ── */
+@keyframes celebrate {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.02); opacity: 1; filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.4)); }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+.celebrate-card {
+  animation: celebrate 4s ease-in-out infinite;
 }

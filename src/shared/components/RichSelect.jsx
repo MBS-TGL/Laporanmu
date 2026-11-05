@@ -38,16 +38,14 @@ const GROUP_TONES = {
 const OptionRow = memo(function OptionRow({ opt, selected, compact, onSelect }) {
     return (
         <button
-            key={opt.id}
             type="button"
             onClick={(e) => { e.stopPropagation(); onSelect(opt.id) }}
-            className={`w-full text-left ${compact ? 'px-3 py-1.5' : 'px-3.5 py-2'} text-xs font-medium leading-5 tabular-nums hover:bg-[var(--color-primary)]/5 transition-colors flex items-center justify-between group whitespace-nowrap ${selected ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/5 font-bold' : 'text-[var(--color-text)]'}`}
+            className={`w-full text-left ${compact ? 'px-2.5 py-1.5' : 'px-3 py-2'} rounded-lg text-xs leading-5 tabular-nums transition-colors flex items-center justify-between gap-3 whitespace-nowrap ${selected
+                ? 'bg-[var(--color-surface-alt)] text-[var(--color-primary)] font-semibold'
+                : 'text-[var(--color-text)] font-medium hover:bg-[var(--color-surface-alt)]/60'}`}
         >
-            <div className="flex items-center gap-2.5">
-                <div className={`w-1.5 h-1.5 rounded-full transition-colors ${selected ? 'bg-[var(--color-primary)] scale-125' : 'bg-[var(--color-border)] group-hover:bg-[var(--color-text-muted)]'}`} />
-                {opt.render ? opt.render : opt.name}
-            </div>
-            {selected && <Check className="w-4 h-4" />}
+            <span className="min-w-0 truncate">{opt.render ? opt.render : opt.name}</span>
+            {selected && <Check className="w-4 h-4 shrink-0" />}
         </button>
     )
 })
@@ -84,13 +82,13 @@ const RichSelect = memo(({
     const statusClasses = {
         error: 'border-danger/50 focus:border-danger focus:ring-danger bg-danger/5',
         success: 'border-success/50 focus:border-success focus:ring-success bg-success/5',
-        normal: 'border-[var(--color-border)] focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]'
+        normal: 'border-[var(--color-border)]'
     }
 
     const iconStatusClasses = {
         error: 'text-danger opacity-80',
         success: 'text-success opacity-80',
-        normal: 'text-[var(--color-text-muted)] opacity-50 group-focus-within:text-[var(--color-primary)] group-hover:text-[var(--color-primary)]'
+        normal: 'text-[var(--color-text-muted)] opacity-50 group-hover:text-[var(--color-text)]'
     }
 
     // Identify unique groups in options
@@ -126,7 +124,7 @@ const RichSelect = memo(({
     // Fokuskan search saat dropdown terbuka (rAF, bukan setTimeout)
     useEffect(() => {
         if (isOpen && searchable) {
-            const raf = requestAnimationFrame(() => searchInputRef.current?.focus())
+            const raf = requestAnimationFrame(() => searchInputRef.current?.focus({ preventScroll: true }))
             return () => cancelAnimationFrame(raf)
         }
     }, [isOpen, searchable])
@@ -237,20 +235,19 @@ const RichSelect = memo(({
 
             {/* Options List */}
             <div
-                className="py-1 overflow-y-auto custom-scrollbar flex-1 min-h-0"
-                style={{ maxHeight: isMobile ? 'calc(75vh - 120px)' : (compact ? 200 : Math.max(60, Math.min(maxHeight || (searchable ? 280 : 240), coords.maxHeight - (searchable ? (uniqueGroups.length > 0 ? 92 : 52) : 8)))) }}
+                className="p-1 overflow-y-auto custom-scrollbar flex-1 min-h-00"
+                style={{ maxHeight: isMobile ? 'calc(75vh - 120px)' : (compact ? 200 : Math.max(160, Math.min(maxHeight || (searchable ? 280 : 240), coords.maxHeight - (searchable ? (uniqueGroups.length > 0 ? 92 : 52) : 8)))) }}
             >
                 {extraOption && (
                     <button
                         type="button"
                         onClick={(e) => { e.stopPropagation(); handleSelect(extraOption.id) }}
-                        className={`w-full text-left px-3.5 py-2 text-xs font-medium leading-5 tabular-nums hover:bg-[var(--color-primary)]/5 transition-colors flex items-center justify-between group whitespace-nowrap ${value === extraOption.id ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/5 font-bold' : 'text-amber-600'}`}
+                        className={`w-full text-left px-3 py-2 rounded-lg text-xs leading-5 tabular-nums transition-colors flex items-center justify-between gap-3 whitespace-nowrap ${value === extraOption.id
+                            ? 'bg-[var(--color-surface-alt)] text-[var(--color-primary)] font-semibold'
+                            : 'text-[var(--color-text)] font-medium hover:bg-[var(--color-surface-alt)]/60'}`}
                     >
-                        <div className="flex items-center gap-2.5">
-                            <div className={`w-1.5 h-1.5 rounded-full ${value === extraOption.id ? 'bg-[var(--color-primary)]' : 'bg-amber-600'}`} />
-                            {extraOption.name}
-                        </div>
-                        {value === extraOption.id && <Check className="w-4 h-4" />}
+                        <span className="min-w-0 truncate">{extraOption.name}</span>
+                        {value === extraOption.id && <Check className="w-4 h-4 shrink-0" />}
                     </button>
                 )}
 
@@ -329,7 +326,7 @@ const RichSelect = memo(({
                 type="button"
                 onClick={disabled ? undefined : toggle}
                 disabled={disabled}
-                className={`w-full flex items-center justify-between gap-2 ${hasCustomHeight ? '' : heightClass} ${paddingClass} rounded-lg border ${statusClasses[status]} bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)]/50 focus:ring-1 outline-none transition-colors leading-none tabular-nums ${compact || small ? 'text-xs font-semibold' : 'text-sm font-medium'} relative group shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${buttonClassName}`}
+                className={`w-full flex items-center justify-between gap-2 ${hasCustomHeight ? '' : heightClass} ${paddingClass} rounded-lg border ${statusClasses[status]} bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)]/50 outline-none transition-colors leading-none tabular-nums ${compact || small ? 'text-xs font-semibold' : 'text-sm font-medium'} relative group shadow-sm ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${buttonClassName}`}
             >
                 <div className="flex items-center gap-2 truncate">
                     {icon && !compact && renderIcon(icon, `absolute ${small ? 'left-3 rtl:left-auto rtl:right-3' : 'left-3.5 rtl:left-auto rtl:right-3.5'} w-4 h-4 top-1/2 -translate-y-1/2 transition-colors ${iconStatusClasses[status]}`)}
@@ -337,7 +334,7 @@ const RichSelect = memo(({
                         {selectedOption ? (selectedOption.render ? selectedOption.render : selectedOption.name) : placeholder}
                     </span>
                 </div>
-                <ChevronDown className={`w-4 h-4 opacity-40 transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`} />
+                <ChevronDown className={`w-4 h-4 opacity-40 transition-transform duration-200 shrink-0 text-[var(--color-text-muted)] ${isOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {isOpen && (!usePortal || compact ? (
@@ -388,7 +385,7 @@ const RichSelect = memo(({
                                 width: 'max-content',
                                 minWidth: coords.width,
                                 maxWidth: small ? Math.max(200, coords.width) : Math.max(300, coords.width),
-                                maxHeight: Math.max(80, coords.maxHeight),
+                                maxHeight: Math.max(200, coords.maxHeight),
                                 overflow: 'hidden',
                                 left: coords.left,
                                 top: coords.placement === 'top' ? 'auto' : coords.bottom + 8,

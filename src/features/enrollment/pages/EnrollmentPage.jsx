@@ -27,8 +27,9 @@ import WaveModal from '@features/enrollment/components/WaveModal'
 import EnrollmentSearch from '@features/enrollment/components/EnrollmentSearch'
 import ArchiveModal from '@features/enrollment/components/ArchiveModal'
 import ConvertModal from '@features/enrollment/components/ConvertModal'
-import ImportModal from '@features/enrollment/components/ImportModal'
-import ExportModal from '@features/enrollment/components/ExportModal'
+import ImportDataModal from '@shared/components/import-export/ImportDataModal'
+import ExportDataModal from '@shared/components/import-export/ExportDataModal'
+import { buildImportConfig, EXPORT_CONFIG } from '@features/enrollment/components/importExportConfig'
 import StatsModal from '@features/enrollment/components/StatsModal'
 import AssessmentModal from '@features/enrollment/components/AssessmentModal'
 import PaymentModal from '@features/enrollment/components/PaymentModal'
@@ -131,6 +132,9 @@ export default function EnrollmentPage() {
         debouncedSearch,
         sortBy
     })
+
+    // Konfigurasi modal import (butuh daftar gelombang & aksi bulk-fix dari hook)
+    const importConfig = buildImportConfig({ waves, handleBulkFix: ie.handleBulkFix })
 
     return (
         <DashboardLayout title="PSB / Enrollment" subtitle="Penerimaan Santri Baru">
@@ -1048,15 +1052,7 @@ export default function EnrollmentPage() {
                 )
             }
             {/* Import & Export Modals */}
-            <input
-                ref={importFileInputRef}
-                type="file"
-                accept=".csv, .xlsx"
-                className="hidden"
-                onChange={ie.handleFileChange}
-            />
-
-            <ImportModal
+            <ImportDataModal
                 isOpen={ie.isImportModalOpen}
                 onClose={() => ie.setIsImportModalOpen(false)}
                 importing={ie.importing}
@@ -1064,14 +1060,12 @@ export default function EnrollmentPage() {
                 setImportStep={ie.setImportStep}
                 importPreview={ie.importPreview}
                 importFileName={ie.importFileName}
-                importFileInputRef={importFileInputRef}
+                fileInputRef={importFileInputRef}
                 importDragOver={ie.importDragOver}
                 setImportDragOver={ie.setImportDragOver}
                 processImportFile={ie.processImportFile}
-                waves={waves}
                 handleDownloadTemplate={ie.handleDownloadTemplate}
                 importFileHeaders={ie.importFileHeaders}
-                SYSTEM_COLS={ie.SYSTEM_COLS}
                 importColumnMapping={ie.importColumnMapping}
                 setImportColumnMapping={ie.setImportColumnMapping}
                 importRawData={ie.importRawData}
@@ -1083,7 +1077,6 @@ export default function EnrollmentPage() {
                 setImportValidationOpen={ie.setImportValidationOpen}
                 importProgress={ie.importProgress}
                 handleCommitImport={ie.handleCommitImport}
-                handleImportClick={ie.handleImportClick}
                 hasImportBlockingErrors={ie.hasImportBlockingErrors}
                 importReadyRows={ie.importReadyRows}
                 handleImportCellEdit={ie.handleImportCellEdit}
@@ -1092,14 +1085,13 @@ export default function EnrollmentPage() {
                 handleRemoveImportRow={ie.handleRemoveImportRow}
                 importSkipDupes={ie.importSkipDupes}
                 setImportSkipDupes={ie.setImportSkipDupes}
-                handleBulkFix={ie.handleBulkFix}
-                importDuplicates={ie.importDuplicates}
+                config={importConfig}
             />
 
-            <ExportModal
+            <ExportDataModal
                 isOpen={ie.isExportModalOpen}
                 onClose={() => ie.setIsExportModalOpen(false)}
-                enrollments={enrollments}
+                items={enrollments}
                 selectedIds={selectedIds}
                 exportScope={ie.exportScope}
                 setExportScope={ie.setExportScope}
@@ -1109,7 +1101,7 @@ export default function EnrollmentPage() {
                 handleExportCSV={ie.handleExportCSV}
                 handleExportExcel={ie.handleExportExcel}
                 handleExportPDF={ie.handleExportPDF}
-                addToast={addToast}
+                config={EXPORT_CONFIG}
             />
 
             <StatsModal

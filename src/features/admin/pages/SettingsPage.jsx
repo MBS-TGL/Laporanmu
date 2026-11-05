@@ -369,7 +369,7 @@ function Toggle({ checked, onChange, disabled = false, activeColor = 'bg-emerald
             <span className="sr-only">Toggle state</span>
             <span
                 className={`
-                    pointer-events-none flex h-4 w-4 transform items-center justify-center rounded-[4px] bg-white shadow-md ring-0 
+                    pointer-events-none flex h-4 w-4 transform items-center justify-center rounded-[4px] bg-white shadow-md ring-0
                     transition-all duration-400 ease-[cubic-bezier(0.23,1,0.32,1)]
                     ${checked ? 'translate-x-[20px]' : 'translate-x-0'}
                 `}
@@ -410,7 +410,7 @@ const FlagRow = memo(({ flag, cat, onToggle, isSaving, query }) => {
                     )}
                 </div>
                 {flag.description && (
-                    <p 
+                    <p
                         className="text-xs text-[var(--color-text-muted)] mt-0.5 leading-snug opacity-70 group-hover:opacity-100 transition-opacity line-clamp-1"
                         title={flag.description}
                     >
@@ -690,7 +690,7 @@ function ActivityFeed({ refreshKey, flags }) {
                     /* High-Density Summary Dashboard (Full Width) */
                     <div className="p-6 bg-slate-50/30 dark:bg-slate-900/10 min-h-[500px]">
                         <div className="space-y-6">
-                            
+
                             {/* Top Stats Row - 4 Columns */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                                 <div className="bg-surface p-4 rounded-2xl border border-[var(--color-border)] shadow-sm flex items-center gap-4">
@@ -740,7 +740,7 @@ function ActivityFeed({ refreshKey, flags }) {
 
                             {/* Middle Row - Split View */}
                             <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                                
+
                                 {/* Left: Progress Bars for Top Features */}
                                 <div className="xl:col-span-2 bg-surface rounded-2xl border border-[var(--color-border)] overflow-hidden flex flex-col">
                                     <div className="px-5 py-4 border-b border-[var(--color-border)] bg-slate-50/50 dark:bg-slate-800/50 flex items-center justify-between">
@@ -758,7 +758,7 @@ function ActivityFeed({ refreshKey, flags }) {
                                                         <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 border border-[var(--color-border)]">{count} perubahan</span>
                                                     </div>
                                                     <div className="h-3 w-full bg-slate-100/50 dark:bg-slate-800/50 rounded-full overflow-hidden p-0.5 border border-[var(--color-border)]">
-                                                        <div 
+                                                        <div
                                                             className="h-full rounded-full bg-indigo-500 transition-all duration-1000 shadow-[0_0_10px_rgba(99,102,241,0.2)]"
                                                             style={{ width: `${percent}%` }}
                                                         />
@@ -777,7 +777,7 @@ function ActivityFeed({ refreshKey, flags }) {
                                 {/* Right: Distribution & Health */}
                                 <div className="space-y-6">
                                     <div className="bg-surface rounded-2xl border border-[var(--color-border)] p-5 flex flex-col items-center text-center relative overflow-hidden h-full">
-                                        
+
                                         <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-800 shadow-lg border border-[var(--color-border)] flex items-center justify-center mb-5 relative z-10">
                                             <ChartPie className="w-6 h-6 text-indigo-500" />
                                         </div>
@@ -785,7 +785,7 @@ function ActivityFeed({ refreshKey, flags }) {
                                         <p className="text-xs text-slate-400 mt-3 leading-relaxed relative z-10 px-4">
                                             Modul internal saat ini berjalan dengan optimal. Semua perubahan flag dicatat secara real-time ke audit log.
                                         </p>
-                                        
+
                                         <div className="mt-6 w-full space-y-3 relative z-10 px-2">
                                             <div className="flex items-center justify-between p-3 rounded-xl bg-slate-100/50 dark:bg-slate-800/50 border border-[var(--color-border)]">
                                                 <div className="flex items-center gap-2">
@@ -803,7 +803,7 @@ function ActivityFeed({ refreshKey, flags }) {
                                             </div>
                                         </div>
 
-                                        <button 
+                                        <button
                                             onClick={() => setActiveView('detail')}
                                             className="mt-6 w-full py-3 rounded-xl bg-slate-800 text-white text-xs font-bold uppercase tracking-wide hover:bg-slate-900 transition-all shadow-md relative z-10"
                                         >
@@ -988,12 +988,12 @@ export default function AdminSettingsPage() {
             if (insertErr) throw insertErr
 
             addToast('Tanda tangan digital berhasil ditambahkan', 'success')
-            
+
             // Reset form
             setNewSigTeacherId('')
             setNewSigFile(null)
             if (sigFileInputRef.current) sigFileInputRef.current.value = ''
-            
+
             // Refresh list
             fetchSignaturesAndTeachers()
         } catch (err) {
@@ -1189,7 +1189,7 @@ export default function AdminSettingsPage() {
                                 key={t.id} onClick={() => setActiveTab(t.id)} type="button"
                                 className={`relative h-10 px-1 sm:px-5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all duration-200
                                     ${activeTab === t.id
-                                        ? `bg-[var(--color-surface)] shadow-sm 
+                                        ? `bg-[var(--color-surface)] shadow-sm
                                            ${t.id === 'danger' ? 'text-rose-500' : 'text-[var(--color-primary)]'}`
                                         : `text-[var(--color-text-muted)] hover:text-[var(--color-text)]
                                            ${t.id === 'danger' ? 'hover:text-rose-500 hover:bg-rose-500/5' : 'hover:bg-[var(--color-surface)]/40'}`
@@ -1433,7 +1433,7 @@ export default function AdminSettingsPage() {
                                     <p className="text-xs text-[var(--color-text-muted)] mt-0.5">Tambah TTD digital guru & pengasuh</p>
                                 </div>
                             </div>
-                            
+
                             <form onSubmit={handleUploadSignature} className="p-5 space-y-4">
                                 <div>
                                     <FL>Pilih Guru / Staff</FL>
@@ -1534,8 +1534,8 @@ export default function AdminSettingsPage() {
                                                 <div>
                                                     <div className="flex items-center justify-between gap-2 mb-1">
                                                         <span className={`text-xs font-bold tracking-wide uppercase px-2 py-0.5 rounded-full ${
-                                                            sig.role === 'pengasuh' 
-                                                                ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20' 
+                                                            sig.role === 'pengasuh'
+                                                                ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20'
                                                                 : 'bg-indigo-500/10 text-indigo-600 border border-indigo-500/20'
                                                         }`}>
                                                             {sig.role === 'pengasuh' ? 'Pengasuh' : 'Wali Kelas'}
@@ -1550,7 +1550,7 @@ export default function AdminSettingsPage() {
                                                 </div>
 
                                                 {/* Image preview area with checkerboard background */}
-                                                <div 
+                                                <div
                                                     className="w-full h-24 rounded-lg border border-[var(--color-border)]/60 bg-[var(--color-surface-alt)] flex items-center justify-center p-3 relative overflow-hidden"
                                                     style={{
                                                         backgroundImage: 'radial-gradient(rgba(0,0,0,0.05) 20%, transparent 20%), radial-gradient(rgba(0,0,0,0.05) 20%, transparent 20%)',

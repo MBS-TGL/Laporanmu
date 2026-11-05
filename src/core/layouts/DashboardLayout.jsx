@@ -60,7 +60,7 @@ export default function DashboardLayout({ children, title }) {
 
             {/* Page Content — shifts right on desktop to make room for sidebar */}
             <main
-                className="relative z-10 w-full px-3 sm:px-5 lg:px-6 xl:px-8 py-4 sm:py-5 lg:py-6 pb-24 lg:pb-6"
+                className="relative z-10 w-full px-3 sm:px-5 lg:px-6 xl:px-8 pb-24 lg:pb-6"
                 style={{
                     marginLeft: `0px`,
                     '--sidebar-width': '0px'
@@ -77,7 +77,7 @@ export default function DashboardLayout({ children, title }) {
                         }
                     }
                 `}</style>
-                <div className="mx-auto w-full max-w-[1800px]">
+                <div className="mx-auto w-full max-w-[1800px] pt-4 sm:pt-5 lg:pt-6">
                     {children}
                 </div>
             </main>

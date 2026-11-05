@@ -43,7 +43,6 @@ export function useCore({ addToast, addUndoToast }) {
     const [isPrintModalOpen, setIsPrintModalOpen] = useState(false)
     const [activeModal, setActiveModal] = useState(null)
     const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false)
-    const [isShortcutOpen, setIsShortcutOpen] = useState(false)
     const [photoZoom, setPhotoZoom] = useState(null)
     const [isPrivacyMode, setIsPrivacyMode] = useState(false)
 
@@ -164,7 +163,6 @@ export function useCore({ addToast, addUndoToast }) {
     const photoInputRef = useRef(null)
     const searchInputRef = useRef(null)
     const headerMenuRef = useRef(null)
-    const shortcutRef = useRef(null)
     const cardCaptureRef = useRef(null)
 
     // ---- COMPUTED ----
@@ -1293,7 +1291,7 @@ Laporanmu System`
         // Modals & UI
         isModalOpen, setIsModalOpen, isPrintModalOpen, setIsPrintModalOpen,
         activeModal, setActiveModal, isHeaderMenuOpen, setIsHeaderMenuOpen,
-        isShortcutOpen, setIsShortcutOpen, photoZoom, setPhotoZoom,
+        photoZoom, setPhotoZoom,
         isPrivacyMode, setIsPrivacyMode, isAnyModalOpen,
         // Action Context
         selectedStudent, setSelectedStudent, studentToDelete, setStudentToDelete,
@@ -1332,7 +1330,7 @@ Laporanmu System`
         allSelected, someSelected, lastReportMap,
         allUsedTags, archivedStudents, loadingArchived, classHistory, loadingClassHistory,
         // Refs
-        formDataRef, importFileInputRef, photoInputRef, searchInputRef, headerMenuRef, shortcutRef, cardCaptureRef,
+        formDataRef, importFileInputRef, photoInputRef, searchInputRef, headerMenuRef, cardCaptureRef,
         // Computed
         selectedStudents, selectedStudentsWithPhone, selectedIdSet, generateCode, handleAddCustomTag,
         // Inline Add State

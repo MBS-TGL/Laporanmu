@@ -925,7 +925,7 @@ const StudentRow = memo(({
                                                         type="button"
                                                         onClick={() => handleStep(-1)}
                                                         disabled={curNum <= 0}
-                                                        className="w-10 flex items-center justify-center border-r border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] active:scale-95 disabled:opacity-30 transition-all cursor-pointer shrink-0 text-lg font-light"
+                                                        className="w-10 flex items-center justify-center border-r border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] active:scale-95 disabled:opacity-30 transition-all cursor-pointer shrink-0 text-lg font-normal"
                                                     >−</button>
                                                     <input
                                                         type="number"
@@ -941,7 +941,7 @@ const StudentRow = memo(({
                                                         type="button"
                                                         onClick={() => handleStep(1)}
                                                         disabled={curNum >= maxVal}
-                                                        className="w-10 flex items-center justify-center border-l border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] active:scale-95 disabled:opacity-30 transition-all cursor-pointer shrink-0 text-lg font-light"
+                                                        className="w-10 flex items-center justify-center border-l border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] active:scale-95 disabled:opacity-30 transition-all cursor-pointer shrink-0 text-lg font-normal"
                                                     >+</button>
                                                 </div>
                                             </div>

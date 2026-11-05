@@ -67,6 +67,41 @@ import { Users, Save } from 'lucide-react'
 - Ikon brand/gender yang tidak ada di lucide: `WhatsAppIcon`, `MarsIcon`, `VenusIcon`,
   `VenusMarsIcon` dari `@shared/components/icons/BrandIcons`.
 
+## Keyboard Shortcuts (reusable — wajib untuk halaman baru)
+
+Sistem shortcut halaman = 2 bagian shared; halaman cuma deklarasi data:
+
+1. **`usePageShortcuts({ isBlocked, items })`** (`src/shared/hooks/usePageShortcuts.js`) —
+   mesin: listener global `?`/Esc/kombinasi, gating, pengelompokan sections.
+   Returns `{ isOpen, open, close, toggle, sections }`.
+2. **`<ShortcutsModal isOpen onClose sections />`** (`@shared/components`) — palet ala
+   Linear (search, navigasi panah, item ber-`onSelect` bisa dijalankan).
+
+Satu array `items` jadi sumber tunggal binding keyboard + daftar modal:
+
+```jsx
+const sc = usePageShortcuts({
+    isBlocked: isAnyModalOpen,          // modal/menu lain terbuka → hanya Esc berlaku
+    items: [
+        { section: 'Navigasi', keys: ['Ctrl', 'K'], label: 'Fokus ke search', icon: Search,
+          onSelect: () => searchRef.current?.focus() },
+        { section: 'Aksi', keys: ['N'], label: 'Tambah data', when: canAdd, onSelect: handleAdd },
+        { section: 'Navigasi', keys: ['Esc'], label: 'Tutup / clear / deselect', onSelect: dismissAll },
+        { section: 'Tampilan', keys: ['?'], label: 'Tampilkan shortcut ini', icon: Keyboard },
+    ],
+})
+
+<ShortcutsModal isOpen={sc.isOpen} onClose={sc.close} sections={sc.sections} />
+```
+
+Aturan: `when: false` = binding mati + disembunyikan dari daftar; item `?` display-only
+(hook yang men-toggle); item `keys: ['Esc']` = aksi halaman saat palet tertutup (saat
+palet terbuka, Esc menutup palet dulu); huruf tunggal tanpa modifier/Shift/repeat;
+Ctrl = ⌘ di Mac (chip dirender via `formatKey` dari `@shared/utils/keyboard`).
+
+Dipakai di: Students, Behavior (+RulesTab), Years, Classes, Teachers, Raport
+(layout + page). **Dilarang** membuat listener keydown shortcut sendiri di halaman.
+
 ## Skala Chrome & Komponen (wajib konsisten)
 
 Semua nilai di bawah adalah satu-satunya pilihan untuk UI chrome & komponen shared —

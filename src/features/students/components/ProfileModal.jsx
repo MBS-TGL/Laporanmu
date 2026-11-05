@@ -41,7 +41,7 @@ export default memo(function ProfileModal({
             <div className="space-y-0.5">
                 <p className="text-xs font-bold text-[var(--color-text-muted)]">Data {label} belum tersedia</p>
                 {canEdit && !isPrivacyMode && (
-                    <button onClick={() => { onClose(); handleEdit(selectedStudent); }} className="text-xs font-bold uppercase tracking-wide text-indigo-500 hover:text-indigo-600 transition-colors">
+                    <button onClick={() => { onClose(); handleEdit(selectedStudent); }} className="text-xs font-bold uppercase tracking-wide text-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors">
                         Lengkapi Data <Plus className="w-4 h-4 ml-1" />
                     </button>
                 )}
@@ -78,19 +78,19 @@ export default memo(function ProfileModal({
             title="Profil Siswa"
             description="Detail informasi akademik, statistik perilaku, histori laporan perizinan, dan rekapan raport siswa."
             icon={Briefcase}
-            iconBg="bg-indigo-500/10"
-            iconColor="text-indigo-600"
+            iconBg="bg-[var(--color-primary)]/10"
+            iconColor="text-[var(--color-primary)]"
             size="lg"
             mobileVariant="bottom-sheet"
             footer={
                 <div className="flex items-center w-full gap-3">
-                    <button onClick={onOpenTagModal} className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center gap-2 shrink-0">
+                    <button onClick={onOpenTagModal} className="h-9 px-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap transition-colors flex items-center justify-center gap-2 shrink-0">
                         <Tags className="w-4 h-4 opacity-70" /> Label
                     </button>
 
                     <div className="flex-1" />
 
-                    <button onClick={onClose} className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center shrink-0">
+                    <button onClick={onClose} className="h-9 px-5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap transition-colors shrink-0">
                         Tutup
                     </button>
 
@@ -100,7 +100,7 @@ export default memo(function ProfileModal({
                                 onClose();
                                 handleEdit(selectedStudent);
                             }}
-                            className="h-10 px-8 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide shadow-lg hover:brightness-110 transition-all flex items-center justify-center gap-2 shrink-0"
+                            className="h-9 px-6 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap shadow-sm transition-colors flex items-center justify-center gap-2 shrink-0"
                         >
                             <SquarePen className="w-4 h-4 opacity-70" /> Edit Data
                         </button>
@@ -119,7 +119,7 @@ export default memo(function ProfileModal({
                                     <span>{isPrivacyMode ? maskInfo(selectedStudent.name, 1) : (selectedStudent.name?.charAt(0) || '?')}</span>
                                 )}
                             </div>
-                            <div className="absolute -bottom-2 -right-2 px-2 py-0.5 bg-indigo-500 text-white rounded-md text-xs font-bold shadow-lg border border-white/20">
+                            <div className="absolute -bottom-2 -right-2 px-2 py-0.5 bg-[var(--color-primary)] text-white rounded-md text-xs font-bold shadow-lg border border-white/20">
                                 {calculateCompleteness(selectedStudent)}%
                             </div>
                         </div>
@@ -129,9 +129,9 @@ export default memo(function ProfileModal({
                                 {isPrivacyMode ? maskInfo(selectedStudent.name, 4) : selectedStudent.name}
                             </h2>
                             <div className="flex flex-wrap gap-3 items-center text-xs font-bold text-white/70 uppercase tracking-wider">
-                                <span className="flex items-center gap-1.5"><IdCard className="w-4 h-4 text-indigo-400" /> {selectedStudent.registration_code}</span>
+                                <span className="flex items-center gap-1.5"><IdCard className="w-4 h-4 text-indigo-300" /> {selectedStudent.registration_code}</span>
                                 <span className="w-1 h-1 rounded-full bg-white/30" />
-                                <span className="flex items-center gap-1.5"><GraduationCap className="w-4 h-4 text-indigo-400" /> {selectedStudent.className}</span>
+                                <span className="flex items-center gap-1.5"><GraduationCap className="w-4 h-4 text-indigo-300" /> {selectedStudent.className}</span>
                             </div>
 
                             {/* Tags display */}
@@ -162,14 +162,14 @@ export default memo(function ProfileModal({
                             onClick={() => setProfileTab(t)}
                             aria-selected={profileTab === t}
                             className={`flex-1 min-w-[70px] h-12 flex flex-col items-center justify-center gap-1 transition-all relative
-                                ${profileTab === t ? 'text-indigo-500' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                                ${profileTab === t ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                         >
                             {t === 'info' ? <IdCard className="w-4 h-4 mb-1" /> : t === 'stats' ? <ChartLine className="w-4 h-4 mb-1" /> : t === 'log' ? <History className="w-4 h-4 mb-1" /> : t === 'audit' ? <History className="w-4 h-4 mb-1" /> : <FileText className="w-4 h-4 mb-1" />}
                             <span className="text-xs font-bold uppercase tracking-wide">{t === 'log' ? 'Perilaku' : t === 'raport' ? 'Raport' : t}</span>
-                            {profileTab === t && <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-indigo-500 rounded-full" />}
+                            {profileTab === t && <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-[var(--color-primary)] rounded-full" />}
 
-                            {t === 'stats' && behaviorHistory.length > 0 && <div className="absolute top-2 right-4 w-1.5 h-1.5 bg-rose-500 rounded-full border border-white" />}
-                            {t === 'raport' && raportHistory.length > 0 && <div className="absolute top-2 right-4 w-1.5 h-1.5 bg-emerald-500 rounded-full border border-white" />}
+                            {t === 'stats' && behaviorHistory.length > 0 && <div className="absolute top-2 right-4 w-1.5 h-1.5 bg-danger rounded-full border border-white" />}
+                            {t === 'raport' && raportHistory.length > 0 && <div className="absolute top-2 right-4 w-1.5 h-1.5 bg-success rounded-full border border-white" />}
                         </button>
                     ))}
                 </div>
@@ -179,14 +179,14 @@ export default memo(function ProfileModal({
                         <div className="space-y-6">
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                                 <div className="flex items-center gap-2.5 pt-1">
-                                    <div className="w-1 h-4 bg-indigo-500 rounded-full" />
-                                    <IdCard className="w-4 h-4 text-indigo-500 opacity-70" />
+                                    <div className="w-1 h-4 bg-[var(--color-primary)] rounded-full" />
+                                    <IdCard className="w-4 h-4 text-[var(--color-primary)] opacity-70" />
                                     <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Profil Pribadi</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
                                 <div className="grid grid-cols-2 gap-y-5 gap-x-6">
                                     <div className="col-span-2">
-                                        <p className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide mb-1 opacity-80 text-indigo-600/70">NISN</p>
+                                        <p className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide mb-1 opacity-80 text-[var(--color-primary)]/70">NISN</p>
                                         <p className="text-sm font-bold text-[var(--color-text)] tracking-wider">
                                             {isPrivacyMode ? maskInfo(selectedStudent.nisn, 4) : (selectedStudent.nisn || '---')}
                                         </p>
@@ -199,8 +199,8 @@ export default memo(function ProfileModal({
                             {/* ── Data Orang Tua & Wali (Unified Grid) ── */}
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-6">
                                 <div className="flex items-center gap-2.5 pt-1">
-                                    <div className="w-1 h-4 bg-indigo-500 rounded-full" />
-                                    <Users className="w-4 h-4 text-indigo-500 opacity-70" />
+                                    <div className="w-1 h-4 bg-[var(--color-primary)] rounded-full" />
+                                    <Users className="w-4 h-4 text-[var(--color-primary)] opacity-70" />
                                     <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Data Orang Tua & Wali</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
@@ -209,7 +209,7 @@ export default memo(function ProfileModal({
                                     {/* Kolom Ayah */}
                                     <div className="space-y-4">
                                         <div className="flex items-center gap-2 border-b border-[var(--color-border)] pb-2">
-                                            <Briefcase className="w-4 h-4 text-indigo-500/60" />
+                                            <Briefcase className="w-4 h-4 text-[var(--color-primary)]/60" />
                                             <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Ayah</span>
                                         </div>
                                         {selectedStudent.metadata?.father?.name || selectedStudent.metadata?.father?.nik ? (
@@ -243,14 +243,14 @@ export default memo(function ProfileModal({
                                     {/* Kolom Wali / Kontak */}
                                     <div className="space-y-4">
                                         <div className="flex items-center gap-2 border-b border-[var(--color-border)] pb-2">
-                                            <IdCard className="w-4 h-4 text-emerald-500/60" />
+                                            <IdCard className="w-4 h-4 text-success/60" />
                                             <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Kontak Wali Utama</span>
                                         </div>
                                         <div className="space-y-1 px-1">
                                             <InfoRow label="Nama Wali / Ortu" value={isPrivacyMode ? maskInfo(selectedStudent.guardian_name, 4) : (selectedStudent.guardian_name || '-')} />
                                             <div className="space-y-1">
                                                 <p className="text-xs font-bold uppercase text-[var(--color-text-muted)] tracking-wide mb-1 flex items-center gap-1.5 opacity-80">
-                                                    <WhatsAppIcon className="w-4 h-4 text-emerald-500" /> No. HP / WhatsApp
+                                                    <WhatsAppIcon className="w-4 h-4 text-success" /> No. HP / WhatsApp
                                                 </p>
                                                 <div className="flex items-center justify-between group/wa">
                                                     <p className="text-xs font-bold text-[var(--color-text)] tracking-wider">
@@ -272,7 +272,7 @@ export default memo(function ProfileModal({
                                                                         window.open(`https://wa.me/${waPhone}?text=${text}`, '_blank')
                                                                     }
                                                                 }}
-                                                                className="w-6 h-6 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs hover:brightness-110 transition-all shadow-sm"
+                                                                className="w-6 h-6 rounded-lg bg-success text-white flex items-center justify-center text-xs hover:brightness-110 transition-all shadow-sm"
                                                             >
                                                                 <WhatsAppIcon className="w-4 h-4" />
                                                             </button>
@@ -281,7 +281,7 @@ export default memo(function ProfileModal({
                                                 </div>
                                             </div>
                                             {!isPrivacyMode && selectedStudent.phone && (
-                                                <button onClick={handleSaveContact} className="w-full mt-2 h-8 rounded-lg border border-indigo-500/20 bg-indigo-500/5 text-indigo-600 text-xs font-bold uppercase tracking-wide hover:bg-indigo-500 hover:text-white transition-all flex items-center justify-center gap-2">
+                                                <button onClick={handleSaveContact} className="w-full mt-2 h-8 rounded-lg border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 text-[var(--color-primary)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-primary)] hover:text-white transition-all flex items-center justify-center gap-2">
                                                     <IdCard className="w-4 h-4" /> Simpan Kontak VCF
                                                 </button>
                                             )}
@@ -292,8 +292,8 @@ export default memo(function ProfileModal({
 
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                                 <div className="flex items-center gap-2.5 pt-1">
-                                    <div className="w-1 h-4 bg-emerald-500 rounded-full" />
-                                    <MapPin className="w-4 h-4 text-emerald-500 opacity-70" />
+                                    <div className="w-1 h-4 bg-success rounded-full" />
+                                    <MapPin className="w-4 h-4 text-success opacity-70" />
                                     <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Alamat & Domisili</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
@@ -315,8 +315,8 @@ export default memo(function ProfileModal({
 
                             <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm space-y-5">
                                 <div className="flex items-center gap-2.5 pt-1">
-                                    <div className="w-1 h-4 bg-amber-500 rounded-full" />
-                                    <IdCard className="w-4 h-4 text-amber-500 opacity-70" />
+                                    <div className="w-1 h-4 bg-warning rounded-full" />
+                                    <IdCard className="w-4 h-4 text-warning opacity-70" />
                                     <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text)]">Dokumen Sipil</span>
                                     <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--color-border)] to-transparent opacity-40" />
                                 </div>
@@ -412,8 +412,8 @@ export default memo(function ProfileModal({
                                                         <span className="text-emerald-400">+{m.pos}</span> / <span className="text-rose-400">-{m.neg}</span>
                                                     </div>
                                                     <div className="w-full flex flex-col gap-0.5 items-stretch justify-end h-full relative">
-                                                        {m.pos > 0 && <div className="w-full rounded-t-sm bg-emerald-500/40 group-hover:bg-emerald-500 transition-all" style={{ height: `${(m.pos / maxVal) * 100}%` }} />}
-                                                        {m.neg > 0 && <div className="w-full rounded-b-sm bg-rose-500/40 group-hover:bg-rose-500 transition-all" style={{ height: `${(m.neg / maxVal) * 100}%` }} />}
+                                                        {m.pos > 0 && <div className="w-full rounded-t-sm bg-success/40 group-hover:bg-success transition-all" style={{ height: `${(m.pos / maxVal) * 100}%` }} />}
+                                                        {m.neg > 0 && <div className="w-full rounded-b-sm bg-danger/40 group-hover:bg-danger transition-all" style={{ height: `${(m.neg / maxVal) * 100}%` }} />}
                                                         {m.pos === 0 && m.neg === 0 && <div className="w-full h-1 bg-[var(--color-border)] opacity-20" />}
                                                     </div>
                                                     <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase">{m.label}</span>
@@ -468,9 +468,9 @@ export default memo(function ProfileModal({
                                 <>
                                     <div className="flex gap-1.5 mb-2 overflow-x-auto no-scrollbar pb-1">
                                         {[
-                                            { id: 'all', label: 'Semua', active: 'bg-indigo-500 text-white border-indigo-500 shadow-lg' },
-                                            { id: 'pos', label: 'Positif', active: 'bg-emerald-500 text-white border-emerald-500 shadow-lg' },
-                                            { id: 'neg', label: 'Negatif', active: 'bg-rose-500 text-white border-rose-500 shadow-lg' }
+                                            { id: 'all', label: 'Semua', active: 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-lg' },
+                                            { id: 'pos', label: 'Positif', active: 'bg-success text-white border-success shadow-lg' },
+                                            { id: 'neg', label: 'Negatif', active: 'bg-danger text-white border-danger shadow-sm' }
                                         ].map(f => (
                                             <button
                                                 key={f.id}
@@ -490,7 +490,7 @@ export default memo(function ProfileModal({
                                         const isNeg = pts < 0
                                         return (
                                             <div key={item.id} className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/10 flex items-start gap-3 hover:bg-[var(--color-surface-alt)]/30 transition-all">
-                                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 font-bold text-xs ${isPos ? 'bg-emerald-500/10 text-emerald-600' : isNeg ? 'bg-rose-500/10 text-rose-600' : 'bg-slate-500/10 text-slate-500'}`}>
+                                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 font-bold text-xs ${isPos ? 'bg-success/10 text-success' : isNeg ? 'bg-danger/10 text-danger' : 'bg-slate-500/10 text-slate-500'}`}>
                                                     {pts > 0 ? '+' : ''}{pts}
                                                 </div>
                                                 <div className="flex-1 min-w-0 pt-0.5">
@@ -540,7 +540,7 @@ export default memo(function ProfileModal({
                                             <div key={r.id} className="p-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/10">
                                                 <div className="flex items-center justify-between mb-3">
                                                     <div className="flex items-center gap-3">
-                                                        <div className="w-9 h-9 rounded-lg bg-indigo-500 text-white flex flex-col items-center justify-center font-bold">
+                                                        <div className="w-9 h-9 rounded-lg bg-[var(--color-primary)] text-white flex flex-col items-center justify-center font-bold">
                                                             <span className="text-[7px] uppercase leading-none opacity-60">Bln</span>
                                                             <span className="text-[14px] leading-none">{r.month}</span>
                                                         </div>
@@ -550,16 +550,16 @@ export default memo(function ProfileModal({
                                                         </div>
                                                     </div>
                                                     <div className="text-right">
-                                                        <p className="text-lg font-bold text-indigo-500">{avg}</p>
+                                                        <p className="text-lg font-bold text-[var(--color-primary)]">{avg}</p>
                                                         <p className="text-[7px] font-bold uppercase opacity-50">Rerata</p>
                                                     </div>
                                                 </div>
                                                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                                                     {[
-                                                        { l: 'Akhlak', v: r.nilai_akhlak, c: 'bg-amber-500' },
-                                                        { l: 'Ibadah', v: r.nilai_ibadah, c: 'bg-indigo-500' },
-                                                        { l: 'Bersih', v: r.nilai_kebersihan, c: 'bg-emerald-500' },
-                                                        { l: 'Quran', v: r.nilai_quran, c: 'bg-indigo-600' },
+                                                        { l: 'Akhlak', v: r.nilai_akhlak, c: 'bg-warning' },
+                                                        { l: 'Ibadah', v: r.nilai_ibadah, c: 'bg-[var(--color-primary)]' },
+                                                        { l: 'Bersih', v: r.nilai_kebersihan, c: 'bg-success' },
+                                                        { l: 'Quran', v: r.nilai_quran, c: 'bg-[var(--color-primary)]' },
                                                         { l: 'Bhs', v: r.nilai_bahasa, c: 'bg-violet-600' },
                                                     ].map(k => (
                                                         <div key={k.l} className="flex flex-col p-2 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-sm">

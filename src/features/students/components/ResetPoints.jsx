@@ -40,7 +40,7 @@ export default function ResetPoints({
                     <button
                         type="button"
                         onClick={handleClose}
-                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
+                        className="h-9 px-5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap transition-colors shrink-0"
                     >
                         Batal
                     </button>
@@ -49,7 +49,7 @@ export default function ResetPoints({
                         type="button"
                         onClick={handleBatchResetPoints}
                         disabled={resettingPoints}
-                        className="h-10 px-6 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed shrink-0"
+                        className="h-9 px-5 rounded-lg bg-warning hover:bg-warning-dark text-white text-xs font-bold uppercase tracking-wide leading-none whitespace-nowrap shadow-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed shrink-0"
                     >
                         {resettingPoints ? (
                             <LoaderCircle className="w-4 h-4 animate-spin" />
@@ -101,11 +101,11 @@ export default function ResetPoints({
                                     type="button"
                                     onClick={() => setResetPointsClassId('')}
                                     className={`col-span-full p-2 rounded-xl border text-left flex items-center gap-2 transition-all hover:scale-[1.01] active:scale-95 group mb-1 ${resetPointsClassId === ''
-                                        ? 'bg-amber-500 border-amber-500 text-white shadow-lg'
-                                            : 'border-amber-500/30 bg-amber-500/5 text-amber-600 hover:bg-amber-500/10'
+                                        ? 'bg-warning border-warning text-white shadow-lg'
+                                            : 'border-warning/30 bg-warning/5 text-warning-dark hover:bg-warning/10'
                                         }`}
                                 >
-                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors ${resetPointsClassId === '' ? 'bg-white/20 text-white' : 'bg-amber-500 text-white shadow-sm'
+                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors ${resetPointsClassId === '' ? 'bg-white/20 text-white' : 'bg-warning text-white shadow-sm'
                                         }`}>
                                         <Layers className="w-4 h-4" />
                                     </div>
@@ -154,7 +154,7 @@ export default function ResetPoints({
                 </div>
 
                 {/* Warning */}
-                <div className="p-3 bg-red-500/5 rounded-2xl border border-red-500/10 text-xs text-red-600 dark:text-red-400 font-bold leading-relaxed">
+                <div className="p-3 bg-danger/5 rounded-2xl border border-danger/10 text-xs text-danger dark:text-red-400 font-bold leading-relaxed">
                     <CircleAlert className="w-4 h-4 mr-2" />
                     Tindakan ini tidak bisa dibatalkan. Semua poin siswa akan direset ke 0 untuk rombongan kelas yang dipilih.
                 </div>

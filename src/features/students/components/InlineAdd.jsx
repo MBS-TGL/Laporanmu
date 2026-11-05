@@ -36,7 +36,7 @@ export default function InlineAdd({
 
     useEffect(() => {
         if (nameInputRef.current) {
-            nameInputRef.current.focus()
+            nameInputRef.current.focus({ preventScroll: true })
         }
     }, [])
 
@@ -156,11 +156,11 @@ export default function InlineAdd({
                 <td className="px-4 py-3 text-center w-[280px]">
                     <div className="flex items-center justify-center gap-1.5">
                         <button onClick={handleSubmit} disabled={submitting || !canEdit || !localForm.name || !localForm.class_id}
-                            className="h-9 px-3 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 shadow-lg transition-all disabled:opacity-50 flex items-center gap-1.5">
+                            className="h-9 px-4 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white text-xs font-bold uppercase tracking-wide leading-none shadow-sm transition-colors disabled:opacity-50 flex items-center gap-1.5">
                             {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <><Check className="w-4 h-4" /> Simpan</>}
                         </button>
                         <button onClick={onCancel}
-                            className="h-9 w-9 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-red-500 hover:text-white hover:border-red-500 transition-all flex items-center justify-center">
+                            className="h-9 w-9 rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-danger hover:text-white hover:border-danger transition-colors flex items-center justify-center">
                             <X className="w-4 h-4" />
                         </button>
                     </div>

@@ -112,6 +112,34 @@ const Modal = memo(function Modal({
         return () => window.removeEventListener('keydown', onKeyDown)
     }, [isOpen])
 
+    // Focus trap: Tab (dan Shift+Tab) berputar di dalam panel, tidak bocor ke background
+    const handleTabTrap = (e) => {
+        if (e.key !== 'Tab') return
+        const root = panelRef.current
+        if (!root) return
+        const focusables = Array.from(root.querySelectorAll(
+            'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )).filter(el => el.offsetParent !== null || el === document.activeElement)
+        if (!focusables.length) {
+            e.preventDefault()
+            root.focus({ preventScroll: true })
+            return
+        }
+        const first = focusables[0]
+        const last = focusables[focusables.length - 1]
+        const active = document.activeElement
+        if (!root.contains(active)) {
+            e.preventDefault()
+            first.focus({ preventScroll: true })
+        } else if (e.shiftKey && active === first) {
+            e.preventDefault()
+            last.focus({ preventScroll: true })
+        } else if (!e.shiftKey && active === last) {
+            e.preventDefault()
+            first.focus({ preventScroll: true })
+        }
+    }
+
     if (!mounted) return null
 
     const container = getPortalContainer('portal-modals-system')
@@ -134,6 +162,7 @@ const Modal = memo(function Modal({
                 transition: `opacity ${duration} ease`,
             }}
             onClick={() => closeOnOutsideClick && onClose?.()}
+            onKeyDown={handleTabTrap}
             role="dialog"
             aria-modal="true"
         >

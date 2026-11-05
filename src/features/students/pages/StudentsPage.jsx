@@ -155,17 +155,17 @@ const SelectedStudentsCarousel = memo(({
                         const targetLevel = targetClass ? (parseInt(targetClass.name) || 0) : 0;
 
                         if (targetLevel < originLevel) {
-                            statusColor = 'bg-red-50 border-red-200';
+                            statusColor = 'bg-danger/10 border-danger/20';
                             icon = TriangleAlert;
-                            iconColor = 'bg-red-500 text-white shadow-lg';
+                            iconColor = 'bg-danger text-white shadow-sm';
                         } else if (targetLevel === originLevel) {
-                            statusColor = 'bg-amber-50 border-amber-200';
+                            statusColor = 'bg-warning/10 border-warning/20';
                             icon = RotateCcw;
-                            iconColor = 'bg-amber-500 text-white shadow-lg';
+                            iconColor = 'bg-warning text-white shadow-sm';
                         } else if (targetLevel > originLevel) {
-                            statusColor = 'bg-indigo-50 border-indigo-200';
+                            statusColor = 'bg-primary/10 border-primary/20';
                             icon = Rocket;
-                            iconColor = 'bg-indigo-500 text-white shadow-lg';
+                            iconColor = 'bg-primary text-white shadow-sm';
                         }
                     }
 
@@ -182,10 +182,10 @@ const SelectedStudentsCarousel = memo(({
                                     setRemovingStudentId(null);
                                 }, 300);
                             }}
-                            className={`flex-shrink-0 flex items-center gap-2.5 p-2 rounded-xl border transition-all duration-300 min-w-[170px] shadow-sm text-left group relative snap-center ${statusColor} ${isRemoving ? 'opacity-0 scale-95 blur-md translate-y-2' : 'hover:border-[var(--color-primary)]/40 hover:shadow-md active:scale-95'}`}
+                            className={`flex-shrink-0 flex items-center gap-2.5 p-2 rounded-xl border transition-[background-color,border-color,box-shadow,opacity,transform,filter] duration-200 min-w-[170px] shadow-sm text-left group relative snap-center ${statusColor} ${isRemoving ? 'opacity-0 scale-95 blur-md translate-y-2' : 'hover:border-[var(--color-primary)]/40 hover:shadow-sm active:scale-95'}`}
                         >
-                            <div className="flex items-center gap-2.5 w-full transition-all duration-300 group-hover:blur-[2px] group-hover:opacity-30">
-                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold overflow-hidden shrink-0 transition-all duration-500 group-hover:rotate-6 ${iconColor}`}>
+                            <div className="flex items-center gap-2.5 w-full transition-[filter,opacity] duration-200 group-hover:blur-[2px] group-hover:opacity-30">
+                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold overflow-hidden shrink-0 transition-[background-color,color,transform] duration-200 group-hover:rotate-6 ${iconColor}`}>
                                     {student.foto ? <img src={student.foto} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" /> : (student.name?.charAt(0) || '?')}
                                 </div>
                                 <div className="min-w-0 flex-1">
@@ -196,8 +196,8 @@ const SelectedStudentsCarousel = memo(({
                                     </p>
                                 </div>
                             </div>
-                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-20">
-                                <div className="w-7 h-7 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg scale-75 group-hover:scale-110 transition-transform duration-300">
+                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
+                                <div className="w-7 h-7 rounded-full bg-danger text-white flex items-center justify-center shadow-sm scale-75 group-hover:scale-110 transition-transform duration-200">
                                     <X className="w-4 h-4" loading="lazy" decoding="async" />
                                 </div>
                             </div>
@@ -210,7 +210,7 @@ const SelectedStudentsCarousel = memo(({
                     {selectedStudents.slice(0, 10).map((_, i) => (
                         <div
                             key={i}
-                            className={`rounded-full transition-all duration-300 ${activeIdx === i
+                            className={`rounded-full transition-[width,height,background-color] duration-200 ${activeIdx === i
                                 ? 'w-5 h-1.5 bg-[var(--color-primary)]'
                                 : 'w-1.5 h-1.5 bg-[var(--color-text-muted)]/30'
                                 }`}
@@ -228,12 +228,13 @@ const SelectedStudentsCarousel = memo(({
 
 
 // ─── Potongan UI kecil (selaras PermitPage) ────────────────────────────
+// sky & orange dipertahankan: tidak ada token untuk warna info/nuansa tsb (preseden attendance: purple/orange)
 const CHIP_COLORS = {
-    indigo: 'text-indigo-600 bg-indigo-500/10',
+    indigo: 'text-primary bg-primary/10',
     sky: 'text-sky-600 bg-sky-500/10',
-    rose: 'text-rose-600 bg-rose-500/10',
-    emerald: 'text-emerald-600 bg-emerald-500/10',
-    amber: 'text-amber-600 bg-amber-500/10',
+    rose: 'text-danger bg-danger/10',
+    emerald: 'text-success bg-success/10',
+    amber: 'text-warning bg-warning/10',
     orange: 'text-orange-600 bg-orange-500/10',
 }
 
@@ -301,10 +302,10 @@ function StudentTableSkeleton({ rows = 8 }) {
 }
 
 const STATUS_STYLE = {
-    aktif: 'text-emerald-600 bg-emerald-500/10',
-    lulus: 'text-indigo-600 bg-indigo-500/10',
-    pindah: 'text-amber-600 bg-amber-500/10',
-    keluar: 'text-rose-600 bg-rose-500/10',
+    aktif: 'text-success bg-success/10',
+    lulus: 'text-primary bg-primary/10',
+    pindah: 'text-warning bg-warning/10',
+    keluar: 'text-danger bg-danger/10',
 }
 
 const STATUS_TABS = [
@@ -415,7 +416,7 @@ function ActionMenu({
                 role="menu"
                 aria-label={label}
                 onKeyDown={handleKeyDown}
-                className={`fixed z-[9991] rounded-2xl border border-border bg-surface shadow-xl p-2 origin-top-right transition-all duration-200 ease-out
+                className={`fixed z-[9991] rounded-xl border border-border bg-surface shadow-xl p-2 origin-top-right transition-[opacity,transform] duration-200 ease-out
                 ${isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'}`}
                 style={{
                     width: MENU_WIDTH,
@@ -453,7 +454,7 @@ function ActionMenu({
                                         ${item.disabled
                                                 ? 'opacity-40 cursor-not-allowed'
                                                 : danger
-                                                    ? 'hover:bg-red-500/10 focus-visible:bg-red-500/10 focus-visible:ring-2 focus-visible:ring-red-500/40'
+                                                    ? 'hover:bg-danger/10 focus-visible:bg-danger/10 focus-visible:ring-2 focus-visible:ring-danger/40'
                                                     : 'hover:bg-surface-alt focus-visible:bg-surface-alt focus-visible:ring-2 focus-visible:ring-primary/40'
                                             }`}
                                     >
@@ -461,7 +462,7 @@ function ActionMenu({
                                         <span
                                             className={`flex items-center justify-center w-9 h-9 shrink-0 rounded-lg border
                                             ${danger
-                                                    ? 'border-red-500/20 bg-red-500/10 text-red-500'
+                                                    ? 'border-danger/20 bg-danger/10 text-danger'
                                                     : 'border-border bg-surface-alt text-text-muted'
                                                 }`}
                                         >
@@ -469,7 +470,7 @@ function ActionMenu({
                                         </span>
 
                                         <span className="flex-1 min-w-0">
-                                            <span className={`block text-sm font-semibold leading-tight ${danger ? 'text-red-500' : 'text-text'}`}>
+                                            <span className={`block text-sm font-semibold leading-tight ${danger ? 'text-danger' : 'text-text'}`}>
                                                 {item.label}
                                             </span>
                                             {item.description && (
@@ -941,9 +942,9 @@ export default function StudentsPage() {
 
                 {/* Read-only Banner */}
                 {!canEdit && (
-                    <div className="px-4 py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center gap-2">
-                        <EyeOff className="w-4 h-4 text-rose-500 shrink-0" />
-                        <p className="text-xs font-bold text-rose-600">Mode Read-only —” Edit data siswa dinonaktifkan oleh administrator.</p>
+                    <div className="px-4 py-2.5 rounded-xl bg-danger/10 border border-danger/20 flex items-center gap-2">
+                        <EyeOff className="w-4 h-4 text-danger shrink-0" />
+                        <p className="text-xs font-bold text-danger">Mode Read-only —” Edit data siswa dinonaktifkan oleh administrator.</p>
                     </div>
                 )}
 
@@ -998,7 +999,7 @@ export default function StudentsPage() {
                                         setIsPrivacyMode(next)
                                         addToast(next ? 'Mode privasi diaktifkan — Data sensitif disembunyikan' : 'Mode privasi dinonaktifkan', next ? 'info' : 'success')
                                     }}
-                                    className={`h-9 w-9 sm:w-auto sm:px-3 rounded-lg border flex items-center justify-center sm:justify-start gap-2 transition-all active:scale-95 ${isPrivacyMode ? 'bg-amber-500/10 border-amber-500/30 text-amber-600' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'} `}
+                                    className={`h-9 w-9 sm:w-auto sm:px-3 rounded-lg border flex items-center justify-center sm:justify-start gap-2 transition-[background-color,border-color,color,transform] active:scale-95 ${isPrivacyMode ? 'bg-warning/10 border-warning/30 text-warning' : 'bg-[var(--color-surface-alt)] border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'} `}
                                     title={isPrivacyMode ? "Matikan Mode Privasi" : "Aktifkan Mode Privasi"}
                                 >
                                     {isPrivacyMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -1074,7 +1075,7 @@ export default function StudentsPage() {
                                 type="button"
                                 aria-label="Geser stats ke kiri"
                                 onClick={() => scrollStats(-1)}
-                                className="absolute left-0 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full border border-border bg-surface/90 backdrop-blur shadow-sm flex items-center justify-center text-text-muted hover:text-text hover:bg-surface transition-all active:scale-90"
+                                className="absolute left-0 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full border border-border bg-surface shadow-sm flex items-center justify-center text-text-muted hover:text-text hover:bg-surface transition-all active:scale-90"
                             >
                                 <ChevronLeft className="w-4 h-4" />
                             </button>
@@ -1084,7 +1085,7 @@ export default function StudentsPage() {
                                 type="button"
                                 aria-label="Geser stats ke kanan"
                                 onClick={() => scrollStats(1)}
-                                className="absolute right-0 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full border border-border bg-surface/90 backdrop-blur shadow-sm flex items-center justify-center text-text-muted hover:text-text hover:bg-surface transition-all active:scale-90"
+                                className="absolute right-0 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full border border-border bg-surface shadow-sm flex items-center justify-center text-text-muted hover:text-text hover:bg-surface transition-all active:scale-90"
                             >
                                 <ChevronRight className="w-4 h-4" />
                             </button>
@@ -1097,10 +1098,10 @@ export default function StudentsPage() {
                     <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 px-3.5 py-2 rounded-xl border border-border bg-surface-alt/50 text-xs">
                         {globalStats.topPerformer && (
                             <span className="flex items-center gap-1.5 font-semibold text-text" title={`Poin tertinggi: +${globalStats.topPerformer.points}`}>
-                                <Crown className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                                <Crown className="w-3.5 h-3.5 text-primary shrink-0" />
                                 Terbaik:
                                 <span className="font-bold max-w-[180px] truncate">{globalStats.topPerformer.name}</span>
-                                <span className="font-bold text-emerald-600 tabular-nums">+{globalStats.topPerformer.points}</span>
+                                <span className="font-bold text-success tabular-nums">+{globalStats.topPerformer.points}</span>
                             </span>
                         )}
                         {globalStats.worstClass && globalStats.worstClass.avg < 0 && (
@@ -1113,14 +1114,14 @@ export default function StudentsPage() {
                                 <School className="w-3.5 h-3.5 text-orange-500 shrink-0" />
                                 Terendah:
                                 <span className="font-bold max-w-[180px] truncate">{globalStats.worstClass.name}</span>
-                                <span className="font-bold text-rose-600 tabular-nums">({globalStats.worstClass.avg})</span>
+                                <span className="font-bold text-danger tabular-nums">({globalStats.worstClass.avg})</span>
                             </button>
                         )}
                     </div>
                 )}
 
                 {/* Filter + Search + Tabel: satu kartu */}
-                <div className="bg-surface border border-border rounded-2xl overflow-hidden">
+                <div className="bg-surface border border-border rounded-xl overflow-hidden">
 
                     {/* Filter bar */}
                     <div className="flex flex-col lg:flex-row lg:items-center gap-3 px-3 py-3 border-b border-border">
@@ -1209,7 +1210,7 @@ export default function StudentsPage() {
                                         className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-xs font-bold text-[var(--color-text)]" title="Hapus pencarian">
                                         <Search className="w-4 h-4 opacity-60" />
                                         <span className="max-w-[180px] truncate">"{searchQuery}"</span>
-                                        <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500 transition-colors">
+                                        <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-danger transition-colors">
                                             <X className="w-4 h-4" />
                                         </span>
                                     </button>
@@ -1229,26 +1230,26 @@ export default function StudentsPage() {
                                         className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-xs font-bold text-[var(--color-text)]" title="Hapus filter gender">
                                         {filterGender === 'L' ? <MarsIcon className="w-4 h-4 opacity-70" /> : <VenusIcon className="w-4 h-4 opacity-70" />}
                                         Gender: {filterGender === 'L' ? 'Putra' : 'Putri'}
-                                        <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-red-500 transition-colors">
+                                        <span className="w-5 h-5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-danger transition-colors">
                                             <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterStatus && (
                                     <button type="button" onClick={() => setFilterStatus('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-xs font-bold text-amber-600" title="Hapus filter status">
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-warning/20 bg-warning/10 text-xs font-bold text-warning" title="Hapus filter status">
                                         Status: {(filterStatus?.charAt(0).toUpperCase() || '') + (filterStatus?.slice(1) || '')}
-                                        <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-amber-500/20 flex items-center justify-center text-amber-600 opacity-70 group-hover:opacity-100 transition-opacity">
+                                        <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-warning/20 flex items-center justify-center text-warning opacity-70 group-hover:opacity-100 transition-opacity">
                                             <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 {filterTag && (
                                     <button type="button" onClick={() => setFilterTag('')}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-indigo-500/20 bg-indigo-500/10 text-xs font-bold text-indigo-600" title="Hapus filter label">
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-primary/20 bg-primary/10 text-xs font-bold text-primary" title="Hapus filter label">
                                         <Tags className="w-4 h-4 opacity-70" />
                                         {filterTag}
-                                        <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-indigo-500/20 flex items-center justify-center text-indigo-600 opacity-70 group-hover:opacity-100 transition-opacity">
+                                        <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-primary/20 flex items-center justify-center text-primary opacity-70 group-hover:opacity-100 transition-opacity">
                                             <X className="w-4 h-4" />
                                         </span>
                                     </button>
@@ -1264,15 +1265,15 @@ export default function StudentsPage() {
                                 )}
                                 {filterPointMode && (
                                     <button type="button" onClick={() => { setFilterPointMode(''); setFilterPointMin(''); setFilterPointMax('') }}
-                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-xs font-bold text-emerald-600" title="Hapus filter poin">
+                                        className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-success/20 bg-success/10 text-xs font-bold text-success" title="Hapus filter poin">
                                         Poin: {filterPointMode === 'risk' ? 'Risiko' : filterPointMode === 'positive' ? 'Positif' : filterPointMode === 'custom' ? `${filterPointMin || '∞'}—${filterPointMax || '∞'}` : filterPointMode}
-                                        <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-emerald-500/20 flex items-center justify-center text-emerald-600 opacity-70 group-hover:opacity-100 transition-opacity">
+                                        <span className="w-5 h-5 rounded-lg bg-white/70 dark:bg-[var(--color-surface)] border border-success/20 flex items-center justify-center text-success opacity-70 group-hover:opacity-100 transition-opacity">
                                             <X className="w-4 h-4" />
                                         </span>
                                     </button>
                                 )}
                                 <button type="button" onClick={resetAllFilters}
-                                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-red-500/20 bg-red-500/5 text-xs font-bold text-red-600" title="Reset semua filter">
+                                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-danger/20 bg-danger/5 text-xs font-bold text-danger" title="Reset semua filter">
                                     <RotateCcw className="w-4 h-4" />
                                     Reset semua
                                 </button>
@@ -1434,7 +1435,7 @@ export default function StudentsPage() {
                                                                     aria-label="Lihat foto"
                                                                 >
                                                                     {student.photo_url
-                                                                        ? <img src={student.photo_url} alt="" className="w-full h-full object-cover" />
+                                                                        ? <img src={student.photo_url} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
                                                                         : <span className="text-xs font-bold text-primary">{student.name?.charAt(0)}</span>}
                                                                 </button>
                                                                 <div className="min-w-0">
@@ -1453,17 +1454,17 @@ export default function StudentsPage() {
                                                             </div>
                                                         </td>
                                                         <td className="px-4 py-2.5">
-                                                            <span className="inline-flex items-center h-5 px-2 rounded-md text-[11px] font-semibold bg-primary/10 text-primary whitespace-nowrap">
+                                                            <span className="inline-flex items-center h-5 px-2 rounded-md text-xs font-semibold bg-primary/10 text-primary whitespace-nowrap">
                                                                 {className}
                                                             </span>
                                                         </td>
                                                         <td className="px-4 py-2.5 hidden lg:table-cell">
-                                                            <span className={`inline-flex items-center h-5 px-2 rounded-md text-[11px] font-semibold capitalize ${STATUS_STYLE[student.status] || 'text-text-muted bg-surface-alt'}`}>
+                                                            <span className={`inline-flex items-center h-5 px-2 rounded-md text-xs font-semibold capitalize ${STATUS_STYLE[student.status] || 'text-text-muted bg-surface-alt'}`}>
                                                                 {student.status || '-'}
                                                             </span>
                                                         </td>
                                                         <td className="px-4 py-2.5 hidden lg:table-cell">
-                                                            <span className={`text-sm font-semibold tabular-nums ${isRisk ? 'text-rose-600' : pts > 0 ? 'text-emerald-600' : 'text-text-muted'}`}>
+                                                            <span className={`text-sm font-semibold tabular-nums ${isRisk ? 'text-danger' : pts > 0 ? 'text-success' : 'text-text-muted'}`}>
                                                                 {pts > 0 ? `+${pts}` : pts}
                                                             </span>
                                                         </td>
@@ -1480,7 +1481,7 @@ export default function StudentsPage() {
                                                                 {student.phone && (
                                                                     <button
                                                                         onClick={() => openWAForStudent(student, buildWAMessage(student, waTemplate))}
-                                                                        className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-emerald-500/10 text-text-muted hover:text-emerald-600 transition-colors"
+                                                                        className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-success/10 text-text-muted hover:text-success transition-colors"
                                                                         title="Kirim WhatsApp ke wali"
                                                                         aria-label="Kirim WhatsApp"
                                                                     >
@@ -1519,7 +1520,7 @@ export default function StudentsPage() {
 
                             {/* Mobile View Selection Header */}
                             {isMobile && selectedStudentIds.length > 0 && (
-                                <div className="sticky top-0 z-40 -mx-3 sm:-mx-4 mb-4 px-3 sm:px-4 py-2 bg-[var(--color-surface)] border-b border-[var(--color-border)] flex items-center justify-between animate-in slide-in-from-top-4 duration-300">
+                                <div className="sticky top-0 z-40 -mx-3 sm:-mx-4 mb-4 px-3 sm:px-4 py-2 bg-[var(--color-surface)] border-b border-[var(--color-border)] flex items-center justify-between animate-in slide-in-from-top-4 duration-200">
                                     <div className="flex items-center gap-2">
                                         <div className="w-6 h-6 rounded-lg bg-[var(--color-primary)] text-white flex items-center justify-center text-xs font-bold">
                                             {selectedStudentIds.length}
@@ -1535,7 +1536,7 @@ export default function StudentsPage() {
                                         </button>
                                         <button
                                             onClick={() => setSelectedStudentIds([])}
-                                            className="h-8 w-8 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"
+                                            className="h-8 w-8 rounded-xl bg-danger/10 text-danger flex items-center justify-center hover:bg-danger hover:text-white transition-colors"
                                         >
                                             <X className="w-4 h-4" />
                                         </button>
@@ -1561,7 +1562,7 @@ export default function StudentsPage() {
                                                     <StudentSkeletonCard key={i} />
                                                 ))
                                             ) : (
-                                                <div className="bg-[var(--color-surface)] rounded-[1.5rem] border border-[var(--color-border)] divide-y divide-[var(--color-border)]/50 overflow-hidden shadow-sm">
+                                                <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] divide-y divide-[var(--color-border)]/50 overflow-hidden shadow-sm">
                                                     {Array.from({ length: 8 }).map((_, i) => (
                                                         <div key={i} className="animate-pulse flex items-center gap-4 px-4 py-4">
                                                             <div className="w-10 h-10 rounded-xl bg-[var(--color-surface-alt)]" />
@@ -1596,7 +1597,7 @@ export default function StudentsPage() {
                                                     ) : (
                                                         <button
                                                             onClick={() => { setIsModalOpen(true); setActiveModal('add'); }}
-                                                            className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide bg-[var(--color-primary)] text-white shadow-lg active:scale-95 transition-all flex items-center gap-2"
+                                                            className="h-9 px-4 rounded-xl text-xs font-bold uppercase tracking-wide bg-[var(--color-primary)] text-white shadow-sm active:scale-95 transition-transform flex items-center gap-2"
                                                         >
                                                             <Plus className="w-4 h-4" />
                                                             Tambah Siswa Pertama
@@ -1608,24 +1609,24 @@ export default function StudentsPage() {
                                     ) : (
                                         <>
                                             {/* Mobile View Switcher */}
-                                            <div className="pt-3 pb-2 px-1 mb-1 flex items-center justify-between bg-[var(--color-surface)]/20 rounded-2xl -mx-3 px-3">
+                                            <div className="pt-3 pb-2 px-1 mb-1 flex items-center justify-between bg-[var(--color-surface)]/20 rounded-xl -mx-3 px-3">
                                                 <div className="flex items-center gap-2">
                                                     <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse" />
                                                     <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                                         {totalRows} Data ditemukan
                                                     </span>
                                                 </div>
-                                                <div className="flex items-center bg-[var(--color-surface)] shadow-inner p-1 rounded-[1.2rem] border border-[var(--color-border)]">
+                                                <div className="flex items-center bg-[var(--color-surface)] shadow-inner p-1 rounded-xl border border-[var(--color-border)]">
                                                     <button
                                                         onClick={() => switchMobileView('card')}
-                                                        className={`h-8 px-4 rounded-xl flex items-center gap-2 text-xs font-bold transition-all duration-200 ${pendingView === 'card' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
+                                                        className={`h-8 px-4 rounded-xl flex items-center gap-2 text-xs font-bold transition-[background-color,color,box-shadow] duration-200 ${pendingView === 'card' ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
                                                     >
                                                         <Table className="w-4 h-4" />
                                                         Card
                                                     </button>
                                                     <button
                                                         onClick={() => switchMobileView('list')}
-                                                        className={`h-8 px-4 rounded-xl flex items-center gap-2 text-xs font-bold transition-all duration-200 ${pendingView === 'list' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
+                                                        className={`h-8 px-4 rounded-xl flex items-center gap-2 text-xs font-bold transition-[background-color,color,box-shadow] duration-200 ${pendingView === 'list' ? 'bg-[var(--color-primary)] text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)]'}`}
                                                     >
                                                         <TableProperties className="w-4 h-4" />
                                                         List
@@ -1647,7 +1648,7 @@ export default function StudentsPage() {
                                                 {/* Card View Container */}
                                                 {mobileView === 'card' && (
                                                     <div
-                                                        className="space-y-3 transition-all duration-300 ease-in-out"
+                                                        className="space-y-3 transition-[opacity,transform] duration-200 ease-in-out"
                                                         style={{
                                                             opacity: !isViewTransitioning ? 1 : 0,
                                                             transform: !isViewTransitioning ? 'translateY(0)' : 'translateY(-8px)',
@@ -1659,10 +1660,10 @@ export default function StudentsPage() {
                                                             return (
                                                                 <div
                                                                     key={student.id}
-                                                                    className={`relative rounded-2xl transition-all ${isRisk ? 'ring-1 ring-red-500/40 ring-offset-0' : ''}`}
+                                                                    className={`relative rounded-xl transition-shadow ${isRisk ? 'ring-1 ring-danger/40 ring-offset-0' : ''}`}
                                                                 >
                                                                     {isRisk && (
-                                                                        <div className="absolute left-0 top-4 bottom-4 w-1 rounded-r-full bg-red-500 z-10 pointer-events-none" />
+                                                                        <div className="absolute left-0 top-4 bottom-4 w-1 rounded-r-full bg-danger z-10 pointer-events-none" />
                                                                     )}
                                                                     <StudentMobileCard
                                                                         student={student}
@@ -1689,7 +1690,7 @@ export default function StudentsPage() {
                                                 {/* List View Container */}
                                                 {mobileView === 'list' && (
                                                     <div
-                                                        className="flex flex-col gap-2 transition-all duration-300 ease-in-out"
+                                                        className="flex flex-col gap-2 transition-[opacity,transform] duration-200 ease-in-out"
                                                         style={{
                                                             opacity: !isViewTransitioning ? 1 : 0,
                                                             transform: !isViewTransitioning ? 'translateY(0)' : 'translateY(8px)',
@@ -1702,7 +1703,7 @@ export default function StudentsPage() {
                                                                 Ketuk baris siswa untuk menu cepat & poin
                                                             </div>
                                                         )}
-                                                        <div className="bg-[var(--color-surface)] rounded-[1.5rem] border border-[var(--color-border)] divide-y divide-[var(--color-border)]/40 overflow-hidden shadow-sm">
+                                                        <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] divide-y divide-[var(--color-border)]/40 overflow-hidden shadow-sm">
                                                             {students.map((student) => (
                                                                 <StudentMobileListRow
                                                                     key={student.id}
@@ -1734,7 +1735,7 @@ export default function StudentsPage() {
                                                             setIsInlineAddOpen(true)
                                                             setTimeout(() => quickAddRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80)
                                                         }}
-                                                        className="w-full py-3 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wide text-[var(--color-primary)] bg-[var(--color-primary)]/[0.04] hover:bg-[var(--color-primary)]/10 active:scale-[0.98] transition-all border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/40 border-dashed rounded-2xl mt-4 mb-2 shadow-sm"
+                                                        className="w-full py-3 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wide text-[var(--color-primary)] bg-[var(--color-primary)]/[0.04] hover:bg-[var(--color-primary)]/10 active:scale-[0.98] transition-[background-color,border-color,transform] border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/40 border-dashed rounded-xl mt-4 mb-2 shadow-sm"
                                                     >
                                                         <Plus className="w-4 h-4" />
                                                         Quick Add Siswa
@@ -1743,13 +1744,13 @@ export default function StudentsPage() {
 
                                                 {/* Quick Add form — BELOW the list (correct position) */}
                                                 {isInlineAddOpen && canEdit && canAddStudent && (
-                                                    <div ref={quickAddRef} className="p-3 rounded-2xl border border-[var(--color-primary)]/25 bg-[var(--color-primary)]/[0.02] shadow-sm mt-2 animate-in slide-in-from-bottom-4 fade-in duration-300">
+                                                    <div ref={quickAddRef} className="p-3 rounded-xl border border-[var(--color-primary)]/25 bg-[var(--color-primary)]/[0.02] shadow-sm mt-2 animate-in slide-in-from-bottom-4 fade-in duration-200">
                                                         <div className="flex items-center justify-between gap-3 mb-2">
                                                             <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Quick Add Siswa</p>
                                                             <button
                                                                 type="button"
                                                                 onClick={() => setIsInlineAddOpen(false)}
-                                                                className="h-8 w-8 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center"
+                                                                className="h-8 w-8 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-colors flex items-center justify-center"
                                                             >
                                                                 <X className="w-4 h-4" />
                                                             </button>
@@ -1787,8 +1788,8 @@ export default function StudentsPage() {
                                                                             key={g}
                                                                             type="button"
                                                                             onClick={() => setInlineForm(p => ({ ...p, gender: g }))}
-                                                                            className={`h-11 flex-1 rounded-xl text-xs font-bold border transition-all ${inlineForm.gender === g
-                                                                                ? (g === 'L' ? 'bg-blue-500 text-white border-blue-500 shadow-lg' : 'bg-pink-500 text-white border-pink-500 shadow-lg')
+                                                                            className={`h-11 flex-1 rounded-xl text-xs font-bold border transition-colors ${inlineForm.gender === g
+                                                                                ? (g === 'L' ? 'bg-blue-500 text-white border-blue-500 shadow-sm' : 'bg-pink-500 text-white border-pink-500 shadow-sm')
                                                                                 : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] bg-[var(--color-surface)]'}`}
                                                                         >
                                                                             {g}
@@ -1808,7 +1809,7 @@ export default function StudentsPage() {
                                                             <button
                                                                 type="submit"
                                                                 disabled={submittingInline || !canEdit || !inlineForm.name.trim()}
-                                                                className="h-11 w-full rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                                                                className="h-11 w-full rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 shadow-sm transition-[filter,opacity] disabled:opacity-50 flex items-center justify-center gap-2"
                                                             >
                                                                 {submittingInline ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <><Check className="w-4 h-4" /> Simpan</>}
                                                             </button>
@@ -1928,8 +1929,8 @@ export default function StudentsPage() {
                             title="Guardian Broadcast Hub"
                             description="Kirim pesan massal ke wali murid menggunakan template otomatis."
                             icon={WhatsAppIcon}
-                            iconBg="bg-emerald-500/10"
-                            iconColor="text-emerald-600"
+                            iconBg="bg-success/10"
+                            iconColor="text-success"
                             size="lg"
                             mobileVariant="bottom-sheet"
                             footer={
@@ -1941,7 +1942,7 @@ export default function StudentsPage() {
                                         </div>
                                         <div className="h-1.5 w-full bg-[var(--color-surface-alt)] rounded-full overflow-hidden">
                                             <div
-                                                className="h-full bg-[var(--color-primary)] transition-all duration-500"
+                                                className="h-full bg-[var(--color-primary)] transition-[width] duration-200"
                                                 style={{ width: `${selectedStudentsWithPhone.length ? ((broadcastIndex + 1) / selectedStudentsWithPhone.length) * 100 : 0}%` }}
                                             />
                                         </div>
@@ -1949,7 +1950,7 @@ export default function StudentsPage() {
                                     <div className="flex gap-2">
                                         <button
                                             onClick={() => closeModal()}
-                                            className="h-11 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all"
+                                            className="h-11 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-colors"
                                         >
                                             Tutup
                                         </button>
@@ -1962,7 +1963,7 @@ export default function StudentsPage() {
                                                     }, i * 1200);
                                                 });
                                             }}
-                                            className="h-11 px-6 rounded-xl bg-emerald-500 text-white text-xs font-bold uppercase tracking-wide shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
+                                            className="h-11 px-6 rounded-xl bg-success text-white text-xs font-bold uppercase tracking-wide shadow-sm hover:brightness-110 active:scale-95 transition-[filter,transform] flex items-center justify-center gap-2 shrink-0"
                                         >
                                             <Send className="w-4 h-4" />
                                             Mulai Siaran Massal
@@ -1974,7 +1975,7 @@ export default function StudentsPage() {
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                                 {/* Selector Section */}
                                 <div className="lg:col-span-4 space-y-4">
-                                    <div className="p-4 rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] space-y-3">
+                                    <div className="p-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] space-y-3">
                                         <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Pilih Template Pesan</label>
                                         {[
                                             { id: 'summary', label: 'Laporan Akademik Lengkap', icon: FileText },
@@ -1985,7 +1986,7 @@ export default function StudentsPage() {
                                             <button
                                                 key={t.id}
                                                 onClick={() => setBroadcastTemplate(t.id)}
-                                                className={`w-full p-3 rounded-xl border text-left flex items-center gap-3 transition-all ${broadcastTemplate === t.id ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-lg' : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
+                                                className={`w-full p-3 rounded-xl border text-left flex items-center gap-3 transition-colors ${broadcastTemplate === t.id ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-sm' : 'bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-border)]'}`}
                                             >
                                                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${broadcastTemplate === t.id ? 'bg-white/20' : 'bg-[var(--color-surface-alt)]'}`}>
                                                     <t.icon className="text-xs" />
@@ -2000,24 +2001,24 @@ export default function StudentsPage() {
                                             value={customWaMsg}
                                             onChange={(e) => setCustomWaMsg(e.target.value)}
                                             placeholder="Tulis pesan kustom di sini... Gunakan {nama}, {poin}, {kelas} sebagai tag otomatis."
-                                            className="w-full h-32 p-3 text-xs rounded-2xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none"
+                                            className="w-full h-32 p-3 text-xs rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none"
                                         />
                                     )}
                                 </div>
 
                                 {/* Preview & Action Section */}
                                 <div className="lg:col-span-8 flex flex-col">
-                                    <div className="flex-1 bg-[var(--color-surface-alt)]/30 border border-[var(--color-border)] rounded-2xl overflow-hidden flex flex-col min-h-[400px]">
+                                    <div className="flex-1 bg-[var(--color-surface-alt)]/30 border border-[var(--color-border)] rounded-xl overflow-hidden flex flex-col min-h-[400px]">
                                         <div className="p-3 border-b border-[var(--color-border)] bg-[var(--color-surface)]/50 flex items-center justify-between">
                                             <h5 className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Antrean Siaran ({selectedStudentsWithPhone.length} Wali)</h5>
                                             {broadcastIndex >= 0 && (
-                                                <div className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 text-xs font-bold animate-pulse">SIARAN BERJALAN...</div>
+                                                <div className="px-2 py-0.5 rounded bg-warning/10 text-warning text-xs font-bold animate-pulse">SIARAN BERJALAN...</div>
                                             )}
                                         </div>
 
                                         <div className="flex-1 overflow-auto p-4 space-y-3 max-h-[350px] scrollbar-none">
                                             {selectedStudentsWithPhone.map((s, idx) => (
-                                                <div key={idx} className={`p-3 rounded-xl border transition-all ${broadcastIndex === idx ? 'bg-[var(--color-primary)]/5 border-[var(--color-primary)]' : 'bg-[var(--color-surface)] border-[var(--color-border)] opacity-70'}`}>
+                                                <div key={idx} className={`p-3 rounded-xl border transition-colors ${broadcastIndex === idx ? 'bg-[var(--color-primary)]/5 border-[var(--color-primary)]' : 'bg-[var(--color-surface)] border-[var(--color-border)] opacity-70'}`}>
                                                     <div className="flex items-start justify-between gap-3 mb-2">
                                                         <div>
                                                             <p className="text-xs font-bold leading-none">{s.name}</p>
@@ -2025,7 +2026,7 @@ export default function StudentsPage() {
                                                         </div>
                                                         <button
                                                             onClick={() => openWAForStudent(s, buildWAMessage(s, broadcastTemplate))}
-                                                            className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all flex items-center justify-center text-xs"
+                                                            className="w-7 h-7 rounded-lg bg-success/10 text-success hover:bg-success hover:text-white transition-colors flex items-center justify-center text-xs"
                                                         >
                                                             <WhatsAppIcon className="w-4 h-4" />
                                                         </button>
@@ -2163,7 +2164,7 @@ export default function StudentsPage() {
                                     <button
                                         type="button"
                                         onClick={() => { closeModal(); setClassSearchQuery('') }}
-                                        className="flex-1 h-12 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all"
+                                        className="flex-1 h-12 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-colors"
                                     >
                                         Batal
                                     </button>
@@ -2171,7 +2172,7 @@ export default function StudentsPage() {
                                         type="button"
                                         onClick={handleBulkPromote}
                                         disabled={submitting || !bulkClassId}
-                                        className="flex-[2] h-12 rounded-2xl bg-[var(--color-primary)] text-white text-xs md:text-xs font-bold uppercase tracking-wide hover:brightness-110 transition-all disabled:opacity-50 flex items-center justify-center gap-2 md:gap-3 shadow-xl active:scale-[0.98] whitespace-nowrap px-2"
+                                        className="flex-[2] h-12 rounded-xl bg-[var(--color-primary)] text-white text-xs md:text-xs font-bold uppercase tracking-wide hover:brightness-110 transition-[background-color,filter,opacity,transform] disabled:opacity-50 flex items-center justify-center gap-2 md:gap-3 shadow-xl active:scale-[0.98] whitespace-nowrap px-2"
                                     >
                                         {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : (
                                             <>
@@ -2195,7 +2196,7 @@ export default function StudentsPage() {
                                     classesList={classesList}
                                 />
 
-                                <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent" />
+                                <div className="h-px bg-border" />
 
                                 {/* Smart Level Safety Banners */}
                                 {(() => {
@@ -2239,53 +2240,53 @@ export default function StudentsPage() {
                                     return (
                                         <div className="space-y-2">
                                             {hasDowngrade && (
-                                                <div className="p-2.5 rounded-xl bg-red-50 border border-red-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in slide-in-from-top-1 duration-300">
+                                                <div className="p-2.5 rounded-xl bg-danger/10 border border-danger/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in slide-in-from-top-1 duration-200">
                                                     <div className="flex gap-2.5 items-center">
-                                                        <div className="w-8 h-8 rounded-lg bg-red-500 text-white flex items-center justify-center shrink-0 shadow-lg">
+                                                        <div className="w-8 h-8 rounded-lg bg-danger text-white flex items-center justify-center shrink-0 shadow-sm">
                                                             <TriangleAlert className="w-4 h-4 animate-pulse" />
                                                         </div>
                                                         <div className="min-w-0">
-                                                            <p className="text-xs font-bold text-red-700 uppercase tracking-wide leading-none">Kritis: Penurunan Kelas!</p>
-                                                            <p className="text-xs text-red-600/80 font-bold mt-1 leading-tight">Ada siswa yang dipindahkan ke level yang lebih rendah.</p>
+                                                            <p className="text-xs font-bold text-danger uppercase tracking-wide leading-none">Kritis: Penurunan Kelas!</p>
+                                                            <p className="text-xs text-danger/80 font-bold mt-1 leading-tight">Ada siswa yang dipindahkan ke level yang lebih rendah.</p>
                                                         </div>
                                                     </div>
                                                     <button
                                                         type="button"
                                                         onClick={() => removeBatch('downgrade')}
-                                                        className="px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-bold uppercase tracking-wider hover:bg-red-700 transition-all shadow-md active:scale-95 shrink-0"
+                                                        className="px-3 py-1.5 rounded-lg bg-danger-dark text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 transition-[filter] shadow-sm active:scale-95 shrink-0"
                                                     >
                                                         Keluarkan Siswa
                                                     </button>
                                                 </div>
                                             )}
                                             {hasStay && (
-                                                <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in slide-in-from-top-1 duration-300">
+                                                <div className="p-2.5 rounded-xl bg-warning/10 border border-warning/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in slide-in-from-top-1 duration-200">
                                                     <div className="flex gap-2.5 items-center">
-                                                        <div className="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-lg">
+                                                        <div className="w-8 h-8 rounded-lg bg-warning text-white flex items-center justify-center shrink-0 shadow-sm">
                                                             <RotateCcw className="w-4 h-4" />
                                                         </div>
                                                         <div className="min-w-0">
-                                                            <p className="text-xs font-bold text-amber-700 uppercase tracking-wide leading-none">Peringatan: Tetap di Kelas</p>
-                                                            <p className="text-xs text-amber-600/80 font-bold mt-1 leading-tight">Siswa ini akan tetap berada di tingkat yang sama.</p>
+                                                            <p className="text-xs font-bold text-warning uppercase tracking-wide leading-none">Peringatan: Tetap di Kelas</p>
+                                                            <p className="text-xs text-warning/80 font-bold mt-1 leading-tight">Siswa ini akan tetap berada di tingkat yang sama.</p>
                                                         </div>
                                                     </div>
                                                     <button
                                                         type="button"
                                                         onClick={() => removeBatch('stay')}
-                                                        className="px-3 py-1.5 rounded-lg bg-amber-600 text-white text-xs font-bold uppercase tracking-wider hover:bg-amber-700 transition-all shadow-md active:scale-95 shrink-0"
+                                                        className="px-3 py-1.5 rounded-lg bg-warning-dark text-white text-xs font-bold uppercase tracking-wider hover:brightness-110 transition-[filter] shadow-sm active:scale-95 shrink-0"
                                                     >
                                                         Keluarkan Siswa
                                                     </button>
                                                 </div>
                                             )}
                                             {hasSkip && (
-                                                <div className="p-2.5 rounded-xl bg-indigo-50 border border-indigo-200 flex gap-3 items-center animate-in fade-in slide-in-from-top-1 duration-300">
-                                                    <div className="w-8 h-8 rounded-lg bg-indigo-500 text-white flex items-center justify-center shrink-0 shadow-lg">
+                                                <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20 flex gap-3 items-center animate-in fade-in slide-in-from-top-1 duration-200">
+                                                    <div className="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center shrink-0 shadow-sm">
                                                         <Rocket className="w-4 h-4" />
                                                     </div>
                                                     <div className="min-w-0">
-                                                        <p className="text-xs font-bold text-indigo-700 uppercase tracking-wide leading-none">Info: Loncatan Kelas</p>
-                                                        <p className="text-xs text-indigo-600/80 font-bold mt-1 leading-tight">Ada siswa yang meloncat 1 tingkat atau lebih.</p>
+                                                        <p className="text-xs font-bold text-primary uppercase tracking-wide leading-none">Info: Loncatan Kelas</p>
+                                                        <p className="text-xs text-primary/80 font-bold mt-1 leading-tight">Ada siswa yang meloncat 1 tingkat atau lebih.</p>
                                                     </div>
                                                 </div>
                                             )}
@@ -2308,15 +2309,15 @@ export default function StudentsPage() {
                                                 placeholder="Cari kelas..."
                                                 value={classSearchQuery}
                                                 onChange={(e) => setClassSearchQuery(e.target.value)}
-                                                className="w-full h-8 pl-8 pr-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold outline-none focus:border-[var(--color-primary)] transition-all"
+                                                className="w-full h-8 pl-8 pr-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold outline-none focus:border-[var(--color-primary)] transition-colors"
                                             />
                                         </div>
                                     </div>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-1">
                                         {classesList.filter(c => c.name.toLowerCase().includes(classSearchQuery.toLowerCase())).length === 0 ? (
-                                            <div className="col-span-full py-12 text-center space-y-3 bg-[var(--color-surface-alt)] rounded-3xl border-2 border-dashed border-[var(--color-border)]">
-                                                <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/5 text-[var(--color-primary)] flex items-center justify-center mx-auto opacity-20">
+                                            <div className="col-span-full py-12 text-center space-y-3 bg-[var(--color-surface-alt)] rounded-xl border-2 border-dashed border-[var(--color-border)]">
+                                                <div className="w-12 h-12 rounded-xl bg-[var(--color-primary)]/5 text-[var(--color-primary)] flex items-center justify-center mx-auto opacity-20">
                                                     <Search className="w-5 h-5" />
                                                 </div>
                                                 <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] opacity-40">Kelas tidak ditemukan</p>
@@ -2334,12 +2335,12 @@ export default function StudentsPage() {
                                                         key={c.id}
                                                         type="button"
                                                         onClick={() => setBulkClassId(bulkClassId === c.id ? '' : c.id)}
-                                                        className={`p-3 rounded-2xl border-2 text-left flex items-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] group relative overflow-hidden ${isSelected
+                                                        className={`p-3 rounded-xl border-2 text-left flex items-center gap-3 transition-[background-color,border-color,color,box-shadow,transform] duration-200 hover:scale-[1.02] active:scale-[0.97] group relative overflow-hidden ${isSelected
                                                             ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-sm z-10'
                                                             : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[var(--color-primary)]/40 hover:bg-[var(--color-surface-alt)] shadow-sm'
                                                             }`}
                                                     >
-                                                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all duration-500 ${isSelected ? 'bg-white/20 text-white rotate-[360deg]' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] group-hover:bg-[var(--color-primary)] group-hover:text-white'
+                                                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-[transform,background-color,color] duration-200 ${isSelected ? 'bg-white/20 text-white rotate-[360deg]' : 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] group-hover:bg-[var(--color-primary)] group-hover:text-white'
                                                             }`}>
                                                             <GraduationCap className="w-4 h-4" />
                                                         </div>
@@ -2355,7 +2356,7 @@ export default function StudentsPage() {
                                                         </div>
 
                                                         {/* Selection Indicator */}
-                                                        <div className={`absolute right-4 top-1/2 -translate-y-1/2 transition-all duration-300 ${isSelected ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
+                                                        <div className={`absolute right-4 top-1/2 -translate-y-1/2 transition-[opacity,transform] duration-200 ${isSelected ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
                                                             <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center border border-white/40">
                                                                 <Check className="w-4 h-4" />
                                                             </div>
@@ -2380,7 +2381,7 @@ export default function StudentsPage() {
                                 </div>
 
                                 {/* Information Alert */}
-                                <div className="p-4 rounded-2xl bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/15 flex gap-4 items-start">
+                                <div className="p-4 rounded-xl bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/15 flex gap-4 items-start">
                                     <div className="w-8 h-8 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex items-center justify-center shrink-0">
                                         <Info className="w-4 h-4" />
                                     </div>
@@ -2405,8 +2406,8 @@ export default function StudentsPage() {
                             title="Konfirmasi Arsip"
                             description="Siswa akan dipindahkan ke folder Arsip"
                             icon={Archive}
-                            iconBg="bg-amber-500/10"
-                            iconColor="text-amber-600"
+                            iconBg="bg-warning/10"
+                            iconColor="text-warning"
                             size="sm"
                             mobileVariant="bottom-sheet"
                             footer={
@@ -2414,7 +2415,7 @@ export default function StudentsPage() {
                                     <button
                                         type="button"
                                         onClick={() => closeModal()}
-                                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
+                                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-colors shrink-0"
                                     >
                                         Batal
                                     </button>
@@ -2422,7 +2423,7 @@ export default function StudentsPage() {
                                     <button
                                         type="button"
                                         onClick={executeDelete}
-                                        className="h-10 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
+                                        className="h-10 px-6 rounded-xl bg-warning hover:bg-warning-dark text-white text-xs font-bold uppercase tracking-wide shadow-sm transition-colors flex items-center justify-center gap-2 shrink-0"
                                     >
                                         <Archive className="w-4 h-4 opacity-70" />
                                         Arsipkan
@@ -2432,7 +2433,7 @@ export default function StudentsPage() {
                         >
                             <div className="px-1">
                                 <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
-                                    Siswa <span className="text-amber-600 font-bold px-1.5 py-0.5 bg-amber-500/10 rounded-md border border-amber-500/20">{studentToDelete?.name}</span> akan diarsipkan. Riwayat laporan & poin tetap tersimpan dengan aman.
+                                    Siswa <span className="text-warning font-bold px-1.5 py-0.5 bg-warning/10 rounded-md border border-warning/20">{studentToDelete?.name}</span> akan diarsipkan. Riwayat laporan & poin tetap tersimpan dengan aman.
                                 </p>
                             </div>
                         </Modal>
@@ -2448,8 +2449,8 @@ export default function StudentsPage() {
                             title="Konfirmasi Hapus"
                             description={`${selectedStudentIds.length} siswa akan dihapus secara permanen`}
                             icon={Trash2}
-                            iconBg="bg-red-500/10"
-                            iconColor="text-red-500"
+                            iconBg="bg-danger/10"
+                            iconColor="text-danger"
                             size="sm"
                             mobileVariant="bottom-sheet"
                             footer={
@@ -2457,7 +2458,7 @@ export default function StudentsPage() {
                                     <button
                                         type="button"
                                         onClick={() => closeModal()}
-                                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all shrink-0"
+                                        className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-colors shrink-0"
                                     >
                                         Batal
                                     </button>
@@ -2466,7 +2467,7 @@ export default function StudentsPage() {
                                         type="button"
                                         onClick={handleBulkDelete}
                                         disabled={submitting}
-                                        className="h-10 px-6 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 shrink-0"
+                                        className="h-10 px-6 rounded-xl bg-danger hover:bg-danger-dark text-white text-xs font-bold uppercase tracking-wide shadow-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 shrink-0"
                                     >
                                         {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : (
                                             <>
@@ -2480,7 +2481,7 @@ export default function StudentsPage() {
                         >
                             <div className="px-1">
                                 <p className="text-xs text-[var(--color-text-muted)] leading-relaxed font-bold">
-                                    Anda akan menghapus <span className="text-red-500 font-bold bg-red-500/10 px-1.5 py-0.5 rounded-md border border-red-500/20">{selectedStudentIds.length} siswa</span>. Tindakan ini tidak dapat dibatalkan. Riwayat behavior mereka akan hilang.
+                                    Anda akan menghapus <span className="text-danger font-bold bg-danger/10 px-1.5 py-0.5 rounded-md border border-danger/20">{selectedStudentIds.length} siswa</span>. Tindakan ini tidak dapat dibatalkan. Riwayat behavior mereka akan hilang.
                                 </p>
                             </div>
                         </Modal>
@@ -2517,8 +2518,8 @@ export default function StudentsPage() {
                             title={`Statistik Kelas — ${classBreakdownData?.className || ''}`}
                             description="Ringkasan data, demografi, dan performa poin per kelas."
                             icon={ChartPie}
-                            iconBg="bg-indigo-500/10"
-                            iconColor="text-indigo-600"
+                            iconBg="bg-primary/10"
+                            iconColor="text-primary"
                             size="md"
                             mobileVariant="bottom-sheet"
                         >
@@ -2534,7 +2535,7 @@ export default function StudentsPage() {
                                             { label: 'Total Siswa', value: classBreakdownData.total, color: 'text-[var(--color-primary)]' },
                                             { label: 'Putra', value: classBreakdownData.boys, color: 'text-blue-500' },
                                             { label: 'Putri', value: classBreakdownData.girls, color: 'text-pink-500' },
-                                            { label: 'Rata-rata Poin', value: classBreakdownData.avgPoints, color: classBreakdownData.avgPoints >= 0 ? 'text-emerald-500' : 'text-red-500' },
+                                            { label: 'Rata-rata Poin', value: classBreakdownData.avgPoints, color: classBreakdownData.avgPoints >= 0 ? 'text-success' : 'text-danger' },
                                         ].map(item => (
                                             <div key={item.label} className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/40 text-center">
                                                 <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mb-1">{item.label}</p>
@@ -2542,16 +2543,16 @@ export default function StudentsPage() {
                                             </div>
                                         ))}
                                     </div>
-                                    <div className="p-3 rounded-xl border border-red-500/20 bg-red-500/5 flex items-center gap-3">
-                                        <TriangleAlert className="w-4 h-4 text-red-500 shrink-0" />
+                                    <div className="p-3 rounded-xl border border-danger/20 bg-danger/5 flex items-center gap-3">
+                                        <TriangleAlert className="w-4 h-4 text-danger shrink-0" />
                                         <div>
-                                            <p className="text-xs font-bold text-red-600 dark:text-red-400 uppercase">Siswa Risiko (â‰¤ {RiskThreshold})</p>
-                                            <p className="text-lg font-bold text-red-500">{classBreakdownData.riskCount} siswa</p>
+                                            <p className="text-xs font-bold text-danger uppercase">Siswa Risiko (â‰¤ {RiskThreshold})</p>
+                                            <p className="text-lg font-bold text-danger">{classBreakdownData.riskCount} siswa</p>
                                         </div>
                                     </div>
                                     <div>
                                         <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide mb-2 flex items-center gap-1.5">
-                                            <Trophy className="w-4 h-4 text-amber-500" />
+                                            <Trophy className="w-4 h-4 text-warning" />
                                             Top 3 Poin Tertinggi
                                         </p>
                                         <div className="space-y-2">
@@ -2562,7 +2563,7 @@ export default function StudentsPage() {
                                                             'bg-orange-400/20 text-orange-600'
                                                         }`}>#{idx + 1}</span>
                                                     <span className="flex-1 text-sm font-bold text-[var(--color-text)] truncate">{s.name}</span>
-                                                    <span className={`text-sm font-bold ${s.total_points >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>{s.total_points}</span>
+                                                    <span className={`text-sm font-bold ${s.total_points >= 0 ? 'text-success' : 'text-danger'}`}>{s.total_points}</span>
                                                 </div>
                                             ))}
                                         </div>
@@ -2668,7 +2669,7 @@ export default function StudentsPage() {
                                 <img
                                     src={photoZoom.url}
                                     alt={photoZoom.name}
-                                    className="max-w-full max-h-full rounded-2xl object-contain shadow-xl ring-1 ring-white/10"
+                                    className="max-w-full max-h-full rounded-xl object-contain shadow-xl ring-1 ring-white/10"
                                     onError={(e) => { e.target.onerror = null; e.target.src = '' }}
                                     loading="lazy" decoding="async" />
                             </div>
@@ -2763,7 +2764,7 @@ export default function StudentsPage() {
                 {
                     selectedStudentIds.length > 0 && createPortal(
                         <div
-                            className="fixed -translate-x-1/2 z-[250] w-[95%] md:w-max max-w-[95%] animate-in fade-in slide-in-from-bottom-8 duration-700 cubic-bezier(0.34, 1.56, 0.64, 1)"
+                            className="fixed -translate-x-1/2 z-[250] w-[95%] md:w-max max-w-[95%] animate-in fade-in slide-in-from-bottom-8 duration-200 cubic-bezier(0.34, 1.56, 0.64, 1)"
                             style={{
                                 left: dir === 'rtl'
                                     ? 'calc(50vw - (var(--sidebar-width, 0px) / 2))'
@@ -2772,13 +2773,13 @@ export default function StudentsPage() {
                             }}
                         >
                             <div className="relative">
-                                <div className="relative bg-gray-900 dark:bg-gray-800 border border-white/20 rounded-2xl px-3 py-2 flex items-center gap-4 text-white overflow-hidden shadow-xl">
+                                <div className="relative bg-gray-900 dark:bg-gray-800 border border-white/20 rounded-xl px-3 py-2 flex items-center gap-4 text-white overflow-hidden shadow-xl">
                                     {/* Animated scanline */}
                                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
 
                                     {/* Left: count badge + label */}
                                     <div className="flex items-center gap-2 shrink-0">
-                                        <div className="w-9 h-9 rounded-xl bg-indigo-500 flex items-center justify-center font-bold text-sm shrink-0">
+                                        <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center font-bold text-sm shrink-0">
                                             {selectedStudentIds.length}
                                         </div>
                                         <div className="hidden md:block">
@@ -2794,7 +2795,7 @@ export default function StudentsPage() {
                                     <div className="flex items-center gap-1.5 py-0.5 overflow-x-auto no-scrollbar">
                                         <button
                                             onClick={handleBulkWA}
-                                            className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-xs font-bold uppercase tracking-wide"
+                                            className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-success/10 text-emerald-400 border border-success/20 hover:bg-success hover:text-white transition-colors duration-200 flex items-center justify-center md:justify-start gap-1.5 text-xs font-bold uppercase tracking-wide"
                                             title="Broadcast WA"
                                         >
                                             <WhatsAppIcon className="w-4 h-4" />
@@ -2804,7 +2805,7 @@ export default function StudentsPage() {
                                         {canPrintCard && (
                                             <button
                                                 onClick={handleBulkPrint}
-                                                className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-xs font-bold uppercase tracking-wide"
+                                                className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-warning/10 text-amber-400 border border-warning/20 hover:bg-warning hover:text-white transition-colors duration-200 flex items-center justify-center md:justify-start gap-1.5 text-xs font-bold uppercase tracking-wide"
                                                 title="Cetak Kartu"
                                             >
                                                 <Printer className="w-4 h-4" />
@@ -2826,7 +2827,7 @@ export default function StudentsPage() {
                                         {canPromote && (
                                             <button
                                                 onClick={() => setActiveModal('bulkPromote')}
-                                                className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500 hover:text-white transition-all duration-200 flex items-center justify-center md:justify-start gap-1.5 text-xs font-bold uppercase tracking-wide"
+                                                className="h-8 w-8 md:w-auto md:px-3 shrink-0 rounded-xl bg-primary/10 text-indigo-400 border border-primary/20 hover:bg-primary hover:text-white transition-colors duration-200 flex items-center justify-center md:justify-start gap-1.5 text-xs font-bold uppercase tracking-wide"
                                                 title="Naik Kelas"
                                             >
                                                 <GraduationCap className="w-4 h-4" />
@@ -2860,7 +2861,7 @@ export default function StudentsPage() {
                                     <div className="w-px h-6 bg-white/10 shrink-0" />
                                     <button
                                         onClick={() => setSelectedStudentIds([])}
-                                        className="h-9 w-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-red-500/20 hover:text-red-400 transition-all text-white/50 shrink-0"
+                                        className="h-9 w-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-danger/20 hover:text-red-400 transition-colors text-white/50 shrink-0"
                                         title="Batal Pilih"
                                     >
                                         <X className="w-4 h-4" />
@@ -2882,15 +2883,15 @@ export default function StudentsPage() {
                             title={`Aksi Label Massal — ${selectedStudentIds.length} Siswa`}
                             description="Tambah atau hapus label untuk rombongan siswa terpilih."
                             icon={Tags}
-                            iconBg="bg-indigo-500/10"
-                            iconColor="text-indigo-600"
+                            iconBg="bg-primary/10"
+                            iconColor="text-primary"
                             size="sm"
                             mobileVariant="bottom-sheet"
                             footer={
                                 <div className="flex justify-end">
                                     <button
                                         onClick={() => closeModal()}
-                                        className="h-11 px-8 bg-indigo-600 text-white text-xs font-bold uppercase tracking-wide rounded-xl hover:bg-indigo-700 transition-all active:scale-95 shadow-lg"
+                                        className="h-11 px-8 bg-primary text-white text-xs font-bold uppercase tracking-wide rounded-xl hover:bg-primary-dark transition-[background-color,transform] active:scale-95 shadow-sm"
                                     >
                                         Selesai
                                     </button>
@@ -2905,19 +2906,19 @@ export default function StudentsPage() {
                                     toggleSelectStudent={toggleSelectStudent}
                                 />}
 
-                                <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent" />
+                                <div className="h-px bg-border" />
 
                                 {/* Mode Toggle */}
                                 <div className="flex p-1 bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)]">
                                     <button
                                         onClick={() => setBulkTagAction('add')}
-                                        className={`flex-1 py-2 text-xs font-bold uppercase tracking-wide rounded-lg transition-all ${bulkTagAction === 'add' ? 'bg-indigo-500 text-white shadow-lg' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                                        className={`flex-1 py-2 text-xs font-bold uppercase tracking-wide rounded-lg transition-colors ${bulkTagAction === 'add' ? 'bg-primary text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                                     >
                                         Tambah Label
                                     </button>
                                     <button
                                         onClick={() => setBulkTagAction('remove')}
-                                        className={`flex-1 py-2 text-xs font-bold uppercase tracking-wide rounded-lg transition-all ${bulkTagAction === 'remove' ? 'bg-red-500 text-white shadow-lg' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+                                        className={`flex-1 py-2 text-xs font-bold uppercase tracking-wide rounded-lg transition-colors ${bulkTagAction === 'remove' ? 'bg-danger text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
                                     >
                                         Hapus Label
                                     </button>
@@ -2931,23 +2932,23 @@ export default function StudentsPage() {
                                                 key={tag}
                                                 onClick={() => handleBulkTagApply(tag)}
                                                 disabled={submitting}
-                                                className={`p-3 rounded-xl border text-xs font-bold transition-all text-left flex items-center justify-between group hover:scale-[1.02] active:scale-95 ${bulkTagAction === 'add'
-                                                    ? 'hover:border-indigo-500 hover:bg-indigo-500/5'
-                                                    : 'hover:border-red-500 hover:bg-red-500/5'
+                                                className={`p-3 rounded-xl border text-xs font-bold transition-[border-color,background-color,transform] text-left flex items-center justify-between group hover:scale-[1.02] active:scale-95 ${bulkTagAction === 'add'
+                                                    ? 'hover:border-primary hover:bg-primary/5'
+                                                    : 'hover:border-danger hover:bg-danger/5'
                                                     } border-[var(--color-border)] bg-[var(--color-surface)]`}
                                             >
                                                 <span className="flex items-center gap-2 truncate">
                                                     <div className={`w-2 h-2 rounded-full shrink-0 ${getTagColor(tag).split(' ')[0]}`} />
                                                     <span className="truncate">{tag}</span>
                                                 </span>
-                                                {bulkTagAction === 'add' ? <Plus className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ${bulkTagAction === 'add' ? 'text-indigo-500' : 'text-red-500'}`} /> : <Trash2 className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ${bulkTagAction === 'add' ? 'text-indigo-500' : 'text-red-500'}`} />}
+                                                {bulkTagAction === 'add' ? <Plus className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ${bulkTagAction === 'add' ? 'text-primary' : 'text-danger'}`} /> : <Trash2 className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ${bulkTagAction === 'add' ? 'text-primary' : 'text-danger'}`} />}
                                             </button>
                                         ))}
                                     </div>
                                 </div>
 
-                                <div className="p-4 rounded-2xl bg-indigo-500/5 border border-indigo-500/10">
-                                    <p className="text-xs text-indigo-600 dark:text-indigo-400 font-bold leading-relaxed">
+                                <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
+                                    <p className="text-xs text-primary font-bold leading-relaxed">
                                         {bulkTagAction === 'add'
                                             ? `* Memilih label akan MENAMBAHKAN label tersebut ke SEMUA (${selectedStudentIds.length}) siswa yang Anda pilih.`
                                             : `* Memilih label akan MENGHAPUS label tersebut dari SEMUA (${selectedStudentIds.length}) siswa yang memiliki label itu.`}
@@ -2974,9 +2975,9 @@ export default function StudentsPage() {
                             mobileVariant="bottom-sheet"
                             footer={
                                 <div className="space-y-3">
-                                    <div className="flex p-3 rounded-2xl bg-amber-500/5 border border-amber-500/10 gap-3 items-start">
-                                        <CircleAlert className="w-4 h-4 text-amber-500 mt-0.5" />
-                                        <p className="text-xs text-amber-700 dark:text-amber-400 font-bold leading-relaxed">
+                                    <div className="flex p-3 rounded-xl bg-warning/5 border border-warning/10 gap-3 items-start">
+                                        <CircleAlert className="w-4 h-4 text-warning mt-0.5" />
+                                        <p className="text-xs text-warning font-bold leading-relaxed">
                                             Poin akan ditambahkan ke total poin masing-masing siswa. Pastikan jumlah dan alasan sudah benar sebelum memproses.
                                         </p>
                                     </div>
@@ -2984,7 +2985,7 @@ export default function StudentsPage() {
                                         <button
                                             type="button"
                                             onClick={() => closeModal()}
-                                            className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all"
+                                            className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-colors"
                                         >
                                             Batal
                                         </button>
@@ -2992,7 +2993,7 @@ export default function StudentsPage() {
                                             type="button"
                                             onClick={handleBulkPointUpdate}
                                             disabled={submitting || !bulkPointValue}
-                                            className="flex-[2] h-11 rounded-xl bg-orange-500 text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 transition-all disabled:opacity-50 shadow-lg flex items-center justify-center gap-2"
+                                            className="flex-[2] h-11 rounded-xl bg-orange-500 text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 transition-[filter,opacity] disabled:opacity-50 shadow-sm flex items-center justify-center gap-2"
                                         >
                                             {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : (
                                                 <>
@@ -3013,7 +3014,7 @@ export default function StudentsPage() {
                                     toggleSelectStudent={toggleSelectStudent}
                                 />}
 
-                                <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent" />
+                                <div className="h-px bg-border" />
 
                                 <div className="space-y-4">
                                     <div>
@@ -3027,8 +3028,8 @@ export default function StudentsPage() {
                                                 className="input-field w-full h-12 px-4 pr-24 rounded-xl border-[var(--color-border)] bg-[var(--color-surface-alt)] text-lg font-bold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none transition-all"
                                             />
                                             <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
-                                                <button onClick={() => setBulkPointValue(10)} className="h-7 px-2 rounded-lg bg-emerald-500/10 text-emerald-600 text-xs font-bold hover:bg-emerald-500 hover:text-white transition-all">+10</button>
-                                                <button onClick={() => setBulkPointValue(-10)} className="h-7 px-2 rounded-lg bg-red-500/10 text-red-600 text-xs font-bold hover:bg-red-500 hover:text-white transition-all">-10</button>
+                                                <button onClick={() => setBulkPointValue(10)} className="h-7 px-2 rounded-lg bg-success/10 text-success text-xs font-bold hover:bg-success hover:text-white transition-colors">+10</button>
+                                                <button onClick={() => setBulkPointValue(-10)} className="h-7 px-2 rounded-lg bg-danger/10 text-danger text-xs font-bold hover:bg-danger hover:text-white transition-colors">-10</button>
                                             </div>
                                         </div>
                                     </div>
@@ -3066,7 +3067,7 @@ export default function StudentsPage() {
                             footer={
                                 <div className="space-y-3">
                                     {bulkRoomId && (
-                                        <div className="flex p-3 rounded-2xl bg-teal-500/5 border border-teal-500/15 gap-3 items-start">
+                                        <div className="flex p-3 rounded-xl bg-teal-500/5 border border-teal-500/15 gap-3 items-start">
                                             <CircleAlert className="w-4 h-4 text-teal-500 mt-0.5 shrink-0" />
                                             <p className="text-xs text-teal-700 dark:text-teal-400 font-bold leading-relaxed">
                                                 {selectedStudentIds.length} siswa akan ditetapkan ke kamar
@@ -3081,7 +3082,7 @@ export default function StudentsPage() {
                                         <button
                                             type="button"
                                             onClick={() => closeModal()}
-                                            className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-all"
+                                            className="flex-1 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide transition-colors"
                                         >
                                             Batal
                                         </button>
@@ -3089,7 +3090,7 @@ export default function StudentsPage() {
                                             type="button"
                                             onClick={handleBulkRoomAssign}
                                             disabled={submitting || !bulkRoomId}
-                                            className="flex-[2] h-11 rounded-xl bg-teal-500 text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg"
+                                            className="flex-[2] h-11 rounded-xl bg-teal-500 text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 transition-[filter,opacity] disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm"
                                         >
                                             {submitting ? <LoaderCircle className="w-4 h-4 animate-spin" /> : (
                                                 <><DoorOpen className="w-4 h-4" /> Tetapkan Kamar</>
@@ -3107,26 +3108,26 @@ export default function StudentsPage() {
                                     toggleSelectStudent={toggleSelectStudent}
                                 />}
 
-                                <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent" />
+                                <div className="h-px bg-border" />
                                 <label className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] block mb-3">Pilih Kamar Tujuan</label>
 
                                 {/* Opsi Kosongkan */}
                                 <button
                                     type="button"
                                     onClick={() => setBulkRoomId(bulkRoomId === '-' ? '' : '-')}
-                                    className={`w-full p-3 rounded-xl border text-xs font-bold transition-all text-left flex items-center gap-3 hover:scale-[1.01] active:scale-95 ${bulkRoomId === '-'
-                                        ? 'bg-amber-500/10 border-amber-500 text-amber-700'
-                                        : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:border-amber-500/40 hover:bg-amber-500/5'
+                                    className={`w-full p-3 rounded-xl border text-xs font-bold transition-[border-color,background-color,color,transform] text-left flex items-center gap-3 hover:scale-[1.01] active:scale-95 ${bulkRoomId === '-'
+                                        ? 'bg-warning/10 border-warning text-warning'
+                                        : 'border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] hover:border-warning/40 hover:bg-warning/5'
                                         }`}
                                 >
-                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${bulkRoomId === '-' ? 'bg-amber-500 text-white' : 'bg-amber-500/10 text-amber-500'}`}>
+                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${bulkRoomId === '-' ? 'bg-warning text-white' : 'bg-warning/10 text-warning'}`}>
                                         <DoorOpen className="w-4 h-4" />
                                     </div>
                                     <div className="flex-1">
                                         <p className="font-bold text-xs">Lainnya / Kosongkan</p>
                                         <p className="text-xs opacity-60 mt-0.5">Hapus penugasan kamar untuk siswa terpilih</p>
                                     </div>
-                                    {bulkRoomId === '-' && <Check className="w-4 h-4 ml-auto text-amber-600" />}
+                                    {bulkRoomId === '-' && <Check className="w-4 h-4 ml-auto text-warning" />}
                                 </button>
 
                                 <div className="h-px bg-[var(--color-border)] my-1" />

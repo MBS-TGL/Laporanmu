@@ -8,7 +8,7 @@ import { ArrowRight, Banknote, Bell, CalendarDays, ChartColumn, Check, ChevronDo
 
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import Breadcrumb from '@shared/components/Breadcrumb'
-import { EmptyState } from '@shared/components/DataDisplay'
+import { Button, Badge, EmptyState, Modal } from '@shared/components'
 import { useToast } from '@context/Toast'
 import { useLanguage } from '@context/Language'
 import { useAuth } from '@context/Auth'
@@ -26,10 +26,10 @@ const BULAN_NAMA = [
 const STATUS_CYCLE = ['', 'H', 'S', 'I', 'A', 'P']
 
 const STATUS_META = {
-    H: { label: 'Hadir', color: 'text-emerald-600', cellBg: 'bg-emerald-500/15', cellBorder: 'border-emerald-500/30', textColor: '#059669', icon: UserCheck },
-    S: { label: 'Sakit', color: 'text-amber-600', cellBg: 'bg-amber-500/15', cellBorder: 'border-amber-500/30', textColor: '#d97706', icon: HeartPulse },
-    I: { label: 'Izin', color: 'text-blue-600', cellBg: 'bg-blue-500/15', cellBorder: 'border-blue-500/30', textColor: '#2563eb', icon: FileCheck },
-    A: { label: 'Alpa', color: 'text-red-600', cellBg: 'bg-red-500/15', cellBorder: 'border-red-500/30', textColor: '#dc2626', icon: CircleX },
+    H: { label: 'Hadir', color: 'text-success', cellBg: 'bg-success/15', cellBorder: 'border-success/30', textColor: '#059669', icon: UserCheck },
+    S: { label: 'Sakit', color: 'text-warning', cellBg: 'bg-warning/15', cellBorder: 'border-warning/30', textColor: '#d97706', icon: HeartPulse },
+    I: { label: 'Izin', color: 'text-primary', cellBg: 'bg-primary/15', cellBorder: 'border-primary/30', textColor: '#2563eb', icon: FileCheck },
+    A: { label: 'Alpa', color: 'text-danger', cellBg: 'bg-danger/15', cellBorder: 'border-danger/30', textColor: '#dc2626', icon: CircleX },
     P: { label: 'Pulang Awal', color: 'text-purple-600', cellBg: 'bg-purple-500/15', cellBorder: 'border-purple-500/30', textColor: '#7c3aed', icon: DoorOpen },
 }
 
@@ -103,12 +103,12 @@ const DayCell = memo(({ status, weekend, invalid, isToday, isFocused, onMouseDow
         >
             {isToday && !meta && (
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
-                    <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 z-10" />
-                    <div className="absolute w-1.5 h-1.5 rounded-full bg-indigo-500 animate-ping opacity-75" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary z-10" />
+                    <div className="absolute w-1.5 h-1.5 rounded-full bg-primary animate-ping opacity-75" />
                 </div>
             )}
             <div
-                className={`w-full h-full flex items-center justify-center text-xs font-bold transition-all duration-75 hover:brightness-90 active:scale-90 ${meta ? meta.color : weekend ? 'text-[var(--color-text-muted)]/20' : 'text-transparent hover:text-[var(--color-text-muted)]/30'
+                className={`w-full h-full flex items-center justify-center text-xs font-bold transition-[filter,transform] duration-75 hover:brightness-90 active:scale-90 ${meta ? meta.color : weekend ? 'text-[var(--color-text-muted)]/20' : 'text-transparent hover:text-[var(--color-text-muted)]/30'
                     }`}
                 style={{ height: 28 }}
             >
@@ -129,7 +129,7 @@ const StudentRow = memo(({ student, idx, days, tahun, bulan, daysInMonth, todayD
     const hasNote = !!note
 
     return (
-        <tr className={`table-row-lazy ${alertAlpa ? 'bg-red-500/[0.02]' : ''}`}>
+        <tr className={`table-row-lazy ${alertAlpa ? 'bg-danger/[0.02]' : ''}`}>
             {/* No — sticky */}
             <td style={{
                 position: 'sticky', left: 0, zIndex: 4,
@@ -164,11 +164,11 @@ const StudentRow = memo(({ student, idx, days, tahun, bulan, daysInMonth, todayD
                     <div className="min-w-0">
                         <p className="text-xs font-bold text-[var(--color-text)] truncate group-hover:text-[var(--color-primary)] transition-colors">{student.name}</p>
                         {alertAlpa
-                            ? <p className="text-xs font-bold text-red-500 flex items-center gap-1 mt-0.5">
+                            ? <p className="text-xs font-bold text-danger flex items-center gap-1 mt-0.5">
                                 <TriangleAlert className="w-4 h-4" />Alpa {sum.A}×
                             </p>
                             : alertHadir
-                                ? <p className="text-xs font-bold text-amber-500 flex items-center gap-1 mt-0.5">
+                                ? <p className="text-xs font-bold text-warning flex items-center gap-1 mt-0.5">
                                     <Bell className="w-4 h-4" />Hadir {pct}%
                                 </p>
                                 : student.nisn
@@ -180,7 +180,7 @@ const StudentRow = memo(({ student, idx, days, tahun, bulan, daysInMonth, todayD
                     <div className="w-5 shrink-0">
                         <button
                             onClick={(e) => { e.stopPropagation(); onNoteClick(e, student) }}
-                            className={`w-5 h-5 rounded flex items-center justify-center transition-all ${hasNote ? 'text-amber-500' : 'opacity-0 group-hover:opacity-40 text-[var(--color-text-muted)]'}`}
+                            className={`w-5 h-5 rounded flex items-center justify-center transition-[color,opacity] ${hasNote ? 'text-warning' : 'opacity-0 group-hover:opacity-40 text-[var(--color-text-muted)]'}`}
                             title={hasNote ? `Catatan: ${note}` : 'Tambah catatan'}
                         >
                             <StickyNote className="w-4 h-4" />
@@ -236,11 +236,11 @@ const StudentRow = memo(({ student, idx, days, tahun, bulan, daysInMonth, todayD
                 }}
             >
                 <div className="flex flex-col items-center gap-0.5 py-1">
-                    <span className={`text-xs font-bold tabular-nums ${pct >= 80 ? 'text-emerald-600' : pct >= 60 ? 'text-amber-600' : 'text-red-600'}`}>
+                    <span className={`text-xs font-bold tabular-nums ${pct >= 80 ? 'text-success' : pct >= 60 ? 'text-warning' : 'text-danger'}`}>
                         {pct}%
                     </span>
                     <div className="w-5 h-0.5 rounded-full bg-[var(--color-border)] overflow-hidden">
-                        <div className="h-full rounded-full transition-all"
+                        <div className="h-full rounded-full transition-[width]"
                             style={{ width: `${pct}%`, background: pct >= 80 ? '#059669' : pct >= 60 ? '#d97706' : '#dc2626' }} />
                     </div>
                 </div>
@@ -374,7 +374,7 @@ function MassActionDropdown({ studentList, dataMap, setDataMap, tahun, bulan, da
                 ref={btnRef}
                 type="button"
                 onClick={handleToggle}
-                className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all flex items-center gap-1.5 shrink-0"
+                className="h-8 px-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-colors flex items-center gap-1.5 shrink-0"
             >
                 <ListChecks className="w-4 h-4" />
                 Aksi Massal
@@ -399,7 +399,7 @@ function MassActionDropdown({ studentList, dataMap, setDataMap, tahun, bulan, da
                     {STATUS_LIST.map(s => (
                         <button key={s} onClick={() => applyAll(s)}
                             className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold hover:bg-[var(--color-surface-alt)] transition-colors text-left">
-                            <span className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold border ${STATUS_META[s].cellBg} ${STATUS_META[s].color.replace('text-', 'border-').replace('600', '500/30')}`}>
+                            <span className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold border ${STATUS_META[s].cellBg} ${STATUS_META[s].cellBorder}`}>
                                 {s}
                             </span>
                             <span className={STATUS_META[s].color}>{STATUS_META[s].label}</span>
@@ -407,8 +407,8 @@ function MassActionDropdown({ studentList, dataMap, setDataMap, tahun, bulan, da
                     ))}
                     <div className="my-1 border-t border-[var(--color-border)]" />
                     <button onClick={handleReset}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold hover:bg-red-500/5 transition-colors text-left text-red-500">
-                        <span className="w-6 h-6 rounded-lg flex items-center justify-center text-xs bg-red-500/10 border border-red-500/20">
+                        className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-bold hover:bg-danger/5 transition-colors text-left text-danger">
+                        <span className="w-6 h-6 rounded-lg flex items-center justify-center text-xs bg-danger/10 border border-danger/20">
                             <RefreshCw className="w-4 h-4" />
                         </span>
                         Reset Semua
@@ -532,35 +532,38 @@ function ImportModal({ studentList, tahun, bulan, daysInMonth, onImport, onClose
         setLoading(false)
     }
 
-    return createPortal(
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-            onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-                <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl w-full max-w-md overflow-hidden flex flex-col max-h-[85vh]">
-                <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
-                    <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                            <FileInput className="w-4 h-4 text-blue-500" />
-                        </div>
-                        <div>
-                            <p className="text-sm font-bold text-[var(--color-text)]">Import Absensi</p>
-                            <p className="text-xs text-[var(--color-text-muted)]">Upload file Excel/CSV {BULAN_NAMA[bulan]} {tahun}</p>
-                        </div>
-                    </div>
-                    <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center">
-                        <X className="w-4 h-4 text-[var(--color-text-muted)]" />
-                    </button>
+    return (
+        <Modal
+            isOpen
+            onClose={onClose}
+            title="Import Absensi"
+            description={`Upload file Excel/CSV ${BULAN_NAMA[bulan]} ${tahun}`}
+            icon={FileInput}
+            size="md"
+            footer={
+                <div className="flex gap-2 justify-end">
+                    <button onClick={onClose} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">Batal</button>
+                    <Button
+                        disabled={!preview || preview.matched.length === 0}
+                        onClick={() => { onImport(preview.matched); onClose() }}
+                    >
+                        <Check className="w-4 h-4" />
+                        Terapkan ({preview?.matched.length || 0} siswa)
+                    </Button>
                 </div>
-                <div className="p-5 overflow-y-auto flex-1 space-y-4">
+            }
+        >
+                <div className="space-y-4">
                     {/* Format hint */}
-                    <div className="p-3 rounded-xl bg-blue-500/5 border border-blue-500/20">
-                        <p className="text-xs font-bold text-blue-600 mb-1">Format yang didukung:</p>
+                    <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+                        <p className="text-xs font-bold text-primary mb-1">Format yang didukung:</p>
                         <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
                             Baris pertama = header. Harus ada kolom <strong>Nama</strong>. Kolom tanggal = angka (1, 2, 3, ...).
                             Nilai: <strong>H</strong> Hadir · <strong>S</strong> Sakit · <strong>I</strong> Izin · <strong>A</strong> Alpa · <strong>P</strong> Pulang Awal.
                         </p>
                     </div>
                     {/* Drop zone */}
-                    <label className="flex flex-col items-center justify-center gap-2 p-6 rounded-xl border-2 border-dashed border-[var(--color-border)] hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/3 transition-all cursor-pointer">
+                    <label className="flex flex-col items-center justify-center gap-2 p-6 rounded-xl border-2 border-dashed border-[var(--color-border)] hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/3 transition-colors cursor-pointer">
                         <Upload className="w-6 h-6 text-[var(--color-text-muted)]" />
                         <p className="text-xs font-bold text-[var(--color-text-muted)]">
                             {file ? file.name : 'Klik atau seret file di sini'}
@@ -570,16 +573,16 @@ function ImportModal({ studentList, tahun, bulan, daysInMonth, onImport, onClose
                             onChange={e => handleFile(e.target.files[0])} />
                     </label>
                     {loading && <div className="flex items-center justify-center gap-2 py-4"><LoaderCircle className="w-4 h-4 animate-spin text-[var(--color-primary)]" /><span className="text-xs text-[var(--color-text-muted)]">Membaca file...</span></div>}
-                    {error && <div className="p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-xs font-bold text-red-600">{error}</div>}
+                    {error && <div className="p-3 rounded-xl bg-danger/8 border border-danger/20 text-xs font-bold text-danger">{error}</div>}
                     {preview && (
                         <div className="space-y-3">
                             <div className="flex items-center gap-2">
-                                <span className="text-xs font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-md">{preview.matched.length} cocok</span>
-                                {preview.unmatched.length > 0 && <span className="text-xs font-bold text-amber-600 bg-amber-500/10 px-2 py-0.5 rounded-md">{preview.unmatched.length} tidak ditemukan</span>}
+                                <Badge variant="success">{preview.matched.length} cocok</Badge>
+                                {preview.unmatched.length > 0 && <Badge variant="warning">{preview.unmatched.length} tidak ditemukan</Badge>}
                             </div>
                             {preview.unmatched.length > 0 && (
-                                <div className="p-3 rounded-xl bg-amber-500/5 border border-amber-500/20">
-                                    <p className="text-xs font-bold text-amber-600 mb-1 uppercase tracking-wider">Tidak ditemukan di daftar siswa:</p>
+                                <div className="p-3 rounded-xl bg-warning/5 border border-warning/20">
+                                    <p className="text-xs font-bold text-warning mb-1 uppercase tracking-wider">Tidak ditemukan di daftar siswa:</p>
                                     {preview.unmatched.slice(0, 5).map((n, i) => <p key={i} className="text-xs text-[var(--color-text-muted)]">· {n}</p>)}
                                     {preview.unmatched.length > 5 && <p className="text-xs text-[var(--color-text-muted)]">...dan {preview.unmatched.length - 5} lainnya</p>}
                                 </div>
@@ -587,19 +590,7 @@ function ImportModal({ studentList, tahun, bulan, daysInMonth, onImport, onClose
                         </div>
                     )}
                 </div>
-                <div className="px-5 py-3 border-t border-[var(--color-border)] flex gap-2 justify-end">
-                    <button onClick={onClose} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">Batal</button>
-                    <button
-                        disabled={!preview || preview.matched.length === 0}
-                        onClick={() => { onImport(preview.matched); onClose() }}
-                        className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold disabled:opacity-40 hover:opacity-90 transition-all flex items-center gap-2">
-                        <Check className="w-4 h-4" />
-                        Terapkan ({preview?.matched.length || 0} siswa)
-                    </button>
-                </div>
-            </div>
-        </div>,
-        document.body
+        </Modal>
     )
 }
 
@@ -608,57 +599,49 @@ function ImportModal({ studentList, tahun, bulan, daysInMonth, onImport, onClose
 function AlertThresholdModal({ threshold, onSave, onClose }) {
     const [alpa, setAlpa] = useState(threshold.alpa)
     const [hadirPct, setHadirPct] = useState(threshold.hadirPct)
-    return createPortal(
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-            onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-                <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl w-full max-w-xs overflow-hidden">
-                <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
-                    <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center">
-                            <Bell className="w-4 h-4 text-amber-500" />
-                        </div>
-                        <div>
-                            <p className="text-sm font-bold text-[var(--color-text)]">Ambang Batas Alert</p>
-                            <p className="text-xs text-[var(--color-text-muted)]">Tampilkan notifikasi otomatis</p>
-                        </div>
-                    </div>
-                    <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center">
-                        <X className="w-4 h-4 text-[var(--color-text-muted)]" />
-                    </button>
+    return (
+        <Modal
+            isOpen
+            onClose={onClose}
+            title="Ambang Batas Alert"
+            description="Tampilkan notifikasi otomatis"
+            icon={Bell}
+            iconBg="bg-warning/10"
+            iconColor="text-warning"
+            size="xs"
+            footer={
+                <div className="flex gap-2 justify-end">
+                    <button onClick={onClose} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">Batal</button>
+                    <Button onClick={() => { onSave({ alpa, hadirPct }); onClose() }}>
+                        <Check className="w-4 h-4" />
+                        Simpan
+                    </Button>
                 </div>
-                <div className="p-5 space-y-4">
+            }
+        >
+                <div className="space-y-4">
                     <div>
                         <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-2">
-                            Alpa ≥ <span className="text-red-600 text-[14px] ml-1">{alpa}</span> hari → merah
+                            Alpa ≥ <span className="text-danger text-sm ml-1">{alpa}</span> hari → merah
                         </label>
                         <input type="range" min={1} max={10} value={alpa} onChange={e => setAlpa(+e.target.value)}
-                            className="w-full accent-red-500 h-1.5 cursor-pointer" />
+                            className="w-full accent-danger h-1.5 cursor-pointer" />
                         <div className="flex justify-between text-xs text-[var(--color-text-muted)] mt-1">
                             <span>1</span><span>5</span><span>10</span>
                         </div>
                     </div>
                     <div>
                         <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-2">
-                            Kehadiran &lt; <span className="text-amber-600 text-[14px] ml-1">{hadirPct}%</span> → kuning
+                            Kehadiran &lt; <span className="text-warning text-sm ml-1">{hadirPct}%</span> → kuning
                         </label>
                         <input type="range" min={30} max={90} step={5} value={hadirPct} onChange={e => setHadirPct(+e.target.value)}
-                            className="w-full accent-amber-500 h-1.5 cursor-pointer" />
+                            className="w-full accent-warning h-1.5 cursor-pointer" />
                         <div className="flex justify-between text-xs text-[var(--color-text-muted)] mt-1">
                             <span>30%</span><span>60%</span><span>90%</span>
                         </div>
                     </div>
                 </div>
-                <div className="px-5 py-3 border-t border-[var(--color-border)] flex gap-2 justify-end">
-                    <button onClick={onClose} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">Batal</button>
-                    <button onClick={() => { onSave({ alpa, hadirPct }); onClose() }}
-                        className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:opacity-90 transition-all flex items-center gap-2">
-                        <Check className="w-4 h-4" />
-                        Simpan
-                    </button>
-                </div>
-            </div>
-        </div>,
-        document.body
+        </Modal>
     )
 }
 
@@ -679,7 +662,7 @@ function MobileCardView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
     if (loadingData) return (
         <div className="p-4 space-y-3">
             {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 animate-pulse">
+                <div key={i} className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 animate-pulse">
                     <div className="h-3 w-32 rounded bg-[var(--color-border)] mb-3" />
                     <div className="flex flex-wrap gap-1">
                         {Array.from({ length: 31 }).map((_, j) => <div key={j} className="w-8 h-8 rounded-lg bg-[var(--color-border)]/40" />)}
@@ -689,10 +672,12 @@ function MobileCardView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
         </div>
     )
     if (filteredStudents.length === 0) return (
-        <div className="py-16 flex flex-col items-center gap-2 text-[var(--color-text-muted)]">
-            <Search className="w-6 h-6 opacity-20" />
-            <p className="text-xs font-bold">Tidak ada siswa</p>
-        </div>
+        <EmptyState
+            variant="plain"
+            color="slate"
+            icon={Search}
+            title="Tidak ada siswa"
+        />
     )
     return (
         <div className="p-3 space-y-2.5">
@@ -706,17 +691,17 @@ function MobileCardView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
                 const hasNote = !!notesMap[s.id]
 
                 return (
-                    <div key={s.id} className={`rounded-2xl border bg-[var(--color-surface)] overflow-hidden transition-all ${alertAlpa ? 'border-red-300 dark:border-red-800' : 'border-[var(--color-border)]'}`}>
+                    <div key={s.id} className={`rounded-xl border bg-[var(--color-surface)] overflow-hidden transition-colors ${alertAlpa ? 'border-danger/40 dark:border-danger-dark' : 'border-[var(--color-border)]'}`}>
                         {/* Card header */}
-                        <div className={`flex items-center justify-between px-4 py-2.5 border-b border-[var(--color-border)] ${alertAlpa ? 'bg-red-500/5' : 'bg-[var(--color-surface-alt)]/40'}`}>
+                        <div className={`flex items-center justify-between px-4 py-2.5 border-b border-[var(--color-border)] ${alertAlpa ? 'bg-danger/5' : 'bg-[var(--color-surface-alt)]/40'}`}>
                             <div className="flex items-center gap-2 min-w-0">
                                 <div className="w-6 h-6 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-xs font-bold text-[var(--color-text-muted)] shrink-0">
                                     {idx + 1}
                                 </div>
                                 <div className="min-w-0">
                                     <p className="text-sm font-bold text-[var(--color-text)] truncate">{s.name}</p>
-                                    {alertAlpa && <p className="text-xs font-bold text-red-500 flex items-center gap-1"><TriangleAlert className="w-4 h-4" />Alpa {sum.A}×</p>}
-                                    {!alertAlpa && alertHadir && <p className="text-xs font-bold text-amber-500 flex items-center gap-1"><Bell className="w-4 h-4" />Hadir {pct}%</p>}
+                                    {alertAlpa && <p className="text-xs font-bold text-danger flex items-center gap-1"><TriangleAlert className="w-4 h-4" />Alpa {sum.A}×</p>}
+                                    {!alertAlpa && alertHadir && <p className="text-xs font-bold text-warning flex items-center gap-1"><Bell className="w-4 h-4" />Hadir {pct}%</p>}
                                 </div>
                             </div>
                             <div className="flex items-center gap-1 shrink-0">
@@ -729,7 +714,7 @@ function MobileCardView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
                                 ))}
                                 {/* Note btn */}
                                 <button onClick={(e) => { const r = e.currentTarget.getBoundingClientRect(); onNoteClick({ student: s, x: r.left, y: r.bottom }) }}
-                                    className={`w-6 h-6 rounded-md flex items-center justify-center ml-1 transition-all ${hasNote ? 'text-amber-500 bg-amber-500/10' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
+                                    className={`w-6 h-6 rounded-md flex items-center justify-center ml-1 transition-[color,background-color] ${hasNote ? 'text-warning bg-warning/10' : 'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]'}`}>
                                     <StickyNote className="w-4 h-4" />
                                 </button>
                             </div>
@@ -753,12 +738,12 @@ function MobileCardView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
                                                 ),
                                                 aspectRatio: '1 / 1.1',
                                             }}
-                                            className={`rounded-lg transition-all active:scale-90 select-none flex flex-col items-center justify-center w-full relative overflow-hidden ${isT && !meta ? 'shadow-[inset_0_0_8px_rgba(99,102,241,0.15)] bg-indigo-500/5' : ''}`}
+                                            className={`rounded-lg transition-transform active:scale-90 select-none flex flex-col items-center justify-center w-full relative overflow-hidden ${isT && !meta ? 'shadow-[inset_0_0_8px_rgba(99,102,241,0.15)] bg-primary/5' : ''}`}
                                         >
                                             {isT && !meta && (
                                                 <div className="absolute top-[3px] right-[3px] flex items-center justify-center">
-                                                    <div className="w-1 h-1 rounded-full bg-indigo-500 z-10" />
-                                                    <div className="absolute w-1 h-1 rounded-full bg-indigo-500 animate-ping opacity-75" />
+                                                    <div className="w-1 h-1 rounded-full bg-primary z-10" />
+                                                    <div className="absolute w-1 h-1 rounded-full bg-primary animate-ping opacity-75" />
                                                 </div>
                                             )}
                                             <span style={{ fontSize: 12, fontWeight: 900, lineHeight: 1, color: meta ? meta.text : 'transparent' }}>
@@ -780,9 +765,9 @@ function MobileCardView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
                         {/* Progress bar */}
                         <div className="px-3 pb-3 flex items-center gap-2">
                             <div className="flex-1 h-1.5 rounded-full bg-[var(--color-border)] overflow-hidden">
-                                <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: pct >= 80 ? '#059669' : pct >= 60 ? '#d97706' : '#dc2626' }} />
+                                <div className="h-full rounded-full transition-[width]" style={{ width: `${pct}%`, background: pct >= 80 ? '#059669' : pct >= 60 ? '#d97706' : '#dc2626' }} />
                             </div>
-                            <span className={`text-xs font-bold tabular-nums min-w-[32px] text-right ${pct >= 80 ? 'text-emerald-600' : pct >= 60 ? 'text-amber-600' : 'text-red-600'}`}>{pct}%</span>
+                            <span className={`text-xs font-bold tabular-nums min-w-[32px] text-right ${pct >= 80 ? 'text-success' : pct >= 60 ? 'text-warning' : 'text-danger'}`}>{pct}%</span>
                         </div>
                     </div>
                 )
@@ -829,10 +814,12 @@ function MobileListView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
     )
 
     if (filteredStudents.length === 0) return (
-        <div className="py-16 flex flex-col items-center gap-2 text-[var(--color-text-muted)]">
-            <Search className="w-6 h-6 opacity-20" />
-            <p className="text-xs font-bold">Tidak ada siswa</p>
-        </div>
+        <EmptyState
+            variant="plain"
+            color="slate"
+            icon={Search}
+            title="Tidak ada siswa"
+        />
     )
 
     return (
@@ -847,7 +834,7 @@ function MobileListView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
                     const hasNote = !!notesMap[s.id]
 
                     return (
-                        <div key={s.id} className={`flex items-center gap-2.5 px-4 py-2.5 transition-colors ${alertAlpa ? 'bg-red-500/[0.02]' : ''}`}>
+                        <div key={s.id} className={`flex items-center gap-2.5 px-4 py-2.5 transition-colors ${alertAlpa ? 'bg-danger/[0.02]' : ''}`}>
                             {/* No */}
                             <div className="w-5 h-5 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-xs font-bold text-[var(--color-text-muted)] shrink-0">
                                 {idx + 1}
@@ -857,13 +844,13 @@ function MobileListView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-1">
                                     <p className="text-xs font-bold text-[var(--color-text)] truncate">{s.name}</p>
-                                    {hasNote && <StickyNote className="w-4 h-4 text-amber-500 shrink-0" />}
+                                    {hasNote && <StickyNote className="w-4 h-4 text-warning shrink-0" />}
                                 </div>
                                 <div className="flex items-center gap-1.5 mt-0.5">
                                     <div className="w-12 h-1 rounded-full bg-[var(--color-border)] overflow-hidden">
                                         <div className="h-full rounded-full" style={{ width: `${pct}%`, background: pct >= 80 ? '#059669' : pct >= 60 ? '#d97706' : '#dc2626' }} />
                                     </div>
-                                    <span className={`text-xs font-bold tabular-nums ${alertAlpa ? 'text-red-500' : 'text-[var(--color-text-muted)]'}`}>
+                                    <span className={`text-xs font-bold tabular-nums ${alertAlpa ? 'text-danger' : 'text-[var(--color-text-muted)]'}`}>
                                         {alertAlpa ? `⚠ Alpa ${sum.A}×` : `${pct}%`}
                                     </span>
                                 </div>
@@ -882,7 +869,7 @@ function MobileListView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
                                                 ? { background: meta.bg, border: `1.5px solid ${meta.border}`, boxShadow: isT ? '0 0 0 1.5px #6366f1' : undefined }
                                                 : { background: 'var(--color-surface-alt)', border: isT ? '1.5px solid #6366f1' : '1px solid var(--color-border)' }
                                             }
-                                            className="w-8 h-9 rounded-lg transition-all active:scale-90 select-none flex flex-col items-center justify-center">
+                                            className="w-8 h-9 rounded-lg transition-transform active:scale-90 select-none flex flex-col items-center justify-center">
                                             <span style={{ fontSize: 11, fontWeight: 900, lineHeight: 1, color: meta ? meta.text : 'transparent' }}>{v}</span>
                                             <span style={{ fontSize: 7, fontWeight: 700, lineHeight: 1.2, color: meta ? meta.text : 'var(--color-text-muted)', opacity: 0.45 }}>{d}</span>
                                         </button>
@@ -892,7 +879,7 @@ function MobileListView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
 
                             {/* Expand button */}
                             <button onClick={() => setExpandedId(s.id)}
-                                className="w-8 h-8 rounded-xl bg-[var(--color-primary)] flex items-center justify-center text-white transition-all hover:opacity-85 active:scale-90 shrink-0 shadow-sm">
+                                className="w-8 h-8 rounded-xl bg-[var(--color-primary)] flex items-center justify-center text-white transition-[opacity,transform] hover:opacity-85 active:scale-90 shrink-0 shadow-sm">
                                 <ChevronRight className="w-4 h-4" />
                             </button>
                         </div>
@@ -909,7 +896,7 @@ function MobileListView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
                 >
                     <div className="absolute inset-0 bg-black/40" onClick={() => setExpandedId(null)} />
                     <div
-                        className="relative bg-[var(--color-surface)] rounded-t-3xl border-t border-[var(--color-border)] shadow-xl flex flex-col"
+                        className="relative bg-[var(--color-surface)] rounded-t-2xl border-t border-[var(--color-border)] shadow-xl flex flex-col"
                         style={{ maxHeight: 'calc(100dvh - 140px)' }}
                     >
                         {/* Handle */}
@@ -926,15 +913,15 @@ function MobileListView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
                             <div className="flex items-center gap-2 shrink-0 ml-3">
                                 <button
                                     onClick={(e) => { const r = e.currentTarget.getBoundingClientRect(); onNoteClick({ student: expanded, x: r.left, y: r.bottom }); setExpandedId(null) }}
-                                    className={`h-8 px-3 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${notesMap[expanded.id]
-                                        ? 'text-amber-600 bg-amber-500/10 border border-amber-500/20'
+                                    className={`h-8 px-3 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors ${notesMap[expanded.id]
+                                        ? 'text-warning bg-warning/10 border border-warning/20'
                                         : 'text-[var(--color-text-muted)] bg-[var(--color-surface-alt)] border border-[var(--color-border)]'}`}>
                                     <StickyNote className="w-4 h-4" />
                                     Catatan
                                 </button>
                                 <button
                                     onClick={() => setExpandedId(null)}
-                                    className="w-8 h-8 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">
+                                    className="w-8 h-8 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
                                     <X className="w-4 h-4" />
                                 </button>
                             </div>
@@ -980,7 +967,7 @@ function MobileListView({ filteredStudents, dataMap, tahun, bulan, daysInMonth, 
                                                             ),
                                                             aspectRatio: '1 / 1.15',
                                                         }}
-                                                        className="rounded-xl transition-all active:scale-90 select-none flex flex-col items-center justify-center w-full">
+                                                        className="rounded-lg transition-transform active:scale-90 select-none flex flex-col items-center justify-center w-full">
                                                         <span style={{ fontSize: 14, fontWeight: 900, lineHeight: 1, color: meta ? meta.text : 'transparent' }}>{v}</span>
                                                         <span style={{ fontSize: 9, fontWeight: 700, lineHeight: 1.2, color: isWknd ? '#fca5a5' : meta ? meta.text : 'var(--color-text-muted)', opacity: meta ? 0.6 : isWknd ? 0.5 : 0.4 }}>{d}</span>
                                                     </button>
@@ -1083,7 +1070,7 @@ function CommandPalette({ open, onClose, onAction, studentCount, bulan, tahun, c
     return createPortal(
         <div className="fixed inset-0 z-[200] flex flex-col items-center pt-[10vh] px-4 pb-4 bg-black/50"
             onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-                <div className="w-full max-w-lg bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl overflow-hidden flex flex-col max-h-[75vh]">
+                <div className="w-full max-w-lg bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-xl overflow-hidden flex flex-col max-h-[75vh]">
                 {/* Search input */}
                 <div className="flex items-center gap-3 px-4 py-3 border-b border-[var(--color-border)]">
                     <Search className="w-4 h-4 text-[var(--color-text-muted)] shrink-0" />
@@ -1149,35 +1136,18 @@ function CommandPalette({ open, onClose, onAction, studentCount, bulan, tahun, c
 // ─── MobileToolbarSheet — bottom drawer untuk overflow actions di mobile ──────
 
 function MobileToolbarSheet({ open, onClose, children }) {
-    useEffect(() => {
-        if (open) document.body.style.overflow = 'hidden'
-        else document.body.style.overflow = ''
-        return () => { document.body.style.overflow = '' }
-    }, [open])
-
-    if (!open) return null
-    return createPortal(
-        <div className="fixed inset-0 z-50 flex flex-col justify-end">
-            {/* Backdrop */}
-            <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-            {/* Sheet */}
-            <div className="relative bg-[var(--color-surface)] rounded-t-2xl border-t border-[var(--color-border)] shadow-xl overflow-hidden">
-                {/* Handle */}
-                <div className="flex justify-center pt-3 pb-1">
-                    <div className="w-8 h-1 rounded-full bg-[var(--color-border)]" />
-                </div>
-                <div className="px-4 pb-2 pt-1 flex items-center justify-between">
-                    <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide">Pengaturan Tampilan</p>
-                    <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]">
-                        <X className="w-4 h-4" />
-                    </button>
-                </div>
-                <div className="px-4 pb-6 space-y-1">
-                    {children}
-                </div>
-            </div>
-        </div>,
-        document.body
+    return (
+        <Modal
+            isOpen={open}
+            onClose={onClose}
+            title="Pengaturan Tampilan"
+            mobileVariant="bottom-sheet"
+            size="full"
+            noPadding
+            contentClassName="px-4 pb-6 pt-1 space-y-1"
+        >
+            {children}
+        </Modal>
     )
 }
 
@@ -1218,7 +1188,7 @@ function ColFillPopup({ day, dow, x, y, onFill, onClear, onClose, studentCount }
                 ))}
                 <div style={{ margin: '4px 12px', height: 1, background: 'var(--color-border)' }} />
                 <button onClick={() => { onClear(); onClose() }}
-                    className="w-full flex items-center gap-2.5 px-3 py-1.5 hover:bg-red-500/5 transition-colors text-left"
+                    className="w-full flex items-center gap-2.5 px-3 py-1.5 hover:bg-danger/5 transition-colors text-left"
                     style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
                     <span className="w-6 h-6 rounded-md flex items-center justify-center bg-[var(--color-surface-alt)] border border-[var(--color-border)]" style={{ flexShrink: 0 }}>
                         <RefreshCw style={{ fontSize: 9, color: 'var(--color-text-muted)' }} className="w-4 h-4" />
@@ -1268,7 +1238,7 @@ function RowFillPopup({ student, x, y, onFill, onClear, onClose, weekdays }) {
                 ))}
                 <div style={{ margin: '4px 12px', height: 1, background: 'var(--color-border)' }} />
                 <button onClick={() => { onClear(); onClose() }}
-                    className="w-full flex items-center gap-2.5 px-3 py-1.5 hover:bg-red-500/5 transition-colors text-left"
+                    className="w-full flex items-center gap-2.5 px-3 py-1.5 hover:bg-danger/5 transition-colors text-left"
                     style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
                     <span className="w-6 h-6 rounded-md flex items-center justify-center bg-[var(--color-surface-alt)] border border-[var(--color-border)]" style={{ flexShrink: 0 }}>
                         <RefreshCw style={{ fontSize: 9, color: 'var(--color-text-muted)' }} className="w-4 h-4" />
@@ -1470,20 +1440,20 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                     </div>
                     <div className="flex items-center gap-2">
                         <button onClick={handleExport}
-                            className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)] transition-all flex items-center gap-1.5">
+                            className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)] transition-colors flex items-center gap-1.5">
                             <FileOutput className="w-4 h-4" /> Export Excel
                         </button>
                         <button onClick={handlePrint}
-                            className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)] transition-all flex items-center gap-1.5">
+                            className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)] transition-colors flex items-center gap-1.5">
                             <Printer className="w-4 h-4" /> Cetak
                         </button>
                         <button onClick={handleSync} disabled={syncing}
-                            className={`h-8 px-4 rounded-xl text-xs font-bold uppercase tracking-wide flex items-center gap-2 transition-all ${syncDone
-                                ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-600'
-                                : 'bg-[var(--color-primary)] hover:opacity-90 text-white shadow-sm disabled:opacity-60'}`}>
-                            { syncing ? <LoaderCircle className={syncing ? 'animate-spin' : ''} className="w-4 h-4" /> : syncDone ? <CircleCheck className={syncing ? 'animate-spin' : ''} className="w-4 h-4" /> : <CloudUpload className={syncing ? 'animate-spin' : ''} className="w-4 h-4" /> }
+                            className={`h-8 px-4 rounded-xl text-xs font-bold uppercase tracking-wide flex items-center gap-2 transition-colors ${syncDone
+                                ? 'bg-success/10 border border-success/20 text-success'
+                                : 'bg-[var(--color-primary)] hover:bg-primary-dark text-white shadow-sm disabled:opacity-60'}`}>
+                            { syncing ? <LoaderCircle className={syncing ? 'animate-spin w-4 h-4' : 'w-4 h-4'} /> : syncDone ? <CircleCheck className={syncing ? 'animate-spin w-4 h-4' : 'w-4 h-4'} /> : <CloudUpload className={syncing ? 'animate-spin w-4 h-4' : 'w-4 h-4'} /> }
                             {syncing ? 'Menyinkronkan...' : syncDone ? 'Tersinkronkan' : 'Sync ke Raport'}
-                            <span className={`text-xs font-bold px-1 py-0.5 rounded ${syncDone ? 'bg-emerald-500/20 text-emerald-600' : 'bg-white/20 text-white'}`}>AUTO</span>
+                            <span className={`text-xs font-bold px-1 py-0.5 rounded ${syncDone ? 'bg-success/20 text-success' : 'bg-white/20 text-white'}`}>AUTO</span>
                         </button>
                     </div>
                 </div>
@@ -1497,12 +1467,12 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                             <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{weekdays} hari efektif · Senin–Jumat</p>
                         </div>
                         <button onClick={handleSync} disabled={syncing}
-                            className={`shrink-0 h-8 px-3 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${syncDone
-                                ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-600'
-                                : 'bg-[var(--color-primary)] hover:opacity-90 text-white shadow-sm disabled:opacity-60'}`}>
+                            className={`shrink-0 h-8 px-3 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors ${syncDone
+                                ? 'bg-success/10 border border-success/20 text-success'
+                                : 'bg-[var(--color-primary)] hover:bg-primary-dark text-white shadow-sm disabled:opacity-60'}`}>
                             { syncing ? <LoaderCircle className={`w-4 h-4 ${syncing ? 'animate-spin' : ''}`} /> : syncDone ? <CircleCheck className={`w-4 h-4 ${syncing ? 'animate-spin' : ''}`} /> : <CloudUpload className={`w-4 h-4 ${syncing ? 'animate-spin' : ''}`} /> }
                             {syncing ? '' : syncDone ? 'Sinkron' : 'Sync'}
-                            <span className={`text-[7px] font-bold px-1 py-0.5 rounded ${syncDone ? 'bg-emerald-500/20 text-emerald-600' : 'bg-white/20 text-white'}`}>AUTO</span>
+                            <span className={`text-[7px] font-bold px-1 py-0.5 rounded ${syncDone ? 'bg-success/20 text-success' : 'bg-white/20 text-white'}`}>AUTO</span>
                         </button>
                     </div>
                     {/* Baris 2: View switcher kiri, Export+Cetak kanan */}
@@ -1516,18 +1486,18 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                                 <button key={v.key}
                                     onClick={() => { setRekapMobileView(v.key); try { localStorage.setItem('rekap_mobile_view', v.key) } catch { } }}
                                     title={v.label}
-                                    className={`w-8 h-7 rounded-lg flex items-center justify-center text-xs transition-all ${rekapMobileView === v.key ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)]'}`}>
+                                    className={`w-8 h-7 rounded-lg flex items-center justify-center text-xs transition-colors ${rekapMobileView === v.key ? 'bg-[var(--color-surface)] text-[var(--color-primary)] shadow-sm' : 'text-[var(--color-text-muted)]'}`}>
                                     <v.icon />
                                 </button>
                             ))}
                         </div>
                         <div className="flex items-center gap-1.5">
                             <button onClick={handleExport}
-                                className="h-7 px-2.5 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all flex items-center gap-1.5">
+                                className="h-7 px-2.5 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-colors flex items-center gap-1.5">
                                 <FileOutput className="w-4 h-4" /> Export
                             </button>
                             <button onClick={handlePrint}
-                                className="h-7 px-2.5 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-all flex items-center gap-1.5">
+                                className="h-7 px-2.5 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)] transition-colors flex items-center gap-1.5">
                                 <Printer className="w-4 h-4" /> Cetak
                             </button>
                         </div>
@@ -1539,9 +1509,9 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
             {summary && (
                 <div className="grid grid-cols-3 gap-3 px-5 py-3 border-b border-[var(--color-border)]">
                     {[
-                        { label: 'Rata-rata Hadir', val: summary.avgHadir, sub: `hari / ${weekdays} efektif`, color: 'text-emerald-600' },
+                        { label: 'Rata-rata Hadir', val: summary.avgHadir, sub: `hari / ${weekdays} efektif`, color: 'text-success' },
                         { label: 'Kehadiran Kelas', val: `${weekdays > 0 ? Math.round((summary.avgHadir / weekdays) * 100) : 0}%`, sub: 'rata-rata kelas', color: 'text-[var(--color-primary)]' },
-                        { label: 'Alpa ≥ 3 hari', val: summary.alpaCount, sub: 'siswa perlu perhatian', color: summary.alpaCount > 0 ? 'text-red-600' : 'text-[var(--color-text-muted)]' },
+                        { label: 'Alpa ≥ 3 hari', val: summary.alpaCount, sub: 'siswa perlu perhatian', color: summary.alpaCount > 0 ? 'text-danger' : 'text-[var(--color-text-muted)]' },
                     ].map(c => (
                         <div key={c.label} className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 p-3">
                             <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mb-1">{c.label}</p>
@@ -1568,7 +1538,7 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                         const pctColor = pct >= 80 ? '#059669' : pct >= 60 ? '#d97706' : '#dc2626'
 
                         return (
-                            <div key={s.id} className={`px-4 py-2.5 ${alertAlpa ? 'bg-red-500/[0.02]' : ''}`}>
+                            <div key={s.id} className={`px-4 py-2.5 ${alertAlpa ? 'bg-danger/[0.02]' : ''}`}>
                                 {/* Baris 1: nomor + nama + % */}
                                 <div className="flex items-center gap-2 mb-1.5">
                                     <div className="w-5 h-5 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-xs font-bold text-[var(--color-text-muted)] shrink-0">
@@ -1576,7 +1546,7 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                                     </div>
                                     <p className="text-xs font-bold text-[var(--color-text)] flex-1 min-w-0 truncate">{s.name}</p>
                                     {delta !== null && delta !== 0 && (
-                                        <span className={`text-xs font-bold flex items-center gap-0.5 shrink-0 ${delta > 0 ? 'text-emerald-600' : 'text-red-500'}`}>
+                                        <span className={`text-xs font-bold flex items-center gap-0.5 shrink-0 ${delta > 0 ? 'text-success' : 'text-danger'}`}>
                                             { delta > 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" /> }
                                             {delta > 0 ? `+${delta}` : delta}
                                         </span>
@@ -1592,7 +1562,7 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                                         </span>
                                     ))}
                                     <div className="flex-1 h-1.5 rounded-full bg-[var(--color-border)] overflow-hidden mx-1">
-                                        <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: pctColor }} />
+                                        <div className="h-full rounded-full transition-[width]" style={{ width: `${pct}%`, background: pctColor }} />
                                     </div>
                                     {rap && (
                                         <span className="text-xs font-bold shrink-0" style={{ color: synced ? '#059669' : '#d97706' }}>
@@ -1627,11 +1597,11 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                             const pctColor = pct >= 80 ? '#059669' : pct >= 60 ? '#d97706' : '#dc2626'
                             return (
                                 <div key={s.id}
-                                    className={`grid items-center px-3 py-2.5 ${alertAlpa ? 'bg-red-500/[0.02]' : ''}`}
+                                    className={`grid items-center px-3 py-2.5 ${alertAlpa ? 'bg-danger/[0.02]' : ''}`}
                                     style={{ gridTemplateColumns: '1fr 32px 32px 32px 32px 40px' }}>
                                     <div className="min-w-0 pr-1">
                                         <p className="text-xs font-bold text-[var(--color-text)] truncate leading-tight">{s.name}</p>
-                                        {alertAlpa && <p className="text-xs font-bold text-red-500 mt-0.5">Alpa {r.A}×</p>}
+                                        {alertAlpa && <p className="text-xs font-bold text-danger mt-0.5">Alpa {r.A}×</p>}
                                     </div>
                                     {['H', 'S', 'I', 'A', 'P'].map(k => (
                                         <span key={k} className="text-xs font-bold text-center tabular-nums"
@@ -1667,7 +1637,7 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                             if (!isWeekend(tahun, bulan, d)) weekdayList.push(d)
                         }
                         return (
-                            <div key={s.id} className={`px-4 py-2.5 ${alertAlpa ? 'bg-red-500/[0.02]' : ''}`}>
+                            <div key={s.id} className={`px-4 py-2.5 ${alertAlpa ? 'bg-danger/[0.02]' : ''}`}>
                                 {/* Nama + % */}
                                 <div className="flex items-center gap-2 mb-2">
                                     <div className="w-5 h-5 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-xs font-bold text-[var(--color-text-muted)] shrink-0">
@@ -1743,22 +1713,22 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                             const synced = rap && rap.hari_sakit === (r.S || 0) && rap.hari_izin === (r.I || 0) && rap.hari_alpa === (r.A || 0)
                             const alertAlpa = (r.A || 0) >= 3
                             return (
-                                <tr key={s.id} className={`transition-colors hover:bg-[var(--color-surface-alt)]/50 ${alertAlpa ? 'bg-red-500/[0.02]' : ''}`}>
+                                <tr key={s.id} className={`transition-colors hover:bg-[var(--color-surface-alt)]/50 ${alertAlpa ? 'bg-danger/[0.02]' : ''}`}>
                                     <td className="px-4 py-2.5">
                                         <div className="w-6 h-6 rounded-full bg-[var(--color-surface-alt)] border border-[var(--color-border)] flex items-center justify-center text-xs font-bold text-[var(--color-text-muted)]">{idx + 1}</div>
                                     </td>
                                     <td className="px-4 py-2.5 min-w-[160px]">
                                         <p className="text-sm font-bold text-[var(--color-text)]">{s.name}</p>
-                                        {alertAlpa && <p className="text-xs font-bold text-red-600 flex items-center gap-1 mt-0.5"><TriangleAlert className="w-4 h-4" />Alpa {r.A} hari</p>}
+                                        {alertAlpa && <p className="text-xs font-bold text-danger flex items-center gap-1 mt-0.5"><TriangleAlert className="w-4 h-4" />Alpa {r.A} hari</p>}
                                     </td>
-                                    <td className="px-3 py-2.5 text-center"><span className="text-sm font-bold text-emerald-600">{r.H || 0}</span></td>
-                                    <td className="px-3 py-2.5 text-center"><span className="text-sm font-bold text-amber-600">{r.S || 0}</span></td>
-                                    <td className="px-3 py-2.5 text-center"><span className="text-sm font-bold text-blue-600">{r.I || 0}</span></td>
-                                    <td className="px-3 py-2.5 text-center"><span className={`text-sm font-bold ${(r.A || 0) > 0 ? 'text-red-600' : 'text-[var(--color-text-muted)]'}`}>{r.A || 0}</span></td>
+                                    <td className="px-3 py-2.5 text-center"><span className="text-sm font-bold text-success">{r.H || 0}</span></td>
+                                    <td className="px-3 py-2.5 text-center"><span className="text-sm font-bold text-warning">{r.S || 0}</span></td>
+                                    <td className="px-3 py-2.5 text-center"><span className="text-sm font-bold text-primary">{r.I || 0}</span></td>
+                                    <td className="px-3 py-2.5 text-center"><span className={`text-sm font-bold ${(r.A || 0) > 0 ? 'text-danger' : 'text-[var(--color-text-muted)]'}`}>{r.A || 0}</span></td>
                                     <td className="px-3 py-2.5 text-center"><span className="text-sm font-bold text-purple-600">{r.P || 0}</span></td>
                                     <td className="px-3 py-2.5 text-center">
                                         <div className="flex flex-col items-center gap-1">
-                                            <span className={`text-xs font-bold ${pct >= 80 ? 'text-emerald-600' : pct >= 60 ? 'text-amber-600' : 'text-red-600'}`}>{pct}%</span>
+                                            <span className={`text-xs font-bold ${pct >= 80 ? 'text-success' : pct >= 60 ? 'text-warning' : 'text-danger'}`}>{pct}%</span>
                                             <div className="w-12 h-1.5 rounded-full bg-[var(--color-border)] overflow-hidden">
                                                 <div className="h-full rounded-full" style={{ width: `${pct}%`, background: pct >= 80 ? '#059669' : pct >= 60 ? '#d97706' : '#dc2626' }} />
                                             </div>
@@ -1770,7 +1740,7 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                                             if (!lm) return <span className="text-xs text-[var(--color-text-muted)]">—</span>
                                             const delta = (r.H || 0) - (lm.H || 0)
                                             return (
-                                                <span className={`text-xs font-bold flex items-center justify-center gap-1 ${delta > 0 ? 'text-emerald-600' : delta < 0 ? 'text-red-600' : 'text-[var(--color-text-muted)]'}`}>
+                                                <span className={`text-xs font-bold flex items-center justify-center gap-1 ${delta > 0 ? 'text-success' : delta < 0 ? 'text-danger' : 'text-[var(--color-text-muted)]'}`}>
                                                     {delta > 0 && <TrendingUp className="w-4 h-4" />}
                                                     {delta < 0 && <TrendingDown className="w-4 h-4" />}
                                                     {delta > 0 ? `+${delta}` : delta}
@@ -1781,8 +1751,8 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
                                     <td className="px-3 py-2.5 text-center">
                                         {rap
                                             ? synced
-                                                ? <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-500/10 px-1.5 py-0.5 rounded-md"><CircleCheck className="w-4 h-4" /> Sinkron</span>
-                                                : <span className="inline-flex items-center gap-1 text-xs font-bold text-amber-600 bg-amber-500/10 px-1.5 py-0.5 rounded-md"><TriangleAlert className="w-4 h-4" /> Beda</span>
+                                                ? <Badge variant="success"><CircleCheck className="w-3.5 h-3.5 shrink-0" /> Sinkron</Badge>
+                                                : <Badge variant="warning"><TriangleAlert className="w-3.5 h-3.5 shrink-0" /> Beda</Badge>
                                             : <span className="text-xs text-[var(--color-text-muted)] font-bold">Belum ada</span>
                                         }
                                     </td>
@@ -1800,30 +1770,28 @@ function RekapBulananPanel({ classId, tahun, bulan, studentList, dataMap }) {
 
 function ConfirmModal({ message, confirmLabel = 'Lanjutkan', onConfirm, onCancel }) {
     return (
-        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/40"
-            onClick={e => { if (e.target === e.currentTarget) onCancel() }}>
-                <div className="w-full max-w-xs bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl overflow-hidden">
-                <div className="flex items-start gap-3 px-5 pt-5 pb-4">
-                    <div className="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center shrink-0 mt-0.5">
-                        <TriangleAlert className="w-4 h-4 text-amber-500" />
-                    </div>
-                    <div>
-                        <p className="text-sm font-bold text-[var(--color-text)]">Ada perubahan belum disimpan</p>
-                        <p className="text-xs text-[var(--color-text-muted)] mt-1">{message}</p>
-                    </div>
-                </div>
-                <div className="flex gap-2 px-5 pb-4">
+        <Modal
+            isOpen
+            onClose={onCancel}
+            title="Ada perubahan belum disimpan"
+            description={message}
+            icon={TriangleAlert}
+            iconBg="bg-warning/10"
+            iconColor="text-warning"
+            size="xs"
+            footer={
+                <div className="flex gap-2 w-full">
                     <button onClick={onCancel}
-                        className="flex-1 h-9 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all">
+                        className="flex-1 h-9 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-colors">
                         Batal
                     </button>
                     <button onClick={onConfirm}
-                        className="flex-1 h-9 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all">
+                        className="flex-1 h-9 rounded-xl bg-warning hover:bg-warning-dark text-white text-xs font-bold transition-colors">
                         {confirmLabel}
                     </button>
                 </div>
-            </div>
-        </div>
+            }
+        />
     )
 }
 
@@ -1835,29 +1803,29 @@ function TutorialModal({ onClose }) {
     const SLIDES = [
         {
             icon: CalendarDays,
-            iconColor: 'text-emerald-500',
-            iconBg: 'bg-emerald-500/15',
+            iconColor: 'text-success',
+            iconBg: 'bg-success/15',
             title: 'Selamat Datang di Absensi Bulanan',
             subtitle: 'Format baru — lebih detail, lebih mudah',
             body: (
                 <div className="space-y-3 text-xs text-[var(--color-text)] leading-relaxed">
                     <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]">
                         <p className="font-bold mb-1 flex items-center gap-1.5">
-                            <span className="w-5 h-5 rounded-full bg-emerald-500 text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>
+                            <span className="w-5 h-5 rounded-full bg-success text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>
                             Pilih Kelas & Bulan
                         </p>
                         <p className="text-[var(--color-text-muted)] pl-6">Gunakan dropdown kelas di kiri dan tombol navigasi bulan untuk memilih periode absensi yang ingin diisi.</p>
                     </div>
                     <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]">
                         <p className="font-bold mb-1 flex items-center gap-1.5">
-                            <span className="w-5 h-5 rounded-full bg-emerald-500 text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>
+                            <span className="w-5 h-5 rounded-full bg-success text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>
                             Isi Absensi Harian
                         </p>
                         <p className="text-[var(--color-text-muted)] pl-6">Tabel menampilkan 31 kolom tanggal. Klik sel untuk mengisi status kehadiran siswa per hari.</p>
                     </div>
                     <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]">
                         <p className="font-bold mb-1 flex items-center gap-1.5">
-                            <span className="w-5 h-5 rounded-full bg-emerald-500 text-white text-xs font-bold flex items-center justify-center shrink-0">3</span>
+                            <span className="w-5 h-5 rounded-full bg-success text-white text-xs font-bold flex items-center justify-center shrink-0">3</span>
                             Simpan & Sync ke Raport
                         </p>
                         <p className="text-[var(--color-text-muted)] pl-6">Tekan Simpan atau Ctrl+S. Setelah tersimpan, gunakan tab Rekap untuk sinkronisasi data ke Raport bulanan.</p>
@@ -1868,8 +1836,8 @@ function TutorialModal({ onClose }) {
         },
         {
             icon: MousePointer2,
-            iconColor: 'text-indigo-500',
-            iconBg: 'bg-indigo-500/15',
+            iconColor: 'text-primary',
+            iconBg: 'bg-primary/15',
             title: 'Cara Mengisi Sel Absensi',
             subtitle: 'Klik sel untuk ganti status — cycling otomatis',
             body: (
@@ -1906,8 +1874,8 @@ function TutorialModal({ onClose }) {
                         <p className="font-bold text-[var(--color-text-muted)] mb-2">Keterangan kolom warna:</p>
                         <div className="space-y-1.5">
                             <div className="flex items-start gap-2">
-                                <span className="w-5 h-5 rounded-full bg-red-400/20 border border-red-400/30 flex items-center justify-center shrink-0 mt-0.5">
-                                    <CalendarDays className="w-4 h-4 text-red-400" />
+                                <span className="w-5 h-5 rounded-full bg-danger/20 border border-danger/30 flex items-center justify-center shrink-0 mt-0.5">
+                                    <CalendarDays className="w-4 h-4 text-danger" />
                                 </span>
                                 <span className="text-xs text-[var(--color-text-muted)]">Kolom <b>Sabtu &amp; Minggu</b> — angka merah &amp; redup, tetap bisa diisi jika sekolah masuk</span>
                             </div>
@@ -1925,8 +1893,8 @@ function TutorialModal({ onClose }) {
         },
         {
             icon: ListChecks,
-            iconColor: 'text-rose-500',
-            iconBg: 'bg-rose-500/15',
+            iconColor: 'text-danger',
+            iconBg: 'bg-danger/15',
             title: 'Aksi Massal',
             subtitle: 'Isi banyak siswa sekaligus dengan cepat',
             body: (
@@ -1943,9 +1911,9 @@ function TutorialModal({ onClose }) {
                             </div>
                         ))}
                     </div>
-                    <div className="p-2.5 rounded-xl border border-red-500/20 bg-red-500/5 flex items-center gap-2">
-                        <RefreshCw className="w-4 h-4 text-red-500 shrink-0" />
-                        <p className="text-xs text-red-600"><strong>Reset Semua</strong> — hapus seluruh isian bulan ini dan mulai dari kosong.</p>
+                    <div className="p-2.5 rounded-xl border border-danger/20 bg-danger/5 flex items-center gap-2">
+                        <RefreshCw className="w-4 h-4 text-danger shrink-0" />
+                        <p className="text-xs text-danger"><strong>Reset Semua</strong> — hapus seluruh isian bulan ini dan mulai dari kosong.</p>
                     </div>
                 </div>
             ),
@@ -1953,16 +1921,16 @@ function TutorialModal({ onClose }) {
         },
         {
             icon: Save,
-            iconColor: 'text-sky-500',
-            iconBg: 'bg-sky-500/15',
+            iconColor: 'text-primary',
+            iconBg: 'bg-primary/15',
             title: 'Simpan, Draft & Ctrl+S',
             subtitle: 'Data aman meski koneksi terputus',
             body: (
                 <div className="space-y-3 text-xs text-[var(--color-text)] leading-relaxed">
                     <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]">
                         <p className="font-bold mb-1 flex items-center gap-1.5">
-                            <span className="w-5 h-5 rounded-lg bg-sky-500/15 border border-sky-500/20 flex items-center justify-center shrink-0">
-                                <Save className="w-4 h-4 text-sky-500" />
+                            <span className="w-5 h-5 rounded-lg bg-primary/15 border border-primary/20 flex items-center justify-center shrink-0">
+                                <Save className="w-4 h-4 text-primary" />
                             </span>
                             Simpan ke Server
                         </p>
@@ -1970,19 +1938,19 @@ function TutorialModal({ onClose }) {
                     </div>
                     <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]">
                         <p className="font-bold mb-1 flex items-center gap-1.5">
-                            <span className="w-5 h-5 rounded-lg bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center shrink-0">
-                                <TableProperties className="w-4 h-4 text-indigo-500" />
+                            <span className="w-5 h-5 rounded-lg bg-primary/15 border border-primary/20 flex items-center justify-center shrink-0">
+                                <TableProperties className="w-4 h-4 text-primary" />
                             </span>
                             Auto-Draft Lokal
                         </p>
                         <p className="text-[var(--color-text-muted)]">Setiap perubahan otomatis disimpan sebagai draft di browser (0.5 detik setelah mengetik). Jika tiba-tiba browser tertutup, draft bisa dipulihkan saat membuka halaman kembali.</p>
                     </div>
-                    <div className="p-3 rounded-xl border border-amber-500/20 bg-amber-500/5">
-                        <p className="font-bold text-amber-600 mb-1 flex items-center gap-1.5">
-                            <TriangleAlert className="w-4 h-4 text-amber-500" />
+                    <div className="p-3 rounded-xl border border-warning/20 bg-warning/5">
+                        <p className="font-bold text-warning mb-1 flex items-center gap-1.5">
+                            <TriangleAlert className="w-4 h-4 text-warning" />
                             Floating Save Bar
                         </p>
-                        <p className="text-amber-700/70">Bar oranye di bagian bawah layar muncul jika ada perubahan belum disimpan. Klik <strong>Reset</strong> untuk membatalkan atau <strong>Simpan</strong> untuk menyimpan.</p>
+                        <p className="text-warning/70">Bar oranye di bagian bawah layar muncul jika ada perubahan belum disimpan. Klik <strong>Reset</strong> untuk membatalkan atau <strong>Simpan</strong> untuk menyimpan.</p>
                     </div>
                 </div>
             ),
@@ -2008,16 +1976,16 @@ function TutorialModal({ onClose }) {
                     </div>
                     <div className="p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]">
                         <p className="font-bold mb-1 flex items-center gap-1.5">
-                            <span className="w-5 h-5 rounded-lg bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center shrink-0">
-                                <FileOutput className="w-4 h-4 text-emerald-500" />
+                            <span className="w-5 h-5 rounded-lg bg-success/15 border border-success/20 flex items-center justify-center shrink-0">
+                                <FileOutput className="w-4 h-4 text-success" />
                             </span>
                             Export Excel
                         </p>
                         <p className="text-[var(--color-text-muted)]">Download data absensi lengkap (per hari + rekap) dalam format .xlsx. Kolom tanggal menampilkan kode H/S/I/A/P.</p>
                     </div>
-                    <div className="flex items-center gap-2 p-2 rounded-xl border border-red-500/20 bg-red-500/5">
-                        <TriangleAlert className="w-4 h-4 text-red-500 shrink-0" />
-                        <p className="text-xs text-red-600">Siswa alpa <strong>≥ 3 hari</strong> ditandai merah di rekap sebagai peringatan perhatian khusus.</p>
+                    <div className="flex items-center gap-2 p-2 rounded-xl border border-danger/20 bg-danger/5">
+                        <TriangleAlert className="w-4 h-4 text-danger shrink-0" />
+                        <p className="text-xs text-danger">Siswa alpa <strong>≥ 3 hari</strong> ditandai merah di rekap sebagai peringatan perhatian khusus.</p>
                     </div>
                 </div>
             ),
@@ -2029,80 +1997,61 @@ function TutorialModal({ onClose }) {
     const isLast = step === SLIDES.length - 1
     const isFirst = step === 0
 
-    return createPortal(
-        <div
-            className="fixed inset-0 z-[203] flex items-center justify-center bg-black/60 p-4"
-            onClick={e => { if (e.target === e.currentTarget) onClose() }}
-        >
-            <div
-                className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]"
-                role="dialog" aria-modal="true" aria-label="Tutorial Absensi"
-            >
-                {/* Header */}
-                <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-[var(--color-border)]">
-                    <div className="flex items-center gap-3">
-                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${slide.iconBg}`}>
-                            <slide.icon className={`text-base ${slide.iconColor}`} />
-                        </div>
-                        <div>
-                            <p className="text-sm font-bold text-[var(--color-text)] leading-tight">{slide.title}</p>
-                            <p className="text-xs text-[var(--color-text-muted)]">{slide.subtitle}</p>
-                        </div>
-                    </div>
-                    <button onClick={onClose} aria-label="Tutup tutorial"
-                        className="w-8 h-8 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] transition-all shrink-0">
-                        <X className="w-4 h-4" />
-                    </button>
-                </div>
-
-                {/* Dot navigator */}
-                <div className="flex items-center justify-center gap-1.5 pt-4 px-6">
-                    {SLIDES.map((_, i) => (
-                        <button key={i} onClick={() => setStep(i)}
-                            className={`rounded-full transition-all ${i === step ? 'w-5 h-2 bg-emerald-500' : 'w-2 h-2 bg-[var(--color-border)] hover:bg-emerald-500/40'}`}
-                            aria-label={`Slide ${i + 1}`} />
-                    ))}
-                    <span className="ml-2 text-xs text-[var(--color-text-muted)] font-bold">{step + 1}/{SLIDES.length}</span>
-                </div>
-
-                {/* Body */}
-                <div className="px-6 pt-4 pb-2 overflow-y-auto flex-1">
-                    {typeof slide.body === 'string'
-                        ? <p className="text-xs text-[var(--color-text)] leading-relaxed">{slide.body}</p>
-                        : slide.body
-                    }
-                </div>
-
-                {/* Tips */}
-                <div className="px-6 pb-2">
-                    <div className="p-3 rounded-xl bg-emerald-500/8 border border-emerald-500/20 flex items-start gap-2">
-                        <Lightbulb className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" />
-                        <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 leading-snug">{slide.tips}</p>
-                    </div>
-                </div>
-
-                {/* Footer nav */}
-                <div className="flex items-center gap-3 px-6 py-4">
+    return (
+        <Modal
+            isOpen
+            onClose={onClose}
+            title={slide.title}
+            description={slide.subtitle}
+            icon={slide.icon}
+            iconBg={slide.iconBg}
+            iconColor={slide.iconColor}
+            size="md"
+            footer={
+                <div className="flex items-center gap-3 w-full">
                     <button onClick={() => setStep(v => Math.max(0, v - 1))} disabled={isFirst}
-                        className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all disabled:opacity-30 flex items-center gap-1.5">
+                        className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors disabled:opacity-30 flex items-center gap-1.5">
                         <ChevronLeft className="w-4 h-4" /> Sebelumnya
                     </button>
                     <div className="flex-1" />
                     {isLast ? (
-                        <button onClick={onClose}
-                            className="h-9 px-5 rounded-xl bg-emerald-500 text-white text-xs font-bold hover:bg-emerald-600 transition-all flex items-center gap-1.5 shadow-lg">
+                        <Button variant="success" onClick={onClose}>
                             <Check className="w-4 h-4" /> Selesai
-                        </button>
+                        </Button>
                     ) : (
-                        <button onClick={() => setStep(v => Math.min(SLIDES.length - 1, v + 1))}
-                            className="h-9 px-5 rounded-xl bg-emerald-500 text-white text-xs font-bold hover:bg-emerald-600 transition-all flex items-center gap-1.5 shadow-lg">
+                        <Button onClick={() => setStep(v => Math.min(SLIDES.length - 1, v + 1))}>
                             Berikutnya <ChevronRight className="w-4 h-4" />
-                        </button>
+                        </Button>
                     )}
                 </div>
+            }
+        >
+            {/* Dot navigator */}
+            <div className="flex items-center justify-center gap-1.5 pb-4">
+                {SLIDES.map((_, i) => (
+                    <button key={i} onClick={() => setStep(i)}
+                        className={`rounded-full transition-[width,height,background-color] ${i === step ? 'w-5 h-2 bg-success' : 'w-2 h-2 bg-[var(--color-border)] hover:bg-success/40'}`}
+                        aria-label={`Slide ${i + 1}`} />
+                ))}
+                <span className="ml-2 text-xs text-[var(--color-text-muted)] font-bold">{step + 1}/{SLIDES.length}</span>
             </div>
-        </div>,
-        document.body
+
+            {/* Body */}
+            <div className="pb-2">
+                {typeof slide.body === 'string'
+                    ? <p className="text-xs text-[var(--color-text)] leading-relaxed">{slide.body}</p>
+                    : slide.body
+                }
+            </div>
+
+            {/* Tips */}
+            <div className="pb-2">
+                <div className="p-3 rounded-xl bg-success/8 border border-success/20 flex items-start gap-2">
+                    <Lightbulb className="w-4 h-4 text-success mt-0.5 shrink-0" />
+                    <p className="text-xs font-semibold text-success leading-snug">{slide.tips}</p>
+                </div>
+            </div>
+        </Modal>
     )
 }
 
@@ -2121,13 +2070,13 @@ const JAM_KELUAR = '15:30:00'
 const POTONGAN_PER_MENIT = 1000 // Rp 1.000 per menit (default)
 
 const GURU_STATUS_META = {
-    hadir: { label: 'Hadir', color: 'text-emerald-600', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', dot: 'bg-emerald-500' },
-    terlambat: { label: 'Terlambat', color: 'text-amber-600', bg: 'bg-amber-500/10', border: 'border-amber-500/20', dot: 'bg-amber-500' },
+    hadir: { label: 'Hadir', color: 'text-success', bg: 'bg-success/10', border: 'border-success/20', dot: 'bg-success' },
+    terlambat: { label: 'Terlambat', color: 'text-warning', bg: 'bg-warning/10', border: 'border-warning/20', dot: 'bg-warning' },
     pulang_awal: { label: 'Pulang Awal', color: 'text-purple-600', bg: 'bg-purple-500/10', border: 'border-purple-500/20', dot: 'bg-purple-500' },
-    alpha: { label: 'Alpha', color: 'text-red-600', bg: 'bg-red-500/10', border: 'border-red-500/20', dot: 'bg-red-500' },
-    izin: { label: 'Izin', color: 'text-blue-600', bg: 'bg-blue-500/10', border: 'border-blue-500/20', dot: 'bg-blue-500' },
+    alpha: { label: 'Alpha', color: 'text-danger', bg: 'bg-danger/10', border: 'border-danger/20', dot: 'bg-danger' },
+    izin: { label: 'Izin', color: 'text-primary', bg: 'bg-primary/10', border: 'border-primary/20', dot: 'bg-primary' },
     sakit: { label: 'Sakit', color: 'text-orange-600', bg: 'bg-orange-500/10', border: 'border-orange-500/20', dot: 'bg-orange-500' },
-    libur: { label: 'Libur', color: 'text-slate-500', bg: 'bg-slate-500/10', border: 'border-slate-500/20', dot: 'bg-slate-400' },
+    libur: { label: 'Libur', color: 'text-text-muted', bg: 'bg-surface-alt', border: 'border-border', dot: 'bg-text-muted' },
 }
 
 const GURU_LETTER_MAP = {
@@ -2340,27 +2289,25 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
         }
     }
 
-    return createPortal(
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50"
-            onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-                <div className="w-full max-w-3xl bg-[var(--color-surface)] rounded-[32px] border border-[var(--color-border)] shadow-xl flex flex-col overflow-hidden">
-                {/* Header */}
-                <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-border)]">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center">
-                            <Settings className="w-5 h-5 text-[var(--color-primary)]" />
-                        </div>
-                        <div>
-                            <p className="text-[15px] font-bold text-[var(--color-text)]">Pengaturan Absensi Guru</p>
-                            <p className="text-xs text-[var(--color-text-muted)]">Konfigurasi jam kerja, kebijakan potongan & lembur</p>
-                        </div>
-                    </div>
-                    <button onClick={onClose} className="w-10 h-10 rounded-2xl border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] transition-all">
-                        <X className="w-4 h-4" />
-                    </button>
+    return (
+        <Modal
+            isOpen
+            onClose={onClose}
+            title="Pengaturan Absensi Guru"
+            description="Konfigurasi jam kerja, kebijakan potongan & lembur"
+            icon={Settings}
+            size="3xl"
+            contentClassName="bg-[var(--color-surface-alt)]/30"
+            footer={
+                <div className="flex gap-2 justify-end">
+                    <button onClick={onClose} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">Batal</button>
+                    <Button onClick={handleSave} loading={saving}>
+                        {!saving && <Save className="w-4 h-4" />}
+                        Simpan Pengaturan
+                    </Button>
                 </div>
-
-                <div className="p-6 overflow-y-auto flex-1 bg-[var(--color-surface-alt)]/30">
+            }
+        >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Kolom Kiri: Jam Kerja */}
                         <div className="space-y-4">
@@ -2368,12 +2315,12 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
                                 <Clock className="w-4 h-4 text-[var(--color-primary)]" />
                                 <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Jadwal Jam Kerja</p>
                             </div>
-                            <div className="bg-[var(--color-surface)] rounded-[24px] border border-[var(--color-border)] px-5 py-1 shadow-sm">
+                            <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] px-5 py-1 shadow-sm">
                                 <InputRow label="Jam Masuk" sub="Waktu kedatangan guru agar tidak dihitung terlambat.">
                                     <div className="relative group">
                                         <input type="text" value={form.jam_masuk} placeholder="07:00"
                                             onChange={e => handleTimeChangeStatic(form, set, 'jam_masuk', e.target.value)}
-                                            className="h-11 px-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[14px] font-bold text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] transition-all w-32 text-center shadow-sm" />
+                                            className="h-11 px-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-sm font-bold text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] transition-[border-color,background-color,box-shadow] w-32 text-center shadow-sm" />
                                         <Clock className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors pointer-events-none" />
                                     </div>
                                 </InputRow>
@@ -2381,7 +2328,7 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
                                     <div className="relative group">
                                         <input type="text" value={form.jam_keluar} placeholder="15:30"
                                             onChange={e => handleTimeChangeStatic(form, set, 'jam_keluar', e.target.value)}
-                                            className="h-11 px-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[14px] font-bold text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] transition-all w-32 text-center shadow-sm" />
+                                            className="h-11 px-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-sm font-bold text-[var(--color-text)] outline-none focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] transition-[border-color,background-color,box-shadow] w-32 text-center shadow-sm" />
                                         <Clock className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors pointer-events-none" />
                                     </div>
                                 </InputRow>
@@ -2391,14 +2338,14 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
                                             <input type="text" inputMode="numeric" placeholder="8"
                                                 value={form.standar_jam}
                                                 onChange={e => set('standar_jam', e.target.value.replace(/\D/g, ''))}
-                                                className="h-11 w-12 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[15px] font-bold text-[var(--color-text)] text-center outline-none focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] transition-all shadow-sm" />
+                                                className="h-11 w-12 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[15px] font-bold text-[var(--color-text)] text-center outline-none focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] transition-[border-color,background-color,box-shadow] shadow-sm" />
                                             <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide">Jam</span>
                                         </div>
                                         <div className="flex flex-col items-center gap-1">
                                             <input type="text" inputMode="numeric" placeholder="0"
                                                 value={form.standar_menit}
                                                 onChange={e => set('standar_menit', e.target.value.replace(/\D/g, ''))}
-                                                className="h-11 w-16 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[15px] font-bold text-[var(--color-text)] text-center outline-none focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] transition-all shadow-sm" />
+                                                className="h-11 w-16 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[15px] font-bold text-[var(--color-text)] text-center outline-none focus:border-[var(--color-primary)] focus:bg-[var(--color-surface)] transition-[border-color,background-color,box-shadow] shadow-sm" />
                                             <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide">Menit</span>
                                         </div>
                                     </div>
@@ -2411,21 +2358,21 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
                             {/* Potongan */}
                             <div className="space-y-2">
                                 <div className="flex items-center gap-2 px-1">
-                                    <Banknote className="w-4 h-4 text-amber-500" />
+                                    <Banknote className="w-4 h-4 text-warning" />
                                     <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Kebijakan Potongan</p>
                                 </div>
-                                <div className="bg-[var(--color-surface)] rounded-[24px] border border-[var(--color-border)] px-5 py-1 shadow-sm">
+                                <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] px-5 py-1 shadow-sm">
                                     <InputRow label="Potongan Gaji">
-                                        <div className="flex items-center gap-1 bg-[var(--color-surface-alt)] p-1 rounded-2xl border border-[var(--color-border)] h-11 shrink-0">
+                                        <div className="flex items-center gap-1 bg-[var(--color-surface-alt)] p-1 rounded-xl border border-[var(--color-border)] h-11 shrink-0">
                                             <div className="flex items-center gap-1 px-2.5 border-r border-[var(--color-border)] h-full">
                                                 <span className="text-xs font-bold text-[var(--color-text-muted)] tracking-tighter">RP</span>
                                                 <input type="number" min={0} step={500} value={form.potongan_nominal} onChange={e => set('potongan_nominal', +e.target.value)}
-                                                    className="w-14 bg-transparent text-[14px] font-bold text-[var(--color-text)] outline-none text-right" />
+                                                    className="w-14 bg-transparent text-sm font-bold text-[var(--color-text)] outline-none text-right" />
                                             </div>
                                             <div className="flex items-center gap-1.5 px-2.5 h-full">
                                                 <span className="text-xs font-bold text-[var(--color-text-muted)] tracking-tighter">PER</span>
                                                 <input type="number" min={1} max={60} value={form.potongan_interval} onChange={e => set('potongan_interval', +e.target.value)}
-                                                    className="w-10 bg-transparent text-[14px] font-bold text-[var(--color-text)] outline-none text-center" />
+                                                    className="w-10 bg-transparent text-sm font-bold text-[var(--color-text)] outline-none text-center" />
                                                 <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tighter">MENIT</span>
                                             </div>
                                         </div>
@@ -2439,29 +2386,29 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
                                     <TrendingUp className="w-4 h-4 text-purple-500" />
                                     <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Lembur & Ekstra</p>
                                 </div>
-                                <div className="bg-[var(--color-surface)] rounded-[24px] border border-[var(--color-border)] px-5 py-1 shadow-sm">
+                                <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] px-5 py-1 shadow-sm">
                                     <div className="flex items-center justify-between py-2.5 border-b border-[var(--color-border)]">
                                         <div>
                                             <p className="text-xs font-bold text-[var(--color-text)]">Status Lembur</p>
                                             <p className="text-xs text-[var(--color-text-muted)] mt-0.5 leading-none">Aktifkan kalkulasi otomatis</p>
                                         </div>
                                         <button onClick={() => set('lembur_enabled', !form.lembur_enabled)}
-                                            className={`w-10 h-5.5 rounded-full transition-all relative ${form.lembur_enabled ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}`}>
-                                            <div className={`absolute top-1 w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-all ${form.lembur_enabled ? 'left-[calc(100%-18px)]' : 'left-1'}`} />
+                                            className={`w-10 h-5.5 rounded-full transition-colors relative ${form.lembur_enabled ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'}`}>
+                                            <div className={`absolute top-1 w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-[margin] ${form.lembur_enabled ? 'left-[calc(100%-18px)]' : 'left-1'}`} />
                                         </button>
                                     </div>
                                     {form.lembur_enabled && (
                                         <InputRow label="Biaya Lembur">
-                                            <div className="flex items-center gap-1 bg-[var(--color-surface-alt)] p-1 rounded-2xl border border-[var(--color-border)] h-11 shrink-0">
+                                            <div className="flex items-center gap-1 bg-[var(--color-surface-alt)] p-1 rounded-xl border border-[var(--color-border)] h-11 shrink-0">
                                                 <div className="flex items-center gap-1 px-2.5 border-r border-[var(--color-border)] h-full">
                                                     <span className="text-xs font-bold text-[var(--color-text-muted)] tracking-tighter">RP</span>
                                                     <input type="number" min={0} step={500} value={form.lembur_nominal} onChange={e => set('lembur_nominal', +e.target.value)}
-                                                        className="w-14 bg-transparent text-[14px] font-bold text-[var(--color-text)] outline-none text-right" />
+                                                        className="w-14 bg-transparent text-sm font-bold text-[var(--color-text)] outline-none text-right" />
                                                 </div>
                                                 <div className="flex items-center gap-1.5 px-2.5 h-full">
                                                     <span className="text-xs font-bold text-[var(--color-text-muted)] tracking-tighter">PER</span>
                                                     <input type="number" min={1} max={120} value={form.lembur_interval} onChange={e => set('lembur_interval', +e.target.value)}
-                                                        className="w-10 bg-transparent text-[14px] font-bold text-[var(--color-text)] outline-none text-center" />
+                                                        className="w-10 bg-transparent text-sm font-bold text-[var(--color-text)] outline-none text-center" />
                                                     <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-tighter">MENIT</span>
                                                 </div>
                                             </div>
@@ -2473,31 +2420,19 @@ function AttendanceSettingsModal({ settings, onSave, onClose }) {
                     </div>
 
                     {/* Info Note Full Width */}
-                    <div className="mt-8 flex items-start gap-4 p-4 rounded-[20px] bg-blue-500/5 border border-blue-500/10">
-                        <div className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
-                            <TriangleAlert className="w-4 h-4 text-blue-500" />
+                    <div className="mt-8 flex items-start gap-4 p-4 rounded-xl bg-primary/5 border border-primary/10">
+                        <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                            <TriangleAlert className="w-4 h-4 text-primary" />
                         </div>
                         <div className="min-w-0">
-                            <p className="text-xs font-bold text-blue-700">Informasi Penting</p>
-                            <p className="text-xs text-blue-600/80 leading-relaxed mt-0.5">
+                            <p className="text-xs font-bold text-primary">Informasi Penting</p>
+                            <p className="text-xs text-primary/80 leading-relaxed mt-0.5">
                                 Parameter ini digunakan sebagai acuan perhitungan otomatis pada dashboard. Jam Masuk & Keluar wajib diisi dalam <strong>Format 24 Jam</strong>. Perubahan tidak akan mengubah data historis yang sudah tersimpan, namun mempengaruhi laporan saat ini.
                             </p>
                         </div>
                     </div>
-                </div>
 
-                {/* Footer */}
-                <div className="px-5 py-3 border-t border-[var(--color-border)] flex gap-2 justify-end bg-[var(--color-surface)]">
-                    <button onClick={onClose} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">Batal</button>
-                    <button onClick={handleSave} disabled={saving}
-                        className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:opacity-90 transition-all flex items-center gap-2 disabled:opacity-60">
-                        {saving ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                        Simpan Pengaturan
-                    </button>
-                </div>
-            </div>
-        </div>,
-        document.body
+        </Modal>
     )
 }
 
@@ -2604,34 +2539,24 @@ function HistoryDrawer({ teacher, onClose, settings = DEFAULT_ATTENDANCE_SETTING
 
     if (!teacher) return null
 
-    return createPortal(
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50"
-            onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-                <div className="w-full max-w-lg bg-[var(--color-surface)] rounded-3xl border border-[var(--color-border)] shadow-xl flex flex-col max-h-[88vh] overflow-hidden">
-
-                {/* Header */}
-                <div className="sticky top-0 bg-[var(--color-surface)] border-b border-[var(--color-border)] px-5 py-4 flex items-center gap-3 z-10 rounded-t-3xl shrink-0">
-                    <div className="w-10 h-10 rounded-2xl bg-[var(--color-primary)] flex items-center justify-center text-white font-bold text-base shrink-0">
-                        {teacher.name.charAt(0).toUpperCase()}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-[var(--color-text)] truncate">{teacher.name}</p>
-                        <p className="text-xs text-[var(--color-text-muted)]">{teacher.type ? teacher.type.charAt(0).toUpperCase() + teacher.type.slice(1) : 'Guru'} · Riwayat Kehadiran</p>
-                    </div>
-                    <button onClick={onClose} className="w-8 h-8 rounded-xl border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
-                        <X className="w-4 h-4" />
-                    </button>
-                </div>
-
-                <div className="p-5 space-y-4 flex-1 overflow-y-auto">
+    return (
+        <Modal
+            isOpen
+            onClose={onClose}
+            title={teacher.name}
+            description={`${teacher.type ? teacher.type.charAt(0).toUpperCase() + teacher.type.slice(1) : 'Guru'} · Riwayat Kehadiran`}
+            icon={History}
+            size="md"
+        >
+                <div className="space-y-4">
                     {/* Stats kehadiran */}
                     <div className="grid grid-cols-3 gap-2">
                         {[
-                            { label: 'Hadir', val: stats.hadir, color: 'text-emerald-600', bg: 'bg-emerald-500/8', border: 'border-emerald-500/20' },
-                            { label: 'Terlambat', val: stats.terlambat, color: 'text-amber-600', bg: 'bg-amber-500/8', border: 'border-amber-500/20' },
-                            { label: 'Alpha', val: stats.alpha, color: 'text-red-600', bg: 'bg-red-500/8', border: 'border-red-500/20' },
+                            { label: 'Hadir', val: stats.hadir, color: 'text-success', bg: 'bg-success/8', border: 'border-success/20' },
+                            { label: 'Terlambat', val: stats.terlambat, color: 'text-warning', bg: 'bg-warning/8', border: 'border-warning/20' },
+                            { label: 'Alpha', val: stats.alpha, color: 'text-danger', bg: 'bg-danger/8', border: 'border-danger/20' },
                         ].map(s => (
-                            <div key={s.label} className={`rounded-2xl border ${s.border} ${s.bg} p-3 text-center`}>
+                            <div key={s.label} className={`rounded-xl border ${s.border} ${s.bg} p-3 text-center`}>
                                 <p className={`text-xl font-bold ${s.color}`}>{s.val}</p>
                                 <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">{s.label}</p>
                             </div>
@@ -2641,11 +2566,11 @@ function HistoryDrawer({ teacher, onClose, settings = DEFAULT_ATTENDANCE_SETTING
                     {/* Stats jam kerja & lembur */}
                     <div className="grid grid-cols-3 gap-2">
                         {[
-                            { label: 'Total Jam', val: fmtDuration(stats.totalWorkMin), color: 'text-blue-600', bg: 'bg-blue-500/8', border: 'border-blue-500/20', icon: History },
-                            { label: 'Rata-rata', val: fmtDuration(stats.avgWorkMin), color: 'text-indigo-600', bg: 'bg-indigo-500/8', border: 'border-indigo-500/20', icon: ChartColumn },
+                            { label: 'Total Jam', val: fmtDuration(stats.totalWorkMin), color: 'text-primary', bg: 'bg-primary/8', border: 'border-primary/20', icon: History },
+                            { label: 'Rata-rata', val: fmtDuration(stats.avgWorkMin), color: 'text-primary', bg: 'bg-primary/8', border: 'border-primary/20', icon: ChartColumn },
                             { label: 'Total Lembur', val: settings.lembur_enabled !== false ? fmtDuration(stats.totalLemburMin) : '—', color: stats.totalLemburMin > 0 && settings.lembur_enabled !== false ? 'text-purple-600' : 'text-[var(--color-text-muted)]', bg: stats.totalLemburMin > 0 && settings.lembur_enabled !== false ? 'bg-purple-500/8' : 'bg-[var(--color-surface-alt)]', border: stats.totalLemburMin > 0 && settings.lembur_enabled !== false ? 'border-purple-500/20' : 'border-[var(--color-border)]', icon: TrendingUp },
                         ].map(s => (
-                            <div key={s.label} className={`rounded-2xl border ${s.border} ${s.bg} p-3 text-center`}>
+                            <div key={s.label} className={`rounded-xl border ${s.border} ${s.bg} p-3 text-center`}>
                                 <p className={`text-[15px] font-bold tabular-nums ${s.color}`}>{s.val}</p>
                                 <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mt-0.5">{s.label}</p>
                             </div>
@@ -2655,12 +2580,12 @@ function HistoryDrawer({ teacher, onClose, settings = DEFAULT_ATTENDANCE_SETTING
                     {/* Potongan & total terlambat */}
                     {stats.terlambat > 0 && (
                         <div className="grid grid-cols-2 gap-2">
-                            <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-3 text-center">
-                                <p className="text-[15px] font-bold tabular-nums text-amber-600">{stats.totalLateMin}m</p>
+                            <div className="rounded-xl border border-warning/20 bg-warning/5 p-3 text-center">
+                                <p className="text-[15px] font-bold tabular-nums text-warning">{stats.totalLateMin}m</p>
                                 <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mt-0.5">Total Terlambat</p>
                             </div>
-                            <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-3 text-center">
-                                <p className="text-sm font-bold tabular-nums text-red-600">{fmtRupiah(stats.totalPotongan)}</p>
+                            <div className="rounded-xl border border-danger/20 bg-danger/5 p-3 text-center">
+                                <p className="text-sm font-bold tabular-nums text-danger">{fmtRupiah(stats.totalPotongan)}</p>
                                 <p className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] mt-0.5">Est. Potongan</p>
                             </div>
                         </div>
@@ -2702,7 +2627,7 @@ function HistoryDrawer({ teacher, onClose, settings = DEFAULT_ATTENDANCE_SETTING
                                     ? workMin - STANDARD_WORK_MINUTES : 0
                                 const potonganRec = r.late_minutes > 0 ? calcPotongan(r.late_minutes) : 0
                                 return (
-                                    <div key={r.id} className="rounded-2xl border border-[var(--color-border)] p-3 flex items-center gap-3 hover:bg-[var(--color-surface-alt)]/40 transition-colors">
+                                    <div key={r.id} className="rounded-xl border border-[var(--color-border)] p-3 flex items-center gap-3 hover:bg-[var(--color-surface-alt)]/40 transition-colors">
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2 mb-1">
                                                 <p className="text-xs font-bold text-[var(--color-text)]">{fmtDateG(r.date)}</p>
@@ -2715,17 +2640,17 @@ function HistoryDrawer({ teacher, onClose, settings = DEFAULT_ATTENDANCE_SETTING
                                                     {fmtTime(r.scan_in)} → {fmtTime(r.scan_out)}
                                                 </p>
                                                 {workMin !== null && (
-                                                    <span className="text-xs font-bold text-blue-600 bg-blue-500/8 px-1.5 py-0.5 rounded-md border border-blue-500/20">
+                                                    <span className="text-xs font-bold text-primary bg-primary/8 px-1.5 py-0.5 rounded-md border border-primary/20">
                                                         {fmtDuration(workMin)}
                                                     </span>
                                                 )}
                                                 {r.late_minutes > 0 && (
-                                                    <span className="text-xs font-bold text-amber-600 bg-amber-500/8 px-1.5 py-0.5 rounded-md border border-amber-500/20">
+                                                    <span className="text-xs font-bold text-warning bg-warning/8 px-1.5 py-0.5 rounded-md border border-warning/20">
                                                         terlambat +{r.late_minutes}m
                                                     </span>
                                                 )}
                                                 {potonganRec > 0 && (
-                                                    <span className="text-xs font-bold text-red-600 bg-red-500/8 px-1.5 py-0.5 rounded-md border border-red-500/20">
+                                                    <span className="text-xs font-bold text-danger bg-danger/8 px-1.5 py-0.5 rounded-md border border-danger/20">
                                                         −{fmtRupiah(potonganRec)}
                                                     </span>
                                                 )}
@@ -2749,9 +2674,7 @@ function HistoryDrawer({ teacher, onClose, settings = DEFAULT_ATTENDANCE_SETTING
                         </div>
                     )}
                 </div>
-            </div>
-        </div>,
-        document.body
+        </Modal>
     )
 }
 
@@ -2961,47 +2884,63 @@ function FingerspotImportModal({ teachers, onClose, onImported }) {
         }
     }
 
-    return createPortal(
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-            <div className="relative w-full max-w-2xl max-h-[90vh] bg-[var(--color-surface)] rounded-3xl border border-[var(--color-border)] shadow-xl flex flex-col overflow-hidden">
-                {/* Header */}
-                <div className="px-6 py-4 border-b border-[var(--color-border)] flex items-center justify-between shrink-0">
-                    <div>
-                        <p className="text-sm font-bold text-[var(--color-text)]">Import Fingerspot</p>
-                        <p className="text-xs text-[var(--color-text-muted)]">
-                            {step === 1 && 'Upload file XLS export dari Fingerspot Personnel'}
-                            {step === 2 && `${fingerspotNames.length} nama ditemukan · ${unmapped.length} belum dipetakan`}
-                            {step === 3 && `${previewRows.length} record siap diimpor`}
-                        </p>
-                    </div>
-                    <button onClick={onClose} className="w-8 h-8 rounded-xl border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-                        <X className="w-4 h-4" />
+    return (
+        <Modal
+            isOpen
+            onClose={onClose}
+            title="Import Fingerspot"
+            description={
+                step === 1 ? 'Upload file XLS export dari Fingerspot Personnel'
+                    : step === 2 ? `${fingerspotNames.length} nama ditemukan · ${unmapped.length} belum dipetakan`
+                        : `${previewRows.length} record siap diimpor`
+            }
+            icon={FileInput}
+            size="lg"
+            footer={
+                <div className="flex items-center justify-between w-full">
+                    <button onClick={() => step > 1 ? setStep(s => s - 1) : onClose()}
+                        className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
+                        {step === 1 ? 'Batal' : '← Kembali'}
                     </button>
+                    {step === 1 && (
+                        <p className="text-xs text-[var(--color-text-muted)]">
+                            Export dari Fingerspot Personnel → Report → Excel
+                        </p>
+                    )}
+                    {step === 2 && (
+                        <Button onClick={() => setStep(3)}>
+                            Preview → ({rawRows.length} baris)
+                        </Button>
+                    )}
+                    {step === 3 && (
+                        <Button onClick={handleImport} disabled={importing || !previewRows.length} loading={importing}>
+                            {!importing && <FileInput className="w-4 h-4" />}
+                            {importing ? `${progress.done}/${progress.total}` : `Import ${previewRows.length} Record`}
+                        </Button>
+                    )}
                 </div>
-
-                {/* Steps indicator */}
-                <div className="px-6 py-3 border-b border-[var(--color-border)] flex items-center gap-2 shrink-0">
-                    {['Upload', 'Mapping Nama', 'Preview'].map((s, i) => (
-                        <div key={s} className="flex items-center gap-2">
-                            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold border transition-all
-                                ${step > i + 1 ? 'bg-emerald-500 border-emerald-500 text-white' :
-                                    step === i + 1 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white' :
-                                        'border-[var(--color-border)] text-[var(--color-text-muted)]'}`}>
-                                {step > i + 1 ? <Check className="w-4 h-4" /> : i + 1}
+            }
+        >
+                    {/* Steps indicator */}
+                    <div className="pb-3 flex items-center gap-2">
+                        {['Upload', 'Mapping Nama', 'Preview'].map((s, i) => (
+                            <div key={s} className="flex items-center gap-2">
+                                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold border transition-colors
+                                    ${step > i + 1 ? 'bg-success border-success text-white' :
+                                        step === i + 1 ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white' :
+                                            'border-[var(--color-border)] text-[var(--color-text-muted)]'}`}>
+                                    {step > i + 1 ? <Check className="w-4 h-4" /> : i + 1}
+                                </div>
+                                <span className={`text-xs font-bold ${step === i + 1 ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)]'}`}>{s}</span>
+                                {i < 2 && <ArrowRight className="w-4 h-4 text-[var(--color-border)]" />}
                             </div>
-                            <span className={`text-xs font-bold ${step === i + 1 ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)]'}`}>{s}</span>
-                            {i < 2 && <ArrowRight className="w-4 h-4 text-[var(--color-border)]" />}
-                        </div>
-                    ))}
-                </div>
-
-                {/* Body */}
-                <div className="flex-1 overflow-y-auto p-6">
+                        ))}
+                    </div>
+                    <div className="border-t border-[var(--color-border)] -mx-6 md:-mx-8 mb-4" />
                     {/* Step 1 — Upload */}
                     {step === 1 && (
                         <div
-                            className="border-2 border-dashed border-[var(--color-border)] rounded-2xl p-12 text-center cursor-pointer hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 transition-all"
+                            className="border-2 border-dashed border-[var(--color-border)] rounded-xl p-12 text-center cursor-pointer hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 transition-colors"
                             onClick={() => fileRef.current?.click()}
                             onDrop={e => { e.preventDefault(); handleFile(e.dataTransfer.files[0]) }}
                             onDragOver={e => e.preventDefault()}
@@ -3030,12 +2969,12 @@ function FingerspotImportModal({ teachers, onClose, onImported }) {
                             {fingerspotNames.map(fn => {
                                 const mapped = nameMap[fn]
                                 return (
-                                    <div key={fn} className="bg-surface rounded-2xl border border-[var(--color-border)] p-3 flex items-center gap-3">
+                                    <div key={fn} className="bg-surface rounded-xl border border-[var(--color-border)] p-3 flex items-center gap-3">
                                         <div className="flex-1 min-w-0">
                                             <p className="text-xs font-bold text-[var(--color-text)] truncate">{fn}</p>
                                             <p className="text-xs text-[var(--color-text-muted)]">Fingerspot</p>
                                         </div>
-                                        { mapped ? <Link className={`w-4 h-4 shrink-0 ${mapped ? 'text-emerald-500' : 'text-[var(--color-text-muted)]'}`} /> : <Unlink className={`w-4 h-4 shrink-0 ${mapped ? 'text-emerald-500' : 'text-[var(--color-text-muted)]'}`} /> }
+                                        { mapped ? <Link className={`w-4 h-4 shrink-0 ${mapped ? 'text-success' : 'text-[var(--color-text-muted)]'}`} /> : <Unlink className={`w-4 h-4 shrink-0 ${mapped ? 'text-success' : 'text-[var(--color-text-muted)]'}`} /> }
                                         <select
                                             value={nameMap[fn] || ''}
                                             onChange={e => setNameMap(prev => ({ ...prev, [fn]: e.target.value || null }))}
@@ -3060,14 +2999,14 @@ function FingerspotImportModal({ teachers, onClose, onImported }) {
                                 {Object.entries(
                                     previewRows.reduce((acc, r) => { acc[r.status] = (acc[r.status] || 0) + 1; return acc }, {})
                                 ).map(([status, count]) => (
-                                    <div key={status} className="bg-surface rounded-2xl border border-[var(--color-border)] p-2 text-center">
+                                    <div key={status} className="bg-surface rounded-xl border border-[var(--color-border)] p-2 text-center">
                                         <p className="text-lg font-bold text-[var(--color-text)]">{count}</p>
                                         <StatusBadge status={status} size="xs" />
                                     </div>
                                 ))}
                             </div>
                             {/* Table preview */}
-                            <div className="rounded-2xl border border-[var(--color-border)] overflow-hidden">
+                            <div className="rounded-xl border border-[var(--color-border)] overflow-hidden">
                                 <div className="grid grid-cols-[1fr_100px_80px_80px_90px] gap-2 px-4 py-2 bg-[var(--color-surface-alt)] text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
                                     {['Nama Guru', 'Tanggal', 'Masuk', 'Keluar', 'Status'].map(h => <div key={h}>{h}</div>)}
                                 </div>
@@ -3085,37 +3024,7 @@ function FingerspotImportModal({ teachers, onClose, onImported }) {
                             </div>
                         </div>
                     )}
-                </div>
-
-                {/* Footer */}
-                <div className="px-6 py-4 border-t border-[var(--color-border)] flex items-center justify-between shrink-0">
-                    <button onClick={() => step > 1 ? setStep(s => s - 1) : onClose()}
-                        className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
-                        {step === 1 ? 'Batal' : '← Kembali'}
-                    </button>
-                    {step === 1 && (
-                        <p className="text-xs text-[var(--color-text-muted)]">
-                            Export dari Fingerspot Personnel → Report → Excel
-                        </p>
-                    )}
-                    {step === 2 && (
-                        <button onClick={() => setStep(3)}
-                            className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:brightness-110 transition-all">
-                            Preview → ({rawRows.length} baris)
-                        </button>
-                    )}
-                    {step === 3 && (
-                        <button onClick={handleImport} disabled={importing || !previewRows.length}
-                            className="h-9 px-5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:brightness-110 transition-all flex items-center gap-2 disabled:opacity-50">
-                            {importing
-                                ? <><LoaderCircle className="w-4 h-4 animate-spin" /> {progress.done}/{progress.total}</>
-                                : <><FileInput className="w-4 h-4" /> Import {previewRows.length} Record</>}
-                        </button>
-                    )}
-                </div>
-            </div>
-        </div>,
-        document.body
+        </Modal>
     )
 }
 
@@ -3366,7 +3275,7 @@ function GuruTab() {
                         { key: 'bulanan', label: 'Bulanan', icon: ChartColumn },
                     ].map(v => (
                         <button key={v.key} onClick={() => setViewMode(v.key)}
-                            className={`h-8 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${viewMode === v.key ? 'bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                            className={`h-8 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors ${viewMode === v.key ? 'bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                             <v.icon className="text-xs" />
                             {v.label}
                         </button>
@@ -3375,37 +3284,36 @@ function GuruTab() {
 
                 {/* Period nav */}
                 <div className="flex items-center gap-0.5 bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5">
-                    <button onClick={prevPeriod} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all">
+                    <button onClick={prevPeriod} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-colors">
                         <ChevronLeft className="w-4 h-4" />
                     </button>
                     <span className="px-3 text-xs font-bold text-[var(--color-text)] min-w-[160px] text-center tabular-nums">{periodLabel}</span>
-                    <button onClick={nextPeriod} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all">
+                    <button onClick={nextPeriod} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-colors">
                         <ChevronRight className="w-4 h-4" />
                     </button>
                 </div>
             </div>
 
             {/* ── Main card — sama strukturnya dengan Siswa: card + toolbar di dalam ── */}
-            <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden">
+            <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden">
 
                 {/* Toolbar di dalam card: search + import + settings */}
                 <div className="px-3 md:px-4 py-2.5 border-b border-[var(--color-border)] flex items-center gap-2">
                     <div className="relative flex-1 max-w-xs">
                         <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] pointer-events-none" />
                         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Cari nama guru..."
-                            className="w-full h-8 pl-8 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-medium text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] outline-none focus:border-[var(--color-primary)] transition-all" />
+                            className="w-full h-8 pl-8 pr-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-medium text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] outline-none focus:border-[var(--color-primary)] transition-colors" />
                     </div>
                     <button onClick={() => setShowSettings(true)}
-                        className="h-8 w-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] flex items-center justify-center hover:text-[var(--color-text)] hover:border-[var(--color-primary)]/40 transition-all shrink-0 ml-auto"
+                        className="h-8 w-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] flex items-center justify-center hover:text-[var(--color-text)] hover:border-[var(--color-primary)]/40 transition-colors shrink-0 ml-auto"
                         title="Pengaturan absensi guru">
                         <Settings className="w-4 h-4" />
                     </button>
-                    <button onClick={() => setShowImport(true)}
-                        className="h-8 px-3 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold flex items-center gap-1.5 hover:brightness-110 transition-all shrink-0">
+                    <Button size="sm" onClick={() => setShowImport(true)} className="shrink-0">
                         <FileInput className="w-4 h-4" />
                         <span className="hidden sm:inline">Import Fingerspot</span>
                         <span className="sm:hidden">Import</span>
-                    </button>
+                    </Button>
                 </div>
 
 
@@ -3415,15 +3323,18 @@ function GuruTab() {
                         <LoaderCircle className="w-6 h-6 animate-spin text-[var(--color-primary)]" />
                     </div>
                 ) : filtered.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-20 gap-3">
-                        <CalendarDays className="w-6 h-6 text-[var(--color-text-muted)] opacity-30" />
-                        <p className="text-xs font-bold text-[var(--color-text)]">Belum ada data</p>
-                        <p className="text-xs text-[var(--color-text-muted)]">Import data dari Fingerspot untuk mulai</p>
-                        <button onClick={() => setShowImport(true)}
-                            className="h-8 px-4 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold border border-[var(--color-primary)]/20 hover:bg-[var(--color-primary)]/20 transition-all">
-                            Import Sekarang
-                        </button>
-                    </div>
+                    <EmptyState
+                        variant="plain"
+                        color="slate"
+                        icon={CalendarDays}
+                        title="Belum ada data"
+                        description="Import data dari Fingerspot untuk mulai"
+                        action={
+                            <Button variant="outline" size="sm" onClick={() => setShowImport(true)}>
+                                Import Sekarang
+                            </Button>
+                        }
+                    />
                 ) : viewMode === 'harian' ? (
                     /* Daily view */
                     <>
@@ -3497,7 +3408,7 @@ function GuruTab() {
                                         <span className="text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)]">Ringkasan</span>
                                     </th>
                                     <th rowSpan={2} style={{ width: 60, borderBottom: '2px solid var(--color-border)', borderLeft: '1px solid var(--color-border)', background: 'var(--color-surface-alt)', verticalAlign: 'middle' }}>
-                                        <span className="text-xs font-bold uppercase tracking-wide text-blue-500">Jam Kerja</span>
+                                        <span className="text-xs font-bold uppercase tracking-wide text-primary">Jam Kerja</span>
                                     </th>
                                     <th rowSpan={2} style={{ width: 60, borderBottom: '2px solid var(--color-border)', borderLeft: '1px solid var(--color-border)', background: 'var(--color-surface-alt)', verticalAlign: 'middle' }}>
                                         <span className="text-xs font-bold uppercase tracking-wide text-purple-500">Lembur</span>
@@ -3557,7 +3468,7 @@ function GuruTab() {
                                                         textAlign: 'center', padding: 0,
                                                         backgroundColor: meta ? undefined : (isLibur || isWeekend ? 'var(--color-surface-alt)' : undefined)
                                                     }} className={meta ? `${meta.bg} ${meta.border}` : ''}>
-                                                        <span className={`text-xs font-bold ${meta ? meta.color : (isLibur ? 'text-slate-400/50' : 'text-slate-300/30')}`}>
+                                                        <span className={`text-xs font-bold ${meta ? meta.color : (isLibur ? 'text-text-muted/50' : 'text-text-muted/30')}`}>
                                                             {letter}
                                                         </span>
                                                     </td>
@@ -3565,13 +3476,13 @@ function GuruTab() {
                                             })}
                                             <td style={{ padding: '0 12px', borderLeft: '2px solid var(--color-border)' }}>
                                                 <div className="flex gap-1 flex-wrap items-center">
-                                                    {t.stats.hadir > 0 && <span className="text-xs font-bold text-emerald-600 bg-emerald-500/8 px-1.5 py-0.5 rounded-md border border-emerald-500/20">{t.stats.hadir} H</span>}
-                                                    {t.stats.terlambat > 0 && <span className="text-xs font-bold text-amber-600 bg-amber-500/8 px-1.5 py-0.5 rounded-md border border-amber-500/20">{t.stats.terlambat} T</span>}
-                                                    {t.stats.alpha > 0 && <span className="text-xs font-bold text-red-600 bg-red-500/8 px-1.5 py-0.5 rounded-md border border-red-500/20">{t.stats.alpha} A</span>}
+                                                    {t.stats.hadir > 0 && <span className="text-xs font-bold text-success bg-success/8 px-1.5 py-0.5 rounded-md border border-success/20">{t.stats.hadir} H</span>}
+                                                    {t.stats.terlambat > 0 && <span className="text-xs font-bold text-warning bg-warning/8 px-1.5 py-0.5 rounded-md border border-warning/20">{t.stats.terlambat} T</span>}
+                                                    {t.stats.alpha > 0 && <span className="text-xs font-bold text-danger bg-danger/8 px-1.5 py-0.5 rounded-md border border-danger/20">{t.stats.alpha} A</span>}
                                                 </div>
                                             </td>
                                             <td style={{ textAlign: 'center', borderLeft: '1px solid var(--color-border)' }}>
-                                                <span className="text-xs font-bold text-blue-600 tabular-nums">{fmtDurationG(t.stats.totalWorkMin)}</span>
+                                                <span className="text-xs font-bold text-primary tabular-nums">{fmtDurationG(t.stats.totalWorkMin)}</span>
                                             </td>
                                             <td style={{ textAlign: 'center', borderLeft: '1px solid var(--color-border)' }}>
                                                 <span className="text-xs font-bold text-purple-600 tabular-nums">{t.stats.totalLemburMin > 0 ? fmtDurationG(t.stats.totalLemburMin) : '—'}</span>
@@ -4318,7 +4229,7 @@ export default function AttendancePage() {
                             <>
                                 <button
                                     onClick={() => { setShowCommandPalette(true); haptic('light') }}
-                                    className="h-8 px-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-xs font-bold flex items-center gap-1.5 hover:bg-[var(--color-border)] hover:text-[var(--color-text)] active:scale-95 transition-all"
+                                    className="h-8 px-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text-muted)] text-xs font-bold flex items-center gap-1.5 hover:bg-[var(--color-border)] hover:text-[var(--color-text)] active:scale-95 transition-colors"
                                     title="Command Palette (Ctrl+K)"
                                 >
                                     <Keyboard className="w-4 h-4" />
@@ -4326,7 +4237,7 @@ export default function AttendancePage() {
                                 </button>
                                 <button
                                     onClick={() => setShowTutorial(true)}
-                                    className="h-8 px-3 rounded-lg border border-amber-500/30 bg-amber-500/8 text-amber-500 text-xs font-bold flex items-center gap-1.5 hover:bg-amber-500/15 active:scale-95 transition-all"
+                                    className="h-8 px-3 rounded-lg border border-warning/30 bg-warning/8 text-warning text-xs font-bold flex items-center gap-1.5 hover:bg-warning/15 active:scale-95 transition-colors"
                                     title="Panduan & Tutorial"
                                 >
                                     <Lightbulb className="w-4 h-4" />
@@ -4336,8 +4247,8 @@ export default function AttendancePage() {
                         )}
                         {/* Online indicator — hanya tampil kalau offline */}
                         {!isOnline && (
-                            <div className="flex items-center gap-1.5 text-xs font-bold px-2 py-1 rounded-full border text-red-500 border-red-500/20 bg-red-500/5 transition-colors">
-                                <div className="w-1.5 h-1.5 rounded-full shrink-0 bg-red-500" />
+                            <div className="flex items-center gap-1.5 text-xs font-bold px-2 py-1 rounded-full border text-danger border-danger/20 bg-danger/5 transition-colors">
+                                <div className="w-1.5 h-1.5 rounded-full shrink-0 bg-danger" />
                                 <span className="hidden sm:inline">Offline</span>
                             </div>
                         )}
@@ -4351,7 +4262,7 @@ export default function AttendancePage() {
                         { key: 'guru', label: 'Absensi Guru', icon: Users },
                     ].map(t => (
                         <button key={t.key} onClick={() => setMainTab(t.key)}
-                            className={`h-8 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${mainTab === t.key
+                            className={`h-8 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors ${mainTab === t.key
                                 ? 'bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm'
                                 : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                             <t.icon className="text-xs" />
@@ -4389,7 +4300,7 @@ export default function AttendancePage() {
                                     { key: 'rekap', icon: ChartColumn },
                                 ].map(t => (
                                     <button key={t.key} onClick={() => setActiveTab(t.key)}
-                                        className={`h-8 px-3 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${activeTab === t.key
+                                        className={`h-8 px-3 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors ${activeTab === t.key
                                             ? 'bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm'
                                             : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                                         <t.icon className="text-xs" />
@@ -4402,13 +4313,13 @@ export default function AttendancePage() {
                         <div className="flex items-center gap-2">
                             {/* Month nav */}
                             <div className="flex items-center gap-0.5 bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5 flex-1 sm:flex-none justify-between sm:justify-start">
-                                <button onClick={prevBulan} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all">
+                                <button onClick={prevBulan} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-colors">
                                     <ChevronLeft className="w-4 h-4" />
                                 </button>
                                 <span className="px-2 text-xs font-bold text-[var(--color-text)] min-w-[110px] text-center tabular-nums">
                                     {BULAN_NAMA[bulan]} {tahun}
                                 </span>
-                                <button onClick={nextBulan} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all">
+                                <button onClick={nextBulan} className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-colors">
                                     <ChevronRight className="w-4 h-4" />
                                 </button>
                             </div>
@@ -4420,7 +4331,7 @@ export default function AttendancePage() {
                                     { key: 'rekap', label: 'Rekap', icon: ChartColumn },
                                 ].map(t => (
                                     <button key={t.key} onClick={() => setActiveTab(t.key)}
-                                        className={`h-8 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${activeTab === t.key
+                                        className={`h-8 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors ${activeTab === t.key
                                             ? 'bg-[var(--color-surface)] text-[var(--color-text)] shadow-sm'
                                             : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                                         <t.icon className="text-xs" />
@@ -4433,15 +4344,15 @@ export default function AttendancePage() {
 
                     {/* Draft banner */}
                     {draftAvail && !isDirty && (
-                        <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-amber-500/20 bg-amber-500/5 mb-4">
-                            <TriangleAlert className="w-4 h-4 text-amber-500 shrink-0" />
-                            <p className="text-xs text-amber-600 font-medium flex-1">Ada draft dari sesi sebelumnya</p>
+                        <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-warning/20 bg-warning/5 mb-4">
+                            <TriangleAlert className="w-4 h-4 text-warning shrink-0" />
+                            <p className="text-xs text-warning font-medium flex-1">Ada draft dari sesi sebelumnya</p>
                             <button onClick={() => {
                                 try {
                                     const raw = localStorage.getItem(draftKey(classId, tahun, bulan))
                                     if (raw) { const { dataMap: dm } = JSON.parse(raw); setDataMap(dm); setIsDirty(true); setDraftAvail(false) }
                                 } catch { }
-                            }} className="text-xs font-bold text-amber-600 hover:text-amber-700 underline underline-offset-2">Pulihkan</button>
+                            }} className="text-xs font-bold text-warning hover:text-warning-dark underline underline-offset-2">Pulihkan</button>
                             <button onClick={() => {
                                 try { localStorage.removeItem(draftKey(classId, tahun, bulan)) } catch { }
                                 setDraftAvail(false)
@@ -4450,7 +4361,7 @@ export default function AttendancePage() {
                     )}
 
                     {/* Main card */}
-                    <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm">
+                    <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm">
 
                         {/* ══ TAB INPUT ══════════════════════════════════════════ */}
                         {activeTab === 'input' && (
@@ -4477,14 +4388,14 @@ export default function AttendancePage() {
                                                 />
                                                 <div className="w-px h-4 bg-[var(--color-border)] mx-0.5" />
                                                 <button onClick={handleCopyLastMonth} disabled={copyingLastMonth || loadingData}
-                                                    className="h-8 px-2.5 rounded-lg text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all flex items-center gap-1.5 disabled:opacity-40"
+                                                    className="h-8 px-2.5 rounded-lg text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-colors flex items-center gap-1.5 disabled:opacity-40"
                                                     title="Salin data dari bulan lalu">
                                                     {copyingLastMonth ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Copy className="w-4 h-4" />}
                                                     <span className="hidden lg:inline">Salin Bulan Lalu</span>
                                                     <span className="lg:hidden sm:inline">Salin</span>
                                                 </button>
                                                 <button onClick={() => setShowImport(true)}
-                                                    className="h-8 px-2.5 rounded-lg text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all flex items-center gap-1.5"
+                                                    className="h-8 px-2.5 rounded-lg text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-colors flex items-center gap-1.5"
                                                     title="Import data">
                                                     <FileInput className="w-4 h-4" />
                                                     <span className="hidden sm:inline">Import</span>
@@ -4494,19 +4405,19 @@ export default function AttendancePage() {
                                             {/* Group: History & Navigation */}
                                             <div className="flex items-center bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5 shadow-sm">
                                                 <button onClick={applyUndo} disabled={!canUndo} title="Batalkan (Ctrl+Z)"
-                                                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all disabled:opacity-30">
+                                                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-colors disabled:opacity-30">
                                                     <RotateCcw className="w-4 h-4" />
                                                 </button>
                                                 <button onClick={applyRedo} disabled={!canRedo} title="Ulangi (Ctrl+Y)"
-                                                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all disabled:opacity-30">
+                                                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-colors disabled:opacity-30">
                                                     <RotateCw className="w-4 h-4" />
                                                 </button>
                                                 <div className="w-px h-4 bg-[var(--color-border)] mx-0.5" />
                                                 <button onClick={handleScrollToToday} disabled={!todayDate}
-                                                    className="h-8 px-3 rounded-lg text-xs font-bold text-indigo-600 hover:bg-indigo-500/10 transition-all flex items-center gap-1.5 disabled:opacity-40"
+                                                    className="h-8 px-3 rounded-lg text-xs font-bold text-primary hover:bg-primary/10 transition-colors flex items-center gap-1.5 disabled:opacity-40"
                                                     title="Scroll ke kolom hari ini">
                                                     <Crosshair className="w-4 h-4" />
-                                                    <span className="hidden sm:inline text-indigo-700">HARI INI</span>
+                                                    <span className="hidden sm:inline text-primary">HARI INI</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -4516,20 +4427,20 @@ export default function AttendancePage() {
                                             {/* Group: View Settings (Desktop) */}
                                             <div className="hidden sm:flex items-center bg-[var(--color-surface-alt)] rounded-xl border border-[var(--color-border)] p-0.5 shadow-sm">
                                                 <button onClick={() => setHideWeekend(v => !v)}
-                                                    className={`h-8 px-3 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${hideWeekend ? 'bg-indigo-500 text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]'}`}
+                                                    className={`h-8 px-3 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 ${hideWeekend ? 'bg-primary text-white shadow-sm' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]'}`}
                                                     title="Toggle akhir pekan">
                                                     { hideWeekend ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" /> }
                                                     <span className="hidden lg:inline">{hideWeekend ? 'Tampilkan Weekend' : 'Sembunyikan Weekend'}</span>
                                                 </button>
                                                 <div className="w-px h-4 bg-[var(--color-border)] mx-0.5" />
                                                 <select value={filterMode} onChange={e => setFilterMode(e.target.value)}
-                                                    className={`h-8 px-2 rounded-lg text-xs font-bold outline-none cursor-pointer bg-transparent transition-all ${filterMode !== 'all' ? 'text-amber-600' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                                                    className={`h-8 px-2 rounded-lg text-xs font-bold outline-none cursor-pointer bg-transparent transition-colors ${filterMode !== 'all' ? 'text-warning' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                                                     <option value="all">Semua Siswa</option>
                                                     <option value="alpa">Alpa ≥ {alertThreshold.alpa}</option>
                                                     <option value="belum">Belum diisi</option>
                                                 </select>
                                                 <button onClick={() => setShowAlertConfig(true)}
-                                                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all"
+                                                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-colors"
                                                     title="Konfigurasi alert">
                                                     <Bell className="w-4 h-4" />
                                                 </button>
@@ -4539,7 +4450,7 @@ export default function AttendancePage() {
                                             <div className="hidden xl:flex items-center gap-1.5 px-2 py-1 bg-[var(--color-surface-alt)]/50 rounded-xl border border-[var(--color-border)]">
                                                 {STATUS_LIST.map(s => (
                                                     <div key={s}
-                                                        className={`w-6 h-6 rounded-md border flex items-center justify-center text-xs font-bold cursor-help transition-all hover:scale-110 shadow-sm ${STATUS_META[s].cellBg} ${STATUS_META[s].color} ${STATUS_META[s].cellBorder}`}
+                                                        className={`w-6 h-6 rounded-md border flex items-center justify-center text-xs font-bold cursor-help transition-transform hover:scale-110 shadow-sm ${STATUS_META[s].cellBg} ${STATUS_META[s].color} ${STATUS_META[s].cellBorder}`}
                                                         title={STATUS_META[s].label}>
                                                         {s}
                                                     </div>
@@ -4555,10 +4466,10 @@ export default function AttendancePage() {
                                         <div className="hidden lg:flex flex-col items-start gap-1 w-64 xl:w-80 shrink-0">
                                             <div className="flex items-center justify-between w-full">
                                                 <span className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide opacity-60">Penyelesaian</span>
-                                                <span className={`text-xs font-bold tabular-nums ${completionPct === 100 ? 'text-emerald-600' : completionPct >= 60 ? 'text-indigo-600' : 'text-amber-600'}`}>{completionPct}%</span>
+                                                <span className={`text-xs font-bold tabular-nums ${completionPct === 100 ? 'text-success' : completionPct >= 60 ? 'text-primary' : 'text-warning'}`}>{completionPct}%</span>
                                             </div>
                                             <div className="w-full h-1.5 rounded-full bg-[var(--color-border)] overflow-hidden">
-                                                <div className="h-full transition-all duration-700 ease-out"
+                                                <div className="h-full transition-[width] duration-200 ease-out"
                                                     style={{
                                                         width: `${completionPct}%`,
                                                         backgroundColor: completionPct === 100 ? '#059669' : completionPct >= 60 ? '#6366f1' : '#d97706',
@@ -4579,7 +4490,7 @@ export default function AttendancePage() {
                                                 ].map(v => (
                                                     <button key={v.key}
                                                         onClick={() => { setMobileView(v.key); try { localStorage.setItem('absensi_mobile_view', v.key) } catch { } }}
-                                                        className={`w-8 h-7 rounded-lg flex items-center justify-center text-xs transition-all ${mobileView === v.key ? 'bg-white shadow-sm text-indigo-600' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+                                                        className={`w-8 h-7 rounded-lg flex items-center justify-center text-xs transition-colors ${mobileView === v.key ? 'bg-white shadow-sm text-primary' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
                                                         <v.icon />
                                                     </button>
                                                 ))}
@@ -4589,10 +4500,10 @@ export default function AttendancePage() {
                                             {studentList.length > 0 && (
                                                 <div className="flex items-center gap-2 px-2 h-8 bg-[var(--color-surface-alt)] rounded-lg border border-[var(--color-border)]">
                                                     <div className="w-10 h-1 rounded-full bg-[var(--color-border)] overflow-hidden">
-                                                        <div className="h-full rounded-full transition-all duration-300"
+                                                        <div className="h-full rounded-full transition-[width] duration-200"
                                                             style={{ width: `${completionPct}%`, background: completionPct === 100 ? '#059669' : completionPct >= 60 ? '#6366f1' : '#d97706' }} />
                                                     </div>
-                                                    <span className={`text-xs font-bold tabular-nums ${completionPct === 100 ? 'text-emerald-600' : completionPct >= 60 ? 'text-indigo-500' : 'text-amber-600'}`}>
+                                                    <span className={`text-xs font-bold tabular-nums ${completionPct === 100 ? 'text-success' : completionPct >= 60 ? 'text-primary' : 'text-warning'}`}>
                                                         {completionPct}%
                                                     </span>
                                                 </div>
@@ -4601,16 +4512,16 @@ export default function AttendancePage() {
 
                                         {/* Search Input — Flex-1 to stretch & fill the remaining space without max-width */}
                                         <div className="relative group flex-1 w-full">
-                                            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] group-focus-within:text-indigo-500 transition-colors pointer-events-none" />
+                                            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] group-focus-within:text-primary transition-colors pointer-events-none" />
                                             <input value={searchRaw} onChange={e => setSearchRaw(e.target.value)} placeholder="Cari nama / NISN..."
-                                                className="w-full h-8 sm:h-9 pl-9 pr-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 text-xs font-medium text-[var(--color-text)] outline-none focus:border-indigo-500 focus:bg-[var(--color-surface)] focus:shadow-md transition-all placeholder:opacity-50" />
+                                                className="w-full h-8 sm:h-9 pl-9 pr-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/50 text-xs font-medium text-[var(--color-text)] outline-none focus:border-primary focus:bg-[var(--color-surface)] focus:shadow-md transition-[border-color,background-color,box-shadow] placeholder:opacity-50" />
                                             {searchRaw && (
-                                                <button onClick={() => setSearchRaw('')} className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-[var(--color-text-muted)] hover:text-red-500 text-[14px] transition-colors">&times;</button>
+                                                <button onClick={() => setSearchRaw('')} className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-[var(--color-text-muted)] hover:text-danger text-sm transition-colors">&times;</button>
                                             )}
                                         </div>
 
                                         <button onClick={() => setShowMobileSheet(true)}
-                                            className="sm:hidden shrink-0 w-8 h-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] shadow-sm text-indigo-600 flex items-center justify-center active:scale-95 transition-transform">
+                                            className="sm:hidden shrink-0 w-8 h-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] shadow-sm text-primary flex items-center justify-center active:scale-95 transition-transform">
                                             <Settings className="w-4 h-4" />
                                         </button>
                                     </div>
@@ -4621,8 +4532,8 @@ export default function AttendancePage() {
                                     {/* Hide Weekend */}
                                     <button
                                         onClick={() => setHideWeekend(v => !v)}
-                                        className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border transition-all ${hideWeekend
-                                            ? 'bg-indigo-500/10 border-indigo-500/30 text-indigo-600'
+                                        className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border transition-colors ${hideWeekend
+                                            ? 'bg-primary/10 border-primary/30 text-primary'
                                             : 'border-[var(--color-border)] text-[var(--color-text)]'}`}
                                     >
                                         <div className="flex items-center gap-3">
@@ -4632,8 +4543,8 @@ export default function AttendancePage() {
                                                 <p className="text-xs text-[var(--color-text-muted)]">Sembunyikan kolom Sabtu & Minggu</p>
                                             </div>
                                         </div>
-                                        <div className={`w-8 h-4 rounded-full transition-colors ${hideWeekend ? 'bg-indigo-500' : 'bg-[var(--color-border)]'}`}>
-                                            <div className={`w-3.5 h-3.5 rounded-full bg-white shadow mt-0.5 transition-all ${hideWeekend ? 'ml-4' : 'ml-0.5'}`} />
+                                        <div className={`w-8 h-4 rounded-full transition-colors ${hideWeekend ? 'bg-primary' : 'bg-[var(--color-border)]'}`}>
+                                            <div className={`w-3.5 h-3.5 rounded-full bg-white shadow mt-0.5 transition-[margin] ${hideWeekend ? 'ml-4' : 'ml-0.5'}`} />
                                         </div>
                                     </button>
 
@@ -4651,14 +4562,14 @@ export default function AttendancePage() {
                                             ].map(opt => (
                                                 <button key={opt.val}
                                                     onClick={() => setFilterMode(opt.val)}
-                                                    className={`flex items-center justify-between px-3 py-2 rounded-lg border text-left transition-all ${filterMode === opt.val
-                                                        ? 'bg-amber-500/10 border-amber-500/30 text-amber-700'
+                                                    className={`flex items-center justify-between px-3 py-2 rounded-lg border text-left transition-colors ${filterMode === opt.val
+                                                        ? 'bg-warning/10 border-warning/30 text-warning'
                                                         : 'border-[var(--color-border)] text-[var(--color-text-muted)]'}`}>
                                                     <div>
                                                         <p className="text-xs font-bold">{opt.label}</p>
                                                         <p className="text-xs opacity-70">{opt.sub}</p>
                                                     </div>
-                                                    {filterMode === opt.val && <Check className="w-4 h-4 text-amber-600" />}
+                                                    {filterMode === opt.val && <Check className="w-4 h-4 text-warning" />}
                                                 </button>
                                             ))}
                                         </div>
@@ -4667,9 +4578,9 @@ export default function AttendancePage() {
                                     {/* Alert threshold */}
                                     <button
                                         onClick={() => { setShowMobileSheet(false); setTimeout(() => setShowAlertConfig(true), 200) }}
-                                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text)] transition-all hover:bg-[var(--color-surface-alt)]"
+                                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text)] transition-colors hover:bg-[var(--color-surface-alt)]"
                                     >
-                                        <Bell className="text-sm w-4 text-amber-500" />
+                                        <Bell className="text-sm w-4 text-warning" />
                                         <div className="text-left">
                                             <p className="text-xs font-bold">Konfigurasi Alert</p>
                                             <p className="text-xs text-[var(--color-text-muted)]">Alpa ≥ {alertThreshold.alpa} hari · Hadir &lt; {alertThreshold.hadirPct}%</p>
@@ -4772,7 +4683,7 @@ export default function AttendancePage() {
                                                                 transition: 'background-color 0.2s',
                                                             }}
                                                             title={`Klik untuk isi semua siswa — tgl ${d}`}
-                                                            className="group hover:bg-indigo-50/50"
+                                                            className="group hover:bg-primary-light/50"
                                                         >
                                                             <span className={`text-xs font-bold transition-transform group-active:scale-90 inline-block`}
                                                                 style={{ color: d === todayDate ? '#6366f1' : weekend ? '#ef4444' : 'var(--color-text-muted)' }}>
@@ -4853,7 +4764,7 @@ export default function AttendancePage() {
                                                                             color="slate"
                                                                             action={
                                                                                 <button onClick={() => setSearchRaw('')}
-                                                                                    className="h-8 px-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">
+                                                                                    className="h-8 px-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors">
                                                                                     Hapus pencarian
                                                                                 </button>
                                                                             }
@@ -4868,7 +4779,7 @@ export default function AttendancePage() {
                                                                             color="slate"
                                                                             action={
                                                                                 <button onClick={() => setFilterMode('all')}
-                                                                                    className="h-8 px-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all flex items-center gap-1.5">
+                                                                                    className="h-8 px-4 rounded-xl bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors flex items-center gap-1.5">
                                                                                     <RefreshCw className="w-4 h-4" /> Reset filter
                                                                                 </button>
                                                                             }
@@ -4883,16 +4794,17 @@ export default function AttendancePage() {
                                                                             color="indigo"
                                                                             action={
                                                                                 <div className="flex items-center gap-2 flex-wrap justify-center">
-                                                                                    <button
+                                                                                    <Button
                                                                                         onClick={handleCopyLastMonth}
                                                                                         disabled={copyingLastMonth}
-                                                                                        className="h-9 px-4 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 shadow-sm">
-                                                                                        {copyingLastMonth ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Copy className="w-4 h-4" />}
+                                                                                        loading={copyingLastMonth}
+                                                                                    >
+                                                                                        {!copyingLastMonth && <Copy className="w-4 h-4" />}
                                                                                         Copy dari {BULAN_NAMA[bulan === 1 ? 12 : bulan - 1]}
-                                                                                    </button>
+                                                                                    </Button>
                                                                                     <button
                                                                                         onClick={() => { setShowCommandPalette(true); haptic('light') }}
-                                                                                        className="h-9 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-all flex items-center gap-2">
+                                                                                        className="h-9 px-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] active:scale-95 transition-colors flex items-center gap-2">
                                                                                         <WandSparkles className="w-4 h-4" />
                                                                                         Isi cepat ⌘K
                                                                                     </button>
@@ -5008,8 +4920,8 @@ export default function AttendancePage() {
                                             } &middot; {BULAN_NAMA[bulan]} {tahun} &middot; {daysInMonth} hari
                                         </p>
                                         <button onClick={handleSave} disabled={saving || !isDirty}
-                                            className={`h-9 px-5 rounded-xl text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-2 ${isDirty
-                                                ? 'bg-[var(--color-primary)] hover:opacity-90 text-white shadow-lg'
+                                            className={`h-9 px-5 rounded-xl text-xs font-bold uppercase tracking-wide transition-colors flex items-center gap-2 ${isDirty
+                                                ? 'bg-[var(--color-primary)] hover:bg-primary-dark text-white shadow-sm'
                                                 : 'bg-[var(--color-surface-alt)] border border-[var(--color-border)] text-[var(--color-text-muted)] cursor-not-allowed opacity-60'
                                                 }`}>
                                             {saving ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
@@ -5032,7 +4944,7 @@ export default function AttendancePage() {
 
                     {/* Floating save bar */}
                     <div
-                        className={`fixed bottom-20 sm:bottom-6 -translate-x-1/2 z-50 transition-all duration-300 px-4 w-full sm:w-auto ${isDirty && activeTab === 'input'
+                        className={`fixed bottom-20 sm:bottom-6 -translate-x-1/2 z-50 transition-[opacity,transform] duration-200 px-4 w-full sm:w-auto ${isDirty && activeTab === 'input'
                             ? 'opacity-100 translate-y-0 pointer-events-auto'
                             : 'opacity-0 translate-y-4 pointer-events-none'}`}
                         style={{
@@ -5041,22 +4953,21 @@ export default function AttendancePage() {
                                 : 'calc(50vw + (var(--sidebar-width, 0px) / 2))'
                         }}
                     >
-                        <div className="flex items-center gap-2 sm:gap-3 px-4 py-2.5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl">
-                            <TriangleAlert className="w-4 h-4 text-amber-400 shrink-0" />
+                        <div className="flex items-center gap-2 sm:gap-3 px-4 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl">
+                            <TriangleAlert className="w-4 h-4 text-warning shrink-0" />
                             <span className="text-xs text-[var(--color-text-muted)] font-medium flex-1 sm:flex-none">
                                 <span className="hidden sm:inline">Ada perubahan belum disimpan</span>
                                 <span className="sm:hidden">Belum disimpan</span>
                             </span>
                             <button onClick={handleReset}
-                                className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold hover:text-[var(--color-text)] transition-all flex items-center gap-1.5 shrink-0">
+                                className="h-8 px-3 rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs font-bold hover:text-[var(--color-text)] transition-colors flex items-center gap-1.5 shrink-0">
                                 <RotateCcw className="w-4 h-4" />
                                 <span className="hidden sm:inline">Reset</span>
                             </button>
-                            <button onClick={handleSave} disabled={saving}
-                                className="h-8 px-4 rounded-xl bg-[var(--color-primary)] hover:opacity-90 text-white text-xs font-bold uppercase tracking-wide flex items-center gap-2 shadow-lg disabled:opacity-60 shrink-0">
-                                {saving ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                            <Button onClick={handleSave} loading={saving} className="uppercase tracking-wide shrink-0">
+                                {!saving && <Save className="w-4 h-4" />}
                                 Simpan
-                            </button>
+                            </Button>
                         </div>
                     </div>
 

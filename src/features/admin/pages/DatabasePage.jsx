@@ -297,7 +297,7 @@ function IntegrityRow({ check, result, isExpanded, onToggle, onRepair }) {
                                 className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all flex items-center gap-1.5 disabled:opacity-50 ${style.bg} ${style.color} ${style.border} hover:scale-105 active:scale-95`}
                                 title={`Bersihkan data ${check.label}`}
                             >
-                                { repairing ? <LoaderCircle className={repairing ? 'animate-spin' : ''} className="w-4 h-4" /> : <Trash2 className={repairing ? 'animate-spin' : ''} className="w-4 h-4" /> }
+                                { repairing ? <LoaderCircle className={repairing ? 'animate-spin w-4 h-4' : 'w-4 h-4'} /> : <Trash2 className={repairing ? 'animate-spin w-4 h-4' : 'w-4 h-4'} /> }
                                 <span>{repairing ? 'Membersihkan...' : 'Bersihkan'}</span>
                             </button>
                         )}
@@ -775,7 +775,7 @@ export default function DatabasePage() {
                                 }`}
                             title="Auto-refresh 60 detik"
                         >
-                            <RefreshCw className={autoRefresh ? 'animate-spin' : ''} style={{ animationDuration: '3s' }} className="w-4 h-4" />
+                            <RefreshCw className={autoRefresh ? 'animate-spin w-4 h-4' : 'w-4 h-4'} style={{ animationDuration: '3s' }} />
                             <span className="hidden sm:inline">{autoRefresh ? 'Auto On' : 'Auto-refresh'}</span>
                         </button>
                         <button

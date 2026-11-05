@@ -1013,7 +1013,7 @@ export default function ListPage() {
                                                 <tr key={news.id} className={`hover:bg-[var(--color-surface-alt)]/30 transition-colors ${selectedIds.has(news.id) ? 'bg-[var(--color-primary)]/5' : ''}`}>
                                                     <td className="px-6 py-4 text-center">
                                                         <button onClick={() => toggleSelect(news.id)}>
-                                                            {selectedIds.has(news.id) ? <SquareCheck className={selectedIds.has(news.id) ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-30'} className="w-4 h-4" /> : <Square className={selectedIds.has(news.id) ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)] opacity-30'} className="w-4 h-4" />}
+                                                            {selectedIds.has(news.id) ? <SquareCheck className="text-primary w-4 h-4" /> : <Square className="text-text-muted opacity-30 w-4 h-4" />}
                                                         </button>
                                                     </td>
                                                     <td className="px-6 py-4 min-w-[300px]">

@@ -278,7 +278,7 @@ function RaportPreview({ form }) {
                 {/* Teks tengah */}
                 <div className="flex-1 text-center leading-tight min-w-0 pt-0.5">
                     {form.school_subtitle_ar && <div className="text-[7.5px] text-gray-500 mb-1" dir="rtl" style={{ fontFamily: 'Arial, sans-serif' }}>{form.school_subtitle_ar}</div>}
-                    <div className="text-[15px] font-bold" style={{ color: c1 }} dir="rtl" style={{ fontFamily: 'Arial, sans-serif' }}>{form.school_name_ar || '—'}</div>
+                    <div className="text-[15px] font-bold" style={{ color: c1, fontFamily: 'Arial, sans-serif' }} dir="rtl">{form.school_name_ar || '—'}</div>
                     <div className="text-xs font-bold text-gray-800 mt-0.5" style={{ fontFamily: 'Times New Roman, serif' }}>{form.school_name_id || '—'}</div>
                     <div className="text-[8.5px] text-gray-500 mt-1 leading-snug" style={{ fontFamily: 'Times New Roman, serif' }}>
                         <div>{form.school_address_line1 || 'Jl. Pemandian no. 88 RT 002 RW 003 Patemon, Tanggul, Jember 68155'}</div>
@@ -623,7 +623,7 @@ function ActivityFeed({ refreshKey, flags }) {
                             onClick={fetchLogs}
                             className="w-9 h-9 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-slate-400 hover:text-[var(--color-primary)] transition-all flex items-center justify-center shadow-sm"
                         >
-                            <RotateCw className={loading ? 'animate-spin' : ''} className="w-4 h-4" />
+                            <RotateCw className={loading ? 'animate-spin w-4 h-4' : 'w-4 h-4'} />
                         </button>
                     </div>
                 </div>

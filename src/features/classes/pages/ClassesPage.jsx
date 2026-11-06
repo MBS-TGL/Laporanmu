@@ -586,7 +586,7 @@ export default function ClassesPage() {
         exporting, exportScope, setExportScope, exportColumns, setExportColumns,
         importStep, setImportStep, importFileName, importPreview, setImportPreview,
         importIssues, setImportIssues, importFileHeaders, importColumnMapping, setImportColumnMapping,
-        importRawData, importLoading, importDragOver, setImportDragOver,
+        importRawData, importLoading, setImportLoading = () => {}, importDragOver, setImportDragOver,
         importValidationOpen, setImportValidationOpen, importing, importProgress,
         importEditCell, setImportEditCell, importSkipDupes, setImportSkipDupes,
         importReadyRows, hasImportBlockingErrors,

@@ -365,14 +365,45 @@ export default function TeachersPage() {
     // ── crud ──────────────────────────────────────────────────────────────────
     const handleAdd = () => { setSelectedItem(null); setIsModalOpen(true) }
     const handleEdit = item => { setSelectedItem(item); setIsModalOpen(true) }
+    // Ubah string kosong pada kolom tanggal/tahun/jam menjadi null (Postgres menolak '' untuk tipe date/integer -> 400)
+    const cleanTeacherPayload = (p) => {
+        const out = {}
+        for (const [k, v] of Object.entries(p || {})) {
+            if (v === undefined) continue
+            out[k] = (v === '' && /(_date|_year|_hours)$/.test(k)) ? null : v
+        }
+        return out
+    }
+    // Kirim ke Supabase. Jika ada kolom yang tidak ada di tabel (PGRST204, mis. avatar_url hasil injeksi
+    // dari profiles), buang kolom itu lalu coba lagi, supaya satu field asing tidak menggagalkan seluruh simpan.
+    const saveTeacherRow = async (run, payload) => {
+        let body = payload
+        for (let attempt = 0; attempt < 6; attempt++) {
+            const res = await run(body)
+            const err = res.error
+            const col = err && (err.code === 'PGRST204' || /Could not find the '[^']+' column/.test(err.message || ''))
+                ? (err.message || '').match(/'([^']+)' column/)?.[1]
+                : null
+            if (!col || !(col in body)) return res
+            console.warn(`[teachers] kolom "${col}" tidak ada di tabel, dilewati`)
+            const { [col]: _dropped, ...rest } = body
+            body = rest
+        }
+        return run(body)
+    }
+
     const handleSubmit = async (payload) => {
+        payload = cleanTeacherPayload(payload)
         setSubmitting(true)
         try {
-            if (selectedItem) { const { error } = await supabase.from('teachers').update(payload).eq('id', selectedItem.id); if (error) throw error; addToast('Data guru berhasil diupdate', 'success'); await logAudit({ action: 'UPDATE', source: 'OPERATIONAL', tableName: 'teachers', recordId: selectedItem.id, oldData: selectedItem, newData: { ...selectedItem, ...payload } }) }
-            else { const { data: insData, error } = await supabase.from('teachers').insert([payload]).select().single(); if (error) throw error; addToast('Guru baru berhasil ditambahkan', 'success'); await logAudit({ action: 'INSERT', source: 'OPERATIONAL', tableName: 'teachers', recordId: insData?.id, newData: payload }) }
+            if (selectedItem) { const { error } = await saveTeacherRow(b => supabase.from('teachers').update(b).eq('id', selectedItem.id), payload); if (error) throw error; addToast('Data guru berhasil diupdate', 'success'); await logAudit({ action: 'UPDATE', source: 'OPERATIONAL', tableName: 'teachers', recordId: selectedItem.id, oldData: selectedItem, newData: { ...selectedItem, ...payload } }) }
+            else { const { data: insData, error } = await saveTeacherRow(b => supabase.from('teachers').insert([b]).select().single(), payload); if (error) throw error; addToast('Guru baru berhasil ditambahkan', 'success'); await logAudit({ action: 'INSERT', source: 'OPERATIONAL', tableName: 'teachers', recordId: insData?.id, newData: payload }) }
             setIsModalOpen(false); fetchData(); fetchStats()
             return null
-        } catch (err) { return { error: true, code: err.code, message: 'Gagal menyimpan data.' } }
+        } catch (err) {
+            console.error('handleSubmit teachers error:', err)
+            return { error: true, code: err.code, message: `Gagal menyimpan data.${err.message ? ' (' + err.message + ')' : ''}` }
+        }
         finally { setSubmitting(false) }
     }
     const handleArchive = async () => {
@@ -678,7 +709,7 @@ export default function TeachersPage() {
         exporting, exportScope, setExportScope, exportColumns, setExportColumns,
         importStep, setImportStep, importFileName, importPreview, setImportPreview,
         importIssues, setImportIssues, importFileHeaders, importColumnMapping, setImportColumnMapping,
-        importRawData, importLoading, importDragOver: importDrag, setImportDragOver: setImportDrag,
+        importRawData, importLoading, setImportLoading = () => {}, importDragOver: importDrag, setImportDragOver: setImportDrag,
         importValidationOpen, setImportValidationOpen, importing, importProgress,
         importEditCell, setImportEditCell, importSkipDupes, setImportSkipDupes,
         importReadyRows, hasImportBlockingErrors,

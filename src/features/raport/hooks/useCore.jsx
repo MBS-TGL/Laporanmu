@@ -615,11 +615,17 @@ export function useCore() {
         finally { setLoading(false) }
     }, [selectedClassId, selectedMonth, selectedYear, selectedSemester, academicYear, reportType, lang, transliterateNames, addToast, classesList])
 
+    // Muat ulang hanya saat pengaturan benar-benar berubah. Sebelumnya efek ini bergantung pada
+    // identitas fungsi loadStudents (ikut berubah saat addToast/classesList berubah) sehingga data
+    // bisa dimuat ulang tanpa sebab dan draf yang belum disimpan ikut terhapus.
+    const autoLoadKeyRef = useRef(null)
     useEffect(() => {
-        if (selectedClassId && step === 2) {
-            loadStudents()
-        }
-    }, [reportType, selectedClassId, step, loadStudents])
+        if (!(selectedClassId && step === 2)) { autoLoadKeyRef.current = null; return }
+        const key = [selectedClassId, reportType, selectedMonth, selectedYear, selectedSemester, academicYear, lang].join('|')
+        if (autoLoadKeyRef.current === key) return
+        autoLoadKeyRef.current = key
+        loadStudents()
+    }, [reportType, selectedClassId, step, selectedMonth, selectedYear, selectedSemester, academicYear, lang, loadStudents])
 
     // ── Load offline draft ──
     const loadDraft = useCallback(() => {
@@ -779,10 +785,19 @@ export function useCore() {
     }, [existingReportIds, students, addToast, setScores, selectedMonth, selectedYear, selectedSemester, academicYear, reportType, selectedClass])
 
     // ── Save all ──
+    const savingAllRef = useRef(false)
+
     const _doSaveAll = useCallback(async () => {
+        if (savingAllRef.current) return
         setSaveAllConfirm(null)
+        savingAllRef.current = true
         setSavingAll(true)
         try {
+            // Baca dari ref supaya selalu nilai terbaru, bukan closure lama
+            const curScores = scoresRef.current
+            const curExtras = extrasRef.current
+            const existing = existingReportIdsRef.current
+
             const rtObj = RAPORT_TYPES[reportType] || RAPORT_TYPES.bulanan
             const criteria = rtObj.getCriteria(selectedClass)
 
@@ -793,14 +808,24 @@ export function useCore() {
                 ex.pelanggaran, ex.prestasi, ex.sholat
                 ].some(v => v !== '' && v !== null && v !== undefined)
 
-            const studentsToSave = students.filter(s => hasAnyData(scores[s.id] || {}, extras[s.id] || {}))
+            // Santri yang sudah punya baris di DB tetap disimpan walau dikosongkan,
+            // supaya pengosongan nilai ikut tersimpan (sebelumnya dilewati -> nilai lama muncul lagi saat refresh)
+            const studentsToSave = students.filter(s =>
+                hasAnyData(curScores[s.id] || {}, curExtras[s.id] || {}) || existing[s.id]
+            )
             if (!studentsToSave.length) {
                 addToast('Belum ada data yang diisi untuk disimpan', 'warning')
                 return
             }
 
+            // Foto kondisi saat ini, untuk mendeteksi ketikan baru selama proses simpan
+            const snapshot = {}
+            for (const s of studentsToSave) {
+                snapshot[s.id] = JSON.stringify([curScores[s.id] || {}, curExtras[s.id] || {}])
+            }
+
             const payloads = studentsToSave.map(s => {
-                const sc = scores[s.id] || {}, ex = extras[s.id] || {}
+                const sc = curScores[s.id] || {}, ex = curExtras[s.id] || {}
                 if (reportType === 'bulanan') {
                     return {
                         student_id: s.id,
@@ -824,25 +849,26 @@ export function useCore() {
                         prestasi: ex.prestasi || null,
                         sholat: ex.sholat || null
                     }
-                } else {
-                    return {
-                        student_id: s.id,
-                        report_type: reportType,
-                        semester: selectedSemester,
-                        academic_year: academicYear,
-                        musyrif_name: musyrif,
-                        updated_by: profile?.id ?? null,
-                        updated_by_name: profile?.name ?? null,
-                        scores: Object.fromEntries(Object.entries(sc).map(([k, v]) => [k, v === '' ? null : Number(v)])),
-                        extras: {
-                            berat_badan: sanitizeNum(ex.berat_badan, 300, 0, null),
-                            tinggi_badan: sanitizeNum(ex.tinggi_badan, 300, 0, null),
-                            hari_sakit: sanitizeNum(ex.hari_sakit, 365, 0, 0),
-                            hari_izin: sanitizeNum(ex.hari_izin, 365, 0, 0),
-                            hari_alpa: sanitizeNum(ex.hari_alpa, 365, 0, 0),
-                            hari_pulang: sanitizeNum(ex.hari_pulang, 365, 0, 0),
-                            catatan: ex.catatan || null
-                        }
+                }
+                return {
+                    student_id: s.id,
+                    report_type: reportType,
+                    semester: selectedSemester,
+                    academic_year: academicYear,
+                    musyrif_name: musyrif,
+                    updated_by: profile?.id ?? null,
+                    updated_by_name: profile?.name ?? null,
+                    scores: Object.fromEntries(Object.entries(sc).map(([k, v]) => [k, v === '' ? null : Number(v)])),
+                    extras: {
+                        berat_badan: sanitizeNum(ex.berat_badan, 300, 0, null),
+                        tinggi_badan: sanitizeNum(ex.tinggi_badan, 300, 0, null),
+                        // sebelumnya 'sholat' tidak ikut di Simpan Semua semester (hanya di simpan per santri)
+                        sholat: ex.sholat || null,
+                        hari_sakit: sanitizeNum(ex.hari_sakit, 365, 0, 0),
+                        hari_izin: sanitizeNum(ex.hari_izin, 365, 0, 0),
+                        hari_alpa: sanitizeNum(ex.hari_alpa, 365, 0, 0),
+                        hari_pulang: sanitizeNum(ex.hari_pulang, 365, 0, 0),
+                        catatan: ex.catatan || null
                     }
                 }
             })
@@ -865,11 +891,17 @@ export function useCore() {
                     return next
                 })
             }
+
+            // Tandai "tersimpan" hanya untuk santri yang datanya tidak berubah selama proses simpan
+            const unchangedIds = studentsToSave
+                .filter(s => JSON.stringify([scoresRef.current[s.id] || {}, extrasRef.current[s.id] || {}]) === snapshot[s.id])
+                .map(s => s.id)
             setSavedIds(prev => {
                 const next = new Set(prev)
-                studentsToSave.forEach(s => next.add(s.id))
+                unchangedIds.forEach(id => next.add(id))
                 return next
             })
+
             const skipped = students.length - studentsToSave.length
             addToast(
                 skipped > 0
@@ -878,20 +910,27 @@ export function useCore() {
                 'success'
             )
 
-            const suffixKey = reportType === 'bulanan'
-                ? `${selectedMonth}_${selectedYear}`
-                : `${selectedSemester}_${academicYear.replace('/', '_')}`
-            try { const key = `draft_raport_${reportType}_${selectedClassId}_${suffixKey}`; localStorage.removeItem(key); setDraftAvailable(false) } catch { }
+            if (unchangedIds.length === studentsToSave.length) {
+                const suffixKey = reportType === 'bulanan'
+                    ? `${selectedMonth}_${selectedYear}`
+                    : `${selectedSemester}_${academicYear.replace('/', '_')}`
+                try { const key = `draft_raport_${reportType}_${selectedClassId}_${suffixKey}`; localStorage.removeItem(key); setDraftAvailable(false) } catch { }
+            }
 
             logAudit({
                 action: 'UPDATE', source: 'OPERATIONAL', tableName: tableName,
                 newData: { bulk_save_all: true, count: studentsToSave.length, class_name: selectedClass?.name, report_type: reportType, month: selectedMonth, year: selectedYear, semester: selectedSemester, academic_year: academicYear }
             })
         } catch (e) { addToast(`Gagal menyimpan semua: ${e.message}`, 'error'); console.error('_doSaveAll error:', e) }
-        finally { setSavingAll(false) }
-    }, [students, scores, extras, reportType, selectedClass, selectedMonth, selectedYear, selectedSemester, academicYear, musyrif, selectedClassId, addToast])
+        finally { savingAllRef.current = false; setSavingAll(false) }
+    }, [students, reportType, selectedClass, selectedMonth, selectedYear, selectedSemester, academicYear, musyrif, selectedClassId, addToast, profile])
 
     const saveAll = useCallback(async () => {
+        if (savingAllRef.current) return
+        const curScores = scoresRef.current
+        const curExtras = extrasRef.current
+        const existing = existingReportIdsRef.current
+
         const rtObj = RAPORT_TYPES[reportType] || RAPORT_TYPES.bulanan
         const criteria = rtObj.getCriteria(selectedClass)
 
@@ -902,18 +941,21 @@ export function useCore() {
             ex.pelanggaran, ex.prestasi, ex.sholat
             ].some(v => v !== '' && v !== null && v !== undefined)
 
-        const studentsToSave = students.filter(s => hasAnyData(scores[s.id] || {}, extras[s.id] || {}))
+        const studentsToSave = students.filter(s =>
+            hasAnyData(curScores[s.id] || {}, curExtras[s.id] || {}) || existing[s.id]
+        )
         if (!studentsToSave.length) {
             addToast('Belum ada data yang diisi untuk disimpan', 'warning')
             return
         }
-        const incomplete = students.filter(s => !isComplete(scores[s.id] || {}, criteria))
+        const incomplete = students.filter(s => !isComplete(curScores[s.id] || {}, criteria))
         if (incomplete.length > 0) {
-            setSaveAllConfirm({ completedCount: completedCount, totalCount: students.length, incompleteCount: incomplete.length })
+            // Konfirmasi ditampilkan oleh InputPage lewat state saveAllConfirm
+            setSaveAllConfirm({ completedCount: students.length - incomplete.length, totalCount: students.length, incompleteCount: incomplete.length })
             return
         }
         await _doSaveAll()
-    }, [students, scores, extras, reportType, selectedClass, completedCount, addToast, _doSaveAll])
+    }, [students, reportType, selectedClass, addToast, _doSaveAll])
 
     // ── Copy from last month ──
     const copyFromLastMonth = useCallback(async (fromMonth, fromYear, studentIds = null, overwriteAll = false) => {

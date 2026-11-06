@@ -5,6 +5,7 @@ import RichSelect from '@shared/components/RichSelect'
 import Modal from '@shared/components/Modal'
 import { EmptyState } from '@shared/components/DataDisplay'
 import { supabase } from '@lib/supabase'
+import { buildRaportQuery } from '@features/raport/hooks/useRaportUrlParams'
 import {
     ArrowLeft, ArrowRight, ChevronRight, Sliders, MoonStar,
     School, Eye, UserCheck, Search, Check, Loader2
@@ -28,7 +29,7 @@ export default function SetupPage({ isAcademic = false }) {
     const { core, activeRtObj, monthOptions, yearOptions } = useRaportContext()
 
     const {
-        classesList, selectedClass, setSelectedClassId, selectedMonth, setSelectedMonth,
+        classesList, selectedClass, selectedClassId, setSelectedClassId, selectedMonth, setSelectedMonth,
         selectedYear, setSelectedYear, selectedSemester, setSelectedSemester, academicYear, setAcademicYear,
         musyrif, setMusyrif, homeroomTeacherName, setHomeroomTeacherName, reportType, loadStudents, now, lang, setLang,
         classProgress
@@ -130,7 +131,10 @@ export default function SetupPage({ isAcademic = false }) {
         try {
             const ok = await loadStudents(selectedClass.id, selectedMonth, selectedYear, lang, reportType, selectedSemester, academicYear)
             if (ok) {
-                navigate(`${basePath}/input/${selectedClass.id}?month=${selectedMonth}&year=${selectedYear}&type=${reportType}`)
+                navigate(`${basePath}/input/${selectedClass.id}?${buildRaportQuery({
+                    month: selectedMonth, year: selectedYear, type: reportType, lang,
+                    semester: selectedSemester, academicYear, musyrif,
+                })}`)
             }
         } finally {
             setSubmitting(false)

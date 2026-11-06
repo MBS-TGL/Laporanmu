@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useRaportUrlParams, buildRaportQuery } from '@features/raport/hooks/useRaportUrlParams'
 import { useRaportContext } from '@features/raport/context/RaportContext'
 import {
     ArrowLeft, Printer, Download, Search, Check, FileArchive,
@@ -23,7 +24,6 @@ import {
 
 export default function PreviewPage({ isAcademic = false }) {
     const { classId } = useParams()
-    const [searchParams] = useSearchParams()
     const navigate = useNavigate()
     const { core, importExport, pageSize, setPageSize, layoutConfig, setLayoutConfig } = useRaportContext()
 
@@ -214,15 +214,22 @@ export default function PreviewPage({ isAcademic = false }) {
         executePrint(stuList)
     }, [printRenderedCount, printQueue, students, archivePreview, executePrint, silentPrintRef])
 
-    useEffect(() => {
-        if (classId) setSelectedClassId(classId)
-    }, [classId, setSelectedClassId])
+    // Sinkronkan context dengan URL (sebelumnya Preview tidak membaca URL sama sekali)
+    const { hydrated, params: urlParams } = useRaportUrlParams(classId, core)
+    const attemptedKeyRef = useRef(null)
 
     useEffect(() => {
-        if (classId && students.length === 0) {
-            loadStudents(classId, selectedMonth, selectedYear, lang, reportType, selectedSemester, academicYear)
-        }
-    }, [classId, students.length, selectedMonth, selectedYear, lang, reportType, selectedSemester, academicYear, loadStudents])
+        if (!hydrated || !classId || students.length > 0) return
+        const key = [classId, urlParams.month, urlParams.year, urlParams.type, urlParams.lang, urlParams.semester, urlParams.academicYear].join('|')
+        if (attemptedKeyRef.current === key) return
+        attemptedKeyRef.current = key
+        loadStudents(classId, urlParams.month, urlParams.year, urlParams.lang, urlParams.type, urlParams.semester, urlParams.academicYear)
+    }, [hydrated, classId, students.length, urlParams, loadStudents])
+
+    const raportQuery = buildRaportQuery({
+        month: selectedMonth, year: selectedYear, type: reportType, lang,
+        semester: selectedSemester, academicYear, musyrif,
+    })
 
     // ── Filtered Students & Stats Calculation ──
     const studentStatusMap = useMemo(() => {
@@ -338,7 +345,7 @@ export default function PreviewPage({ isAcademic = false }) {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--color-border)]">
                 <div className="flex items-center gap-3">
                     <button
-                        onClick={() => navigate(`${basePath}/input/${classId}?month=${selectedMonth}&year=${selectedYear}&type=${reportType}`)}
+                        onClick={() => navigate(`${basePath}/input/${classId}?${raportQuery}`)}
                         className="w-9 h-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-alt)] flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all shadow-sm"
                         title="Kembali ke Input Nilai"
                     >

@@ -1,5 +1,6 @@
 import React, { useEffect, Suspense, lazy, useState, useRef, useMemo, useCallback } from 'react'
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useRaportUrlParams, buildRaportQuery } from '@features/raport/hooks/useRaportUrlParams'
 import { useRaportContext } from '@features/raport/context/RaportContext'
 import { AlertTriangle, ArrowLeft, Save, Copy, Eye, Loader2, CheckCircle2, Globe, FileSpreadsheet, Archive } from 'lucide-react'
 import { isComplete } from '@features/raport/utils/raportHelpers'
@@ -19,7 +20,6 @@ const OVERSCAN = 5
 
 export default function InputPage({ isAcademic = false }) {
     const { classId } = useParams()
-    const [searchParams] = useSearchParams()
     const navigate = useNavigate()
     const {
         core,
@@ -38,7 +38,7 @@ export default function InputPage({ isAcademic = false }) {
     const {
         selectedClass, setSelectedClassId, selectedMonth, setSelectedMonth,
         selectedYear, setSelectedYear, selectedSemester, setSelectedSemester, academicYear, setAcademicYear,
-        reportType, setReportType, students, loading, saveAll, savingAll, copyFromLastMonth, copyingLastMonth,
+        reportType, setReportType, students, loading, saveAll, savingAll, saveAllConfirm, setSaveAllConfirm, _doSaveAll, copyFromLastMonth, copyingLastMonth,
         lang, setLang, hasUnsavedMemo, loadStudents, bulanObj,
         scores, setScores, setScoresRaw, extras, setExtras, savedIds, setSavedIds,
         saving, canEdit, addToast, musyrif, prevMonthScores, prevMonthExtras,
@@ -62,22 +62,23 @@ export default function InputPage({ isAcademic = false }) {
 
     const basePath = isAcademic ? '/academic/raport' : '/raport'
 
-    const queryMonth = searchParams.get('month')
-    const queryYear = searchParams.get('year')
-    const queryType = searchParams.get('type')
+    // Sinkronkan context dengan URL (aman saat refresh) lalu muat data hanya setelah siap
+    const { hydrated, waitingForClass, params: urlParams } = useRaportUrlParams(classId, core)
+    const attemptedKeyRef = useRef(null)
 
     useEffect(() => {
-        if (classId) setSelectedClassId(classId)
-        if (queryMonth) setSelectedMonth(Number(queryMonth))
-        if (queryYear) setSelectedYear(Number(queryYear))
-        if (queryType) setReportType(queryType)
-    }, [classId, queryMonth, queryYear, queryType, setSelectedClassId, setSelectedMonth, setSelectedYear, setReportType])
+        if (!hydrated || !classId || loading || students.length > 0) return
+        const key = [classId, urlParams.month, urlParams.year, urlParams.type, urlParams.lang, urlParams.semester, urlParams.academicYear].join('|')
+        // satu kali percobaan per kombinasi (cegah loop tak berujung untuk kelas tanpa siswa)
+        if (attemptedKeyRef.current === key) return
+        attemptedKeyRef.current = key
+        loadStudents(classId, urlParams.month, urlParams.year, urlParams.lang, urlParams.type, urlParams.semester, urlParams.academicYear)
+    }, [hydrated, classId, loading, students.length, urlParams, loadStudents])
 
-    useEffect(() => {
-        if (classId && students.length === 0 && !loading) {
-            loadStudents(classId, selectedMonth, selectedYear, lang, reportType, selectedSemester, academicYear)
-        }
-    }, [classId, students.length, loading, selectedMonth, selectedYear, lang, reportType, selectedSemester, academicYear, loadStudents])
+    const raportQuery = buildRaportQuery({
+        month: selectedMonth, year: selectedYear, type: reportType, lang,
+        semester: selectedSemester, academicYear, musyrif,
+    })
 
     // ── Instant Filtered Students ──
     const filteredStudents = useMemo(() => {
@@ -245,8 +246,8 @@ export default function InputPage({ isAcademic = false }) {
     // ── PDF handler ──
     const handlePDF = useCallback((studentId) => {
         setPreviewStudentId(studentId)
-        navigate(`${basePath}/preview/${classId}?month=${selectedMonth}&year=${selectedYear}&type=${reportType}`)
-    }, [setPreviewStudentId, navigate, basePath, classId, selectedMonth, selectedYear, reportType])
+        navigate(`${basePath}/preview/${classId}?${raportQuery}`)
+    }, [setPreviewStudentId, navigate, basePath, classId, raportQuery])
 
     // ── Batch Printing Logic ──
     const printExecutingRef = useRef(false)
@@ -373,9 +374,18 @@ export default function InputPage({ isAcademic = false }) {
     // ── openStudentDetailDrawer (no-op placeholder; drawer not available in this page) ──
     const openStudentDetailDrawer = useCallback(() => {}, [])
     const openPrintWindow = useCallback(() => {
-        navigate(`${basePath}/preview/${classId}?month=${selectedMonth}&year=${selectedYear}&type=${reportType}`)
-    }, [navigate, basePath, classId, selectedMonth, selectedYear, reportType])
+        navigate(`${basePath}/preview/${classId}?${raportQuery}`)
+    }, [navigate, basePath, classId, raportQuery])
     const setPendingNav = useCallback(() => {}, [])
+
+    if (!selectedClass && waitingForClass) {
+        return (
+            <div className="p-12 flex flex-col items-center justify-center gap-3 text-center">
+                <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+                <p className="text-xs font-bold text-[var(--color-text-muted)]">Memuat data kelas...</p>
+            </div>
+        )
+    }
 
     if (!selectedClass) {
         return (
@@ -390,6 +400,27 @@ export default function InputPage({ isAcademic = false }) {
 
     return (
         <div className="space-y-4">
+            {/* Konfirmasi Simpan Semua (saveAll hanya mengisi state saveAllConfirm, harus ada UI-nya) */}
+            {saveAllConfirm && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 p-4" onClick={() => setSaveAllConfirm(null)}>
+                    <div className="w-full max-w-sm rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] p-5 shadow-xl space-y-4" onClick={e => e.stopPropagation()}>
+                        <div className="space-y-1">
+                            <h3 className="text-sm font-extrabold text-[var(--color-text)]">Simpan semua data?</h3>
+                            <p className="text-xs text-[var(--color-text-muted)]">
+                                {saveAllConfirm.incompleteCount} santri belum lengkap ({saveAllConfirm.completedCount}/{saveAllConfirm.totalCount} lengkap).
+                                Data yang sudah terisi tetap akan disimpan.
+                            </p>
+                        </div>
+                        <div className="flex justify-end gap-2">
+                            <button onClick={() => setSaveAllConfirm(null)} className="px-3 py-2 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)]">Batal</button>
+                            <button onClick={() => _doSaveAll()} disabled={savingAll} className="px-3 py-2 rounded-xl bg-emerald-500 text-white text-xs font-bold disabled:opacity-60">
+                                {savingAll ? 'Menyimpan...' : 'Simpan Sekarang'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Main Input Table */}
             {loading ? (
                 <div className="p-12 flex flex-col items-center justify-center gap-3 text-center">
@@ -461,7 +492,7 @@ export default function InputPage({ isAcademic = false }) {
                         handleResetClass={handleResetClass}
                         setStep={(step) => {
                             if (step === 0) navigate(`${basePath}/setup/${classId}`)
-                            else if (step === 3 || step === 1) navigate(`${basePath}/preview/${classId}?month=${selectedMonth}&year=${selectedYear}&type=${reportType}`)
+                            else if (step === 3 || step === 1) navigate(`${basePath}/preview/${classId}?${raportQuery}`)
                         }}
                         setSelectedClassId={setSelectedClassId}
                         setPendingNav={setPendingNav}
@@ -531,7 +562,7 @@ export default function InputPage({ isAcademic = false }) {
                     buildWaMessage={buildWaMessage}
                     onPreviewStudent={(studentId) => {
                         setPreviewStudentId(studentId)
-                        navigate(`${basePath}/preview/${classId}?month=${selectedMonth}&year=${selectedYear}&type=${reportType}`)
+                        navigate(`${basePath}/preview/${classId}?${raportQuery}`)
                     }}
                     handleDownloadPdf={handleDownloadPdf}
                     generatingPdfIds={generatingPdfIds}

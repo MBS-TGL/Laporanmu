@@ -402,23 +402,30 @@ export default function InputPage({ isAcademic = false }) {
         <div className="space-y-4">
             {/* Konfirmasi Simpan Semua (saveAll hanya mengisi state saveAllConfirm, harus ada UI-nya) */}
             {saveAllConfirm && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 p-4" onClick={() => setSaveAllConfirm(null)}>
-                    <div className="w-full max-w-sm rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] p-5 shadow-xl space-y-4" onClick={e => e.stopPropagation()}>
-                        <div className="space-y-1">
-                            <h3 className="text-sm font-extrabold text-[var(--color-text)]">Simpan semua data?</h3>
-                            <p className="text-xs text-[var(--color-text-muted)]">
-                                {saveAllConfirm.incompleteCount} santri belum lengkap ({saveAllConfirm.completedCount}/{saveAllConfirm.totalCount} lengkap).
-                                Data yang sudah terisi tetap akan disimpan.
-                            </p>
-                        </div>
-                        <div className="flex justify-end gap-2">
-                            <button onClick={() => setSaveAllConfirm(null)} className="px-3 py-2 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)]">Batal</button>
-                            <button onClick={() => _doSaveAll()} disabled={savingAll} className="px-3 py-2 rounded-xl bg-emerald-500 text-white text-xs font-bold disabled:opacity-60">
-                                {savingAll ? 'Menyimpan...' : 'Simpan Sekarang'}
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <ConfirmDialog
+                    isOpen={!!saveAllConfirm}
+                    onClose={() => { if (!savingAll) setSaveAllConfirm(null) }}
+                    onConfirm={() => { if (!savingAll) _doSaveAll() }}
+                    title="Simpan Semua Data?"
+                    description="Semua perubahan akan disimpan ke database"
+                    icon={Save}
+                    iconBg="bg-emerald-500/10"
+                    iconColor="text-emerald-500"
+                    confirmText={savingAll ? 'Menyimpan...' : 'Ya, Simpan Semua'}
+                    confirmIcon={savingAll ? Loader2 : CheckCircle2}
+                >
+                    <span className="text-xs text-[var(--color-text-muted)] leading-relaxed block">
+                        {saveAllConfirm.incompleteCount > 0 && (
+                            <>
+                                <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 font-bold border border-amber-500/20 inline-block">
+                                    {saveAllConfirm.incompleteCount} santri belum lengkap
+                                </span>{' '}
+                                ({saveAllConfirm.completedCount}/{saveAllConfirm.totalCount} lengkap).{' '}
+                            </>
+                        )}
+                        Data yang sudah terisi tetap akan disimpan.
+                    </span>
+                </ConfirmDialog>
             )}
 
             {/* Main Input Table */}

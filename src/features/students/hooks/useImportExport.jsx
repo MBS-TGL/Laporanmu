@@ -88,7 +88,16 @@ export function useImportExport({
     // Cache siswa existing di DB untuk deteksi duplikat saat revalidasi
     const dbCacheRef = useRef({ names: new Set(), nisns: new Set(), codes: new Set() })
 
-    const getExportData = async (scope, cols) => {
+    const getExportData = async (scopeArg, colsArg) => {
+        // Dukung dua gaya panggilan: (scope, cols) atau ({ scope, cols | columns })
+        const scope = typeof scopeArg === 'object' && scopeArg !== null ? scopeArg.scope : scopeArg
+        const rawCols = colsArg ?? (typeof scopeArg === 'object' ? (scopeArg?.cols ?? scopeArg?.columns) : undefined)
+
+        // Fallback: kalau tidak ada kolom yang dikirim, ekspor semua kolom
+        const cols = Array.isArray(rawCols) && rawCols.length > 0
+            ? rawCols.map(c => (typeof c === 'string' ? c : c?.key)).filter(Boolean)
+            : ALL_EXPORT_COLUMNS.map(c => c.key)
+
         if (scope === 'selected' && selectedStudentIds.length > 0) {
             // Ambil dari state (sudah include className)
             return selectedStudents.map(s => {

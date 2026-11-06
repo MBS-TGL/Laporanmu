@@ -1,6 +1,7 @@
 export { default as Breadcrumb } from './Breadcrumb'
 export { default as ActionBar } from './ActionBar'
-export { StatCard, DataTable, EmptyState } from './DataDisplay'
+export { StatCard, EmptyState } from './DataDisplay'
+export { default as DataTable } from './DataTable'
 export { default as ConfirmDialog } from './ConfirmDialog'
 export { default as Modal } from './Modal'
 export { default as PageHeader } from './PageHeader'

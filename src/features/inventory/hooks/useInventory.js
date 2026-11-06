@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { supabase } from '@lib/supabase'
+import { logAudit } from '@utils/auditLogger'
+import { writeCSV, writeExcel, exportTablePDF } from '@utils/importExportEngine'
 
 const TABLE = 'dorm_inventories'
 
@@ -58,9 +60,21 @@ function formatRelativeDate(dateStr) {
     if (diff === 1) return 'Kemarin'
     if (diff < 7) return `${diff} hari lalu`
     if (diff < 30) return `${Math.floor(diff / 7)} minggu lalu`
-    if (diff < 365) return `${Math.floor(diff / 30)} bulan lalu`
+    if (diff < 365) return `${Math.floor(diff / 365)} tahun lalu`
     return `${Math.floor(diff / 365)} tahun lalu`
 }
+
+// Kolom export (urutan = urutan kolom di file)
+const ALL_EXPORT_COLUMNS = [
+    { key: 'nama', label: 'Nama Item', fn: i => i.item_name || '' },
+    { key: 'total', label: 'Total', fn: i => i.total_quantity || 0 },
+    { key: 'baik', label: 'Kondisi Baik', fn: i => i.good_condition_count || 0 },
+    { key: 'rusak', label: 'Kondisi Rusak', fn: i => i.damaged_condition_count || 0 },
+    { key: 'kondisi', label: 'Kondisi (%)', fn: i => { const p = getConditionPct(i); return p !== null ? `${p}%` : '—' } },
+    { key: 'kategori', label: 'Kategori', fn: i => categorizeItem(i.item_name) },
+    { key: 'dicek', label: 'Terakhir Dicek', fn: i => formatDate(i.last_checked_at) },
+    { key: 'catatan', label: 'Catatan', fn: i => i.notes || '' },
+]
 
 export function useInventory({ addToast }) {
     const [items, setItems] = useState([])
@@ -264,25 +278,63 @@ export function useInventory({ addToast }) {
     }, [selectedIds, addToast, fetchItems])
 
     // ── Export ──
-    const exportData = useCallback((format = 'csv') => {
-        const data = selectedIds.size > 0
-            ? items.filter(i => selectedIds.has(i.id))
-            : filteredItems
+    const [exportScope, setExportScope] = useState('filtered')
+    const [exportColumns, setExportColumns] = useState(ALL_EXPORT_COLUMNS.map(c => c.key))
 
-        if (format === 'csv') {
-            const headers = ['Nama Item', 'Total', 'Kondisi Baik', 'Kondisi Rusak', 'Kondisi (%)', 'Kategori', 'Terakhir Dicek', 'Catatan']
-            const rows = data.map(i => {
-                const pct = getConditionPct(i)
-                return [i.item_name, i.total_quantity || 0, i.good_condition_count || 0, i.damaged_condition_count || 0, pct !== null ? `${pct}%` : '—', categorizeItem(i.item_name), formatDate(i.last_checked_at), i.notes || '']
+    const getExportData = useCallback(() => {
+        const source = exportScope === 'selected'
+            ? items.filter(i => selectedIds.has(i.id))
+            : exportScope === 'all' ? items : filteredItems
+        return source.map(i => {
+            const row = {}
+            exportColumns.forEach(key => {
+                const col = ALL_EXPORT_COLUMNS.find(c => c.key === key)
+                if (col) row[col.label] = col.fn(i)
             })
-            const csv = [headers, ...rows].map(r => r.map(c => `"${c}"`).join(',')).join('\n')
-            const blob = new Blob([csv], { type: 'text/csv' })
-            const url = URL.createObjectURL(blob)
-            const a = document.createElement('a'); a.href = url; a.download = `inventaris_${new Date().toISOString().slice(0, 10)}.csv`; a.click()
-            URL.revokeObjectURL(url)
-            addToast?.(`Export ${data.length} item ke CSV`, 'success')
-        }
-    }, [items, filteredItems, selectedIds, addToast])
+            return row
+        })
+    }, [items, filteredItems, selectedIds, exportScope, exportColumns])
+
+    const auditExport = useCallback(async (format, count) => {
+        try {
+            await logAudit({
+                action: 'EXPORT', source: 'OPERATIONAL', tableName: TABLE,
+                newData: { format, count, scope: exportScope }
+            })
+        } catch { /* audit gagal tidak memblokir export */ }
+    }, [exportScope])
+
+    const handleExportCSV = useCallback(async (filename, options = {}) => {
+        const rows = await getExportData()
+        if (!rows.length) return addToast?.('Tidak ada data untuk diekspor', 'warning')
+        const count = await writeCSV(filename || `inventaris_${new Date().toISOString().slice(0, 10)}`, rows, options)
+        addToast?.(`Export ${count} item ke CSV`, 'success')
+        await auditExport('CSV', count)
+    }, [getExportData, addToast, auditExport])
+
+    const handleExportExcel = useCallback(async (filename) => {
+        const rows = await getExportData()
+        if (!rows.length) return addToast?.('Tidak ada data untuk diekspor', 'warning')
+        const count = await writeExcel(filename || `inventaris_${new Date().toISOString().slice(0, 10)}`, rows, 'Inventaris')
+        addToast?.(`Export ${count} item ke Excel`, 'success')
+        await auditExport('XLSX', count)
+    }, [getExportData, addToast, auditExport])
+
+    const handleExportPDF = useCallback(async (filename, options = {}) => {
+        const rows = await getExportData()
+        if (!rows.length) return addToast?.('Tidak ada data untuk diekspor', 'warning')
+        const count = await exportTablePDF({
+            filename: filename || `inventaris_${new Date().toISOString().slice(0, 10)}`,
+            title: 'Laporan Data Inventaris',
+            metaText: `Tanggal: ${new Date().toLocaleDateString('id-ID')}  |  Total: ${rows.length} item  |  Scope: ${exportScope === 'filtered' ? 'Filter Aktif' : exportScope === 'selected' ? 'Dipilih' : 'Semua'}`,
+            rows,
+            orientation: options.orientation || 'landscape',
+            includeHeader: options.includeHeader,
+            columnStyles: { 'Total': { halign: 'right' }, 'Kondisi Baik': { halign: 'right' }, 'Kondisi Rusak': { halign: 'right' }, 'Kondisi (%)': { halign: 'center' } },
+        })
+        addToast?.(`Export PDF berhasil (${count} item)`, 'success')
+        await auditExport('PDF', count)
+    }, [getExportData, addToast, auditExport, exportScope])
 
     // ── Keyboard shortcuts ──
     useEffect(() => {
@@ -320,7 +372,8 @@ export function useInventory({ addToast }) {
         openAddModal, openEditModal, openDetail, closeModal, closeDetail,
         toggleSelectAll, toggleSelect, clearSelection,
         handleSave, handleDelete, handleBulkDelete,
-        exportData, fetchItems,
+        exportScope, setExportScope, exportColumns, setExportColumns,
+        handleExportCSV, handleExportExcel, handleExportPDF, fetchItems,
         categorizeItem, getConditionPct, getConditionLevel, formatDate, formatRelativeDate
     }
 }

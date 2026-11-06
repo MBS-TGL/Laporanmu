@@ -70,9 +70,7 @@ export function useCore({ addToast, addUndoToast }) {
     const [loadingAudit, setLoadingAudit] = useState(false)
     const [loadingHistory, setLoadingHistory] = useState(false)
 
-    // ---- STATE: ARCHIVE & HISTORY ----
-    const [archivedStudents, setArchivedStudents] = useState([])
-    const [loadingArchived, setLoadingArchived] = useState(false)
+    // ---- STATE: HISTORY ----
     const [classHistory, setClassHistory] = useState([])
     const [loadingClassHistory, setLoadingClassHistory] = useState(false)
 
@@ -148,8 +146,6 @@ export function useCore({ addToast, addUndoToast }) {
     const [tagToEdit, setTagToEdit] = useState(null)
     const [studentForTags, setStudentForTags] = useState(null)
     const [renameInput, setRenameInput] = useState('')
-    const [archivePage, setArchivePage] = useState(1)
-    const [archivePageSize, setArchivePageSize] = useState(15)
     const [loadingRaport, setLoadingRaport] = useState(false)
 
     // ---- REFS ----
@@ -728,50 +724,6 @@ export function useCore({ addToast, addUndoToast }) {
         } catch { addToast('Gagal menetapkan kamar', 'error') } finally { setSubmitting(false) }
     }
 
-    // ---- FUNCTIONS: ARCHIVE ----
-    const fetchArchivedStudents = async () => {
-        setLoadingArchived(true)
-        try {
-            const { data, error } = await supabase.from('students').select(`*, classes(name)`).not('deleted_at', 'is', null).order('deleted_at', { ascending: false })
-            if (error) throw error
-            setArchivedStudents((data || []).map(s => ({ ...s, className: s.classes?.name || '-' })))
-        } catch { addToast('Gagal memuat arsip', 'error') } finally { setLoadingArchived(false) }
-    }
-
-    const handleRestoreStudent = async (student) => {
-        try {
-            const { error } = await supabase.from('students').update({ deleted_at: null }).eq('id', student.id)
-            if (error) throw error
-            addToast(`${student.name} berhasil dipulihkan`, 'success')
-            await logAudit({
-                action: 'UPDATE',
-                source: 'SYSTEM',
-                tableName: 'students',
-                recordId: student.id,
-                oldData: student,
-                newData: { ...student, deleted_at: null, restored: true }
-            })
-            fetchArchivedStudents(); fetchData(); fetchStats()
-        } catch { addToast('Gagal memulihkan', 'error') }
-    }
-
-    const handlePermanentDelete = async (student) => {
-        if (!window.confirm(`Hapus permanen "${student.name}"?`)) return
-        try {
-            const { error } = await supabase.from('students').delete().eq('id', student.id)
-            if (error) throw error
-            addToast(`${student.name} dihapus permanen`, 'success')
-            await logAudit({
-                action: 'DELETE',
-                source: 'SYSTEM',
-                tableName: 'students',
-                recordId: student.id,
-                oldData: student
-            })
-            fetchArchivedStudents()
-        } catch { addToast('Gagal hapus', 'error') }
-    }
-
     // ---- FUNCTIONS: TAGS ----
     const fetchUsedTags = useCallback(async () => {
         try {
@@ -1310,7 +1262,6 @@ Laporanmu System`
         handleSubmit, handleAdd, handleEdit, confirmDelete, executeDelete, closeModal,
         toggleSelectAll, toggleSelectStudent, handleBulkPromote, handleBulkDelete,
         handleBulkPointUpdate, handleBulkTagApply, handleBulkRoomAssign,
-        fetchArchivedStudents, handleRestoreStudent, handlePermanentDelete, setArchivedStudents,
         fetchUsedTags, handleToggleTag, handleGlobalDeleteTag, handleGlobalRenameTag,
         fetchBehaviorHistory, fetchRaportHistory, handleViewProfile,
         handleResetPin, checkDuplicate, fetchAuditLog, fetchClassHistory, handleViewClassHistory,
@@ -1326,9 +1277,9 @@ Laporanmu System`
         checkingDuplicate, gSheetsUrl, setGSheetsUrl, fetchingGSheets, setFetchingGSheets,
         page, setPage, pageSize, setPageSize, jumpPage, setJumpPage, generatingPdf,
         studentForTags, setStudentForTags, renameInput, setRenameInput,
-        archivePage, setArchivePage, archivePageSize, setArchivePageSize, loadingRaport,
+        loadingRaport,
         allSelected, someSelected, lastReportMap,
-        allUsedTags, archivedStudents, loadingArchived, classHistory, loadingClassHistory,
+        allUsedTags, classHistory, loadingClassHistory,
         // Refs
         formDataRef, importFileInputRef, photoInputRef, searchInputRef, headerMenuRef, cardCaptureRef,
         // Computed

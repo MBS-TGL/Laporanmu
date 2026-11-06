@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { supabase } from '@lib/supabase'
 import { useToast, useLanguage, useAuth } from '@context'
 import DashboardLayout from '@core/layouts/DashboardLayout'
+import { logAudit } from '@utils/auditLogger'
+import { writeCSV, writeExcel, exportTablePDF } from '@utils/importExportEngine'
+import ExportDataModal from '@shared/components/import-export/ExportDataModal'
+import { EXPORT_CONFIG, COLUMN_DEFS, COLUMN_LABELS, EXPORT_FNS } from '@features/counseling/components/importExportConfig'
 import {
     PageHeader,
     StatCard,
@@ -762,49 +766,60 @@ export default function CounselingPage() {
         setIsPrintModalOpen(false)
     }
 
-    // --- Export CSV / Excel ---
-    const handleExportCSV = () => {
-        if (logs.length === 0) {
-            addToast('Tidak ada data konseling yang dapat diekspor', 'warning')
-            return
-        }
+    // --- Export rekap via ExportDataModal ---
+    const [isExportOpen, setIsExportOpen] = useState(false)
+    const [exportScope, setExportScope] = useState('filtered')
+    const [exportColumns, setExportColumns] = useState(COLUMN_DEFS.map(c => c.key))
 
-        const headers = ['ID', 'Tanggal', 'Jam', 'Nama Santri', 'Kelas', 'Konselor', 'Kategori', 'Masalah', 'Diagnosis BK', 'Rencana Tindakan', 'Urgensi', 'Status']
-        const csvRows = [headers.join(';')]
-
-        logs.forEach(l => {
-            const row = [
-                l.id,
-                l.date,
-                l.time,
-                `"${(l.student_name || '').replace(/"/g, '""')}"`,
-                `"${(l.class_name || '').replace(/"/g, '""')}"`,
-                `"${(l.counselor_name || '').replace(/"/g, '""')}"`,
-                l.category,
-                `"${(l.complaint || '').replace(/"/g, '""')}"`,
-                `"${(l.diagnosis || '').replace(/"/g, '""')}"`,
-                `"${(l.action_plan || '').replace(/"/g, '""')}"`,
-                l.urgency,
-                l.status
-            ]
-            csvRows.push(row.join(';'))
+    const getExportData = useCallback(() => {
+        const source = exportScope === 'all' ? logs : filteredLogs
+        return source.map(l => {
+            const row = {}
+            exportColumns.forEach(key => row[COLUMN_LABELS[key]] = EXPORT_FNS[key](l))
+            return row
         })
+    }, [logs, filteredLogs, exportScope, exportColumns])
 
-        const csvString = '\uFEFF' + csvRows.join('\n') // Adding BOM for Excel compatibility
-        const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' })
-        const url = URL.createObjectURL(blob)
+    const auditExport = useCallback(async (format, count) => {
+        try {
+            await logAudit({
+                action: 'EXPORT', source: 'OPERATIONAL', tableName: 'counseling_logs',
+                newData: { format, count, scope: exportScope }
+            })
+        } catch { /* audit gagal tidak memblokir export */ }
+    }, [exportScope])
 
-        const link = document.createElement('a')
-        link.setAttribute('href', url)
-        link.setAttribute('download', `rekap_bimbingan_konseling_${new Date().toISOString().slice(0, 10)}.csv`)
-        link.style.visibility = 'hidden'
+    const handleExportCSV = useCallback(async (filename, options = {}) => {
+        const rows = await getExportData()
+        if (!rows.length) return addToast('Tidak ada data konseling yang dapat diekspor', 'warning')
+        const count = await writeCSV(filename || `rekap_bimbingan_konseling_${new Date().toISOString().slice(0, 10)}`, rows, options)
+        addToast(`Laporan konseling berhasil diekspor (${count} catatan)`, 'success')
+        await auditExport('CSV', count)
+    }, [getExportData, addToast, auditExport])
 
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
+    const handleExportExcel = useCallback(async (filename) => {
+        const rows = await getExportData()
+        if (!rows.length) return addToast('Tidak ada data konseling yang dapat diekspor', 'warning')
+        const count = await writeExcel(filename || `rekap_bimbingan_konseling_${new Date().toISOString().slice(0, 10)}`, rows, 'Rekap BK')
+        addToast(`Laporan konseling berhasil diekspor ke Excel (${count} catatan)`, 'success')
+        await auditExport('XLSX', count)
+    }, [getExportData, addToast, auditExport])
 
-        addToast('Laporan konseling berhasil diekspor ke Excel (CSV) ✓', 'success')
-    }
+    const handleExportPDF = useCallback(async (filename, options = {}) => {
+        const rows = await getExportData()
+        if (!rows.length) return addToast('Tidak ada data konseling yang dapat diekspor', 'warning')
+        const count = await exportTablePDF({
+            filename: filename || `rekap_bimbingan_konseling_${new Date().toISOString().slice(0, 10)}`,
+            title: 'Rekap Bimbingan & Konseling',
+            metaText: `Tanggal: ${new Date().toLocaleDateString('id-ID')}  |  Total: ${rows.length} catatan  |  Scope: ${exportScope === 'filtered' ? 'Filter Aktif' : 'Semua'}`,
+            rows,
+            orientation: options.orientation || 'landscape',
+            includeHeader: options.includeHeader,
+            columnStyles: { 'Urgensi': { halign: 'center' }, 'Status': { halign: 'center' } },
+        })
+        addToast(`Export PDF berhasil (${count} catatan)`, 'success')
+        await auditExport('PDF', count)
+    }, [getExportData, addToast, auditExport, exportScope])
 
     // Helper options for Student Select
     const studentOptions = useMemo(() => {
@@ -850,11 +865,11 @@ export default function CounselingPage() {
                     actions={
                         <>
                             <button
-                                onClick={handleExportCSV}
+                                onClick={() => setIsExportOpen(true)}
                                 className="h-9 px-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] hover:bg-[var(--color-surface)] text-[var(--color-text)] text-xs font-bold flex items-center gap-2 transition-all"
                             >
                                 <FileSpreadsheet className="w-4 h-4 text-emerald-500" />
-                                <span>Ekspor Excel</span>
+                                <span>Ekspor</span>
                             </button>
                             <button
                                 onClick={openAddModal}
@@ -1535,6 +1550,21 @@ export default function CounselingPage() {
                         </div>
                     )}
                 </Modal>
+
+                <ExportDataModal
+                    isOpen={isExportOpen}
+                    onClose={() => setIsExportOpen(false)}
+                    items={filteredLogs}
+                    selectedIds={[]}
+                    exportScope={exportScope}
+                    setExportScope={setExportScope}
+                    exportColumns={exportColumns}
+                    setExportColumns={setExportColumns}
+                    handleExportCSV={handleExportCSV}
+                    handleExportExcel={handleExportExcel}
+                    handleExportPDF={handleExportPDF}
+                    config={EXPORT_CONFIG}
+                />
 
             </div>
         </DashboardLayout>

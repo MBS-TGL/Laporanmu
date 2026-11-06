@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom'
 import { Bell, BookOpen, CalendarDays, ChartColumn, Check, ChevronDown, ChevronLeft, ChevronRight, CircleX, ClipboardCheck, Crosshair, DoorOpen, FileCheck, FileInput, HeartPulse, Layers, LayoutGrid, List, ListChecks, LoaderCircle, Plus, Presentation, RefreshCw, RotateCcw, RotateCw, Save, Search, Settings, StickyNote, TableProperties, TriangleAlert, Upload, User, UserCheck, Users, X, Eye, EyeOff } from 'lucide-react'
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import Breadcrumb from '@shared/components/Breadcrumb'
+import { Modal } from '@shared/components'
 import { EmptyState } from '@shared/components/DataDisplay'
 import Pagination from '@shared/components/Pagination'
 import { useToast } from '@context/Toast'
@@ -500,7 +501,7 @@ function NotePopup({ item, note, x, y, onSave, onClose }) {
 
 // ─── ImportModal ──────────────────────────────────────────────────────────────
 
-function ImportModal({ itemList, tahun, bulan, daysInMonth, onImport, onClose }) {
+function ImportModal({ isOpen, itemList, tahun, bulan, daysInMonth, onImport, onClose }) {
     const [file, setFile] = useState(null)
     const [preview, setPreview] = useState(null)
     const [loading, setLoading] = useState(false)
@@ -546,59 +547,19 @@ function ImportModal({ itemList, tahun, bulan, daysInMonth, onImport, onClose })
         setLoading(false)
     }
 
-    return createPortal(
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-            onClick={e => { if (e.target === e.currentTarget) onClose() }}>
-            <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] shadow-xl w-full max-w-md overflow-hidden flex flex-col max-h-[85vh]">
-                <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
-                    <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                            <FileInput className="w-4 h-4 text-blue-500" />
-                        </div>
-                        <div>
-                            <p className="text-sm font-bold text-[var(--color-text)]">Import Absensi</p>
-                            <p className="text-xs text-[var(--color-text-muted)]">Upload file Excel/CSV {BULAN_NAMA[bulan]} {tahun}</p>
-                        </div>
-                    </div>
-                    <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-[var(--color-surface-alt)] flex items-center justify-center">
-                        <X className="w-4 h-4 text-[var(--color-text-muted)]" />
-                    </button>
-                </div>
-                <div className="p-5 overflow-y-auto flex-1 space-y-4">
-                    <div className="p-3 rounded-xl bg-blue-500/5 border border-blue-500/20">
-                        <p className="text-xs font-bold text-blue-600 mb-1">Format yang didukung:</p>
-                        <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
-                            Baris pertama = header. Harus ada kolom <strong>Nama</strong>. Kolom tanggal = angka (1, 2, 3, ...).
-                            Nilai: <strong>H</strong> Hadir · <strong>S</strong> Sakit · <strong>I</strong> Izin · <strong>A</strong> Alpa · <strong>P</strong> Pulang Awal.
-                        </p>
-                    </div>
-                    <label className="flex flex-col items-center justify-center gap-2 p-6 rounded-xl border-2 border-dashed border-[var(--color-border)] hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/3 transition-all cursor-pointer">
-                        <Upload className="w-6 h-6 text-[var(--color-text-muted)]" />
-                        <p className="text-xs font-bold text-[var(--color-text-muted)]">
-                            {file ? file.name : 'Klik atau seret file di sini'}
-                        </p>
-                        <p className="text-xs text-[var(--color-text-muted)]">.xlsx, .xls, .csv</p>
-                        <input type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={e => handleFile(e.target.files[0])} />
-                    </label>
-                    {loading && <div className="flex items-center justify-center gap-2 py-4"><LoaderCircle className="w-4 h-4 animate-spin text-[var(--color-primary)]" /><span className="text-xs text-[var(--color-text-muted)]">Membaca file...</span></div>}
-                    {error && <div className="p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-xs font-bold text-red-600">{error}</div>}
-                    {preview && (
-                        <div className="space-y-3">
-                            <div className="flex items-center gap-2">
-                                <span className="text-xs font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-md">{preview.matched.length} cocok</span>
-                                {preview.unmatched.length > 0 && <span className="text-xs font-bold text-amber-600 bg-amber-500/10 px-2 py-0.5 rounded-md">{preview.unmatched.length} tidak ditemukan</span>}
-                            </div>
-                            {preview.unmatched.length > 0 && (
-                                <div className="p-3 rounded-xl bg-amber-500/5 border border-amber-500/20">
-                                    <p className="text-xs font-bold text-amber-600 mb-1 uppercase tracking-wider">Tidak ditemukan di daftar:</p>
-                                    {preview.unmatched.slice(0, 5).map((n, i) => <p key={i} className="text-xs text-[var(--color-text-muted)]">· {n}</p>)}
-                                    {preview.unmatched.length > 5 && <p className="text-xs text-[var(--color-text-muted)]">...dan {preview.unmatched.length - 5} lainnya</p>}
-                                </div>
-                            )}
-                        </div>
-                    )}
-                </div>
-                <div className="px-5 py-3 border-t border-[var(--color-border)] flex gap-2 justify-end">
+    return (
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            title="Import Absensi"
+            description={`Upload file Excel/CSV ${BULAN_NAMA[bulan]} ${tahun}`}
+            icon={FileInput}
+            iconBg="bg-blue-500/10"
+            iconColor="text-blue-500"
+            size="md"
+            mobileVariant="bottom-sheet"
+            footer={
+                <div className="flex gap-2 justify-end w-full">
                     <button onClick={onClose} className="h-9 px-4 rounded-xl border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">Batal</button>
                     <button disabled={!preview || preview.matched.length === 0}
                         onClick={() => { onImport(preview.matched); onClose() }}
@@ -607,9 +568,43 @@ function ImportModal({ itemList, tahun, bulan, daysInMonth, onImport, onClose })
                         Terapkan ({preview?.matched.length || 0})
                     </button>
                 </div>
+            }
+        >
+            <div className="space-y-4">
+                <div className="p-3 rounded-xl bg-blue-500/5 border border-blue-500/20">
+                    <p className="text-xs font-bold text-blue-600 mb-1">Format yang didukung:</p>
+                    <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
+                        Baris pertama = header. Harus ada kolom <strong>Nama</strong>. Kolom tanggal = angka (1, 2, 3, ...).
+                        Nilai: <strong>H</strong> Hadir · <strong>S</strong> Sakit · <strong>I</strong> Izin · <strong>A</strong> Alpa · <strong>P</strong> Pulang Awal.
+                    </p>
+                </div>
+                <label className="flex flex-col items-center justify-center gap-2 p-6 rounded-xl border-2 border-dashed border-[var(--color-border)] hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/3 transition-all cursor-pointer">
+                    <Upload className="w-6 h-6 text-[var(--color-text-muted)]" />
+                    <p className="text-xs font-bold text-[var(--color-text-muted)]">
+                        {file ? file.name : 'Klik atau seret file di sini'}
+                    </p>
+                    <p className="text-xs text-[var(--color-text-muted)]">.xlsx, .xls, .csv</p>
+                    <input type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={e => handleFile(e.target.files[0])} />
+                </label>
+                {loading && <div className="flex items-center justify-center gap-2 py-4"><LoaderCircle className="w-4 h-4 animate-spin text-[var(--color-primary)]" /><span className="text-xs text-[var(--color-text-muted)]">Membaca file...</span></div>}
+                {error && <div className="p-3 rounded-xl bg-red-500/8 border border-red-500/20 text-xs font-bold text-red-600">{error}</div>}
+                {preview && (
+                    <div className="space-y-3">
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-md">{preview.matched.length} cocok</span>
+                            {preview.unmatched.length > 0 && <span className="text-xs font-bold text-amber-600 bg-amber-500/10 px-2 py-0.5 rounded-md">{preview.unmatched.length} tidak ditemukan</span>}
+                        </div>
+                        {preview.unmatched.length > 0 && (
+                            <div className="p-3 rounded-xl bg-amber-500/5 border border-amber-500/20">
+                                <p className="text-xs font-bold text-amber-600 mb-1 uppercase tracking-wider">Tidak ditemukan di daftar:</p>
+                                {preview.unmatched.slice(0, 5).map((n, i) => <p key={i} className="text-xs text-[var(--color-text-muted)]">· {n}</p>)}
+                                {preview.unmatched.length > 5 && <p className="text-xs text-[var(--color-text-muted)]">...dan {preview.unmatched.length - 5} lainnya</p>}
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
-        </div>,
-        document.body
+        </Modal>
     )
 }
 
@@ -2403,7 +2398,7 @@ export default function HalaqahPage() {
 
                 {/* Import modal */}
                 {showImport && (
-                    <ImportModal itemList={filteredItems.length > 0 ? filteredItems : currentList} tahun={tahun} bulan={bulan} daysInMonth={daysInMonth}
+                    <ImportModal isOpen itemList={filteredItems.length > 0 ? filteredItems : currentList} tahun={tahun} bulan={bulan} daysInMonth={daysInMonth}
                         onImport={handleImport} onClose={() => setShowImport(false)} />
                 )}
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Archive, ChevronLeft, ChevronRight, LoaderCircle, RotateCcw, Trash2, TriangleAlert } from 'lucide-react'
-import { Modal, EmptyState } from '@shared/components'
+import { Modal, EmptyState, DataTable } from '@shared/components'
 import { supabase } from '@lib/supabase'
 
 export default function ArchiveModal({
@@ -152,53 +152,60 @@ export default function ArchiveModal({
                     />
                 ) : (
                     <div className="space-y-3">
-                        <div className="border border-[var(--color-border)] rounded-xl overflow-hidden bg-[var(--color-surface)] shadow-sm">
-                            <table className="w-full text-xs">
-                                <thead className="bg-[var(--color-surface-alt)] sticky top-0">
-                                    <tr className="text-left text-xs font-bold uppercase tracking-wide text-[var(--color-text-muted)] border-b border-[var(--color-border)]">
-                                        <th className="px-3 py-2.5">Kelas</th>
-                                        <th className="px-3 py-2.5 text-center whitespace-nowrap">Program / Major</th>
-                                        <th className="px-3 py-2.5 text-center whitespace-nowrap">Diarsipkan</th>
-                                        <th className="px-3 py-2.5 text-right">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {archivedClasses.slice((archivePage - 1) * archivePageSize, archivePage * archivePageSize).map(c => (
-                                        <tr key={c.id} className="border-b last:border-0 border-[var(--color-border)] hover:bg-[var(--color-surface-alt)]/40 transition-colors">
-                                            <td className="px-3 py-2.5">
-                                                <p className="font-bold text-[var(--color-text)] text-xs leading-snug whitespace-nowrap">{c.name}</p>
-                                                <p className="text-xs font-mono text-[var(--color-text-muted)]">Grade {c.grade || '-'}</p>
-                                            </td>
-                                            <td className="px-3 py-2.5 text-center whitespace-nowrap">
-                                                <span className="text-xs font-bold bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-1.5 py-0.5 rounded-md border border-[var(--color-primary)]/20">{c.major || '—'}</span>
-                                            </td>
-                                            <td className="px-3 py-2.5 text-center text-xs font-medium text-[var(--color-text-muted)] whitespace-nowrap">
-                                                {formatRelativeDate(c.deleted_at)}
-                                            </td>
-                                            <td className="px-3 py-2.5 text-right">
-                                                <div className="flex items-center justify-end gap-1.5">
-                                                    <button
-                                                        onClick={() => handleRestoreClass(c)}
-                                                        disabled={restoring}
-                                                        className="h-7 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500 hover:text-white border border-emerald-500/20 text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1 disabled:opacity-50 cursor-pointer"
-                                                    >
-                                                        <RotateCcw className="w-4 h-4" />
-                                                        Pulihkan
-                                                    </button>
-                                                    <button
-                                                        onClick={() => setDeleteTarget(c)}
-                                                        className="h-7 px-2.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1 cursor-pointer"
-                                                    >
-                                                        <Trash2 className="w-4 h-4" />
-                                                        Hapus
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                        <DataTable
+                            dense
+                            data={archivedClasses.slice((archivePage - 1) * archivePageSize, archivePage * archivePageSize)}
+                            columns={[
+                                {
+                                    key: 'name',
+                                    header: 'Kelas',
+                                    render: (c) => (
+                                        <>
+                                            <p className="font-bold text-[var(--color-text)] leading-snug whitespace-nowrap">{c.name}</p>
+                                            <p className="font-mono text-[var(--color-text-muted)]">Grade {c.grade || '-'}</p>
+                                        </>
+                                    ),
+                                },
+                                {
+                                    key: 'major',
+                                    header: 'Program / Major',
+                                    align: 'center',
+                                    render: (c) => (
+                                        <span className="font-bold bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-1.5 py-0.5 rounded-md border border-[var(--color-primary)]/20 whitespace-nowrap">{c.major || '—'}</span>
+                                    ),
+                                },
+                                {
+                                    key: 'deleted_at',
+                                    header: 'Diarsipkan',
+                                    align: 'center',
+                                    render: (c) => <span className="font-medium text-[var(--color-text-muted)] whitespace-nowrap">{formatRelativeDate(c.deleted_at)}</span>,
+                                },
+                                {
+                                    key: 'actions',
+                                    header: 'Aksi',
+                                    align: 'right',
+                                    render: (c) => (
+                                        <div className="flex items-center justify-end gap-1.5">
+                                            <button
+                                                onClick={() => handleRestoreClass(c)}
+                                                disabled={restoring}
+                                                className="h-7 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500 hover:text-white border border-emerald-500/20 text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1 disabled:opacity-50 cursor-pointer"
+                                            >
+                                                <RotateCcw className="w-4 h-4" />
+                                                Pulihkan
+                                            </button>
+                                            <button
+                                                onClick={() => setDeleteTarget(c)}
+                                                className="h-7 px-2.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1 cursor-pointer"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                                Hapus
+                                            </button>
+                                        </div>
+                                    ),
+                                },
+                            ]}
+                        />
 
                         {/* Pagination Arsip */}
                         {archivedClasses.length > archivePageSize && (

@@ -265,9 +265,7 @@ export default function SuspensionsPage() {
           description={search ? 'Tidak cocok dengan pencarian.' : 'Buat data skorsing pertama lewat tombol di atas.'}
         />
       ) : (
-        <div className="table-container rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-x-auto">
-          <DataTable columns={columns} data={items} />
-        </div>
+        <DataTable columns={columns} data={items} dense={false} />
       )}
 
       {!!total && (

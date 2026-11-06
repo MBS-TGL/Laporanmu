@@ -76,6 +76,7 @@ const AdminDashboardPage = lazyRetry(() => import('@features/admin/pages/Dashboa
 
 // Master Data
 const StudentsPage = lazyRetry(() => import('@features/students/pages/StudentsPage.jsx'))
+const StudentArchivePage = lazyRetry(() => import('@features/students/pages/ArchivePage.jsx'))
 const TeachersPage = lazyRetry(() => import('@features/teachers/pages/TeachersPage.jsx'))
 const ClassesPage = lazyRetry(() => import('@features/classes/pages/ClassesPage.jsx'))
 const YearsPage = lazyRetry(() => import('@features/academic-years/pages/YearsPage.jsx'))
@@ -88,6 +89,9 @@ const SuspensionTasks = lazyRetry(() => import('@features/suspension/pages/Tasks
 const PublicPage = lazyRetry(() => import('@features/suspension/pages/PublicPage.jsx'))
 const PublicEnrollment = lazyRetry(() => import('@features/public/pages/EnrollmentPage.jsx'))
 const StatusPage = lazyRetry(() => import('@features/public/pages/StatusPage.jsx'))
+
+// 404
+const NotFoundPage = lazyRetry(() => import('@core/pages/NotFoundPage.jsx'))
 
 // ─── Role Hierarchy ───────────────────────────────────────────────────────────
 // developer > admin > guru = satpam > viewer
@@ -415,35 +419,6 @@ function MaintenanceGuard({ children }) {
   return children
 }
 
-function NotFoundPage() {
-  const navigate = useNavigate()
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--color-surface)] px-4">
-      <div className="text-center max-w-sm">
-        <div className="text-[80px] font-bold font-heading leading-none gradient-text mb-2 select-none">
-          404
-        </div>
-        <h2 className="text-xl font-bold text-[var(--color-text)] mb-2">
-          Halaman Tidak Ditemukan
-        </h2>
-        <p className="text-sm text-[var(--color-text-muted)] mb-8 leading-relaxed">
-          URL yang kamu akses tidak tersedia atau sudah dipindahkan.
-        </p>
-        <div className="flex items-center justify-center gap-3">
-          <button
-            onClick={() => navigate(-1)}
-            className="h-10 px-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-sm font-bold text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-all">
-            ← Kembali
-          </button>
-          <a href="/dashboard" className="btn btn-primary h-10 px-5 text-sm">
-            Ke Dashboard
-          </a>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 // ─── Routes ───────────────────────────────────────────────────────────────────
 function AppRoutes() {
   return (
@@ -609,6 +584,13 @@ function AppRoutes() {
             <Route path="/master/students" element={
               <RoleFlagRoute roles={DEV_ADMIN_TEACHER} flag="module.students" label="Data Siswa">
                 <StudentsPage />
+              </RoleFlagRoute>
+            } />
+            <Route path="/master/students/archive" element={
+              <RoleFlagRoute roles={DEV_ADMIN_TEACHER} flag="module.students" label="Data Siswa">
+                <FlagRoute flag="students.archive" label="Arsip Siswa">
+                  <StudentArchivePage />
+                </FlagRoute>
               </RoleFlagRoute>
             } />
             <Route path="/master/teachers" element={

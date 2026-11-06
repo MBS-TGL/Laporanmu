@@ -16,7 +16,8 @@ import { useDormsData } from '@features/dorms/hooks/useDormsData'
 // UI — Modals
 import AssignModal from '@features/dorms/components/AssignModal'
 import ExportModal from '@features/dorms/components/ExportModal'
-import ImportModal from '@features/dorms/components/ImportModal'
+import ImportDataModal from '@shared/components/import-export/ImportDataModal'
+import { buildImportConfig } from '@features/dorms/components/importExportConfig'
 import BulkAssign from '@features/dorms/components/BulkAssign'
 import { InventoryModal, DormsInventoryFormModal } from '@features/dorms/components/InventoryModal'
 import AuditModal from '@features/dorms/components/AuditModal'
@@ -48,9 +49,15 @@ export default function DormsPage() {
     const [headerMenuRect, setHeaderMenuRect] = useState(null)
     const [headerMenuMounted, setHeaderMenuMounted] = useState(false)
     const headerMenuBtnRef = useRef(null)
-    const importFileInputRef = useRef(null)
 
     const data = useDormsData(addToast)
+
+    // Konfigurasi modal import (butuh daftar santri & kamar + aksi bulk-fix)
+    const importConfig = buildImportConfig({
+        students: data.students,
+        dorms: data.dorms,
+        handleBulkFix: data.handleBulkFix
+    })
 
     // Mount/unmount header dropdown with animation delay
     useEffect(() => {
@@ -329,7 +336,7 @@ export default function DormsPage() {
                 addToast={addToast}
             />
 
-            <ImportModal
+            <ImportDataModal
                 isOpen={data.isImportModalOpen}
                 onClose={() => data.setIsImportModalOpen(false)}
                 importing={data.importing}
@@ -337,15 +344,11 @@ export default function DormsPage() {
                 setImportStep={data.setImportStep}
                 importPreview={data.importPreview}
                 importFileName={data.importFileName}
-                importFileInputRef={importFileInputRef}
                 importDragOver={data.importDragOver}
                 setImportDragOver={data.setImportDragOver}
                 processImportFile={data.processImportFile}
-                students={data.students}
-                dorms={data.dorms}
                 handleDownloadTemplate={data.handleDownloadTemplate}
                 importFileHeaders={data.importFileHeaders}
-                SYSTEM_COLS={data.SYSTEM_COLS}
                 importColumnMapping={data.importColumnMapping}
                 setImportColumnMapping={data.setImportColumnMapping}
                 importRawData={data.importRawData}
@@ -363,7 +366,7 @@ export default function DormsPage() {
                 importEditCell={data.importEditCell}
                 setImportEditCell={data.setImportEditCell}
                 handleRemoveImportRow={data.handleRemoveImportRow}
-                handleBulkFix={data.handleBulkFix}
+                config={importConfig}
             />
 
             <BulkAssign

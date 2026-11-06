@@ -9,6 +9,8 @@ import {
 
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import { PageHeader, Modal, RichSelect, StatsCarousel, StatCard, EmptyState } from '@shared/components'
+import ExportDataModal from '@shared/components/import-export/ExportDataModal'
+import { EXPORT_CONFIG } from '@features/inventory/components/importExportConfig'
 import { useToast, useFlag, useLanguage } from '@context'
 import { supabase } from '@lib/supabase'
 import {
@@ -356,34 +358,6 @@ function DetailDrawer({ item, isOpen, onClose, onEdit, canEdit }) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// ── ExportModal ───────────────────────────────────────────────────────────────
-// ═══════════════════════════════════════════════════════════════════════════════
-function ExportModal({ isOpen, onClose, onExport, totalFiltered, totalSelected }) {
-    return (
-        <Modal isOpen={isOpen} onClose={onClose} title="Export Data Inventaris"
-            icon={Download} iconBg="bg-indigo-500/10" iconColor="text-indigo-500" size="sm" mobileVariant="bottom-sheet">
-            <div className="space-y-3">
-                <p className="text-xs text-[var(--color-text-muted)]">
-                    {totalSelected > 0 ? `Mengekspor ${totalSelected} item terpilih` : `Mengekspor ${totalFiltered} item yang ditampilkan`}
-                </p>
-                <div className="space-y-2">
-                    <button onClick={() => { onExport('csv'); onClose() }}
-                        className="w-full flex items-center gap-3 p-3 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-surface-alt)] transition-all text-left group">
-                        <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Download className="w-4 h-4 text-emerald-500" />
-                        </div>
-                        <div>
-                            <p className="text-xs font-bold text-[var(--color-text)]">Export CSV</p>
-                            <p className="text-xs text-[var(--color-text-muted)]">Format spreadsheet universal</p>
-                        </div>
-                    </button>
-                </div>
-            </div>
-        </Modal>
-    )
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
 // ── MAIN PAGE ────────────────────────────────────────────────────────────────
 // ═══════════════════════════════════════════════════════════════════════════════
 export default function InventoryPage() {
@@ -399,8 +373,10 @@ export default function InventoryPage() {
         submitting, stats, formDataRef, viewMode, switchView,
         openAddModal, openEditModal, openDetail, closeModal, closeDetail,
         toggleSelectAll, toggleSelect, clearSelection,
-        handleSave, handleDelete, handleBulkDelete, exportData, setIsModalOpen,
-        setIsDetailOpen, setIsExportOpen
+        handleSave, handleDelete, handleBulkDelete, setIsModalOpen,
+        setIsDetailOpen, setIsExportOpen,
+        exportScope, setExportScope, exportColumns, setExportColumns,
+        handleExportCSV, handleExportExcel, handleExportPDF
     } = inv
 
     const [deleteTarget, setDeleteTarget] = useState(null)
@@ -700,7 +676,20 @@ export default function InventoryPage() {
             {/* Modals */}
             <ItemFormModal isOpen={isModalOpen} onClose={closeModal} onSave={handleSave} editingItem={editingItem} submitting={submitting} formDataRef={formDataRef} />
             <DetailDrawer item={selectedItem} isOpen={isDetailOpen} onClose={closeDetail} onEdit={openEditModal} canEdit={canEdit} />
-            <ExportModal isOpen={isExportOpen} onClose={() => setIsExportOpen(false)} onExport={exportData} totalFiltered={items.length} totalSelected={selectedIds.size} />
+            <ExportDataModal
+                isOpen={isExportOpen}
+                onClose={() => setIsExportOpen(false)}
+                items={items}
+                selectedIds={[...selectedIds]}
+                exportScope={exportScope}
+                setExportScope={setExportScope}
+                exportColumns={exportColumns}
+                setExportColumns={setExportColumns}
+                handleExportCSV={handleExportCSV}
+                handleExportExcel={handleExportExcel}
+                handleExportPDF={handleExportPDF}
+                config={EXPORT_CONFIG}
+            />
 
             {/* Delete Confirm */}
             <Modal isOpen={isDeleteOpen} onClose={() => { setIsDeleteOpen(false); setDeleteTarget(null) }} title="Hapus Item"

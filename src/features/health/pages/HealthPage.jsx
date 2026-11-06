@@ -14,6 +14,10 @@ import {
     Modal
 } from '@shared/components'
 import { askAi } from '@lib/ai'
+import { logAudit } from '@utils/auditLogger'
+import { writeCSV, writeExcel, exportTablePDF } from '@utils/importExportEngine'
+import ExportDataModal from '@shared/components/import-export/ExportDataModal'
+import { EXPORT_CONFIG, COLUMN_DEFS, COLUMN_LABELS, EXPORT_FNS } from '@features/health/components/importExportConfig'
 import {
     HeartPulse, Search, Plus, Trash2, X, Edit2,
     Calendar, User, Clock, AlertCircle, Bed,
@@ -874,6 +878,7 @@ export default function HealthPage() {
 
     const handlePrintLogs = () => {
         const printWindow = window.open('', '_blank')
+        const periode = new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })
         const html = `
             <html>
                 <head>
@@ -889,7 +894,7 @@ export default function HealthPage() {
                 </head>
                 <body>
                     <h1>Jurnal Kesehatan Santri (Poskestren)</h1>
-                    <h2>LaporanMu - Periode Mei 2026</h2>
+                    <h2>LaporanMu - ${periode}</h2>
                     <table>
                         <thead>
                             <tr>
@@ -926,24 +931,59 @@ export default function HealthPage() {
         printWindow.document.close()
     }
 
-    const handleExportCSV = () => {
-        const headers = ['Tanggal', 'Waktu', 'Nama Santri', 'Kelas', 'Keluhan', 'Diagnosis', 'Tindakan', 'Obat', 'Jumlah Obat', 'Status']
-        const rows = filteredLogs.map(l => [
-            l.date, l.time, l.student_name, l.class_name,
-            l.complaint, l.diagnosis || '', l.treatment,
-            l.medicine_name, l.medicine_qty, l.status
-        ])
-        const csvContent = "data:text/csv;charset=utf-8,"
-            + [headers.join(','), ...rows.map(e => e.map(val => `"${val}"`).join(','))].join('\n')
+    // ── Export jurnal via ExportDataModal ──
+    const [isExportOpen, setIsExportOpen] = useState(false)
+    const [exportScope, setExportScope] = useState('filtered')
+    const [exportColumns, setExportColumns] = useState(COLUMN_DEFS.map(c => c.key))
 
-        const encodedUri = encodeURI(csvContent)
-        const link = document.createElement("a")
-        link.setAttribute("href", encodedUri)
-        link.setAttribute("download", `rekam_medis_uks_${new Date().toISOString().slice(0, 10)}.csv`)
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-    }
+    const getExportData = useCallback(() => {
+        const source = exportScope === 'all' ? logs : filteredLogs
+        return source.map(l => {
+            const row = {}
+            exportColumns.forEach(key => row[COLUMN_LABELS[key]] = EXPORT_FNS[key](l))
+            return row
+        })
+    }, [logs, filteredLogs, exportScope, exportColumns])
+
+    const auditExport = useCallback(async (format, count) => {
+        try {
+            await logAudit({
+                action: 'EXPORT', source: 'OPERATIONAL', tableName: 'health_logs',
+                newData: { format, count, scope: exportScope }
+            })
+        } catch { /* audit gagal tidak memblokir export */ }
+    }, [exportScope])
+
+    const handleExportCSV = useCallback(async (filename, options = {}) => {
+        const rows = await getExportData()
+        if (!rows.length) return addToast('Tidak ada data untuk diekspor', 'warning')
+        const count = await writeCSV(filename || `rekam_medis_uks_${new Date().toISOString().slice(0, 10)}`, rows, options)
+        addToast(`Export ${count} jurnal ke CSV`, 'success')
+        await auditExport('CSV', count)
+    }, [getExportData, addToast, auditExport])
+
+    const handleExportExcel = useCallback(async (filename) => {
+        const rows = await getExportData()
+        if (!rows.length) return addToast('Tidak ada data untuk diekspor', 'warning')
+        const count = await writeExcel(filename || `rekam_medis_uks_${new Date().toISOString().slice(0, 10)}`, rows, 'Rekam Medis')
+        addToast(`Export ${count} jurnal ke Excel`, 'success')
+        await auditExport('XLSX', count)
+    }, [getExportData, addToast, auditExport])
+
+    const handleExportPDF = useCallback(async (filename, options = {}) => {
+        const rows = await getExportData()
+        if (!rows.length) return addToast('Tidak ada data untuk diekspor', 'warning')
+        const count = await exportTablePDF({
+            filename: filename || `rekam_medis_uks_${new Date().toISOString().slice(0, 10)}`,
+            title: 'Jurnal Kesehatan Santri (Poskestren)',
+            metaText: `Tanggal: ${new Date().toLocaleDateString('id-ID')}  |  Total: ${rows.length} jurnal  |  Scope: ${exportScope === 'filtered' ? 'Filter Aktif' : 'Semua'}`,
+            rows,
+            orientation: options.orientation || 'landscape',
+            includeHeader: options.includeHeader,
+        })
+        addToast(`Export PDF berhasil (${count} jurnal)`, 'success')
+        await auditExport('PDF', count)
+    }, [getExportData, addToast, auditExport, exportScope])
 
     return (
         <DashboardLayout title={tp('title')}>
@@ -1005,7 +1045,7 @@ export default function HealthPage() {
                                                 </button>
                                                 <div className="h-px bg-[var(--color-border)] my-1" />
                                                 <button
-                                                    onClick={() => { setIsDataMenuOpen(false); handleExportCSV(); }}
+                                                    onClick={() => { setIsDataMenuOpen(false); setIsExportOpen(true) }}
                                                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-surface-alt)] text-[var(--color-text)] transition-all group text-left"
                                                 >
                                                     <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -1944,6 +1984,21 @@ export default function HealthPage() {
                         Apakah santri <strong className="text-emerald-600 font-bold">{logToSembuh?.student_name}</strong> sudah pulih sepenuhnya dan diizinkan kembali ke kelas / aktivitas KBM pesantren?
                     </p>
                 </Modal>
+
+                <ExportDataModal
+                    isOpen={isExportOpen}
+                    onClose={() => setIsExportOpen(false)}
+                    items={filteredLogs}
+                    selectedIds={[]}
+                    exportScope={exportScope}
+                    setExportScope={setExportScope}
+                    exportColumns={exportColumns}
+                    setExportColumns={setExportColumns}
+                    handleExportCSV={handleExportCSV}
+                    handleExportExcel={handleExportExcel}
+                    handleExportPDF={handleExportPDF}
+                    config={EXPORT_CONFIG}
+                />
 
             </div>
         </DashboardLayout>

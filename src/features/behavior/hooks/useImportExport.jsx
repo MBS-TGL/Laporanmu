@@ -1,8 +1,10 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState } from 'react'
 import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
+import { buildPrintHTML, openPrintWindow } from '@utils/printTemplate'
 import { useLanguage } from '@context'
-import { buildPrintHTML, openPrintWindow } from '@shared/utils/printTemplate'
+import { useImportExportCore } from '@shared/hooks/useImportExportCore'
+import { pick } from '@utils/importExportEngine'
 
 export const SYSTEM_COLS = [
     { key: 'student_name', labelKey: 'colStudent', synonyms: ['nama', 'student', 'siswa', 'student_name', 'nama siswa', 'name', 'nama lengkap'] },
@@ -13,61 +15,28 @@ export const SYSTEM_COLS = [
     { key: 'date', labelKey: 'colDate', synonyms: ['tanggal', 'date', 'reported_at', 'waktu'] }
 ]
 
+/**
+ * Hook import/export fitur Behavior. Mesin generik (state, parse, auto-match,
+ * commit chunk, export CSV/Excel) ada di useImportExportCore; file ini hanya
+ * logika domain: lookup siswa/aturan, validasi, payload commit, export PDF
+ * bergaya surat (printHTML), dan fitur salin-bulan.
+ */
 export function useImportExport({
-    reports,
     students,
     violationTypes,
-    classesList,
     fetchReports,
     fetchStats,
     addToast,
-    closeModal,
-    importFileInputRef,
     filterType,
     filterClass,
     debouncedSearch,
-    sortBy,
     selectedIds,
     profile
 }) {
-    const { t, language, tNum } = useLanguage()
+    const { t, tNum, language } = useLanguage()
+    const [copyingData, setCopyingData] = useState(false)
 
-    // ---- STATE ----
-    const [isImportModalOpen, setIsImportModalOpen] = useState(false)
-    const [isExportModalOpen, setIsExportModalOpen] = useState(false)
-
-    // Export states
-    const [exportScope, setExportScope] = useState('filtered') // 'filtered' | 'selected' | 'all'
-    const [exportColumns, setExportColumns] = useState(['date', 'student', 'class', 'type', 'points', 'notes', 'teacher'])
-    const [exporting, setExporting] = useState(false)
-
-    // Import states
-    const [importFileName, setImportFileName] = useState('')
-    const [importPreview, setImportPreview] = useState([])
-    const [importIssues, setImportIssues] = useState([])
-    const [importing, setImporting] = useState(false)
-    const [importProgress, setImportProgress] = useState({ done: 0, total: 0 })
-    const [importStep, setImportStep] = useState(1) // 1: Upload, 2: Mapping, 3: Review
-    const [importRawData, setImportRawData] = useState([])
-    const [importFileHeaders, setImportFileHeaders] = useState([])
-    const [importColumnMapping, setImportColumnMapping] = useState({})
-    const [importDragOver, setImportDragOver] = useState(false)
-    const [importValidationOpen, setImportValidationOpen] = useState(false)
-    const [importLoading, setImportLoading] = useState(false)
-    const [importEditCell, setImportEditCell] = useState(null)
-
-    // ---- COMPUTED ----
-    const importReadyRows = useMemo(() => {
-        if (!importPreview.length) return []
-        const errorSet = new Set(importIssues.filter(x => x.level === 'error').map(x => x.row - 2))
-        return importPreview.filter((_, i) => !errorSet.has(i))
-    }, [importPreview, importIssues])
-
-    const hasImportBlockingErrors = useMemo(() => {
-        return importIssues.some(x => x.level === 'error')
-    }, [importIssues])
-
-    // ---- EXPORT LOGIC ----
+    // ---- EXPORT (domain) ----
     const ALL_EXPORT_COLUMNS = [
         { key: 'date', label: t('behavior.colDate'), fn: r => r.reported_at ? new Date(r.reported_at).toLocaleDateString(language === 'ar' ? 'ar-SA' : language === 'en' ? 'en-US' : 'id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) : '—' },
         { key: 'student', label: t('behavior.colStudent'), fn: r => r.students?.name || '-' },
@@ -78,13 +47,13 @@ export function useImportExport({
         { key: 'teacher', label: t('behavior.colTeacher'), fn: r => r.teacher_name || '-' }
     ]
 
-    const getExportRawData = async () => {
+    const getExportRawData = async (scope = 'filtered') => {
         let q = supabase
             .from('reports')
             .select('*, students(name, class_id, classes(name)), point_rules(name)')
             .order('reported_at', { ascending: false })
 
-        if (exportScope === 'selected') {
+        if (scope === 'selected') {
             q = q.in('id', selectedIds)
         }
 
@@ -93,8 +62,8 @@ export function useImportExport({
 
         let filtered = data || []
 
-        // If 'filtered' scope, apply in-memory filters (consistent with BehaviorPage's fetch)
-        if (exportScope === 'filtered') {
+        // Scope 'filtered': filter in-memory (konsisten dengan fetch BehaviorPage)
+        if (scope === 'filtered') {
             if (filterType === 'positive') filtered = filtered.filter(r => r.points > 0)
             if (filterType === 'negative') filtered = filtered.filter(r => r.points < 0)
             if (filterClass) {
@@ -111,86 +80,160 @@ export function useImportExport({
         return filtered
     }
 
-    const getExportData = async () => {
-        const filtered = await getExportRawData()
-        // Map based on the requested exportColumns order
-        return filtered.map(r => {
-            const row = {}
-            exportColumns.forEach(key => {
-                const col = ALL_EXPORT_COLUMNS.find(c => c.key === key)
-                if (col) {
-                    row[col.label] = col.fn(r)
+    const mapExportRows = (rawList, cols) => rawList.map(r => {
+        const row = {}
+        cols.forEach(key => {
+            const col = ALL_EXPORT_COLUMNS.find(c => c.key === key)
+            if (col) row[col.label] = col.fn(r)
+        })
+        return row
+    })
+
+    // ---- VALIDASI DOMAIN ----
+    const validatePreview = (preview) => {
+        const issues = []
+        const validated = preview.map((r, idx) => {
+            const rowIssues = []
+            if (!r.student_id) {
+                rowIssues.push({ level: 'error', type: 'student', message: t('behavior.importErrStudentNotFound').replace('{name}', r._studentName) })
+            }
+            if (!r.violation_type_id) {
+                rowIssues.push({ level: 'error', type: 'rule', message: t('behavior.importErrRuleNotFound').replace('{name}', r._violationName) })
+            }
+            if (rowIssues.length) {
+                issues.push({
+                    row: idx + 2,
+                    level: 'error',
+                    types: rowIssues.map(x => x.type),
+                    messages: rowIssues.map(x => x.message)
+                })
+            }
+            return { ...r, _hasError: rowIssues.length > 0 }
+        })
+        return { validated, issues, dupeIndices: [] }
+    }
+
+    // Sinkron field turunan saat sel/bulk diedit (selalu set poin default aturan)
+    const resyncRow = (row) => {
+        if (row.student_id !== undefined) {
+            const student = students.find(s => s.id === row.student_id)
+            row._studentName = student?.name || ''
+            row._className = student?.class_name || ''
+        }
+        if (row.violation_type_id !== undefined) {
+            const rule = violationTypes.find(v => v.id === row.violation_type_id)
+            row._violationName = rule?.name || ''
+            row.points = rule?.points ?? 0
+        }
+        return row
+    }
+
+    const core = useImportExportCore({
+        systemCols: SYSTEM_COLS.map(s => ({ ...s, label: t(`behavior.${s.labelKey}`) })),
+        addToast,
+        table: 'reports',
+        audit: { source: 'OPERATIONAL', insertPayload: (count) => ({ bulk_import: true, count }) },
+        messages: {
+            unsupportedFormat: t('behavior.toastImportUnsupportedFormat'),
+            emptyFile: t('behavior.toastImportEmptyFile'),
+            parseFailed: t('behavior.toastImportFailedRead'),
+            noData: t('behavior.toastImportNoData'),
+            hasErrors: t('behavior.toastImportFixErrors'),
+            removeRow: t('behavior.toastImportRowDeleted'),
+            bulkFix: (n) => t('behavior.toastImportBulkUpdateSuccess').replace('{count}', tNum(n)),
+            commitSuccess: (n) => t('behavior.toastImportTextSuccess') || t('behavior.toastImportSuccess').replace('{count}', tNum(n)),
+            commitFailed: () => t('behavior.toastImportFailed'),
+        },
+        buildPreview: async (rows, mapping) => {
+            const preview = rows.map((r) => {
+                const getVal = (row, sysKey) => {
+                    if (mapping && mapping[sysKey]) return row[mapping[sysKey]]
+                    const colDef = SYSTEM_COLS.find(c => c.key === sysKey)
+                    return pick(row, colDef ? colDef.synonyms : [sysKey])
+                }
+
+                const studentName = String(getVal(r, 'student_name') ?? '').trim()
+                const className = String(getVal(r, 'class_name') ?? '').trim()
+                const ruleName = String(getVal(r, 'rule_name') ?? '').trim()
+                const pointsRaw = String(getVal(r, 'points') ?? '').trim()
+                const notes = String(getVal(r, 'notes') ?? '').trim()
+                const dateRaw = String(getVal(r, 'date') ?? '').trim()
+
+                // Cari siswa yang cocok (nama + kelas opsional)
+                const matchedStudent = students.find(s => {
+                    const nameMatches = s.name.toLowerCase() === studentName.toLowerCase()
+                    if (!nameMatches) return false
+                    if (className) {
+                        return (s.class_name || '').toLowerCase() === className.toLowerCase()
+                    }
+                    return true
+                })
+
+                const matchedRule = violationTypes.find(v => v.name.toLowerCase() === ruleName.toLowerCase())
+
+                // Poin dari file, fallback ke poin default aturan
+                let points = pointsRaw !== '' ? Number(pointsRaw) : (matchedRule?.points ?? 0)
+                if (isNaN(points)) points = matchedRule?.points ?? 0
+
+                // Tanggal (fallback hari ini bila tidak valid)
+                let date = dateRaw ? new Date(dateRaw) : new Date()
+                if (isNaN(date.getTime())) date = new Date()
+
+                return {
+                    student_id: matchedStudent?.id || '',
+                    violation_type_id: matchedRule?.id || '',
+                    points,
+                    notes: notes || matchedRule?.name || '',
+                    date: date.toISOString().slice(0, 10),
+                    _studentName: matchedStudent?.name || studentName || '',
+                    _violationName: matchedRule?.name || ruleName || '',
+                    _className: className || matchedStudent?.class_name || '',
+                    _hasError: false
                 }
             })
-            return row
-        })
-    }
+            return validatePreview(preview)
+        },
+        validate: validatePreview,
+        resyncRow,
+        buildCommitRow: (r) => ({
+            student_id: r.student_id,
+            violation_type_id: r.violation_type_id,
+            points: r.points,
+            notes: r.notes,
+            reported_at: new Date(r.date).toISOString(),
+            teacher_name: profile?.name || 'Sistem'
+        }),
+        afterCommit: async () => {
+            await fetchReports()
+            fetchStats()
+        },
+        template: {
+            headers: [t('behavior.colStudent'), t('behavior.colClass'), t('behavior.colRule'), t('behavior.colPoints'), t('behavior.colNotes'), t('behavior.colDate')],
+            widths: [25, 20, 25, 10, 25, 15],
+            rows: [
+                [t('behavior.tplStudent1'), t('behavior.tplClass1'), t('behavior.tplRule1'), -5, t('behavior.tplNotes1'), '2026-05-29'],
+                [t('behavior.tplStudent2'), t('behavior.tplClass2'), t('behavior.tplRule2'), 10, t('behavior.tplNotes2'), '2026-05-29'],
+            ],
+            filename: t('behavior.importDownloadTemplate'),
+        },
+        export: {
+            getExportData: async (scope, cols) => mapExportRows(await getExportRawData(scope), cols || ALL_EXPORT_COLUMNS.map(c => c.key)),
+            sheetName: t('behavior.importRefDesc'),
+            defaultFileName: 'export_perilaku',
+            noData: t('behavior.toastNoDataExport'),
+            failed: (fmt) => t(fmt === 'csv' ? 'behavior.toastExportFailedCSV' : fmt === 'xlsx' ? 'behavior.toastExportFailedExcel' : 'behavior.toastExportFailedPDF'),
+            toast: (fmt, n) => t(fmt === 'csv' ? 'behavior.toastExportSuccessCSV' : fmt === 'xlsx' ? 'behavior.toastExportSuccessExcel' : 'behavior.toastExportSuccessPDF').replace('{count}', tNum(n)),
+        },
+    })
 
-    const handleExportCSV = async (filename, options = {}) => {
-        setExporting(true)
-        try {
-            const Papa = (await import('papaparse')).default
-            const rows = await getExportData()
-            if (!rows.length) return addToast(t('behavior.toastNoDataExport'), 'warning')
-            const csv = Papa.unparse(rows)
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-            downloadBlob(blob, `${filename || 'export_perilaku'}.csv`)
-            addToast(t('behavior.toastExportSuccessCSV').replace('{count}', tNum(rows.length)), 'success')
-            await logAudit({
-                action: 'EXPORT', source: 'OPERATIONAL', tableName: 'reports',
-                newData: { format: 'CSV', count: rows.length, scope: exportScope }
-            })
-        } catch (e) {
-            console.error(e)
-            addToast(t('behavior.toastExportFailedCSV'), 'error')
-        } finally {
-            setExporting(false)
-        }
-    }
-
-    const handleExportExcel = async (filename) => {
-        setExporting(true)
-        try {
-            const XLSX = await import('xlsx')
-            const data = await getExportData()
-            if (!data.length) return addToast(t('behavior.toastNoDataExport'), 'warning')
-            const ws = XLSX.utils.json_to_sheet(data)
-            const cols = Object.keys(data[0]).map(k => ({ wch: Math.max(k.length, 14) }))
-            ws['!cols'] = cols
-            const wb = XLSX.utils.book_new()
-            XLSX.utils.book_append_sheet(wb, ws, t('behavior.importRefDesc'))
-            const out = XLSX.write(wb, { type: 'array', bookType: 'xlsx' })
-            const blob = new Blob([out], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-            downloadBlob(blob, `${filename || 'export_perilaku'}.xlsx`)
-            addToast(t('behavior.toastExportSuccessExcel').replace('{count}', tNum(data.length)), 'success')
-            await logAudit({
-                action: 'EXPORT', source: 'OPERATIONAL', tableName: 'reports',
-                newData: { format: 'XLSX', count: data.length, scope: exportScope }
-            })
-        } catch (e) {
-            console.error(e)
-            addToast(t('behavior.toastExportFailedExcel'), 'error')
-        } finally {
-            setExporting(false)
-        }
-    }
-
+    // PDF khusus behavior: dokumen bergaya surat via buildPrintHTML (bukan autoTable)
     const handleExportPDF = async (filename, options = {}) => {
-        setExporting(true)
+        core.setExporting(true)
         try {
-            const rawList = await getExportRawData()
+            const rawList = await getExportRawData(core.exportScope)
             if (!rawList.length) return addToast(t('behavior.toastNoDataExport'), 'warning')
 
-            const allRows = rawList.map(r => {
-                const row = {}
-                exportColumns.forEach(key => {
-                    const col = ALL_EXPORT_COLUMNS.find(c => c.key === key)
-                    if (col) {
-                        row[col.label] = col.fn(r)
-                    }
-                })
-                return row
-            })
+            const allRows = mapExportRows(rawList, core.exportColumns)
 
             const totalCount = rawList.length
             const positiveCount = rawList.filter(r => r.points > 0).length
@@ -206,7 +249,7 @@ export function useImportExport({
             ]
 
             const periodLabel = new Date().toLocaleDateString(language === 'ar' ? 'ar-SA' : language === 'en' ? 'en-US' : 'id-ID', { month: 'long', year: 'numeric' })
-            const scopeLabel = exportScope === 'filtered' ? t('behavior.pdfScopeFiltered') : exportScope === 'selected' ? t('behavior.pdfScopeSelected') : t('behavior.pdfScopeAll')
+            const scopeLabel = core.exportScope === 'filtered' ? t('behavior.pdfScopeFiltered') : core.exportScope === 'selected' ? t('behavior.pdfScopeSelected') : t('behavior.pdfScopeAll')
             const infoStrip = [
                 { label: 'Periode', value: periodLabel },
                 { label: 'Cakupan', value: scopeLabel },
@@ -253,336 +296,17 @@ export function useImportExport({
             addToast(t('behavior.toastExportSuccessPDF').replace('{count}', tNum(allRows.length)), 'success')
             await logAudit({
                 action: 'EXPORT', source: 'OPERATIONAL', tableName: 'reports',
-                newData: { format: 'PDF', count: allRows.length, scope: exportScope }
+                newData: { format: 'PDF', count: allRows.length, scope: core.exportScope }
             })
         } catch (e) {
             console.error(e)
             addToast(t('behavior.toastExportFailedPDF'), 'error')
         } finally {
-            setExporting(false)
+            core.setExporting(false)
         }
     }
 
-    const downloadBlob = (blob, filename) => {
-        const link = document.createElement('a')
-        link.href = URL.createObjectURL(blob)
-        link.download = filename
-        link.click()
-    }
-
-    // ---- HELPERS & IMPORT PROCESS ----
-    const sanitizeText = (s) => String(s ?? '').replace(/[<>]/g, '').trim()
-    const pick = (obj, keys) => {
-        for (const k of keys) {
-            const v = obj?.[k]
-            if (v !== undefined && v !== null && String(v).trim() !== '') return v
-        }
-        return ''
-    }
-
-    const parseCSVFile = async (file) => {
-        const Papa = (await import('papaparse')).default
-        return new Promise((resolve, reject) => {
-            Papa.parse(file, {
-                header: true,
-                skipEmptyLines: true,
-                complete: (results) => resolve(results.data || []),
-                error: (err) => reject(err)
-            })
-        })
-    }
-
-    const parseExcelFile = async (file) => {
-        const XLSX = await import('xlsx')
-        const buf = await file.arrayBuffer()
-        const wb = XLSX.read(buf, { type: 'array', cellDates: true })
-        const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' })
-        return json
-    }
-
-    const buildImportPreview = async (rows, mapping) => {
-        const preview = rows.map((r) => {
-            const getVal = (row, sysKey) => {
-                if (mapping && mapping[sysKey]) return sanitizeText(row[mapping[sysKey]])
-                const colDef = SYSTEM_COLS.find(c => c.key === sysKey)
-                return sanitizeText(pick(row, colDef ? colDef.synonyms : [sysKey]))
-            }
-
-            const studentName = getVal(r, 'student_name')
-            const className = getVal(r, 'class_name')
-            const ruleName = getVal(r, 'rule_name')
-            const pointsRaw = getVal(r, 'points')
-            const notes = getVal(r, 'notes')
-            const dateRaw = getVal(r, 'date')
-
-            // Look up student matching studentName + className
-            const matchedStudent = students.find(s => {
-                const nameMatches = s.name.toLowerCase() === studentName.toLowerCase()
-                if (!nameMatches) return false
-                if (className) {
-                    return (s.class_name || '').toLowerCase() === className.toLowerCase()
-                }
-                return true
-            })
-
-            // Look up point rule matching ruleName
-            const matchedRule = violationTypes.find(v => v.name.toLowerCase() === ruleName.toLowerCase())
-
-            // Default points or fallback to Excel custom points
-            let points = pointsRaw !== '' ? Number(pointsRaw) : (matchedRule?.points ?? 0)
-            if (isNaN(points)) points = matchedRule?.points ?? 0
-
-            // Formatted date (fallback to today if invalid)
-            let date = dateRaw ? new Date(dateRaw) : new Date()
-            if (isNaN(date.getTime())) date = new Date()
-
-            return {
-                student_id: matchedStudent?.id || '',
-                violation_type_id: matchedRule?.id || '',
-                points,
-                notes: notes || matchedRule?.name || '',
-                date: date.toISOString().slice(0, 10),
-                _studentName: matchedStudent?.name || studentName || '',
-                _violationName: matchedRule?.name || ruleName || '',
-                _className: className || matchedStudent?.class_name || '',
-                _hasError: false
-            }
-        })
-
-        setImportPreview(preview)
-        validateImportPreview(preview)
-    }
-
-    const validateImportPreview = (preview) => {
-        const issues = []
-
-        const validated = preview.map((r, idx) => {
-            const rowIssues = []
-
-            if (!r.student_id) {
-                rowIssues.push({ level: 'error', type: 'student', message: t('behavior.importErrStudentNotFound').replace('{name}', r._studentName) })
-            }
-            if (!r.violation_type_id) {
-                rowIssues.push({ level: 'error', type: 'rule', message: t('behavior.importErrRuleNotFound').replace('{name}', r._violationName) })
-            }
-
-            if (rowIssues.length) {
-                issues.push({
-                    row: idx + 2,
-                    level: 'error',
-                    types: rowIssues.map(x => x.type),
-                    messages: rowIssues.map(x => x.message)
-                })
-            }
-
-            return {
-                ...r,
-                _hasError: rowIssues.length > 0
-            }
-        })
-
-        setImportPreview(validated)
-        setImportIssues(issues)
-        setImportValidationOpen(issues.length > 0)
-    }
-
-    const processImportFile = async (file) => {
-        const ext = file.name.toLowerCase()
-        if (!ext.endsWith('.csv') && !ext.endsWith('.xlsx')) {
-            addToast(t('behavior.toastImportUnsupportedFormat'), 'error')
-            return
-        }
-        setImportFileName(file.name)
-        setImportPreview([])
-        setImportIssues([])
-        setImportLoading(true)
-        try {
-            const isXlsx = ext.endsWith('.xlsx') || (file.type || '').includes('sheet')
-            const rows = isXlsx ? await parseExcelFile(file) : await parseCSVFile(file)
-            if (!rows.length) { addToast(t('behavior.toastImportEmptyFile'), 'error'); return }
-
-            setImportRawData(rows)
-            const headers = Object.keys(rows[0])
-            setImportFileHeaders(headers)
-
-            // Columns Auto-matching
-            const mapping = {}
-            const norm = (str) => (str || '').toLowerCase().replace(/[\s\xA0\n\r]+/g, ' ').trim()
-            SYSTEM_COLS.forEach(sys => {
-                const match = headers.find(h => {
-                    const normH = norm(h)
-                    const cleanH = norm(h.split(/[\(\[\{（\n\r]/)[0])
-                    const normL = norm(t(`behavior.${sys.labelKey}`))
-                    const normK = norm(sys.key)
-                    if (normH === normL || normH === normK || cleanH === normL || cleanH === normK) return true
-                    if (sys.synonyms && sys.synonyms.some(syn => {
-                        const s = norm(syn)
-                        return normH === s || cleanH === s || cleanH.replace(/[^a-z0-9]/g, '') === s.replace(/[^a-z0-9]/g, '')
-                    })) return true
-                    return false
-                })
-                if (match) mapping[sys.key] = match
-            })
-
-            setImportColumnMapping(mapping)
-            setImportStep(2)
-        } catch (err) {
-            console.error(err)
-            addToast(t('behavior.toastImportFailedRead'), 'error')
-        } finally {
-            setImportLoading(false)
-        }
-    }
-
-    const handleBulkFix = (sysKey, value) => {
-        const newPrev = importPreview.map(r => {
-            const updated = { ...r, [sysKey]: value }
-            if (sysKey === 'student_id') {
-                const student = students.find(s => s.id === value)
-                updated._studentName = student?.name || ''
-                updated._className = student?.class_name || ''
-            } else if (sysKey === 'violation_type_id') {
-                const rule = violationTypes.find(v => v.id === value)
-                updated._violationName = rule?.name || ''
-                if (r.points === 0 || !r.points) updated.points = rule?.points ?? 0
-            }
-            return updated
-        })
-        setImportPreview(newPrev)
-        validateImportPreview(newPrev)
-        addToast(t('behavior.toastImportBulkUpdateSuccess').replace('{count}', tNum(newPrev.length)), 'success')
-    }
-
-    const handleImportCellEdit = (index, key, value) => {
-        const newPrev = [...importPreview]
-        const updatedRow = { ...newPrev[index], [key]: value }
-
-        if (key === 'student_id') {
-            const student = students.find(s => s.id === value)
-            updatedRow._studentName = student?.name || ''
-            updatedRow._className = student?.class_name || ''
-        } else if (key === 'violation_type_id') {
-            const rule = violationTypes.find(v => v.id === value)
-            updatedRow._violationName = rule?.name || ''
-            updatedRow.points = rule?.points ?? 0
-        }
-
-        newPrev[index] = updatedRow
-        setImportPreview(newPrev)
-        validateImportPreview(newPrev)
-    }
-
-    const handleRemoveImportRow = (idx) => {
-        const next = importPreview.filter((_, i) => i !== idx)
-        setImportPreview(next)
-        validateImportPreview(next)
-        addToast(t('behavior.toastImportRowDeleted'), 'success')
-    }
-
-    const handleImportClick = () => {
-        if (!isImportModalOpen) {
-            setImportStep(1)
-            setImportFileName('')
-            setImportRawData([])
-            setImportPreview([])
-            setImportIssues([])
-            setImportColumnMapping({})
-            setImportLoading(false)
-            setIsImportModalOpen(true)
-        } else {
-            importFileInputRef.current?.click()
-        }
-    }
-
-    const handleDownloadTemplate = async () => {
-        const templateData = [
-            {
-                [t('behavior.colStudent')]: t('behavior.tplStudent1'),
-                [t('behavior.colClass')]: t('behavior.tplClass1'),
-                [t('behavior.colRule')]: t('behavior.tplRule1'),
-                [t('behavior.colPoints')]: -5,
-                [t('behavior.colNotes')]: t('behavior.tplNotes1'),
-                [t('behavior.colDate')]: '2026-05-29'
-            },
-            {
-                [t('behavior.colStudent')]: t('behavior.tplStudent2'),
-                [t('behavior.colClass')]: t('behavior.tplClass2'),
-                [t('behavior.colRule')]: t('behavior.tplRule2'),
-                [t('behavior.colPoints')]: 10,
-                [t('behavior.colNotes')]: t('behavior.tplNotes2'),
-                [t('behavior.colDate')]: '2026-05-29'
-            }
-        ]
-        const XLSX = await import('xlsx')
-        const ws = XLSX.utils.json_to_sheet(templateData)
-        ws['!cols'] = [
-            { wch: 25 }, { wch: 20 }, { wch: 25 }, { wch: 10 },
-            { wch: 25 }, { wch: 15 }
-        ]
-        const wb = XLSX.utils.book_new()
-        XLSX.utils.book_append_sheet(wb, ws, t('behavior.importTitle'))
-        const out = XLSX.write(wb, { type: 'array', bookType: 'xlsx' })
-        const blob = new Blob([out], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-        downloadBlob(blob, `${t('behavior.importDownloadTemplate')}.xlsx`)
-    }
-
-    const handleCommitImport = async () => {
-        if (!importPreview.length) {
-            addToast(t('behavior.toastImportNoData'), 'error')
-            return
-        }
-        if (hasImportBlockingErrors) {
-            addToast(t('behavior.toastImportFixErrors'), 'error')
-            return
-        }
-
-        setImporting(true)
-        setImportProgress({ done: 0, total: importReadyRows.length })
-
-        const CHUNK = 50
-        try {
-            for (let i = 0; i < importReadyRows.length; i += CHUNK) {
-                const chunk = importReadyRows.slice(i, i + CHUNK).map(r => ({
-                    student_id: r.student_id,
-                    violation_type_id: r.violation_type_id,
-                    points: r.points,
-                    notes: r.notes,
-                    reported_at: new Date(r.date).toISOString(),
-                    teacher_name: profile?.name || 'Sistem'
-                }))
-                const { error } = await supabase.from('reports').insert(chunk)
-                if (error) throw error
-                setImportProgress({ done: Math.min(i + CHUNK, importReadyRows.length), total: importReadyRows.length })
-            }
-
-            addToast(t('behavior.toastImportTextSuccess') || t('behavior.toastImportSuccess').replace('{count}', tNum(importReadyRows.length)), 'success')
-            await logAudit({
-                action: 'INSERT',
-                source: 'OPERATIONAL',
-                tableName: 'reports',
-                newData: {
-                    bulk_import: true,
-                    count: importReadyRows.length
-                }
-            })
-
-            setIsImportModalOpen(false)
-            setImportPreview([])
-            setImportIssues([])
-            setImportFileName('')
-            setImportStep(1)
-            await fetchReports()
-            fetchStats()
-        } catch (err) {
-            console.error(err)
-            addToast(t('behavior.toastImportFailed'), 'error')
-        } finally {
-            setImporting(false)
-        }
-    }
-
-    const [copyingData, setCopyingData] = useState(false)
-
+    // ---- Fitur khusus: salin laporan antar-bulan ----
     const copyDataFromMonth = async (sourceMonth, sourceYear, targetMonth, targetYear) => {
         setCopyingData(true)
         try {
@@ -599,8 +323,8 @@ export function useImportExport({
 
             if (!data || data.length === 0) {
                 addToast(
-                    t('behavior.toastCopyNoData') || 
-                    `Tidak ada data laporan perilaku pada bulan ${sourceMonth}/${sourceYear}`, 
+                    t('behavior.toastCopyNoData') ||
+                    `Tidak ada data laporan perilaku pada bulan ${sourceMonth}/${sourceYear}`,
                     'warning'
                 )
                 return false
@@ -611,7 +335,7 @@ export function useImportExport({
                 const day = sourceDate.getDate()
                 const lastDayOfTarget = new Date(targetYear, targetMonth, 0).getDate()
                 const newDay = Math.min(day, lastDayOfTarget)
-                
+
                 const targetDate = new Date(
                     targetYear,
                     targetMonth - 1,
@@ -642,8 +366,8 @@ export function useImportExport({
             }
 
             addToast(
-                t('behavior.toastCopySuccess') || 
-                `Berhasil menyalin ${newReports.length} data laporan perilaku`, 
+                t('behavior.toastCopySuccess') ||
+                `Berhasil menyalin ${newReports.length} data laporan perilaku`,
                 'success'
             )
 
@@ -672,40 +396,11 @@ export function useImportExport({
     }
 
     return {
-        isImportModalOpen, setIsImportModalOpen,
-        isExportModalOpen, setIsExportModalOpen,
-        exportScope, setExportScope,
-        exportColumns, setExportColumns,
-        importFileName, setImportFileName,
-        importPreview, setImportPreview,
-        importIssues, setImportIssues,
-        importing, setImporting,
-        importProgress, setImportProgress,
-        importStep, setImportStep,
-        importRawData, setImportRawData,
-        importFileHeaders, setImportFileHeaders,
-        importColumnMapping, setImportColumnMapping,
-        importDragOver, setImportDragOver,
-        importValidationOpen, setImportValidationOpen,
-        importLoading, setImportLoading,
-        importEditCell, setImportEditCell,
-        importReadyRows,
-        hasImportBlockingErrors,
+        ...core,
         SYSTEM_COLS,
         ALL_EXPORT_COLUMNS,
         copyingData,
         copyDataFromMonth,
-
-        processImportFile,
-        handleImportClick,
-        handleCommitImport,
-        handleBulkFix,
-        handleDownloadTemplate,
-        handleExportCSV,
-        handleExportExcel,
         handleExportPDF,
-        buildImportPreview,
-        handleImportCellEdit,
-        handleRemoveImportRow
     }
 }

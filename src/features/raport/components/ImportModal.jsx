@@ -26,6 +26,7 @@ import {
 } from 'lucide-react'
 import { Modal, RichSelect } from '@shared/components'
 import { supabase } from '@lib/supabase'
+import { logAudit } from '@utils/auditLogger'
 import { useToast } from '@context'
 
 export default function ImportModal({

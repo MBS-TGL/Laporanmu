@@ -12,7 +12,7 @@ import { useFlag } from '@context/FeatureFlags'
 const LazyRulesTab = React.lazy(() => import('../components/RulesTab'))
 
 const LazyExportModal = React.lazy(() => import('../components/ExportModal'))
-const LazyImportModal = React.lazy(() => import('../components/ImportModal'))
+const LazyImportModal = React.lazy(() => import('@shared/components/import-export/ImportDataModal'))
 const LazyFormModal = React.lazy(() => import('../components/FormModal'))
 const LazyDetailModal = React.lazy(() => import('../components/DetailModal'))
 import DashboardLayout from '@core/layouts/DashboardLayout'
@@ -33,6 +33,7 @@ import { useLanguage } from '@context/Language'
 import Pagination from '@shared/components/Pagination'
 import ActionBar from '@shared/components/ActionBar'
 import { useCore } from '../hooks/useCore'
+import { buildImportConfig } from '../components/importExportConfig'
 
 function getPortalContainer(id) {
     let el = document.getElementById(id);
@@ -46,7 +47,7 @@ function getPortalContainer(id) {
 
 
 export default function BehaviorPage() {
-    const { t, tNum, dir } = useLanguage()
+    const { t, tNum, dir, language } = useLanguage()
     const tp = useCallback((key) => t(`behavior.${key}`), [t])
 
     const {
@@ -142,10 +143,8 @@ export default function BehaviorPage() {
         importEditCell, setImportEditCell,
         importReadyRows,
         hasImportBlockingErrors,
-        SYSTEM_COLS,
         ALL_EXPORT_COLUMNS,
         processImportFile,
-        handleImportClick,
         handleCommitImport,
         handleBulkFix,
         handleDownloadTemplate,
@@ -158,6 +157,14 @@ export default function BehaviorPage() {
         copyingData,
         copyDataFromMonth
     } = useCore()
+
+    // Konfigurasi modal import (i18n behavior.* + tab salin bulan + slot bulk-fix)
+    const importConfig = buildImportConfig({
+        t, tNum, language,
+        students, violationTypes,
+        handleBulkFix, copyingData, copyDataFromMonth,
+        onClose: () => setIsImportModalOpen(false)
+    })
 
     const { profile } = useAuth()
     const { enabled: showPoinTab } = useFlag('module.violation_types')
@@ -228,13 +235,6 @@ export default function BehaviorPage() {
         return tDb(name)
     }, [violationTypes, tDb])
 
-    const handleFileChange = async (e) => {
-        const file = e.target.files?.[0]
-        if (!file) return
-        await processImportFile(file)
-        e.target.value = ''
-    }
-
     const trendDiff = stats.today - (stats.yesterday || 0)
     const trendValue = trendDiff > 0 ? `+${trendDiff}` : trendDiff < 0 ? `${trendDiff}` : '0'
     const trendUp = trendDiff > 0 ? true : trendDiff < 0 ? false : null
@@ -283,15 +283,12 @@ export default function BehaviorPage() {
                             setImportStep={setImportStep}
                             importPreview={importPreview}
                             importFileName={importFileName}
-                            importFileInputRef={importFileInputRef}
+                            fileInputRef={importFileInputRef}
                             importDragOver={importDragOver}
                             setImportDragOver={setImportDragOver}
                             processImportFile={processImportFile}
-                            students={students}
-                            violationTypes={violationTypes}
                             handleDownloadTemplate={handleDownloadTemplate}
                             importFileHeaders={importFileHeaders}
-                            SYSTEM_COLS={SYSTEM_COLS}
                             importColumnMapping={importColumnMapping}
                             setImportColumnMapping={setImportColumnMapping}
                             importRawData={importRawData}
@@ -303,25 +300,15 @@ export default function BehaviorPage() {
                             setImportValidationOpen={setImportValidationOpen}
                             importProgress={importProgress}
                             handleCommitImport={handleCommitImport}
-                            handleImportClick={handleImportClick}
                             hasImportBlockingErrors={hasImportBlockingErrors}
                             importReadyRows={importReadyRows}
                             handleImportCellEdit={handleImportCellEdit}
                             importEditCell={importEditCell}
                             setImportEditCell={setImportEditCell}
                             handleRemoveImportRow={handleRemoveImportRow}
-                            handleBulkFix={handleBulkFix}
-                            copyingData={copyingData}
-                            copyDataFromMonth={copyDataFromMonth}
+                            config={importConfig}
                         />
                     )}
-                    <input
-                        type="file"
-                        ref={importFileInputRef}
-                        onChange={handleFileChange}
-                        className="hidden"
-                        accept=".csv, .xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                    />
                 </React.Suspense>
 
                 {/* ── PAGE HEADER ── */}

@@ -28,7 +28,6 @@ import { MobileListSkeleton, MobileCardSkeleton } from '@shared/components/Skele
 //   <nav className="fixed bottom-0 z-[80] ...">
 // Ini mencegah backdrop modal mencover bottom nav sehingga tap nav tetap berfungsi.
 
-import ArchiveModal from '@features/students/components/ArchiveModal'
 import { buildImportConfig, buildExportConfig } from '@features/students/components/importExportConfig'
 import BulkPhoto from '@features/students/components/BulkPhoto'
 import ResetPoints from '@features/students/components/ResetPoints'
@@ -658,7 +657,6 @@ export default function StudentsPage() {
         handleSubmit, handleAdd, handleEdit, confirmDelete, executeDelete, closeModal,
         toggleSelectAll, toggleSelectStudent, handleBulkPromote, handleBulkDelete,
         handleBulkPointUpdate, handleBulkTagApply, handleBulkRoomAssign,
-        fetchArchivedStudents, handleRestoreStudent, handlePermanentDelete, setArchivedStudents,
         fetchUsedTags, handleToggleTag, handleGlobalDeleteTag, handleGlobalRenameTag,
         fetchBehaviorHistory, fetchRaportHistory, handleViewProfile,
         handleResetPin, checkDuplicate, fetchAuditLog, fetchClassHistory, handleViewClassHistory,
@@ -671,9 +669,9 @@ export default function StudentsPage() {
         checkingDuplicate, gSheetsUrl, setGSheetsUrl, fetchingGSheets, setFetchingGSheets,
         page, setPage, pageSize, setPageSize, jumpPage, setJumpPage, generatingPdf,
         studentForTags, setStudentForTags, renameInput, setRenameInput,
-        archivePage, setArchivePage, archivePageSize, setArchivePageSize, loadingRaport,
+        loadingRaport,
         allSelected, someSelected, lastReportMap,
-        allUsedTags, tagStats, loadingArchived, archivedStudents, loadingClassHistory, classHistory,
+        allUsedTags, tagStats, loadingClassHistory, classHistory,
         isInlineAddOpen, setIsInlineAddOpen, inlineForm, setInlineForm, submittingInline, setSubmittingInline,
         classBreakdownData, loadingBreakdown, resetPointsClassId, setResetPointsClassId, resettingPoints,
         resettingPin, uploadingPhoto, broadcastTemplate, setBroadcastTemplate, customWaMsg, setCustomWaMsg, broadcastIndex, setBroadcastIndex,
@@ -753,14 +751,13 @@ export default function StudentsPage() {
         importColumnMapping, setImportColumnMapping, importDuplicates, setImportDuplicates,
         importSkipDupes, setImportSkipDupes, importDragOver, setImportDragOver,
         importValidationOpen, setImportValidationOpen, importLoading, setImportLoading,
-        isRevalidating, setIsRevalidating, importEditCell, setImportEditCell,
-        importCachedDBStudents, setImportCachedDBStudents, exporting, setExporting,
-        importReadyRows, hasImportBlockingErrors, ALL_EXPORT_COLUMNS, SYSTEM_COLS,
+        importEditCell, setImportEditCell,
+        exporting, setExporting,
+        importReadyRows, hasImportBlockingErrors, SYSTEM_COLS,
         processImportFile, handleImportClick, handleCommitImport,
-        handleBulkFix, handleBulkFixClassGroup, validateImportPreview, handleDownloadTemplate,
+        handleBulkFix, handleBulkFixClassGroup, handleDownloadTemplate,
         handleExportCSV, handleExportExcel, handleExportPDF, handleFetchGSheets,
-        fetchFilteredForExport, getExportData, importTab, setImportTab,
-        downloadBlob, buildImportPreview, handleImportCellEdit, handleRemoveImportRow
+        buildImportPreview, handleImportCellEdit, handleRemoveImportRow
     } = importExport
 
     // Konfigurasi modal import/export (butuh daftar kelas, t(), dan aksi bulk-fix)
@@ -880,9 +877,9 @@ export default function StudentsPage() {
         onGSheets: () => setActiveModal('gsheets'),
         onExport: () => setIsExportModalOpen(true),
         onBulkPhoto: () => setActiveModal('bulkPhoto'),
-        onArchive: () => { fetchArchivedStudents(); setActiveModal('archived') },
+        onArchive: () => navigateLocal('/master/students/archive'),
         onResetPoints: () => { setResetPointsClassId(''); setActiveModal('resetPoints') },
-    }), [handleImportClick, setActiveModal, setIsExportModalOpen, fetchArchivedStudents, setResetPointsClassId])
+    }), [handleImportClick, setActiveModal, setIsExportModalOpen, navigateLocal, setResetPointsClassId])
 
     // ---- Click outside: menu kolom ----
     useEffect(() => {
@@ -2487,19 +2484,6 @@ export default function StudentsPage() {
                         </Modal>
                     )
                 }
-                {/* Modal Arsip Siswa */}
-                <ArchiveModal
-                    isOpen={activeModal === 'archived'}
-                    onClose={closeModal}
-                    archivedStudents={archivedStudents}
-                    loadingArchived={loadingArchived}
-                    setArchivedStudents={setArchivedStudents}
-                    fetchArchivedStudents={fetchArchivedStudents}
-                    fetchData={fetchData}
-                    fetchStats={fetchStats}
-                    addToast={addToast}
-                />
-
                 {/* Modal Riwayat Kelas */}
                 <ClassHistory
                     isOpen={activeModal === 'classHistory'}

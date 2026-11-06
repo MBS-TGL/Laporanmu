@@ -7,11 +7,11 @@ import { Archive, Calendar, CalendarDays, CircleCheck, Clock, GraduationCap, Hea
  */
 
 export const SYSTEM_COLS = [
-    { key: 'name', label: 'Tahun Pelajaran (e.g. 2024/2025)' },
-    { key: 'semester', label: 'Semester (Ganjil / Genap)' },
-    { key: 'start_date', label: 'Tanggal Mulai (YYYY-MM-DD)' },
-    { key: 'end_date', label: 'Tanggal Selesai (YYYY-MM-DD)' },
-    { key: 'curriculum', label: 'Kurikulum (e.g. Merdeka)' },
+    { key: 'name', label: 'Tahun Pelajaran', synonyms: ['tahun pelajaran', 'tahun ajaran', 'periode', 'year', 'academic year', 'nama tahun'] },
+    { key: 'semester', label: 'Semester', synonyms: ['semester', 'sem', 'ganjil genap'] },
+    { key: 'start_date', label: 'Tanggal Mulai', synonyms: ['tanggal mulai', 'mulai', 'start', 'start_date', 'tgl mulai'] },
+    { key: 'end_date', label: 'Tanggal Selesai', synonyms: ['tanggal selesai', 'selesai', 'end', 'end_date', 'tanggal berakhir', 'tgl selesai'] },
+    { key: 'curriculum', label: 'Kurikulum', synonyms: ['kurikulum', 'curriculum'] },
 ]
 
 const COLUMN_DEFS = [

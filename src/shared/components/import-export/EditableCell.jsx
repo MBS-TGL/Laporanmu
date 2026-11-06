@@ -48,15 +48,16 @@ const EditableCell = memo(function EditableCell({
     }, [isEditing])
 
     const normOpt = (o) => (typeof o === 'string' ? { id: o, name: o } : o)
-    const normItem = (o) => (typeof o === 'string' ? { id: o, name: o } : o)
+    const normItem = normOpt
+    const getByPath = (obj, path) => path.split('.').reduce((acc, k) => (acc == null ? acc : acc[k]), obj)
+    const labelOf = (item) => (editor.labelFn ? editor.labelFn(item) : item[editor.labelKey || 'name'])
 
     // Resolve display value per tipe editor
     let displayValue = value || '-'
     if (type === 'entity') {
-        const labelKey = editor.labelKey || 'name'
         const list = (editor.list || []).map(normItem)
         const found = list.find(it => it.id === value)
-        displayValue = (found ? found[labelKey] : '') || row?.[editor.displayKey] || '-'
+        displayValue = (found ? labelOf(found) : '') || row?.[editor.displayKey] || '-'
     } else if (type === 'enum') {
         const opt = (editor.options || []).map(normOpt).find(o => o.id === value)
         if (opt) displayValue = opt.name
@@ -132,7 +133,7 @@ const EditableCell = memo(function EditableCell({
             const searchKeys = editor.searchKeys || [labelKey]
             const list = (editor.list || []).map(normItem)
             const filtered = list.filter(item =>
-                searchKeys.some(k => String(item[k] ?? '').toLowerCase().includes(searchTerm.toLowerCase()))
+                searchKeys.some(k => String(getByPath(item, k) ?? '').toLowerCase().includes(searchTerm.toLowerCase()))
             )
             const currentDisplay = displayValue === '-' ? '' : displayValue
 
@@ -154,7 +155,7 @@ const EditableCell = memo(function EditableCell({
                                         if (e.key === 'Escape') close()
                                         if (e.key === 'Enter' && filtered.length > 0) {
                                             const item = filtered[0]
-                                            commit(item.id, editor.displayKey ? { key: editor.displayKey, value: item[labelKey] } : null)
+                                            commit(item.id, editor.displayKey ? { key: editor.displayKey, value: labelOf(item) } : null)
                                         }
                                     }}
                                 />
@@ -165,11 +166,11 @@ const EditableCell = memo(function EditableCell({
                                         key={item.id}
                                         type="button"
                                         className="w-full px-4 py-2 text-left text-xs font-bold hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-colors flex items-center justify-between gap-2"
-                                        onClick={() => commit(item.id, editor.displayKey ? { key: editor.displayKey, value: item[labelKey] } : null)}
+                                        onClick={() => commit(item.id, editor.displayKey ? { key: editor.displayKey, value: labelOf(item) } : null)}
                                     >
                                         {editor.renderOption
                                             ? <div className="flex-1 min-w-0">{editor.renderOption(item)}</div>
-                                            : <span className="truncate">{item[labelKey]}</span>}
+                                            : <span className="truncate">{labelOf(item)}</span>}
                                         {value === item.id && <Check className="w-4 h-4 shrink-0" />}
                                     </button>
                                 )) : (

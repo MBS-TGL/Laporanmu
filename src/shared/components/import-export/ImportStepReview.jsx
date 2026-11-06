@@ -104,7 +104,7 @@ export default function ImportStepReview({
                                 <thead>
                                     <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-alt)]/30">
                                         {config.columns.map(col => (
-                                            <th key={col.key} className={`px-2 py-2 ${col.center ? 'text-center' : 'text-left'} text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] ${col.w}`}>
+                                            <th key={col.key || col.label} className={`px-2 py-2 ${col.center ? 'text-center' : 'text-left'} text-xs font-bold uppercase tracking-tighter text-[var(--color-text-muted)] ${col.w}`}>
                                                 {col.label}
                                             </th>
                                         ))}
@@ -121,15 +121,26 @@ export default function ImportStepReview({
                                         const isWarn = r._hasWarn
                                         return (
                                             <tr key={i} className={`hover:bg-[var(--color-surface-alt)]/40 transition-colors border-b border-[var(--color-border)]/30 last:border-0 ${isError ? 'bg-danger/3' : isDupe ? 'bg-violet-500/3' : ''}`}>
-                                                {config.columns.map(col => (
-                                                    <td key={col.key} className={`px-2 py-0.5 ${col.center ? 'text-center' : 'text-left'} ${col.required ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)]'} font-bold text-xs truncate`}>
-                                                        <EditableCell
-                                                            rowIdx={i} colKey={col.key} value={r[col.key]} row={r}
-                                                            editor={col.editor} center={col.center} required={col.required}
-                                                            {...cellCtx}
-                                                        />
-                                                    </td>
-                                                ))}
+                                                {config.columns.map(col => {
+                                                    // Kolom statis: 'index' = nomor baris, atau nama key row untuk tampilan read-only
+                                                    if (col.static) {
+                                                        const text = col.static === 'index' ? tNum(i + 1) : (r[col.static] || '—')
+                                                        return (
+                                                            <td key={col.key || col.label} className={`px-2 py-0.5 ${col.center ? 'text-center' : 'text-left'} text-[var(--color-text-muted)] font-bold text-xs truncate`}>
+                                                                {text}
+                                                            </td>
+                                                        )
+                                                    }
+                                                    return (
+                                                        <td key={col.key} className={`px-2 py-0.5 ${col.center ? 'text-center' : 'text-left'} ${col.required ? 'text-[var(--color-text)]' : 'text-[var(--color-text-muted)]'} font-bold text-xs truncate`}>
+                                                            <EditableCell
+                                                                rowIdx={i} colKey={col.key} value={r[col.key]} row={r}
+                                                                editor={col.editor} center={col.center} required={col.required}
+                                                                {...cellCtx}
+                                                            />
+                                                        </td>
+                                                    )
+                                                })}
                                                 <td className="px-2 py-1">
                                                     <div className="flex items-center justify-center gap-2">
                                                         {isError

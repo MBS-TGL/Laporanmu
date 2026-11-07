@@ -4,7 +4,7 @@ import { logAudit } from '@utils/auditLogger'
 import { useImportExportCore } from '@shared/hooks/useImportExportCore'
 import { RiskThreshold, calculateCompleteness } from '@features/students/utils/studentsConstants'
 import { isDapodikDaftarPD, flattenDapodik, extractDapodikMetadata } from '@features/students/utils/dapodik'
-import { sanitizeText, pick, normalizePhone, parseExcelMatrix, parseExcelFile, parseCSVFile } from '@utils/importExportEngine'
+import { sanitizeText, pick, normalizePhone, parseExcelMatrix, parseExcelFile } from '@utils/importExportEngine'
 
 export const SYSTEM_COLS = [
     { key: 'name', label: 'Nama', synonyms: ['nama', 'name', 'nama lengkap', 'full name', 'student name', 'siswa', 'nama siswa'] },
@@ -82,8 +82,7 @@ export function useImportExport({
     selectedStudentIds,
     selectedStudents,
     gSheetsUrl,
-    setFetchingGSheets,
-    profile // untuk audit forensik
+    setFetchingGSheets
 }) {
     // Cache siswa existing di DB untuk deteksi duplikat saat revalidasi
     const dbCacheRef = useRef({ names: new Set(), nisns: new Set(), codes: new Set() })

@@ -5,7 +5,7 @@ import DashboardLayout from '@core/layouts/DashboardLayout'
 import { logAudit } from '@utils/auditLogger'
 import { writeCSV, writeExcel, exportTablePDF } from '@utils/importExportEngine'
 import ExportDataModal from '@shared/components/import-export/ExportDataModal'
-import { EXPORT_CONFIG, COLUMN_DEFS, COLUMN_LABELS, EXPORT_FNS } from '@features/counseling/components/importExportConfig'
+import { EXPORT_CONFIG, COLUMN_DEFS } from '@features/counseling/components/importExportConfig'
 import {
     PageHeader,
     StatCard,
@@ -769,6 +769,21 @@ export default function CounselingPage() {
     // --- Export rekap via ExportDataModal ---
     const [isExportOpen, setIsExportOpen] = useState(false)
     const [exportScope, setExportScope] = useState('filtered')
+    const COLUMN_LABELS = Object.fromEntries(COLUMN_DEFS.map(c => [c.key, c.label]))
+    const EXPORT_FNS = {
+        id: l => l.id || '',
+        tanggal: l => l.date || '',
+        jam: l => l.time || '',
+        nama: l => l.student_name || '',
+        kelas: l => l.class_name || '',
+        konselor: l => l.counselor_name || '',
+        kategori: l => l.category || '',
+        masalah: l => l.complaint || '',
+        diagnosis: l => l.diagnosis || '',
+        tindakan: l => l.action_plan || '',
+        urgensi: l => l.urgency || '',
+        status: l => l.status || '',
+    }
     const [exportColumns, setExportColumns] = useState(COLUMN_DEFS.map(c => c.key))
 
     const getExportData = useCallback(() => {
@@ -858,7 +873,7 @@ export default function CounselingPage() {
 
                 {/* Header */}
                 <PageHeader
-                    title="Bimbingan & Konseling (BK)"
+                    title="Bimbingan & Konseling"
                     subtitle="Pusat pembinaan karakter, solusi psikososial, dan arahan karir santri MBS Tanggul."
                     breadcrumbs={['Konseling & BK']}
                     badge="Kesantrian"

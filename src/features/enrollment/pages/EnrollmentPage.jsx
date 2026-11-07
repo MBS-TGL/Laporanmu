@@ -1,4 +1,4 @@
-import React, { useState, useRef, memo, useCallback } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import {
     Archive, ArrowRight, AudioWaveform, Bell, BookOpenText, ChartPie, CheckCheck, CircleCheck,
@@ -49,7 +49,6 @@ export default function EnrollmentPage() {
     const core = useCore({ addToast, addUndoToast })
     const [jumpPage, setJumpPage] = useState('')
     const [isArchiveOpen, setIsArchiveOpen] = useState(false)
-    const [showStatusDropdown, setShowStatusDropdown] = useState(false)
     const [validationModal, setValidationModal] = useState({ isOpen: false, type: '', missingDocs: [], enrollment: null, nextStatus: '' })
     const [isPaymentOpen, setIsPaymentOpen] = useState(false)
     const [paymentEnrollment, setPaymentEnrollment] = useState(null)
@@ -62,12 +61,12 @@ export default function EnrollmentPage() {
     const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
 
     const {
-        enrollments, waves, loading, totalRows, globalStats, pipelineDistribution,
+        enrollments, waves, loading, totalRows, globalStats,
         searchQuery, setSearchQuery, filterWave, setFilterWave,
         filterStatus, setFilterStatus, filterGender, setFilterGender,
         filterProgram, setFilterProgram,
         filterDateFrom, setFilterDateFrom, filterDateTo, setFilterDateTo,
-        sortBy, setSortBy,
+        sortBy,
         activeFilterCount, resetAllFilters,
         page, setPage, pageSize, setPageSize,
         isFormOpen, isProfileOpen, isWaveModalOpen, setIsWaveModalOpen,

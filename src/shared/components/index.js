@@ -26,3 +26,6 @@ export { WhatsAppIcon, MarsIcon, VenusIcon, VenusMarsIcon } from './icons/BrandI
 export { default as ImportDataModal } from './import-export/ImportDataModal'
 export { default as ExportDataModal } from './import-export/ExportDataModal'
 
+/* ── Arsip (soft-delete) generik ── */
+export { default as ArchiveDataModal } from './archive/ArchiveDataModal'
+

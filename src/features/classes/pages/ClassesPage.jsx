@@ -13,11 +13,9 @@ import Modal from '@shared/components/Modal'
 import Breadcrumb from '@shared/components/Breadcrumb'
 import PageHeader from '@shared/components/PageHeader'
 import { useToast } from '@context/Toast'
-import { useAuth } from '@context/Auth'
 import { useFlag } from '@context/FeatureFlags'
 import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
-import { useDebounce } from '@hooks/useDebounce'
 import { TableSkeleton, CardSkeleton } from '@shared/components/Skeleton'
 import RichSelect from '@shared/components/RichSelect'
 import StatsCarousel from '@shared/components/StatsCarousel'
@@ -40,11 +38,6 @@ const LS_FILTERS = 'classes_filters'
 const LS_COLS = 'classes_columns'
 const LS_PAGE_SIZE = 'classes_page_size'
 
-const maskInfo = (str, vis = 4) => {
-    if (!str) return '—'
-    if (str.length <= vis) return str[0] + '*'.repeat(str.length - 1)
-    return str.substring(0, vis) + '***'
-}
 
 function getPortalContainer(id) {
     let el = document.getElementById(id);
@@ -61,15 +54,19 @@ const DebouncedSearchInput = memo(({ searchQuery, onSearch, inputRef, isLoading 
     const [value, setValue] = useState(searchQuery)
 
     // Debounce: propagate ke parent setelah 350ms berhenti mengetik
+    // (onSearch = setSearchQuery dari parent — stabil)
     useEffect(() => {
         const t = setTimeout(() => onSearch(value), 350)
         return () => clearTimeout(t)
-    }, [value])
+    }, [value, onSearch])
 
-    // Sync saat di-clear dari luar (resetAllFilters, klik chip ×)
-    useEffect(() => {
+    // Sync saat di-clear dari luar (resetAllFilters, klik chip ×) —
+    // pattern "adjust state saat prop berubah" (render-phase, bukan effect)
+    const [prevQuery, setPrevQuery] = useState(searchQuery)
+    if (searchQuery !== prevQuery) {
+        setPrevQuery(searchQuery)
         if (searchQuery === '' && value !== '') setValue('')
-    }, [searchQuery])
+    }
 
     return (
         <div className="relative group">
@@ -95,11 +92,11 @@ DebouncedSearchInput.displayName = 'DebouncedSearchInput'
 
 export default function ClassesPage() {
     const { addToast } = useToast()
-    const { profile } = useAuth()
     const { enabled: canEdit } = useFlag('access.teacher_classes')
 
     const [classes, setClasses] = useState([])
     const [archivedClasses, setArchivedClasses] = useState([])
+    const [loadingArchived, setLoadingArchived] = useState(false)
     const [teachersList, setTeachersList] = useState([])
     const [academicYearsList, setAcademicYearsList] = useState([])
     const [loading, setLoading] = useState(true)
@@ -114,9 +111,6 @@ export default function ClassesPage() {
     // Stats
     const [stats, setStats] = useState({ total: 0, boarding: 0, reguler: 0, totalStudents: 0 })
 
-    // --- Stats Carousel Dot Indicator ---
-    const statsScrollRef = useRef(null)
-    const [activeStatIdx, setActiveStatIdx] = useState(0)
     const STAT_CARD_COUNT = 4
 
     // UI states
@@ -141,7 +135,6 @@ export default function ClassesPage() {
 
     // Refs
     const searchInputRef = useRef(null)
-    const headerMenuRef = useRef(null)
     const colMenuRef = useRef(null)
 
     // Sticky portal refs & rects for header menu dropdown
@@ -171,21 +164,29 @@ export default function ClassesPage() {
     })
 
     // ── persist ──────────────────────────────────────────────────────────────
+    // Hydrate filter/kolom tersimpan sekali saat mount (bukan derivasi state)
+    /* eslint-disable react-hooks/set-state-in-effect -- hydrate localStorage on-mount */
     useEffect(() => {
-        try { const f = JSON.parse(localStorage.getItem(LS_FILTERS) || '{}'); if (f.filterLevel) setFilterLevel(f.filterLevel); if (f.filterProgram) setFilterProgram(f.filterProgram); if (f.sortBy) setSortBy(f.sortBy); if (f.filterNoTeacher !== undefined) setFilterNoTeacher(f.filterNoTeacher); if (f.filterCrowded !== undefined) setFilterCrowded(f.filterCrowded) } catch { }
-        try { const c = JSON.parse(localStorage.getItem(LS_COLS) || '{}'); if (Object.keys(c).length) setVisibleCols(c) } catch { }
+        try { const f = JSON.parse(localStorage.getItem(LS_FILTERS) || "{}"); if (f.filterLevel) setFilterLevel(f.filterLevel); if (f.filterProgram) setFilterProgram(f.filterProgram); if (f.sortBy) setSortBy(f.sortBy); if (f.filterNoTeacher !== undefined) setFilterNoTeacher(f.filterNoTeacher); if (f.filterCrowded !== undefined) setFilterCrowded(f.filterCrowded) } catch { /* filter tersimpan rusak — pakai default */ }
+        try { const c = JSON.parse(localStorage.getItem(LS_COLS) || '{}'); if (Object.keys(c).length) setVisibleCols(c) } catch { /* abaikan: kuota/quota write error tidak fatal */ }
     }, [])
-    useEffect(() => { try { localStorage.setItem(LS_FILTERS, JSON.stringify({ filterLevel, filterProgram, sortBy, filterNoTeacher, filterCrowded })) } catch { } }, [filterLevel, filterProgram, sortBy, filterNoTeacher, filterCrowded])
-    useEffect(() => { try { localStorage.setItem(LS_COLS, JSON.stringify(visibleCols)) } catch { } }, [visibleCols])
-    useEffect(() => { try { localStorage.setItem(LS_PAGE_SIZE, pageSize) } catch { } }, [pageSize])
+    /* eslint-enable react-hooks/set-state-in-effect */
+    useEffect(() => { try { localStorage.setItem(LS_FILTERS, JSON.stringify({ filterLevel, filterProgram, sortBy, filterNoTeacher, filterCrowded })) } catch { /* abaikan: write error tidak fatal */ } }, [filterLevel, filterProgram, sortBy, filterNoTeacher, filterCrowded])
+    useEffect(() => { try { localStorage.setItem(LS_COLS, JSON.stringify(visibleCols)) } catch { /* abaikan: write error tidak fatal */ } }, [visibleCols])
+    useEffect(() => { try { localStorage.setItem(LS_PAGE_SIZE, pageSize) } catch { /* abaikan: write error tidak fatal */ } }, [pageSize])
 
-    // reset page on search/filter change
-    useEffect(() => { setPage(1) }, [searchQuery, filterLevel, filterProgram, sortBy, filterNoTeacher, filterCrowded])
+    // reset page on search/filter change (reset pagination — bukan derivasi state)
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- reset halaman saat filter berubah
+        setPage(1)
+    }, [searchQuery, filterLevel, filterProgram, sortBy, filterNoTeacher, filterCrowded])
 
     // ── outside click ─────────────────────────────────────────────────────────
-    // Deferred unmount effect for header menu
+    // Deferred unmount for header menu (animasi keluar 200ms — sinkronisasi
+    // mounted dengan isOpen; bukan derivasi state)
     useEffect(() => {
         if (isHeaderMenuOpen) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- sinkronisasi terpaksa: animasi keluar
             setHeaderMenuMounted(true)
         } else {
             const t = setTimeout(() => setHeaderMenuMounted(false), 200)
@@ -269,27 +270,31 @@ export default function ClassesPage() {
     }, [])
 
     const handleRestore = async (id) => {
-        try {
-            const { error } = await supabase.from('classes').update({ deleted_at: null }).eq('id', id)
-            if (error) throw error
-            addToast('Kelas berhasil dipulihkan', 'success'); await logAudit({ action: 'UPDATE', source: 'SYSTEM', tableName: 'classes', recordId: id, oldData: { id, restored: false }, newData: { deleted_at: null, restored: true } }); fetchArchived(); fetchData()
-        } catch { addToast('Gagal memulihkan kelas', 'error') }
+        const { error } = await supabase.from('classes').update({ deleted_at: null }).eq('id', id)
+        if (error) throw error
+        addToast('Kelas berhasil dipulihkan', 'success')
+        await logAudit({ action: 'UPDATE', source: 'SYSTEM', tableName: 'classes', recordId: id, oldData: { id, restored: false }, newData: { deleted_at: null, restored: true } })
+        fetchArchived(); fetchData()
     }
 
     const handlePermanentDelete = async (id) => {
-        if (!confirm('Hapus permanen kelas ini? Data tidak bisa dikembalikan.')) return
-        try {
-            const { error } = await supabase.from('classes').delete().eq('id', id)
-            if (error) throw error
-            addToast('Kelas dihapus permanen', 'success'); await logAudit({ action: 'DELETE', source: 'SYSTEM', tableName: 'classes', recordId: id, oldData: { permanent_delete: true } }); fetchArchived()
-        } catch { addToast('Gagal menghapus permanen', 'error') }
+        const { error } = await supabase.from('classes').delete().eq('id', id)
+        if (error) throw error
+        await logAudit({ action: 'DELETE', source: 'SYSTEM', tableName: 'classes', recordId: id, oldData: { permanent_delete: true } })
+        fetchArchived()
     }
 
     const fetchDataRef = useRef(fetchData)
     useEffect(() => { fetchDataRef.current = fetchData }, [fetchData])
-    useEffect(() => { fetchData() }, [fetchData])
-
+    // Muat data saat mount (fetchData men-set state — bukan derivasi)
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- pemuatan data on-mount
+        fetchData()
+    }, [fetchData])
+
+    // Muat arsip saat modal arsip dibuka (fetchArchived men-set state)
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- pemuatan data on-open
         if (isArchivedModalOpen) fetchArchived()
     }, [isArchivedModalOpen, fetchArchived])
 
@@ -501,7 +506,7 @@ export default function ClassesPage() {
                 })
 
                 // Normalisasi
-                const { name, grade, program, gender_type, teacher, year } = data
+                const { grade, program, gender_type, teacher, year } = data
 
                 let homeroom_teacher_id = null
                 if (teacher) homeroom_teacher_id = teacherByName[teacher.toLowerCase()] || null
@@ -584,13 +589,13 @@ export default function ClassesPage() {
     const {
         isImportModalOpen, setIsImportModalOpen, isExportModalOpen, setIsExportModalOpen,
         exporting, exportScope, setExportScope, exportColumns, setExportColumns,
-        importStep, setImportStep, importFileName, importPreview, setImportPreview,
-        importIssues, setImportIssues, importFileHeaders, importColumnMapping, setImportColumnMapping,
+        importStep, setImportStep, importFileName, importPreview,
+        importIssues, importFileHeaders, importColumnMapping, setImportColumnMapping,
         importRawData, importLoading, setImportLoading = () => {}, importDragOver, setImportDragOver,
         importValidationOpen, setImportValidationOpen, importing, importProgress,
         importEditCell, setImportEditCell, importSkipDupes, setImportSkipDupes,
         importReadyRows, hasImportBlockingErrors,
-        processImportFile, handleImportClick, resetImport, handleCommitImport,
+        processImportFile, handleImportClick, handleCommitImport,
         buildImportPreview, handleImportCellEdit, handleRemoveImportRow,
         handleDownloadTemplate, handleExportCSV, handleExportExcel, handleExportPDF,
     } = importExport
@@ -1270,8 +1275,11 @@ export default function ClassesPage() {
                     isOpen={isArchivedModalOpen}
                     onClose={() => setIsArchivedModalOpen(false)}
                     archivedClasses={archivedClasses}
-                    handleRestore={handleRestore}
-                    handlePermanentDelete={handlePermanentDelete}
+                    loadingArchived={loadingArchived}
+                    setArchivedClasses={setArchivedClasses}
+                    onRestore={(cls) => handleRestore(cls.id)}
+                    onPermanentDelete={(cls) => handlePermanentDelete(cls.id)}
+                    addToast={addToast}
                 />
 
                 {/* ── Import Modal ── */}

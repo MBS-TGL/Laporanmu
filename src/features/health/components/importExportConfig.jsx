@@ -33,19 +33,3 @@ export const EXPORT_CONFIG = {
     resetCols: ['tanggal', 'nama'],
 }
 
-// Pemetaan key → label kolom (urutan file mengikuti pilihan user)
-export const COLUMN_LABELS = Object.fromEntries(COLUMN_DEFS.map(c => [c.key, c.label]))
-
-// Pemetaan key → nilai baris (dipakai handler export di HealthPage)
-export const EXPORT_FNS = {
-    tanggal: l => l.date || '',
-    waktu: l => l.time || '',
-    nama: l => l.student_name || '',
-    kelas: l => l.class_name || '',
-    keluhan: l => l.complaint || '',
-    diagnosis: l => l.diagnosis || '',
-    tindakan: l => l.treatment || '',
-    obat: l => l.medicine_name || '',
-    jumlah: l => l.medicine_qty ?? '',
-    status: l => l.status === 'UKS' ? 'Istirahat di UKS' : l.status === 'Asrama' ? 'Istirahat di Asrama' : 'Kembali ke Kelas',
-}

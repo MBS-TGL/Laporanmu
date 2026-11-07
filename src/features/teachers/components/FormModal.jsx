@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback, memo, useRef } from 'react'
+import React, { useState, useEffect, memo, useRef } from 'react'
 import { Book, Briefcase, Camera, FingerprintPattern, GraduationCap, IdCard, LoaderCircle, Mail, Plus, Save, SquarePen, TriangleAlert } from 'lucide-react'
 import { Modal, RichSelect } from '@shared/components'
+import { useFormDraft } from '@shared/hooks/useFormDraft'
 
 const DAYS = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
 
@@ -14,61 +15,59 @@ const EMPTY_FORM = {
 }
 
 const FormModal = memo(function FormModal({
-    isOpen, onClose, selectedItem, classesList, subjectsList,
+    isOpen, onClose, selectedItem, subjectsList,
     onSubmit, submitting, onPhotoUpload, uploadingPhoto
 }) {
-    const [form, setForm] = useState(EMPTY_FORM)
-    const [formError, setFormError] = useState('')
-    const [touched, setTouched] = useState({})
-    const [attemptedSubmit, setAttemptedSubmit] = useState(false)
     const [avatarPreview, setAvatarPreview] = useState(null)
     const fileInputRef = useRef(null)
 
+    const draft = useFormDraft({
+        isOpen,
+        selectedItem,
+        buildDraft: (item) => {
+            if (item) {
+                return {
+                    name: item.name || '',
+                    nbm: item.nbm || '',
+                    subject: item.subject || '',
+                    gender: item.gender || 'L',
+                    phone: item.phone || '',
+                    email: item.email || '',
+                    status: item.status || 'active',
+                    join_date: item.join_date || '',
+                    address: item.address || '',
+                    notes: item.notes || '',
+                    class_id: item.class_id || '',
+                    type: item.type || 'guru',
+                    avatar_url: item.avatar_url || item.photo_url || '',
+                    work_days: item.work_days || DAYS,
+                    fingerspot_name: item.fingerspot_name || '',
+                    nik: item.nik || '',
+                    nip: item.nip || '',
+                    nuptk: item.nuptk || '',
+                    birth_place: item.birth_place || '',
+                    birth_date: item.birth_date || '',
+                    employment_status: item.employment_status || 'GTY',
+                    teaching_hours: item.teaching_hours || 0,
+                    last_education: item.last_education || '',
+                    major: item.major || '',
+                    graduation_year: item.graduation_year || '',
+                }
+            }
+            return EMPTY_FORM
+        },
+        warnings: {
+            phone: (v) => v.length < 10 || !v.startsWith('08'),
+            email: (v) => !v.includes('@'),
+        }
+    })
+    const { form, setForm, setField, setFieldTouched, getStatus, overallProgress, formError, setFormError, beginSubmit, fail } = draft
+
+    // Preview avatar (state lokal, terpisah dari draft)
     useEffect(() => {
         if (!isOpen) return
-        if (selectedItem) {
-            setForm({
-                name: selectedItem.name || '',
-                nbm: selectedItem.nbm || '',
-                subject: selectedItem.subject || '',
-                gender: selectedItem.gender || 'L',
-                phone: selectedItem.phone || '',
-                email: selectedItem.email || '',
-                status: selectedItem.status || 'active',
-                join_date: selectedItem.join_date || '',
-                address: selectedItem.address || '',
-                notes: selectedItem.notes || '',
-                class_id: selectedItem.class_id || '',
-                type: selectedItem.type || 'guru',
-                avatar_url: selectedItem.avatar_url || selectedItem.photo_url || '',
-                work_days: selectedItem.work_days || DAYS,
-                fingerspot_name: selectedItem.fingerspot_name || '',
-                nik: selectedItem.nik || '',
-                nip: selectedItem.nip || '',
-                nuptk: selectedItem.nuptk || '',
-                birth_place: selectedItem.birth_place || '',
-                birth_date: selectedItem.birth_date || '',
-                employment_status: selectedItem.employment_status || 'GTY',
-                teaching_hours: selectedItem.teaching_hours || 0,
-                last_education: selectedItem.last_education || '',
-                major: selectedItem.major || '',
-                graduation_year: selectedItem.graduation_year || '',
-            })
-            setAvatarPreview(selectedItem.avatar_url || selectedItem.photo_url || null)
-        } else {
-            setForm(EMPTY_FORM)
-            setAvatarPreview(null)
-        }
-        setFormError('')
-        setTouched({})
-        setAttemptedSubmit(false)
+        setAvatarPreview(selectedItem ? (selectedItem.avatar_url || selectedItem.photo_url || null) : null)
     }, [isOpen, selectedItem])
-
-    const setField = useCallback((key, value) => {
-        setForm(prev => ({ ...prev, [key]: value }))
-    }, [])
-
-    const setFieldTouched = (field) => setTouched(prev => ({ ...prev, [field]: true }))
 
     const handleFileChange = async (e) => {
         const file = e.target.files?.[0]
@@ -98,36 +97,11 @@ const FormModal = memo(function FormModal({
         })
     }
 
-    // Validation status helper
-    const getStatus = (field, isRequired = false) => {
-        const value = form[field]
-        const isTouched = touched[field] || attemptedSubmit
-
-        if (field === 'phone' && value && (value.length < 10 || !value.startsWith('08'))) return 'warning'
-        if (field === 'email' && value && !value.includes('@')) return 'warning'
-
-        if (isRequired) {
-            if (isTouched && (!value || (typeof value === 'string' && !value.trim()))) return 'error'
-            if (value && (typeof value === 'string' ? value.trim() : true)) return 'success'
-        } else {
-            if (value && (typeof value === 'string' ? value.trim() : true)) return 'success'
-        }
-        return 'normal'
-    }
-
-    // Progress calculation
-    const overallProgress = (() => {
-        const fields = ['name', 'nbm', 'subject', 'gender', 'phone', 'email', 'status', 'join_date', 'address', 'class_id', 'type', 'nik', 'last_education']
-        const filled = fields.filter(f => form[f]).length
-        return Math.round((filled / fields.length) * 100)
-    })()
-
     const handleSubmit = async (e) => {
         e?.preventDefault()
-        setAttemptedSubmit(true)
+        beginSubmit()
         const name = (form.name || '').trim()
-        if (!name) { setFormError('Nama lengkap wajib diisi.'); return }
-        setFormError('')
+        if (!name) { fail('Nama lengkap wajib diisi.'); return }
         const payload = {
             name,
             nbm: (form.nbm || '').trim() || null,
@@ -165,7 +139,8 @@ const FormModal = memo(function FormModal({
         }
     }
 
-    if (!isOpen) return null
+    const progress = overallProgress(["name", "nbm", "subject", "gender", "phone", "email", "status", "join_date", "address", "class_id", "type", "nik", "last_education"])
+    if (!isOpen || !form) return null
 
     const inputCls = (field, required = false) => {
         const s = getStatus(field, required)
@@ -186,10 +161,10 @@ const FormModal = memo(function FormModal({
                     <div className="h-1.5 w-24 bg-[var(--color-border)] rounded-full overflow-hidden shrink-0">
                         <div
                             className="h-full bg-emerald-500 transition-all duration-500"
-                            style={{ width: `${overallProgress}%` }}
+                            style={{ width: `${progress}%` }}
                         />
                     </div>
-                    <span className="text-xs font-bold text-emerald-600">{overallProgress}% Lengkap</span>
+                    <span className="text-xs font-bold text-emerald-600">{progress}% Lengkap</span>
                 </div>
             }
             icon={selectedItem ? SquarePen : Plus}

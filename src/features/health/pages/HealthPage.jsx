@@ -17,7 +17,7 @@ import { askAi } from '@lib/ai'
 import { logAudit } from '@utils/auditLogger'
 import { writeCSV, writeExcel, exportTablePDF } from '@utils/importExportEngine'
 import ExportDataModal from '@shared/components/import-export/ExportDataModal'
-import { EXPORT_CONFIG, COLUMN_DEFS, COLUMN_LABELS, EXPORT_FNS } from '@features/health/components/importExportConfig'
+import { EXPORT_CONFIG, COLUMN_DEFS } from '@features/health/components/importExportConfig'
 import {
     HeartPulse, Search, Plus, Trash2, X, Edit2,
     Calendar, User, Clock, AlertCircle, Bed,
@@ -934,6 +934,19 @@ export default function HealthPage() {
     // ── Export jurnal via ExportDataModal ──
     const [isExportOpen, setIsExportOpen] = useState(false)
     const [exportScope, setExportScope] = useState('filtered')
+    const COLUMN_LABELS = Object.fromEntries(COLUMN_DEFS.map(c => [c.key, c.label]))
+    const EXPORT_FNS = {
+        tanggal: l => l.date || '',
+        waktu: l => l.time || '',
+        nama: l => l.student_name || '',
+        kelas: l => l.class_name || '',
+        keluhan: l => l.complaint || '',
+        diagnosis: l => l.diagnosis || '',
+        tindakan: l => l.treatment || '',
+        obat: l => l.medicine_name || '',
+        jumlah: l => l.medicine_qty ?? '',
+        status: l => l.status === 'UKS' ? 'Istirahat di UKS' : l.status === 'Asrama' ? 'Istirahat di Asrama' : 'Kembali ke Kelas',
+    }
     const [exportColumns, setExportColumns] = useState(COLUMN_DEFS.map(c => c.key))
 
     const getExportData = useCallback(() => {

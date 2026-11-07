@@ -1,239 +1,71 @@
-import React, { useState } from 'react'
-import { Archive, ChevronLeft, ChevronRight, LoaderCircle, RotateCcw, Trash2, TriangleAlert } from 'lucide-react'
-import { Modal, EmptyState, DataTable } from '@shared/components'
 import { supabase } from '@lib/supabase'
+import { ArchiveDataModal } from '@shared/components'
+import { fmtRelative } from '@utils/formatters'
 
+/**
+ * Wrapper arsip Kelas di atas ArchiveDataModal (shared).
+ * Hapus permanen kelas: tanpa cleanup FK khusus (relasi siswa dilepas via
+ * constraint/behavior database).
+ */
 export default function ArchiveModal({
     isOpen,
     onClose,
     archivedClasses,
     loadingArchived,
     setArchivedClasses,
-    fetchArchivedClasses,
     fetchData,
     fetchStats,
     addToast
 }) {
-    const [archivePage, setArchivePage] = useState(1)
-    const archivePageSize = 10
-
-    const [deleteTarget, setDeleteTarget] = useState(null)
-    const [deleting, setDeleting] = useState(false)
-    const [restoring, setRestoring] = useState(false)
-
-    if (!isOpen) return null
-
-    const handleRestoreClass = async (cls) => {
-        setRestoring(true)
-        try {
-            const { error } = await supabase.from('classes').update({ deleted_at: null }).eq('id', cls.id)
-            if (error) throw error
-            addToast(`${cls.name} berhasil dipulihkan`, 'success')
-            setArchivedClasses(prev => prev.filter(c => c.id !== cls.id))
-            fetchData?.()
-            fetchStats?.()
-        } catch {
-            addToast('Gagal memulihkan kelas', 'error')
-        } finally {
-            setRestoring(false)
-        }
+    const handleRestore = async (cls) => {
+        const { error } = await supabase.from('classes').update({ deleted_at: null }).eq('id', cls.id)
+        if (error) throw error
+        addToast(`${cls.name} berhasil dipulihkan`, 'success')
     }
 
-    const confirmPermanentDelete = async () => {
-        if (!deleteTarget) return
-        setDeleting(true)
-        try {
-            const { error } = await supabase.from('classes').delete().eq('id', deleteTarget.id)
-
-            if (error) throw error
-
-            addToast(`${deleteTarget.name} dihapus permanen`, 'success')
-            setArchivedClasses(prev => prev.filter(c => c.id !== deleteTarget.id))
-            setDeleteTarget(null)
-            fetchData?.()
-            fetchStats?.()
-        } catch (err) {
-            console.error('Delete error:', err)
-            addToast(err.message || 'Gagal hapus permanen data', 'error')
-        } finally {
-            setDeleting(false)
-        }
+    const handlePermanentDelete = async (cls) => {
+        const { error } = await supabase.from('classes').delete().eq('id', cls.id)
+        if (error) throw error
     }
 
-    const formatRelativeDate = (dateString) => {
-        if (!dateString) return '-'
-        const date = new Date(dateString)
-        const diff = new Date() - date
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-        if (days === 0) return 'Hari ini'
-        if (days === 1) return 'Kemarin'
-        if (days < 7) return `${days} hari lalu`
-        if (days < 30) return `${Math.floor(days / 7)} minggu lalu`
-        return `${Math.floor(days / 30)} bulan lalu`
+    const handleRemoved = (cls) => {
+        setArchivedClasses(prev => prev.filter(c => c.id !== cls.id))
     }
 
     return (
-        <Modal
+        <ArchiveDataModal
             isOpen={isOpen}
             onClose={onClose}
             title="Arsip Kelas"
             description="Kelola dan pulihkan data kelas yang telah dihapus sementara."
-            icon={Archive}
-            iconBg="bg-amber-500/10"
-            iconColor="text-amber-600"
-            size="lg"
-            mobileVariant="bottom-sheet"
-            footer={
-                <div className="flex items-center w-full">
-                    <button
-                        onClick={onClose}
-                        className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center"
-                    >
-                        Tutup
-                    </button>
-                    <div className="flex-1" />
-                </div>
-            }
-        >
-            <div className="space-y-3 relative">
-
-                {/* ====== DELETE CONFIRMATION OVERLAY ====== */}
-                <div
-                    className={`absolute inset-0 z-20 bg-[var(--color-surface)] flex flex-col items-center justify-center gap-4 p-6 rounded-xl transition-all duration-300 ease-out ${deleteTarget ? 'opacity-100 visible scale-100' : 'opacity-0 invisible scale-95 pointer-events-none'}`}
-                >
-                    <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
-                        <TriangleAlert className="w-6 h-6 text-red-500" />
-                    </div>
-                    <div className="text-center max-w-xs">
-                        <p className="text-sm font-bold text-[var(--color-text)] mb-1">Hapus Permanen?</p>
-                        <p className="text-xs font-medium text-[var(--color-text-muted)] leading-relaxed">
-                            Data kelas <b className="text-red-500">{deleteTarget?.name}</b> akan dihapus secara permanen. Tindakan ini <b>tidak dapat dibatalkan</b>.
-                        </p>
-                    </div>
-                    <div className="flex items-center gap-3 mt-2">
-                        <button
-                            onClick={() => setDeleteTarget(null)}
-                            disabled={deleting}
-                            className="h-9 px-5 rounded-xl bg-[var(--color-surface-alt)] font-bold text-xs uppercase tracking-wide text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors border border-[var(--color-border)] disabled:opacity-50"
-                        >
-                            Batal
-                        </button>
-                        <button
-                            onClick={confirmPermanentDelete}
-                            disabled={deleting}
-                            className="h-9 px-5 rounded-xl bg-red-50 hover:brightness-110 text-white text-xs font-bold uppercase tracking-wide transition-all shadow-lg disabled:opacity-50 flex items-center gap-2"
-                        >
-                            {deleting ? <><LoaderCircle className="w-4 h-4 animate-spin" /> Menghapus...</> : <><Trash2 className="w-4 h-4" /> Hapus Permanen</>}
-                        </button>
-                    </div>
-                </div>
-
-                {/* ====== MAIN CONTENT ====== */}
-                <div className="p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20 flex items-center gap-3">
-                    <Archive className="w-5 h-5 text-amber-600 shrink-0" />
-                    <div>
-                        <p className="text-xs font-bold text-amber-700 dark:text-amber-400">{archivedClasses.length} kelas di arsip</p>
-                        <p className="text-xs text-[var(--color-text-muted)] font-medium">Pulihkan untuk mengembalikan ke daftar aktif, atau hapus permanen.</p>
-                    </div>
-                </div>
-
-                {loadingArchived ? (
-                    <div className="text-center py-12 text-[var(--color-text-muted)]">
-                        <LoaderCircle className="w-5 h-5 animate-spin mb-3" />
-                        <p className="text-xs font-bold">Memuat arsip...</p>
-                    </div>
-                ) : archivedClasses.length === 0 ? (
-                    <EmptyState
-                        icon={Archive}
-                        title="Arsip Kosong"
-                        description="Tidak ada data kelas yang telah dihapus sementara saat ini."
-                        variant="dashed"
-                        color="amber"
-                    />
-                ) : (
-                    <div className="space-y-3">
-                        <DataTable
-                            dense
-                            data={archivedClasses.slice((archivePage - 1) * archivePageSize, archivePage * archivePageSize)}
-                            columns={[
-                                {
-                                    key: 'name',
-                                    header: 'Kelas',
-                                    render: (c) => (
-                                        <>
-                                            <p className="font-bold text-[var(--color-text)] leading-snug whitespace-nowrap">{c.name}</p>
-                                            <p className="font-mono text-[var(--color-text-muted)]">Grade {c.grade || '-'}</p>
-                                        </>
-                                    ),
-                                },
-                                {
-                                    key: 'major',
-                                    header: 'Program / Major',
-                                    align: 'center',
-                                    render: (c) => (
-                                        <span className="font-bold bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-1.5 py-0.5 rounded-md border border-[var(--color-primary)]/20 whitespace-nowrap">{c.major || '—'}</span>
-                                    ),
-                                },
-                                {
-                                    key: 'deleted_at',
-                                    header: 'Diarsipkan',
-                                    align: 'center',
-                                    render: (c) => <span className="font-medium text-[var(--color-text-muted)] whitespace-nowrap">{formatRelativeDate(c.deleted_at)}</span>,
-                                },
-                                {
-                                    key: 'actions',
-                                    header: 'Aksi',
-                                    align: 'right',
-                                    render: (c) => (
-                                        <div className="flex items-center justify-end gap-1.5">
-                                            <button
-                                                onClick={() => handleRestoreClass(c)}
-                                                disabled={restoring}
-                                                className="h-7 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500 hover:text-white border border-emerald-500/20 text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1 disabled:opacity-50 cursor-pointer"
-                                            >
-                                                <RotateCcw className="w-4 h-4" />
-                                                Pulihkan
-                                            </button>
-                                            <button
-                                                onClick={() => setDeleteTarget(c)}
-                                                className="h-7 px-2.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1 cursor-pointer"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                                Hapus
-                                            </button>
-                                        </div>
-                                    ),
-                                },
-                            ]}
-                        />
-
-                        {/* Pagination Arsip */}
-                        {archivedClasses.length > archivePageSize && (
-                            <div className="flex items-center justify-between px-1">
-                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide">
-                                    Halaman {archivePage} dari {Math.ceil(archivedClasses.length / archivePageSize)}
-                                </p>
-                                <div className="flex gap-1.5">
-                                    <button
-                                        disabled={archivePage === 1}
-                                        onClick={() => setArchivePage(p => p - 1)}
-                                        className="w-7 h-7 rounded-lg border border-[var(--color-border)] flex items-center justify-center disabled:opacity-30 hover:bg-[var(--color-surface-alt)] shadow-sm transition-colors cursor-pointer"
-                                    >
-                                        <ChevronLeft className="w-4 h-4" />
-                                    </button>
-                                    <button
-                                        disabled={archivePage >= Math.ceil(archivedClasses.length / archivePageSize)}
-                                        onClick={() => setArchivePage(p => p + 1)}
-                                        className="w-7 h-7 rounded-lg border border-[var(--color-border)] flex items-center justify-center disabled:opacity-30 hover:bg-[var(--color-surface-alt)] shadow-sm transition-colors cursor-pointer"
-                                    >
-                                        <ChevronRight className="w-4 h-4" />
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                )}
-            </div>
-        </Modal>
+            rows={archivedClasses}
+            loading={loadingArchived}
+            entityLabel="kelas"
+            nameKey="name"
+            nameHeader="Kelas"
+            secondaryKey="grade"
+            secondaryFallback="—"
+            columns={[
+                {
+                    key: 'major',
+                    header: 'Program / Major',
+                    align: 'center',
+                    render: (c) => (
+                        <span className="font-bold bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-1.5 py-0.5 rounded-md border border-[var(--color-primary)]/20 whitespace-nowrap">{c.major || '—'}</span>
+                    ),
+                },
+                {
+                    key: 'deleted_at',
+                    header: 'Diarsipkan',
+                    align: 'center',
+                    render: (c) => <span className="font-medium text-[var(--color-text-muted)] whitespace-nowrap">{fmtRelative(c.deleted_at)}</span>,
+                },
+            ]}
+            onRestore={handleRestore}
+            onPermanentDelete={handlePermanentDelete}
+            onRemoved={handleRemoved}
+            fetchData={fetchData}
+            fetchStats={fetchStats}
+        />
     )
 }

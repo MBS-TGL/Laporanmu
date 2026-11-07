@@ -28,10 +28,8 @@ const COLUMN_DEFS = [
     { key: 'jumlah_siswa', label: 'Jumlah Siswa', icon: Users },
 ]
 
-const LEVELS = ['7', '8', '9', '10', '11', '12']
-const PROGRAMS = ['Boarding', 'Reguler']
-
-export { LEVELS, PROGRAMS }
+export const LEVELS = ['7', '8', '9', '10', '11', '12']
+export const PROGRAMS = ['Boarding', 'Reguler']
 
 // Config import dibangun per-render karena kolom entity butuh daftar dinamis
 // (guru & tahun ajaran). Bungkus dengan useMemo di page.

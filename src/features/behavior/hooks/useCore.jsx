@@ -77,6 +77,7 @@ export function useCore() {
 
     useEffect(() => {
         if (isHeaderMenuOpen) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- sinkronisasi terpaksa: animasi keluar
             setHeaderMenuMounted(true)
         } else {
             const t = setTimeout(() => setHeaderMenuMounted(false), 200)
@@ -144,12 +145,15 @@ export function useCore() {
     useEffect(() => { localStorage.setItem(LS_VIEW, viewMode) }, [viewMode])
 
     // Load/Save columns
+    // Hydrate kolom tersimpan sekali saat mount (bukan derivasi state)
+    /* eslint-disable react-hooks/set-state-in-effect -- hydrate localStorage on-mount */
     useEffect(() => {
         try {
             const c = JSON.parse(localStorage.getItem(LS_COLS) || '{}')
             if (Object.keys(c).length) setVisibleCols(c)
-        } catch { }
+        } catch { /* kolom tersimpan rusak — pakai default */ }
     }, [])
+    /* eslint-enable react-hooks/set-state-in-effect */
     useEffect(() => {
         localStorage.setItem(LS_COLS, JSON.stringify(visibleCols))
     }, [visibleCols])
@@ -306,16 +310,26 @@ export function useCore() {
                 today: todayRes.count ?? 0,
                 yesterday: yesterdayRes.count ?? 0,
             })
-        } catch { }
+        } catch { /* statistik gagal — biarkan nilai lama */ }
     }, [canAchievement, canViolation])
 
     const fetchRef = useRef(fetchReports)
     const fetchStatsRef = useRef(fetchStats)
     useEffect(() => { fetchRef.current = fetchReports }, [fetchReports])
     useEffect(() => { fetchStatsRef.current = fetchStats }, [fetchStats])
-    useEffect(() => { fetchMetadata() }, [fetchMetadata])
-    useEffect(() => { fetchReports() }, [fetchReports])
-    useEffect(() => { fetchStats() }, [fetchStats])
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- pemuatan data on-mount
+        fetchMetadata()
+    }, [fetchMetadata])
+    // Pemuatan data on-mount (fetch men-set state — bukan derivasi)
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- pemuatan data on-mount
+        fetchReports()
+    }, [fetchReports])
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- pemuatan data on-mount
+        fetchStats()
+    }, [fetchStats])
 
     useEffect(() => {
         const ch = supabase.channel('reports-rt')
@@ -330,10 +344,10 @@ export function useCore() {
         setSelectedItem(null)
         setIsModalOpen(true)
     }
-    const handleOpenDetail = (r) => {
+    const handleOpenDetail = useCallback((r) => {
         setDetailItem(r)
         setIsDetailOpen(true)
-    }
+    }, [])
     const handleEdit = (r) => {
         setSelectedItem(r)
         setIsModalOpen(true)

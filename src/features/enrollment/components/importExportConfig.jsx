@@ -1,7 +1,4 @@
-import {
-    AudioWaveform, Barcode, Calendar, CircleQuestionMark, Hash, House, IdCard,
-    MapPin, School, Shirt, Star, User, Zap
-} from 'lucide-react'
+import { AudioWaveform, Barcode, Calendar, CircleQuestionMark, Hash, House, IdCard, MapPin, School, Shirt, Star, User, Zap } from 'lucide-react'
 import { MarsIcon, VenusIcon, VenusMarsIcon, WhatsAppIcon } from '@shared/components'
 import { SYSTEM_COLS } from '@features/enrollment/hooks/useImportExport'
 
@@ -11,6 +8,39 @@ import { SYSTEM_COLS } from '@features/enrollment/hooks/useImportExport'
  * hanya deklarasi UI. Config import dibangun per-render (butuh daftar
  * gelombang untuk entity/reference dan aksi bulk-fix dari hook).
  */
+
+const COLUMN_DEFS = [
+    { key: 'id', label: 'ID', icon: Hash },
+    { key: 'no_reg', label: 'No. Registrasi', icon: Barcode },
+    { key: 'nama', label: 'Nama', icon: User },
+    { key: 'gender', label: 'Gender', icon: VenusMarsIcon },
+    { key: 'nisn', label: 'NISN', icon: IdCard },
+    { key: 'asal_sekolah', label: 'Asal Sekolah', icon: School },
+    { key: 'program', label: 'Program', icon: Star },
+    { key: 'gelombang', label: 'Gelombang', icon: AudioWaveform },
+    { key: 'phone', label: 'Whatsapp', icon: WhatsAppIcon },
+    { key: 'birth_place', label: 'Tempat Lahir', icon: MapPin },
+    { key: 'birth_date', label: 'Tgl Lahir', icon: Calendar },
+    { key: 'father_name', label: 'Ayah', icon: MarsIcon },
+    { key: 'mother_name', label: 'Ibu', icon: VenusIcon },
+    { key: 'address', label: 'Alamat', icon: House },
+    { key: 'uniform_size', label: 'Seragam', icon: Shirt },
+    { key: 'status', label: 'Status', icon: CircleQuestionMark },
+]
+
+export const EXPORT_CONFIG = {
+    title: 'Export Data Pendaftar',
+    description: 'Cadangkan atau pindahkan data pendaftaran ke format CSV, Excel, atau PDF.',
+    entityNoun: 'pendaftar',
+    columnDefs: COLUMN_DEFS,
+    presets: [
+        { id: 'all', label: 'Data Lengkap', cols: ['no_reg', 'nama', 'gender', 'asal_sekolah', 'program', 'gelombang', 'phone', 'status', 'uniform_size'] },
+        { id: 'contact', label: 'Kontak Wali', cols: ['nama', 'phone', 'father_name', 'mother_name'] },
+        { id: 'minimal', label: 'Administrasi', cols: ['no_reg', 'nama', 'program', 'gelombang', 'status'] },
+    ],
+    defaultFileName: 'export_psb',
+    resetCols: ['no_reg', 'nama'],
+}
 
 export const buildImportConfig = ({ waves = [], handleBulkFix }) => ({
     title: 'Import Calon Santri Baru',
@@ -84,36 +114,3 @@ export const buildImportConfig = ({ waves = [], handleBulkFix }) => ({
         )
     },
 })
-
-const COLUMN_DEFS = [
-    { key: 'id', label: 'ID', icon: Hash },
-    { key: 'no_reg', label: 'No. Registrasi', icon: Barcode },
-    { key: 'nama', label: 'Nama', icon: User },
-    { key: 'gender', label: 'Gender', icon: VenusMarsIcon },
-    { key: 'nisn', label: 'NISN', icon: IdCard },
-    { key: 'asal_sekolah', label: 'Asal Sekolah', icon: School },
-    { key: 'program', label: 'Program', icon: Star },
-    { key: 'gelombang', label: 'Gelombang', icon: AudioWaveform },
-    { key: 'phone', label: 'Whatsapp', icon: WhatsAppIcon },
-    { key: 'birth_place', label: 'Tempat Lahir', icon: MapPin },
-    { key: 'birth_date', label: 'Tgl Lahir', icon: Calendar },
-    { key: 'father_name', label: 'Ayah', icon: MarsIcon },
-    { key: 'mother_name', label: 'Ibu', icon: VenusIcon },
-    { key: 'address', label: 'Alamat', icon: House },
-    { key: 'uniform_size', label: 'Seragam', icon: Shirt },
-    { key: 'status', label: 'Status', icon: CircleQuestionMark },
-]
-
-export const EXPORT_CONFIG = {
-    title: 'Export Data Pendaftar',
-    description: 'Cadangkan atau pindahkan data pendaftaran ke format CSV, Excel, atau PDF.',
-    entityNoun: 'pendaftar',
-    columnDefs: COLUMN_DEFS,
-    presets: [
-        { id: 'all', label: 'Data Lengkap', cols: ['no_reg', 'nama', 'gender', 'asal_sekolah', 'program', 'gelombang', 'phone', 'status', 'uniform_size'] },
-        { id: 'contact', label: 'Kontak Wali', cols: ['nama', 'phone', 'father_name', 'mother_name'] },
-        { id: 'minimal', label: 'Administrasi', cols: ['no_reg', 'nama', 'program', 'gelombang', 'status'] },
-    ],
-    defaultFileName: 'Data Pendaftar',
-    resetCols: ['no_reg', 'nama'],
-}

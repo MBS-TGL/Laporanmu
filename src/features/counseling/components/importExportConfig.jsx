@@ -34,20 +34,3 @@ export const EXPORT_CONFIG = {
     resetCols: ['tanggal', 'nama'],
 }
 
-export const COLUMN_LABELS = Object.fromEntries(COLUMN_DEFS.map(c => [c.key, c.label]))
-
-// Pemetaan key → nilai baris
-export const EXPORT_FNS = {
-    id: l => l.id || '',
-    tanggal: l => l.date || '',
-    jam: l => l.time || '',
-    nama: l => l.student_name || '',
-    kelas: l => l.class_name || '',
-    konselor: l => l.counselor_name || '',
-    kategori: l => l.category || '',
-    masalah: l => l.complaint || '',
-    diagnosis: l => l.diagnosis || '',
-    tindakan: l => l.action_plan || '',
-    urgensi: l => l.urgency || '',
-    status: l => l.status || '',
-}

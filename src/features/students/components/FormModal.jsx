@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react'
-import { createPortal } from 'react-dom'
 import { ArrowLeft, ArrowRight, Briefcase, Camera, ChevronDown, CircleCheck, Coins, DoorOpen, Eye, FileText, Footprints, GraduationCap, History, House, IdCard, Landmark, LoaderCircle, MapPin, Pen, Phone, Plus, Save, School, SquarePen, Trash2, TriangleAlert, User, Users, Zap } from 'lucide-react'
 import { MarsIcon, VenusIcon, WhatsAppIcon } from '@shared/components'
 import { supabase } from '@lib/supabase'
 import Modal from '@shared/components/Modal'
 import RichSelect from '@shared/components/RichSelect'
+import { useFormDraft } from '@shared/hooks/useFormDraft'
+import { useToast } from '@context'
 import { LIST_KAMAR } from '@utils/reports/raportConstants'
 import {
     EDUCATION_LEVELS,
@@ -15,41 +16,98 @@ import {
     TRANSPORT_MODES
 } from '@features/students/utils/studentsConstants'
 
+const INIT = {
+    name: '', gender: 'L', class_id: '', phone: '', photo_url: '',
+    nisn: '',
+    guardian_name: '',
+    status: 'aktif', tags: [], kamar: '',
+    // Father
+    father_name: '', father_nik: '', father_education: '', father_occupation: '', father_income: '', father_alive: true,
+    // Mother
+    mother_name: '', mother_nik: '', mother_education: '', mother_occupation: '', mother_income: '', mother_alive: true,
+    // Address Detail
+    address_rt: '', address_rw: '', address_village: '', address_district: '', address_city: '', address_province: '', address_postal_code: '',
+    living_with: 'Orang Tua',
+    // Documents & EMIS
+    no_kk: '', no_akta: '', special_needs: 'Tidak Ada', hobby: '', aspiration: '', transport: 'Jalan Kaki'
+}
+
 const FormModal = memo(function FormModal({
 
     isOpen, onClose, selectedStudent, classesList,
     onSubmit, submitting, onPhotoUpload, uploadingPhoto,
 }) {
-    const INIT = {
-        name: '', gender: 'L', class_id: '', phone: '', photo_url: '',
-        nisn: '',
-        guardian_name: '',
-        status: 'aktif', tags: [], kamar: '',
-        // Father
-        father_name: '', father_nik: '', father_education: '', father_occupation: '', father_income: '', father_alive: true,
-        // Mother
-        mother_name: '', mother_nik: '', mother_education: '', mother_occupation: '', mother_income: '', mother_alive: true,
-        // Address Detail
-        address_rt: '', address_rw: '', address_village: '', address_district: '', address_city: '', address_province: '', address_postal_code: '',
-        living_with: 'Orang Tua',
-        // Documents & EMIS
-        no_kk: '', no_akta: '', special_needs: 'Tidak Ada', hobby: '', aspiration: '', transport: 'Jalan Kaki'
-    }
-
     const STATUS_OPTIONS = [
         { key: 'aktif', label: 'Aktif', activeCls: 'bg-success' },
         { key: 'lulus', label: 'Lulus', activeCls: 'bg-blue-500' },
         { key: 'keluar', label: 'Keluar', activeCls: 'bg-slate-700' },
     ]
+    const { addToast } = useToast()
 
-    const [form, setForm] = useState(INIT)
     const [metadataFields, setMetadataFields] = useState([]) // [{key, value}]
-    const [touched, setTouched] = useState({})
-    const [attemptedSubmit, setAttemptedSubmit] = useState(false)
     const [duplicateWarning, setDuplicateWarning] = useState(null)
     const [showOptional, setShowOptional] = useState(false)
     const [showMetadata, setShowMetadata] = useState(false)
     const [avatarPreview, setAvatarPreview] = useState(null)
+
+    // Draft + validasi UX dari primitif shared (wizard step/draft storage tetap lokal)
+    const draft = useFormDraft({
+        isOpen,
+        selectedItem: selectedStudent,
+        buildDraft: (student) => {
+            if (!student) return INIT
+            const meta = student.metadata || {}
+            return {
+                name: student.name || '',
+                gender: student.gender || 'L',
+                class_id: student.class_id || '',
+                phone: student.phone || '',
+                photo_url: student.photo_url || '',
+                nisn: student.nisn || '',
+                guardian_name: student.guardian_name || '',
+                status: student.status || 'aktif',
+                tags: student.tags || [],
+                kamar: meta.kamar || '',
+                // Father
+                father_name: meta.father?.name || '',
+                father_nik: meta.father?.nik || '',
+                father_education: meta.father?.education || '',
+                father_occupation: meta.father?.occupation || '',
+                father_income: meta.father?.income || '',
+                father_alive: meta.father?.alive ?? true,
+                // Mother
+                mother_name: meta.mother?.name || '',
+                mother_nik: meta.mother?.nik || '',
+                mother_education: meta.mother?.education || '',
+                mother_occupation: meta.mother?.occupation || '',
+                mother_income: meta.mother?.income || '',
+                mother_alive: meta.mother?.alive ?? true,
+                // Address Detail
+                address_rt: meta.address_detail?.rt || '',
+                address_rw: meta.address_detail?.rw || '',
+                address_village: meta.address_detail?.village || '',
+                address_district: meta.address_detail?.district || '',
+                address_city: meta.address_detail?.city || '',
+                address_province: meta.address_detail?.province || '',
+                address_postal_code: meta.address_detail?.postal_code || '',
+                living_with: meta.address_detail?.living_with || 'Orang Tua',
+                // Documents & EMIS
+                no_kk: meta.documents?.no_kk || '',
+                no_akta: meta.documents?.no_akta || '',
+                special_needs: meta.special_needs || 'Tidak Ada',
+                hobby: meta.hobby || '',
+                aspiration: meta.aspiration || '',
+                transport: meta.transport || 'Jalan Kaki'
+            }
+        },
+        warnings: {
+            nisn: (v) => v.length !== 10,
+            father_nik: (v) => v.length !== 16,
+            mother_nik: (v) => v.length !== 16,
+            phone: (v) => v.length < 10 || !v.startsWith('08'),
+        }
+    })
+    const { form, setForm, setField, touched, setFieldTouched, getStatus, beginSubmit } = draft
 
     // Wizard & Logic States
     const [currentStep, setCurrentStep] = useState(1)
@@ -125,27 +183,6 @@ const FormModal = memo(function FormModal({
 
     const overallProgress = Math.round((calculateStepProgress(1) + calculateStepProgress(2) + calculateStepProgress(3)) / 3)
 
-    // Helper to determine validation status
-    const getStatus = (field, isRequired = false) => {
-        const value = form[field]
-        const isTouched = touched[field] || attemptedSubmit
-
-        if (field === 'nisn' && value && value.length !== 10) return 'warning'
-        if ((field === 'father_nik' || field === 'mother_nik') && value && value.length !== 16) return 'warning'
-        if (field === 'phone' && value && (value.length < 10 || !value.startsWith('08'))) return 'warning'
-
-        if (isRequired) {
-            if (isTouched && (!value || (typeof value === 'string' && !value.trim()))) return 'error'
-            if (value && (typeof value === 'string' ? value.trim() : true)) return 'success'
-        } else {
-            if (value && (typeof value === 'string' ? value.trim() : true)) return 'success'
-        }
-        return 'normal'
-    }
-
-    const setFieldTouched = (field) => setTouched(prev => ({ ...prev, [field]: true }))
-
-
     const handleFileChange = useCallback((e) => {
         const file = e.target.files[0]
         if (file) {
@@ -163,69 +200,17 @@ const FormModal = memo(function FormModal({
         }
     }, [avatarPreview])
 
-    // Reset / populate form setiap kali modal dibuka
+    // Side-effect UI saat modal dibuka (form ditangani useFormDraft)
     useEffect(() => {
         if (!isOpen) return
-        if (selectedStudent) {
-            const meta = selectedStudent.metadata || {}
-            setForm({
-                name: selectedStudent.name || '',
-                gender: selectedStudent.gender || 'L',
-                class_id: selectedStudent.class_id || '',
-                phone: selectedStudent.phone || '',
-                photo_url: selectedStudent.photo_url || '',
-                nisn: selectedStudent.nisn || '',
-                guardian_name: selectedStudent.guardian_name || '',
-                status: selectedStudent.status || 'aktif',
-                tags: selectedStudent.tags || [],
-                kamar: meta.kamar || '',
-                // Father
-                father_name: meta.father?.name || '',
-                father_nik: meta.father?.nik || '',
-                father_education: meta.father?.education || '',
-                father_occupation: meta.father?.occupation || '',
-                father_income: meta.father?.income || '',
-                father_alive: meta.father?.alive ?? true,
-                // Mother
-                mother_name: meta.mother?.name || '',
-                mother_nik: meta.mother?.nik || '',
-                mother_education: meta.mother?.education || '',
-                mother_occupation: meta.mother?.occupation || '',
-                mother_income: meta.mother?.income || '',
-                mother_alive: meta.mother?.alive ?? true,
-                // Address Detail
-                address_rt: meta.address_detail?.rt || '',
-                address_rw: meta.address_detail?.rw || '',
-                address_village: meta.address_detail?.village || '',
-                address_district: meta.address_detail?.district || '',
-                address_city: meta.address_detail?.city || '',
-                address_province: meta.address_detail?.province || '',
-                address_postal_code: meta.address_detail?.postal_code || '',
-                living_with: meta.address_detail?.living_with || 'Orang Tua',
-                // Documents & EMIS
-                no_kk: meta.documents?.no_kk || '',
-                no_akta: meta.documents?.no_akta || '',
-                special_needs: meta.special_needs || 'Tidak Ada',
-                hobby: meta.hobby || '',
-                aspiration: meta.aspiration || '',
-                transport: meta.transport || 'Jalan Kaki'
-            })
-            // Handle Metadata
-            const excludedKeys = ['kamar', 'father', 'mother', 'address_detail', 'documents', 'special_needs', 'hobby', 'aspiration', 'transport']
-            const metaArray = Object.entries(meta)
-                .filter(([k]) => !excludedKeys.includes(k))
-                .map(([k, v]) => ({ key: k, value: v }))
-            setMetadataFields(metaArray)
-            setShowMetadata(metaArray.length > 0)
-            setShowOptional(!!(selectedStudent.nisn || selectedStudent.guardian_name || (selectedStudent.tags || []).length > 0))
-        } else {
-            setForm(INIT)
-            setMetadataFields([])
-            setShowOptional(false)
-            setShowMetadata(false)
-        }
-        setTouched({})
-        setAttemptedSubmit(false)
+        const meta = selectedStudent?.metadata || {}
+        const excludedKeys = ['kamar', 'father', 'mother', 'address_detail', 'documents', 'special_needs', 'hobby', 'aspiration', 'transport']
+        const metaArray = Object.entries(meta)
+            .filter(([k]) => !excludedKeys.includes(k))
+            .map(([k, v]) => ({ key: k, value: v }))
+        setMetadataFields(metaArray)
+        setShowMetadata(metaArray.length > 0)
+        setShowOptional(!!(selectedStudent?.nisn || selectedStudent?.guardian_name || (selectedStudent?.tags || []).length > 0))
         setDuplicateWarning(null)
         setCurrentStep(1)
         setIsQuickMode(false)
@@ -253,10 +238,6 @@ const FormModal = memo(function FormModal({
         dupTimerRef.current = setTimeout(() => checkDuplicate(name, classId), 600)
     }, [checkDuplicate])
 
-    const setField = useCallback((key, value) => {
-        setForm(prev => ({ ...prev, [key]: value }))
-    }, [])
-
     const handleAddMeta = () => setMetadataFields(p => [...p, { key: '', value: '' }])
     const handleRemoveMeta = (index) => setMetadataFields(p => p.filter((_, i) => i !== index))
     const handleUpdateMeta = (index, k, v) => setMetadataFields(p => {
@@ -265,7 +246,7 @@ const FormModal = memo(function FormModal({
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        setAttemptedSubmit(true)
+        beginSubmit()
 
         // Safety: Only allow submission from the final step (Review) 
         // OR if explicitly in Quick Mode / using the Step 1 shortcut
@@ -335,7 +316,7 @@ const FormModal = memo(function FormModal({
     }
 
 
-    if (!isOpen) return null
+    if (!isOpen || !form) return null
 
     return (
         <Modal
@@ -411,7 +392,7 @@ const FormModal = memo(function FormModal({
                                     e.preventDefault()
                                     e.stopPropagation()
                                     if (currentStep === 1 && (!form.name.trim() || !form.class_id)) {
-                                        setAttemptedSubmit(true)
+                                        beginSubmit()
                                         return
                                     }
                                     setCurrentStep(prev => prev + 1)

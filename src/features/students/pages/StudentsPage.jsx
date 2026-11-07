@@ -2,7 +2,6 @@ import React from 'react'
 import { useState, useRef, useEffect, useCallback, memo, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createPortal } from 'react-dom'
-import { createRoot } from 'react-dom/client'
 import { Camera, FileInput, FileOutput, Link as LinkIcon, Pencil, RefreshCw, TrendingUp, TrendingDown, CheckCheck, Archive, ArrowDownAZ, ArrowUpNarrowWide, Briefcase, ChartPie, Check, ChevronLeft, ChevronRight, CircleAlert, CircleCheck, Crown, DoorOpen, Download, Eye, EyeOff, FileText, GraduationCap, Image, Info, Keyboard, LoaderCircle, PenTool, Plus, Printer, Rocket, RotateCcw, School, Search, Send, ShieldHalf, SlidersHorizontal, SquareCheck, Table, TableProperties, Tags, Trash2, TriangleAlert, Trophy, Users, X, Zap } from 'lucide-react'
 import { LIST_KAMAR } from '@utils/reports/raportConstants'
 
@@ -10,9 +9,9 @@ import DashboardLayout from '@core/layouts/DashboardLayout'
 import { Breadcrumb, PageHeader, Modal, RichSelect, Button, EmptyState, Pagination, MarsIcon, VenusIcon, WhatsAppIcon, ShortcutsModal } from '@shared/components'
 import { usePageShortcuts } from '@shared/hooks/usePageShortcuts'
 import { useToast, useFlag, useLanguage } from '@context'
-import { supabase } from '@lib/supabase'
-import mbsLogo from '@assets/images/logos/logo-mbs.png'
-import { SortOptions, RiskThreshold, AvailableTags, getTagColor, calculateCompleteness, maskInfo, formatRelativeDate } from '@features/students/utils/studentsConstants'
+
+
+import { SortOptions, RiskThreshold, AvailableTags, getTagColor, calculateCompleteness, maskInfo } from '@features/students/utils/studentsConstants'
 import { useImportExport } from '@features/students/hooks/useImportExport'
 import { generateStudentPDF as _generateStudentPDF, handlePrintThermal as _handlePrintThermal, handleSavePNG as _handleSavePNG } from '@features/students/utils/pdfUtils'
 import { useCore } from '@features/students/hooks/useCore'
@@ -68,15 +67,19 @@ const DebouncedSearchInput = memo(({ searchQuery, onSearch, inputRef, isLoading 
     const [value, setValue] = useState(searchQuery)
 
     // Debounce: propagate ke parent setelah 350ms berhenti mengetik
+    // (onSearch = setSearchQuery dari parent — stabil)
     useEffect(() => {
         const t = setTimeout(() => onSearch(value), 350)
         return () => clearTimeout(t)
-    }, [value])
+    }, [value, onSearch])
 
-    // Sync saat di-clear dari luar (resetAllFilters, klik chip ×)
-    useEffect(() => {
+    // Sync saat di-clear dari luar (resetAllFilters, klik chip ×) —
+    // pattern "adjust state saat prop berubah" (render-phase, bukan effect)
+    const [prevQuery, setPrevQuery] = useState(searchQuery)
+    if (searchQuery !== prevQuery) {
+        setPrevQuery(searchQuery)
         if (searchQuery === '' && value !== '') setValue('')
-    }, [searchQuery])
+    }
 
     return (
         <div className="relative group">
@@ -238,12 +241,12 @@ const CHIP_COLORS = {
 }
 
 // Chip ringkas: statis (statistik) atau tombol (insight yang bisa memfilter)
-function StatChip({ icon: Icon, label, value, color = 'indigo', loading, onClick, active }) {
+function StatChip({ icon: IconCmp, label, value, color = "indigo", loading, onClick, active }) {
     const cls = `flex items-center gap-2 h-9 pl-1.5 pr-3 rounded-lg border bg-surface shrink-0 snap-start transition-all ${active ? 'border-primary ring-1 ring-primary' : 'border-border'} ${onClick ? 'hover:bg-surface-alt active:scale-95 cursor-pointer' : ''}`
     const body = (
         <>
             <span className={`w-6 h-6 rounded-md flex items-center justify-center ${CHIP_COLORS[color]}`}>
-                <Icon className="w-3.5 h-3.5" />
+                <IconCmp className="w-3.5 h-3.5" />
             </span>
             <span className="text-sm font-semibold tabular-nums text-text max-w-[120px] truncate">{loading ? '–' : value}</span>
             <span className="text-xs text-text-muted whitespace-nowrap">{label}</span>
@@ -517,6 +520,7 @@ const StudentsHeaderMenu = memo(function StudentsHeaderMenu({ isOpen, setIsOpen,
 
     useEffect(() => {
         if (isOpen) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- sinkronisasi terpaksa: animasi keluar
             setMounted(true)
         } else {
             const t = setTimeout(() => setMounted(false), 200)
@@ -644,39 +648,37 @@ export default function StudentsPage() {
         activeModal, setActiveModal, isHeaderMenuOpen, setIsHeaderMenuOpen,
         photoZoom, setPhotoZoom,
         isPrivacyMode, setIsPrivacyMode, isAnyModalOpen,
-        selectedStudent, setSelectedStudent, studentToDelete, setStudentToDelete,
-        selectedStudentIds, setSelectedStudentIds, submitting, setSubmitting,
+        selectedStudent, studentToDelete,
+        selectedStudentIds, setSelectedStudentIds, submitting,
         newlyCreatedStudent, setNewlyCreatedStudent,
         bulkClassId, setBulkClassId, bulkTagAction, setBulkTagAction,
         bulkPointValue, setBulkPointValue, bulkPointLabel, setBulkPointLabel,
         bulkRoomId, setBulkRoomId,
-        behaviorHistory, setBehaviorHistory, raportHistory, setRaportHistory,
+        behaviorHistory, raportHistory,
         profileTab, setProfileTab, timelineFilter, setTimelineFilter,
-        timelineVisible, setTimelineVisible, auditLogs, setAuditLogs, loadingAudit, setLoadingAudit,
+        timelineVisible, setTimelineVisible,
         loadingHistory,
         handleSubmit, handleAdd, handleEdit, confirmDelete, executeDelete, closeModal,
         toggleSelectAll, toggleSelectStudent, handleBulkPromote, handleBulkDelete,
         handleBulkPointUpdate, handleBulkTagApply, handleBulkRoomAssign,
-        fetchUsedTags, handleToggleTag, handleGlobalDeleteTag, handleGlobalRenameTag,
-        fetchBehaviorHistory, fetchRaportHistory, handleViewProfile,
-        handleResetPin, checkDuplicate, fetchAuditLog, fetchClassHistory, handleViewClassHistory,
-        handleQuickPoint, handleInlineUpdate, handleTogglePin, handlePhotoUpload,
-        handleInlineSubmit, handleViewQR, handleViewPrint, handleBulkWA, buildWAMessage, openWAForStudent, waTemplate,
+        handleToggleTag, handleGlobalDeleteTag, handleGlobalRenameTag,
+        handleViewProfile,
+        handleResetPin, handleQuickPoint, handleTogglePin, handlePhotoUpload,
+        handleInlineSubmit, handleBulkWA, buildWAMessage, openWAForStudent, waTemplate,
         generateStudentPDF, handlePrintSingle, handlePrintThermal, handleSavePNG, handleBulkPrint,
-        handleBulkPhotoMatch, handleBulkPhotoUpload, handleClassBreakdown, handleBatchResetPoints,
+        handleBulkPhotoMatch, handleBulkPhotoUpload, handleBatchResetPoints,
         // State Helpers
-        tagToEdit, setTagToEdit, duplicateWarning,
-        checkingDuplicate, gSheetsUrl, setGSheetsUrl, fetchingGSheets, setFetchingGSheets,
+        tagToEdit, setTagToEdit,
+        gSheetsUrl, setGSheetsUrl, fetchingGSheets, setFetchingGSheets,
         page, setPage, pageSize, setPageSize, jumpPage, setJumpPage, generatingPdf,
         studentForTags, setStudentForTags, renameInput, setRenameInput,
         loadingRaport,
-        allSelected, someSelected, lastReportMap,
-        allUsedTags, tagStats, loadingClassHistory, classHistory,
-        isInlineAddOpen, setIsInlineAddOpen, inlineForm, setInlineForm, submittingInline, setSubmittingInline,
+        allUsedTags, loadingClassHistory, classHistory,
+        isInlineAddOpen, setIsInlineAddOpen, inlineForm, setInlineForm, submittingInline,
         classBreakdownData, loadingBreakdown, resetPointsClassId, setResetPointsClassId, resettingPoints,
         resettingPin, uploadingPhoto, broadcastTemplate, setBroadcastTemplate, customWaMsg, setCustomWaMsg, broadcastIndex, setBroadcastIndex,
-        formDataRef, importFileInputRef, photoInputRef, searchInputRef, headerMenuRef, cardCaptureRef,
-        selectedStudents, selectedStudentsWithPhone, selectedIdSet, generateCode, handleAddCustomTag,
+        importFileInputRef, searchInputRef, cardCaptureRef,
+        selectedStudents, selectedStudentsWithPhone, selectedIdSet, generateCode,
         bulkPhotoMatches, uploadingBulkPhotos, setBulkPhotoMatches, allStudentsForBulk, matchingPhotos,
     } = core
     const { enabled: canImportCSV } = useFlag('students.import_csv')
@@ -699,10 +701,10 @@ export default function StudentsPage() {
 
     // --- Enterprise Enforcement: Sync flags with state ---
     useEffect(() => {
-        if (!canPrivacyMode && core.isPrivacyMode) {
-            core.setIsPrivacyMode(false)
+        if (!canPrivacyMode && isPrivacyMode) {
+            setIsPrivacyMode(false)
         }
-    }, [canPrivacyMode, core.isPrivacyMode, core.setIsPrivacyMode])
+    }, [canPrivacyMode, isPrivacyMode, setIsPrivacyMode])
 
     // --- Enterprise Logic: Data Fetching ---
     const statsScrollRef = useRef(null)
@@ -736,26 +738,23 @@ export default function StudentsPage() {
         setFetchingGSheets, fetchingGSheets, profile: core.profile
     })
 
-    const handleViewTags = useCallback((s) => {
-        setStudentForTags(s)
-        setActiveModal('tag')
-    }, [setStudentForTags, setActiveModal])
 
     const {
         isImportModalOpen, setIsImportModalOpen, isExportModalOpen, setIsExportModalOpen,
         exportScope, setExportScope, exportColumns, setExportColumns,
-        importFileName, setImportFileName, importPreview, setImportPreview,
-        importIssues, setImportIssues, importing, setImporting,
-        importProgress, setImportProgress, importStep, setImportStep,
-        importRawData, setImportRawData, importFileHeaders, setImportFileHeaders,
-        importColumnMapping, setImportColumnMapping, importDuplicates, setImportDuplicates,
+        importFileName, importPreview, resetImport,
+        importIssues, importing,
+        importProgress, importStep, setImportStep,
+        importRawData, importFileHeaders,
+        importColumnMapping, setImportColumnMapping,
         importSkipDupes, setImportSkipDupes, importDragOver, setImportDragOver,
         importValidationOpen, setImportValidationOpen, importLoading, setImportLoading,
         importEditCell, setImportEditCell,
-        exporting, setExporting,
+        exporting,
         importReadyRows, hasImportBlockingErrors, SYSTEM_COLS,
         processImportFile, handleImportClick, handleCommitImport,
-        handleBulkFix, handleBulkFixClassGroup, handleDownloadTemplate,
+
+        handleBulkFixClassGroup, handleDownloadTemplate,
         handleExportCSV, handleExportExcel, handleExportPDF, handleFetchGSheets,
         buildImportPreview, handleImportCellEdit, handleRemoveImportRow
     } = importExport
@@ -777,7 +776,7 @@ export default function StudentsPage() {
         , [behaviorHistory, timelineFilter])
 
     // UI States for Column Visibility
-    const [visibleColumns, setVisibleColumns] = useState(() => {
+    const [visibleColumns] = useState(() => {
         try {
             const saved = localStorage.getItem('students_visible_columns')
             if (saved) return JSON.parse(saved)
@@ -819,7 +818,7 @@ export default function StudentsPage() {
         if (viewTransitionTimer.current) clearTimeout(viewTransitionTimer.current)
         viewTransitionTimer.current = setTimeout(() => {
             setMobileView(newView)
-            try { localStorage.setItem('students_mobile_view', newView) } catch (e) { }
+            try { localStorage.setItem('students_mobile_view', newView) } catch { /* abaikan: write error tidak fatal */ }
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
                     setIsViewTransitioning(false)
@@ -832,23 +831,6 @@ export default function StudentsPage() {
     const handleSearchChange = useCallback((val) => setSearchQuery(val), [setSearchQuery])
 
     const quickAddRef = useRef(null)
-    const [isColMenuOpen, setIsColMenuOpen] = useState(false)
-    const [colMenuPos, setColMenuPos] = useState({ top: 0, left: 0 })
-    const colMenuRef = useRef(null)
-
-    const toggleColumn = (key) => setVisibleColumns(prev => ({
-        ...prev,
-        [key]: !prev[key]
-    }))
-
-    const timelineGroups = useMemo(() =>
-        timelineFiltered.reduce((acc, item) => {
-            const key = new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
-            if (!acc[key]) acc[key] = []
-            acc[key].push(item)
-            return acc
-        }, {})
-        , [timelineFiltered])
 
     // ---- SHORTCUTS (binding + daftar modal dari satu deklarasi — usePageShortcuts) ----
     const sc = usePageShortcuts({
@@ -856,7 +838,7 @@ export default function StudentsPage() {
         items: [
             { section: 'Navigasi', keys: ['Ctrl', 'K'], label: 'Fokus ke search', icon: Search, onSelect: () => searchInputRef.current?.focus() },
             { section: 'Navigasi', keys: ['Ctrl', 'F'], label: 'Toggle filter lanjutan', icon: SlidersHorizontal, onSelect: () => setShowAdvancedFilter(v => !v) },
-            { section: 'Navigasi', keys: ['Esc'], label: 'Tutup / clear / deselect', icon: X, onSelect: () => { setIsColMenuOpen(false); setIsHeaderMenuOpen(false) } },
+            { section: 'Navigasi', keys: ['Esc'], label: 'Tutup / clear / deselect', icon: X, onSelect: () => { setIsHeaderMenuOpen(false) } },
             { section: 'Aksi', keys: ['N'], label: 'Tambah siswa baru', icon: Plus, when: canAddStudent && canEdit, onSelect: handleAdd },
             { section: 'Aksi', keys: ['Ctrl', 'A'], label: 'Pilih semua / deselect', icon: CheckCheck, onSelect: toggleSelectAll },
             { section: 'Aksi', keys: ['Ctrl', 'E'], label: 'Buka export', icon: FileOutput, when: canExport, onSelect: () => setIsExportModalOpen(true) },
@@ -881,24 +863,6 @@ export default function StudentsPage() {
         onResetPoints: () => { setResetPointsClassId(''); setActiveModal('resetPoints') },
     }), [handleImportClick, setActiveModal, setIsExportModalOpen, navigateLocal, setResetPointsClassId])
 
-    // ---- Click outside: menu kolom ----
-    useEffect(() => {
-        const handleGlobalClick = (e) => {
-            // Klik di luar ikon gear DAN di luar menu portal
-            if (colMenuRef.current &&
-                !colMenuRef.current.contains(e.target) &&
-                !e.target.closest('#portal-column-menu')) {
-                setIsColMenuOpen(false)
-            }
-        }
-        document.addEventListener('mousedown', handleGlobalClick)
-        document.addEventListener('touchstart', handleGlobalClick)
-        return () => {
-            document.removeEventListener('mousedown', handleGlobalClick)
-            document.removeEventListener('touchstart', handleGlobalClick)
-        }
-    }, [setIsColMenuOpen])
-
     const timelineStats = useMemo(() => {
         const pos = behaviorHistory.filter(i => (i.points ?? 0) > 0)
         const neg = behaviorHistory.filter(i => (i.points ?? 0) < 0)
@@ -911,9 +875,6 @@ export default function StudentsPage() {
         }).length
         return { pos: pos.length, neg: neg.length, totalPos, totalNeg, thisMonthCount }
     }, [behaviorHistory])
-
-    const navigate = navigateLocal;
-
 
     const initialLoading = loading && students.length === 0
     const hasStatChips = canShowStats || globalStats.risk > 0 || globalStats.incompleteCount > 0 || globalStats.avgPointsLastWeek !== null
@@ -1844,13 +1805,8 @@ export default function StudentsPage() {
                             isOpen={isImportModalOpen}
                             onClose={() => {
                                 if (importing) return
+                                resetImport()
                                 setIsImportModalOpen(false)
-                                setImportPreview([])
-                                setImportIssues([])
-                                setImportDuplicates([])
-                                setImportFileName('')
-                                setImportDragOver(false)
-                                setImportStep(1)
                             }}
                             importing={importing}
                             importStep={importStep}
@@ -2639,7 +2595,7 @@ export default function StudentsPage() {
                                                     a.click()
                                                     document.body.removeChild(a)
                                                     URL.revokeObjectURL(url)
-                                                } catch { }
+                                                } catch { /* abaikan: write error tidak fatal */ }
                                             }}
                                             className="h-9 px-4 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-primary)] hover:text-white transition-all flex items-center gap-2 border border-[var(--color-primary)]/20"
                                         >

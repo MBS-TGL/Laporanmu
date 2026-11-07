@@ -52,7 +52,7 @@ export function autoMatchColumns(headers, rows, systemCols) {
         const normK = normStr(sys.key)
         const matches = headers.filter(h => {
             const normH = normStr(h)
-            const cleanH = normStr((h || '').split(/[\(\[\{（\n\r]/)[0])
+            const cleanH = normStr((h || '').split(/[([{（\n\r]/)[0])
             if (normH === normL || normH === normK || cleanH === normL || cleanH === normK) return true
             if (sys.synonyms && sys.synonyms.some(syn => {
                 const s = normStr(syn)

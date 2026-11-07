@@ -146,7 +146,7 @@ const DayCell = memo(({ status, weekend, invalid, isToday, isFocused, onMouseDow
 
 // ─── Row (per item) ──────────────────────────────────────────────────────────
 
-const Row = memo(({ item, idx, days, tahun, bulan, daysInMonth, todayDate, onCellMouseDown, onCellMouseEnter, onRowFill, onNoteClick, note, hideWeekend, focusedDay, alpaThreshold, hadirThreshold, visibleDays }) => {
+const Row = memo(({ item, idx, days, tahun, bulan, daysInMonth, todayDate, onCellMouseDown, onCellMouseEnter, onRowFill, onNoteClick, note, focusedDay, alpaThreshold, hadirThreshold, visibleDays }) => {
     const sum = useMemo(() => summarize(days, tahun, bulan), [days, tahun, bulan])
     const weekdays = useMemo(() => countWeekdays(tahun, bulan), [tahun, bulan])
     const pct = weekdays > 0 ? Math.round((sum.H / weekdays) * 100) : 0
@@ -340,7 +340,7 @@ function RowSkeleton({ colCount = 31 }) {
 
 // ─── MassActionDropdown ───────────────────────────────────────────────────────
 
-function MassActionDropdown({ items, dataMap, setDataMap, tahun, bulan, daysInMonth, onDirty, addToast, tabKey, activeSession }) {
+function MassActionDropdown({ items, setDataMap, tahun, bulan, daysInMonth, onDirty, addToast, tabKey, activeSession }) {
     const [open, setOpen] = useState(false)
     const [menuPos, setMenuPos] = useState({ x: 0, y: 0 })
     const btnRef = useRef(null)
@@ -878,7 +878,7 @@ function MobileCardView({ items, dataMap, tahun, bulan, daysInMonth, todayDate, 
 
 // ─── MobileListView ───────────────────────────────────────────────────────────
 
-function MobileListView({ items, dataMap, tahun, bulan, daysInMonth, todayDate, onCellClick, notesMap, onNoteClick, alpaThreshold, hadirThreshold, loadingData }) {
+function MobileListView({ items, dataMap, tahun, bulan, daysInMonth, notesMap, alpaThreshold, hadirThreshold, loadingData }) {
     const weekdays = useMemo(() => countWeekdays(tahun, bulan), [tahun, bulan])
 
     if (loadingData) return (
@@ -1018,7 +1018,7 @@ function GroupManageModal({ groups, teacherList, studentList, onClose, onRefresh
             await supabase.from('wafa_groups').update({ deleted_at: new Date().toISOString() }).eq('id', g.id)
             addToast('Kelompok dihapus', 'success')
             await onRefresh()
-        } catch (err) { addToast('Gagal hapus', 'error') }
+        } catch { addToast('Gagal hapus', 'error') }
     }
 
     return createPortal(

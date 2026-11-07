@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback, memo } from 'react'
+import React, { memo } from 'react'
 import { Bed, Briefcase, Building, Calendar, CircleCheck, IdCard, LoaderCircle, Plus, School, SquarePen, TriangleAlert } from 'lucide-react'
 import { MarsIcon, Modal, RichSelect, VenusIcon } from '@shared/components'
+import { useFormDraft } from '@shared/hooks/useFormDraft'
 
 const FormModal = memo(function FormModal({
     isOpen,
@@ -15,75 +16,43 @@ const FormModal = memo(function FormModal({
     const PROGRAMS = ['Boarding', 'Reguler']
     const GENDERS = ['Putra', 'Putri']
 
-    const INIT = {
-        name: '',
-        level: '7',
-        program: 'Boarding',
-        gender_type: 'Putra',
-        homeroom_teacher_id: '',
-        academic_year_id: academicYearsList[0]?.id || ''
-    }
-
-    const [form, setForm] = useState(INIT)
-    const [formError, setFormError] = useState('')
-    const [touched, setTouched] = useState({})
-    const [attemptedSubmit, setAttemptedSubmit] = useState(false)
-
-    useEffect(() => {
-        if (!isOpen) return
-        if (selectedItem) {
-            const teacherIds = teachersList.map(t => t.id)
-            const validTeacherId = teacherIds.includes(selectedItem.homeroom_teacher_id)
-                ? selectedItem.homeroom_teacher_id
-                : ''
-            setForm({
-                name: selectedItem.name || '',
-                level: selectedItem.grade || '7',
-                program: selectedItem.major?.includes('Reguler') ? 'Reguler' : 'Boarding',
-                gender_type: selectedItem.major?.includes('Putri') ? 'Putri' : 'Putra',
-                homeroom_teacher_id: validTeacherId,
-                academic_year_id: selectedItem.academic_year_id || academicYearsList[0]?.id || ''
-            })
-        } else {
-            setForm({ ...INIT, academic_year_id: academicYearsList[0]?.id || '' })
+    // Draft + validasi UX (touched/status/progress) dari primitif shared
+    const draft = useFormDraft({
+        isOpen,
+        selectedItem,
+        buildDraft: (item) => {
+            if (item) {
+                const teacherIds = teachersList.map(t => t.id)
+                const validTeacherId = teacherIds.includes(item.homeroom_teacher_id)
+                    ? item.homeroom_teacher_id
+                    : ''
+                return {
+                    name: item.name || '',
+                    level: item.grade || '7',
+                    program: item.major?.includes('Reguler') ? 'Reguler' : 'Boarding',
+                    gender_type: item.major?.includes('Putri') ? 'Putri' : 'Putra',
+                    homeroom_teacher_id: validTeacherId,
+                    academic_year_id: item.academic_year_id || academicYearsList[0]?.id || ''
+                }
+            }
+            return {
+                name: '',
+                level: '7',
+                program: 'Boarding',
+                gender_type: 'Putra',
+                homeroom_teacher_id: '',
+                academic_year_id: academicYearsList[0]?.id || ''
+            }
         }
-        setFormError('')
-        setTouched({})
-        setAttemptedSubmit(false)
-    }, [isOpen, selectedItem, academicYearsList, teachersList])
-
-    const setField = useCallback((key, val) => {
-        setForm(p => ({ ...p, [key]: val }))
-    }, [])
-
-    const setFieldTouched = (field) => setTouched(prev => ({ ...prev, [field]: true }))
-
-    const getStatus = (field, isRequired = false) => {
-        const value = form[field]
-        const isTouched = touched[field] || attemptedSubmit
-
-        if (isRequired) {
-            if (isTouched && (!value || (typeof value === 'string' && !value.trim()))) return 'error'
-            if (value && (typeof value === 'string' ? value.trim() : true)) return 'success'
-        } else {
-            if (value && (typeof value === 'string' ? value.trim() : true)) return 'success'
-        }
-        return 'normal'
-    }
-
-    const overallProgress = (() => {
-        const fields = ['name', 'homeroom_teacher_id', 'academic_year_id']
-        const filled = fields.filter(f => form[f]).length
-        return Math.round((filled / fields.length) * 100)
-    })()
+    })
+    const { form, setField, markTouched: setFieldTouched, getStatus, overallProgress, formError, setFormError, beginSubmit, fail } = draft
 
     const handleSubmit = async (e) => {
         e?.preventDefault()
-        setAttemptedSubmit(true)
+        beginSubmit()
         const name = (form.name || '').trim()
-        if (!name) { setFormError('Nama kelas wajib diisi.'); return }
-        setFormError('')
-        
+        if (!name) { fail('Nama kelas wajib diisi.'); return }
+
         const sanitized = {
             ...form,
             name,
@@ -96,8 +65,9 @@ const FormModal = memo(function FormModal({
         }
     }
 
-    if (!isOpen) return null
+    if (!isOpen || !form) return null
     const hasTeachers = (teachersList?.length || 0) > 0
+    const progress = overallProgress(['name', 'homeroom_teacher_id', 'academic_year_id'])
 
     const inputCls = (field, required = false) => {
         const s = getStatus(field, required)
@@ -118,10 +88,10 @@ const FormModal = memo(function FormModal({
                     <div className="h-1.5 w-24 bg-[var(--color-border)] rounded-full overflow-hidden shrink-0">
                         <div
                             className="h-full bg-[var(--color-primary)] transition-all duration-500"
-                            style={{ width: `${overallProgress}%` }}
+                            style={{ width: `${progress}%` }}
                         />
                     </div>
-                    <span className="text-xs font-bold text-[var(--color-primary)]">{overallProgress}% Lengkap</span>
+                    <span className="text-xs font-bold text-[var(--color-primary)]">{progress}% Lengkap</span>
                 </div>
             }
             icon={selectedItem ? SquarePen : Plus}

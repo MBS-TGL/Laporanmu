@@ -47,7 +47,7 @@ function getPortalContainer(id) {
 
 
 export default function BehaviorPage() {
-    const { t, tNum, dir, language } = useLanguage()
+    const { t, tNum, language } = useLanguage()
     const tp = useCallback((key) => t(`behavior.${key}`), [t])
 
     const {
@@ -92,13 +92,9 @@ export default function BehaviorPage() {
         isPrivacyMode, setIsPrivacyMode,
         isHeaderMenuOpen, setIsHeaderMenuOpen,
         headerMenuRect, setHeaderMenuRect,
-        headerMenuMounted, setHeaderMenuMounted,
+        headerMenuMounted,
 
         // Derived / Selectors
-        totalPages,
-        fromRow,
-        toRow,
-        activeFilters,
         groupedReports,
         allSelected,
 
@@ -128,14 +124,14 @@ export default function BehaviorPage() {
         isExportModalOpen, setIsExportModalOpen,
         exportScope, setExportScope,
         exportColumns, setExportColumns,
-        importFileName, setImportFileName,
-        importPreview, setImportPreview,
-        importIssues, setImportIssues,
-        importing, setImporting,
-        importProgress, setImportProgress,
+        importFileName,
+        importPreview,
+        importIssues,
+        importing,
+        importProgress,
         importStep, setImportStep,
-        importRawData, setImportRawData,
-        importFileHeaders, setImportFileHeaders,
+        importRawData,
+        importFileHeaders,
         importColumnMapping, setImportColumnMapping,
         importDragOver, setImportDragOver,
         importValidationOpen, setImportValidationOpen,
@@ -206,12 +202,18 @@ export default function BehaviorPage() {
     const [hasOpenedDelete, setHasOpenedDelete] = useState(false)
     const [hasOpenedBulkDelete, setHasOpenedBulkDelete] = useState(false)
 
-    useEffect(() => { if (isModalOpen) setHasOpenedForm(true) }, [isModalOpen])
-    useEffect(() => { if (isDetailOpen) setHasOpenedDetail(true) }, [isDetailOpen])
-    useEffect(() => { if (isExportModalOpen) setHasOpenedExport(true) }, [isExportModalOpen])
-    useEffect(() => { if (isImportModalOpen) setHasOpenedImport(true) }, [isImportModalOpen])
-    useEffect(() => { if (isDeleteModalOpen) setHasOpenedDelete(true) }, [isDeleteModalOpen])
-    useEffect(() => { if (isBulkDeleteOpen) setHasOpenedBulkDelete(true) }, [isBulkDeleteOpen])
+    useEffect(() => { // eslint-disable-next-line react-hooks/set-state-in-effect -- lazy modal: tetap ter-mount setelah dibuka sekali (animasi keluar)
+        if (isModalOpen) setHasOpenedForm(true) }, [isModalOpen])
+    useEffect(() => { // eslint-disable-next-line react-hooks/set-state-in-effect -- lazy modal: tetap ter-mount setelah dibuka sekali (animasi keluar)
+        if (isDetailOpen) setHasOpenedDetail(true) }, [isDetailOpen])
+    useEffect(() => { // eslint-disable-next-line react-hooks/set-state-in-effect -- lazy modal: tetap ter-mount setelah dibuka sekali (animasi keluar)
+        if (isExportModalOpen) setHasOpenedExport(true) }, [isExportModalOpen])
+    useEffect(() => { // eslint-disable-next-line react-hooks/set-state-in-effect -- lazy modal: tetap ter-mount setelah dibuka sekali (animasi keluar)
+        if (isImportModalOpen) setHasOpenedImport(true) }, [isImportModalOpen])
+    useEffect(() => { // eslint-disable-next-line react-hooks/set-state-in-effect -- lazy modal: tetap ter-mount setelah dibuka sekali (animasi keluar)
+        if (isDeleteModalOpen) setHasOpenedDelete(true) }, [isDeleteModalOpen])
+    useEffect(() => { // eslint-disable-next-line react-hooks/set-state-in-effect -- lazy modal: tetap ter-mount setelah dibuka sekali (animasi keluar)
+        if (isBulkDeleteOpen) setHasOpenedBulkDelete(true) }, [isBulkDeleteOpen])
 
     const handleTabChange = (newTab) => {
         setActiveTab(newTab)

@@ -1,5 +1,4 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react'
-import { useSearchParams } from 'react-router-dom'
 import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
 import {
@@ -16,7 +15,7 @@ const STATUS_ORDER = {
 }
 
 
-export function useCore({ addToast, addUndoToast }) {
+export function useCore({ addToast }) {
     // ── DATA ──
     const [enrollments, setEnrollments] = useState([])
     const [waves, setWaves] = useState([])
@@ -72,8 +71,11 @@ export function useCore({ addToast, addUndoToast }) {
         return () => clearTimeout(t)
     }, [searchQuery])
 
-    // Reset page on filter change
-    useEffect(() => { setPage(1) }, [debouncedSearch, filterWave, filterStatus, filterGender, filterProgram, sortBy, filterDateFrom, filterDateTo])
+    // Reset page on filter change (bukan derivasi state)
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- reset halaman
+        setPage(1)
+    }, [debouncedSearch, filterWave, filterStatus, filterGender, filterProgram, sortBy, filterDateFrom, filterDateTo])
 
     // ── GLOBAL STATS & PIPELINE ──
     const [globalStats, setGlobalStats] = useState({
@@ -250,7 +252,11 @@ export function useCore({ addToast, addUndoToast }) {
         }
     }, [page, pageSize, filterWave, filterStatus, filterGender, filterProgram, filterDateFrom, filterDateTo, sortBy, debouncedSearch, fetchWaves, addToast])
 
-    useEffect(() => { fetchData() }, [fetchData])
+    // Pemuatan data saat mount/deps berubah (fetchData men-set state — bukan derivasi)
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- pemuatan data on-mount
+        fetchData()
+    }, [fetchData])
 
     // Self-healing: auto-link enrollments without wave_id to the active wave
     useEffect(() => {
@@ -311,6 +317,13 @@ export function useCore({ addToast, addUndoToast }) {
     const closeProfile = useCallback(() => {
         setIsProfileOpen(false)
         setSelectedEnrollment(null)
+    }, [])
+
+    const generateCode = useCallback(() => {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
+        const part1 = Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('')
+        const part2 = Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('')
+        return `REG-${part1}-${part2}`
     }, [])
 
     const handleSubmit = useCallback(async (formData) => {
@@ -391,7 +404,7 @@ export function useCore({ addToast, addUndoToast }) {
         } finally {
             setSubmitting(false)
         }
-    }, [selectedEnrollment, addToast, fetchData, globalStats])
+    }, [selectedEnrollment, addToast, fetchData, globalStats, generateCode])
 
     const checkForWaitingListPromotion = useCallback(async (waveId) => {
         if (!waveId) return
@@ -526,63 +539,44 @@ export function useCore({ addToast, addUndoToast }) {
     }, [addToast])
 
     const handleRestoreEnrollment = useCallback(async (enrollment) => {
-        try {
-            const meta = { ...enrollment.metadata }
-            delete meta.deleted_at
+        const meta = { ...enrollment.metadata }
+        delete meta.deleted_at
 
-            const { error } = await supabase
-                .from('enrollments')
-                .update({ metadata: meta })
-                .eq('id', enrollment.id)
-            if (error) throw error
+        const { error } = await supabase
+            .from('enrollments')
+            .update({ metadata: meta })
+            .eq('id', enrollment.id)
+        if (error) throw error
 
-            addToast(`${enrollment.name} berhasil dipulihkan`, 'success')
-            await logAudit({
-                action: 'UPDATE',
-                source: 'SYSTEM',
-                tableName: 'enrollments',
-                recordId: enrollment.id,
-                oldData: enrollment,
-                newData: { ...enrollment, metadata: meta }
-            })
-            fetchArchivedEnrollments()
-            fetchData()
-        } catch (err) {
-            console.error('Restore error:', err)
-            addToast('Gagal memulihkan', 'error')
-        }
+        addToast(`${enrollment.name} berhasil dipulihkan`, 'success')
+        await logAudit({
+            action: 'UPDATE',
+            source: 'SYSTEM',
+            tableName: 'enrollments',
+            recordId: enrollment.id,
+            oldData: enrollment,
+            newData: { ...enrollment, metadata: meta }
+        })
+        fetchArchivedEnrollments()
+        fetchData()
     }, [fetchArchivedEnrollments, fetchData, addToast])
 
     const handlePermanentDeleteEnrollment = useCallback(async (enrollment) => {
-        try {
-            const { error } = await supabase
-                .from('enrollments')
-                .delete()
-                .eq('id', enrollment.id)
-            if (error) throw error
+        const { error } = await supabase
+            .from('enrollments')
+            .delete()
+            .eq('id', enrollment.id)
+        if (error) throw error
 
-            addToast(`${enrollment.name} dihapus permanen`, 'success')
-            await logAudit({
-                action: 'DELETE',
-                source: 'SYSTEM',
-                tableName: 'enrollments',
-                recordId: enrollment.id,
-                oldData: enrollment
-            })
-            fetchArchivedEnrollments()
-        } catch (err) {
-            console.error('Permanent delete error:', err)
-            addToast('Gagal menghapus data', 'error')
-        }
-    }, [fetchArchivedEnrollments, addToast])
-
-    // ── HELPERS & NOTIFICATIONS ──
-    const generateCode = useCallback(() => {
-        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-        const part1 = Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('')
-        const part2 = Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('')
-        return `REG-${part1}-${part2}`
-    }, [])
+        await logAudit({
+            action: 'DELETE',
+            source: 'SYSTEM',
+            tableName: 'enrollments',
+            recordId: enrollment.id,
+            oldData: enrollment
+        })
+        fetchArchivedEnrollments()
+    }, [fetchArchivedEnrollments])
 
     const sendFonnteMessage = async (target, message) => {
         const token = import.meta.env.VITE_FONNTE_TOKEN || ''

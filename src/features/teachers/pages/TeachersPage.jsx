@@ -11,7 +11,6 @@ import ShortcutsModal from '@shared/components/ShortcutsModal'
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import { Modal, Breadcrumb, PageHeader, Pagination, StatsCarousel, StatCard, ActionBadge, DiffViewer, AuditTimeline, RichSelect, MarsIcon, VenusIcon, WhatsAppIcon } from '@shared/components'
 import { useToast } from '@context/Toast'
-import { useAuth } from '@context/Auth'
 import { useFlag } from '@context/FeatureFlags'
 import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
@@ -25,7 +24,6 @@ import { useImportExportCore } from '@shared/hooks/useImportExportCore'
 import ArchiveModal from '@features/teachers/components/ArchiveModal'
 
 
-import { useDebounce } from '@hooks/useDebounce'
 
 // STATUS_CONFIG imported from TeacherRow component
 const LS_FILTERS = 'teachers_filters'
@@ -76,15 +74,19 @@ const DebouncedSearchInput = memo(({ searchQuery, onSearch, inputRef, isLoading 
     const [value, setValue] = useState(searchQuery)
 
     // Debounce: propagate ke parent setelah 350ms berhenti mengetik
+    // (onSearch = setSearchQuery dari parent — stabil)
     useEffect(() => {
         const t = setTimeout(() => onSearch(value), 350)
         return () => clearTimeout(t)
-    }, [value])
+    }, [value, onSearch])
 
-    // Sync saat di-clear dari luar (resetAllFilters, klik chip ×)
-    useEffect(() => {
+    // Sync saat di-clear dari luar (resetAllFilters, klik chip ×) —
+    // pattern "adjust state saat prop berubah" (render-phase, bukan effect)
+    const [prevQuery, setPrevQuery] = useState(searchQuery)
+    if (searchQuery !== prevQuery) {
+        setPrevQuery(searchQuery)
         if (searchQuery === '' && value !== '') setValue('')
-    }, [searchQuery])
+    }
 
     return (
         <div className="relative group">
@@ -175,18 +177,14 @@ export default function TeachersPage() {
     const quickStatusRef = useRef(null)
 
     const searchInputRef = useRef(null)
-    const headerMenuRef = useRef(null)
     // Sticky portal refs & rects for header menu dropdown
     const headerMenuBtnRef = useRef(null)
     const [headerMenuRect, setHeaderMenuRect] = useState(null)
     // Deferred unmount: keeps portal in DOM for 200ms after close so exit animation can play
     const [headerMenuMounted, setHeaderMenuMounted] = useState(false)
     const { addToast } = useToast()
-    const { profile } = useAuth()
 
     // --- Stats Carousel Dot Indicator ---
-    const statsScrollRef = useRef(null)
-    const [activeStatIdx, setActiveStatIdx] = useState(0)
     const STAT_CARD_COUNT = 5
 
     // access.teacher_teachers — kalau off, guru hanya bisa lihat (read-only)
@@ -194,21 +192,29 @@ export default function TeachersPage() {
     const canEdit = teacherTeachersEnabled
 
     // ── persist ──────────────────────────────────────────────────────────────
+    // Hydrate filter/kolom tersimpan sekali saat mount (bukan derivasi state)
+    /* eslint-disable react-hooks/set-state-in-effect -- hydrate localStorage on-mount */
     useEffect(() => {
-        try { const f = JSON.parse(localStorage.getItem(LS_FILTERS) || '{}'); if (f.filterGender) setFilterGender(f.filterGender); if (f.filterStatus !== undefined) setFilterStatus(f.filterStatus); if (f.filterSubject) setFilterSubject(f.filterSubject); if (f.filterType) setFilterType(f.filterType); if (f.sortBy) setSortBy(f.sortBy) } catch { }
-        try { const c = JSON.parse(localStorage.getItem(LS_COLS) || '{}'); if (Object.keys(c).length) setVisibleCols(c) } catch { }
+        try { const f = JSON.parse(localStorage.getItem(LS_FILTERS) || '{}'); if (f.filterGender) setFilterGender(f.filterGender); if (f.filterStatus !== undefined) setFilterStatus(f.filterStatus); if (f.filterSubject) setFilterSubject(f.filterSubject); if (f.filterType) setFilterType(f.filterType); if (f.sortBy) setSortBy(f.sortBy) } catch { /* filter tersimpan rusak — pakai default */ }
+        try { const c = JSON.parse(localStorage.getItem(LS_COLS) || '{}'); if (Object.keys(c).length) setVisibleCols(c) } catch { /* abaikan: filter kolom rusak */ }
     }, [])
-    useEffect(() => { try { localStorage.setItem(LS_FILTERS, JSON.stringify({ filterGender, filterStatus, filterSubject, filterType, sortBy })) } catch { } }, [filterGender, filterStatus, filterSubject, filterType, sortBy])
-    useEffect(() => { try { localStorage.setItem(LS_COLS, JSON.stringify(visibleCols)) } catch { } }, [visibleCols])
-    useEffect(() => { try { localStorage.setItem(LS_PAGE_SIZE, pageSize) } catch { } }, [pageSize])
+    /* eslint-enable react-hooks/set-state-in-effect */
+    useEffect(() => { try { localStorage.setItem(LS_FILTERS, JSON.stringify({ filterGender, filterStatus, filterSubject, filterType, sortBy })) } catch { /* abaikan: write error tidak fatal */ } }, [filterGender, filterStatus, filterSubject, filterType, sortBy])
+    useEffect(() => { try { localStorage.setItem(LS_COLS, JSON.stringify(visibleCols)) } catch { /* abaikan: write error tidak fatal */ } }, [visibleCols])
+    useEffect(() => { try { localStorage.setItem(LS_PAGE_SIZE, pageSize) } catch { /* abaikan: write error tidak fatal */ } }, [pageSize])
 
-    // reset page on search change
-    useEffect(() => { setPage(1) }, [searchQuery])
+    // reset page on search change (reset pagination — bukan derivasi state)
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- reset halaman saat search berubah
+        setPage(1)
+    }, [searchQuery])
 
     // ── outside click ─────────────────────────────────────────────────────────
-    // Deferred unmount effect for header menu
+    // Deferred unmount for header menu (animasi keluar 200ms — sinkronisasi
+    // mounted dengan isOpen; bukan derivasi state)
     useEffect(() => {
         if (isHeaderMenuOpen) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- sinkronisasi terpaksa: animasi keluar
             setHeaderMenuMounted(true)
         } else {
             const t = setTimeout(() => setHeaderMenuMounted(false), 200)
@@ -295,13 +301,13 @@ export default function TeachersPage() {
             if (cls) setClassesList(cls)
         } catch { addToast('Gagal memuat data guru', 'error') }
         finally { setLoading(false) }
-    }, [page, sortBy, filterStatus, filterGender, filterSubject, filterType, filterMissing, searchQuery, addToast])
+    }, [page, pageSize, sortBy, filterStatus, filterGender, filterSubject, filterType, filterMissing, searchQuery, addToast])
 
     const fetchStats = useCallback(async () => {
         try {
             const { data } = await supabase.from('teachers').select('id,gender,status,type').is('deleted_at', null)
             if (data) setStats({ total: data.length, active: data.filter(t => t.status === 'active').length, male: data.filter(t => t.gender === 'L').length, female: data.filter(t => t.gender === 'P').length, guru: data.filter(t => !t.type || t.type === 'guru').length, karyawan: data.filter(t => t.type === 'karyawan').length, pengabdian: data.filter(t => t.type === 'pengabdian').length })
-        } catch { }
+        } catch { /* statistik gagal — biarkan nilai lama */ }
     }, [])
 
     const fetchDataRef = useRef(fetchData); const fetchStatsRef = useRef(fetchStats)
@@ -313,8 +319,17 @@ export default function TeachersPage() {
         return () => supabase.removeChannel(ch)
     }, [])
 
-    useEffect(() => { fetchStats() }, [])
-    useEffect(() => { fetchData() }, [page, sortBy, filterStatus, filterGender, filterSubject, filterType, filterMissing, searchQuery])
+    // Pemuatan awal (fetch men-set state — bukan derivasi)
+    // fetchStats stabil (deps []) — masuk deps tanpa efek refetch tambahan
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- pemuatan data on-mount
+        fetchStats()
+    }, [fetchStats])
+    // fetchData berubah hanya saat page/filter berubah — setara daftar deps lama
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- pemuatan data on-mount / saat filter berubah
+        fetchData()
+    }, [fetchData])
 
 
 
@@ -411,10 +426,6 @@ export default function TeachersPage() {
         try { const { error } = await supabase.from('teachers').update({ deleted_at: new Date().toISOString() }).eq('id', teacherToAction.id); if (error) throw error; addToast(`"${teacherToAction.name}" diarsipkan`, 'success'); await logAudit({ action: 'UPDATE', source: 'OPERATIONAL', tableName: 'teachers', recordId: teacherToAction.id, oldData: teacherToAction, newData: { ...teacherToAction, deleted_at: new Date().toISOString() } }); setIsArchiveModalOpen(false); setTeacherToAction(null); fetchData(); fetchStats() }
         catch { addToast('Gagal mengarsipkan', 'error') } finally { setSubmitting(false) }
     }
-    const handleRestore = async teacher => {
-        try { const { error } = await supabase.from('teachers').update({ deleted_at: null }).eq('id', teacher.id); if (error) throw error; addToast(`"${teacher.name}" dipulihkan`, 'success'); await logAudit({ action: 'RESTORE', source: 'OPERATIONAL', tableName: 'teachers', recordId: teacher.id, oldData: teacher, newData: { ...teacher, deleted_at: null } }); setArchivedTeachers(prev => prev.filter(t => t.id !== teacher.id)); fetchData(); fetchStats() }
-        catch { addToast('Gagal memulihkan', 'error') }
-    }
     const fetchArchived = async () => {
         setLoadingArchived(true)
         try { const { data, error } = await supabase.from('teachers').select('*').not('deleted_at', 'is', null).order('deleted_at', { ascending: false }); if (error) throw error; setArchivedTeachers(data || []) }
@@ -507,7 +518,7 @@ export default function TeachersPage() {
                 setProfileReports(reports)
                 setProfileStats({ total: reports.length, monthly: reports.filter(r => new Date(r.created_at) >= thisMonth).length, totalPts: reports.reduce((a, r) => a + (r.points || 0), 0), posCount: reports.filter(r => (r.points || 0) > 0).length, negCount: reports.filter(r => (r.points || 0) < 0).length })
             }
-        } catch { } finally { setLoadingProfile(false) }
+        } catch { /* statistik profil gagal — biarkan nilai lama */ } finally { setLoadingProfile(false) }
     }
 
     // ── bulk ──────────────────────────────────────────────────────────────────
@@ -707,14 +718,14 @@ export default function TeachersPage() {
     const {
         isImportModalOpen, setIsImportModalOpen, isExportModalOpen, setIsExportModalOpen,
         exporting, exportScope, setExportScope, exportColumns, setExportColumns,
-        importStep, setImportStep, importFileName, importPreview, setImportPreview,
-        importIssues, setImportIssues, importFileHeaders, importColumnMapping, setImportColumnMapping,
+        importStep, setImportStep, importFileName, importPreview,
+        importIssues, importFileHeaders, importColumnMapping, setImportColumnMapping,
         importRawData, importLoading, setImportLoading = () => {}, importDragOver: importDrag, setImportDragOver: setImportDrag,
         importValidationOpen, setImportValidationOpen, importing, importProgress,
         importEditCell, setImportEditCell, importSkipDupes, setImportSkipDupes,
         importReadyRows, hasImportBlockingErrors,
         processImportFile, handleImportClick, resetImport, handleCommitImport,
-        buildImportPreview, handleImportCellEdit, handleRemoveImportRow, handleBulkFix,
+        buildImportPreview, handleImportCellEdit, handleRemoveImportRow,
         handleDownloadTemplate, handleExportCSV, handleExportExcel, handleExportPDF,
     } = importExport
 

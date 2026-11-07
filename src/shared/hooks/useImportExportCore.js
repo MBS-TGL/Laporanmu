@@ -1,9 +1,9 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react'
 import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
 import {
     parseCSVFile, parseExcelFile, autoMatchColumns,
-    downloadBlob, writeCSV, writeExcel, exportTablePDF, buildTemplateFile
+    writeCSV, writeExcel, exportTablePDF, buildTemplateFile
 } from '@utils/importExportEngine'
 
 /**
@@ -16,6 +16,9 @@ import {
  * validasi/dupe, payload commit, query export, teks toast/audit — sehingga
  * perilaku domain tiap fitur tidak berubah.
  *
+ * Config dibaca lewat ref (selalu nilai render terbaru), jadi callback stabil
+ * tanpa perlu membungkus config dalam useMemo di sisi fitur.
+ *
  * config = {
  *   systemCols   : [{ key, label, synonyms? }]
  *   addToast     : (msg, type) => void
@@ -23,31 +26,35 @@ import {
  *   buildPreview : async (rows, mapping) => { validated, issues, dupeIndices? }
  *   validate     : (preview) => { validated, issues, dupeIndices? }   // re-run saat edit
  *   resyncRow    : (row, key, value) => row      // sync field turunan (_className dkk.)
- *   buildCommitRow: (row) => payload             // mapping row → kolom DB
+ *   buildCommitRow: (row, ctx) => payload        // mapping row → kolom DB
  *   commitRows   : async (chunk, allRows) => void // override; default insert ke table
  *   afterCommit  : async () => void              // refetch data fitur
  *   messages     : { unsupportedFormat?, emptyFile?, parseFailed?, noData?, hasErrors?, noValidRows?,
- *                    removeRow?, bulkFix?: (n) => string, commitSuccess?: (n) => string, commitFailed?: (err) => string }
- *   audit        : { source?: 'SYSTEM'|'OPERATIONAL'|'MASTER', insertPayload?: (n, rows) => object }
+ *                    removeRow?, bulkFix?: (value, n) => string, commitSuccess?: (n) => string, commitFailed?: (err) => string }
+ *   audit        : { source?: 'SYSTEM'|'OPERATIONAL'|'MASTER', insertPayload?: (n, rows) => object } | null
  *   parseWorkbook: async (file) => rows           // override parser xlsx (mis. dapodik)
  *   template     : { headers, widths?, rows?, filename? }
- *   export       : { getExportData, sheetName?, defaultFileName?, defaultColumns?,
+ *   export       : { getExportData(scope, cols), sheetName?, defaultFileName?, defaultColumns?,
  *                    pdfTitle?, pdfMeta?(rows, scope), pdfFilterLines?(), pdfColumnStyles?,
- *                    auditSource?, auditPayload?(format, count), toast?(format, count),
+ *                    auditSource?, auditPayload?(format, count, ctx), toast?(format, count),
  *                    noData?, failed?(format) }
  * }
  */
 const CHUNK = 50
+const NOOP = () => {}
 
 export function useImportExportCore(config) {
-    const cfg = config || {}
-    const addToast = cfg.addToast || (() => {})
+    // Config selalu dibaca dari ref → callback stabil walau config dibangun per-render
+    const configRef = useRef(config)
+    useEffect(() => { configRef.current = config })
+
+    const addToast = useCallback((msg, type) => (configRef.current.addToast || NOOP)(msg, type), [])
 
     // ---- STATE ----
     const [isImportModalOpen, setIsImportModalOpen] = useState(false)
     const [isExportModalOpen, setIsExportModalOpen] = useState(false)
     const [exportScope, setExportScope] = useState('filtered')   // 'filtered' | 'selected' | 'all'
-    const [exportColumns, setExportColumns] = useState(cfg.export?.defaultColumns || [])
+    const [exportColumns, setExportColumns] = useState(config?.export?.defaultColumns || [])
     const [importFileName, setImportFileName] = useState('')
     const [importPreview, setImportPreview] = useState([])
     const [importIssues, setImportIssues] = useState([])
@@ -82,16 +89,17 @@ export function useImportExportCore(config) {
     }, [])
 
     const runValidation = useCallback((preview) => {
-        if (!cfg.validate) return
-        applyValidation(cfg.validate(preview), preview)
-    }, [cfg.validate, applyValidation])
+        const validate = configRef.current.validate
+        if (!validate) return
+        applyValidation(validate(preview), preview)
+    }, [applyValidation])
 
     // ---- IMPORT FLOW ----
     const processImportFile = useCallback(async (file) => {
+        const { systemCols, parseWorkbook, messages } = configRef.current
         const ext = file.name.toLowerCase()
-        const msg = cfg.messages || {}
         if (!ext.endsWith('.csv') && !ext.endsWith('.xlsx')) {
-            addToast(msg.unsupportedFormat || 'Format tidak didukung. Gunakan .csv atau .xlsx', 'error')
+            addToast(messages?.unsupportedFormat || 'Format tidak didukung. Gunakan .csv atau .xlsx', 'error')
             return
         }
         setImportFileName(file.name)
@@ -103,24 +111,24 @@ export function useImportExportCore(config) {
             const isXlsx = ext.endsWith('.xlsx') || (file.type || '').includes('sheet')
             let rows
             if (isXlsx) {
-                rows = cfg.parseWorkbook ? await cfg.parseWorkbook(file) : await parseExcelFile(file)
+                rows = parseWorkbook ? await parseWorkbook(file) : await parseExcelFile(file)
             } else {
                 rows = await parseCSVFile(file)
             }
-            if (!rows.length) { addToast(msg.emptyFile || 'File kosong atau tidak terbaca', 'error'); return }
+            if (!rows.length) { addToast(messages?.emptyFile || 'File kosong atau tidak terbaca', 'error'); return }
 
             setImportRawData(rows)
             const headers = Object.keys(rows[0])
             setImportFileHeaders(headers)
-            setImportColumnMapping(autoMatchColumns(headers, rows, cfg.systemCols || []))
+            setImportColumnMapping(autoMatchColumns(headers, rows, systemCols || []))
             setImportStep(2)
         } catch (err) {
             console.error(err)
-            addToast(msg.parseFailed || 'Gagal membaca file import', 'error')
+            addToast(messages?.parseFailed || 'Gagal membaca file import', 'error')
         } finally {
             setImportLoading(false)
         }
-    }, [cfg.systemCols, cfg.parseWorkbook, cfg.messages, addToast])
+    }, [addToast])
 
     const resetImport = useCallback(() => {
         setImportStep(1)
@@ -141,141 +149,145 @@ export function useImportExportCore(config) {
     }, [resetImport])
 
     const handleImportCellEdit = useCallback((index, key, value) => {
+        const { resyncRow } = configRef.current
         const next = [...importPreview]
         const updatedRow = { ...next[index], [key]: value }
-        next[index] = cfg.resyncRow ? cfg.resyncRow(updatedRow, key, value) : updatedRow
+        next[index] = resyncRow ? resyncRow(updatedRow, key, value) : updatedRow
         setImportPreview(next)
         runValidation(next)
-    }, [importPreview, cfg.resyncRow, runValidation])
+    }, [importPreview, runValidation])
 
     const handleRemoveImportRow = useCallback((idx) => {
+        const { messages } = configRef.current
         const next = importPreview.filter((_, i) => i !== idx)
         setImportPreview(next)
         runValidation(next)
-        addToast(cfg.messages?.removeRow || 'Baris berhasil dihapus dari preview', 'success')
-    }, [importPreview, runValidation, addToast, cfg.messages])
+        addToast(messages?.removeRow || 'Baris berhasil dihapus dari preview', 'success')
+    }, [importPreview, runValidation, addToast])
 
     const handleBulkFix = useCallback((sysKey, value) => {
+        const { resyncRow, messages } = configRef.current
         const newPrev = importPreview.map(r => {
             const updated = { ...r, [sysKey]: value }
-            return cfg.resyncRow ? cfg.resyncRow(updated, sysKey, value) : updated
+            return resyncRow ? resyncRow(updated, sysKey, value) : updated
         })
         setImportPreview(newPrev)
         runValidation(newPrev)
         addToast(
-            cfg.messages?.bulkFix ? cfg.messages.bulkFix(value, newPrev.length) : `Selesai memperbarui ${newPrev.length} baris`,
+            messages?.bulkFix ? messages.bulkFix(value, newPrev.length) : `Selesai memperbarui ${newPrev.length} baris`,
             'success'
         )
-    }, [importPreview, cfg.resyncRow, runValidation, addToast, cfg.messages])
+    }, [importPreview, runValidation, addToast])
 
     const buildImportPreview = useCallback(async (rawRows, mapping) => {
-        const res = await cfg.buildPreview(rawRows, mapping)
+        const res = await configRef.current.buildPreview(rawRows, mapping)
         applyValidation(res, [])
-    }, [cfg.buildPreview, applyValidation])
+    }, [applyValidation])
 
     const handleCommitImport = useCallback(async () => {
-        const msg = cfg.messages || {}
-        if (!importPreview.length) { addToast(msg.noData || 'Tidak ada data untuk diimport', 'error'); return }
-        if (hasImportBlockingErrors) { addToast(msg.hasErrors || 'Masih ada ERROR. Perbaiki file dulu ya.', 'error'); return }
+        const { messages, audit, table, commitRows: customCommitRows, buildCommitRow, afterCommit } = configRef.current
+        if (!importPreview.length) { addToast(messages?.noData || 'Tidak ada data untuk diimport', 'error'); return }
+        if (hasImportBlockingErrors) { addToast(messages?.hasErrors || 'Masih ada ERROR. Perbaiki file dulu ya.', 'error'); return }
         if (importReadyRows.length === 0) {
-            addToast(msg.noValidRows || 'Tidak ada data baru yang valid untuk diimport (semua duplikat atau error)', 'warning')
+            addToast(messages?.noValidRows || 'Tidak ada data baru yang valid untuk diimport (semua duplikat atau error)', 'warning')
             return
         }
 
         setImporting(true)
         setImportProgress({ done: 0, total: importReadyRows.length })
         try {
-            const commitRows = cfg.commitRows || (async (chunk) => {
-                const { error } = await supabase.from(cfg.table).insert(chunk)
+            const commitRows = customCommitRows || (async (chunk) => {
+                const { error } = await supabase.from(table).insert(chunk)
                 if (error) throw error
             })
             for (let i = 0; i < importReadyRows.length; i += CHUNK) {
-                const chunk = importReadyRows.slice(i, i + CHUNK).map((r, cIdx) => cfg.buildCommitRow(r, { chunkStart: i, indexInChunk: cIdx }))
+                const chunk = importReadyRows.slice(i, i + CHUNK).map((r, cIdx) => buildCommitRow(r, { chunkStart: i, indexInChunk: cIdx }))
                 await commitRows(chunk, importReadyRows)
                 setImportProgress({ done: Math.min(i + CHUNK, importReadyRows.length), total: importReadyRows.length })
             }
 
             addToast(
-                msg.commitSuccess
-                    ? msg.commitSuccess(importReadyRows.length)
+                messages?.commitSuccess
+                    ? messages.commitSuccess(importReadyRows.length)
                     : `Berhasil import ${importReadyRows.length} data`,
                 'success'
             )
-            // cfg.audit === null → lewati audit (mis. dorms: commit hanya update metadata)
-            if (cfg.audit !== null) {
+            // audit === null → lewati audit (mis. dorms: commit hanya update metadata)
+            if (audit !== null) {
                 await logAudit({
                     action: 'INSERT',
-                    source: cfg.audit?.source || 'SYSTEM',
-                    tableName: cfg.table,
-                    newData: cfg.audit?.insertPayload
-                        ? cfg.audit.insertPayload(importReadyRows.length, importReadyRows)
+                    source: audit?.source || 'SYSTEM',
+                    tableName: table,
+                    newData: audit?.insertPayload
+                        ? audit.insertPayload(importReadyRows.length, importReadyRows)
                         : { bulk_import: true, count: importReadyRows.length }
                 })
             }
             resetImport()
             setIsImportModalOpen(false)
-            await cfg.afterCommit?.()
+            await afterCommit?.()
         } catch (err) {
             console.error(err)
-            addToast(msg.commitFailed ? msg.commitFailed(err) : `Gagal import: ${err?.message || 'cek constraint DB / duplikat / koneksi'}`, 'error')
+            addToast(messages?.commitFailed ? messages.commitFailed(err) : `Gagal import: ${err?.message || 'cek constraint DB / duplikat / koneksi'}`, 'error')
         } finally {
             setImporting(false)
         }
-    }, [importPreview, hasImportBlockingErrors, importReadyRows, cfg, addToast, resetImport])
+    }, [importPreview, hasImportBlockingErrors, importReadyRows, addToast, resetImport])
 
     const handleDownloadTemplate = useCallback(() => {
+        const { template, systemCols } = configRef.current
         return buildTemplateFile({
-            headers: cfg.template?.headers || (cfg.systemCols || []).map(s => s.label),
-            widths: cfg.template?.widths || [],
-            rows: cfg.template?.rows || [],
-            filename: cfg.template?.filename || 'Template Import'
+            headers: template?.headers || (systemCols || []).map(s => s.label),
+            widths: template?.widths || [],
+            rows: template?.rows || [],
+            filename: template?.filename || 'Template Import'
         })
-    }, [cfg.template, cfg.systemCols])
+    }, [])
 
     // ---- EXPORT ----
     const runExport = useCallback(async (fmt, filename, options = {}) => {
+        const { export: exportCfg, table } = configRef.current
         setExporting(true)
         try {
-            const exp = cfg.export || {}
-            const rows = await exp.getExportData()
-            if (!rows.length) { addToast(exp.noData || 'Tidak ada data untuk diekspor', 'warning'); return }
-            const fname = filename || exp.defaultFileName || 'export'
+            const rows = await exportCfg?.getExportData(exportScope, exportColumns)
+            if (!rows.length) { addToast(exportCfg?.noData || 'Tidak ada data untuk diekspor', 'warning'); return }
+            const fname = filename || exportCfg?.defaultFileName || 'export'
             let count
             if (fmt === 'csv') {
                 count = await writeCSV(fname, rows, options)
             } else if (fmt === 'xlsx') {
-                count = await writeExcel(fname, rows, exp.sheetName || 'Data')
+                count = await writeExcel(fname, rows, exportCfg?.sheetName || 'Data')
             } else {
                 count = await exportTablePDF({
                     filename: fname,
-                    title: exp.pdfTitle || 'Laporan Data',
-                    metaText: exp.pdfMeta ? exp.pdfMeta(rows, exportScope) : `Tanggal: ${new Date().toLocaleDateString('id-ID')}  |  Total: ${rows.length}`,
-                    filterLines: exp.pdfFilterLines ? exp.pdfFilterLines() : [],
+                    title: exportCfg?.pdfTitle || 'Laporan Data',
+                    metaText: exportCfg?.pdfMeta ? exportCfg.pdfMeta(rows, exportScope) : `Tanggal: ${new Date().toLocaleDateString('id-ID')}  |  Total: ${rows.length}`,
+                    filterLines: exportCfg?.pdfFilterLines ? exportCfg.pdfFilterLines() : [],
                     rows,
-                    columnStyles: exp.pdfColumnStyles || {},
+                    columnStyles: exportCfg?.pdfColumnStyles || {},
                     orientation: options.orientation || 'landscape',
                     includeHeader: options.includeHeader,
                 })
             }
             addToast(
-                exp.toast ? exp.toast(fmt, count) : `Export ${fmt.toUpperCase()} berhasil (${count} data)`,
+                exportCfg?.toast ? exportCfg.toast(fmt, count) : `Export ${fmt.toUpperCase()} berhasil (${count} data)`,
                 'success'
             )
             await logAudit({
                 action: 'EXPORT',
-                source: exp.auditSource || 'OPERATIONAL',
-                tableName: cfg.table,
-                newData: exp.auditPayload
-                    ? exp.auditPayload(fmt, count, { exportScope, exportColumns })
+                source: exportCfg?.auditSource || 'OPERATIONAL',
+                tableName: table,
+                newData: exportCfg?.auditPayload
+                    ? exportCfg.auditPayload(fmt, count, { exportScope, exportColumns })
                     : { format: fmt.toUpperCase(), count, scope: exportScope }
             })
         } catch (e) {
             console.error(e)
-            addToast(cfg.export?.failed ? cfg.export.failed(fmt) : `Gagal export ${fmt.toUpperCase()}`, 'error')
+            addToast(configRef.current.export?.failed ? configRef.current.export.failed(fmt) : `Gagal export ${fmt.toUpperCase()}`, 'error')
         } finally {
             setExporting(false)
         }
-    }, [cfg.export, cfg.table, exportScope, addToast])
+    }, [exportScope, exportColumns, addToast])
 
     const handleExportCSV = useCallback((filename, options) => runExport('csv', filename, options), [runExport])
     const handleExportExcel = useCallback((filename) => runExport('xlsx', filename), [runExport])
@@ -323,6 +335,6 @@ export function useImportExportCore(config) {
         handleExportPDF,
 
         // Helper untuk kebutuhan khusus fitur (GSheets, dsb.)
-        helpers: { parseCSVFile, downloadBlob },
+        helpers: { parseCSVFile },
     }
 }

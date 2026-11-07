@@ -5,6 +5,7 @@ import {
     Save, School, User, Users
 } from 'lucide-react'
 import { Modal, RichSelect, VenusIcon } from '@shared/components'
+import { useFormDraft } from '@shared/hooks/useFormDraft'
 import {
     PROGRAM_OPTIONS, QURAN_LEVELS, UNIFORM_SIZES, TEST_SCORES, REQUIRED_DOCUMENTS
 } from '@features/enrollment/utils/enrollmentConstants'
@@ -33,10 +34,21 @@ const INITIAL_FORM = {
 
 function FormModal({ isOpen, onClose, onSubmit, enrollment, submitting, onPhotoUpload, uploadingPhoto }) {
     const [step, setStep] = useState(0)
-    const [form, setForm] = useState({ ...INITIAL_FORM })
-    const [touched, setTouched] = useState({})
-    const [attemptedSubmit, setAttemptedSubmit] = useState(false)
     const photoRef = useRef(null)
+
+    // Draft + validasi UX dari primitif shared (multi-step: step & crop tetap lokal)
+    const draft = useFormDraft({
+        isOpen,
+        selectedItem: enrollment,
+        buildDraft: (item) => (item ? { ...INITIAL_FORM, ...item } : { ...INITIAL_FORM }),
+        warnings: {
+            nisn: (v) => v.length !== 10,
+            phone: (v) => v.length < 10 || !v.startsWith('08'),
+            father_phone: (v) => v.length < 10 || !v.startsWith('08'),
+            mother_phone: (v) => v.length < 10 || !v.startsWith('08'),
+        }
+    })
+    const { form, setField, markTouched: setFieldTouched, beginSubmit, getStatus } = draft
 
     // Cropping states
     const [cropSrc, setCropSrc] = useState(null)
@@ -64,51 +76,16 @@ function FormModal({ isOpen, onClose, onSubmit, enrollment, submitting, onPhotoU
         setIsDragging(false)
     }
 
-    // Reset or load data
+    // Reset wizard (step & crop) — form ditangani useFormDraft
     useEffect(() => {
         if (isOpen) {
-            if (enrollment) {
-                setForm({
-                    ...INITIAL_FORM,
-                    ...enrollment,
-                })
-            } else {
-                setForm({ ...INITIAL_FORM })
-            }
             setStep(0)
-            setTouched({})
-            setAttemptedSubmit(false)
             setCropSrc(null)
             setCropZoom(1)
             setCropPos({ x: 0, y: 0 })
             setIsCropperOpen(false)
         }
-    }, [enrollment, isOpen])
-
-    const setField = useCallback((key, value) => {
-        setForm(prev => ({ ...prev, [key]: value }))
-    }, [])
-
-    const setFieldTouched = useCallback((key) => {
-        setTouched(prev => ({ ...prev, [key]: true }))
-    }, [])
-
-    // Get validation state
-    const getStatus = useCallback((field, isRequired = false) => {
-        const value = form[field]
-        const isTouched = touched[field] || attemptedSubmit
-
-        if (field === 'nisn' && value && value.length !== 10) return 'warning'
-        if ((field === 'phone' || field === 'father_phone' || field === 'mother_phone') && value && (value.length < 10 || !value.startsWith('08'))) return 'warning'
-
-        if (isRequired) {
-            if (isTouched && (!value || (typeof value === 'string' && !value.trim()))) return 'error'
-            if (value && (typeof value === 'string' ? value.trim() : true)) return 'success'
-        } else {
-            if (value && (typeof value === 'string' ? value.trim() : true)) return 'success'
-        }
-        return 'normal'
-    }, [form, touched, attemptedSubmit])
+    }, [isOpen])
 
     const canNext = useCallback(() => {
         if (step === 0) {
@@ -125,24 +102,24 @@ function FormModal({ isOpen, onClose, onSubmit, enrollment, submitting, onPhotoU
 
     const handleNext = useCallback(() => {
         if (step === 0 && (!form.name || form.name.trim().length < 3 || !form.school_origin || form.school_origin.trim().length < 2)) {
-            setAttemptedSubmit(true)
-            setTouched({ name: true, school_origin: true })
+            beginSubmit()
+            setFieldTouched('name'); setFieldTouched('school_origin')
             return
         }
         if (step === 1 && (!form.father_name || form.father_name.trim().length < 2 || !form.mother_name || form.mother_name.trim().length < 2)) {
-            setAttemptedSubmit(true)
-            setTouched({ father_name: true, mother_name: true })
+            beginSubmit()
+            setFieldTouched('father_name'); setFieldTouched('mother_name')
             return
         }
         if (step === 2 && (!form.address || form.address.trim().length < 5)) {
-            setAttemptedSubmit(true)
-            setTouched({ address: true })
+            beginSubmit()
+            setFieldTouched('address')
             return
         }
         if (step < STEPS.length - 1) {
             setStep(s => s + 1)
         }
-    }, [step, form])
+    }, [step, form, beginSubmit, setFieldTouched])
 
     const handlePrev = useCallback(() => {
         if (step > 0) setStep(s => s - 1)
@@ -151,11 +128,11 @@ function FormModal({ isOpen, onClose, onSubmit, enrollment, submitting, onPhotoU
     const handleSubmitForm = useCallback((e) => {
         if (e) e.preventDefault()
         if (!canNext()) {
-            setAttemptedSubmit(true)
+            beginSubmit()
             return
         }
         onSubmit(form)
-    }, [form, onSubmit, canNext])
+    }, [form, onSubmit, canNext, beginSubmit])
 
     if (!isOpen) return null
 

@@ -9,11 +9,9 @@ import {
 import DashboardLayout from '@core/layouts/DashboardLayout'
 import { useToast } from '@context/Toast'
 import { useLanguage } from '@context/Language'
-import { useAuth } from '@context/Auth'
 import { useFlag } from '@context/FeatureFlags'
 import { supabase } from '@lib/supabase'
 import { logAudit } from '@utils/auditLogger'
-import { useDebounce } from '@hooks/useDebounce'
 import {
     PageHeader,
     Modal,
@@ -62,15 +60,19 @@ const DebouncedSearchInput = memo(({ searchQuery, onSearch, inputRef, isLoading 
     const [value, setValue] = useState(searchQuery)
 
     // Debounce: propagate ke parent setelah 350ms berhenti mengetik
+    // (onSearch = setSearchQuery dari parent — stabil)
     useEffect(() => {
         const t = setTimeout(() => onSearch(value), 350)
         return () => clearTimeout(t)
-    }, [value])
+    }, [value, onSearch])
 
-    // Sync saat di-clear dari luar (resetAllFilters, klik chip ×)
-    useEffect(() => {
+    // Sync saat di-clear dari luar (resetAllFilters, klik chip ×) —
+    // pattern "adjust state saat prop berubah" (render-phase, bukan effect)
+    const [prevQuery, setPrevQuery] = useState(searchQuery)
+    if (searchQuery !== prevQuery) {
+        setPrevQuery(searchQuery)
         if (searchQuery === '' && value !== '') setValue('')
-    }, [searchQuery])
+    }
 
     return (
         <div className="relative group">
@@ -129,7 +131,7 @@ function TimelineView({ years, onEdit, onHistory, onSetActive, onDuplicate, onDe
                     {/* Active Gradient Path (Card Width) */}
                     <div className="absolute top-[72px] left-16 right-16 md:left-32 md:right-32 h-[3px] bg-gradient-to-r from-transparent via-[var(--color-primary)]/80 to-transparent shadow-[0_0_15px_rgba(var(--color-primary-rgb),0.5)] pointer-events-none" />
 
-                    {sorted.map((year, idx) => {
+                    {sorted.map((year) => {
                         const isActive = year.is_active
                         const isGanjil = year.semester === 'Ganjil'
 
@@ -267,7 +269,6 @@ function TimelineView({ years, onEdit, onHistory, onSetActive, onDuplicate, onDe
 export default function YearsPage() {
     const { addToast, addUndoToast } = useToast()
     const { dir } = useLanguage()
-    const { profile } = useAuth()
     const { enabled: canEdit } = useFlag('access.teacher_academic')
 
     const [years, setYears] = useState([])
@@ -276,9 +277,6 @@ export default function YearsPage() {
     const [submitting, setSubmitting] = useState(false)
     const [stats, setStats] = useState({ total: 0, active: 0, ganjil: 0, genap: 0 })
 
-    // --- Stats Carousel Dot Indicator ---
-    const statsScrollRef = useRef(null)
-    const [activeStatIdx, setActiveStatIdx] = useState(0)
     const STAT_CARD_COUNT = 4
 
     // Search & Filter
@@ -314,11 +312,7 @@ export default function YearsPage() {
 
     // UI
     const [isPrivacyMode, setIsPrivacyMode] = useState(false)
-    const [mobileView, setMobileView] = useState(() => {
-        try { return localStorage.getItem('ay_mobile_view') || 'card' } catch { return 'card' }
-    }) // 'card' | 'list'
     const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false)
-    const headerMenuRef = useRef(null)
     const headerMenuBtnRef = useRef(null)
     const [headerMenuRect, setHeaderMenuRect] = useState(null)
     // Deferred unmount: keeps portal in DOM for 200ms after close so exit animation can play
@@ -333,7 +327,6 @@ export default function YearsPage() {
     const [selectedItem, setSelectedItem] = useState(null)
     const [itemToDelete, setItemToDelete] = useState(null)
     const [itemToDeactivate, setItemToDeactivate] = useState(null)
-    const [itemToPermanentDelete, setItemToPermanentDelete] = useState(null)
     const [readOnlyDetailItem, setReadOnlyDetailItem] = useState(null)
     const [historyItem, setHistoryItem] = useState(null)
 
@@ -343,7 +336,6 @@ export default function YearsPage() {
     const [isArchivedOpen, setIsArchivedOpen] = useState(false)
     const [loadingArchived, setLoadingArchived] = useState(false)
     const [isBulkDeleteOpen, setIsBulkDeleteOpen] = useState(false)
-    const [isPermanentDeleteOpen, setIsPermanentDeleteOpen] = useState(false)
     const [isDeactivateConfirmOpen, setIsDeactivateConfirmOpen] = useState(false)
     const [isReadOnlyDetailOpen, setIsReadOnlyDetailOpen] = useState(false)
     const [isHistoryOpen, setIsHistoryOpen] = useState(false)
@@ -381,11 +373,16 @@ export default function YearsPage() {
                 .not('deleted_at', 'is', null)
                 .order('created_at', { ascending: false })
             setArchivedYears(data || [])
-        } catch { }
+        } catch { /* biarkan data arsip sebelumnya; UI menampilkan status loading selesai */ }
         finally { setLoadingArchived(false) }
     }, [])
 
-    useEffect(() => { fetchData() }, [fetchData])
+    // Fetch awal arsip saat mount (fetchData memuat data ke state —
+    // efek mount untuk memuat data, bukan derivasi state)
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- pemuatan data on-mount
+        fetchData()
+    }, [fetchData])
 
     useEffect(() => {
         const handler = (e) => {
@@ -398,9 +395,11 @@ export default function YearsPage() {
         return () => document.removeEventListener('mousedown', handler)
     }, [isColMenuOpen])
 
-    // Deferred unmount effect for header menu
+    // Deferred unmount for header menu (animasi keluar 200ms — sinkronisasi
+    // mounted dengan isOpen; bukan derivasi state)
     useEffect(() => {
         if (isHeaderMenuOpen) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- sinkronisasi terpaksa: animasi keluar butuh state mounted
             setHeaderMenuMounted(true)
         } else {
             const t = setTimeout(() => setHeaderMenuMounted(false), 200)
@@ -570,7 +569,7 @@ export default function YearsPage() {
         try {
             const { error: e1 } = await supabase.from('academic_years').update({ is_active: false }).neq('id', item.id).select()
             if (e1) throw e1
-            const { data, error: e2 } = await supabase.from('academic_years').update({ is_active: true }).eq('id', item.id).select()
+            const { error: e2 } = await supabase.from('academic_years').update({ is_active: true }).eq('id', item.id).select()
             if (e2) throw e2
             addToast(`${item.name} ${item.semester} diaktifkan`, 'success')
             await logAudit({ action: 'UPDATE', source: 'MASTER', tableName: 'academic_years', recordId: item.id, oldData: item, newData: { ...item, is_active: true } })
@@ -593,10 +592,6 @@ export default function YearsPage() {
         finally { setSubmitting(false) }
     }
 
-    const handleDeactivate = (item) => {
-        setItemToDeactivate(item)
-        setIsDeactivateConfirmOpen(true)
-    }
 
     const handleDeactivateConfirm = async () => {
         if (!itemToDeactivate || submitting) return
@@ -653,21 +648,7 @@ export default function YearsPage() {
         finally { setSubmitting(false); setItemToDelete(null) }
     }
 
-    const handleRestore = async (item) => {
-        try {
-            await supabase.from('academic_years').update({ deleted_at: null }).eq('id', item.id)
-            addToast('Berhasil dipulihkan', 'success')
-            fetchArchived(); fetchData()
-        } catch { addToast('Gagal memulihkan', 'error') }
-    }
 
-    const handlePermanentDelete = async (item) => {
-        try {
-            await supabase.from('academic_years').delete().eq('id', item.id)
-            addToast('Data dihapus permanen', 'success')
-            setIsPermanentDeleteOpen(false); fetchArchived()
-        } catch { addToast('Gagal menghapus permanen', 'error') }
-    }
 
     const handleBulkDelete = async () => {
         setSubmitting(true)
@@ -816,8 +797,8 @@ export default function YearsPage() {
     const {
         isImportModalOpen, setIsImportModalOpen, isExportModalOpen, setIsExportModalOpen,
         exporting, exportScope, setExportScope, exportColumns, setExportColumns,
-        importFileName, setImportFileName, importPreview, setImportPreview,
-        importIssues, setImportIssues, importStep, setImportStep,
+        importFileName, importPreview,
+        importIssues, importStep, setImportStep,
         importFileHeaders, importColumnMapping, setImportColumnMapping,
         importRawData, importLoading, setImportLoading, importDragOver, setImportDragOver,
         importValidationOpen, setImportValidationOpen, importing, importProgress,
@@ -881,7 +862,6 @@ export default function YearsPage() {
 
     const totalRows = filtered.length
     const paged = filtered.slice((page - 1) * pageSize, page * pageSize)
-    const isTrulyEmpty = years.length === 0
     const isEmpty = filtered.length === 0
 
     const toggleSelect = (id) => setSelectedIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
@@ -1281,7 +1261,7 @@ export default function YearsPage() {
                                                     <tr><td colSpan="5" className="py-24 text-center"><EmptyState icon={Search} title="Tidak ada data ditemukan" description="Sesuaikan filter atau kata kunci pencarian Anda" color="slate" variant="plain" /></td></tr>
                                                 ) : paged.map(year => {
                                                     const isSelected = selectedIds.includes(year.id);
-                                                    const ts = getTimeStatus(year.start_date, year.end_date)
+                                                    
                                                     return (
                                                         <tr key={year.id} className={`border-t border-[var(--color-border)] transition-colors group/row ${isSelected ? 'bg-[var(--color-primary)]/5' : 'hover:bg-[var(--color-surface-alt)]/40'}`}>
                                                             <td className="px-6 py-4"><input type="checkbox" checked={selectedIds.includes(year.id)} onChange={() => toggleSelect(year.id)} className="w-4 h-4 rounded border-[var(--color-border)] text-[var(--color-primary)] focus:ring-[var(--color-primary)] accent-[var(--color-primary)] cursor-pointer" /></td>
@@ -1409,7 +1389,7 @@ export default function YearsPage() {
 
                 <Modal isOpen={isReadOnlyDetailOpen} onClose={() => { setIsReadOnlyDetailOpen(false); setReadOnlyDetailItem(null) }} title="Detail Tahun Pelajaran" size="full" mobileVariant="bottom-sheet">
                     {readOnlyDetailItem && (() => {
-                        const ts = getTimeStatus(readOnlyDetailItem.start_date, readOnlyDetailItem.end_date)
+                        
                         return (
                             <div className="space-y-4 pb-2">
                                 <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-alt)]/30 flex items-start justify-between gap-3">

@@ -1,224 +1,56 @@
-import React, { useState } from 'react'
-import { Archive, ChevronLeft, ChevronRight, LoaderCircle, RotateCcw, Trash2, TriangleAlert } from 'lucide-react'
-import { Modal, EmptyState, DataTable } from '@shared/components'
+import { Archive } from 'lucide-react'
+import { ArchiveDataModal } from '@shared/components'
+import { fmtRelative } from '@utils/formatters'
 import { getProgramLabel } from '@features/enrollment/utils/enrollmentConstants'
 
+/**
+ * Wrapper arsip Pendaftar (PSB) di atas ArchiveDataModal (shared).
+ * Logika DB (restore / hapus permanen) di-delegasikan ke handler dari
+ * EnrollmentPage — wrapper hanya menyusun kolom & konfirmasi.
+ */
 export default function ArchiveModal({
     isOpen,
     onClose,
     archivedEnrollments,
     loadingArchived,
-    fetchArchivedEnrollments,
     handleRestoreEnrollment,
     handlePermanentDeleteEnrollment,
-    addToast
 }) {
-    const [archivePage, setArchivePage] = useState(1)
-    const archivePageSize = 10
-
-    const [deleteTarget, setDeleteTarget] = useState(null)
-    const [deleting, setDeleting] = useState(false)
-    const [restoring, setRestoring] = useState(false)
-
-    if (!isOpen) return null
-
-    const onRestore = async (enrollment) => {
-        setRestoring(true)
-        try {
-            await handleRestoreEnrollment(enrollment)
-        } finally {
-            setRestoring(false)
-        }
-    }
-
-    const confirmPermanentDelete = async () => {
-        if (!deleteTarget) return
-        setDeleting(true)
-        try {
-            await handlePermanentDeleteEnrollment(deleteTarget)
-            setDeleteTarget(null)
-        } finally {
-            setDeleting(false)
-        }
-    }
-
-    const formatRelativeDate = (dateString) => {
-        if (!dateString) return '-'
-        const date = new Date(dateString)
-        const diff = new Date() - date
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-        if (days === 0) return 'Hari ini'
-        if (days === 1) return 'Kemarin'
-        if (days < 7) return `${days} hari lalu`
-        if (days < 30) return `${Math.floor(days / 7)} minggu lalu`
-        return `${Math.floor(days / 30)} bulan lalu`
-    }
+    const columns = [
+        {
+            key: 'program',
+            header: 'Program',
+            align: 'center',
+            render: (e) => (
+                <span className="font-bold bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-1.5 py-0.5 rounded-md border border-[var(--color-primary)]/20 whitespace-nowrap">
+                    {getProgramLabel(e.program)}
+                </span>
+            ),
+        },
+        {
+            key: 'deleted_at',
+            header: 'Diarsipkan',
+            align: 'center',
+            render: (e) => <span className="font-medium text-[var(--color-text-muted)] whitespace-nowrap">{fmtRelative(e.metadata?.deleted_at)}</span>,
+        },
+    ]
 
     return (
-        <Modal
+        <ArchiveDataModal
             isOpen={isOpen}
             onClose={onClose}
             title="Arsip Pendaftar"
             description="Kelola dan pulihkan data calon santri yang telah diarsipkan."
-            icon={Archive}
-            iconBg="bg-amber-500/10"
-            iconColor="text-amber-600"
-            size="lg"
-            mobileVariant="bottom-sheet"
-            footer={
-                <div className="flex items-center w-full">
-                    <button
-                        onClick={onClose}
-                        className="h-10 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-wide hover:bg-[var(--color-surface-alt)] transition-all flex items-center justify-center"
-                    >
-                        Tutup
-                    </button>
-                    <div className="flex-1" />
-                </div>
-            }
-        >
-            <div className="space-y-3 relative">
-
-                {/* ====== DELETE CONFIRMATION OVERLAY ====== */}
-                <div
-                    className={`absolute inset-0 z-20 bg-[var(--color-surface)] flex flex-col items-center justify-center gap-4 p-6 rounded-xl transition-all duration-300 ease-out ${deleteTarget ? 'opacity-100 visible scale-100' : 'opacity-0 invisible scale-95 pointer-events-none'}`}
-                >
-                    <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
-                        <TriangleAlert className="w-6 h-6 text-red-500" />
-                    </div>
-                    <div className="text-center max-w-xs">
-                        <p className="text-sm font-bold text-[var(--color-text)] mb-1">Hapus Permanen?</p>
-                        <p className="text-xs font-medium text-[var(--color-text-muted)] leading-relaxed">
-                         Data calon santri <b className="text-red-500">{deleteTarget?.name}</b> akan dihapus secara permanen dari database. Tindakan ini <b>tidak dapat dibatalkan</b>.
-                        </p>
-                    </div>
-                    <div className="flex items-center w-full max-w-xs gap-3 mt-2">
-                        <button
-                            onClick={() => setDeleteTarget(null)}
-                            disabled={deleting}
-                            className="h-10 px-5 rounded-xl bg-[var(--color-surface-alt)] font-bold text-xs uppercase tracking-wide text-[var(--color-text-muted)] hover:bg-[var(--color-border)] transition-colors border border-[var(--color-border)] disabled:opacity-50 shrink-0"
-                        >
-                            Batal
-                        </button>
-                        <div className="flex-1" />
-                        <button
-                            onClick={confirmPermanentDelete}
-                            disabled={deleting}
-                            className="h-10 px-5 rounded-xl bg-red-500 hover:brightness-110 text-white text-xs font-bold uppercase tracking-wide transition-all shadow-lg disabled:opacity-50 flex items-center justify-center gap-2 shrink-0"
-                        >
-                            {deleting ? <><LoaderCircle className="w-4 h-4 animate-spin" /> Menghapus...</> : <><Trash2 className="w-4 h-4" /> Hapus Permanen</>}
-                        </button>
-                    </div>
-                </div>
-
-                {/* ====== MAIN CONTENT ====== */}
-                <div className="p-2.5 bg-amber-500/10 rounded-xl border border-amber-500/20 flex items-center gap-3">
-                    <Archive className="w-5 h-5 text-amber-600 shrink-0" />
-                    <div>
-                        <p className="text-xs font-bold text-amber-700 dark:text-amber-400">{archivedEnrollments.length} pendaftar di arsip</p>
-                        <p className="text-xs text-[var(--color-text-muted)] font-medium">Pulihkan untuk mengembalikan ke daftar aktif seleksi, atau hapus permanen.</p>
-                    </div>
-                </div>
-
-                {loadingArchived ? (
-                    <div className="text-center py-12 text-[var(--color-text-muted)]">
-                        <LoaderCircle className="w-5 h-5 animate-spin mb-3" />
-                        <p className="text-xs font-bold">Memuat arsip...</p>
-                    </div>
-                ) : archivedEnrollments.length === 0 ? (
-                    <EmptyState
-                        icon={Archive}
-                        title="Arsip Kosong"
-                        description="Tidak ada data pendaftaran yang diarsipkan saat ini."
-                        variant="dashed"
-                        color="amber"
-                    />
-                ) : (
-                    <div className="space-y-3">
-                        <DataTable
-                            dense
-                            data={archivedEnrollments.slice((archivePage - 1) * archivePageSize, archivePage * archivePageSize)}
-                            columns={[
-                                {
-                                    key: 'name',
-                                    header: 'Calon Santri',
-                                    render: (e) => (
-                                        <>
-                                            <p className="font-bold text-[var(--color-text)] leading-snug whitespace-nowrap">{e.name}</p>
-                                            <p className="font-mono text-[var(--color-text-muted)]">{e.registration_number}</p>
-                                        </>
-                                    ),
-                                },
-                                {
-                                    key: 'program',
-                                    header: 'Program',
-                                    align: 'center',
-                                    render: (e) => (
-                                        <span className="font-bold bg-[var(--color-primary)]/10 text-[var(--color-primary)] px-1.5 py-0.5 rounded-md border border-[var(--color-primary)]/20 whitespace-nowrap">
-                                            {getProgramLabel(e.program)}
-                                        </span>
-                                    ),
-                                },
-                                {
-                                    key: 'deleted_at',
-                                    header: 'Diarsipkan',
-                                    align: 'center',
-                                    render: (e) => <span className="font-medium text-[var(--color-text-muted)] whitespace-nowrap">{formatRelativeDate(e.metadata?.deleted_at)}</span>,
-                                },
-                                {
-                                    key: 'actions',
-                                    header: 'Aksi',
-                                    align: 'right',
-                                    render: (e) => (
-                                        <div className="flex items-center justify-end gap-1.5">
-                                            <button
-                                                onClick={() => onRestore(e)}
-                                                disabled={restoring}
-                                                className="h-7 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500 hover:text-white border border-emerald-500/20 text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1 disabled:opacity-50"
-                                            >
-                                                <RotateCcw className="w-4 h-4" />
-                                                Pulihkan
-                                            </button>
-                                            <button
-                                                onClick={() => setDeleteTarget(e)}
-                                                className="h-7 px-2.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                                Hapus
-                                            </button>
-                                        </div>
-                                    ),
-                                },
-                            ]}
-                        />
-
-                        {/* Pagination Arsip */}
-                        {archivedEnrollments.length > archivePageSize && (
-                            <div className="flex items-center justify-between px-1">
-                                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wide">
-                                    Halaman {archivePage} dari {Math.ceil(archivedEnrollments.length / archivePageSize)}
-                                </p>
-                                <div className="flex gap-1.5">
-                                    <button
-                                        disabled={archivePage === 1}
-                                        onClick={() => setArchivePage(p => p - 1)}
-                                        className="w-7 h-7 rounded-lg border border-[var(--color-border)] flex items-center justify-center disabled:opacity-30 hover:bg-[var(--color-surface-alt)] shadow-sm transition-colors"
-                                    >
-                                        <ChevronLeft className="w-4 h-4" />
-                                    </button>
-                                    <button
-                                        disabled={archivePage >= Math.ceil(archivedEnrollments.length / archivePageSize)}
-                                        onClick={() => setArchivePage(p => p + 1)}
-                                        className="w-7 h-7 rounded-lg border border-[var(--color-border)] flex items-center justify-center disabled:opacity-30 hover:bg-[var(--color-surface-alt)] shadow-sm transition-colors"
-                                    >
-                                        <ChevronRight className="w-4 h-4" />
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                )}
-            </div>
-        </Modal>
+            rows={archivedEnrollments}
+            loading={loadingArchived}
+            entityLabel="pendaftar"
+            nameKey="name"
+            nameHeader="Calon Santri"
+            secondaryKey="registration_number"
+            dangerNote="akan dihapus secara permanen dari database"
+            columns={columns}
+            onRestore={handleRestoreEnrollment}
+            onPermanentDelete={handlePermanentDeleteEnrollment}
+        />
     )
 }

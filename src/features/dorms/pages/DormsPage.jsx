@@ -41,7 +41,7 @@ import { getPortalContainer } from '@features/dorms/utils/dormUtils'
 
 export default function DormsPage() {
     const { addToast } = useToast()
-    const { language, t, tNum } = useLanguage()
+    const { t } = useLanguage()
 
     const [activeTab, setActiveTab] = useState('plotting') // 'plotting' | 'kebersihan' | 'musyrif' | 'kelola_kamar'
     const [isPrivacyMode, setIsPrivacyMode] = useState(false)
@@ -62,6 +62,7 @@ export default function DormsPage() {
     // Mount/unmount header dropdown with animation delay
     useEffect(() => {
         if (isHeaderMenuOpen) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- sinkronisasi terpaksa: animasi keluar
             setHeaderMenuMounted(true)
         } else {
             const t = setTimeout(() => setHeaderMenuMounted(false), 200)
